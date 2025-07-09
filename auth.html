@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In / Sign Up - IELTS Mahir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      /* Base styles for body and font */
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+          "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #f8ffef; /* Light background for the auth page */
+      }
+      /* Custom font for the title */
+      .font-anton {
+        font-family: "Anton", sans-serif;
+      }
+
+      /* Toast notification styles */
+      #toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .toast {
+        padding: 12px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        color: white;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        min-width: 250px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .toast.success {
+        background-color: #28a745;
+      }
+      .toast.error {
+        background-color: #dc3545;
+      }
+      .toast.info {
+        background-color: #007bff;
+      }
+    </style>
+  </head>
+  <body class="light">
+    <div
+      id="app-root"
+      class="min-h-screen flex flex-col transition-colors duration-300"
+    >
+      <!-- Header / Navigation Bar - Simplified for Auth Page -->
+      <header
+        id="app-header"
+        class="py-3 px-4 md:py-4 md:px-8 flex items-center justify-between bg-white border-b border-gray-100 rounded-b-xl transition-colors duration-300 sticky top-0 z-50"
+      >
+        <div class="flex items-center gap-4">
+          <h1 class="font-anton text-2xl md:text-3xl text-blue-600">Mahir</h1>
+          <nav class="hidden md:flex gap-4">
+            <!-- Navigation links, if any, can be added here -->
+          </nav>
+        </div>
+        <div
+          id="auth-buttons-container"
+          class="flex items-center gap-2 sm:gap-4"
+        >
+          <!-- Authentication status will be handled by auth.js and redirect -->
+          <!-- A loading spinner or placeholder can be here initially -->
+          <div class="animate-pulse flex space-x-4">
+            <div class="rounded-full bg-gray-200 h-10 w-10"></div>
+            <div class="flex-1 space-y-6 py-1">
+              <div class="h-2 bg-gray-200 rounded"></div>
+              <div class="space-y-3">
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="h-2 bg-gray-200 rounded col-span-2"></div>
+                  <div class="h-2 bg-gray-200 rounded col-span-1"></div>
+                </div>
+                <div class="h-2 bg-gray-200 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main content area for Auth Page -->
+      <main
+        id="main-content"
+        class="flex-1 flex items-center justify-center min-h-screen -mt-16"
+      >
+        <div
+          class="p-8 md:p-10 rounded-2xl border border-gray-200 bg-white w-full max-w-md"
+        >
+          <h2
+            id="auth-title"
+            class="text-2xl md:text-3xl font-bold mb-6 text-gray-900 text-center"
+          >
+            Sign In to Mahir
+          </h2>
+          <form id="auth-form" class="space-y-5">
+            <!-- Name Field - Hidden by default for login, shown for signup -->
+            <div id="name-field" class="hidden">
+              <label
+                for="auth-name"
+                class="block text-sm font-medium mb-1 text-gray-700"
+                >Name</label
+              >
+              <input
+                type="text"
+                id="auth-name"
+                class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"
+                placeholder="Your full name"
+              />
+            </div>
+            <div>
+              <label
+                for="auth-email"
+                class="block text-sm font-medium mb-1 text-gray-700"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="auth-email"
+                class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"
+                placeholder="your@example.com"
+                required
+              />
+            </div>
+            <div>
+              <label
+                for="auth-password"
+                class="block text-sm font-medium mb-1 text-gray-700"
+                >Password</label
+              >
+              <input
+                type="password"
+                id="auth-password"
+                class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"
+                placeholder="Minimum 6 characters"
+                required
+              />
+            </div>
+            <div id="confirm-password-field" class="hidden">
+              <label
+                for="auth-confirm-password"
+                class="block text-sm font-medium mb-1 text-gray-700"
+                >Confirm Password</label
+              >
+              <input
+                type="password"
+                id="auth-confirm-password"
+                class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"
+                placeholder="Confirm your password"
+              />
+            </div>
+            <button
+              type="submit"
+              id="auth-submit-btn"
+              class="w-full px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-colors font-semibold transform active:scale-95"
+            >
+              Sign In
+            </button>
+          </form>
+          <div class="mt-6 text-center text-gray-600">
+            Don't have an account?
+            <button
+              id="toggle-auth-mode"
+              class="text-blue-600 font-semibold hover:underline"
+            >
+              Sign Up
+            </button>
+          </div>
+          <div class="relative flex items-center justify-center my-6">
+            <div class="absolute inset-x-0 h-px bg-gray-200"></div>
+            <span class="relative bg-white px-4 text-sm text-gray-500">OR</span>
+          </div>
+          <button
+            id="google-auth-btn"
+            class="w-full flex items-center justify-center gap-3 px-6 py-3 bg-red-500 text-white rounded-xl shadow-md hover:bg-red-600 transition-colors font-semibold transform active:scale-95"
+          >
+            <i class="fab fa-google text-lg"></i> Continue with Google
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <script type="module">
+      // Import authentication functions and state from the central auth.js file
+      import {
+        initFirebaseAuth,
+        signInEmailPassword,
+        signUpEmailPassword,
+        signInWithGoogle,
+        showToast, // Import showToast from auth.js for this page
+      } from "./auth.js";
+
+      // --- Helper Icons (Font Awesome classes) ---
+      const Icons = {
+        SignIn: `<i class="fas fa-sign-in-alt"></i>`,
+      };
+
+      // --- DOM Elements Cache (for this page) ---
+      const elements = {
+        authButtonsContainer: document.getElementById("auth-buttons-container"),
+        authTitle: document.getElementById("auth-title"),
+        authForm: document.getElementById("auth-form"),
+        nameInput: document.getElementById("auth-name"), // Added name input
+        nameField: document.getElementById("name-field"), // Added name field container
+        emailInput: document.getElementById("auth-email"),
+        passwordInput: document.getElementById("auth-password"),
+        confirmPasswordField: document.getElementById("confirm-password-field"),
+        confirmPasswordInput: document.getElementById("auth-confirm-password"),
+        authSubmitBtn: document.getElementById("auth-submit-btn"),
+        toggleAuthModeBtn: document.getElementById("toggle-auth-mode"),
+        googleAuthBtn: document.getElementById("google-auth-btn"),
+      };
+
+      let currentAuthMode = "login"; // 'login' or 'signup'
+
+      /**
+       * Callback function to update the UI based on authentication state.
+       * This is passed to initFirebaseAuth.
+       * @param {object|null} user - The Firebase User object or null if signed out.
+       */
+      function handleAuthChange(user) {
+        if (user) {
+          // User is signed in - redirect to the main forum page
+          window.location.href = "home.html"; // Assuming index.html is your main forum page
+        } else {
+          // User is signed out - keep auth form visible
+          elements.authButtonsContainer.innerHTML = `
+            <a href="auth.html" id="sign-in-nav-btn" class="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-xs sm:text-sm font-semibold transform active:scale-95"> ${Icons.SignIn} <span class="hidden sm:inline">Sign In</span> </a>
+          `;
+        }
+      }
+
+      /**
+       * Toggles the UI between login and signup modes.
+       * @param {string} mode - 'login' or 'signup'.
+       */
+      function toggleAuthModeUI(mode) {
+        currentAuthMode = mode;
+        if (mode === "login") {
+          elements.authTitle.textContent = "Sign In to Mahir";
+          elements.authSubmitBtn.textContent = "Sign In";
+          elements.nameField.classList.add("hidden"); // Hide name field for login
+          elements.nameInput.removeAttribute("required");
+          elements.confirmPasswordField.classList.add("hidden");
+          elements.confirmPasswordInput.removeAttribute("required");
+          elements.toggleAuthModeBtn.textContent = "Sign Up";
+        } else {
+          elements.authTitle.textContent = "Sign Up for Mahir";
+          elements.authSubmitBtn.textContent = "Sign Up";
+          elements.nameField.classList.remove("hidden"); // Show name field for signup
+          elements.nameInput.setAttribute("required", "true");
+          elements.confirmPasswordField.classList.remove("hidden");
+          elements.confirmPasswordInput.setAttribute("required", "true");
+          elements.toggleAuthModeBtn.textContent = "Sign In";
+        }
+      }
+
+      // Event Listeners for Auth Page
+      elements.toggleAuthModeBtn.addEventListener("click", () => {
+        toggleAuthModeUI(currentAuthMode === "login" ? "signup" : "login");
+        // Update URL hash to reflect the mode, useful for direct links
+        window.location.hash = currentAuthMode === "signup" ? "#signup" : "";
+      });
+
+      elements.authForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const name = elements.nameInput.value.trim(); // Get name value
+        const email = elements.emailInput.value.trim();
+        const password = elements.passwordInput.value.trim();
+        const confirmPassword = elements.confirmPasswordInput.value.trim();
+
+        if (currentAuthMode === "signup") {
+          if (!name) {
+            showToast("Please enter your name.", "error");
+            return;
+          }
+          if (password !== confirmPassword) {
+            showToast("Passwords do not match!", "error");
+            return;
+          }
+        }
+
+        if (password.length < 6) {
+          showToast("Password must be at least 6 characters long.", "error");
+          return;
+        }
+
+        if (currentAuthMode === "login") {
+          await signInEmailPassword(email, password);
+        } else {
+          // Pass name to signUpEmailPassword
+          await signUpEmailPassword(email, password, name);
+        }
+      });
+
+      elements.googleAuthBtn.addEventListener("click", async () => {
+        await signInWithGoogle();
+      });
+
+      // Initialize authentication when the DOM is fully loaded
+      document.addEventListener("DOMContentLoaded", () => {
+        // Pass the callback to initFirebaseAuth to handle UI updates/redirections
+        initFirebaseAuth(handleAuthChange);
+
+        // Check if there's a hash in the URL (e.g., auth.html#signup) to set initial mode
+        if (window.location.hash === "#signup") {
+          toggleAuthModeUI("signup");
+        } else {
+          toggleAuthModeUI("login");
+        }
+      });
+    </script>
+  </body>
+</html>

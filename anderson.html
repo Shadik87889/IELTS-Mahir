@@ -1,0 +1,2901 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <link rel="stylesheet" href="admin-panel-extra.css" />
+  </head>
+  <body>
+    <div id="sidebar-overlay" class="lg:hidden hidden overlay"></div>
+    <aside
+      id="sidebar"
+      class="w-64 bg-white shadow-lg p-6 flex flex-col rounded-r-lg max-h-screen overflow-y-auto sidebar-menu fixed lg:static inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out"
+    >
+      <div class="flex items-center justify-center mb-10 mt-2">
+        <img
+          src="https://placehold.co/40x40/ED3A52/white?text=A"
+          alt="Admin Logo"
+          class="w-10 h-10 rounded-full mr-3 shadow-md"
+        />
+        <span class="text-xl font-bold text-gray-800">Admin Panel</span>
+      </div>
+      <div class="relative mb-6 lg:hidden">
+        <input
+          type="text"
+          id="sidebar-search"
+          placeholder="Search..."
+          class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-full"
+        />
+        <i
+          class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+        ></i>
+      </div>
+      <nav class="flex-grow">
+        <ul class="space-y-2">
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200 active-link"
+              data-page="dashboard"
+            >
+              <i class="fas fa-chart-line text-lg mr-4"></i>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="registration"
+            >
+              <i class="fas fa-user-plus text-lg mr-4"></i>
+              Registration
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="messages"
+            >
+              <i class="fas fa-envelope text-lg mr-4"></i>
+              Messages
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="our-teacher"
+            >
+              <i class="fas fa-chalkboard-teacher text-lg mr-4"></i>
+              Our Teacher
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="student-history"
+            >
+              <i class="fas fa-history text-lg mr-4"></i>
+              Student History
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="courses"
+            >
+              <i class="fas fa-book-open text-lg mr-4"></i>
+              Courses
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="community-forum"
+            >
+              <i class="fas fa-users text-lg mr-4"></i>
+              Community Forum
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="blog"
+            >
+              <i class="fas fa-blog text-lg mr-4"></i>
+              Blog
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="free-resources"
+            >
+              <i class="fas fa-file-alt text-lg mr-4"></i>
+              Free Resources
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="mock-test"
+            >
+              <i class="fas fa-clipboard-list text-lg mr-4"></i>
+              Mock Test
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="quizzes"
+            >
+              <i class="fas fa-question-circle text-lg mr-4"></i>
+              Quizzes
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="testimonial"
+            >
+              <i class="fas fa-star text-lg mr-4"></i>
+              Testimonial
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="block-list"
+            >
+              <i class="fas fa-ban text-lg mr-4"></i>
+              Block List
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="homepage"
+            >
+              <i class="fas fa-home text-lg mr-4"></i>
+              Home Page
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+    <div class="flex-1 flex flex-col bg-gray-50 h-full w-[100%]">
+      <header
+        class="bg-white shadow-sm py-4 px-6 flex items-center justify-between flex-nowrap rounded-bl-lg"
+      >
+        <div class="flex items-center space-x-4 flex-shrink-0">
+          <button
+            id="hamburger-menu"
+            class="lg:hidden text-gray-600 hover:text-red-600 text-2xl"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="relative">
+            <input
+              type="date"
+              id="date-picker"
+              class="p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-32 sm:w-auto"
+            />
+          </div>
+          <button
+            id="export-pdf-btn"
+            class="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-md transition-colors duration-200 text-sm hidden md:flex"
+          >
+            <i class="fas fa-file-export mr-2"></i>
+            Export PDF
+          </button>
+        </div>
+        <div
+          class="flex items-center space-x-4 sm:space-x-6 flex-shrink-0 ml-auto"
+        >
+          <div class="relative hidden md:block flex-grow-0">
+            <input
+              type="text"
+              placeholder="Search..."
+              class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-40 lg:w-64"
+            />
+            <i
+              class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            ></i>
+          </div>
+          <button
+            id="notifications-btn"
+            class="relative text-gray-600 hover:text-red-600 transition-colors duration-200"
+          >
+            <i class="fas fa-bell text-xl"></i>
+            <span
+              class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2"
+              >3</span
+            >
+          </button>
+          <button
+            id="settings-btn"
+            class="text-gray-600 hover:text-red-600 transition-colors duration-200"
+          >
+            <i class="fas fa-cog text-xl"></i>
+          </button>
+          <div class="relative group flex-shrink-0">
+            <img
+              src="https://placehold.co/40x40/9CA3AF/white?text=U"
+              alt="User Avatar"
+              class="w-10 h-10 rounded-full border-2 border-gray-300 transition-all duration-200"
+              title="Admin User"
+            />
+          </div>
+        </div>
+      </header>
+      <main
+        id="content-area"
+        class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto custom-scrollbar"
+      ></main>
+    </div>
+    <div
+      id="message-box"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-[1000] hidden"
+    >
+      <div
+        class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center"
+      >
+        <p id="message-content" class="text-gray-800 text-lg mb-4"></p>
+        <button
+          id="close-message-box"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        doc,
+        addDoc,
+        updateDoc,
+        deleteDoc,
+        onSnapshot,
+        getDoc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+      import {
+        getAuth,
+        signInAnonymously,
+        signInWithCustomToken,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+      const defaultAppId = "ielts-mahir-community-forum";
+      const defaultFirebaseConfig = {
+        apiKey: "AIzaSyAxsd0CnLsh7t7yFy3ZPp6saGD_YpLL1mY",
+        authDomain: "ielts-mahir-community-forum.firebaseapp.com",
+        projectId: "ielts-mahir-community-forum",
+        storageBucket: "ielts-mahir-community-forum.firebasestorage.app",
+        messagingSenderId: "1036043607546",
+        appId: "1:1036043607546:web:bd217e04cc0ec5f296d843",
+        measurementId: "G-YC4CG1WKD3",
+      };
+
+      const firebaseConfig =
+        typeof __firebase_config !== "undefined"
+          ? JSON.parse(__firebase_config)
+          : defaultFirebaseConfig;
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+      const appId = typeof __app_id !== "undefined" ? __app_id : defaultAppId;
+
+      let userId = null;
+      let isAuthReady = false;
+      let summernoteEditorInstance = null;
+
+      let blogCurrentPage = 1;
+      const blogItemsPerPage = 6;
+      let blogCurrentFilters = {
+        status: "all",
+        category: "all categories",
+        searchTerm: "",
+      };
+
+      let testimonialCurrentPage = 1;
+      const testimonialItemsPerPage = 6;
+      let testimonialCurrentFilters = { status: "all", searchTerm: "" };
+
+      let contactMessageCurrentPage = 1;
+      const contactMessageItemsPerPage = 5;
+      let contactMessageCurrentFilters = { status: "all", searchTerm: "" };
+
+      let teacherCurrentPage = 1;
+      const teacherItemsPerPage = 6;
+      let teacherCurrentFilters = { status: "all", searchTerm: "" };
+      let freeResourceCurrentPage = 1;
+      const freeResourceItemsPerPage = 6;
+      let freeResourceCurrentFilters = {
+        status: "all",
+        category: "all categories",
+        searchTerm: "",
+      };
+
+      async function authenticateFirebase() {
+        try {
+          typeof __initial_auth_token !== "undefined"
+            ? await signInWithCustomToken(auth, __initial_auth_token)
+            : await signInAnonymously(auth);
+          userId = auth.currentUser.uid;
+          isAuthReady = true;
+          console.log("Firebase authenticated. User ID:", userId);
+        } catch (error) {
+          console.error("Firebase authentication failed:", error);
+          isAuthReady = false;
+          showMessage(
+            `Failed to connect to Firebase: ${error.message}. Please check your internet connection and Firebase setup.`
+          );
+        }
+      }
+
+      const showMessage = (message) => {
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        messageContent.textContent = message;
+        messageBox.classList.remove("hidden");
+      };
+
+      const processAndResizeImage = (file, maxWidth, maxHeight, callback) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            let [width, height] = [img.width, img.height];
+            if (width > height) {
+              if (width > maxWidth) {
+                height *= maxWidth / width;
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxHeight) {
+                width *= maxHeight / height;
+                height = maxHeight;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+            callback(canvas.toDataURL("image/jpeg", 1.0));
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      };
+
+      const setupImageDragAndDrop = (
+        hiddenInputId,
+        dropZoneId,
+        previewImgId,
+        maxWidth = 800,
+        maxHeight = 400
+      ) => {
+        const hiddenInput = document.getElementById(hiddenInputId);
+        const dropZone = document.getElementById(dropZoneId);
+        const previewImg = document.getElementById(previewImgId);
+        const placeholderText = dropZone.querySelector(".placeholder-text");
+        const changeText = dropZone.querySelector(".change-text");
+
+        if (
+          !hiddenInput ||
+          !dropZone ||
+          !previewImg ||
+          !placeholderText ||
+          !changeText
+        ) {
+          console.error(
+            `Missing elements for drag and drop setup: ${hiddenInputId}, ${dropZoneId}, ${previewImgId}`
+          );
+          return;
+        }
+
+        const updateImagePreview = (src) => {
+          previewImg.src = src || "";
+          previewImg.classList.toggle("hidden", !src);
+          placeholderText.classList.toggle("hidden", !!src);
+          changeText.classList.toggle("hidden", !src);
+          hiddenInput.value = src || "";
+        };
+
+        updateImagePreview(hiddenInput.value);
+
+        ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+          dropZone.addEventListener(eventName, preventDefaults, false);
+          document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        ["dragenter", "dragover"].forEach((eventName) => {
+          dropZone.addEventListener(
+            eventName,
+            () => dropZone.classList.add("border-red-500", "bg-red-50"),
+            false
+          );
+        });
+
+        ["dragleave", "drop"].forEach((eventName) => {
+          dropZone.addEventListener(
+            eventName,
+            () => dropZone.classList.remove("border-red-500", "bg-red-50"),
+            false
+          );
+        });
+
+        dropZone.addEventListener(
+          "drop",
+          (e) => {
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+              const file = files[0];
+              file.type.startsWith("image/")
+                ? processAndResizeImage(
+                    file,
+                    maxWidth,
+                    maxHeight,
+                    (dataUrl) => {
+                      updateImagePreview(dataUrl);
+                      showMessage(
+                        "Image dropped, resized, and converted to Data URL."
+                      );
+                    }
+                  )
+                : showMessage(
+                    "Please drop an image file (e.g., .jpg, .png, .gif)."
+                  );
+            } else if (
+              e.dataTransfer
+                .getData("text/plain")
+                .match(/\.(jpeg|jpg|gif|png|webp|svg)$/i)
+            ) {
+              updateImagePreview(e.dataTransfer.getData("text/plain"));
+              showMessage("Image URL dropped.");
+            } else {
+              showMessage("Dropped text is not a valid image URL.");
+            }
+          },
+          false
+        );
+
+        dropZone.addEventListener("click", () => {
+          const input = document.createElement("input");
+          input.type = "file";
+          input.accept = "image/*";
+          input.onchange = (e) => {
+            const file = e.target.files[0];
+            file && file.type.startsWith("image/")
+              ? processAndResizeImage(file, maxWidth, maxHeight, (dataUrl) => {
+                  updateImagePreview(dataUrl);
+                  showMessage(
+                    "Image selected, resized, and converted to Data URL."
+                  );
+                })
+              : showMessage("Please select an image file.");
+          };
+          input.click();
+        });
+        dropZone._setImage = updateImagePreview;
+      };
+
+      const generatePageHeader = (title) => `
+          <h1 class="text-3xl font-bold text-gray-800 mb-6">${title}</h1>
+          <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+              <p class="text-gray-600">This is the content for the <strong>${title}</strong> page.</p>
+          </div>
+          `;
+
+      const mockRegistrations = [
+        { name: "John Doe", date: "2024-01-15" },
+        { name: "Jane Smith", date: "2024-01-10" },
+      ];
+
+      const mockCourses = [
+        {
+          name: "Advanced Math",
+          description:
+            "Comprehensive course covering advanced mathematical concepts.",
+          enrolled: 150,
+          rating: 4.8,
+        },
+        {
+          name: "Basic English",
+          description: "Essential English grammar and communication skills.",
+          enrolled: 200,
+          rating: 4.5,
+        },
+      ];
+
+      const renderRegistrations = () => {
+        const registrationList = document.getElementById("registration-list");
+        if (!registrationList) return;
+        registrationList.innerHTML = "";
+        mockRegistrations.forEach((reg) => {
+          const listItem = document.createElement("li");
+          listItem.className =
+            "flex justify-between items-center p-3 bg-gray-50 rounded-lg";
+          listItem.innerHTML = `<span>${reg.name} - <span class="text-gray-600">Registered on ${reg.date}</span></span><button class="text-blue-500 hover:text-blue-700" onclick="showMessage('Editing ${reg.name}\'s registration.')"><i class="fas fa-edit"></i></button>`;
+          registrationList.appendChild(listItem);
+        });
+      };
+
+      const renderCourses = () => {
+        const coursesGrid = document.getElementById("courses-grid");
+        if (!coursesGrid) return;
+        coursesGrid.innerHTML = "";
+        mockCourses.forEach((course) => {
+          const courseCard = document.createElement("div");
+          courseCard.className = "bg-gray-50 p-4 rounded-lg shadow-sm";
+          courseCard.innerHTML = `<h3 class="font-bold text-gray-800 text-lg mb-2">${course.name}</h3><p class="text-gray-600 text-sm">${course.description}</p><div class="flex justify-between items-center mt-3 text-sm"><span class="text-gray-500"><i class="fas fa-users mr-1"></i> ${course.enrolled} Enrolled</span><span class="text-gray-500"><i class="fas fa-star mr-1"></i> ${course.rating} Rating</span></div><button class="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded-lg" onclick="showMessage('Editing ${course.name} course.')">Edit Course</button>`;
+          coursesGrid.appendChild(courseCard);
+        });
+      };
+
+      const closeAllKebabDropdowns = () => {
+        document
+          .querySelectorAll(".kebab-dropdown.active")
+          .forEach((dropdown) => dropdown.classList.remove("active"));
+      };
+
+      window.updateTestimonialStatus = async (id, newStatus) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        closeAllKebabDropdowns();
+        try {
+          await updateDoc(
+            doc(db, "artifacts", appId, "public", "data", "testimonials", id),
+            { status: newStatus }
+          );
+          showMessage(`Testimonial status updated to '${newStatus}'.`);
+        } catch (error) {
+          console.error("Error updating testimonial status:", error);
+          showMessage(`Failed to update testimonial status: ${error.message}.`);
+        }
+      };
+
+      window.editTestimonial = async (id) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        closeAllKebabDropdowns();
+        try {
+          const docSnap = await getDoc(
+            doc(db, "artifacts", appId, "public", "data", "testimonials", id)
+          );
+          if (!docSnap.exists()) return showMessage("Testimonial not found.");
+          const testimonial = docSnap.data();
+          document.getElementById("testimonial-id").value = id;
+          document.getElementById("testimonial-name").value = testimonial.name;
+          document.getElementById("testimonial-role").value = testimonial.role;
+          document.getElementById("testimonial-text").value =
+            testimonial.text || "";
+          document
+            .getElementById("avatar-drop-zone")
+            ._setImage(testimonial.avatarSrc || "");
+          const typeVideoRadio = document.getElementById(
+            "testimonial-type-video"
+          );
+          const videoUrlGroup = document.getElementById("video-url-group");
+          const testimonialVideoSrc = document.getElementById(
+            "testimonial-video-src"
+          );
+          typeVideoRadio.checked = testimonial.type === "video";
+          videoUrlGroup.classList.toggle(
+            "hidden",
+            testimonial.type !== "video"
+          );
+          testimonialVideoSrc.value = testimonial.videoSrc || "";
+          document.getElementById("testimonial-type-text").checked =
+            testimonial.type !== "video";
+          document.getElementById("add-testimonial-btn").textContent =
+            "Update Testimonial";
+          showMessage(
+            "Form populated for editing. Update and submit to save changes."
+          );
+        } catch (error) {
+          console.error("Error fetching testimonial for edit:", error);
+          showMessage(
+            `Failed to load testimonial for editing: ${error.message}.`
+          );
+        }
+      };
+
+      window.deleteTestimonial = async (id) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        closeAllKebabDropdowns();
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        const closeMessageBoxBtn = document.getElementById("close-message-box");
+        messageContent.textContent =
+          "Are you sure you want to delete this testimonial? This action cannot be undone.";
+        messageBox.classList.remove("hidden");
+
+        const confirmDeleteBtn = document.createElement("button");
+        confirmDeleteBtn.textContent = "Confirm Delete";
+        confirmDeleteBtn.className =
+          "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
+        confirmDeleteBtn.id = "confirm-delete-btn";
+        messageBox.querySelector(".text-center").appendChild(confirmDeleteBtn);
+
+        confirmDeleteBtn.addEventListener("click", async () => {
+          try {
+            await deleteDoc(
+              doc(db, "artifacts", appId, "public", "data", "testimonials", id)
+            );
+            showMessage("Testimonial deleted successfully.");
+          } catch (error) {
+            console.error("Error deleting testimonial:", error);
+            showMessage(`Failed to delete testimonial: ${error.message}.`);
+          } finally {
+            confirmDeleteBtn.remove();
+            messageBox.classList.add("hidden");
+          }
+        });
+
+        const originalCloseHandler = closeMessageBoxBtn.onclick;
+        closeMessageBoxBtn.onclick = () => {
+          confirmDeleteBtn.remove();
+          messageBox.classList.add("hidden");
+          if (originalCloseHandler) originalCloseHandler();
+          closeMessageBoxBtn.onclick = originalCloseHandler;
+        };
+      };
+
+      const renderTestimonials = (filters, currentPage, itemsPerPage) => {
+        if (!isAuthReady)
+          return showMessage(
+            "Testimonials cannot be loaded or managed because Firebase authentication is not ready. Please try refreshing the page."
+          );
+        const [pendingList, approvedList, rejectedList, paginationContainer] = [
+          document.getElementById("pending-testimonials-list"),
+          document.getElementById("approved-testimonials-list"),
+          document.getElementById("rejected-testimonials-list"),
+          document.getElementById("testimonial-pagination"),
+        ];
+        if (
+          !pendingList ||
+          !approvedList ||
+          !rejectedList ||
+          !paginationContainer
+        )
+          return console.error("Testimonial elements not found.");
+
+        onSnapshot(
+          collection(db, "artifacts", appId, "public", "data", "testimonials"),
+          (snapshot) => {
+            [
+              pendingList,
+              approvedList,
+              rejectedList,
+              paginationContainer,
+            ].forEach((el) => (el.innerHTML = ""));
+            let allTestimonials = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            let filteredTestimonials = allTestimonials.filter(
+              (t) =>
+                (filters.status === "all" || t.status === filters.status) &&
+                (filters.searchTerm === "" ||
+                  t.name
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()) ||
+                  t.role
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()) ||
+                  (t.text &&
+                    t.text
+                      .toLowerCase()
+                      .includes(filters.searchTerm.toLowerCase())))
+            );
+            filteredTestimonials.sort(
+              (a, b) =>
+                (b.timestamp?.toDate() || new Date(0)).getTime() -
+                (a.timestamp?.toDate() || new Date(0)).getTime()
+            );
+
+            const totalPages = Math.ceil(
+              filteredTestimonials.length / itemsPerPage
+            );
+            const paginatedTestimonials = filteredTestimonials.slice(
+              (currentPage - 1) * itemsPerPage,
+              currentPage * itemsPerPage
+            );
+
+            if (paginatedTestimonials.length === 0) {
+              pendingList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No pending testimonials.</p>';
+              approvedList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No approved testimonials.</p>';
+              rejectedList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No rejected testimonials.</p>';
+            }
+
+            paginatedTestimonials.forEach((testimonial) => {
+              const card = document.createElement("div");
+              card.classList.add("testimonial-card-admin");
+              card.dataset.id = testimonial.id;
+              let contentHtml =
+                testimonial.type === "video"
+                  ? `
+              <img src="${testimonial.avatarSrc}" alt="${
+                      testimonial.name
+                    }" class="avatar video-avatar" onerror="this.src='https://placehold.co/80x80/9CA3AF/white?text=User'">
+              <video class="tes-video" src="${
+                testimonial.videoSrc
+              }" preload="metadata"></video>
+              <div class="play-button" data-video-id="${
+                testimonial.id
+              }"><i class="fa-solid fa-play"></i></div>
+              <div class="pause-button" data-video-id="${
+                testimonial.id
+              }" style="display:none;"><i class="fa-solid fa-pause"></i></div>
+              <p class="name video-name">${
+                testimonial.name
+              }</p><p class="role video-role">${testimonial.role}</p>
+              <p class="hidden-text" style="display:none;">${
+                testimonial.text || ""
+              }</p>
+            `
+                  : `
+              <img src="${testimonial.avatarSrc}" alt="${testimonial.name}" class="avatar" onerror="this.src='https://placehold.co/80x80/9CA3AF/white?text=User'">
+              <div class="text-content"><p class="text">"${testimonial.text}"</p></div>
+              <p class="name">${testimonial.name}</p><p class="role">${testimonial.role}</p>
+            `;
+              const kebabMenu = `
+              <div class="kebab-menu-container">
+                  <button class="kebab-button" aria-label="Testimonial actions" data-testimonial-id="${
+                    testimonial.id
+                  }"><i class="fas fa-ellipsis-v"></i></button>
+                  <div class="kebab-dropdown">
+                      ${
+                        testimonial.status === "pending"
+                          ? `<button onclick="updateTestimonialStatus('${testimonial.id}', 'approved')"><i class="fas fa-check-circle"></i> Approve</button><button onclick="updateTestimonialStatus('${testimonial.id}', 'rejected')"><i class="fas fa-times-circle"></i> Reject</button>`
+                          : ""
+                      }
+                      ${
+                        testimonial.status === "approved"
+                          ? `<button onclick="updateTestimonialStatus('${testimonial.id}', 'pending')"><i class="fas fa-ban"></i> Unpublish</button>`
+                          : ""
+                      }
+                      ${
+                        testimonial.status === "rejected"
+                          ? `<button onclick="updateTestimonialStatus('${testimonial.id}', 'approved')"><i class="fas fa-check-circle"></i> Approve</button>`
+                          : ""
+                      }
+                      <button onclick="editTestimonial('${
+                        testimonial.id
+                      }')"><i class="fas fa-edit"></i> Edit</button>
+                      <button onclick="deleteTestimonial('${
+                        testimonial.id
+                      }')"><i class="fas fa-trash-alt"></i> Delete</button>
+                  </div>
+              </div>`;
+              card.innerHTML = contentHtml + kebabMenu;
+              if (
+                filters.status === "all" ||
+                testimonial.status === filters.status
+              ) {
+                if (testimonial.status === "pending")
+                  pendingList.appendChild(card);
+                else if (testimonial.status === "approved")
+                  approvedList.appendChild(card);
+                else if (testimonial.status === "rejected")
+                  rejectedList.appendChild(card);
+              }
+            });
+
+            paginationContainer.innerHTML = "";
+            if (totalPages > 1) {
+              const paginationNav = document.createElement("nav");
+              paginationNav.className =
+                "flex justify-center items-center space-x-2 mt-4";
+              const createButton = (text, page, disabled, onClick) => {
+                const btn = document.createElement("button");
+                btn.textContent = text;
+                btn.className = `px-3 py-1 rounded-lg text-sm transition-colors duration-200 ${
+                  disabled
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : page === currentPage
+                    ? "bg-red-600 text-white"
+                    : "bg-red-500 hover:bg-red-600 text-white"
+                }`;
+                btn.disabled = disabled;
+                btn.addEventListener("click", onClick);
+                return btn;
+              };
+              paginationNav.appendChild(
+                createButton(
+                  "Previous",
+                  currentPage - 1,
+                  currentPage === 1,
+                  () => {
+                    testimonialCurrentPage--;
+                    renderTestimonials(
+                      filters,
+                      testimonialCurrentPage,
+                      itemsPerPage
+                    );
+                  }
+                )
+              );
+              for (let i = 1; i <= totalPages; i++) {
+                paginationNav.appendChild(
+                  createButton(i, i, false, () => {
+                    testimonialCurrentPage = i;
+                    renderTestimonials(
+                      filters,
+                      testimonialCurrentPage,
+                      itemsPerPage
+                    );
+                  })
+                );
+              }
+              paginationNav.appendChild(
+                createButton(
+                  "Next",
+                  currentPage + 1,
+                  currentPage === totalPages,
+                  () => {
+                    testimonialCurrentPage++;
+                    renderTestimonials(
+                      filters,
+                      testimonialCurrentPage,
+                      itemsPerPage
+                    );
+                  }
+                )
+              );
+              paginationContainer.appendChild(paginationNav);
+            }
+
+            document
+              .querySelectorAll(".testimonial-card-admin .play-button")
+              .forEach((button) => {
+                button.addEventListener("click", (e) => {
+                  const video = e.currentTarget
+                    .closest(".testimonial-card-admin")
+                    .querySelector(".tes-video");
+                  if (video) {
+                    video.play();
+                    e.currentTarget.style.display = "none";
+                    video.nextElementSibling.style.display = "flex";
+                  }
+                });
+              });
+            document
+              .querySelectorAll(".testimonial-card-admin .pause-button")
+              .forEach((button) => {
+                button.addEventListener("click", (e) => {
+                  const video = e.currentTarget
+                    .closest(".testimonial-card-admin")
+                    .querySelector(".tes-video");
+                  if (video) {
+                    video.pause();
+                    e.currentTarget.style.display = "none";
+                    video.previousElementSibling.style.display = "flex";
+                  }
+                });
+              });
+            document
+              .querySelectorAll(".testimonial-card-admin .tes-video")
+              .forEach((video) => {
+                video.addEventListener("ended", (e) => {
+                  const card = e.target.closest(".testimonial-card-admin");
+                  card.querySelector(".play-button").style.display = "flex";
+                  card.querySelector(".pause-button").style.display = "none";
+                });
+                video.addEventListener("play", (e) => {
+                  const card = e.target.closest(".testimonial-card-admin");
+                  card.querySelector(".play-button").style.display = "none";
+                  card.querySelector(".pause-button").style.display = "flex";
+                });
+                video.addEventListener("pause", (e) => {
+                  const card = e.target.closest(".testimonial-card-admin");
+                  card.querySelector(".play-button").style.display = "flex";
+                  card.querySelector(".pause-button").style.display = "none";
+                });
+              });
+            document.querySelectorAll(".kebab-button").forEach((button) => {
+              button.addEventListener("click", (event) => {
+                event.stopPropagation();
+                closeAllKebabDropdowns();
+                button.nextElementSibling.classList.toggle("active");
+              });
+            });
+          },
+          (error) =>
+            showMessage(`Error loading testimonials: ${error.message}.`)
+        );
+      };
+
+      window.updateQuizStatus = async (id, newStatus) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        try {
+          await updateDoc(
+            doc(db, "artifacts", appId, "public", "data", "quizzes", id),
+            { status: newStatus }
+          );
+          showMessage(`Quiz status updated to '${newStatus}'.`);
+        } catch (error) {
+          console.error("Error updating quiz status:", error);
+          showMessage(`Failed to update quiz status: ${error.message}.`);
+        }
+      };
+
+      window.editQuiz = async (id) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        try {
+          const docSnap = await getDoc(
+            doc(db, "artifacts", appId, "public", "data", "quizzes", id)
+          );
+          if (!docSnap.exists()) return showMessage("Quiz not found.");
+          const quiz = docSnap.data();
+          document.getElementById("quiz-id").value = id;
+          document.getElementById("quiz-title").value = quiz.title;
+          document.getElementById("quiz-description").value = quiz.description;
+          document.getElementById("quiz-questions-count").value =
+            quiz.questionsCount;
+          document.getElementById("add-quiz-btn").textContent = "Update Quiz";
+          showMessage(
+            "Form populated for editing. Update and submit to save changes."
+          );
+        } catch (error) {
+          console.error("Error fetching quiz for edit:", error);
+          showMessage(`Failed to load quiz for editing: ${error.message}.`);
+        }
+      };
+
+      window.deleteQuiz = async (id) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        const closeMessageBoxBtn = document.getElementById("close-message-box");
+        messageContent.textContent =
+          "Are you sure you want to delete this quiz? This action cannot be undone.";
+        messageBox.classList.remove("hidden");
+
+        const confirmDeleteBtn = document.createElement("button");
+        confirmDeleteBtn.textContent = "Confirm Delete";
+        confirmDeleteBtn.className =
+          "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
+        confirmDeleteBtn.id = "confirm-delete-btn";
+        messageBox.querySelector(".text-center").appendChild(confirmDeleteBtn);
+
+        confirmDeleteBtn.addEventListener("click", async () => {
+          try {
+            await deleteDoc(
+              doc(db, "artifacts", appId, "public", "data", "quizzes", id)
+            );
+            showMessage("Quiz deleted successfully.");
+          } catch (error) {
+            console.error("Error deleting quiz:", error);
+            showMessage(`Failed to delete quiz: ${error.message}.`);
+          } finally {
+            confirmDeleteBtn.remove();
+            messageBox.classList.add("hidden");
+          }
+        });
+
+        const originalCloseHandler = closeMessageBoxBtn.onclick;
+        closeMessageBoxBtn.onclick = () => {
+          confirmDeleteBtn.remove();
+          messageBox.classList.add("hidden");
+          if (originalCloseHandler) originalCloseHandler();
+          closeMessageBoxBtn.onclick = originalCloseHandler;
+        };
+      };
+
+      const renderQuizzes = () => {
+        if (!isAuthReady)
+          return showMessage(
+            "Quizzes cannot be loaded or managed because Firebase authentication is not ready. Please try refreshing the page."
+          );
+        const [publishedList, draftList] = [
+          document.getElementById("published-quizzes-list"),
+          document.getElementById("draft-quizzes-list"),
+        ];
+        if (!publishedList || !draftList)
+          return console.error("Quiz lists not found in DOM. Cannot render.");
+
+        onSnapshot(
+          collection(db, "artifacts", appId, "public", "data", "quizzes"),
+          (snapshot) => {
+            [publishedList, draftList].forEach((el) => (el.innerHTML = ""));
+            if (snapshot.empty) {
+              publishedList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No published quizzes.</p>';
+              draftList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No draft quizzes.</p>';
+            }
+            snapshot.forEach((doc) => {
+              const quiz = { id: doc.id, ...doc.data() };
+              const card = document.createElement("div");
+              card.classList.add(
+                "bg-white",
+                "p-4",
+                "rounded-lg",
+                "shadow-sm",
+                "flex",
+                "flex-col"
+              );
+              card.innerHTML = `<h3 class="font-bold text-gray-800 text-lg mb-2">${
+                quiz.title
+              }</h3><p class="text-gray-600 text-sm flex-grow mb-2">${
+                quiz.description
+              }</p><p class="text-gray-500 text-xs mb-4">Questions: ${
+                quiz.questionsCount
+              }</p><div class="flex flex-wrap gap-2 mt-auto">${
+                quiz.status === "draft"
+                  ? `<button class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateQuizStatus('${quiz.id}', 'published')">Publish</button>`
+                  : `<button class="bg-orange-600 hover:bg-orange-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateQuizStatus('${quiz.id}', 'draft')">Unpublish</button>`
+              }<button class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="editQuiz('${
+                quiz.id
+              }')">Edit</button><button class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="deleteQuiz('${
+                quiz.id
+              }')">Delete</button></div>`;
+              quiz.status === "published"
+                ? publishedList.appendChild(card)
+                : draftList.appendChild(card);
+            });
+          },
+          (error) => showMessage(`Error loading quizzes: ${error.message}.`)
+        );
+      };
+
+      window.updateBlogPostStatus = async (id, newStatus) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        try {
+          await updateDoc(
+            doc(db, "artifacts", appId, "public", "data", "blogPosts", id),
+            { status: newStatus }
+          );
+          showMessage(`Blog post status updated to '${newStatus}'.`);
+        } catch (error) {
+          console.error("Error updating blog post status:", error);
+          showMessage(`Failed to update blog post status: ${error.message}.`);
+        }
+      };
+
+      window.editBlogPost = async (id) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        try {
+          const docSnap = await getDoc(
+            doc(db, "artifacts", appId, "public", "data", "blogPosts", id)
+          );
+          if (!docSnap.exists()) return showMessage("Blog post not found.");
+          const blogPost = docSnap.data();
+          document.getElementById("blog-id").value = id;
+          document.getElementById("blog-title").value = blogPost.title;
+          document.getElementById("blog-category").value = blogPost.category;
+          $("#blog-content").summernote("code", blogPost.content || "");
+          document.getElementById("blog-author").value = blogPost.author;
+          document
+            .getElementById("blog-image-drop-zone")
+            ._setImage(blogPost.image || "");
+          document
+            .getElementById("author-image-drop-zone")
+            ._setImage(blogPost.authorImg || "");
+          document.getElementById("add-blog-btn").textContent =
+            "Update Blog Post";
+          showMessage(
+            "Form populated for editing. Update and submit to save changes."
+          );
+        } catch (error) {
+          console.error("Error fetching blog post for edit:", error);
+          showMessage(
+            `Failed to load blog post for editing: ${error.message}.`
+          );
+        }
+      };
+
+      window.deleteBlogPost = async (id) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        const closeMessageBoxBtn = document.getElementById("close-message-box");
+        messageContent.textContent =
+          "Are you sure you want to delete this blog post? This action cannot be undone.";
+        messageBox.classList.remove("hidden");
+
+        const confirmDeleteBtn = document.createElement("button");
+        confirmDeleteBtn.textContent = "Confirm Delete";
+        confirmDeleteBtn.className =
+          "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
+        confirmDeleteBtn.id = "confirm-delete-btn";
+        messageBox.querySelector(".text-center").appendChild(confirmDeleteBtn);
+
+        confirmDeleteBtn.addEventListener("click", async () => {
+          try {
+            await deleteDoc(
+              doc(db, "artifacts", appId, "public", "data", "blogPosts", id)
+            );
+            showMessage("Blog post deleted successfully.");
+          } catch (error) {
+            console.error("Error deleting blog post:", error);
+            showMessage(`Failed to delete blog post: ${error.message}.`);
+          } finally {
+            confirmDeleteBtn.remove();
+            messageBox.classList.add("hidden");
+          }
+        });
+
+        const originalCloseHandler = closeMessageBoxBtn.onclick;
+        closeMessageBoxBtn.onclick = () => {
+          confirmDeleteBtn.remove();
+          messageBox.classList.add("hidden");
+          if (originalCloseHandler) originalCloseHandler();
+          closeMessageBoxBtn.onclick = originalCloseHandler;
+        };
+      };
+
+      const renderBlogPosts = (filters, currentPage, itemsPerPage) => {
+        if (!isAuthReady)
+          return showMessage(
+            "Blog posts cannot be loaded or managed because Firebase authentication is not ready. Please try refreshing the page."
+          );
+        const [container, heading, pagination] = [
+          document.getElementById("blog-posts-container"),
+          document.getElementById("blog-posts-list-heading"),
+          document.getElementById("blog-pagination"),
+        ];
+        if (!container || !heading || !pagination)
+          return console.error("Blog post elements not found.");
+
+        onSnapshot(
+          collection(db, "artifacts", appId, "public", "data", "blogPosts"),
+          (snapshot) => {
+            [container, pagination].forEach((el) => (el.innerHTML = ""));
+            let allPosts = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            let filteredPosts = allPosts.filter(
+              (p) =>
+                (filters.status === "all" || p.status === filters.status) &&
+                (filters.category === "all categories" ||
+                  p.category === filters.category) &&
+                (filters.searchTerm === "" ||
+                  p.title
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()) ||
+                  (p.content &&
+                    p.content
+                      .toLowerCase()
+                      .includes(filters.searchTerm.toLowerCase())) ||
+                  p.author
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()))
+            );
+            filteredPosts.sort(
+              (a, b) =>
+                (b.timestamp?.toDate() || new Date(0)).getTime() -
+                (a.timestamp?.toDate() || new Date(0)).getTime()
+            );
+
+            const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
+            const paginatedPosts = filteredPosts.slice(
+              (currentPage - 1) * itemsPerPage,
+              currentPage * itemsPerPage
+            );
+
+            heading.textContent =
+              filters.status === "all"
+                ? "All Blog Posts"
+                : filters.status === "published"
+                ? "Published Blog Posts"
+                : "Draft Blog Posts";
+            if (paginatedPosts.length === 0)
+              container.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No blog posts found matching your criteria.</p>';
+
+            paginatedPosts.forEach((blogPost) => {
+              const formattedDate = (
+                blogPost.timestamp?.toDate() || new Date()
+              ).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              });
+              const card = document.createElement("div");
+              card.classList.add(
+                "bg-white",
+                "p-4",
+                "rounded-lg",
+                "shadow-sm",
+                "flex",
+                "flex-col",
+                "border",
+                "border-gray-300"
+              );
+              card.innerHTML = `<img src="${
+                blogPost.image ||
+                "https://placehold.co/400x200/cccccc/white?text=Blog+Image"
+              }" alt="${
+                blogPost.title
+              }" class="w-full h-[40vw] md:h-[24vw] lg:h-[14vw] object-cover rounded-md mb-4 onerror="this.src='https://placehold.co/400x200/cccccc/white?text=Blog+Image'"><div class="flex items-center justify-between text-xs text-gray-500 mb-2"><span class="bg-red-100 text-red-800 px-2 py-1 rounded-full">${
+                blogPost.category
+              }</span><span>${formattedDate}</span></div><h3 class="font-bold text-gray-800 text-lg mb-2">${
+                blogPost.title
+              }</h3><div class="flex items-center text-sm text-gray-700 mb-4"><img src="${
+                blogPost.authorImg ||
+                "https://placehold.co/40x40/9CA3AF/white?text=A"
+              }" alt="${
+                blogPost.author
+              }" class="w-8 h-8 rounded-full mr-2" onerror="this.src='https://placehold.co/40x40/9CA3AF/white?text=A'"><span>${
+                blogPost.author
+              }</span></div><div class="flex flex-wrap gap-2 mt-auto">${
+                blogPost.status === "draft"
+                  ? `<button class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateBlogPostStatus('${blogPost.id}', 'published')">Publish</button>`
+                  : `<button class="bg-orange-600 hover:bg-orange-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateBlogPostStatus('${blogPost.id}', 'draft')">Unpublish</button>`
+              }<button class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="editBlogPost('${
+                blogPost.id
+              }')">Edit</button><button class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="deleteBlogPost('${
+                blogPost.id
+              }')">Delete</button></div>`;
+              container.appendChild(card);
+            });
+
+            pagination.innerHTML = "";
+            if (totalPages > 1) {
+              const paginationNav = document.createElement("nav");
+              paginationNav.className =
+                "flex justify-center items-center space-x-2 mt-4";
+              const createButton = (text, page, disabled, onClick) => {
+                const btn = document.createElement("button");
+                btn.textContent = text;
+                btn.className = `px-3 py-1 rounded-lg text-sm transition-colors duration-200 ${
+                  disabled
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : page === currentPage
+                    ? "bg-red-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`;
+                btn.disabled = disabled;
+                btn.addEventListener("click", onClick);
+                return btn;
+              };
+              paginationNav.appendChild(
+                createButton(
+                  "Previous",
+                  currentPage - 1,
+                  currentPage === 1,
+                  () => {
+                    blogCurrentPage--;
+                    renderBlogPosts(filters, blogCurrentPage, itemsPerPage);
+                  }
+                )
+              );
+              for (let i = 1; i <= totalPages; i++) {
+                paginationNav.appendChild(
+                  createButton(i, i, false, () => {
+                    blogCurrentPage = i;
+                    renderBlogPosts(filters, blogCurrentPage, itemsPerPage);
+                  })
+                );
+              }
+              paginationNav.appendChild(
+                createButton(
+                  "Next",
+                  currentPage + 1,
+                  currentPage === totalPages,
+                  () => {
+                    blogCurrentPage++;
+                    renderBlogPosts(filters, blogCurrentPage, itemsPerPage);
+                  }
+                )
+              );
+              pagination.appendChild(paginationNav);
+            }
+          },
+          (error) => showMessage(`Error loading blog posts: ${error.message}.`)
+        );
+      };
+
+      window.sendContactReply = async (messageId) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        const replyInput = document.getElementById(`reply-input-${messageId}`);
+        const replyText = replyInput ? replyInput.value.trim() : "";
+        if (replyText === "")
+          return showMessage("Reply message cannot be empty.");
+        try {
+          await updateDoc(
+            doc(
+              db,
+              "artifacts",
+              appId,
+              "public",
+              "data",
+              "contactMessages",
+              messageId
+            ),
+            {
+              adminReply: replyText,
+              adminReplyTimestamp: serverTimestamp(),
+              status: "replied",
+            }
+          );
+          showMessage("Reply sent successfully and message marked as replied!");
+          if (replyInput) replyInput.value = "";
+          document
+            .getElementById(`reply-form-${messageId}`)
+            ?.classList.add("hidden");
+        } catch (error) {
+          console.error("Error sending reply:", error);
+          showMessage(`Failed to send reply: ${error.message}.`);
+        }
+      };
+
+      window.toggleReplyForm = (messageId) =>
+        document
+          .getElementById(`reply-form-${messageId}`)
+          ?.classList.toggle("hidden");
+
+      const renderContactMessages = (filters, currentPage, itemsPerPage) => {
+        if (!isAuthReady)
+          return showMessage(
+            "Contact messages cannot be loaded or managed because Firebase authentication is not ready. Please try refreshing the page."
+          );
+        const [container, pagination] = [
+          document.getElementById("contact-messages-list"),
+          document.getElementById("contact-message-pagination"),
+        ];
+        if (!container || !pagination)
+          return console.error("Contact message elements not found.");
+
+        onSnapshot(
+          collection(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "contactMessages"
+          ),
+          (snapshot) => {
+            [container, pagination].forEach((el) => (el.innerHTML = ""));
+            let allMessages = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            let filteredMessages = allMessages.filter(
+              (m) =>
+                (filters.status === "all" || m.status === filters.status) &&
+                (filters.searchTerm === "" ||
+                  m.name
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()) ||
+                  m.email
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()) ||
+                  m.subject
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()) ||
+                  m.message
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()) ||
+                  (m.adminReply &&
+                    m.adminReply
+                      .toLowerCase()
+                      .includes(filters.searchTerm.toLowerCase())))
+            );
+            filteredMessages.sort(
+              (a, b) =>
+                (b.timestamp?.toDate() || new Date(0)).getTime() -
+                (a.timestamp?.toDate() || new Date(0)).getTime()
+            );
+
+            const totalPages = Math.ceil(
+              filteredMessages.length / itemsPerPage
+            );
+            const paginatedMessages = filteredMessages.slice(
+              (currentPage - 1) * itemsPerPage,
+              currentPage * itemsPerPage
+            );
+
+            if (paginatedMessages.length === 0)
+              container.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No contact messages found matching your criteria.</p>';
+
+            paginatedMessages.forEach((message) => {
+              const formattedDate = (
+                message.timestamp?.toDate() || new Date()
+              ).toLocaleString();
+              let replySection = "";
+              let statusBadge = "";
+              if (message.status === "pending") {
+                statusBadge =
+                  '<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold">Pending</span>';
+                replySection = `<button onclick="toggleReplyForm('${message.id}')" class="mt-4 bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200"><i class="fas fa-reply mr-2"></i> Reply</button><div id="reply-form-${message.id}" class="hidden mt-4 p-3 bg-gray-100 rounded-lg"><label for="reply-input-${message.id}" class="block text-gray-700 text-sm font-semibold mb-2">Your Reply:</label><textarea id="reply-input-${message.id}" class="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" rows="3" placeholder="Type your reply here..."></textarea><button onclick="sendContactReply('${message.id}')" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200">Send Reply</button><button onclick="toggleReplyForm('${message.id}')" class="mt-2 ml-2 bg-gray-300 hover:bg-gray-400 text-gray-800 text-sm py-2 px-3 rounded-lg transition-colors duration-200">Cancel</button></div>`;
+              } else if (message.status === "replied") {
+                statusBadge =
+                  '<span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">Replied</span>';
+                const replyDate = (
+                  message.adminReplyTimestamp?.toDate() || "N/A"
+                ).toLocaleString();
+                replySection = `<div class="mt-4 p-3 bg-green-50 rounded-lg border border-green-200"><p class="text-gray-700 text-sm font-semibold">Admin Reply:</p><p class="text-gray-600 text-sm mt-1">${message.adminReply}</p><p class="text-gray-500 text-xs mt-2">Replied on: ${replyDate}</p></div>`;
+              }
+              const card = document.createElement("div");
+              card.classList.add(
+                "bg-white",
+                "p-4",
+                "rounded-lg",
+                "shadow-sm",
+                "border",
+                "border-gray-300"
+              );
+              card.innerHTML = `<div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-gray-800 text-lg">${message.subject}</h3><p class="text-gray-700 text-sm">From: ${message.name} &lt;<a href="mailto:${message.email}" class="text-blue-600 hover:underline">${message.email}</a>&gt;</p><p class="text-gray-700 text-sm">Phone: <a href="tel:${message.phone}" class="text-blue-600 hover:underline">${message.phone}</a></p><p class="text-gray-500 text-xs mt-1">Received: ${formattedDate}</p></div>${statusBadge}</div><p class="text-gray-600 text-base mb-4 border-t pt-3 mt-3">${message.message}</p>${replySection}`;
+              container.appendChild(card);
+            });
+
+            pagination.innerHTML = "";
+            if (totalPages > 1) {
+              const paginationNav = document.createElement("nav");
+              paginationNav.className =
+                "flex justify-center items-center space-x-2 mt-4";
+              const createButton = (text, page, disabled, onClick) => {
+                const btn = document.createElement("button");
+                btn.textContent = text;
+                btn.className = `px-3 py-1 rounded-lg text-sm transition-colors duration-200 ${
+                  disabled
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : page === currentPage
+                    ? "bg-red-600 text-white"
+                    : "bg-red-500 hover:bg-red-600 text-white"
+                }`;
+                btn.disabled = disabled;
+                btn.addEventListener("click", onClick);
+                return btn;
+              };
+              paginationNav.appendChild(
+                createButton(
+                  "Previous",
+                  currentPage - 1,
+                  currentPage === 1,
+                  () => {
+                    contactMessageCurrentPage--;
+                    renderContactMessages(
+                      contactMessageCurrentFilters,
+                      contactMessageCurrentPage,
+                      contactMessageItemsPerPage
+                    );
+                  }
+                )
+              );
+              for (let i = 1; i <= totalPages; i++) {
+                paginationNav.appendChild(
+                  createButton(i, i, false, () => {
+                    contactMessageCurrentPage = i;
+                    renderContactMessages(
+                      contactMessageCurrentFilters,
+                      contactMessageCurrentPage,
+                      contactMessageItemsPerPage
+                    );
+                  })
+                );
+              }
+              paginationNav.appendChild(
+                createButton(
+                  "Next",
+                  currentPage + 1,
+                  currentPage === totalPages,
+                  () => {
+                    contactMessageCurrentPage++;
+                    renderContactMessages(
+                      contactMessageCurrentFilters,
+                      contactMessageCurrentPage,
+                      contactMessageItemsPerPage
+                    );
+                  }
+                )
+              );
+              pagination.appendChild(paginationNav);
+            }
+          },
+          (error) =>
+            showMessage(`Error loading contact messages: ${error.message}.`)
+        );
+      };
+
+      window.updateTeacherStatus = async (id, newStatus) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        try {
+          await updateDoc(
+            doc(db, "artifacts", appId, "public", "data", "teachers", id),
+            { status: newStatus }
+          );
+          showMessage(`Teacher status updated to '${newStatus}'.`);
+        } catch (error) {
+          console.error("Error updating teacher status:", error);
+          showMessage(`Failed to update teacher status: ${error.message}.`);
+        }
+      };
+
+      window.editTeacher = async (id) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        try {
+          const docSnap = await getDoc(
+            doc(db, "artifacts", appId, "public", "data", "teachers", id)
+          );
+          if (!docSnap.exists()) return showMessage("Teacher not found.");
+          const teacher = docSnap.data();
+          document.getElementById("teacher-id").value = id;
+          document.getElementById("teacher-name").value = teacher.name;
+          document.getElementById("teacher-expertise").value =
+            teacher.expertise;
+          $("#teacher-bio").summernote("code", teacher.bio || "");
+          document
+            .getElementById("teacher-image-drop-zone")
+            ._setImage(teacher.image || "");
+          document.getElementById("add-teacher-btn").textContent =
+            "Update Teacher";
+          showMessage(
+            "Form populated for editing. Update and submit to save changes."
+          );
+        } catch (error) {
+          console.error("Error fetching teacher for edit:", error);
+          showMessage(`Failed to load teacher for editing: ${error.message}.`);
+        }
+      };
+
+      window.deleteTeacher = async (id) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        const closeMessageBoxBtn = document.getElementById("close-message-box");
+        messageContent.textContent =
+          "Are you sure you want to delete this teacher's profile? This action cannot be undone.";
+        messageBox.classList.remove("hidden");
+
+        const confirmDeleteBtn = document.createElement("button");
+        confirmDeleteBtn.textContent = "Confirm Delete";
+        confirmDeleteBtn.className =
+          "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
+        confirmDeleteBtn.id = "confirm-delete-btn";
+        messageBox.querySelector(".text-center").appendChild(confirmDeleteBtn);
+
+        confirmDeleteBtn.addEventListener("click", async () => {
+          try {
+            await deleteDoc(
+              doc(db, "artifacts", appId, "public", "data", "teachers", id)
+            );
+            showMessage("Teacher profile deleted successfully.");
+          } catch (error) {
+            console.error("Error deleting teacher:", error);
+            showMessage(`Failed to delete teacher: ${error.message}.`);
+          } finally {
+            confirmDeleteBtn.remove();
+            messageBox.classList.add("hidden");
+          }
+        });
+
+        const originalCloseHandler = closeMessageBoxBtn.onclick;
+        closeMessageBoxBtn.onclick = () => {
+          confirmDeleteBtn.remove();
+          messageBox.classList.add("hidden");
+          if (originalCloseHandler) originalCloseHandler();
+          closeMessageBoxBtn.onclick = originalCloseHandler;
+        };
+      };
+
+      const renderTeachers = (filters, currentPage, itemsPerPage) => {
+        if (!isAuthReady)
+          return showMessage(
+            "Teacher profiles cannot be loaded or managed because Firebase authentication is not ready. Please try refreshing the page."
+          );
+        const [container, pagination] = [
+          document.getElementById("teachers-list-container"),
+          document.getElementById("teacher-pagination"),
+        ];
+        if (!container || !pagination)
+          return console.error("Teacher elements not found.");
+
+        onSnapshot(
+          collection(db, "artifacts", appId, "public", "data", "teachers"),
+          (snapshot) => {
+            [container, pagination].forEach((el) => (el.innerHTML = ""));
+            let allTeachers = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            let filteredTeachers = allTeachers.filter(
+              (t) =>
+                (filters.status === "all" || t.status === filters.status) &&
+                (filters.searchTerm === "" ||
+                  t.name
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()) ||
+                  t.expertise
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()) ||
+                  (t.bio &&
+                    t.bio
+                      .toLowerCase()
+                      .includes(filters.searchTerm.toLowerCase())))
+            );
+            filteredTeachers.sort(
+              (a, b) =>
+                (b.timestamp?.toDate() || new Date(0)).getTime() -
+                (a.timestamp?.toDate() || new Date(0)).getTime()
+            );
+
+            const totalPages = Math.ceil(
+              filteredTeachers.length / itemsPerPage
+            );
+            const paginatedTeachers = filteredTeachers.slice(
+              (currentPage - 1) * itemsPerPage,
+              currentPage * itemsPerPage
+            );
+
+            if (paginatedTeachers.length === 0)
+              container.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No teachers found matching your criteria.</p>';
+
+            paginatedTeachers.forEach((teacher) => {
+              const card = document.createElement("div");
+              card.classList.add(
+                "bg-white",
+                "p-4",
+                "rounded-lg",
+                "shadow-sm",
+                "flex",
+                "flex-col",
+                "items-center",
+                "text-center",
+                "border",
+                "border-gray-300"
+              );
+              card.innerHTML = `<img src="${
+                teacher.image ||
+                "https://placehold.co/100x100/9CA3AF/white?text=Teacher"
+              }" alt="${
+                teacher.name
+              }" class="w-24 h-24 rounded-full object-cover mb-4" onerror="this.src='https://placehold.co/100x100/9CA3AF/white?text=Teacher'"><h3 class="font-bold text-gray-800 text-lg mb-1">${
+                teacher.name
+              }</h3><p class="text-red-600 text-sm mb-3">${
+                teacher.expertise
+              }</p><div class="flex flex-wrap gap-2 mt-auto">${
+                teacher.status === "inactive"
+                  ? `<button class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateTeacherStatus('${teacher.id}', 'active')">Activate</button>`
+                  : `<button class="bg-orange-600 hover:bg-orange-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateTeacherStatus('${teacher.id}', 'inactive')">Deactivate</button>`
+              }<button class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="editTeacher('${
+                teacher.id
+              }')">Edit</button><button class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="deleteTeacher('${
+                teacher.id
+              }')">Delete</button></div>`;
+              container.appendChild(card);
+            });
+
+            pagination.innerHTML = "";
+            if (totalPages > 1) {
+              const paginationNav = document.createElement("nav");
+              paginationNav.className =
+                "flex justify-center items-center space-x-2 mt-4";
+              const createButton = (text, page, disabled, onClick) => {
+                const btn = document.createElement("button");
+                btn.textContent = text;
+                btn.className = `px-3 py-1 rounded-lg text-sm transition-colors duration-200 ${
+                  disabled
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : page === currentPage
+                    ? "bg-red-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`;
+                btn.disabled = disabled;
+                btn.addEventListener("click", onClick);
+                return btn;
+              };
+              paginationNav.appendChild(
+                createButton(
+                  "Previous",
+                  currentPage - 1,
+                  currentPage === 1,
+                  () => {
+                    teacherCurrentPage--;
+                    renderTeachers(filters, teacherCurrentPage, itemsPerPage);
+                  }
+                )
+              );
+              for (let i = 1; i <= totalPages; i++) {
+                paginationNav.appendChild(
+                  createButton(i, i, false, () => {
+                    teacherCurrentPage = i;
+                    renderTeachers(filters, teacherCurrentPage, itemsPerPage);
+                  })
+                );
+              }
+              paginationNav.appendChild(
+                createButton(
+                  "Next",
+                  currentPage + 1,
+                  currentPage === totalPages,
+                  () => {
+                    teacherCurrentPage++;
+                    renderTeachers(filters, teacherCurrentPage, itemsPerPage);
+                  }
+                )
+              );
+              pagination.appendChild(paginationNav);
+            }
+          },
+          (error) => showMessage(`Error loading teachers: ${error.message}.`)
+        );
+      };
+
+      window.updateFreeResourceStatus = async (id, newStatus) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        try {
+          await updateDoc(
+            doc(db, "artifacts", appId, "public", "data", "freeResources", id),
+            { status: newStatus }
+          );
+          showMessage(`Free resource status updated to '${newStatus}'.`);
+        } catch (error) {
+          console.error("Error updating free resource status:", error);
+          showMessage(
+            `Failed to update free resource status: ${error.message}.`
+          );
+        }
+      };
+
+      window.editFreeResource = async (id) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        try {
+          const docSnap = await getDoc(
+            doc(db, "artifacts", appId, "public", "data", "freeResources", id)
+          );
+          if (!docSnap.exists()) return showMessage("Free resource not found.");
+          const resource = docSnap.data();
+          document.getElementById("free-resource-id").value = id;
+          document.getElementById("free-resource-title").value = resource.title;
+          document.getElementById("free-resource-category").value =
+            resource.category;
+          document.getElementById("free-resource-link").value = resource.link;
+          document.getElementById("free-resource-summary").value =
+            resource.summary;
+          document.getElementById(
+            "free-resource-keypoints"
+          ).value = Array.isArray(resource.keypoints)
+            ? resource.keypoints.join("\n")
+            : "";
+          document
+            .getElementById("free-resource-image-drop-zone")
+            ._setImage(resource.img || "");
+          document.getElementById("add-free-resource-btn").textContent =
+            "Update Free Resource";
+          showMessage(
+            "Form populated for editing. Update and submit to save changes."
+          );
+        } catch (error) {
+          console.error("Error fetching free resource for edit:", error);
+          showMessage(
+            `Failed to load free resource for editing: ${error.message}.`
+          );
+        }
+      };
+
+      window.deleteFreeResource = async (id) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        const closeMessageBoxBtn = document.getElementById("close-message-box");
+        messageContent.textContent =
+          "Are you sure you want to delete this free resource? This action cannot be undone.";
+        messageBox.classList.remove("hidden");
+
+        const confirmDeleteBtn = document.createElement("button");
+        confirmDeleteBtn.textContent = "Confirm Delete";
+        confirmDeleteBtn.className =
+          "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
+        confirmDeleteBtn.id = "confirm-delete-btn";
+        messageBox.querySelector(".text-center").appendChild(confirmDeleteBtn);
+
+        confirmDeleteBtn.addEventListener("click", async () => {
+          try {
+            await deleteDoc(
+              doc(db, "artifacts", appId, "public", "data", "freeResources", id)
+            );
+            showMessage("Free resource deleted successfully.");
+          } catch (error) {
+            console.error("Error deleting free resource:", error);
+            showMessage(`Failed to delete free resource: ${error.message}.`);
+          } finally {
+            confirmDeleteBtn.remove();
+            messageBox.classList.add("hidden");
+          }
+        });
+
+        const originalCloseHandler = closeMessageBoxBtn.onclick;
+        closeMessageBoxBtn.onclick = () => {
+          confirmDeleteBtn.remove();
+          messageBox.classList.add("hidden");
+          if (originalCloseHandler) originalCloseHandler();
+          closeMessageBoxBtn.onclick = originalCloseHandler;
+        };
+      };
+
+      const renderFreeResources = (filters, currentPage, itemsPerPage) => {
+        if (!isAuthReady)
+          return showMessage(
+            "Free resources cannot be loaded or managed because Firebase authentication is not ready. Please try refreshing the page."
+          );
+        const [container, pagination] = [
+          document.getElementById("free-resources-list-container"),
+          document.getElementById("free-resource-pagination"),
+        ];
+        if (!container || !pagination)
+          return console.error("Free resource elements not found.");
+
+        onSnapshot(
+          collection(db, "artifacts", appId, "public", "data", "freeResources"),
+          (snapshot) => {
+            [container, pagination].forEach((el) => (el.innerHTML = ""));
+            let allResources = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            let filteredResources = allResources.filter(
+              (r) =>
+                (filters.status === "all" || r.status === filters.status) &&
+                (filters.category === "all categories" ||
+                  r.category.toLowerCase() ===
+                    filters.category.toLowerCase()) &&
+                (filters.searchTerm === "" ||
+                  r.title
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()) ||
+                  r.category
+                    .toLowerCase()
+                    .includes(filters.searchTerm.toLowerCase()) ||
+                  (r.summary &&
+                    r.summary
+                      .toLowerCase()
+                      .includes(filters.searchTerm.toLowerCase())))
+            );
+            filteredResources.sort(
+              (a, b) =>
+                (b.timestamp?.toDate() || new Date(0)).getTime() -
+                (a.timestamp?.toDate() || new Date(0)).getTime()
+            );
+
+            const totalPages = Math.ceil(
+              filteredResources.length / itemsPerPage
+            );
+            const paginatedResources = filteredResources.slice(
+              (currentPage - 1) * itemsPerPage,
+              currentPage * itemsPerPage
+            );
+
+            if (paginatedResources.length === 0)
+              container.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No free resources found matching your criteria.</p>';
+
+            paginatedResources.forEach((resource) => {
+              const formattedDate = (
+                resource.timestamp?.toDate() || new Date()
+              ).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              });
+              const card = document.createElement("div");
+              card.classList.add(
+                "bg-white",
+                "p-4",
+                "rounded-lg",
+                "shadow-sm",
+                "flex",
+                "flex-col",
+                "border",
+                "border-gray-300"
+              );
+              card.innerHTML = `<img src="${
+                resource.img ||
+                "https://placehold.co/400x200/cccccc/white?text=Resource+Image"
+              }" alt="${
+                resource.title
+              }" class="w-full h-36 object-cover rounded-md mb-4" onerror="this.src='https://placehold.co/400x200/cccccc/white?text=Resource+Image'"><h3 class="font-bold text-gray-800 text-lg mb-1">${
+                resource.title
+              }</h3><p class="text-red-600 text-sm mb-2">${
+                resource.category
+              }</p><p class="text-gray-500 text-xs mb-3">${formattedDate}</p><p class="text-gray-700 text-sm flex-grow mb-3">${
+                resource.summary || "No summary available."
+              }</p><div class="flex flex-wrap gap-2 mt-auto">${
+                resource.status === "inactive"
+                  ? `<button class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateFreeResourceStatus('${resource.id}', 'active')">Activate</button>`
+                  : `<button class="bg-orange-600 hover:bg-orange-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateFreeResourceStatus('${resource.id}', 'inactive')">Deactivate</button>`
+              }<button class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="editFreeResource('${
+                resource.id
+              }')">Edit</button><button class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="deleteFreeResource('${
+                resource.id
+              }')">Delete</button></div>`;
+              container.appendChild(card);
+            });
+
+            pagination.innerHTML = "";
+            if (totalPages > 1) {
+              const paginationNav = document.createElement("nav");
+              paginationNav.className =
+                "flex justify-center items-center space-x-2 mt-4";
+              const createButton = (text, page, disabled, onClick) => {
+                const btn = document.createElement("button");
+                btn.textContent = text;
+                btn.className = `px-3 py-1 rounded-lg text-sm transition-colors duration-200 ${
+                  disabled
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : page === currentPage
+                    ? "bg-red-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`;
+                btn.disabled = disabled;
+                btn.addEventListener("click", onClick);
+                return btn;
+              };
+              paginationNav.appendChild(
+                createButton(
+                  "Previous",
+                  currentPage - 1,
+                  currentPage === 1,
+                  () => {
+                    freeResourceCurrentPage--;
+                    renderFreeResources(
+                      filters,
+                      freeResourceCurrentPage,
+                      freeResourceItemsPerPage
+                    );
+                  }
+                )
+              );
+              for (let i = 1; i <= totalPages; i++) {
+                paginationNav.appendChild(
+                  createButton(i, i, false, () => {
+                    freeResourceCurrentPage = i;
+                    renderFreeResources(
+                      filters,
+                      freeResourceCurrentPage,
+                      freeResourceItemsPerPage
+                    );
+                  })
+                );
+              }
+              paginationNav.appendChild(
+                createButton(
+                  "Next",
+                  currentPage + 1,
+                  currentPage === totalPages,
+                  () => {
+                    freeResourceCurrentPage++;
+                    renderFreeResources(
+                      filters,
+                      freeResourceCurrentPage,
+                      freeResourceItemsPerPage
+                    );
+                  }
+                )
+              );
+              pagination.appendChild(paginationNav);
+            }
+          },
+          (error) =>
+            showMessage(`Error loading free resources: ${error.message}.`)
+        );
+      };
+
+      let overviewChartInstance = null;
+      const renderCharts = () => {
+        const ctx = document.getElementById("overviewChart");
+        if (!ctx) return;
+        if (overviewChartInstance) overviewChartInstance.destroy();
+        overviewChartInstance = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: [
+              "Dec 1",
+              "Dec 2",
+              "Dec 3",
+              "Dec 4",
+              "Dec 5",
+              "Dec 6",
+              "Dec 7",
+              "Dec 8",
+              "Dec 9",
+            ],
+            datasets: [
+              {
+                label: "Completion Rate",
+                data: [30, 60, 90, 70, 95, 50, 100, 80, 40],
+                backgroundColor: [
+                  "rgba(239, 68, 68, 0.8)",
+                  "rgba(59, 130, 246, 0.8)",
+                  "rgba(16, 185, 129, 0.8)",
+                  "rgba(245, 158, 11, 0.8)",
+                  "rgba(239, 68, 68, 0.8)",
+                  "rgba(59, 130, 246, 0.8)",
+                  "rgba(16, 185, 129, 0.8)",
+                  "rgba(245, 158, 11, 0.8)",
+                  "rgba(239, 68, 68, 0.8)",
+                ],
+                borderColor: [
+                  "rgba(239, 68, 68, 1)",
+                  "rgba(59, 130, 246, 1)",
+                  "rgba(16, 185, 129, 1)",
+                  "rgba(245, 158, 11, 1)",
+                  "rgba(239, 68, 68, 1)",
+                  "rgba(59, 130, 246, 1)",
+                  "rgba(16, 185, 129, 1)",
+                  "rgba(245, 158, 11, 1)",
+                  "rgba(239, 68, 68, 1)",
+                ],
+                borderWidth: 1,
+                borderRadius: 5,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                title: { display: true, text: "Percentage (%)" },
+              },
+              x: { grid: { display: false } },
+            },
+          },
+        });
+      };
+
+      const DASHBOARD_HTML = `
+        ${generatePageHeader("Dashboard")}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between"><div><div class="text-3xl font-bold text-gray-800">13,500</div><div class="text-gray-500">Total Courses</div></div><i class="fas fa-book-open text-5xl text-red-200"></i></div>
+            <div class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between"><div><div class="text-3xl font-bold text-gray-800">13,500</div><div class="text-gray-500">Total Students</div></div><i class="fas fa-users text-5xl text-blue-200"></i></div>
+            <div class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between"><div><div class="text-3xl font-bold text-gray-800">$ 500</div><div class="text-gray-500">Revenue</div></div><i class="fas fa-dollar-sign text-5xl text-green-200"></i></div>
+            <div class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between"><div><div class="text-3xl font-bold text-gray-800">8</div><div class="text-gray-500">Active Batches</div></div><i class="fas fa-layer-group text-5xl text-purple-200"></i></div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4"><h2 class="text-xl font-semibold text-gray-800 mb-2 sm:mb-0">Overview</h2><div class="relative w-full sm:w-auto"><select class="p-2 border border-gray-300 rounded-md text-sm w-full"><option>Sort By Messages</option><option>Sort By Date</option></select><i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i></div></div>
+                <div class="h-64 mb-4"><canvas id="overviewChart"></canvas></div>
+                <div class="flex flex-wrap justify-center sm:justify-between gap-2 mt-4"><button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto transition-colors duration-200" onclick="showMessage('Button December 1 clicked!')">December 1 80%</button><button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto transition-colors duration-200" onclick="showMessage('Button December 2 clicked!')">December 2 80%</button><button class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto transition-colors duration-200" onclick="showMessage('Button December 3 clicked!')">December 3 80%</button><button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto transition-colors duration-200" onclick="showMessage('Button December 4 clicked!')">December 4 80%</button></div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <div class="flex items-center justify-between mb-4"><h2 class="text-xl font-semibold text-gray-800">Messages</h2><a href="#" class="text-red-500 hover:underline text-sm" onclick="showMessage('Viewing all messages!')">View All</a></div>
+                <div class="relative mb-4"><input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-full"><i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i></div>
+                <div class="space-y-4">
+                    <div class="flex items-start"><img src="https://placehold.co/40x40/9CA3AF/white?text=JJ" alt="Jacob Jones" class="w-10 h-10 rounded-full mr-3"><div class="flex-1"><div class="flex justify-between items-center mb-1"><span class="font-semibold text-gray-800">Jacob Jones</span><span class="text-xs text-gray-500">today 05:30PM</span></div><p class="text-gray-600 text-sm">Hey! Did you finish the Hi-Fi wireframes for flora app design?</p></div></div>
+                    <div class="flex items-start"><img src="https://placehold.co/40x40/9CA3AF/white?text=DL" alt="Devon Lane" class="w-10 h-10 rounded-full mr-3"><div class="flex-1"><div class="flex justify-between items-center mb-1"><span class="font-semibold text-gray-800">Devon Lane</span><span class="text-xs text-gray-500">today 05:30PM</span></div><p class="text-gray-600 text-sm">Hey! Did you finish the Hi-Fi wireframes for flora app design?</p></div></div>
+                    <div class="flex items-start"><img src="https://placehold.co/40x40/9CA3AF/white?text=AF" alt="Albert Flores" class="w-10 h-10 rounded-full mr-3"><div class="flex-1"><div class="flex justify-between items-center mb-1"><span class="font-semibold text-gray-800">Albert Flores</span><span class="text-xs text-gray-500">Today-PM</span></div><p class="text-gray-600 text-sm">Hey! Did you finish the Hi-Fi wireframes for flora app design?</p></div></div>
+                    <div class="flex items-start"><img src="https://placehold.co/40x40/9CA3AF/white?text=AM" alt="Arlene McCoy" class="w-10 h-10 rounded-full mr-3"><div class="flex-1"><div class="flex justify-between items-center mb-1"><span class="font-semibold text-gray-800">Arlene McCoy</span><span class="text-xs text-gray-500">1d</span></div><p class="text-gray-600 text-sm">Hey! Did you finish the Hi-Fi wireframes for flora app design?</p></div></div>
+                    <div class="flex items-start"><img src="https://placehold.co/40x40/9CA3AF/white?text=BC" alt="Bessie Cooper" class="w-10 h-10 rounded-full mr-3"><div class="flex-1"><div class="flex justify-between items-center mb-1"><span class="font-semibold text-gray-800">Bessie Cooper</span><span class="text-xs text-gray-500">2d</span></div><p class="text-gray-600 text-sm">Hey! Did you finish the Hi-Fi wireframes for flora app design?</p></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Course Analytics</h2>
+            <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course Name</th><th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purchases</th><th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Views</th><th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Completion Rate</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Math</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">100</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5000</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">85%</td></tr><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Science</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">120</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">6000</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">90%</td></tr><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">History</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">80</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3000</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">75%</td></tr><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">English</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">150</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">7500</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">92%</td></tr></tbody></table></div>
+        </div>`;
+
+      const REGISTRATION_HTML = `
+        ${generatePageHeader("Registration")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Manage user registrations here. Add new users, edit profiles, or view registration logs.</p>
+            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add New User</h3>
+                <form id="add-user-form"><div class="mb-4"><label for="new-username" class="block text-gray-700 text-sm font-semibold mb-2">Username</label><input type="text" id="new-username" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Enter new username" required></div><div class="mb-4"><label for="new-useremail" class="block text-gray-700 text-sm font-semibold mb-2">Email</label><input type="email" id="new-useremail" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Enter new user's email" required></div><button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add New User</button></form>
+            </div>
+            <div class="mt-6"><h3 class="text-lg font-semibold text-gray-800 mb-3">Recent Registrations</h3><ul id="registration-list" class="space-y-2"></ul></div>
+        </div>`;
+
+      const MESSAGES_HTML = `
+        ${generatePageHeader("Contact Form Submissions")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Review and respond to messages submitted through the website's contact form.</p>
+            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Filter Contact Messages</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label for="contact-filter-status" class="block text-gray-700 text-sm font-semibold mb-2">Status</label><select id="contact-filter-status" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500"><option value="all">All Statuses</option><option value="pending">Pending</option><option value="replied">Replied</option></select></div>
+                    <div><label for="contact-filter-search" class="block text-gray-700 text-sm font-semibold mb-2">Search</label><input type="text" id="contact-filter-search" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Search by name, email, subject..."></div>
+                </div>
+            </div>
+            <div id="contact-messages-list" class="space-y-4"></div>
+            <div id="contact-message-pagination" class="mt-8 flex justify-center"></div>
+        </div>`;
+
+      const OUR_TEACHER_HTML = `
+        ${generatePageHeader("Teacher Management")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Add, edit, and manage profiles for all your IELTS teachers. Use the rich text editor for detailed biographies.</p>
+            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add/Edit Teacher</h3>
+                <form id="teacher-form"><input type="hidden" id="teacher-id"><div class="mb-4"><label for="teacher-name" class="block text-gray-700 text-sm font-semibold mb-2">Teacher Name</label><input type="text" id="teacher-name" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., Mahir Hossain" required></div><div class="mb-4"><label for="teacher-expertise" class="block text-gray-700 text-sm font-semibold mb-2">Expertise</label><select id="teacher-expertise" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" required><option value="">Select an Expertise</option><option value="IELTS Speaking">IELTS Speaking</option><option value="IELTS Writing">IELTS Writing</option><option value="IELTS Listening">IELTS Listening</option><option value="IELTS Reading">IELTS Reading</option><option value="IELTS General Training">IELTS General Training</option><option value="IELTS Academic">IELTS Academic</option><option value="Grammar & Vocabulary">Grammar & Vocabulary</option><option value="Test Strategies">Test Strategies</option><option value="Beginner IELTS">Beginner IELTS</option><option value="Advanced IELTS">Advanced IELTS</option><option value="Overall IELTS">Overall IELTS</option></select></div><div class="mb-4"><label for="teacher-bio" class="block text-gray-700 text-sm font-semibold mb-2">Biography</label><textarea id="teacher-bio" name="bio" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-48"></textarea></div><div class="mb-6"><label class="block text-gray-700 text-sm font-semibold mb-2">Teacher Image</label><input type="hidden" id="teacher-image"><div id="teacher-image-drop-zone" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-red-400 transition-colors duration-200"><img id="teacher-image-preview" class="hidden max-w-full h-auto mx-auto mb-2 rounded-full w-24 h-24 object-cover" src="" alt="Teacher Image Preview"><p class="text-gray-500 placeholder-text"><i class="fas fa-cloud-upload-alt mr-2"></i> Drag & drop an image here or click to select</p><p class="text-gray-500 change-text hidden"><i class="fas fa-sync-alt mr-2"></i> Click or drag to change image</p></div></div><button type="submit" id="add-teacher-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Teacher</button></form>
+            </div>
+            <div class="mt-8 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Filter Teachers</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label for="teacher-filter-status" class="block text-gray-700 text-sm font-semibold mb-2">Status</label><select id="teacher-filter-status" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500"><option value="all">All Statuses</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
+                    <div><label for="teacher-filter-search" class="block text-gray-700 text-sm font-semibold mb-2">Search</label><input type="text" id="teacher-filter-search" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Search by name, expertise..."></div>
+                </div>
+            </div>
+            <div class="mt-8"><h3 class="text-xl font-semibold text-gray-800 mb-4">All Teachers</h3><div id="teachers-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
+            <div id="teacher-pagination" class="mt-8 flex justify-center"></div>
+        </div>`;
+
+      const STUDENT_HISTORY_HTML = `
+        ${generatePageHeader("Student History")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Track student progress, course completions, and activity logs. Search for specific student records.</p>
+            <div class="mt-6 overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enrolled Courses</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Activity</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Alice Johnson</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Math, English</td><td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span></td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today</td><td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"><button class="text-blue-600 hover:text-blue-900 mr-2" onclick="showMessage('Viewing Alice Johnson\'s history.')">View</button><button class="text-red-600 hover:text-red-900" onclick="showMessage('Deleting Alice Johnson\'s record.')">Delete</button></td></tr><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Bob Williams</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Science</td><td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">In Progress</span></td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today</td><td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"><button class="text-blue-600 hover:text-blue-900 mr-2" onclick="showMessage('Viewing Bob Williams\'s history.')">View</button><button class="text-red-600 hover:text-red-900" onclick="showMessage('Deleting Bob Williams\'s record.')">Delete</button></td></tr></tbody></table></div>
+        </div>`;
+
+      const COURSES_HTML = `
+        ${generatePageHeader("Courses")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Manage all available courses. Add new courses, edit details, and track enrollment.</p>
+            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add New Course</h3>
+                <form id="add-course-form"><div class="mb-4"><label for="new-course-name" class="block text-gray-700 text-sm font-semibold mb-2">Course Name</label><input type="text" id="new-course-name" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., Advanced Algebra" required></div><div class="mb-4"><label for="new-course-description" class="block text-gray-700 text-sm font-semibold mb-2">Description</label><textarea id="new-course-description" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-24" placeholder="Brief description of the course"></textarea></div><button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add New Course</button></form>
+            </div>
+            <div class="mt-6"><h3 class="text-lg font-semibold text-gray-800 mb-3">Current Courses</h3><div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div></div>
+        </div>`;
+
+      const COMMUNITY_FORUM_HTML = `
+        ${generatePageHeader("Community Forum")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Oversee discussions, moderate content, and manage users in the community forum.</p>
+            <div class="mt-4 space-y-4">
+                <div class="flex items-start p-3 bg-gray-50 rounded-lg"><i class="fas fa-comments text-3xl text-blue-500 mr-3 mt-1"></i><div><h4 class="font-semibold text-gray-800">Discussion: Best IELTS Preparation Books</h4><p class="text-gray-600 text-sm">"What are your top recommendations for IELTS preparation books?"</p><span class="text-xs text-gray-500">Posted by: UserX - 2024-06-22</span></div><button class="ml-auto text-red-500 hover:text-red-700" onclick="showMessage('Moderating forum discussion.')"><i class="fas fa-shield-alt"></i> Moderate</button></div>
+                <div class="flex items-start p-3 bg-gray-50 rounded-lg"><i class="fas fa-exclamation-triangle text-3xl text-yellow-500 mr-3 mt-1"></i><div><h4 class="font-semibold text-gray-800">Reported Post: Spam Content</h4><p class="text-gray-600 text-sm">"This post contains irrelevant advertisements and should be removed."</p><span class="text-xs text-gray-500">Reported: 2024-06-21</span></div><button class="ml-auto text-red-500 hover:text-red-700" onclick="showMessage('Reviewing reported post.')"><i class="fas fa-eye"></i> Review</button></div>
+            </div>
+        </div>`;
+
+      const BLOG_HTML = `
+        ${generatePageHeader("Blog Management")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Create, edit, and publish blog posts. Manage content and authors.</p>
+            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add/Edit Blog Post</h3>
+                <form id="blog-post-form"><input type="hidden" id="blog-id"><div class="mb-4"><label for="blog-title" class="block text-gray-700 text-sm font-semibold mb-2">Title</label><input type="text" id="blog-title" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Enter blog post title" required></div><div class="mb-4"><label for="blog-category" class="block text-gray-700 text-sm font-semibold mb-2">Category</label><select id="blog-category" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" required><option value="">Select a Category</option><option value="all categories">All Categories</option><option value="preparation">Preparation</option><option value="reading">Reading</option><option value="writing">Writing</option><option value="listening">Listening</option><option value="speaking">Speaking</option><option value="grammar">Grammar</option><option value="study plan">Study Plan</option><option value="higher study">Higher Study</option><option value="ielts motivation">IELTS Motivation</option><option value="others">Others</option></select></div><div class="mb-4"><label for="blog-content" class="block text-gray-700 text-sm font-semibold mb-2">Content</label><textarea id="blog-content" name="content" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-48"></textarea></div><div class="mb-4"><label for="blog-author" class="block text-gray-700 text-sm font-semibold mb-2">Author Name</label><input type="text" id="blog-author" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., John Doe" required></div><div class="mb-4"><label class="block text-gray-700 text-sm font-semibold mb-2">Author Image</label><input type="hidden" id="blog-author-img"><div id="author-image-drop-zone" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-red-400 transition-colors duration-200"><img id="author-image-preview" class="hidden max-w-full h-auto mx-auto mb-2 rounded-full w-24 h-24 object-cover" src="" alt="Author Image Preview"><p class="text-gray-500 placeholder-text"><i class="fas fa-cloud-upload-alt mr-2"></i> Drag & drop an image here or click to select</p><p class="text-gray-500 change-text hidden"><i class="fas fa-sync-alt mr-2"></i> Click or drag to change image</p></div></div><div class="mb-6"><label class="block text-gray-700 text-sm font-semibold mb-2">Featured Image</label><input type="hidden" id="blog-image"><div id="blog-image-drop-zone" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-red-400 transition-colors duration-200"><img id="blog-image-preview" class="hidden max-w-full h-auto mx-auto mb-2" src="" alt="Blog Image Preview"><p class="text-gray-500 placeholder-text"><i class="fas fa-cloud-upload-alt mr-2"></i> Drag & drop an image here or click to select</p><p class="text-gray-500 change-text hidden"><i class="fas fa-sync-alt mr-2"></i> Click or drag to change image</p></div></div><button type="submit" id="add-blog-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Blog Post</button></form>
+            </div>
+            <div class="mt-8 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Filter Blog Posts</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div><label for="blog-filter-status" class="block text-gray-700 text-sm font-semibold mb-2">Status</label><select id="blog-filter-status" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500"><option value="all">All Statuses</option><option value="published">Published</option><option value="draft">Draft</option></select></div>
+                    <div><label for="blog-filter-category" class="block text-gray-700 text-sm font-semibold mb-2">Category</label><select id="blog-filter-category" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500"><option value="all categories">All Categories</option><option value="preparation">Preparation</option><option value="reading">Reading</option><option value="writing">Writing</option><option value="listening">Listening</option><option value="speaking">Speaking</option><option value="grammar">Grammar</option><option value="study plan">Study Plan</option><option value="higher study">Higher Study</option><option value="ielts motivation">IELTS Motivation</option><option value="others">Others</option></select></div>
+                    <div><label for="blog-filter-search" class="block text-gray-700 text-sm font-semibold mb-2">Search</label><input type="text" id="blog-filter-search" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Search by title, author..."></div>
+                </div>
+            </div>
+            <div class="mt-8" id="blog-display-section"><h3 class="text-xl font-semibold text-gray-800 mb-4" id="blog-posts-list-heading">All Blog Posts</h3><div id="blog-posts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
+            <div id="blog-pagination" class="mt-8 flex justify-center"></div>
+        </div>`;
+
+      const FREE_RESOURCES_HTML = `
+        ${generatePageHeader("Free Resources Management")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Manage free learning resources like e-books, practice materials, and webinars. Ensure content is up-to-date and accessible.</p>
+            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add/Edit Free Resource (Video)</h3>
+                <form id="free-resource-form"><input type="hidden" id="free-resource-id"><div class="mb-4"><label for="free-resource-title" class="block text-gray-700 text-sm font-semibold mb-2">Video Title</label><input type="text" id="free-resource-title" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., IELTS Speaking Band 7.5 Real Test" required></div><div class="mb-4"><label for="free-resource-category" class="block text-gray-700 text-sm font-semibold mb-2">Category</label><select id="free-resource-category" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" required><option value="">Select a Category</option><option value="Speaking">Speaking</option><option value="Writing">Writing</option><option value="Listening">Listening</option><option value="Reading">Reading</option><option value="Grammar">Grammar</option><option value="Vocabulary">Vocabulary</option>option value="Higher Study">Higher Study</option><option value="Tips & Tricks">Tips & Tricks</option><option value="Study Plan">Study Plan</option><option value="Live">Classes</option><option value="Full Tests">Full Tests</option><option value="Motivation">Motivation</option><option value="Others">Others</option></select></div><div class="mb-4"><label for="free-resource-link" class="block text-gray-700 text-sm font-semibold mb-2">YouTube Video Link</label><input type="url" id="free-resource-link" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., https://www.youtube.com/watch?v=VIDEO_ID" required></div><div class="mb-4"><label for="free-resource-summary" class="block text-gray-700 text-sm font-semibold mb-2">Summary</label><textarea id="free-resource-summary" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-24" placeholder="Brief summary of the video content"></textarea></div><div class="mb-6"><label for="free-resource-keypoints" class="block text-gray-700 text-sm font-semibold mb-2">Key Points (One per line)</label><textarea id="free-resource-keypoints" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-32" placeholder="List key takeaways, one point per line"></textarea></div><div class="mb-6"><label class="block text-gray-700 text-sm font-semibold mb-2">Thumbnail Image</label><input type="hidden" id="free-resource-image"><div id="free-resource-image-drop-zone" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-red-400 transition-colors duration-200"><img id="free-resource-image-preview" class="hidden max-w-full h-auto mx-auto mb-2" src="" alt="Thumbnail Image Preview"><p class="text-gray-500 placeholder-text"><i class="fas fa-cloud-upload-alt mr-2"></i> Drag & drop an image here or click to select</p><p class="text-gray-500 change-text hidden"><i class="fas fa-sync-alt mr-2"></i> Click or drag to change image</p></div></div><button type="submit" id="add-free-resource-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Free Resource</button></form>
+            </div>
+            <div class="mt-8 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Filter Free Resources</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div><label for="free-resource-filter-status" class="block text-gray-700 text-sm font-semibold mb-2">Status</label><select id="free-resource-filter-status" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500"><option value="all">All Statuses</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
+                    <div><label for="free-resource-filter-category" class="block text-gray-700 text-sm font-semibold mb-2">Category</label><select id="free-resource-filter-category" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500"><option value="">Select a Category</option><option value="Speaking">Speaking</option><option value="Writing">Writing</option><option value="Listening">Listening</option><option value="Reading">Reading</option><option value="Grammar">Grammar</option><option value="Vocabulary">Vocabulary</option>option value="Higher Study">Higher Study</option><option value="Tips & Tricks">Tips & Tricks</option><option value="Study Plan">Study Plan</option><option value="Live">Classes</option><option value="Full Tests">Full Tests</option><option value="Motivation">Motivation</option><option value="Others">Others</option></select></div>
+                    <div><label for="free-resource-filter-search" class="block text-gray-700 text-sm font-semibold mb-2">Search</label><input type="text" id="free-resource-filter-search" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Search by title, category, summary..."></div>
+                </div>
+            </div>
+            <div class="mt-8"><h3 class="text-xl font-semibold text-gray-800 mb-4">All Free Resources</h3><div id="free-resources-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
+            <div id="free-resource-pagination" class="mt-8 flex justify-center"></div>
+        </div>`;
+
+      const MOCK_TEST_HTML = `
+        ${generatePageHeader("Mock Test Management")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Create, configure, and administer mock tests. Review results and provide feedback.</p>
+            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add New Mock Test</h3>
+                <form id="add-mock-test-form"><div class="mb-4"><label for="mock-test-title" class="block text-gray-700 text-sm font-semibold mb-2">Test Title</label><input type="text" id="mock-test-title" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., IELTS Full Mock Test 1" required></div><div class="mb-4"><label for="mock-test-duration" class="block text-gray-700 text-sm font-semibold mb-2">Duration (minutes)</label><input type="number" id="mock-test-duration" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" min="1" required></div><button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Mock Test</button></form>
+            </div>
+            <div class="mt-6"><h3 class="text-lg font-semibold text-gray-800 mb-3">Upcoming Mock Tests</h3><ul class="space-y-2"><li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg"><span>IELTS Speaking Practice - <span class="text-gray-600">Date: 2024-07-01</span></span><button class="text-blue-500 hover:text-blue-700" onclick="showMessage('Editing IELTS Speaking Practice.')"><i class="fas fa-edit"></i></button></li><li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg"><span>General English Writing - <span class="text-gray-600">Date: 2024-07-05</span></span><button class="text-blue-500 hover:text-blue-700" onclick="showMessage('Editing General English Writing.')"><i class="fas fa-edit"></i></button></li></ul></div>
+        </div>`;
+
+      const QUIZZES_HTML = `
+        ${generatePageHeader("Quizzes Management")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Design and manage interactive quizzes. Track student performance and review answers.</p>
+            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add/Edit Quiz</h3>
+                <form id="quiz-form"><input type="hidden" id="quiz-id"><div class="mb-4"><label for="quiz-title" class="block text-gray-700 text-sm font-semibold mb-2">Quiz Title</label><input type="text" id="quiz-title" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., Verb Tenses Quiz" required></div><div class="mb-4"><label for="quiz-description" class="block text-gray-700 text-sm font-semibold mb-2">Description</label><textarea id="quiz-description" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-24" placeholder="Brief description of the quiz"></textarea></div><div class="mb-6"><label for="quiz-questions-count" class="block text-gray-700 text-sm font-semibold mb-2">Number of Questions</label><input type="number" id="quiz-questions-count" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" min="1" required></div><button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Quiz</button></form>
+            </div>
+            <div class="mt-8"><h3 class="text-xl font-semibold text-gray-800 mb-4">Published Quizzes</h3><div id="published-quizzes-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
+            <div class="mt-8"><h3 class="text-xl font-semibold text-gray-800 mb-4">Draft Quizzes</h3><div id="draft-quizzes-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
+        </div>`;
+
+      const TESTIMONIAL_HTML = `
+        ${generatePageHeader("Testimonial Management")}
+        <div class="testimonials-section-admin bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700 mb-6">Manage customer testimonials. Approve, reject, edit, or delete submitted testimonials.</p>
+            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add/Edit Testimonial</h3>
+                <form id="testimonial-form"><input type="hidden" id="testimonial-id"><div class="mb-4"><label for="testimonial-name" class="block text-gray-700 text-sm font-semibold mb-2">Name</label><input type="text" id="testimonial-name" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., Jane Doe" required></div><div class="mb-4"><label for="testimonial-role" class="block text-gray-700 text-sm font-semibold mb-2">Role/Course</label><input type="text" id="testimonial-role" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., IELTS Student" required></div><div class="mb-4"><label class="block text-gray-700 text-sm font-semibold mb-2">Testimonial Type</label><div class="flex items-center space-x-4"><label class="inline-flex items-center"><input type="radio" name="testimonial-type" id="testimonial-type-text" value="text" class="form-radio text-red-600" checked><span class="ml-2 text-gray-700">Text</span></label><label class="inline-flex items-center"><input type="radio" name="testimonial-type" id="testimonial-type-video" value="video" class="form-radio text-red-600"><span class="ml-2 text-gray-700">Video</span></label></div></div><div class="mb-4" id="text-content-group"><label for="testimonial-text" class="block text-gray-700 text-sm font-semibold mb-2">Testimonial Text</label><textarea id="testimonial-text" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-24" placeholder="Enter testimonial text"></textarea></div><div class="mb-4 hidden" id="video-url-group"><label for="testimonial-video-src" class="block text-gray-700 text-sm font-semibold mb-2">Video URL</label><input type="url" id="testimonial-video-src" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., https://example.com/video.mp4"></div><div class="mb-6"><label class="block text-gray-700 text-sm font-semibold mb-2">Avatar Image</label><input type="hidden" id="testimonial-avatar-src"><div id="avatar-drop-zone" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-red-400 transition-colors duration-200"><img id="avatar-image-preview" class="hidden max-w-full h-auto mx-auto mb-2 rounded-full w-24 h-24 object-cover" src="" alt="Avatar Image Preview"><p class="text-gray-500 placeholder-text"><i class="fas fa-cloud-upload-alt mr-2"></i> Drag & drop an image here or click to select</p><p class="text-gray-500 change-text hidden"><i class="fas fa-sync-alt mr-2"></i> Click or drag to change image</p></div></div><button type="submit" id="add-testimonial-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Testimonial</button></form>
+            </div>
+            <div class="mt-8 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Filter Testimonials</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label for="testimonial-filter-status" class="block text-gray-700 text-sm font-semibold mb-2">Status</label><select id="testimonial-filter-status" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500"><option value="all">All Statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select></div>
+                    <div><label for="testimonial-filter-search" class="block text-gray-700 text-sm font-semibold mb-2">Search</label><input type="text" id="testimonial-filter-search" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Search by name, role, text..."></div>
+                </div>
+            </div>
+            <div class="mt-8"><h3 class="text-xl font-semibold text-gray-800 mb-4">Pending Testimonials</h3><div id="pending-testimonials-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
+            <div class="mt-8"><h3 class="text-xl font-semibold text-gray-800 mb-4">Approved Testimonials</h3><div id="approved-testimonials-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
+            <div class="mt-8"><h3 class="text-xl font-semibold text-gray-800 mb-4">Rejected Testimonials</h3><div id="rejected-testimonials-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
+            <div id="testimonial-pagination" class="mt-8 flex justify-center"></div>
+        </div>`;
+
+      const BLOCK_LIST_HTML = `
+        ${generatePageHeader("Block List")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Manage blocked users and content. Add or remove entries from the block list to maintain a safe environment.</p>
+            <div class="mt-6 overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Blocked Item</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Blocked Date</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Spam User 123</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">User</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Repeated spamming</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-06-15</td><td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"><button class="text-green-600 hover:text-green-900" onclick="showMessage('Unblocking Spam User 123.')">Unblock</button></td></tr><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Harmful Link Post</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Content</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Malware link</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-06-10</td><td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"><button class="text-green-600 hover:text-green-900" onclick="showMessage('Unblocking Harmful Link Post.')">Unblock</button></td></tr></tbody></table></div>
+        </div>`;
+
+      const loadPageContent = (pageName) => {
+        const contentArea = document.getElementById("content-area");
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((link) =>
+            link.classList.remove("active-link", "bg-red-50", "text-red-600")
+          );
+        document
+          .querySelector(`.nav-link[data-page="${pageName}"]`)
+          ?.classList.add("active-link", "bg-red-50", "text-red-600");
+
+        if (summernoteEditorInstance && $("#blog-content").data("summernote")) {
+          $("#blog-content").summernote("destroy");
+          summernoteEditorInstance = null;
+        }
+        if (summernoteEditorInstance && $("#teacher-bio").data("summernote")) {
+          $("#teacher-bio").summernote("destroy");
+          summernoteEditorInstance = null;
+        }
+
+        let contentHtml = "";
+        switch (pageName) {
+          case "dashboard":
+            contentHtml = DASHBOARD_HTML;
+            break;
+          case "registration":
+            contentHtml = REGISTRATION_HTML;
+            break;
+          case "messages":
+            contentHtml = MESSAGES_HTML;
+            break;
+          case "our-teacher":
+            contentHtml = OUR_TEACHER_HTML;
+            break;
+          case "student-history":
+            contentHtml = STUDENT_HISTORY_HTML;
+            break;
+          case "courses":
+            contentHtml = COURSES_HTML;
+            break;
+          case "community-forum":
+            contentHtml = COMMUNITY_FORUM_HTML;
+            break;
+          case "blog":
+            contentHtml = BLOG_HTML;
+            break;
+          case "free-resources":
+            contentHtml = FREE_RESOURCES_HTML;
+            break;
+          case "mock-test":
+            contentHtml = MOCK_TEST_HTML;
+            break;
+          case "quizzes":
+            contentHtml = QUIZZES_HTML;
+            break;
+          case "testimonial":
+            contentHtml = TESTIMONIAL_HTML;
+            break;
+          case "block-list":
+            contentHtml = BLOCK_LIST_HTML;
+            break;
+        }
+        contentArea.innerHTML = contentHtml;
+
+        setTimeout(() => {
+          if (pageName === "blog") {
+            const blogContentTextArea = document.getElementById("blog-content");
+            if (blogContentTextArea) {
+              $(blogContentTextArea).summernote({
+                placeholder: "Start writing your blog post here...",
+                tabsize: 2,
+                height: 300,
+                toolbar: [
+                  ["style", ["style"]],
+                  ["font", ["bold", "italic", "underline", "clear"]],
+                  ["fontname", ["fontname"]],
+                  ["fontsize", ["fontsize"]],
+                  ["color", ["color"]],
+                  ["para", ["ul", "ol", "paragraph"]],
+                  ["height", ["height"]],
+                  ["table", ["table"]],
+                  ["insert", ["link", "picture", "video", "hr"]],
+                  ["view", ["codeview", "help"]],
+                  ["misc", ["undo", "redo"]],
+                ],
+                callbacks: {
+                  onImageUpload: function (files) {
+                    const editor = $(this);
+                    files.length > 0 && files[0].type.startsWith("image/")
+                      ? processAndResizeImage(files[0], 800, 400, (dataUrl) => {
+                          editor.summernote("insertImage", dataUrl);
+                          showMessage(
+                            "Image inserted into editor (resized and Base64 encoded)."
+                          );
+                        })
+                      : showMessage("Please upload an image file.");
+                  },
+                },
+              });
+              summernoteEditorInstance = $(blogContentTextArea);
+            }
+            setupImageDragAndDrop(
+              "blog-image",
+              "blog-image-drop-zone",
+              "blog-image-preview",
+              800,
+              400
+            );
+            setupImageDragAndDrop(
+              "blog-author-img",
+              "author-image-drop-zone",
+              "author-image-preview",
+              200,
+              200
+            );
+            const blogFilterStatus = document.getElementById(
+              "blog-filter-status"
+            );
+            const blogFilterCategory = document.getElementById(
+              "blog-filter-category"
+            );
+            const blogFilterSearch = document.getElementById(
+              "blog-filter-search"
+            );
+            if (blogFilterStatus) {
+              blogFilterStatus.value = blogCurrentFilters.status;
+              blogFilterStatus.addEventListener("change", (e) => {
+                blogCurrentFilters.status = e.target.value;
+                blogCurrentPage = 1;
+                renderBlogPosts(
+                  blogCurrentFilters,
+                  blogCurrentPage,
+                  blogItemsPerPage
+                );
+              });
+            }
+            if (blogFilterCategory) {
+              blogFilterCategory.value = blogCurrentFilters.category;
+              blogFilterCategory.addEventListener("change", (e) => {
+                blogCurrentFilters.category = e.target.value;
+                blogCurrentPage = 1;
+                renderBlogPosts(
+                  blogCurrentFilters,
+                  blogCurrentPage,
+                  blogItemsPerPage
+                );
+              });
+            }
+            if (blogFilterSearch) {
+              blogFilterSearch.value = blogCurrentFilters.searchTerm;
+              blogFilterSearch.addEventListener("input", (e) => {
+                blogCurrentFilters.searchTerm = e.target.value;
+                blogCurrentPage = 1;
+                renderBlogPosts(
+                  blogCurrentFilters,
+                  blogCurrentPage,
+                  blogItemsPerPage
+                );
+              });
+            }
+          }
+          if (pageName === "dashboard") renderCharts();
+          if (pageName === "registration") renderRegistrations();
+          if (pageName === "courses") renderCourses();
+          if (pageName === "testimonial") {
+            renderTestimonials(
+              testimonialCurrentFilters,
+              testimonialCurrentPage,
+              testimonialItemsPerPage
+            );
+            setupImageDragAndDrop(
+              "testimonial-avatar-src",
+              "avatar-drop-zone",
+              "avatar-image-preview",
+              200,
+              200
+            );
+            const typeTextRadio = document.getElementById(
+              "testimonial-type-text"
+            );
+            const typeVideoRadio = document.getElementById(
+              "testimonial-type-video"
+            );
+            const textContentGroup = document.getElementById(
+              "text-content-group"
+            );
+            const videoUrlGroup = document.getElementById("video-url-group");
+            const toggleTestimonialType = () => {
+              textContentGroup.classList.toggle(
+                "hidden",
+                typeVideoRadio.checked
+              );
+              videoUrlGroup.classList.toggle("hidden", !typeVideoRadio.checked);
+            };
+            typeTextRadio.addEventListener("change", toggleTestimonialType);
+            typeVideoRadio.addEventListener("change", toggleTestimonialType);
+            toggleTestimonialType();
+            const testimonialFilterStatus = document.getElementById(
+              "testimonial-filter-status"
+            );
+            const testimonialFilterSearch = document.getElementById(
+              "testimonial-filter-search"
+            );
+            if (testimonialFilterStatus) {
+              testimonialFilterStatus.value = testimonialCurrentFilters.status;
+              testimonialFilterStatus.addEventListener("change", (e) => {
+                testimonialCurrentFilters.status = e.target.value;
+                testimonialCurrentPage = 1;
+                renderTestimonials(
+                  testimonialCurrentFilters,
+                  testimonialCurrentPage,
+                  testimonialItemsPerPage
+                );
+              });
+            }
+            if (testimonialFilterSearch) {
+              testimonialFilterSearch.value =
+                testimonialCurrentFilters.searchTerm;
+              testimonialFilterSearch.addEventListener("input", (e) => {
+                testimonialCurrentFilters.searchTerm = e.target.value;
+                testimonialCurrentPage = 1;
+                renderTestimonials(
+                  testimonialCurrentFilters,
+                  testimonialCurrentPage,
+                  testimonialItemsPerPage
+                );
+              });
+            }
+          }
+          if (pageName === "quizzes") renderQuizzes();
+          if (pageName === "blog") {
+            blogCurrentFilters = {
+              status: "all",
+              category: "all categories",
+              searchTerm: "",
+            };
+            document.getElementById("blog-filter-status").value =
+              blogCurrentFilters.status;
+            document.getElementById("blog-filter-category").value =
+              blogCurrentFilters.category;
+            renderBlogPosts(
+              blogCurrentFilters,
+              blogCurrentPage,
+              blogItemsPerPage
+            );
+          }
+          if (pageName === "messages")
+            renderContactMessages(
+              contactMessageCurrentFilters,
+              contactMessageCurrentPage,
+              contactMessageItemsPerPage
+            );
+          if (pageName === "our-teacher") {
+            const teacherBioTextArea = document.getElementById("teacher-bio");
+            if (teacherBioTextArea) {
+              $(teacherBioTextArea).summernote({
+                placeholder: "Enter teacher's biography here...",
+                tabsize: 2,
+                height: 200,
+                toolbar: [
+                  ["style", ["style"]],
+                  ["font", ["bold", "italic", "underline", "clear"]],
+                  ["fontname", ["fontname"]],
+                  ["fontsize", ["fontsize"]],
+                  ["color", ["color"]],
+                  ["para", ["ul", "ol", "paragraph"]],
+                  ["height", ["height"]],
+                  ["insert", ["link", "picture", "hr"]],
+                  ["view", ["codeview", "help"]],
+                  ["misc", ["undo", "redo"]],
+                ],
+                callbacks: {
+                  onImageUpload: function (files) {
+                    const editor = $(this);
+                    files.length > 0 && files[0].type.startsWith("image/")
+                      ? processAndResizeImage(files[0], 600, 300, (dataUrl) => {
+                          editor.summernote("insertImage", dataUrl);
+                          showMessage(
+                            "Image inserted into bio (resized and Base64 encoded)."
+                          );
+                        })
+                      : showMessage("Please upload an image file.");
+                  },
+                },
+              });
+              summernoteEditorInstance = $(teacherBioTextArea);
+            }
+            setupImageDragAndDrop(
+              "teacher-image",
+              "teacher-image-drop-zone",
+              "teacher-image-preview",
+              200,
+              200
+            );
+            document
+              .getElementById("teacher-filter-status")
+              .addEventListener("change", (e) => {
+                teacherCurrentFilters.status = e.target.value;
+                teacherCurrentPage = 1;
+                renderTeachers(
+                  teacherCurrentFilters,
+                  teacherCurrentPage,
+                  teacherItemsPerPage
+                );
+              });
+            document
+              .getElementById("teacher-filter-search")
+              .addEventListener("input", (e) => {
+                teacherCurrentFilters.searchTerm = e.target.value;
+                teacherCurrentPage = 1;
+                renderTeachers(
+                  teacherCurrentFilters,
+                  teacherCurrentPage,
+                  teacherItemsPerPage
+                );
+              });
+            renderTeachers(
+              teacherCurrentFilters,
+              teacherCurrentPage,
+              teacherItemsPerPage
+            );
+          }
+          if (pageName === "free-resources") {
+            setupImageDragAndDrop(
+              "free-resource-image",
+              "free-resource-image-drop-zone",
+              "free-resource-image-preview",
+              480,
+              270
+            );
+            document
+              .getElementById("free-resource-filter-status")
+              .addEventListener("change", (e) => {
+                freeResourceCurrentFilters.status = e.target.value;
+                freeResourceCurrentPage = 1;
+                renderFreeResources(
+                  freeResourceCurrentFilters,
+                  freeResourceCurrentPage,
+                  freeResourceItemsPerPage
+                );
+              });
+            document
+              .getElementById("free-resource-filter-category")
+              .addEventListener("change", (e) => {
+                freeResourceCurrentFilters.category = e.target.value;
+                freeResourceCurrentPage = 1;
+                renderFreeResources(
+                  freeResourceCurrentFilters,
+                  freeResourceCurrentPage,
+                  freeResourceItemsPerPage
+                );
+              });
+            document
+              .getElementById("free-resource-filter-search")
+              .addEventListener("input", (e) => {
+                freeResourceCurrentFilters.searchTerm = e.target.value;
+                freeResourceCurrentPage = 1;
+                renderFreeResources(
+                  freeResourceCurrentFilters,
+                  freeResourceCurrentPage,
+                  freeResourceItemsPerPage
+                );
+              });
+            renderFreeResources(
+              freeResourceCurrentFilters,
+              freeResourceCurrentPage,
+              freeResourceItemsPerPage
+            );
+          }
+        }, 0);
+      };
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        await authenticateFirebase();
+        loadPageContent("dashboard");
+
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            loadPageContent(e.currentTarget.dataset.page);
+          });
+        });
+
+        document
+          .getElementById("close-message-box")
+          .addEventListener("click", () =>
+            document.getElementById("message-box").classList.add("hidden")
+          );
+
+        const hamburgerMenu = document.getElementById("hamburger-menu");
+        const sidebar = document.getElementById("sidebar");
+        const sidebarOverlay = document.getElementById("sidebar-overlay");
+
+        hamburgerMenu.addEventListener("click", () => {
+          sidebar.classList.toggle("-translate-x-full");
+          sidebar.classList.toggle("translate-x-0");
+          sidebarOverlay.classList.toggle("hidden");
+        });
+
+        sidebarOverlay.addEventListener("click", () => {
+          sidebar.classList.add("-translate-x-full");
+          sidebar.classList.remove("translate-x-0");
+          sidebarOverlay.classList.add("hidden");
+        });
+
+        window.addEventListener("resize", () => {
+          if (window.innerWidth >= 1024) {
+            sidebar.classList.remove("-translate-x-full", "translate-x-0");
+            sidebar.classList.add("lg:translate-x-0");
+            sidebarOverlay.classList.add("hidden");
+          }
+        });
+
+        document
+          .getElementById("content-area")
+          .addEventListener("submit", async (e) => {
+            if (!isAuthReady) {
+              showMessage("Firebase not ready. Please try again.");
+              return;
+            }
+            e.preventDefault();
+
+            let data = {};
+            let collectionName = "";
+            let idField = "";
+            let successMessage = "";
+            let addBtnId = "";
+            let imageDropZoneId = "";
+            let imagePreviewId = "";
+            let summernoteId = "";
+
+            switch (e.target.id) {
+              case "testimonial-form":
+                collectionName = "testimonials";
+                idField = "testimonial-id";
+                addBtnId = "add-testimonial-btn";
+                imageDropZoneId = "avatar-drop-zone";
+                imagePreviewId = "testimonial-avatar-src";
+                data = {
+                  name: document.getElementById("testimonial-name").value,
+                  role: document.getElementById("testimonial-role").value,
+                  avatarSrc:
+                    document.getElementById("testimonial-avatar-src").value ||
+                    "https://placehold.co/80x80/9CA3AF/white?text=User",
+                  type: document.getElementById("testimonial-type-text").checked
+                    ? "text"
+                    : "video",
+                  timestamp: serverTimestamp(),
+                  status: "pending",
+                };
+                if (data.type === "text")
+                  data.text = document.getElementById("testimonial-text").value;
+                else
+                  data.videoSrc = document.getElementById(
+                    "testimonial-video-src"
+                  ).value;
+                successMessage = "Testimonial";
+                break;
+              case "quiz-form":
+                collectionName = "quizzes";
+                idField = "quiz-id";
+                addBtnId = "add-quiz-btn";
+                data = {
+                  title: document.getElementById("quiz-title").value,
+                  description: document.getElementById("quiz-description")
+                    .value,
+                  questionsCount: parseInt(
+                    document.getElementById("quiz-questions-count").value,
+                    10
+                  ),
+                  timestamp: serverTimestamp(),
+                  status: "draft",
+                };
+                successMessage = "Quiz";
+                break;
+              case "blog-post-form":
+                collectionName = "blogPosts";
+                idField = "blog-id";
+                addBtnId = "add-blog-btn";
+                imageDropZoneId = "blog-image-drop-zone";
+                imagePreviewId = "blog-image";
+                summernoteId = "blog-content";
+                data = {
+                  title: document.getElementById("blog-title").value,
+                  category: document.getElementById("blog-category").value,
+                  content: $(`#${summernoteId}`).summernote("code"),
+                  author: document.getElementById("blog-author").value,
+                  authorImg:
+                    document.getElementById("blog-author-img").value ||
+                    "https://placehold.co/40x40/9CA3AF/white?text=A",
+                  image:
+                    document.getElementById("blog-image").value ||
+                    "https://placehold.co/400x200/cccccc/white?text=Blog+Image",
+                  timestamp: serverTimestamp(),
+                  status: "draft",
+                };
+                successMessage = "Blog post";
+                break;
+              case "teacher-form":
+                collectionName = "teachers";
+                idField = "teacher-id";
+                addBtnId = "add-teacher-btn";
+                imageDropZoneId = "teacher-image-drop-zone";
+                imagePreviewId = "teacher-image";
+                summernoteId = "teacher-bio";
+                data = {
+                  name: document.getElementById("teacher-name").value,
+                  expertise: document.getElementById("teacher-expertise").value,
+                  bio: $(`#${summernoteId}`).summernote("code"),
+                  image:
+                    document.getElementById("teacher-image").value ||
+                    "https://placehold.co/200x200/9CA3AF/white?text=Teacher",
+                  timestamp: serverTimestamp(),
+                  status: "active",
+                };
+                successMessage = "Teacher profile";
+                break;
+              case "free-resource-form":
+                collectionName = "freeResources";
+                idField = "free-resource-id";
+                addBtnId = "add-free-resource-btn";
+                imageDropZoneId = "free-resource-image-drop-zone";
+                imagePreviewId = "free-resource-image";
+                data = {
+                  title: document.getElementById("free-resource-title").value,
+                  category: document.getElementById("free-resource-category")
+                    .value,
+                  link: document.getElementById("free-resource-link").value,
+                  summary: document.getElementById("free-resource-summary")
+                    .value,
+                  keypoints: document
+                    .getElementById("free-resource-keypoints")
+                    .value.split("\n")
+                    .map((kp) => kp.trim())
+                    .filter((kp) => kp !== ""),
+                  img:
+                    document.getElementById("free-resource-image").value ||
+                    "https://placehold.co/400x200/cccccc/white?text=Resource+Image",
+                  timestamp: serverTimestamp(),
+                  status: "active",
+                  views: "0 views",
+                };
+                successMessage = "Free resource";
+                break;
+              default:
+                return;
+            }
+
+            try {
+              const docId = document.getElementById(idField).value;
+              if (docId) {
+                await updateDoc(
+                  doc(
+                    db,
+                    "artifacts",
+                    appId,
+                    "public",
+                    "data",
+                    collectionName,
+                    docId
+                  ),
+                  data
+                );
+                showMessage(`${successMessage} updated successfully!`);
+              } else {
+                await addDoc(
+                  collection(
+                    db,
+                    "artifacts",
+                    appId,
+                    "public",
+                    "data",
+                    collectionName
+                  ),
+                  data
+                );
+                showMessage(`${successMessage} added successfully!`);
+              }
+              e.target.reset();
+              document.getElementById(idField).value = "";
+              document.getElementById(
+                addBtnId
+              ).textContent = `Add ${successMessage}`;
+              if (summernoteId && $(`#${summernoteId}`).data("summernote"))
+                $(`#${summernoteId}`).summernote("code", "");
+              if (imageDropZoneId)
+                document.getElementById(imageDropZoneId)._setImage("");
+              if (
+                imageDropZoneId === "blog-image-drop-zone" &&
+                document.getElementById("author-image-drop-zone")
+              )
+                document.getElementById("author-image-drop-zone")._setImage("");
+            } catch (error) {
+              console.error(`Error adding/updating ${collectionName}: `, error);
+              showMessage(`Error: ${error.message}`);
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Invoice Ninja Clone</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/products.css" />
+    <link rel="stylesheet" href="css/add-products.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>Untitled Company</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+          <a href="customers.html"
+            ><i class="fas fa-user-friends"></i> Customers</a
+          >
+          <a href="products.html"><i class="fas fa-box"></i> Products</a>
+          <a href="invoices.html"
+            ><i class="fas fa-file-invoice"></i> Invoices</a
+          >
+          <a href="recurring.html"
+            ><i class="fas fa-sync-alt"></i> Recurring Invoices</a
+          >
+          <a href="sales-receipt.html"
+            ><i class="fas fa-receipt"></i> Sales Receipt</a
+          >
+          <a href="payments.html"
+            ><i class="fas fa-credit-card"></i> Payments</a
+          >
+          <a href="quotes.html"><i class="fas fa-quote-right"></i> Quotes</a>
+          <a href="expenses.html"><i class="fas fa-chart-pie"></i> Expenses</a>
+          <a href="reports.html"><i class="fas fa-chart-line"></i> Reports</a>
+          <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main">
+        <header class="topbar">
+          <input type="text" placeholder="Find invoices, clients, and more" />
+          <div class="top-actions">
+            <i class="fas fa-bell"></i>
+            <button class="btn-pro">Unlock Pro</button>
+          </div>
+        </header>
+
+        <section class="dashboard-content add-product">
+          <div class="header-action">
+            <h2
+              class="form-title"
+              style="
+                display: flex;
+                align-items: center;
+                font-size: 1.5rem;
+                font-weight: bold;
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#1e1e1e"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="margin-right: 0.5rem;"
+              >
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path
+                  d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                ></path>
+              </svg>
+              Add New Product
+            </h2>
+
+            <!-- Action Buttons -->
+            <div class="form-actions">
+              <button class="btn btn-outline">Save Draft</button>
+              <button class="btn btn-success">Add Product</button>
+            </div>
+          </div>
+          <div class="form-grid">
+            <!-- General Information -->
+            <div class="form-card">
+              <h3>General Information</h3>
+              <div class="form-label-item">
+                <label class="form-label">Product Name</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="Product Name"
+                />
+              </div>
+
+              <div class="form-label-item">
+                <label class="form-label">Description Product</label>
+                <textarea
+                  class="form-textarea"
+                  rows="4"
+                  placeholder="Description"
+                ></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-section">
+                  <label class="form-label">Status</label>
+                  <div class="form-select-group">
+                    <button class="status-select active">Active</button>
+                    <button class="status-select">Draft</button>
+                    <button class="status-select">Out of stock</button>
+                    <button class="status-select">Pending Stock</button>
+                    <button class="status-select">Archived</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-card">
+              <h3 class="upload-label">Upload Img</h3>
+              <div class="upload-img-wrapper">
+                <div class="main-img-container">
+                  <img
+                    id="mainPreview"
+                    src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><circle cx='8.5' cy='8.5' r='1.5'/><path d='M21 15l-5-5L5 21'/></svg>"
+                    class="uploaded-img"
+                  />
+                </div>
+                <div class="thumbnail-list" id="thumbnailList"></div>
+                <label class="upload-btn">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    hidden
+                    id="imgUpload"
+                  />
+                  <span>+</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Pricing and Stock -->
+            <div class="form-card">
+              <h3>Pricing And Stock</h3>
+              <div class="input-label-grid">
+                <div class="input-label">
+                  <label class="form-label">Base Pricing</label>
+                  <input
+                    type="number"
+                    class="form-input"
+                    placeholder="Enter base price"
+                  />
+                </div>
+                <div class="input-label">
+                  <label class="form-label">Stock</label>
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input
+                      type="number"
+                      class="form-input"
+                      id="stock-quantity"
+                      placeholder="Enter stock quantity"
+                      style="flex: 2;"
+                    />
+                    <select class="form-input" id="stock-unit" style="flex: 1;">
+                      <option value="pcs">pcs</option>
+                      <option value="kg">kg</option>
+                      <option value="liters">liters</option>
+                      <option value="boxes">boxes</option>
+                      <option value="packs">packs</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="input-label">
+                  <label class="form-label">Discount (%)</label>
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="Enter discount percentage"
+                  />
+                </div>
+                <div class="input-label">
+                  <label class="form-label">Discount Type</label>
+                  <select class="form-select">
+                    <option value="N/A">Select discount type</option>
+                    <option>Chinese New Year Discount</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category -->
+            <!-- Category Input Section -->
+            <div class="form-card">
+              <h3>Category</h3>
+              <label class="form-label">Product Category</label>
+              <select class="form-select" id="category-select">
+                <option selected disabled>Select Category</option>
+                <option value="jacket">Jacket</option>
+              </select>
+
+              <div class="category-wrapper">
+                <button
+                  type="button"
+                  class="btn btn-add-category"
+                  id="open-category-form"
+                >
+                  Add Category
+                </button>
+
+                <!-- Inline Popup -->
+                <div id="category-popup" class="category-popup hidden">
+                  <input
+                    type="text"
+                    id="category-input"
+                    placeholder="New category"
+                    class="category-popup-input"
+                  />
+                  <div class="popup-buttons">
+                    <button id="popup-add" class="popup-add">Add</button>
+                    <button id="popup-cancel" class="popup-cancel">
+                      Cancel
+                    </button>
+                  </div>
+                  <p id="popup-error" class="popup-error"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/add-products.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

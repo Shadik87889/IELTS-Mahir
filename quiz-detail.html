@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mahir - Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Anton&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Base styles for body and font */
+      body {
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #f8ffef; /* Light background */
+        color: #333;
+      }
+      /* Custom font for the title */
+      .font-anton {
+        font-family: "Anton", sans-serif;
+      }
+
+      /* Header styles */
+      .header-container {
+        background-color: #ffffff;
+        border-bottom: 1px solid #e0e0e0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      .logo-text {
+        color: #2563eb; /* Tailwind blue-600 */
+      }
+      .nav-link {
+        color: #4a5568; /* Tailwind gray-700 */
+        font-weight: 500;
+        transition: color 0.2s ease-in-out;
+      }
+      .nav-link:hover {
+        color: #2563eb; /* Tailwind blue-600 */
+      }
+
+      /* Auth button styles for header (copied for consistency) */
+      .auth-icon-btn {
+        @apply text-blue-600 text-2xl p-2 rounded-full hover:bg-blue-100 transition-colors duration-200;
+      }
+
+      .auth-signin-btn {
+        @apply flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-xs sm:text-sm font-semibold transform active:scale-95;
+      }
+
+      .profile-dropdown-menu {
+        @apply absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 z-50 border border-gray-200;
+      }
+      .profile-dropdown-menu.show {
+        display: block;
+      }
+      .profile-dropdown-menu.hidden {
+        display: none;
+      }
+      .dropdown-header {
+        @apply px-4 py-2 text-sm text-gray-500 border-b border-gray-100 mb-2;
+      }
+      .dropdown-item {
+        @apply flex items-center gap-2 w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-150 rounded-lg mx-2 my-1;
+      }
+      .dropdown-item.sign-out-item {
+        @apply text-red-600 hover:bg-red-50;
+      }
+
+      /* Loading Overlay (copied for consistency) */
+      #loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #f8ffef; /* Match body background */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+        opacity: 1;
+      }
+      #loading-overlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .loader-container {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        border-radius: 50%;
+        background-color: #e0f2fe; /* Light blue background for loader */
+        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+      }
+      .loader-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 200%; /* Make it taller to simulate wave fill */
+        background: linear-gradient(
+          to bottom,
+          #60a5fa,
+          #2563eb
+        ); /* Blue gradient */
+        border-radius: 50%;
+        transform: translateY(100%) rotate(0deg); /* Start hidden below, no rotation */
+        transform-origin: center bottom;
+        transition: transform 0.5s ease-out; /* Smooth transition for wave */
+      }
+      .loader-text {
+        position: relative;
+        z-index: 10;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #2563eb; /* Blue text */
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+      }
+      .loader-spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-left-color: #2563eb;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1rem;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Toast notification styles (copied for consistency) */
+      #toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .toast {
+        padding: 12px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        color: white;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        min-width: 250px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .toast.success {
+        background-color: #28a745;
+      }
+      .toast.error {
+        background-color: #dc3545;
+      }
+      .toast.info {
+        background-color: #007bff;
+      }
+
+      /* Quiz specific styles */
+      .quiz-container {
+        background-color: #ffffff;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 2.5rem;
+        max-width: 800px;
+        margin: 0 auto;
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      .quiz-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #f3f4f6;
+      }
+
+      .question-card {
+        background-color: #f9fafb; /* Light gray background for question */
+        border-radius: 1rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .question-text {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1a202c;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      .options-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .option-button {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        background-color: #edf2f7; /* Light gray */
+        border: 2px solid #e2e8f0;
+        border-radius: 0.75rem;
+        text-align: left;
+        font-size: 1.1rem;
+        color: #2d3748;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out,
+          border-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+      }
+      .option-button:hover {
+        background-color: #e2e8f0;
+        border-color: #cbd5e0;
+        transform: translateY(-2px);
+      }
+      .option-button:active {
+        transform: translateY(0);
+      }
+      .option-button.selected {
+        background-color: #dbeafe; /* blue-100 */
+        border-color: #60a5fa; /* blue-400 */
+        color: #1e40af; /* blue-800 */
+        font-weight: 600;
+      }
+      .option-button.correct {
+        background-color: #d1fae5; /* green-100 */
+        border-color: #34d399; /* green-400 */
+        color: #065f46; /* green-800 */
+      }
+      .option-button.incorrect {
+        background-color: #fee2e2; /* red-100 */
+        border-color: #f87171; /* red-400 */
+        color: #991b1b; /* red-800 */
+      }
+      .option-button.disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      /* Input field for spelling/grammar */
+      .question-input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 0.75rem;
+        font-size: 1.1rem;
+        color: #2d3748;
+        background-color: #edf2f7;
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      }
+      .question-input:focus {
+        outline: none;
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+      }
+
+      .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+      }
+
+      .nav-button {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease-in-out,
+          transform 0.1s ease-in-out;
+        transform: translateZ(0);
+      }
+      .nav-button.primary {
+        background-color: #2563eb;
+        color: white;
+      }
+      .nav-button.primary:hover {
+        background-color: #1d4ed8;
+        transform: translateY(-2px);
+      }
+      .nav-button.primary:active {
+        transform: translateY(0);
+      }
+      .nav-button.secondary {
+        background-color: #e2e8f0;
+        color: #4a5568;
+      }
+      .nav-button.secondary:hover {
+        background-color: #cbd5e0;
+        transform: translateY(-2px);
+      }
+      .nav-button.secondary:active {
+        transform: translateY(0);
+      }
+      .nav-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* Result Modal Styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+      }
+      .modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+      .modal-content {
+        background-color: #ffffff;
+        border-radius: 1.5rem;
+        padding: 2.5rem;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        transform: translateY(-50px);
+        opacity: 0;
+        transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+      }
+      .modal-overlay.show .modal-content {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .modal-title {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 1rem;
+      }
+      .modal-score {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #2563eb;
+        margin-bottom: 1.5rem;
+      }
+      .modal-message {
+        font-size: 1.1rem;
+        color: #4a5568;
+        margin-bottom: 2rem;
+      }
+      .modal-button {
+        padding: 0.8rem 2rem;
+        background-color: #2563eb;
+        color: white;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease-in-out,
+          transform 0.1s ease-in-out;
+      }
+      .modal-button:hover {
+        background-color: #1d4ed8;
+        transform: translateY(-2px);
+      }
+      .modal-button:active {
+        transform: translateY(0);
+      }
+
+      /* Not signed in message */
+      .not-signed-in-message {
+        background-color: #fff;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 2.5rem;
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        color: #4a5568;
+      }
+      .not-signed-in-message h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 1rem;
+      }
+      .not-signed-in-message p {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+      }
+      .not-signed-in-message button {
+        @apply px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all font-semibold;
+      }
+
+      /* Message for no quiz data */
+      .no-quiz-data-message {
+        background-color: #fff;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 2.5rem;
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        color: #4a5568;
+      }
+      .no-quiz-data-message h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 1rem;
+      }
+      .no-quiz-data-message p {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+      }
+      .no-quiz-data-message button {
+        @apply px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all font-semibold;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="light">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+      <div class="loader-container">
+        <div class="loader-wave" id="loader-wave"></div>
+        <div class="loader-text">Loading...</div>
+      </div>
+    </div>
+
+    <div
+      id="app-root"
+      class="min-h-screen flex flex-col transition-colors duration-300"
+    >
+      <!-- Header / Navigation Bar -->
+      <header
+        id="app-header"
+        class="header-container py-3 px-4 md:py-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
+      >
+        <div class="flex items-center gap-4">
+          <h1 class="font-anton text-2xl md:text-3xl logo-text">Mahir</h1>
+          <nav class="hidden md:flex gap-6">
+            <a href="home.html" class="nav-link">Home</a>
+            <a href="free-resources.html" class="nav-link">Free Resources</a>
+            <a href="quizzes.html" class="nav-link">Quizzes</a>
+            <a href="services.html" class="nav-link">Services</a>
+            <a href="tips-tricks.html" class="nav-link">IELTS Tips & Tricks</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+          </nav>
+        </div>
+        <div
+          id="auth-buttons-container"
+          class="flex items-center gap-2 sm:gap-4"
+        >
+          <!-- Authentication status will be handled by auth-sign-in-interface.js -->
+          <div class="animate-pulse flex space-x-4">
+            <div class="rounded-full bg-gray-200 h-10 w-10"></div>
+            <div class="flex-1 space-y-6 py-1">
+              <div class="h-2 bg-gray-200 rounded"></div>
+              <div class="space-y-3">
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="h-2 bg-gray-200 rounded col-span-2"></div>
+                  <div class="h-2 bg-gray-200 rounded col-span-1"></div>
+                </div>
+                <div class="h-2 bg-gray-200 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main content area for Quiz Detail -->
+      <main
+        id="main-content"
+        class="flex-1 container mx-auto px-4 py-8 md:py-12 flex items-center justify-center"
+      >
+        <div id="quiz-content" class="w-full">
+          <!-- Content will be loaded dynamically based on auth status and quiz data -->
+          <div id="not-signed-in" class="not-signed-in-message hidden">
+            <h3>Please Sign In to Take Quizzes</h3>
+            <p>
+              You need to be signed in to access and play the quizzes. Click the
+              button below to sign in.
+            </p>
+            <button id="sign-in-to-play-button">Sign In Now</button>
+          </div>
+
+          <div id="no-quiz-found" class="no-quiz-data-message hidden">
+            <h3>Quiz Not Found or Empty</h3>
+            <p>
+              It seems like this quiz doesn't exist or has no questions yet.
+              Please check the URL or try another quiz.
+            </p>
+            <button onclick="window.location.href='quizzes.html'" class="mt-4">
+              Go to Quizzes Page
+            </button>
+          </div>
+
+          <div id="quiz-display" class="quiz-container hidden">
+            <div class="quiz-header">
+              <h2 id="quiz-title" class="text-3xl font-bold text-gray-900">
+                Quiz Title
+              </h2>
+              <div class="text-xl font-semibold text-blue-600">
+                <span id="current-question-number">1</span> /
+                <span id="total-questions">10</span>
+              </div>
+            </div>
+
+            <div id="question-area" class="question-card">
+              <p id="question-text" class="question-text">
+                Loading question...
+              </p>
+              <div id="input-container">
+                <!-- Input field for spelling/grammar will be loaded here -->
+              </div>
+              <div id="options-container" class="options-grid">
+                <!-- Options for multiple choice will be dynamically loaded here -->
+              </div>
+            </div>
+
+            <div class="navigation-buttons">
+              <button id="prev-button" class="nav-button secondary" disabled>
+                <i class="fas fa-arrow-left mr-2"></i> Previous
+              </button>
+              <button id="next-button" class="nav-button primary">
+                Next <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+              <button id="submit-button" class="nav-button primary hidden">
+                Submit Quiz <i class="fas fa-paper-plane ml-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Result Modal -->
+      <div id="result-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+          <h3 class="modal-title">Quiz Results</h3>
+          <p class="modal-score" id="final-score">-- / --</p>
+          <p class="modal-message" id="result-message"></p>
+          <button id="close-result-modal" class="modal-button">
+            Close
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer
+        class="bg-gray-800 text-white py-6 px-4 md:px-8 text-center rounded-t-xl mt-8"
+      >
+        <p>&copy; 2023 IELTS Mahir. All rights reserved.</p>
+      </footer>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Firebase Authentication and UI Logic -->
+    <script type="module" src="./auth.js"></script>
+    <script type="module" src="./auth-sign-in-interface.js"></script>
+    <script type="module">
+      // JavaScript for Quiz Detail Page
+      import {
+        db,
+        isAuthReady,
+        currentUserId,
+        authenticateUser,
+      } from "./auth.js";
+      import { showToast } from "./toast-notification.js";
+      import {
+        doc,
+        getDoc,
+        collection,
+        addDoc,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+      import { appId } from "./auth.js";
+
+      let quizData = null;
+      let currentQuestionIndex = 0;
+      // Stores user's selected answers: { questionIndex: selectedOptionIndex (for MC) or "text answer" (for input) }
+      let userAnswers = {};
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const quizId = urlParams.get("quizId");
+
+      const loadingOverlay = document.getElementById("loading-overlay");
+      const appRoot = document.getElementById("app-root");
+      const notSignedInMessage = document.getElementById("not-signed-in");
+      const signInToPlayButton = document.getElementById(
+        "sign-in-to-play-button"
+      );
+      const noQuizFoundMessage = document.getElementById("no-quiz-found"); // New element
+      const quizDisplay = document.getElementById("quiz-display");
+      const quizTitleElement = document.getElementById("quiz-title");
+      const currentQuestionNumberElement = document.getElementById(
+        "current-question-number"
+      );
+      const totalQuestionsElement = document.getElementById("total-questions");
+      const questionTextElement = document.getElementById("question-text");
+      const inputContainer = document.getElementById("input-container"); // New container for text inputs
+      const optionsContainer = document.getElementById("options-container");
+      const prevButton = document.getElementById("prev-button");
+      const nextButton = document.getElementById("next-button");
+      const submitButton = document.getElementById("submit-button");
+      const resultModalOverlay = document.getElementById(
+        "result-modal-overlay"
+      );
+      const finalScoreElement = document.getElementById("final-score");
+      const resultMessageElement = document.getElementById("result-message");
+      const closeResultModalButton = document.getElementById(
+        "close-result-modal"
+      );
+
+      // --- DEMO QUIZ DATA FOR DEVELOPMENT ---
+      const demoQuizData = {
+        title: "Demo IELTS Quiz",
+        description: "A sample quiz to demonstrate functionality.",
+        category: "demo",
+        questions: [
+          {
+            text: "Which word is a synonym for 'ubiquitous'?",
+            type: "multiple-choice",
+            options: ["Rare", "Common", "Scarce", "Obsolete"],
+            correctAnswerIndex: 1,
+          },
+          {
+            text: "Spell the word: 'definitely'.",
+            type: "spelling-input",
+            correctAnswer: "definitely",
+          },
+          {
+            text:
+              "Complete the sentence: 'He ____ (go) to the gym every morning.'",
+            type: "grammar-input",
+            correctAnswer: "goes",
+          },
+          {
+            text: "Which of these is a common colocation with 'make'?",
+            type: "multiple-choice",
+            options: [
+              "do a decision",
+              "make a decision",
+              "take a decision",
+              "give a decision",
+            ],
+            correctAnswerIndex: 1,
+          },
+          {
+            text: "Correct the error: 'I am agree with you.'",
+            type: "grammar-input",
+            correctAnswer: "I agree with you.",
+          },
+        ],
+      };
+      // --- END DEMO QUIZ DATA ---
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Hide loading overlay after a short delay to allow content to render
+        setTimeout(() => {
+          loadingOverlay.classList.add("hidden");
+          appRoot.style.display = "flex"; // Show the app content
+        }, 500); // Adjust delay as needed
+
+        // Handle sign-in button on the "not signed in" message
+        if (signInToPlayButton) {
+          signInToPlayButton.addEventListener("click", async () => {
+            await authenticateUser(); // Trigger anonymous sign-in
+            // The authReady listener will handle re-checking and loading quiz
+          });
+        }
+
+        // Listen for authReady event to decide whether to load quiz or show sign-in message
+        window.addEventListener("authReady", (event) => {
+          if (event.detail.userId) {
+            loadQuiz();
+          } else {
+            showNotSignedInMessage();
+          }
+        });
+
+        // If auth is already ready (e.g., page reloaded quickly), check immediately
+        if (isAuthReady) {
+          if (currentUserId) {
+            loadQuiz();
+          } else {
+            showNotSignedInMessage();
+          }
+        }
+      });
+
+      /**
+       * Shows the "Please Sign In" message and hides the quiz.
+       */
+      function showNotSignedInMessage() {
+        quizDisplay.classList.add("hidden");
+        noQuizFoundMessage.classList.add("hidden"); // Hide no quiz message too
+        notSignedInMessage.classList.remove("hidden");
+      }
+
+      /**
+       * Hides the "Please Sign In" message and shows the quiz.
+       */
+      function showQuizDisplay() {
+        notSignedInMessage.classList.add("hidden");
+        noQuizFoundMessage.classList.add("hidden"); // Hide no quiz message too
+        quizDisplay.classList.remove("hidden");
+      }
+
+      /**
+       * Shows the "No Quiz Found" message and hides the quiz/sign-in.
+       */
+      function showNoQuizFoundMessage() {
+        quizDisplay.classList.add("hidden");
+        notSignedInMessage.classList.add("hidden");
+        noQuizFoundMessage.classList.remove("hidden");
+      }
+
+      /**
+       * Fetches quiz data from Firebase and initializes the quiz.
+       */
+      async function loadQuiz() {
+        if (!quizId) {
+          showToast("No quiz ID provided. Loading demo quiz.", "info");
+          console.warn("No quizId found in URL parameters. Loading demo data.");
+          quizData = demoQuizData; // Use demo data if no quizId
+          initializeQuiz();
+          showQuizDisplay();
+          return;
+        }
+
+        if (quizId === "demo") {
+          // Allow explicit 'demo' quizId
+          showToast("Loading demo quiz...", "info");
+          quizData = demoQuizData;
+          initializeQuiz();
+          showQuizDisplay();
+          return;
+        }
+
+        showToast("Loading quiz from Firebase...", "info");
+        quizDisplay.classList.add("hidden"); // Hide quiz while loading
+
+        try {
+          const quizRef = doc(
+            db,
+            `artifacts/${appId}/public/data/quizzes`,
+            quizId
+          );
+          const quizSnap = await getDoc(quizRef);
+
+          if (quizSnap.exists()) {
+            quizData = quizSnap.data();
+            if (!quizData.questions || quizData.questions.length === 0) {
+              showToast(
+                "This quiz has no questions yet. Loading demo quiz.",
+                "info"
+              );
+              console.warn(
+                "Quiz data found but no questions. Loading demo data."
+              );
+              quizData = demoQuizData; // Fallback to demo if quiz exists but has no questions
+            }
+            console.log("Quiz loaded:", quizData);
+            initializeQuiz();
+            showQuizDisplay(); // Show quiz once loaded
+            showToast("Quiz loaded successfully!", "success");
+          } else {
+            showToast("Quiz not found. Loading demo quiz.", "error");
+            console.error("No such quiz document! Loading demo data.");
+            quizData = demoQuizData; // Fallback to demo if quiz not found
+            initializeQuiz();
+            showQuizDisplay();
+          }
+        } catch (error) {
+          console.error("Error loading quiz from Firebase:", error);
+          showToast(
+            "Failed to load quiz from Firebase. Loading demo quiz.",
+            "error"
+          );
+          quizData = demoQuizData; // Fallback to demo on any Firebase error
+          initializeQuiz();
+          showQuizDisplay();
+        }
+      }
+
+      /**
+       * Initializes quiz UI elements and displays the first question.
+       */
+      function initializeQuiz() {
+        quizTitleElement.textContent = quizData.title || "Untitled Quiz";
+        totalQuestionsElement.textContent = quizData.questions.length;
+        currentQuestionIndex = 0;
+        userAnswers = {}; // Reset answers for a new quiz
+        displayQuestion();
+        updateNavigationButtons();
+      }
+
+      /**
+       * Displays the current question and its options/input field based on type.
+       */
+      function displayQuestion() {
+        const question = quizData.questions[currentQuestionIndex];
+        if (!question) {
+          console.error("Question not found at index:", currentQuestionIndex);
+          return;
+        }
+
+        questionTextElement.textContent = `${currentQuestionIndex + 1}. ${
+          question.text
+        }`;
+        optionsContainer.innerHTML = ""; // Clear previous options
+        inputContainer.innerHTML = ""; // Clear previous input field
+
+        if (question.type === "multiple-choice") {
+          optionsContainer.classList.remove("hidden");
+          inputContainer.classList.add("hidden");
+
+          question.options.forEach((option, index) => {
+            const optionButton = document.createElement("button");
+            optionButton.classList.add(
+              "option-button",
+              "rounded-xl",
+              "transition-all"
+            );
+            optionButton.textContent = option;
+            optionButton.dataset.index = index; // Store option index
+
+            // If user has already answered this question, mark the selected option
+            if (userAnswers[currentQuestionIndex] === index) {
+              optionButton.classList.add("selected");
+            }
+
+            optionButton.addEventListener("click", () => selectOption(index));
+            optionsContainer.appendChild(optionButton);
+          });
+        } else if (
+          question.type === "spelling-input" ||
+          question.type === "grammar-input"
+        ) {
+          optionsContainer.classList.add("hidden");
+          inputContainer.classList.remove("hidden");
+
+          const inputField = document.createElement("input");
+          inputField.type = "text";
+          inputField.classList.add(
+            "question-input",
+            "rounded-xl",
+            "transition-all"
+          );
+          inputField.placeholder =
+            question.type === "spelling-input"
+              ? "Type the word here..."
+              : "Type your answer here...";
+
+          // If user has already answered, populate the input field
+          if (userAnswers[currentQuestionIndex] !== undefined) {
+            inputField.value = userAnswers[currentQuestionIndex];
+          }
+
+          // Store the input value when it changes
+          inputField.addEventListener("input", (event) => {
+            userAnswers[currentQuestionIndex] = event.target.value.trim();
+          });
+
+          inputContainer.appendChild(inputField);
+        } else {
+          // Fallback for unknown question types
+          questionTextElement.textContent = `Error: Unknown question type for question ${
+            currentQuestionIndex + 1
+          }.`;
+          optionsContainer.classList.add("hidden");
+          inputContainer.classList.add("hidden");
+          showToast("Unknown question type encountered!", "error");
+        }
+
+        currentQuestionNumberElement.textContent = currentQuestionIndex + 1;
+        updateNavigationButtons();
+      }
+
+      /**
+       * Handles option selection for multiple-choice questions.
+       * @param {number} selectedIndex - The index of the selected option.
+       */
+      function selectOption(selectedIndex) {
+        // Remove 'selected' class from all options first
+        Array.from(optionsContainer.children).forEach((button) => {
+          button.classList.remove("selected");
+        });
+
+        // Add 'selected' class to the clicked option
+        const selectedButton = optionsContainer.querySelector(
+          `[data-index="${selectedIndex}"]`
+        );
+        if (selectedButton) {
+          selectedButton.classList.add("selected");
+        }
+
+        userAnswers[currentQuestionIndex] = selectedIndex; // Store the answer
+        console.log(
+          `Question ${
+            currentQuestionIndex + 1
+          } answered: Option ${selectedIndex}`
+        );
+      }
+
+      /**
+       * Updates the state of navigation buttons (Previous, Next, Submit).
+       */
+      function updateNavigationButtons() {
+        prevButton.disabled = currentQuestionIndex === 0;
+        nextButton.disabled =
+          currentQuestionIndex === quizData.questions.length - 1;
+
+        if (currentQuestionIndex === quizData.questions.length - 1) {
+          nextButton.classList.add("hidden");
+          submitButton.classList.remove("hidden");
+        } else {
+          nextButton.classList.remove("hidden");
+          submitButton.classList.add("hidden");
+        }
+      }
+
+      // Event Listeners for Navigation
+      prevButton.addEventListener("click", () => {
+        if (currentQuestionIndex > 0) {
+          currentQuestionIndex--;
+          displayQuestion();
+        }
+      });
+
+      nextButton.addEventListener("click", () => {
+        if (currentQuestionIndex < quizData.questions.length - 1) {
+          currentQuestionIndex++;
+          displayQuestion();
+        }
+      });
+
+      submitButton.addEventListener("click", () => {
+        showToast("Submitting quiz...", "info");
+        calculateAndSubmitResults();
+      });
+
+      closeResultModalButton.addEventListener("click", () => {
+        resultModalOverlay.classList.remove("show");
+        window.location.href = "quizzes.html"; // Redirect back to main quizzes page
+      });
+
+      /**
+       * Calculates the quiz score and submits results to Firebase.
+       */
+      async function calculateAndSubmitResults() {
+        let correctAnswersCount = 0;
+        const quizResults = []; // To store detailed results for Firebase
+
+        quizData.questions.forEach((question, index) => {
+          const userAnswer = userAnswers[index]; // Can be index or string
+          let isCorrect = false;
+          let userAnswerValue = null;
+          let correctAnswerValue = null;
+
+          if (question.type === "multiple-choice") {
+            userAnswerValue =
+              userAnswer !== undefined && question.options[userAnswer]
+                ? question.options[userAnswer]
+                : null;
+            correctAnswerValue = question.options[question.correctAnswerIndex];
+            isCorrect =
+              userAnswer !== undefined &&
+              userAnswer === question.correctAnswerIndex;
+          } else if (
+            question.type === "spelling-input" ||
+            question.type === "grammar-input"
+          ) {
+            userAnswerValue = userAnswer || "";
+            // For spelling and grammar, assume correctAnswer is a string or array of strings
+            correctAnswerValue = question.correctAnswer;
+            if (typeof question.correctAnswer === "string") {
+              isCorrect =
+                userAnswerValue.toLowerCase() ===
+                question.correctAnswer.toLowerCase();
+            } else if (Array.isArray(question.correctAnswer)) {
+              // If multiple correct answers are possible (e.g., for grammar fill-in-the-blank)
+              isCorrect = question.correctAnswer.some(
+                (ans) => userAnswerValue.toLowerCase() === ans.toLowerCase()
+              );
+            }
+          }
+
+          quizResults.push({
+            questionIndex: index,
+            questionText: question.text,
+            userAnswer: userAnswerValue,
+            correctAnswer: correctAnswerValue,
+            isCorrect: isCorrect,
+            timestamp: new Date().toISOString(),
+            type: question.type,
+          });
+
+          if (isCorrect) {
+            correctAnswersCount++;
+          }
+        });
+
+        const totalQuestions = quizData.questions.length;
+        const scorePercentage =
+          totalQuestions > 0 ? (correctAnswersCount / totalQuestions) * 100 : 0;
+
+        finalScoreElement.textContent = `${correctAnswersCount} / ${totalQuestions}`;
+        resultMessageElement.textContent = `You scored ${scorePercentage.toFixed(
+          0
+        )}%!`;
+
+        // Store results in Firebase
+        try {
+          if (currentUserId) {
+            const userResultsCollectionRef = collection(
+              db,
+              `artifacts/${appId}/users/${currentUserId}/quizResults`
+            );
+            await addDoc(userResultsCollectionRef, {
+              quizId: quizId,
+              quizTitle: quizData.title,
+              score: correctAnswersCount,
+              totalQuestions: totalQuestions,
+              percentage: scorePercentage,
+              timestamp: new Date(),
+              results: quizResults, // Store detailed results
+            });
+            showToast("Quiz results saved!", "success");
+          } else {
+            showToast("Could not save results. Please sign in.", "error");
+          }
+        } catch (error) {
+          console.error("Error saving quiz results:", error);
+          showToast("Failed to save quiz results.", "error");
+        }
+
+        resultModalOverlay.classList.add("show");
+      }
+    </script>
+  </body>
+</html>

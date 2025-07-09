@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teacher Profile - IELTS Mahir Community</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter & Montserrat for professional typography -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      /* Base styles */
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6; /* Light gray background */
+        color: #374151; /* Dark gray text */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 960px; /* Slightly wider container */
+        margin: 0 auto;
+        padding: 1.5rem; /* Default padding for mobile (px-6 py-6) */
+      }
+      @media (min-width: 768px) {
+        .container {
+          padding: 2.5rem; /* md:px-10 md:py-10 */
+        }
+      }
+
+      /* Teacher Profile Card */
+      .teacher-profile-card {
+        background-color: white;
+        border-radius: 1.25rem; /* More rounded corners */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+      @media (min-width: 768px) {
+        .teacher-profile-card {
+          padding: 3rem; /* More padding on larger screens */
+        }
+      }
+
+      /* Profile Image */
+      .profile-image {
+        width: 180px; /* Larger image */
+        height: 180px;
+        object-fit: cover;
+        border-radius: 9999px; /* rounded-full */
+        border: 6px solid #ef4444; /* Red border */
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+        transition: transform 0.3s ease-in-out;
+      }
+      .profile-image:hover {
+        transform: scale(1.05); /* Slight scale on hover */
+      }
+
+      /* Back Button */
+      .btn-back {
+        background-color: #6b7280; /* gray-500 */
+        color: white;
+        padding: 0.75rem 1.25rem; /* py-3 px-5 */
+        border-radius: 0.5rem; /* rounded-lg */
+        font-weight: 600; /* font-semibold */
+        transition: background-color 0.2s ease-in-out,
+          transform 0.2s ease-in-out;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .btn-back:hover {
+        background-color: #4b5563; /* gray-600 */
+        transform: translateY(-2px);
+      }
+
+      /* Skeleton Loader Animation */
+      .skeleton-loader {
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #e0e0e0 50%,
+          #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+      }
+      @keyframes loading {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+
+      /* Teacher Info Text */
+      .teacher-name {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.75rem; /* Larger name */
+        line-height: 1.1;
+        color: #1f2937;
+      }
+      .teacher-expertise {
+        font-family: "Montserrat", sans-serif;
+        color: #ef4444; /* Red for expertise */
+        font-size: 1.35rem; /* Larger expertise */
+        font-weight: 600;
+        margin-top: 0.5rem;
+      }
+      .teacher-detail-item {
+        font-size: 1.1rem;
+        color: #4b5563;
+        margin-bottom: 0.5rem;
+      }
+      .teacher-detail-item strong {
+        color: #1f2937;
+        font-weight: 600;
+      }
+
+      /* Key Achievements Section */
+      #teacher-achievements-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1f2937;
+        font-size: 1.75rem; /* Larger heading */
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #e5e7eb; /* Stronger border */
+        margin-bottom: 1.5rem;
+      }
+      #teacher-achievements li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+        color: #4b5563;
+      }
+      #teacher-achievements li::before {
+        content: "\2713"; /* Checkmark icon */
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        color: #10b981; /* Green checkmark */
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      /* Social Links Section */
+      #teacher-social-links-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1f2937;
+        font-size: 1.75rem; /* Larger heading */
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #e5e7eb;
+        margin-bottom: 1.5rem;
+      }
+      .social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px; /* Larger icons */
+        height: 48px;
+        border-radius: 50%;
+        font-size: 1.5rem; /* Larger icon font */
+        color: white;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .social-icon:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+      .social-icon.linkedin {
+        background-color: #0a66c2;
+      }
+      .social-icon.facebook {
+        background-color: #1877f2;
+      }
+      .social-icon.twitter {
+        background-color: #1da1f2;
+      }
+      .social-icon.youtube {
+        background-color: #ff0000;
+      }
+
+      /* Contact Button */
+      .btn-primary {
+        background-color: #ef4444; /* red-500 */
+        color: white;
+        padding: 1rem 2rem; /* Larger padding for prominent button */
+        border-radius: 0.75rem; /* More rounded */
+        font-weight: 700; /* Bolder text */
+        transition: background-color 0.2s ease-in-out,
+          transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+      }
+      .btn-primary:hover {
+        background-color: #dc2626; /* red-600 */
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Custom styles for Summernote generated content (teacher-bio-content) */
+      .teacher-bio-content h1,
+      .teacher-bio-content h2,
+      .teacher-bio-content h3,
+      .teacher-bio-content h4,
+      .teacher-bio-content h5,
+      .teacher-bio-content h6 {
+        font-family: "Montserrat", sans-serif; /* Use Montserrat for bio headings */
+        font-weight: bold;
+        margin-top: 2em; /* More space above headings */
+        margin-bottom: 0.75em;
+        line-height: 1.2;
+        color: #1f2937; /* Darker gray for headings */
+      }
+      .teacher-bio-content h1 {
+        font-size: 2.5rem;
+      } /* Larger */
+      .teacher-bio-content h2 {
+        font-size: 2rem;
+      } /* Larger */
+      .teacher-bio-content h3 {
+        font-size: 1.75rem;
+      } /* Larger */
+      .teacher-bio-content h4 {
+        font-size: 1.5rem;
+      } /* Larger */
+      .teacher-bio-content h5 {
+        font-size: 1.25rem;
+      } /* Larger */
+      .teacher-bio-content h6 {
+        font-size: 1.125rem;
+      } /* Larger */
+
+      .teacher-bio-content p {
+        margin-bottom: 1.25em; /* More space below paragraphs */
+        line-height: 1.7; /* Increased line height for readability */
+        color: #4b5563; /* Medium gray for paragraphs */
+        font-size: 1.05rem; /* Slightly larger paragraph text */
+      }
+      .teacher-bio-content ul,
+      .teacher-bio-content ol {
+        list-style-position: outside; /* Bullets/numbers outside text */
+        margin-bottom: 1.5em;
+        padding-left: 2em; /* More indent for lists */
+      }
+      .teacher-bio-content ul {
+        list-style-type: disc;
+      }
+      .teacher-bio-content ol {
+        list-style-type: decimal;
+      }
+      .teacher-bio-content li {
+        margin-bottom: 0.75em;
+        color: #4b5563;
+        font-size: 1.05rem; /* Slightly larger list item text */
+      }
+      .teacher-bio-content a {
+        color: #2563eb; /* blue-600 */
+        text-decoration: underline;
+      }
+      .teacher-bio-content a:hover {
+        color: #1d4ed8; /* blue-700 */
+      }
+      .teacher-bio-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.75rem; /* More rounded image corners */
+        margin: 1.5em auto; /* More margin for images */
+        display: block;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15); /* Stronger image shadow */
+      }
+      .teacher-bio-content blockquote {
+        border-left: 5px solid #ef4444; /* Thicker red border */
+        padding-left: 1.5em;
+        margin: 1.5em 0;
+        font-style: italic;
+        color: #6b7280;
+        background-color: #fef2f2; /* Light red background for quotes */
+        border-radius: 0.5rem;
+      }
+      .teacher-bio-content pre {
+        background-color: #2d3748; /* Darker background for code blocks */
+        color: #e2e8f0;
+        padding: 1.5em;
+        border-radius: 0.75rem;
+        overflow-x: auto;
+        margin: 1.5em 0;
+        font-family: "monospace", monospace;
+      }
+      .teacher-bio-content code {
+        font-family: monospace;
+        background-color: #e2e8f0; /* Lighter background for inline code */
+        color: #c53030; /* Red for inline code */
+        padding: 0.2em 0.4em;
+        border-radius: 0.25rem;
+      }
+      .teacher-bio-content pre code {
+        background-color: transparent; /* Reset for code inside pre */
+        color: inherit;
+        padding: 0;
+      }
+
+      /* Message Box Styling */
+      .message-box {
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+      .message-box-content {
+        background-color: #ffffff;
+        padding: 2.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+      .message-box-content p {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+      .message-box-content button {
+        background-color: #ef4444;
+        color: white;
+        padding: 0.75rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+      }
+      .message-box-content button:hover {
+        background-color: #dc2626;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container py-8 md:py-12">
+      <button
+        onclick="window.location.href = 'our-teacher.html';"
+        class="btn-back flex items-center mb-8"
+      >
+        <i class="fas fa-arrow-left mr-2"></i> Back to Teachers
+      </button>
+
+      <div id="teacher-profile" class="teacher-profile-card">
+        <!-- Skeleton Loaders -->
+        <div
+          id="loading-skeleton"
+          class="flex flex-col items-center animate-pulse"
+        >
+          <div class="profile-image bg-gray-200 mb-6"></div>
+          <div class="h-10 w-3/4 bg-gray-200 rounded mb-4"></div>
+          <div class="h-8 w-1/2 bg-gray-200 rounded mb-6"></div>
+          <div class="w-full h-6 bg-gray-200 rounded mb-2"></div>
+          <div class="w-full h-6 bg-gray-200 rounded mb-2"></div>
+          <div class="w-3/4 h-6 bg-gray-200 rounded mb-6"></div>
+          <div class="w-full h-4 bg-gray-200 rounded mb-2"></div>
+          <div class="w-full h-4 bg-gray-200 rounded mb-2"></div>
+          <div class="w-3/4 h-4 bg-gray-200 rounded mb-6"></div>
+          <div class="w-full h-4 bg-gray-200 rounded mb-2"></div>
+          <div class="w-full h-4 bg-gray-200 rounded mb-2"></div>
+          <div class="w-3/4 h-4 bg-gray-200 rounded"></div>
+        </div>
+
+        <!-- Teacher Profile Content (hidden initially, shown after load) -->
+        <div id="teacher-content" class="hidden">
+          <div
+            class="flex flex-col md:flex-row items-center md:items-start gap-8"
+          >
+            <img
+              id="teacher-image"
+              src="https://placehold.co/180x180/9CA3AF/white?text=Teacher"
+              alt="Teacher Profile"
+              class="profile-image flex-shrink-0"
+              onerror="this.src='https://placehold.co/180x180/9CA3AF/white?text=Teacher'"
+            />
+            <div class="text-center md:text-left flex-grow">
+              <h1 id="teacher-name" class="teacher-name mb-2"></h1>
+              <p id="teacher-expertise" class="teacher-expertise mb-4"></p>
+              <p id="teacher-qualification" class="teacher-detail-item">
+                <strong>Qualification:</strong>
+              </p>
+              <p id="teacher-experience" class="teacher-detail-item mb-6">
+                <strong>Experience:</strong>
+              </p>
+
+              <div
+                id="teacher-bio"
+                class="teacher-bio-content text-gray-700 leading-relaxed text-lg"
+              >
+                <!-- Teacher biography will be rendered here (HTML content) -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Achievements Section -->
+          <div id="teacher-achievements-section" class="mt-8 hidden">
+            <h3 class="text-2xl font-bold mb-3">Key Achievements</h3>
+            <ul id="teacher-achievements" class="space-y-2">
+              <!-- Achievements will be dynamically added here -->
+            </ul>
+          </div>
+
+          <!-- Social Links Section -->
+          <div id="teacher-social-links-section" class="mt-8 hidden">
+            <h3 class="text-2xl font-bold mb-3">Connect with Me</h3>
+            <div
+              id="teacher-social-links"
+              class="flex gap-4 justify-center md:justify-start"
+            >
+              <!-- Social links will be dynamically added here -->
+            </div>
+          </div>
+
+          <!-- Contact Button -->
+          <button
+            id="contact-teacher-btn"
+            class="btn-primary w-full md:w-auto mt-8"
+          >
+            <i class="fas fa-envelope mr-2"></i> Contact Teacher
+          </button>
+        </div>
+
+        <!-- Not Found Message (hidden initially) -->
+        <div id="not-found" class="hidden text-center py-12">
+          <p class="text-gray-600 text-2xl font-semibold mb-4">
+            Teacher Not Found
+          </p>
+          <p class="text-gray-500 mb-6">
+            The teacher profile you are looking for does not exist or has been
+            removed.
+          </p>
+          <button
+            onclick="window.location.href = 'our-teacher.html';"
+            class="btn-back inline-flex items-center"
+          >
+            <i class="fas fa-arrow-left mr-2"></i> Go Back to All Teachers
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message Box (replaces alert) -->
+    <div
+      id="message-box"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-[1000] hidden"
+    >
+      <div
+        class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center message-box-content"
+      >
+        <p id="message-content" class="text-gray-800 text-lg mb-4"></p>
+        <button
+          id="close-message-box"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+      // Removed: getAuth, signInAnonymously, signInWithCustomToken imports
+
+      // Firebase configuration and initialization
+      const defaultAppId = "ielts-mahir-community-forum";
+      const defaultFirebaseConfig = {
+        apiKey: "AIzaSyAxsd0CnLsh7t7yFy3ZPp6saGD_YpLL1mY",
+        authDomain: "ielts-mahir-community-forum.firebaseapp.com",
+        projectId: "ielts-mahir-community-forum",
+        storageBucket: "ielts-mahir-community-forum.firebasestorage.app",
+        messagingSenderId: "1036043607546",
+        appId: "1:1036043607546:web:bd217e04cc0ec5f296d843",
+        measurementId: "G-YC4CG1WKD3",
+      };
+
+      const firebaseConfig =
+        typeof __firebase_config !== "undefined"
+          ? JSON.parse(__firebase_config)
+          : defaultFirebaseConfig;
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      // Removed: const auth = getAuth(app);
+      const appId = typeof __app_id !== "undefined" ? __app_id : defaultAppId;
+
+      // Removed: let isAuthReady = false; // Flag to indicate if auth is ready
+
+      // Define Mahir's special profile ID and default details
+      // IMPORTANT: Replace "mahir-ielts-head-institution" with the actual Firestore document ID for Mahir's profile.
+      const mahirProfileId = "mahir-ielts-head-institution";
+      const defaultMahirProfile = {
+        id: mahirProfileId,
+        name: "Mahir Ahmed",
+        expertise: "Head of Institution & Lead IELTS Trainer",
+        image: "https://placehold.co/180x180/2563eb/white?text=MA", // Placeholder for Mahir's image
+        qualification: "M.A. English Literature, Certified CELTA Trainer",
+        experience: "15+ Years of IELTS Teaching Experience",
+        bio: `
+          <p>Mahir Ahmed is the visionary founder and lead instructor at IELTS Mahir Community. With over 15 years of dedicated experience in English language teaching and IELTS preparation, Mahir has personally guided thousands of students to achieve their desired band scores and realize their dreams of studying or working abroad.</p>
+          <p>His teaching philosophy centers on a deep understanding of each student's unique learning style and challenges. Mahir is renowned for his ability to simplify complex concepts, provide actionable strategies, and inspire confidence in his students. He specializes in all four modules of the IELTS exam, with a particular focus on advanced writing and speaking techniques.</p>
+          <p>Beyond the classroom, Mahir is a passionate advocate for accessible education and continues to develop innovative teaching methodologies. His commitment to student success is unparalleled, making him a beloved mentor and a true expert in the field of IELTS training.</p>
+          <ul>
+            <li>Specializes in IELTS Academic & General Training</li>
+            <li>Expert in advanced grammar and vocabulary for IELTS</li>
+            <li>Proven track record of helping students achieve Band 7+</li>
+          </ul>
+          `,
+        achievements: [
+          "Helped over 5,000 students achieve their target IELTS scores.",
+          "Authored the best-selling e-book 'IELTS Mastery: A Comprehensive Guide'.",
+          "Awarded 'Best IELTS Trainer of the Year' for three consecutive years.",
+          "Developed a unique 'Rapid Band Score Improvement' methodology.",
+        ],
+        socialLinks: {
+          linkedin: "https://www.linkedin.com/in/mahirahmed",
+          facebook: "https://www.facebook.com/mahirielts",
+          twitter: "https://twitter.com/mahirielts",
+          youtube: "https://www.youtube.com/c/mahirielts",
+        },
+        contactEmail: "mahir.ahmed@ieltsmahir.com",
+      };
+
+      // Removed: authenticateFirebase function and its related isAuthReady flag.
+
+      // --- Message Box Utility (replaces alert) ---
+      const showMessage = (message) => {
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        messageContent.textContent = message;
+        messageBox.classList.remove("hidden");
+      };
+
+      // --- Fetch and Render Teacher Details ---
+      const fetchAndRenderTeacher = async () => {
+        // Removed: if (!isAuthReady) check
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const teacherId = urlParams.get("id");
+
+        const loadingSkeleton = document.getElementById("loading-skeleton");
+        const teacherContent = document.getElementById("teacher-content");
+        const notFoundMessage = document.getElementById("not-found");
+
+        // Show loading skeleton, hide content and not found message
+        loadingSkeleton.classList.remove("hidden");
+        teacherContent.classList.add("hidden");
+        notFoundMessage.classList.add("hidden");
+
+        let teacherToRender = null;
+
+        // If no ID is provided or if the ID matches Mahir's special ID, use defaultMahirProfile
+        if (!teacherId || teacherId === mahirProfileId) {
+          teacherToRender = defaultMahirProfile;
+          console.log("Rendering default Mahir profile.");
+        } else {
+          // Otherwise, try to fetch from Firestore
+          try {
+            const teacherDocRef = doc(
+              db,
+              "artifacts",
+              appId,
+              "public",
+              "data",
+              "teachers",
+              teacherId
+            );
+            const docSnap = await getDoc(teacherDocRef);
+
+            if (docSnap.exists()) {
+              teacherToRender = { id: docSnap.id, ...docSnap.data() };
+              console.log(
+                "Fetched teacher details from Firestore:",
+                teacherToRender
+              );
+            }
+          } catch (error) {
+            console.error(
+              "Error fetching teacher details from Firestore:",
+              error
+            );
+            showMessage(
+              `Failed to load teacher profile: ${error.message}. Please try again.`
+            );
+            loadingSkeleton.classList.add("hidden");
+            notFoundMessage.classList.remove("hidden");
+            return; // Exit if Firestore fetch fails
+          }
+        }
+
+        if (teacherToRender) {
+          document.getElementById("teacher-image").src =
+            teacherToRender.image ||
+            "https://placehold.co/180x180/9CA3AF/white?text=Teacher";
+          document.getElementById("teacher-name").textContent =
+            teacherToRender.name;
+          document.getElementById("teacher-expertise").textContent =
+            teacherToRender.expertise;
+          document.getElementById("teacher-qualification").innerHTML = `
+            <strong>Qualification:</strong> ${
+              teacherToRender.qualification || "N/A"
+            }
+          `;
+          document.getElementById("teacher-experience").innerHTML = `
+            <strong>Experience:</strong> ${teacherToRender.experience || "N/A"}
+          `;
+          document.getElementById("teacher-bio").innerHTML =
+            teacherToRender.bio || "<p>No biography available.</p>";
+
+          // Render Achievements
+          const achievementsSection = document.getElementById(
+            "teacher-achievements-section"
+          );
+          const achievementsList = document.getElementById(
+            "teacher-achievements"
+          );
+          if (
+            teacherToRender.achievements &&
+            teacherToRender.achievements.length > 0
+          ) {
+            achievementsSection.classList.remove("hidden");
+            achievementsList.innerHTML = teacherToRender.achievements
+              .map((item) => `<li>${item}</li>`)
+              .join("");
+          } else {
+            achievementsSection.classList.add("hidden");
+          }
+
+          // Render Social Links
+          const socialLinksSection = document.getElementById(
+            "teacher-social-links-section"
+          );
+          const socialLinksDiv = document.getElementById(
+            "teacher-social-links"
+          );
+          if (teacherToRender.socialLinks) {
+            let socialHtml = "";
+            if (teacherToRender.socialLinks.linkedin) {
+              socialHtml += `<a href="${teacherToRender.socialLinks.linkedin}" target="_blank" class="social-icon linkedin" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>`;
+            }
+            if (teacherToRender.socialLinks.facebook) {
+              socialHtml += `<a href="${teacherToRender.socialLinks.facebook}" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>`;
+            }
+            if (teacherToRender.socialLinks.twitter) {
+              socialHtml += `<a href="${teacherToRender.socialLinks.twitter}" target="_blank" class="social-icon twitter" title="X (Twitter)"><i class="fab fa-twitter"></i></a>`;
+            }
+            if (teacherToRender.socialLinks.youtube) {
+              socialHtml += `<a href="${teacherToRender.socialLinks.youtube}" target="_blank" class="social-icon youtube" title="YouTube"><i class="fab fa-youtube"></i></a>`;
+            }
+
+            if (socialHtml) {
+              socialLinksSection.classList.remove("hidden");
+              socialLinksDiv.innerHTML = socialHtml;
+            } else {
+              socialLinksSection.classList.add("hidden");
+            }
+          } else {
+            socialLinksSection.classList.add("hidden");
+          }
+
+          // Setup Contact Button
+          const contactBtn = document.getElementById("contact-teacher-btn");
+          if (contactBtn) {
+            if (teacherToRender.contactEmail) {
+              contactBtn.onclick = () => {
+                window.location.href = `mailto:${teacherToRender.contactEmail}`;
+              };
+              contactBtn.textContent = `Contact ${
+                teacherToRender.name.split(" ")[0]
+              }`;
+              contactBtn.classList.remove("hidden");
+            } else {
+              contactBtn.classList.add("hidden");
+            }
+          }
+
+          // Hide skeleton, show content
+          loadingSkeleton.classList.add("hidden");
+          teacherContent.classList.remove("hidden");
+        } else {
+          console.warn("Teacher not found for ID:", teacherId);
+          loadingSkeleton.classList.add("hidden");
+          notFoundMessage.classList.remove("hidden");
+        }
+      };
+
+      // --- Event Listeners ---
+      document.addEventListener("DOMContentLoaded", async () => {
+        // No authentication needed for public data, so we directly fetch and render
+        fetchAndRenderTeacher(); // Fetch and render teacher details on page load
+
+        // Close message box
+        document
+          .getElementById("close-message-box")
+          .addEventListener("click", () => {
+            document.getElementById("message-box").classList.add("hidden");
+          });
+      });
+    </script>
+  </body>
+</html>

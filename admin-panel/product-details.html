@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Invoice Ninja Clone</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/products.css" />
+    <link rel="stylesheet" href="css/product-details.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>Untitled Company</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+          <a href="customers.html"
+            ><i class="fas fa-user-friends"></i> Customers</a
+          >
+          <a href="products.html"><i class="fas fa-box"></i> Products</a>
+          <a href="invoices.html"
+            ><i class="fas fa-file-invoice"></i> Invoices</a
+          >
+          <a href="recurring.html"
+            ><i class="fas fa-sync-alt"></i> Recurring Invoices</a
+          >
+          <a href="sales-receipt.html"
+            ><i class="fas fa-receipt"></i> Sales Receipt</a
+          >
+          <a href="payments.html"
+            ><i class="fas fa-credit-card"></i> Payments</a
+          >
+          <a href="quotes.html"><i class="fas fa-quote-right"></i> Quotes</a>
+          <a href="expenses.html"><i class="fas fa-chart-pie"></i> Expenses</a>
+          <a href="reports.html"><i class="fas fa-chart-line"></i> Reports</a>
+          <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main">
+        <header class="topbar">
+          <input type="text" placeholder="Find invoices, clients, and more" />
+          <div class="top-actions">
+            <i class="fas fa-bell"></i>
+            <button class="btn-pro">Unlock Pro</button>
+          </div>
+        </header>
+
+        <section class="dashboard-content">
+          <!-- Product Details Page Content -->
+          <div class="product-details">
+            <div class="product-image-section">
+              <img
+                id="productImage"
+                src=""
+                alt="Product Image"
+                class="main-image"
+              />
+              <div class="thumbnail-row">
+                <img src="assets/thumb1.jpg" class="thumb" />
+                <img src="assets/thumb2.jpg" class="thumb" />
+                <img src="assets/thumb3.jpg" class="thumb" />
+              </div>
+            </div>
+
+            <div class="product-info-section">
+              <nav class="breadcrumb">
+                Dashboard / Products / <span id="productNameBreadcrumb"></span>
+              </nav>
+
+              <h1 id="productName" class="product-title">Product Name</h1>
+              <p class="product-category" id="productCategory">Category</p>
+
+              <div class="product-price-stock">
+                <p class="price" id="productPrice">Price</p>
+                <p class="stock" id="productStock">Stock:</p>
+              </div>
+
+              <p class="status" id="productStatus">Status</p>
+
+              <div class="description-section">
+                <h3>Description</h3>
+                <p id="productDescription">No description available.</p>
+              </div>
+
+              <button class="add-to-cart">Add to Cart</button>
+
+              <div class="info-cards">
+                <div class="info-card">
+                  <h4>Free Shipping</h4>
+                  <p>On orders over $80</p>
+                </div>
+                <div class="info-card">
+                  <h4>Warranty</h4>
+                  <p>Up to 1 Year</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/product-details.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

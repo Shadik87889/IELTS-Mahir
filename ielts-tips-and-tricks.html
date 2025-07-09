@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Success Hub - Tips & Resources for a High Score</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="ielts-tips-and-tricks.css" />
+    <!-- Google Fonts: Anton for headings, Montserrat for body text -->
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      /* Base Styles */
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: #eef2f6; /* A slightly cooler, very light gray for a modern feel */
+        color: #334155; /* Darker charcoal for body text, less harsh than black */
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+        scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+      }
+
+      .container {
+        max-width: 95%; /* Consistent container width */
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+
+      /* Hero Section (Updated based on user's provided structure and styles) */
+      .content-header {
+        background-color: #063956; /* User's specified background color */
+        height: 62vh; /* User's specified height */
+        width: 100%;
+        position: relative;
+        overflow: hidden; /* Important for containing absolute positioned images */
+        border-bottom-left-radius: 1rem; /* Retain previous aesthetic */
+        border-bottom-right-radius: 1rem;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); /* Retain previous aesthetic */
+        z-index: 1;
+      }
+
+      /* Inner container for text to ensure centering */
+      .content-header-inner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+        max-width: 900px; /* Max width for content within hero */
+        padding: 0 1.5rem;
+        box-sizing: border-box;
+      }
+
+      .content-header img {
+        width: 25vw; /* User's specified image width */
+        max-width: 250px; /* Cap image size on very large screens */
+        position: absolute;
+        bottom: 0;
+        z-index: 2; /* Ensure images are above the background but below text/button if needed */
+      }
+
+      .corner-one {
+        left: 0;
+      }
+
+      .corner-two {
+        right: 0;
+      }
+
+      /* Existing hero text and button styles adapted for the new structure */
+      .hero-title {
+        font-family: "Anton", sans-serif;
+        text-transform: uppercase;
+        font-size: 4rem; /* Large and impactful */
+        font-weight: 999;
+        letter-spacing: 0.1em;
+        margin-bottom: 1.5rem;
+        color: #fff; /* White text for visibility on dark background */
+        animation: fadeInDown 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        line-height: 1.1; /* Adjust line height for Anton */
+      }
+
+      .hero-subtitle {
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.4rem;
+        margin-bottom: 3.5rem;
+        color: #fff; /* White text */
+        animation: fadeInUp 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        opacity: 0.95;
+        line-height: 1.8rem;
+      }
+
+      .hero-button {
+        background-color: #10b981; /* A rich emerald green accent */
+        color: #fff;
+        padding: 1.4rem 4rem; /* Larger, prominent button */
+        border-radius: 9999px; /* Pill shape */
+        font-size: 1.4rem;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.4s ease, transform 0.4s ease,
+          box-shadow 0.4s ease;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        letter-spacing: 0.03em;
+        border: 2px solid rgba(255, 255, 255, 0.2); /* Subtle white border */
+        display: none;
+      }
+
+      .hero-button:hover {
+        background-color: #059669; /* Darker emerald on hover */
+        transform: translateY(-4px) scale(1.02); /* Noticeable lift and slight scale */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow on hover */
+      }
+
+      .hero-button i {
+        margin-left: 1rem;
+        font-size: 1.3rem;
+      }
+
+      /* Main Content Sections */
+      main {
+        padding-top: 5rem; /* Generous top padding for main content */
+        padding-bottom: 6rem; /* Generous bottom padding */
+      }
+
+      .section {
+        margin-bottom: 3rem; /* Increased margin between sections */
+        background-color: #fff; /* White background for each section */
+        border-radius: 1.5rem; /* More rounded sections */
+        padding: 3rem; /* Generous internal padding for sections */
+        /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); */
+        transition: box-shadow 0.3s ease;
+      }
+      .section:hover {
+        /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);  */
+      }
+
+      .section-title {
+        font-family: "Anton", sans-serif;
+        font-size: 3.2rem; /* Larger and more impactful */
+        font-weight: 400;
+        letter-spacing: 0.04em;
+        margin-bottom: 2.8rem; /* More space below title */
+        position: relative;
+        text-align: center;
+        color: #1f2937; /* Darker tone for titles */
+        text-transform: uppercase; /* Uppercase for a stronger look */
+      }
+
+      .section-title::after {
+        content: "";
+        display: block;
+        width: 100px; /* Wider, bolder underline */
+        height: 6px; /* Thicker underline */
+        background-color: #0d9488; /* Teal accent */
+        margin: 15px auto 0; /* Centered and more space */
+        border-radius: 4px;
+      }
+
+      .grid-layout {
+        display: grid;
+        gap: 2rem; /* Consistent gap between cards */
+      }
+
+      .tip-card {
+        background-color: #f9fafb; /* Off-white for card background */
+        border-radius: 1rem; /* Consistent rounded corners */
+        /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); */
+        padding: 2.2rem; /* Increased padding inside cards */
+        transition: transform 0.3s ease, box-shadow 0.3s ease,
+          background-color 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        border: 1px solid #e2e8f0; /* Subtle light gray border */
+      }
+
+      .tip-card:hover {
+        transform: translateY(-8px); /* More significant lift on hover */
+        /* box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15); */
+        background-color: #ffffff; /* White background on hover */
+      }
+
+      .tip-card-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.7rem; /* Larger, more readable title */
+        font-weight: 700; /* Bolder font weight */
+        margin-bottom: 1.2rem; /* More space below title */
+        color: #1f2937; /* Vibrant blue for card titles */
+        display: flex;
+        align-items: center;
+        line-height: 1.3;
+      }
+
+      .tip-card-title i {
+        margin-right: 1rem; /* More space for the icon */
+        color: #0d9488; /* Teal accent for icons */
+        font-size: 2rem; /* Larger, more prominent icons */
+      }
+
+      .tip-card p {
+        font-size: 1.08rem; /* Slightly larger text for readability */
+        color: #4a5568; /* A common mid-gray for good contrast */
+        line-height: 1.7; /* Improved line height */
+      }
+
+      /* Writing Section Accordion */
+      .accordion-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem; /* Slightly tighter gap for accordion items */
+      }
+
+      .accordion-item {
+        background-color: #fff;
+        border-radius: 1rem;
+        /* box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06); */
+        overflow: hidden;
+        border: 1px solid #dbeafe; /* Light blue border for accordions */
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+      }
+      .accordion-item:hover {
+        /* box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); */
+        border-color: #93c5fd; /* Light blue on hover */
+      }
+
+      .accordion-header {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 2rem; /* More horizontal padding */
+        background-color: #e0f2fe; /* Very light blue background for header */
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        transition: background-color 0.3s ease;
+        position: relative;
+        z-index: 2; /* Ensure header is on top of content when collapsed */
+      }
+
+      .accordion-header:hover {
+        background-color: #bfdbfe; /* Slightly darker on hover */
+      }
+
+      .accordion-header-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #1e40af; /* Darker blue for accordion titles */
+        display: flex;
+        align-items: center;
+      }
+
+      .accordion-header-title i {
+        margin-right: 1rem;
+        color: #0d9488; /* Teal accent for accordion icons */
+        font-size: 1.8rem;
+      }
+
+      .accordion-icon {
+        color: #2563eb; /* Blue for the chevron icon */
+        transition: transform 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .accordion-icon.rotate-180 {
+        transform: rotate(180deg);
+      }
+
+      .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.6s ease-out, padding 0.6s ease-out; /* Slower, smoother transition */
+        padding: 0 2rem; /* Initially zero padding, consistent with header */
+        background-color: #fefefe; /* Pure white for content background */
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+      }
+
+      .accordion-content.active {
+        max-height: 1000px; /* Sufficiently large value */
+        padding-bottom: 2rem; /* More padding at the bottom when active */
+        padding-top: 1.5rem; /* Padding at the top when active */
+      }
+
+      .accordion-content ul {
+        list-style-type: disc;
+        padding-left: 2rem; /* More indent */
+        line-height: 1.8;
+        color: #4a5568;
+      }
+
+      .accordion-content ul li {
+        margin-bottom: 0.6rem; /* More space between list items */
+      }
+
+      .accordion-content ul strong {
+        font-weight: 700;
+        color: #334155;
+      }
+
+      /* Resources Section specific styling */
+      .resource-card a {
+        color: #2563eb; /* Blue for links */
+        text-decoration: none;
+        transition: color 0.3s ease;
+        font-weight: 500;
+      }
+
+      .resource-card a:hover {
+        text-decoration: underline;
+        color: #1e40af; /* Darker blue on hover */
+      }
+      .resource-card ul {
+        list-style: none; /* Remove default list style */
+        padding: 0;
+        margin: 0;
+      }
+      .resource-card ul li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.8rem; /* Space between resource links */
+        padding-left: 0; /* Ensure no extra padding from parent UL */
+      }
+      .resource-card ul li::before {
+        content: "\f061"; /* Font Awesome arrow-right icon */
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        color: #0d9488; /* Teal accent color */
+        margin-right: 0.8rem;
+        font-size: 0.9em;
+      }
+
+      /* Animations */
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 767px) {
+        /* Mobile specific adjustments */
+        .container {
+          padding-left: 0.7rem;
+          padding-right: 0.7rem;
+        }
+        .content-header {
+          height: 55vh; /* Adjust height for smaller screens */
+          border-bottom-left-radius: 3vw;
+          border-bottom-right-radius: 3vw;
+        }
+        .hero-title {
+          font-size: 3rem;
+          letter-spacing: 0.06em;
+          margin-bottom: 1rem;
+        }
+        .hero-subtitle {
+          font-size: 1.3rem;
+          margin-bottom: 2.5rem;
+        }
+        .hero-button {
+          padding: 1.1rem 2.5rem;
+          font-size: 1.1rem;
+        }
+        .hero-button i {
+          margin-left: 0.8rem;
+          font-size: 1.1em;
+        }
+        .content-header img {
+          width: 30vw; /* Slightly larger images on mobile */
+        }
+        main {
+          padding-top: 3rem;
+          padding-bottom: 4rem;
+        }
+        .section {
+          margin-bottom: 2rem;
+          padding: 2rem 1rem;
+          border-radius: 1rem;
+        }
+        .section-title {
+          font-size: 2rem;
+          margin-bottom: 2rem;
+        }
+        .section-title::after {
+          width: 70px;
+          height: 4px;
+          margin-top: 10px;
+        }
+        .grid-layout {
+          grid-template-columns: 1fr; /* Single column on mobile */
+          gap: 1.5rem;
+        }
+        .tip-card {
+          padding: 1.5rem;
+          border-radius: 0.75rem;
+        }
+        .tip-card-title {
+          font-size: 1.4rem;
+          margin-bottom: 0.8rem;
+        }
+        .tip-card-title i {
+          font-size: 1.6rem;
+          margin-right: 0.6rem;
+        }
+        .tip-card p {
+          font-size: 0.95rem;
+        }
+        .accordion-header {
+          padding: 1rem 1.2rem;
+          border-radius: 0.75rem;
+        }
+        .accordion-header-title {
+          font-size: 1.3rem;
+        }
+        .accordion-header-title i {
+          font-size: 1.5rem;
+          margin-right: 0.6rem;
+        }
+        .accordion-content {
+          padding: 0 1.2rem;
+        }
+        .accordion-content.active {
+          padding-bottom: 1.2rem;
+          padding-top: 1rem;
+        }
+        .accordion-content ul {
+          padding-left: 1.5rem;
+        }
+        .accordion-content ul li {
+          margin-bottom: 0.4rem;
+        }
+        .resource-card ul li::before {
+          margin-right: 0.6rem;
+        }
+
+        .resource-card ul li {
+          background-color: #e7ecec;
+          min-height: 25vw;
+          padding: 0.4vw 2.5vw;
+          border-radius: 2vw;
+        }
+        .resource-card.three ul li {
+          min-height: 30vw;
+        }
+      }
+
+      @media (min-width: 768px) {
+        /* md breakpoint */
+        .grid-layout.md-cols-2 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .section-title {
+          font-size: 3.5rem;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        /* lg breakpoint */
+        .grid-layout.lg-cols-3 {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .section-title {
+          font-size: 4rem; /* Larger titles on large screens */
+        }
+      }
+
+      /* Custom scrollbar for aesthetics */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #e0e6ea; /* Lighter track */
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <nav>
+      <div class="logo">
+        <img
+          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+          alt="Ielts mahir logo"
+        />
+      </div>
+      <div class="hamburger-menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <div class="menu-item">
+        <a href="home.html">Home</a>
+        <div class="dropdown">
+          <a class="down-arrow" href="javascript:void(0)">
+            Free Resources <span class="arrow">&gt;</span>
+          </a>
+          <div class="submenu">
+            <a href="ielts-all.html" class="category-link">All</a>
+            <a href="ielts-speaking.html" class="category-link">Speaking</a>
+            <a href="ielts-writing.html" class="category-link">Writing</a>
+            <a href="ielts-reading.html" class="category-link">Reading</a>
+            <a href="ielts-listening.html" class="category-link">Listening</a>
+            <a href="ielts-grammar.html" class="category-link">Grammar</a>
+            <a href="ielts-study-plan.html" class="category-link">Study Plan</a>
+            <a href="higher-study.html" class="category-link">higher Study</a>
+            <a href="live-classes.html" class="category-link">Live Classes</a>
+            <a href="ielts-motivation.html" class="category-link"
+              >IELTS Motivation</a
+            >
+          </div>
+        </div>
+        <a href="quizzes.html">Quizzes</a>
+        <div class="dropdown">
+          <a class="down-arrow" href="javascript:void(0)">
+            Services <span class="arrow">&gt;</span>
+          </a>
+          <div class="submenu">
+            <a href="#">1:1 Coaching</a>
+            <a href="#">Essay Checking</a>
+            <a href="#">Speaking Practice</a>
+          </div>
+        </div>
+        <a href="tips-tricks.html">IELTS Tips and Tricks</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </nav>
+    <div class="content-header">
+      <div class="content-header-inner">
+        <h1 class="hero-title">Unlock Your IELTS Potential</h1>
+        <p class="hero-subtitle">
+          Master every section with expert tips, proven strategies, and
+          top-notch resources.
+        </p>
+        <a href="#general-tips" class="hero-button"
+          >Start Your Journey Now <i class="fas fa-arrow-right"></i
+        ></a>
+      </div>
+      <!-- Note: Replace these placeholder images with your actual assets -->
+      <img
+        class="corner-one"
+        src="assets/Header-Corner-1@3x-BIHIy4ju.png"
+        alt=""
+      />
+      <img
+        class="corner-two"
+        src="assets/Header-Corner-2@3x-BraQ-fkp.png"
+        alt=""
+      />
+    </div>
+
+    <main class="container">
+      <!-- Listening Section -->
+      <section id="listening" class="section">
+        <h2 class="section-title">IELTS Listening: Hear Your Way to Success</h2>
+        <div class="grid-layout md-cols-2 lg-cols-3">
+          <!-- Tip Card 1 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-headphones-alt"></i> Read Instructions Carefully
+            </h3>
+            <p>
+              Always pay close attention to the instructions, especially word
+              limits (e.g., "no more than three words and/or a number").
+              Misreading can lead to lost marks.
+            </p>
+          </div>
+          <!-- Tip Card 2 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-search-plus"></i> Predict the Answer
+            </h3>
+            <p>
+              Before the recording plays, use the pause time to read the
+              questions and predict the type of answer (e.g., a name, a number,
+              a date) or even the exact word.
+            </p>
+          </div>
+          <!-- Tip Card 3 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-volume-up"></i> Listen for Synonyms
+            </h3>
+            <p>
+              The audio often uses synonyms or paraphrases of words found in the
+              questions. Train your ear to recognize these variations.
+            </p>
+          </div>
+          <!-- Tip Card 4 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-globe-americas"></i> Expose Yourself to Accents
+            </h3>
+            <p>
+              Practice listening to a variety of English accents (British,
+              American, Australian, Canadian, etc.) to familiarize yourself with
+              different pronunciations and intonations.
+            </p>
+          </div>
+          <!-- Tip Card 5 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-pen-nib"></i> Master Spelling & Grammar
+            </h3>
+            <p>
+              Incorrect spelling or grammar in your answers will result in lost
+              marks. Practice writing down words accurately and proofread during
+              the transfer time.
+            </p>
+          </div>
+          <!-- Tip Card 6 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-clipboard-list"></i> Don't Stop Writing
+            </h3>
+            <p>
+              The recording plays only once. Practice multitasking: read
+              questions, listen for answers, and write notes simultaneously.
+              Don't wait to transfer answers until the end.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reading Section -->
+      <section id="reading" class="section">
+        <h2 class="section-title">
+          IELTS Reading: Navigate Texts with Confidence
+        </h2>
+        <div class="grid-layout md-cols-2 lg-cols-3">
+          <!-- Tip Card 1 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-question-circle"></i> Read Questions First
+            </h3>
+            <p>
+              Before reading the passage, scan the questions to identify
+              keywords and what information you need to find. This guides your
+              reading efficiently.
+            </p>
+          </div>
+          <!-- Tip Card 2 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-eye"></i> Skim for Gist, Scan for Detail
+            </h3>
+            <p>
+              Skim the passage quickly for the main idea of each paragraph.
+              Then, scan for specific keywords from the questions to locate
+              answers.
+            </p>
+          </div>
+          <!-- Tip Card 3 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-clock"></i> Master Time Management
+            </h3>
+            <p>
+              Allocate approximately 20 minutes per reading section. If a
+              question is too difficult, move on and come back later to avoid
+              wasting valuable time.
+            </p>
+          </div>
+          <!-- Tip Card 4 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-puzzle-piece"></i> Understand Question Types
+            </h3>
+            <p>
+              Familiarize yourself with common question types (e.g.,
+              True/False/Not Given, Matching Headings, Sentence Completion) and
+              their specific strategies.
+            </p>
+          </div>
+          <!-- Tip Card 5 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-brain"></i> Don't Understand Every Word
+            </h3>
+            <p>
+              It's okay not to know every word. Focus on understanding the main
+              idea and guessing the meaning of unfamiliar words from context.
+              Overthinking wastes time.
+            </p>
+          </div>
+          <!-- Tip Card 6 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-check-double"></i> Answer All Questions
+            </h3>
+            <p>
+              There are no negative marks for incorrect answers. Always make an
+              educated guess if you are unsure, rather than leaving a question
+              blank.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Writing Section -->
+      <section id="writing" class="section">
+        <h2 class="section-title">
+          IELTS Writing: Crafting Coherent & Compelling Essays
+        </h2>
+        <div class="accordion-wrapper">
+          <!-- Accordion 1 -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <h3 class="accordion-header-title">
+                <i class="fas fa-clipboard-check"></i> Plan Your Essay
+                Meticulously
+              </h3>
+              <i class="fas fa-chevron-down accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+              <ul>
+                <li>
+                  <strong>Time Management:</strong> Allocate ~20 mins for Task 1
+                  and ~40 mins for Task 2. Task 2 is worth twice as much.
+                </li>
+                <li>
+                  <strong>Read the Question Carefully:</strong> Identify all
+                  parts of the question. Highlight keywords and issues to ensure
+                  you address everything.
+                </li>
+                <li>
+                  <strong>Outline Your Response:</strong> Create a blueprint
+                  with an introduction, 2-3 body paragraphs (each with a topic
+                  sentence and supporting ideas), and a conclusion.
+                </li>
+                <li>
+                  <strong>Expand Ideas:</strong> Jot down key points and
+                  vocabulary for each paragraph.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- Accordion 2 -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <h3 class="accordion-header-title">
+                <i class="fas fa-link"></i> Ensure Cohesion & Coherence
+              </h3>
+              <i class="fas fa-chevron-down accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+              <ul>
+                <li>
+                  <strong>Linking Words:</strong> Use a range of appropriate
+                  linking words and phrases (e.g., "Furthermore," "However," "In
+                  addition") to connect your ideas smoothly. Avoid overusing
+                  them.
+                </li>
+                <li>
+                  <strong>Paragraph Structure:</strong> Each paragraph should
+                  focus on one main idea, introduced by a clear topic sentence.
+                </li>
+                <li>
+                  <strong>Flow:</strong> Ensure your ideas logically progress
+                  throughout the essay.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- Accordion 3 -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <h3 class="accordion-header-title">
+                <i class="fas fa-spell-check"></i> Lexical Resource & Grammar
+              </h3>
+              <i class="fas fa-chevron-down accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+              <ul>
+                <li>
+                  <strong>Vocabulary Range:</strong> Use a wide range of
+                  vocabulary, including synonyms, to avoid repetition. Don't use
+                  "big" words if you're unsure of their precise meaning or
+                  usage.
+                </li>
+                <li>
+                  <strong>Grammatical Range & Accuracy:</strong> Employ a mix of
+                  simple, compound, and complex sentence structures. Minimize
+                  grammatical errors.
+                </li>
+                <li>
+                  <strong>Punctuation:</strong> Perfect your punctuation to
+                  enhance clarity and fluency.
+                </li>
+                <li>
+                  <strong>Proofread:</strong> Always reserve time (at least 5
+                  minutes) to meticulously proofread your essay for spelling,
+                  grammar, and punctuation errors.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- Accordion 4 -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <h3 class="accordion-header-title">
+                <i class="fas fa-chart-pie"></i> Task-Specific Tips (Academic
+                vs. General)
+              </h3>
+              <i class="fas fa-chevron-down accordion-icon"></i>
+            </div>
+            <div class="accordion-content">
+              <ul>
+                <li>
+                  <strong>Academic Task 1:</strong> Analyze data (charts,
+                  graphs, maps, processes) carefully. Identify main trends,
+                  comparisons, and significant features. Present information
+                  formally.
+                </li>
+                <li>
+                  <strong>General Training Task 1:</strong> Read the letter
+                  prompt carefully to determine audience and purpose
+                  (formal/informal tone). Cover all three bullet points provided
+                  in the task.
+                </li>
+                <li>
+                  <strong>Task 2 (Both):</strong> Decide on the essay type
+                  (opinion, discussion, problem/solution). Plan supporting
+                  arguments and examples. Maintain a formal or semi-formal tone.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Speaking Section -->
+      <section id="speaking" class="section">
+        <h2 class="section-title">
+          IELTS Speaking: Communicate with Clarity & Confidence
+        </h2>
+        <div class="grid-layout md-cols-2 lg-cols-3">
+          <!-- Tip Card 1 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-microphone"></i> Be Conversational, Not Scripted
+            </h3>
+            <p>
+              Don't memorize answers; examiners can spot this. Focus on natural
+              communication, even if it means small hesitations. Share personal
+              experiences authentically.
+            </p>
+          </div>
+          <!-- Tip Card 2 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-comment-dots"></i> Extend Your Answers
+            </h3>
+            <p>
+              Avoid one-word "yes/no" answers. Elaborate on your points, provide
+              examples, and explain your reasoning. Show the examiner your
+              ability to speak at length.
+            </p>
+          </div>
+          <!-- Tip Card 3 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-sync-alt"></i> Correct Your Mistakes
+            </h3>
+            <p>
+              It's natural to make mistakes. If you notice an error, correct
+              yourself naturally. This demonstrates self-correction ability and
+              awareness of grammar.
+            </p>
+          </div>
+          <!-- Tip Card 4 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-hand-sparkles"></i> Use Thinking Phrases
+            </h3>
+            <p>
+              It's okay to pause and think. Use phrases like "That's an
+              interesting question," "Let me see," or "I've never thought about
+              that before..." to buy time.
+            </p>
+          </div>
+          <!-- Tip Card 5 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-smile"></i> Mind Your Pronunciation
+            </h3>
+            <p>
+              Focus on clear enunciation, intonation, and stress patterns. Don't
+              worry about your accent, but ensure your words are understandable.
+              Smiling can help!
+            </p>
+          </div>
+          <!-- Tip Card 6 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-language"></i> Immerse in English Daily
+            </h3>
+            <p>
+              Speak English daily. Engage in conversations, even short ones.
+              This builds fluency, confidence, and helps you internalize
+              grammatical structures.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- General Preparation Strategies -->
+      <section id="general-tips" class="section">
+        <h2 class="section-title">General IELTS Preparation Strategies</h2>
+        <div class="grid-layout md-cols-2 lg-cols-3">
+          <!-- Tip Card 1 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-calendar-alt"></i> Create a Study Schedule
+            </h3>
+            <p>
+              Discipline is key. Plan regular study sessions, even short ones
+              (10-15 minutes), to maintain consistency and cover all sections.
+            </p>
+          </div>
+          <!-- Tip Card 2 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-chart-line"></i> Take Practice Tests
+            </h3>
+            <p>
+              Regularly take full-length practice tests under timed conditions
+              to familiarize yourself with the format, identify weaknesses, and
+              improve pacing.
+            </p>
+          </div>
+          <!-- Tip Card 3 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-book-open"></i> Understand Marking Criteria
+            </h3>
+            <p>
+              Review the official band descriptors for each module to understand
+              what examiners are looking for. This helps you tailor your
+              preparation effectively.
+            </p>
+          </div>
+          <!-- Tip Card 4 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-users"></i> Join a Study Group
+            </h3>
+            <p>
+              Collaborate with other test-takers. Practice speaking, exchange
+              writing feedback, and quiz each other to stay motivated and learn
+              from peers.
+            </p>
+          </div>
+          <!-- Tip Card 5 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-volume-down"></i> Immerse Yourself in English
+            </h3>
+            <p>
+              Beyond specific IELTS practice, read English books/news, watch
+              English movies/TV shows, and listen to English podcasts or music.
+              Make English part of your daily life.
+            </p>
+          </div>
+          <!-- Tip Card 6 -->
+          <div class="tip-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-bullseye"></i> Set Realistic Goals
+            </h3>
+            <p>
+              Understand that improvement takes time. Set achievable band score
+              goals and track your progress to stay motivated and adjust your
+              strategy.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resources Section -->
+      <section id="resources" class="section">
+        <h2 class="section-title">Top IELTS Resources</h2>
+        <div class="grid-layout resources-grid">
+          <!-- Resource Card 1 -->
+          <div class="tip-card resource-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-external-link-alt"></i> Official IELTS Websites
+            </h3>
+            <ul>
+              <li>
+                <a href="https://www.ielts.org/" target="_blank">IELTS.org</a>
+                <span style="margin-left: 5vw;"></span>
+                (Official site, free practice materials)
+              </li>
+              <li>
+                <a
+                  href="https://www.britishcouncil.org/exams/ielts"
+                  target="_blank"
+                  >British Council IELTS</a
+                >
+                (Practice tests, preparation courses)
+              </li>
+              <li>
+                <a href="https://www.idpielts.com/" target="_blank"
+                  >IDP IELTS</a
+                >
+                <span style="margin-left: 7vw;"></span>
+                (Test information, preparation, booking)
+              </li>
+            </ul>
+          </div>
+          <!-- Resource Card 2 -->
+          <div class="tip-card resource-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-video"></i> Popular YouTube Channels
+            </h3>
+            <ul>
+              <li>
+                <a
+                  href="https://www.youtube.com/@IELTSEssentials"
+                  target="_blank"
+                  >IELTS Liz</a
+                ><span style="margin-left: 5vw;"></span>
+                (Comprehensive lessons and tips)
+              </li>
+              <li>
+                <a
+                  href="https://www.youtube.com/@ieltsadvantage"
+                  target="_blank"
+                  >IELTS Advantage</a
+                >
+                <span style="margin-left: 5vw;"></span>
+                (Strategies for higher bands)
+              </li>
+              <li>
+                <a href="https://www.youtube.com/@IELTSbyIDP" target="_blank"
+                  >IELTS by IDP</a
+                >
+                <span style="margin-left: 5vw;"></span>
+                (Official tips and practice)
+              </li>
+            </ul>
+          </div>
+          <!-- Resource Card 3 -->
+          <div class="tip-card resource-card three">
+            <h3 class="tip-card-title">
+              <i class="fas fa-book"></i> Recommended Study Materials
+            </h3>
+            <ul>
+              <li>
+                <strong>The Official Cambridge Guide to IELTS:</strong>
+                <span style="margin-left: 1vw;"></span> Highly recommended for
+                thorough prep.
+              </li>
+              <li>
+                <strong>Cambridge IELTS Series (1-18+):</strong>
+                <span style="margin-left: 1vw;"></span> Contains authentic past
+                papers for practice.
+              </li>
+              <li>
+                <strong>Road to IELTS (British Council):</strong
+                ><span style="margin-left: 1vw;"></span> Online course with
+                interactive activities and practice tests.
+              </li>
+            </ul>
+          </div>
+          <!-- Resource Card 4 -->
+          <div class="tip-card resource-card">
+            <h3 class="tip-card-title">
+              <i class="fas fa-podcast"></i> General English Immersion
+            </h3>
+            <ul>
+              <li>
+                <a href="https://www.bbc.com/news" target="_blank">BBC News</a>
+                /
+                <a href="https://www.economist.com/" target="_blank"
+                  >The Economist</a
+                >
+                (Reading for academic vocabulary)
+              </li>
+              <li>
+                <a href="https://www.npr.org/podcasts/" target="_blank"
+                  >NPR Podcasts</a
+                >
+                /
+                <a href="https://www.ted.com/talks" target="_blank"
+                  >TED Talks</a
+                >
+                (Listening to various topics and accents)
+              </li>
+              <li>
+                English language movies and TV series (with English subtitles
+                initially)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- IELTS Speaking Test Simulator END -->
+    <footer class="footer">
+      <div class="footer-top">
+        <div class="contact-banner">
+          <div class="contact-content">
+            <h2 class="anton">Achieve Your Desired IELTS Band</h2>
+            <p class="montserrat">
+              Certified mentors guiding you every step of the way
+            </p>
+            <div class="contact-buttons">
+              <button class="btn primary montserrat">
+                Explore IELTS Modules
+              </button>
+              <a href="#" class="btn link montserrat"
+                >Latest Success Stories →</a
+              >
+            </div>
+          </div>
+          <div class="contact-image">
+            <div class="bg-letter">
+              <span class="im-i">I</span>
+              <span class="im-m">M</span>
+            </div>
+            <img src="assets/LELTS-Mahir.png" alt="IELTS Student Image" />
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-column">
+          <h4 class="anton">Quick Access</h4>
+          <ul class="montserrat">
+            <li><a href="#">About IELTS Mahir</a></li>
+            <li><a href="#">Contact Support</a></li>
+            <li><a href="#">IELTS FAQs</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Privacy Guidelines</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4 class="anton">Learning Hub</h4>
+          <ul class="montserrat">
+            <li><a href="#">IELTS Blog</a></li>
+            <li><a href="#">Student Reviews</a></li>
+            <li><a href="#">Success Partners</a></li>
+            <li><a href="#">Live Support</a></li>
+            <li><a href="#">Help & Guidance</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4 class="anton">Free Resources</h4>
+          <ul class="montserrat">
+            <li><a href="#">Mock Tests</a></li>
+            <li><a href="#">IELTS Community</a></li>
+            <li><a href="#">Band Descriptors</a></li>
+            <li><a href="#">Weekly Tips</a></li>
+            <li><a href="#">Download Materials</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column subscribe">
+          <h4 class="anton">Get Weekly IELTS Tips</h4>
+          <p class="montserrat">
+            Subscribe and stay ahead with expert strategies
+          </p>
+          <div class="subscribe-form">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              class="montserrat"
+            />
+            <button class="montserrat">Subscribe</button>
+          </div>
+          <small class="montserrat"
+            >By subscribing, you agree to our
+            <a href="#">Privacy Policy</a></small
+          >
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="branding anton">IELTS MAHIR.</div>
+        <div class="footer-policy-links montserrat">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Cookies Notice</a>
+        </div>
+        <div class="footer-socials">
+          <a href="#"
+            ><img
+              src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png"
+              alt="Facebook"
+          /></a>
+          <a href="#"
+            ><img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png"
+              alt="Instagram"
+          /></a>
+          <a href="#"
+            ><img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png"
+              alt="LinkedIn"
+          /></a>
+          <a href="#"
+            ><img
+              src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png"
+              alt="YouTube"
+          /></a>
+        </div>
+        <p class="montserrat copyright">
+          © 2024 IELTS Mahir. All rights reserved.
+        </p>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="ielts-tips-and-tricks.js"></script>
+    <script src="dropdown-settings.js"></script>
+    <!-- <script src="app.js"></script> -->
+  </body>
+</html>

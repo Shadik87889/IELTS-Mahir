@@ -1,0 +1,3310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mastery Hub - Test In Progress</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style id="common-styles">
+      /* Common styles will be injected here by JavaScript */
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 py-12 px-4 sm:px-6 lg:px-8"
+  >
+    <!-- Header / Navigation Bar -->
+    <header
+      id="app-header"
+      class="py-3 px-4 md:py-4 md:px-8 flex items-center justify-between bg-white border-b border-gray-100 rounded-b-xl transition-colors duration-300 sticky top-0 z-50 shadow-lg"
+    >
+      <div class="flex items-center gap-4">
+        <h1 class="font-bold text-2xl md:text-3xl text-blue-600">
+          IELTS Mastery Hub
+        </h1>
+        <nav class="hidden md:flex gap-4">
+          <!-- Navigation links can be added here if needed -->
+        </nav>
+      </div>
+      <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
+        <!-- Authentication status will be handled by auth.js -->
+        <div class="animate-pulse flex space-x-4">
+          <div class="rounded-full bg-gray-200 h-10 w-10"></div>
+          <div class="flex-1 space-y-6 py-1">
+            <div class="h-2 bg-gray-200 rounded"></div>
+            <div class="space-y-3">
+              <div class="grid grid-cols-3 gap-4">
+                <div class="h-2 bg-gray-200 rounded col-span-2"></div>
+                <div class="h-2 bg-gray-200 rounded col-span-1"></div>
+              </div>
+              <div class="h-2 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="app">
+      <!-- Application content will be rendered here by JavaScript -->
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Modal Container (for blocking messages like submission status) -->
+    <div id="modal-container"></div>
+
+    <script type="module">
+      // Import authentication functions and state from the central auth.js file
+      import {
+        initFirebaseAuth,
+        authAppState,
+        signOutUser,
+        showToast,
+      } from "./auth.js";
+      // Import all test data and utility functions from mock-test-data.js
+      import {
+        allMockTests,
+        listeningQuestions,
+        readingPassages,
+        writingTasks,
+        speakingQuestions,
+        listeningAudioUrl,
+        formatTime,
+        calculateWordCount,
+        Icons,
+        commonStyles,
+      } from "./mock-test-data.js";
+
+      // Inject common styles from mock-test-data.js
+      document.getElementById("common-styles").innerHTML = commonStyles;
+
+      // --- Global State for Test Detail Page ---
+      let currentView = "module-selection"; // 'module-selection', 'module-test-selection', 'test-in-progress', 'my-progress'
+      let selectedModule = null; // 'listening', 'reading', etc.
+      let selectedTestTitle = null; // Title of the selected mock test
+      let showModal = false;
+      let modalContent = {};
+
+      // Firebase instances (will be populated by auth.js)
+      let db;
+      let auth;
+
+      // --- Utility Functions/Components ---
+
+      /**
+       * Updates the navigation bar and user ID display based on authentication status.
+       * @param {object|null} user - The Firebase User object or null if signed out.
+       */
+      function updateAuthUI(user) {
+        const authButtonsContainer = document.getElementById(
+          "auth-buttons-container"
+        );
+        if (authButtonsContainer) {
+          if (user) {
+            // User is signed in: Show profile dropdown
+            authButtonsContainer.innerHTML = `
+              <div class="relative">
+                <button id="profile-icon-btn" class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white text-xl font-bold shadow-md hover:bg-blue-600 transition-colors">
+                  ${(authAppState.userProfile?.name || user.email || user.uid)
+                    .charAt(0)
+                    .toUpperCase()}
+                </button>
+                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden">
+                  <div class="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">Hello, ${
+                    authAppState.userProfile?.name ||
+                    user.email ||
+                    user.uid.substring(0, 8)
+                  }</div>
+                  <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100">
+                    ${Icons.Dashboard} Dashboard
+                  </a>
+                  <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100">
+                    ${Icons.Forum} Forum
+                  </a>
+                  <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg">
+                    ${Icons.SignOut} Sign Out
+                  </button>
+                </div>
+              </div>
+            `;
+
+            const profileIconBtn = document.getElementById("profile-icon-btn");
+            const profileDropdown = document.getElementById("profile-dropdown");
+            const signOutDropdownBtn = document.getElementById(
+              "sign-out-dropdown-btn"
+            );
+
+            profileIconBtn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              profileDropdown.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", (event) => {
+              if (
+                !profileDropdown.contains(event.target) &&
+                !profileIconBtn.contains(event.target)
+              ) {
+                profileDropdown.classList.add("hidden");
+              }
+            });
+
+            signOutDropdownBtn.addEventListener("click", async () => {
+              await signOutUser();
+              // Redirect will happen via onAuthStateChanged in auth.js
+            });
+          } else {
+            // User is signed out: Show sign-in button
+            authButtonsContainer.innerHTML = `
+              <a href="auth.html" id="sign-in-nav-btn" class="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-xs sm:text-sm font-semibold transform active:scale-95">
+                ${Icons.SignIn} <span class="hidden sm:inline">Sign In</span>
+              </a>
+            `;
+          }
+        }
+      }
+
+      /**
+       * Renders the main application based on the currentView.
+       * This function acts as the central router for the application's main views.
+       */
+      function renderApp() {
+        const appDiv = document.getElementById("app");
+        if (!appDiv) return; // Ensure appDiv exists
+
+        appDiv.innerHTML = ""; // Clear previous content
+
+        // Render header (already in HTML, but we need to update user ID if present)
+        const headerHtml = `
+                <header class="text-center mb-16">
+                    <h1 class="text-6xl font-extrabold text-blue-900 drop-shadow-lg leading-tight">
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-700">
+                            IELTS Mastery Hub
+                        </span>
+                    </h1>
+                    <p class="text-2xl text-gray-700 mt-4 max-w-2xl mx-auto">
+                        Your ultimate destination for world-class IELTS preparation.
+                    </p>
+                    ${
+                      authAppState.isAuthReady && authAppState.userId
+                        ? `
+                    <p class="mt-6 text-lg text-gray-600 font-mono bg-white bg-opacity-70 backdrop-blur-sm inline-block px-4 py-2 rounded-xl shadow-md border border-gray-200">
+                        User ID: <span class="font-semibold text-gray-800">${authAppState.userId}</span>
+                    </p>
+                    `
+                        : ""
+                    }
+                </header>
+            `;
+        appDiv.insertAdjacentHTML("beforeend", headerHtml);
+
+        // Create a dedicated div for the main content to allow specific module rendering
+        let contentDiv = document.createElement("div");
+        contentDiv.className = "main-content-area"; // Add a class for easier selection
+        appDiv.appendChild(contentDiv);
+
+        // Render specific view based on current state
+        switch (currentView) {
+          case "module-selection":
+            renderModuleSelection(contentDiv);
+            break;
+          case "module-test-selection":
+            renderModuleTestSelection(contentDiv);
+            break;
+          case "test-in-progress":
+            renderTestInProgress(contentDiv);
+            break;
+          case "my-progress":
+            renderMyProgressDashboard(contentDiv);
+            break;
+        }
+
+        // Always render modal on top if showModal is true
+        renderModal();
+      }
+
+      /**
+       * Sets application state and triggers a re-render of the entire app.
+       * This is the primary way to change views and selected test data.
+       * Also handles resetting test specific states when a new test session begins.
+       * @param {string} view - The new view state ('module-selection', 'module-test-selection', etc.).
+       * @param {string} module - The selected module (optional, e.g., 'listening').
+       * @param {string} testTitle - The title of the selected mock test (optional).
+       */
+      function setAppState(view, module = null, testTitle = null) {
+        // Only reset test state if we are moving TO a test-in-progress view
+        // from a non-test-in-progress view, or if changing modules.
+        if (view === "test-in-progress" && currentView !== "test-in-progress") {
+          if (module === "listening") resetListeningTestState();
+          if (module === "reading") resetReadingTestState();
+          if (module === "writing") resetWritingTestState();
+          if (module === "speaking") resetSpeakingTestState();
+        } else if (
+          view === "module-test-selection" &&
+          currentView === "test-in-progress"
+        ) {
+          // If exiting a test, ensure timers are cleared
+          stopAllListeningTimers();
+          stopAllReadingTimers();
+          stopAllWritingTimers();
+          stopAllSpeakingTimers();
+        }
+
+        currentView = view;
+        if (module !== null) selectedModule = module;
+        if (testTitle !== null) selectedTestTitle = testTitle;
+        renderApp(); // Re-render the entire application
+      }
+
+      /**
+       * Displays a modal message.
+       * @param {string} title - Modal title.
+       * @param {string} message - Modal message.
+       */
+      function showMessageModal(title, message) {
+        modalContent = { title, message };
+        showModal = true;
+        renderModal(); // Re-render only the modal part
+      }
+
+      /**
+       * Hides the modal.
+       */
+      function hideMessageModal() {
+        showModal = false;
+        renderModal();
+      }
+
+      /**
+       * Renders the Modal component. This modal overlays the entire application.
+       */
+      function renderModal() {
+        let modalContainer = document.getElementById("modal-container");
+        if (!modalContainer) {
+          modalContainer = document.createElement("div");
+          modalContainer.id = "modal-container";
+          document.body.appendChild(modalContainer);
+        }
+
+        if (!showModal) {
+          modalContainer.innerHTML = "";
+          return;
+        }
+
+        modalContainer.innerHTML = `
+                <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50 animate-fade-in">
+                    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm transform scale-95 animate-zoom-in">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">${modalContent.title}</h3>
+                        <p class="text-gray-600 mb-8 leading-relaxed">${modalContent.message}</p>
+                        <button id="modal-close-button"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105"
+                        >
+                            Got It!
+                        </button>
+                    </div>
+                </div>
+            `;
+        document.getElementById(
+          "modal-close-button"
+        ).onclick = hideMessageModal;
+      }
+
+      /**
+       * Returns HTML for a loading spinner.
+       * @returns {string} HTML string.
+       */
+      function getLoadingSpinnerHtml() {
+        return `
+                <div class="flex justify-center items-center">
+                    <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
+                    <p class="ml-3 text-md text-gray-700">Processing...</p>
+                </div>
+            `;
+      }
+
+      // --- Module Selection Component (simplified for direct test access) ---
+      // This page is meant to directly load a test, so module selection is not the primary view here.
+      // However, keeping the function for consistency if navigation back to it is needed.
+      function renderModuleSelection(parentDiv) {
+        parentDiv.innerHTML = `
+            <div class="text-center text-gray-600 py-16">
+                <h2 class="text-3xl font-bold mb-4">Select a Module</h2>
+                <p>This page is designed to load a specific test. Please navigate from the main mock test selection page.</p>
+                <button onclick="window.location.href='mock-test.html'"
+                    class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105"
+                >
+                    Go to Module Selection
+                </button>
+            </div>
+        `;
+      }
+
+      // --- Module Specific Test Selection Component (simplified for direct test access) ---
+      // This page is meant to directly load a test, so test selection is not the primary view here.
+      function renderModuleTestSelection(parentDiv) {
+        parentDiv.innerHTML = `
+            <div class="text-center text-gray-600 py-16">
+                <h2 class="text-3xl font-bold mb-4">Test Selection</h2>
+                <p>This page is designed to load a specific test. Please navigate from the main mock test selection page.</p>
+                <button onclick="window.location.href='mock-test.html'"
+                    class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105"
+                >
+                    Go to Module Selection
+                </button>
+            </div>
+        `;
+      }
+
+      /**
+       * Handles navigation back to the module selection screen.
+       */
+      function handleBackToModules() {
+        window.location.href = `mock-test.html`; // Redirect to mock-test.html
+      }
+
+      // --- My Progress / Dashboard Component (Conceptual) ---
+      /**
+       * Renders the conceptual My Progress Dashboard.
+       * @param {HTMLElement} parentDiv - The div to render the dashboard into.
+       */
+      function renderMyProgressDashboard(parentDiv) {
+        const dashboardHtml = `
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 w-full max-w-5xl mx-auto my-8 animate-fade-in-up">
+                    <div class="flex items-center justify-between mb-12">
+                        <button id="back-from-progress-btn"
+                            class="flex items-center text-gray-600 hover:text-gray-800 transition duration-300 text-lg font-semibold bg-white px-5 py-2 rounded-xl shadow-md hover:shadow-lg transform hover:scale-105"
+                        >
+                            ${Icons.ChevronLeft.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="w-6 h-6 mr-2 text-gray-700"'
+                            )}
+                            Back to Modules
+                        </button>
+                        <h2 class="text-5xl font-extrabold text-purple-800 text-center tracking-tight flex-grow">
+                            My Progress Dashboard
+                        </h2>
+                        <div class="w-auto"></div>
+                    </div>
+
+                    <div class="text-center bg-purple-50 p-8 rounded-2xl border border-purple-200 shadow-inner">
+                        <p class="text-gray-700 text-xl mb-6 leading-relaxed">
+                            This is where your personalized progress and past test results would be displayed in a full system!
+                            Imagine interactive charts showing your band scores over time, breakdowns by skill,
+                            and AI-driven insights into your strengths and weaknesses.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                                <h3 class="text-xl font-bold text-gray-800 mb-3">Overall Score Trend</h3>
+                                <img src="https://placehold.co/400x150/f0f4f8/9ca3af?text=LINE+CHART" alt="Overall Score Chart" class="w-full rounded-md"/>
+                                <p class="text-sm text-gray-500 mt-2">Your band score progress over last 5 tests.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                                <h3 class="text-xl font-bold text-gray-800 mb-3">Skill Breakdown</h3>
+                                <img src="https://placehold.co/400x150/f0f4f8/9ca3af?text=RADAR+CHART" alt="Skill Breakdown Chart" class="w-full rounded-md"/>
+                                <p class="text-sm text-gray-500 mt-2">Performance across Listening, Reading, Writing, Speaking.</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-md mt-6">
+                            Future enhancements would include detailed reports, personalized study recommendations, and more!
+                        </p>
+                    </div>
+                </div>
+            `;
+        parentDiv.innerHTML = dashboardHtml;
+        document.getElementById(
+          "back-from-progress-btn"
+        ).onclick = handleBackToModules;
+      }
+
+      // --- Individual IELTS Module Components Logic ---
+
+      // Listening Test State & Functions
+      let listeningTestState = {
+        currentQuestion: 0,
+        answers: {}, // Stores user answers for current test session
+        timeRemaining: 30 * 60, // 30 minutes in seconds
+        isPlaying: false,
+        audioElement: null,
+        timerInterval: null,
+        audioUrl: listeningAudioUrl, // Use imported URL
+        questions: listeningQuestions, // Use imported questions
+        feedback: null, // New: To store listening feedback
+      };
+
+      /**
+       * Resets the listening test state. Called only when a new test is started.
+       */
+      function resetListeningTestState() {
+        stopAllListeningTimers(); // Clear any existing timers
+        if (listeningTestState.audioElement) {
+          listeningTestState.audioElement.pause();
+          listeningTestState.audioElement.removeEventListener(
+            "ended",
+            handleAudioEndedForListening
+          );
+          listeningTestState.audioElement = null; // Clear audio element
+        }
+        listeningTestState = {
+          currentQuestion: 0,
+          answers: {},
+          timeRemaining: 30 * 60,
+          isPlaying: false,
+          audioElement: null,
+          timerInterval: null,
+          audioUrl: listeningAudioUrl,
+          questions: listeningQuestions,
+          feedback: null, // Reset feedback
+        };
+      }
+
+      /**
+       * Stops all active timers for the listening test.
+       */
+      function stopAllListeningTimers() {
+        if (listeningTestState.timerInterval) {
+          clearInterval(listeningTestState.timerInterval);
+          listeningTestState.timerInterval = null;
+        }
+      }
+
+      /**
+       * Handles the 'ended' event for the audio element.
+       * Sets isPlaying to false and updates UI.
+       */
+      function handleAudioEndedForListening() {
+        listeningTestState.isPlaying = false;
+        updateListeningControls();
+        console.log("Audio playback ended.");
+      }
+
+      /**
+       * Starts the overall timer for the listening test.
+       */
+      function startListeningTimer() {
+        if (listeningTestState.timerInterval)
+          clearInterval(listeningTestState.timerInterval); // Clear any old timer
+        listeningTestState.timerInterval = setInterval(() => {
+          listeningTestState.timeRemaining--;
+          if (listeningTestState.timeRemaining <= 0) {
+            clearInterval(listeningTestState.timerInterval);
+            handleFinishListeningTest();
+          }
+          updateListeningTimerDisplay(); // Update UI every second
+        }, 1000);
+      }
+
+      /**
+       * Updates the time display on the UI.
+       */
+      function updateListeningTimerDisplay() {
+        const timerSpan = document.getElementById("listening-time-left");
+        if (timerSpan) {
+          timerSpan.textContent = formatTime(listeningTestState.timeRemaining);
+        }
+      }
+
+      /**
+       * Handles changes in input fields for listening questions, saving answers to state.
+       * @param {Event} e - The input change event.
+       */
+      function handleListeningInputChange(e) {
+        const { name, value, type, checked } = e.target;
+        const currentQ =
+          listeningTestState.questions[listeningTestState.currentQuestion];
+
+        if (type === "radio") {
+          if (checked) {
+            listeningTestState.answers[name] = value;
+          }
+        } else if (currentQ.type === "matching") {
+          // For matching questions, name is typically like "L5-A"
+          listeningTestState.answers[name] = value;
+        } else {
+          listeningTestState.answers[name] = value;
+        }
+        // No need to re-render the whole component, just updating state
+        // The value is read directly from state when constructing the input HTML.
+      }
+
+      /**
+       * Navigates to the next question in the listening test.
+       */
+      function handleNextListeningQuestion() {
+        if (
+          listeningTestState.currentQuestion <
+          listeningTestState.questions.length - 1
+        ) {
+          listeningTestState.currentQuestion++;
+          renderListeningQuestion(
+            document.querySelector(".test-question-area")
+          ); // Render only the question part
+        } else {
+          // If it's the last question and 'Next' is pressed, prompt for submission
+          showMessageModal(
+            "End of Listening Section",
+            "You have completed all questions in the Listening section. Please submit your answers."
+          );
+        }
+      }
+
+      /**
+       * Navigates to the previous question in the listening test.
+       */
+      function handlePreviousListeningQuestion() {
+        if (listeningTestState.currentQuestion > 0) {
+          listeningTestState.currentQuestion--;
+          renderListeningQuestion(
+            document.querySelector(".test-question-area")
+          ); // Render only the question part
+        }
+      }
+
+      /**
+       * Plays or pauses the listening audio.
+       */
+      function handlePlayPauseListeningAudio() {
+        if (!listeningTestState.audioElement) {
+          console.error("Audio element not initialized.");
+          showMessageModal(
+            "Audio Error",
+            "Audio is not ready. Please try again. Ensure you have interacted with the page first if autoplay is blocked."
+          );
+          return;
+        }
+
+        if (listeningTestState.isPlaying) {
+          listeningTestState.audioElement.pause();
+          console.log("Audio paused.");
+        } else {
+          listeningTestState.audioElement.play().catch((error) => {
+            console.error("Error playing audio:", error);
+            showMessageModal(
+              "Audio Playback Error",
+              "Could not play audio. Please ensure your browser allows autoplay (you might need to interact with the page first by clicking anywhere if audio doesn't start)."
+            );
+          });
+          console.log("Audio playing...");
+        }
+        listeningTestState.isPlaying = !listeningTestState.isPlaying;
+        updateListeningControls(); // Update the play/pause button UI
+      }
+
+      /**
+       * Updates the play/pause button and audio status text in the UI.
+       */
+      function updateListeningControls() {
+        const playPauseBtn = document.getElementById("play-pause-audio-btn");
+        if (playPauseBtn) {
+          playPauseBtn.innerHTML = `${Icons.Headphones.replace(
+            /width="24" height="24"/g,
+            'width="20" height="20" class="w-5 h-5 mr-2"'
+          )} ${listeningTestState.isPlaying ? "Pause Audio" : "Play Audio"}`;
+        }
+        const loadingSpinner = document.getElementById(
+          "listening-audio-spinner"
+        );
+        if (loadingSpinner) {
+          loadingSpinner.innerHTML =
+            !listeningTestState.audioElement ||
+            !listeningTestState.audioElement.canPlayType("audio/mpeg")
+              ? getLoadingSpinnerHtml()
+              : "";
+        }
+      }
+
+      /**
+       * Simulates grading for Listening test answers.
+       * @param {Object} userAnswers - Object containing user's answers.
+       * @param {Array} questions - Array of all listening questions.
+       * @returns {Object} Grading feedback.
+       */
+      function simulateListeningGrading(userAnswers, questions) {
+        let correctCount = 0;
+        let totalQuestions = questions.length;
+        let feedbackDetails = [];
+
+        questions.forEach((q) => {
+          let isCorrect = false;
+          let userAnswer = userAnswers[q.id] || "No Answer";
+          let correctAnswer = q.correctAnswer;
+
+          if (q.type === "matching") {
+            // For matching, answers are stored as q.id-ItemKey
+            let allMatchesCorrect = true;
+            const matchedPairs = {};
+            for (const item of q.items) {
+              const subQuestionId = `${q.id}-${item.key.split(".")[0]}`;
+              const userMatch = userAnswers[subQuestionId];
+              matchedPairs[item.key] = userMatch || "No Match";
+
+              if (
+                !userMatch ||
+                String(userMatch).toLowerCase().trim() !==
+                  String(q.correctMapping[item.key]).toLowerCase().trim()
+              ) {
+                allMatchesCorrect = false;
+                break;
+              }
+            }
+            userAnswer = matchedPairs;
+            correctAnswer = q.correctMapping;
+            isCorrect = allMatchesCorrect;
+          } else {
+            if (
+              userAnswer &&
+              String(userAnswer).toLowerCase().trim() ===
+                String(q.correctAnswer).toLowerCase().trim()
+            ) {
+              isCorrect = true;
+            }
+          }
+
+          if (isCorrect) {
+            correctCount++;
+          }
+
+          feedbackDetails.push({
+            questionText: q.questionText,
+            userAnswer: userAnswer,
+            correctAnswer: correctAnswer,
+            isCorrect: isCorrect,
+            type: q.type,
+          });
+        });
+
+        const accuracyPercentage =
+          totalQuestions > 0 ? (correctCount / totalQuestions) * 100 : 0;
+        let estimatedBand;
+
+        if (accuracyPercentage >= 90) estimatedBand = "Band 8.0 - 9.0";
+        else if (accuracyPercentage >= 80) estimatedBand = "Band 7.0 - 7.5";
+        else if (accuracyPercentage >= 70) estimatedBand = "Band 6.0 - 6.5";
+        else if (accuracyPercentage >= 60) estimatedBand = "Band 5.0 - 5.5";
+        else if (accuracyPercentage >= 50) estimatedBand = "Band 4.0 - 4.5";
+        else estimatedBand = "Below Band 4.0";
+
+        return {
+          correctCount,
+          totalQuestions,
+          accuracyPercentage,
+          estimatedBand,
+          overallPerformanceSummary: "Listening test auto-graded.",
+          strengths:
+            "Strengths and areas for improvement would be AI-generated in a full system.",
+          areasForImprovement:
+            "Focus on specific question types you struggled with.",
+          feedbackDetails,
+        };
+      }
+
+      /**
+       * Handles the completion and submission of the listening test.
+       */
+      async function handleFinishListeningTest() {
+        stopAllListeningTimers();
+        if (listeningTestState.audioElement) {
+          listeningTestState.audioElement.pause();
+        }
+
+        showMessageModal(
+          "Submitting Listening Answers",
+          "Your Listening answers are being processed and auto-graded."
+        );
+        await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate processing time
+
+        const feedback = simulateListeningGrading(
+          listeningTestState.answers,
+          listeningTestState.questions
+        );
+        listeningTestState.feedback = feedback;
+        hideMessageModal(); // Hide the submission modal
+
+        // Render feedback section instead of redirecting immediately
+        renderListeningFeedbackSection(
+          document.querySelector(".test-question-area").parentNode
+        ); // Render into the main test container
+      }
+
+      /**
+       * Renders the Listening Test UI.
+       * @param {HTMLElement} parentDiv - The div to render the test into.
+       */
+      function renderListeningTest(parentDiv) {
+        // Initial setup for the entire Listening Test container
+        const listeningTestContainerHtml = `
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 w-full max-w-4xl mx-auto my-8 animate-fade-in-up">
+                    <h2 class="text-4xl font-extrabold text-blue-800 mb-4 text-center tracking-tight">Listening Test</h2>
+                    <p class="text-xl text-gray-700 mb-8 text-center font-medium">${selectedTestTitle}</p>
+
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-100">
+                        <div class="text-lg font-semibold text-gray-700 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 102 0V6zm-3.707 5.707a1 1 0 001.414-1.414L9 8.586V7a1 1 0 10-2 0v2a1 1 0 00.293.707l3 3z" clip-rule="evenodd"></path></svg>
+                            Time Left: <span class="text-red-600 ml-1" id="listening-time-left">${formatTime(
+                              listeningTestState.timeRemaining
+                            )}</span>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <button id="play-pause-audio-btn"
+                                class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-2 px-5 rounded-full shadow-lg transition duration-300 flex items-center transform hover:scale-105"
+                                ${
+                                  !listeningTestState.audioElement ||
+                                  !listeningTestState.audioElement.canPlayType(
+                                    "audio/mpeg"
+                                  )
+                                    ? "disabled"
+                                    : ""
+                                }
+                            >
+                                ${Icons.Headphones.replace(
+                                  /width="24" height="24"/g,
+                                  'width="20" height="20" class="w-5 h-5 mr-2"'
+                                )}
+                                ${
+                                  listeningTestState.isPlaying
+                                    ? "Pause Audio"
+                                    : "Play Audio"
+                                }
+                            </button>
+                            <div id="listening-audio-spinner"></div>
+                        </div>
+                    </div>
+
+                    <div class="test-question-area">
+                        <!-- Current question will be rendered here dynamically -->
+                    </div>
+
+                    <div class="flex justify-between mt-10">
+                        <button id="previous-listening-btn"
+                            class="bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-xl hover:bg-gray-400 transition duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                        >
+                            ${Icons.ChevronLeft.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="inline-block mr-2"'
+                            )} Previous
+                        </button>
+                        <button id="next-or-submit-listening-btn"
+                            class="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105"
+                        ></button>
+                    </div>
+                </div>
+            `;
+        parentDiv.innerHTML = listeningTestContainerHtml;
+
+        // Initialize audio element only once per test session
+        if (!listeningTestState.audioElement) {
+          listeningTestState.audioElement = new Audio(
+            listeningTestState.audioUrl
+          );
+          listeningTestState.audioElement.preload = "auto";
+          listeningTestState.audioElement.addEventListener(
+            "ended",
+            handleAudioEndedForListening
+          );
+        }
+        startListeningTimer(); // Start the test timer
+
+        // Attach core event listeners to buttons
+        document.getElementById(
+          "play-pause-audio-btn"
+        ).onclick = handlePlayPauseListeningAudio;
+        document.getElementById(
+          "previous-listening-btn"
+        ).onclick = handlePreviousListeningQuestion;
+
+        // Initial render of the first question and update controls
+        renderListeningQuestion(document.querySelector(".test-question-area"));
+        updateListeningControls();
+      }
+
+      /**
+       * Renders only the current listening question section, updating input values.
+       * @param {HTMLElement} questionAreaDiv - The div specifically for questions.
+       */
+      function renderListeningQuestion(questionAreaDiv) {
+        const currentQ =
+          listeningTestState.questions[listeningTestState.currentQuestion];
+
+        let questionInputHtml = "";
+        if (currentQ.type === "multiple-choice") {
+          questionInputHtml = `
+                    <div class="space-y-4">
+                        ${currentQ.options
+                          .map(
+                            (option) => `
+                            <label class="flex items-center text-gray-700 cursor-pointer bg-white p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition duration-200 shadow-sm">
+                                <input
+                                    type="radio"
+                                    name="${currentQ.id}"
+                                    value="${option.charAt(0)}"
+                                    ${
+                                      listeningTestState.answers[
+                                        currentQ.id
+                                      ] === option.charAt(0)
+                                        ? "checked"
+                                        : ""
+                                    }
+                                    class="form-radio h-5 w-5 text-blue-600 rounded-full border-gray-300 focus:ring-blue-500 cursor-pointer"
+                                />
+                                <span class="ml-4 text-lg">${option}</span>
+                            </label>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                `;
+        } else if (currentQ.type === "fill-in-the-blank") {
+          questionInputHtml = `
+                    <input
+                        type="text"
+                        name="${currentQ.id}"
+                        value="${listeningTestState.answers[currentQ.id] || ""}"
+                        placeholder="Type your answer here..."
+                        class="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-blue-400 transition duration-300 text-gray-800 text-lg shadow-sm"
+                    />
+                `;
+        } else if (currentQ.type === "matching") {
+          questionInputHtml = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="font-bold text-gray-700 mb-3 text-lg">Items:</p>
+                            <ul class="space-y-2">
+                                ${currentQ.items
+                                  .map(
+                                    (item) => `
+                                    <li class="text-gray-700 bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
+                                        ${item.key}
+                                    </li>
+                                `
+                                  )
+                                  .join("")}
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-700 mb-3 text-lg">Match Options:</p>
+                            ${currentQ.items
+                              .map(
+                                (item) => `
+                                <div class="flex items-center mb-3">
+                                    <span class="mr-3 text-gray-700 font-medium">${
+                                      item.key.split(".")[0]
+                                    }:</span>
+                                    <select
+                                        name="${currentQ.id}-${
+                                  item.key.split(".")[0]
+                                }"
+                                        class="flex-grow p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-blue-400 transition duration-300 text-gray-800 shadow-sm"
+                                    >
+                                        <option value="">Select an option</option>
+                                        ${currentQ.options
+                                          .map(
+                                            (opt) => `
+                                            <option value="${opt.charAt(0)}" ${
+                                              listeningTestState.answers[
+                                                `${currentQ.id}-${
+                                                  item.key.split(".")[0]
+                                                }`
+                                              ] === opt.charAt(0)
+                                                ? "selected"
+                                                : ""
+                                            }>${opt}</option>
+                                        `
+                                          )
+                                          .join("")}
+                                    </select>
+                                </div>
+                            `
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+                `;
+        } else if (currentQ.type === "short-answer") {
+          questionInputHtml = `
+                    <textarea
+                        name="${currentQ.id}"
+                        placeholder="Write your short answer here (max 3 words usually)..."
+                        rows="3"
+                        class="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-blue-400 transition duration-300 text-gray-800 text-lg shadow-sm resize-y"
+                    >${listeningTestState.answers[currentQ.id] || ""}</textarea>
+                `;
+        }
+
+        questionAreaDiv.innerHTML = `
+                <div class="mb-8 bg-blue-50 p-5 rounded-xl border border-blue-200 shadow-inner animate-fade-in">
+                    <p class="text-blue-800 text-lg font-semibold leading-relaxed">
+                        <span class="font-bold text-blue-900 mr-2">Audio Prompt:</span> ${currentQ.audioPrompt}
+                    </p>
+                </div>
+
+                <div class="mb-10 p-6 bg-gray-50 rounded-xl border border-gray-100 shadow-inner animate-fade-in">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-5">${currentQ.questionText}</h3>
+                    ${questionInputHtml}
+                </div>
+            `;
+
+        // Update Previous/Next/Submit button states
+        const prevBtn = document.getElementById("previous-listening-btn");
+        if (prevBtn) {
+          prevBtn.disabled = listeningTestState.currentQuestion === 0;
+          prevBtn.classList.toggle(
+            "opacity-50",
+            listeningTestState.currentQuestion === 0
+          );
+          prevBtn.classList.toggle(
+            "cursor-not-allowed",
+            listeningTestState.currentQuestion === 0
+          );
+        }
+
+        const nextOrSubmitBtn = document.getElementById(
+          "next-or-submit-listening-btn"
+        );
+        if (nextOrSubmitBtn) {
+          if (
+            listeningTestState.currentQuestion <
+            listeningTestState.questions.length - 1
+          ) {
+            nextOrSubmitBtn.innerHTML = `Next Question &rarr;`;
+            nextOrSubmitBtn.className =
+              "bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105";
+            nextOrSubmitBtn.onclick = handleNextListeningQuestion;
+          } else {
+            nextOrSubmitBtn.innerHTML = `Submit Listening`;
+            nextOrSubmitBtn.className =
+              "bg-gradient-to-r from-purple-600 to-pink-700 hover:from-purple-700 hover:to-pink-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105";
+            nextOrSubmitBtn.onclick = handleFinishListeningTest;
+          }
+        }
+
+        // Re-attach input change listeners after content is updated
+        const inputs = questionAreaDiv.querySelectorAll(
+          'input[name^="L"], textarea[name^="L"], select[name^="L"]'
+        );
+        inputs.forEach((input) => {
+          input.onchange = handleListeningInputChange;
+          if (input.tagName === "TEXTAREA" || input.type === "text") {
+            input.oninput = handleListeningInputChange; // For immediate updates on text fields
+          }
+        });
+      }
+
+      /**
+       * Renders the AI Listening Feedback section.
+       * @param {HTMLElement} parentDiv - The div to render feedback into.
+       */
+      function renderListeningFeedbackSection(parentDiv) {
+        if (!listeningTestState.feedback) {
+          parentDiv.innerHTML = ""; // Clear if no feedback
+          return;
+        }
+
+        // Clear the main test content area before rendering feedback
+        const mainTestContainer = parentDiv.closest(".bg-white"); // Find the main container
+        if (mainTestContainer) {
+          mainTestContainer.innerHTML = ""; // Clear everything inside the main container
+        }
+
+        let individualFeedbacksHtml = listeningTestState.feedback.feedbackDetails
+          .map((detail, idx) => {
+            let correctAnswerDisplay = "";
+            let userAnswerDisplay = "";
+
+            if (
+              typeof detail.correctAnswer === "object" &&
+              detail.correctAnswer !== null
+            ) {
+              correctAnswerDisplay = Object.entries(detail.correctAnswer)
+                .map(([key, value]) => `${key}: ${value || "N/A"}`) // Added || 'N/A'
+                .join(", ");
+            } else {
+              correctAnswerDisplay = detail.correctAnswer || "N/A"; // Added || 'N/A'
+            }
+
+            if (
+              typeof detail.userAnswer === "object" &&
+              detail.userAnswer !== null
+            ) {
+              userAnswerDisplay = Object.entries(detail.userAnswer)
+                .map(([key, value]) => `${key}: ${value || "No Answer"}`) // Added || 'No Answer'
+                .join(", ");
+            } else {
+              userAnswerDisplay = detail.userAnswer || "No Answer"; // Added || 'No Answer'
+            }
+
+            return `
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm animate-fade-in">
+                        <p class="text-lg font-semibold text-gray-800 mb-2">Question ${
+                          idx + 1
+                        }: ${detail.questionText}</p>
+                        <p class="text-gray-700">Your Answer: <span class="font-medium ${
+                          detail.isCorrect ? "text-green-600" : "text-red-600"
+                        }">${userAnswerDisplay}</span></p>
+                        <p class="text-gray-700">Correct Answer: <span class="font-medium text-green-600">${correctAnswerDisplay}</span></p>
+                        <p class="font-bold mt-2 ${
+                          detail.isCorrect ? "text-green-700" : "text-red-700"
+                        }">Status: ${
+              detail.isCorrect ? "Correct" : "Incorrect"
+            }</p>
+                    </div>
+                `;
+          })
+          .join("");
+
+        const listeningFeedbackHtml = `
+                <div class="mt-8 bg-green-50 p-8 rounded-3xl shadow-xl border border-green-200 animate-fade-in">
+                    <h3 class="text-3xl font-extrabold text-green-800 mb-6 text-center tracking-tight">Listening Feedback</h3>
+                    <p class="text-center text-2xl font-bold text-green-700 mb-4">Your Score: <span class="bg-green-200 px-4 py-2 rounded-lg">${
+                      listeningTestState.feedback.correctCount
+                    } / ${
+          listeningTestState.feedback.totalQuestions
+        }</span> (Accuracy: ${listeningTestState.feedback.accuracyPercentage.toFixed(
+          2
+        )}%)</p>
+                    <p class="text-center text-2xl font-bold text-green-700 mb-8">Estimated Overall Band: <span class="bg-green-200 px-4 py-2 rounded-lg">${
+                      listeningTestState.feedback.estimatedBand
+                    }</span></p>
+
+                    <div class="mb-8 p-6 bg-white rounded-2xl shadow-md border border-gray-100">
+                        <h4 class="text-xl font-bold text-gray-800 mb-3 flex items-center">${Icons.FileText.replace(
+                          /width="24" height="24"/g,
+                          'width="20" height="20" class="w-5 h-5 mr-2 text-blue-500"'
+                        )} Overall Performance Summary:</h4>
+                        <p class="text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">${
+                          listeningTestState.feedback.overallPerformanceSummary
+                        }</p>
+                    </div>
+
+                    <div class="mb-8 p-6 bg-white rounded-2xl shadow-md border border-gray-100">
+                        <h4 class="text-xl font-bold text-gray-800 mb-3 flex items-center">${Icons.Activity.replace(
+                          /width="24" height="24"/g,
+                          'width="20" height="20" class="w-5 h-5 mr-2 text-blue-500"'
+                        )} Strengths (Conceptual):</h4>
+                        <p class="text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">${
+                          listeningTestState.feedback.strengths
+                        }</p>
+                    </div>
+
+                    <div class="p-6 bg-white rounded-2xl shadow-md border border-gray-100">
+                        <h4 class="text-xl font-bold text-gray-800 mb-3 flex items-center">${Icons.Lightbulb.replace(
+                          /width="24" height="24"/g,
+                          'width="20" height="20" class="w-5 h-5 mr-2 text-blue-500"'
+                        )} Areas for Improvement (Conceptual):</h4>
+                        <p class="text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">${
+                          listeningTestState.feedback.areasForImprovement
+                        }</p>
+                    </div>
+
+                    <div class="mt-10 p-6 bg-yellow-50 rounded-2xl border border-yellow-200 shadow-inner">
+                        <h4 class="text-xl font-bold text-yellow-800 mb-4">Detailed Question-by-Question Review:</h4>
+                        <div class="space-y-4">
+                            ${individualFeedbacksHtml}
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center mt-10">
+                        <button id="listening-feedback-back-to-modules-btn"
+                            class="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105"
+                        >
+                            Back to Module Tests
+                        </button>
+                    </div>
+                </div>
+            `;
+        mainTestContainer.innerHTML = listeningFeedbackHtml; // Render into the existing bg-white container
+      }
+
+      // Reading Test State & Functions
+      let readingTestState = {
+        currentPassage: 0,
+        answers: {}, // Stores user answers for current test session
+        timeRemaining: 60 * 60, // 60 minutes in seconds
+        timerInterval: null,
+        isLoadingFeedback: false,
+        readingFeedback: null,
+        passages: readingPassages, // Use imported passages
+      };
+
+      /**
+       * Resets the reading test state. Called only when a new test is started.
+       */
+      function resetReadingTestState() {
+        stopAllReadingTimers(); // Clear any existing timers
+        readingTestState = {
+          currentPassage: 0,
+          answers: {},
+          timeRemaining: 60 * 60,
+          timerInterval: null,
+          isLoadingFeedback: false,
+          readingFeedback: null,
+          passages: readingPassages,
+        };
+      }
+
+      /**
+       * Stops all active timers for the reading test.
+       */
+      function stopAllReadingTimers() {
+        if (readingTestState.timerInterval) {
+          clearInterval(readingTestState.timerInterval);
+          readingTestState.timerInterval = null;
+        }
+      }
+
+      /**
+       * Starts the overall timer for the reading test.
+       */
+      function startReadingTimer() {
+        if (readingTestState.timerInterval)
+          clearInterval(readingTestState.timerInterval);
+        readingTestState.timerInterval = setInterval(() => {
+          readingTestState.timeRemaining--;
+          if (readingTestState.timeRemaining <= 0) {
+            clearInterval(readingTestState.timerInterval);
+            handleFinishReadingTest();
+          }
+          updateReadingTimerDisplay();
+        }, 1000);
+      }
+
+      /**
+       * Updates the time display on the UI for reading test.
+       */
+      function updateReadingTimerDisplay() {
+        const timerSpan = document.getElementById("reading-time-left");
+        if (timerSpan) {
+          timerSpan.textContent = formatTime(readingTestState.timeRemaining);
+        }
+      }
+
+      /**
+       * Handles changes in input fields for reading questions, saving answers to state.
+       * @param {Event} e - The input change event.
+       */
+      function handleReadingInputChange(e) {
+        const { name, value, type, checked } = e.target;
+        // For radio buttons, only update if checked
+        if (type === "radio") {
+          if (checked) {
+            readingTestState.answers[name] = value;
+          }
+        } else {
+          readingTestState.answers[name] = value;
+        }
+      }
+
+      /**
+       * Navigates to the next passage in the reading test.
+       */
+      function handleNextReadingPassage() {
+        if (
+          readingTestState.currentPassage <
+          readingTestState.passages.length - 1
+        ) {
+          readingTestState.currentPassage++;
+          // Re-render the reading test content to show next passage and its questions
+          renderReadingPassageAndQuestions(
+            document.querySelector(".reading-content-area")
+          );
+          updateReadingNavigationButtons();
+        } else {
+          showMessageModal(
+            "End of Reading Section",
+            "You have completed all passages in the Reading section. Please submit your answers."
+          );
+        }
+      }
+
+      /**
+       * Navigates to the previous passage in the reading test.
+       */
+      function handlePreviousReadingPassage() {
+        if (readingTestState.currentPassage > 0) {
+          readingTestState.currentPassage--;
+          // Re-render the reading test content to show previous passage and its questions
+          renderReadingPassageAndQuestions(
+            document.querySelector(".reading-content-area")
+          );
+          updateReadingNavigationButtons();
+        }
+      }
+
+      /**
+       * Updates the state of the Previous/Next/Submit buttons for reading test.
+       */
+      function updateReadingNavigationButtons() {
+        const prevBtn = document.getElementById("previous-reading-btn");
+        if (prevBtn) {
+          prevBtn.disabled = readingTestState.currentPassage === 0;
+          prevBtn.classList.toggle(
+            "opacity-50",
+            readingTestState.currentPassage === 0
+          );
+          prevBtn.classList.toggle(
+            "cursor-not-allowed",
+            readingTestState.currentPassage === 0
+          );
+        }
+
+        const nextOrSubmitBtn = document.getElementById(
+          "next-or-submit-reading-btn"
+        );
+        if (nextOrSubmitBtn) {
+          const isLastPassage =
+            readingTestState.currentPassage ===
+            readingTestState.passages.length - 1;
+          if (!isLastPassage) {
+            nextOrSubmitBtn.innerHTML = `Next Passage &rarr;`;
+            nextOrSubmitBtn.className =
+              "bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105";
+            nextOrSubmitBtn.onclick = handleNextReadingPassage;
+          } else {
+            nextOrSubmitBtn.innerHTML = readingTestState.isLoadingFeedback
+              ? getLoadingSpinnerHtml()
+              : "Submit Reading";
+            nextOrSubmitBtn.className =
+              "bg-gradient-to-r from-purple-600 to-pink-700 hover:from-purple-700 hover:to-pink-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105 flex items-center justify-center";
+            nextOrSubmitBtn.disabled = readingTestState.isLoadingFeedback;
+            nextOrSubmitBtn.onclick = handleFinishReadingTest;
+          }
+        }
+      }
+
+      /**
+       * Simulates AI grading for Reading test answers.
+       * @param {Object} userAnswers - Object containing user's answers.
+       * @param {Array} allPassages - Array of all reading passages and their questions.
+       * @returns {Promise<Object>} A promise that resolves with grading feedback.
+       */
+      async function simulateReadingAIGrading(userAnswers, allPassages) {
+        let correctCount = 0;
+        let totalQuestions = 0;
+        let feedbackDetails = [];
+
+        const allQuestions = allPassages.flatMap(
+          (passage) => passage.questions
+        );
+
+        allQuestions.forEach((q) => {
+          totalQuestions++;
+          const userAnswer = userAnswers[q.id]; // Attempt to get a direct answer
+
+          let isCorrect = false;
+          let actualUserAnswer = userAnswer || "No Answer"; // Default for feedback display
+
+          if (
+            q.type === "multiple-choice" ||
+            q.type === "short-answer" ||
+            q.type === "fill-in-the-blank" ||
+            q.type === "true-false-not-given"
+          ) {
+            if (
+              userAnswer &&
+              String(userAnswer).toLowerCase().trim() ===
+                String(q.correctAnswer).toLowerCase().trim()
+            ) {
+              isCorrect = true;
+              correctCount++;
+            }
+          } else if (q.type === "matching" || q.type === "matching-headings") {
+            let allMatchesCorrect = true;
+            // For matching, the answers are stored as `q.id-ItemKey` (e.g., 'R1Q6-Paragraph2')
+            const matchedPairs = {};
+            for (const key in q.correctMapping) {
+              const subQuestionId = `${q.id}-${key.replace(
+                /[^a-zA-Z0-9]/g,
+                ""
+              )}`; // Sanitize key for ID
+              const userMatch = userAnswers[subQuestionId];
+              matchedPairs[key] = userMatch || "No Match";
+
+              if (
+                !userMatch ||
+                String(userMatch).toLowerCase().trim() !==
+                  String(q.correctMapping[key]).toLowerCase().trim()
+              ) {
+                allMatchesCorrect = false;
+                break;
+              }
+            }
+            actualUserAnswer = matchedPairs; // Store the collected matches for display
+            if (allMatchesCorrect) {
+              isCorrect = true;
+              correctCount++;
+            }
+          }
+
+          feedbackDetails.push({
+            questionText: q.questionText,
+            userAnswer: actualUserAnswer,
+            correctAnswer: q.correctAnswer || q.correctMapping, // Display correct mapping for matching types
+            isCorrect: isCorrect,
+            type: q.type,
+          });
+        });
+
+        const accuracyPercentage =
+          totalQuestions > 0 ? (correctCount / totalQuestions) * 100 : 0;
+        let estimatedBand;
+
+        if (accuracyPercentage >= 90) estimatedBand = "Band 8.0 - 9.0";
+        else if (accuracyPercentage >= 80) estimatedBand = "Band 7.0 - 7.5";
+        else if (accuracyPercentage >= 70) estimatedBand = "Band 6.0 - 6.5";
+        else if (accuracyPercentage >= 60) estimatedBand = "Band 5.0 - 5.5";
+        else if (accuracyPercentage >= 50) estimatedBand = "Band 4.0 - 4.5";
+        else estimatedBand = "Below Band 4.0";
+
+        const generalPrompt = `Based on an IELTS Reading test where the user answered ${correctCount} out of ${totalQuestions} questions correctly (Accuracy: ${accuracyPercentage.toFixed(
+          2
+        )}%), provide general feedback for an IELTS Reading test. Focus on common strengths and weaknesses (e.g., detail scanning, understanding main ideas, vocabulary in context, speed reading). Suggest 3-5 actionable areas for improvement. Format as JSON with fields: 'overallPerformanceSummary', 'strengths', 'areasForImprovement', 'estimatedBand'.`;
+
+        let chatHistory = [{ role: "user", parts: [{ text: generalPrompt }] }];
+        const payload = {
+          contents: chatHistory,
+          generationConfig: {
+            responseMimeType: "application/json",
+            responseSchema: {
+              type: "OBJECT",
+              properties: {
+                overallPerformanceSummary: { type: "STRING" },
+                strengths: { type: "STRING" },
+                areasForImprovement: { type: "STRING" },
+                estimatedBand: { type: "STRING" },
+              },
+              propertyOrdering: [
+                "overallPerformanceSummary",
+                "strengths",
+                "areasForImprovement",
+                "estimatedBand",
+              ],
+            },
+          },
+        };
+        const apiKey = ""; // Set to empty string for Canvas to inject API key
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(
+              `API call failed: ${response.status} ${response.statusText} - ${errorText}`
+            );
+          }
+
+          const result = await response.json();
+          let aiGeneratedFeedback = {};
+          if (
+            result.candidates &&
+            result.candidates.length > 0 &&
+            result.candidates[0].content &&
+            result.candidates[0].content.parts &&
+            result.candidates[0].content.parts.length > 0
+          ) {
+            aiGeneratedFeedback = JSON.parse(
+              result.candidates[0].content.parts[0].text
+            );
+          }
+
+          return {
+            correctCount,
+            totalQuestions,
+            accuracyPercentage,
+            estimatedBand: aiGeneratedFeedback.estimatedBand || estimatedBand,
+            feedbackDetails,
+            overallPerformanceSummary:
+              aiGeneratedFeedback.overallPerformanceSummary || "N/A",
+            strengths: aiGeneratedFeedback.strengths || "N/A",
+            areasForImprovement:
+              aiGeneratedFeedback.areasForImprovement || "N/A",
+          };
+        } catch (error) {
+          console.error(
+            "Error calling Gemini API for Reading feedback:",
+            error
+          );
+          return {
+            correctCount,
+            totalQuestions,
+            accuracyPercentage,
+            estimatedBand,
+            feedbackDetails,
+            overallPerformanceSummary:
+              "Could not generate detailed AI feedback due to an error.",
+            strengths: "N/A",
+            areasForImprovement: "Please check console for errors.",
+          };
+        }
+      }
+
+      /**
+       * Handles the completion and submission of the reading test.
+       */
+      async function handleFinishReadingTest() {
+        stopAllReadingTimers();
+        readingTestState.isLoadingFeedback = true;
+        readingTestState.readingFeedback = null; // Clear previous feedback
+        updateReadingNavigationButtons(); // Update button to show loading spinner
+
+        showMessageModal(
+          "Submitting Reading Answers",
+          "Your Reading answers are being processed for AI evaluation. This may take a moment."
+        );
+
+        try {
+          const feedback = await simulateReadingAIGrading(
+            readingTestState.answers,
+            readingTestState.passages
+          );
+          readingTestState.readingFeedback = feedback;
+          hideMessageModal(); // Hide the submission modal
+          showMessageModal(
+            "Reading Feedback Generated",
+            "Your detailed AI-generated feedback and estimated band score are now available below."
+          );
+        } catch (error) {
+          console.error("Error during Reading AI grading:", error);
+          hideMessageModal();
+          showMessageModal(
+            "Grading Error",
+            `There was an error generating feedback: ${error.message}. Please try again later.`
+          );
+        } finally {
+          readingTestState.isLoadingFeedback = false;
+          renderReadingFeedbackSection(
+            document.querySelector("#reading-feedback-section")
+          ); // Re-render feedback section
+          updateReadingNavigationButtons(); // Re-enable button
+        }
+      }
+
+      /**
+       * Renders the main Reading Test UI structure.
+       * @param {HTMLElement} parentDiv - The div to render the test into.
+       */
+      function renderReadingTest(parentDiv) {
+        // Initial setup for the entire Reading Test container
+        const readingTestContainerHtml = `
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 w-full max-w-6xl mx-auto my-8 animate-fade-in-up">
+                    <h2 class="text-4xl font-extrabold text-blue-800 mb-4 text-center tracking-tight">Reading Test</h2>
+                    <p class="text-xl text-gray-700 mb-8 text-center font-medium">${selectedTestTitle}</p>
+
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-100">
+                        <div class="text-lg font-semibold text-gray-700 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 102 0V6zm-3.707 5.707a1 1 0 001.414-1.414L9 8.586V7a1 1 0 10-2 0v2a1 1 0 00.293.707l3 3z" clip-rule="evenodd"></path></svg>
+                            Time Left: <span class="text-red-600 ml-1" id="reading-time-left">${formatTime(
+                              readingTestState.timeRemaining
+                            )}</span>
+                        </div>
+                        <div class="text-lg font-semibold text-gray-700">
+                            Passage <span class="font-bold text-gray-800" id="current-passage-number">${
+                              readingTestState.currentPassage + 1
+                            }</span> of <span class="font-bold text-gray-800">${
+          readingTestState.passages.length
+        }</span>
+                        </div>
+                    </div>
+
+                    <div class="reading-content-area grid md:grid-cols-2 gap-8">
+                        <!-- Passage and Questions will be rendered here dynamically -->
+                    </div>
+
+                    <div class="flex justify-between mt-10">
+                        <button id="previous-reading-btn"
+                            class="bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-xl hover:bg-gray-400 transition duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                        >
+                            ${Icons.ChevronLeft.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="inline-block mr-2"'
+                            )} Previous
+                        </button>
+                        <button id="next-or-submit-reading-btn"
+                            class="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105"
+                        ></button>
+                    </div>
+
+                    <div id="reading-feedback-section"></div>
+                </div>
+            `;
+        parentDiv.innerHTML = readingTestContainerHtml;
+
+        startReadingTimer(); // Start the overall test timer
+
+        // Attach core event listeners to buttons
+        document.getElementById(
+          "previous-reading-btn"
+        ).onclick = handlePreviousReadingPassage;
+
+        // Initial render of the first passage and its questions
+        renderReadingPassageAndQuestions(
+          document.querySelector(".reading-content-area")
+        );
+        updateReadingNavigationButtons();
+        renderReadingFeedbackSection(
+          document.querySelector("#reading-feedback-section")
+        ); // Ensure feedback section is rendered if already present
+      }
+
+      /**
+       * Renders the current reading passage and its associated questions.
+       * This function is called on initial load and when navigating between passages.
+       * @param {HTMLElement} contentAreaDiv - The div holding the passage and questions.
+       */
+      function renderReadingPassageAndQuestions(contentAreaDiv) {
+        const currentP =
+          readingTestState.passages[readingTestState.currentPassage];
+
+        let questionsHtml = currentP.questions
+          .map((q, qIndex) => {
+            let questionInputHtml = "";
+            if (q.type === "multiple-choice") {
+              questionInputHtml = `
+                        <div class="space-y-3">
+                            ${q.options
+                              .map(
+                                (option) => `
+                                <label class="flex items-center text-gray-700 cursor-pointer bg-white p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition duration-200 shadow-sm">
+                                    <input
+                                        type="radio"
+                                        name="${q.id}"
+                                        value="${option.charAt(0)}"
+                                        ${
+                                          readingTestState.answers[q.id] ===
+                                          option.charAt(0)
+                                            ? "checked"
+                                            : ""
+                                        }
+                                        class="form-radio h-5 w-5 text-blue-600 rounded-full border-gray-300 focus:ring-blue-500 cursor-pointer"
+                                    />
+                                    <span class="ml-4 text-lg">${option}</span>
+                                </label>
+                            `
+                              )
+                              .join("")}
+                        </div>
+                    `;
+            } else if (q.type === "true-false-not-given") {
+              questionInputHtml = `
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <p class="font-semibold text-gray-700 mb-3 text-lg">Statement: "${
+                              q.statement
+                            }"</p>
+                            <div class="flex space-x-6">
+                                <label class="inline-flex items-center text-gray-700 cursor-pointer">
+                                    <input type="radio" name="${
+                                      q.id
+                                    }" value="True" ${
+                readingTestState.answers[q.id] === "True" ? "checked" : ""
+              }
+                                        class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer" />
+                                    <span class="ml-2 text-lg">True</span>
+                                </label>
+                                <label class="inline-flex items-center text-gray-700 cursor-pointer">
+                                    <input type="radio" name="${
+                                      q.id
+                                    }" value="False" ${
+                readingTestState.answers[q.id] === "False" ? "checked" : ""
+              }
+                                        class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer" />
+                                    <span class="ml-2 text-lg">False</span>
+                                </label>
+                                <label class="inline-flex items-center text-gray-700 cursor-pointer">
+                                    <input type="radio" name="${
+                                      q.id
+                                    }" value="Not Given" ${
+                readingTestState.answers[q.id] === "Not Given" ? "checked" : ""
+              }
+                                        class="form-radio h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer" />
+                                    <span class="ml-2 text-lg">Not Given</span>
+                                </label>
+                            </div>
+                        </div>
+                    `;
+            } else if (q.type === "summary-completion") {
+              questionInputHtml = `
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <p class="italic text-gray-600 mb-3 text-lg">${
+                              q.prompt
+                            }</p>
+                            <p class="bg-gray-100 p-3 rounded-lg border border-gray-200 mb-3 text-gray-700 leading-relaxed text-lg font-medium">${q.summaryText.replace(
+                              "___________",
+                              "_____"
+                            )}</p>
+                            <input
+                                type="text"
+                                name="${q.id}"
+                                value="${readingTestState.answers[q.id] || ""}"
+                                placeholder="Enter missing word(s)..."
+                                class="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-blue-400 transition duration-300 text-gray-800 text-lg shadow-sm"
+                            />
+                        </div>
+                    `;
+            } else if (q.type === "matching-headings") {
+              questionInputHtml = `
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <p class="italic text-gray-600 mb-3 text-lg">${
+                              q.prompt
+                            }</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <p class="font-bold text-gray-700 mb-3 text-lg">Headings:</p>
+                                    <ul class="space-y-1">
+                                        ${q.headings
+                                          .map(
+                                            (heading) => `
+                                            <li class="text-gray-700 text-base py-1">${heading}</li>
+                                        `
+                                          )
+                                          .join("")}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-700 mb-3 text-lg">Match to Paragraph:</p>
+                                    ${Object.keys(q.correctMapping)
+                                      .map(
+                                        (paraKey) => `
+                                        <div class="flex items-center mb-3">
+                                            <span class="mr-3 text-gray-700 font-medium">${paraKey}:</span>
+                                            <select
+                                                name="${q.id}-${paraKey.replace(
+                                          /[^a-zA-Z0-9]/g,
+                                          ""
+                                        )}"
+                                                class="flex-grow p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-blue-400 transition duration-300 text-gray-800 shadow-sm"
+                                            >
+                                                <option value="">Select a heading</option>
+                                                ${q.headings
+                                                  .map(
+                                                    (heading) => `
+                                                    <option value="${
+                                                      heading.split(".")[0]
+                                                    }" ${
+                                                      readingTestState.answers[
+                                                        `${
+                                                          q.id
+                                                        }-${paraKey.replace(
+                                                          /[^a-zA-Z0-9]/g,
+                                                          ""
+                                                        )}`
+                                                      ] ===
+                                                      heading.split(".")[0]
+                                                        ? "selected"
+                                                        : ""
+                                                    }>${heading}</option>
+                                                `
+                                                  )
+                                                  .join("")}
+                                            </select>
+                                        </div>
+                                    `
+                                      )
+                                      .join("")}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+            } else if (q.type === "short-answer") {
+              questionInputHtml = `
+                        <textarea
+                            name="${q.id}"
+                            placeholder="Write your short answer here..."
+                            rows="3"
+                            class="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-blue-400 transition duration-300 text-gray-800 text-lg shadow-sm resize-y"
+                        >${readingTestState.answers[q.id] || ""}</textarea>
+                    `;
+            }
+            return `
+                    <div class="mb-8 pb-6 border-b border-gray-200 last:border-b-0 animate-fade-in">
+                        <p class="text-lg font-semibold text-gray-800 mb-4">${q.questionText}</p>
+                        ${questionInputHtml}
+                    </div>
+                `;
+          })
+          .join("");
+
+        contentAreaDiv.innerHTML = `
+                <div class="bg-blue-50 p-6 rounded-2xl overflow-y-auto max-h-[70vh] shadow-inner border border-blue-200 animate-fade-in">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-5">${
+                      currentP.title
+                    }</h3>
+                    ${currentP.text
+                      .split("\n\n")
+                      .map(
+                        (paragraph) =>
+                          `<p class="text-gray-700 mb-4 leading-relaxed text-lg">${paragraph}</p>`
+                      )
+                      .join("")}
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl overflow-y-auto max-h-[70vh] shadow-inner border border-gray-100 animate-fade-in">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-5">Questions for Passage ${
+                      readingTestState.currentPassage + 1
+                    }</h3>
+                    ${questionsHtml}
+                </div>
+            `;
+
+        // Update passage number display
+        const currentPassageNumSpan = document.getElementById(
+          "current-passage-number"
+        );
+        if (currentPassageNumSpan) {
+          currentPassageNumSpan.textContent =
+            readingTestState.currentPassage + 1;
+        }
+
+        // Re-attach input change listeners after content is updated
+        const inputs = contentAreaDiv.querySelectorAll(
+          'input[name^="R"], textarea[name^="R"], select[name^="R"]'
+        );
+        inputs.forEach((input) => {
+          input.onchange = handleReadingInputChange;
+          if (input.tagName === "TEXTAREA" || input.type === "text") {
+            input.oninput = handleReadingInputChange; // For immediate updates on text fields
+          }
+        });
+      }
+
+      /**
+       * Renders the AI Reading Feedback section.
+       * @param {HTMLElement} feedbackSectionDiv - The div to render feedback into.
+       */
+      function renderReadingFeedbackSection(feedbackSectionDiv) {
+        if (!readingTestState.readingFeedback) {
+          feedbackSectionDiv.innerHTML = ""; // Clear if no feedback
+          return;
+        }
+
+        let individualFeedbacksHtml = readingTestState.readingFeedback.feedbackDetails
+          .map((detail, idx) => {
+            let correctAnswerDisplay = "";
+            let userAnswerDisplay = "";
+
+            if (
+              typeof detail.correctAnswer === "object" &&
+              detail.correctAnswer !== null
+            ) {
+              // For matching types, format object into readable key-value pairs
+              correctAnswerDisplay = Object.entries(detail.correctAnswer)
+                .map(([key, value]) => `${key}: ${value || "N/A"}`) // Added || 'N/A'
+                .join(", ");
+            } else {
+              correctAnswerDisplay = detail.correctAnswer || "N/A"; // Added || 'N/A'
+            }
+
+            if (
+              typeof detail.userAnswer === "object" &&
+              detail.userAnswer !== null
+            ) {
+              userAnswerDisplay = Object.entries(detail.userAnswer)
+                .map(([key, value]) => `${key}: ${value || "No Answer"}`) // Added || 'No Answer'
+                .join(", ");
+            } else {
+              userAnswerDisplay = detail.userAnswer || "No Answer"; // Added || 'No Answer'
+            }
+
+            return `
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm animate-fade-in">
+                        <p class="text-lg font-semibold text-gray-800 mb-2">Question ${
+                          idx + 1
+                        }: ${detail.questionText}</p>
+                        <p class="text-gray-700">Your Answer: <span class="font-medium ${
+                          detail.isCorrect ? "text-green-600" : "text-red-600"
+                        }">${userAnswerDisplay}</span></p>
+                        <p class="text-gray-700">Correct Answer: <span class="font-medium text-green-600">${correctAnswerDisplay}</span></p>
+                        <p class="font-bold mt-2 ${
+                          detail.isCorrect ? "text-green-700" : "text-red-700"
+                        }">Status: ${
+              detail.isCorrect ? "Correct" : "Incorrect"
+            }</p>
+                    </div>
+                `;
+          })
+          .join("");
+
+        const readingFeedbackHtml = `
+                <div class="mt-16 bg-green-50 p-8 rounded-3xl shadow-xl border border-green-200 animate-fade-in">
+                    <h3 class="text-3xl font-extrabold text-green-800 mb-6 text-center tracking-tight">AI Reading Feedback</h3>
+                    <p class="text-center text-2xl font-bold text-green-700 mb-4">Your Score: <span class="bg-green-200 px-4 py-2 rounded-lg">${
+                      readingTestState.readingFeedback.correctCount
+                    } / ${
+          readingTestState.readingFeedback.totalQuestions
+        }</span> (Accuracy: ${readingTestState.readingFeedback.accuracyPercentage.toFixed(
+          2
+        )}%)</p>
+                    <p class="text-center text-2xl font-bold text-green-700 mb-8">Estimated Overall Band: <span class="bg-green-200 px-4 py-2 rounded-lg">${
+                      readingTestState.readingFeedback.estimatedBand
+                    }</span></p>
+
+                    <div class="mb-8 p-6 bg-white rounded-2xl shadow-md border border-gray-100">
+                        <h4 class="text-xl font-bold text-gray-800 mb-3 flex items-center">${Icons.FileText.replace(
+                          /width="24" height="24"/g,
+                          'width="20" height="20" class="w-5 h-5 mr-2 text-blue-500"'
+                        )} Overall Performance Summary:</h4>
+                        <p class="text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">${
+                          readingTestState.readingFeedback
+                            .overallPerformanceSummary
+                        }</p>
+                    </div>
+
+                    <div class="mb-8 p-6 bg-white rounded-2xl shadow-md border border-gray-100">
+                        <h4 class="text-xl font-bold text-gray-800 mb-3 flex items-center">${Icons.Activity.replace(
+                          /width="24" height="24"/g,
+                          'width="20" height="20" class="w-5 h-5 mr-2 text-blue-500"'
+                        )} Strengths:</h4>
+                        <p class="text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">${
+                          readingTestState.readingFeedback.strengths
+                        }</p>
+                    </div>
+
+                    <div class="p-6 bg-white rounded-2xl shadow-md border border-gray-100">
+                        <h4 class="text-xl font-bold text-gray-800 mb-3 flex items-center">${Icons.Lightbulb.replace(
+                          /width="24" height="24"/g,
+                          'width="20" height="20" class="w-5 h-5 mr-2 text-blue-500"'
+                        )} Areas for Improvement:</h4>
+                        <p class="text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">${
+                          readingTestState.readingFeedback.areasForImprovement
+                        }</p>
+                    </div>
+
+                    <div class="mt-10 p-6 bg-yellow-50 rounded-2xl border border-yellow-200 shadow-inner">
+                        <h4 class="text-xl font-bold text-yellow-800 mb-4">Detailed Question-by-Question Review:</h4>
+                        <div class="space-y-4">
+                            ${individualFeedbacksHtml}
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center mt-10">
+                        <button id="reading-feedback-back-to-modules-btn"
+                            class="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105"
+                        >
+                            Back to Module Tests
+                        </button>
+                    </div>
+                </div>
+            `;
+        feedbackSectionDiv.innerHTML = readingFeedbackHtml; // Corrected variable name here
+        document.getElementById(
+          "reading-feedback-back-to-modules-btn"
+        ).onclick = () => (window.location.href = `reading.html`); // Redirect to reading.html
+      }
+
+      // Writing Test State & Functions
+      let writingTestState = {
+        task1Answer: "",
+        task2Answer: "",
+        task1WordCount: 0,
+        task2WordCount: 0,
+        timeRemaining: 60 * 60, // 60 minutes in seconds
+        timerInterval: null,
+        isLoadingFeedback: false,
+        feedback: null,
+      };
+
+      /**
+       * Handles input change for Task 1, updating its answer and word count in state.
+       * @param {Event} e - The input event.
+       */
+      function handleTask1Change(e) {
+        const text = e.target.value;
+        writingTestState.task1Answer = text;
+        writingTestState.task1WordCount = calculateWordCount(text);
+        updateWritingUI(); // Update word count display
+      }
+
+      /**
+       * Handles input change for Task 2, updating its answer and word count in state.
+       * @param {Event} e - The input event.
+       */
+      function handleTask2Change(e) {
+        const text = e.target.value;
+        writingTestState.task2Answer = text;
+        writingTestState.task2WordCount = calculateWordCount(text);
+        updateWritingUI(); // Update word count display
+      }
+
+      /**
+       * Resets the writing test state. Called only when a new test is started.
+       */
+      function resetWritingTestState() {
+        stopAllWritingTimers(); // Clear any existing timers
+        writingTestState = {
+          task1Answer: "",
+          task2Answer: "",
+          task1WordCount: 0,
+          task2WordCount: 0,
+          timeRemaining: 60 * 60,
+          timerInterval: null,
+          isLoadingFeedback: false,
+          feedback: null,
+        };
+      }
+
+      /**
+       * Stops all active timers for the writing test.
+       */
+      function stopAllWritingTimers() {
+        if (writingTestState.timerInterval) {
+          clearInterval(writingTestState.timerInterval);
+          writingTestState.timerInterval = null;
+        }
+      }
+
+      /**
+       * Starts the overall timer for the writing test.
+       */
+      function startWritingTimer() {
+        if (writingTestState.timerInterval)
+          clearInterval(writingTestState.timerInterval);
+        writingTestState.timerInterval = setInterval(() => {
+          writingTestState.timeRemaining--;
+          if (writingTestState.timeRemaining <= 0) {
+            clearInterval(writingTestState.timerInterval);
+            handleFinishWritingTest();
+          }
+          updateWritingUI(); // Update UI every second
+        }, 1000);
+      }
+
+      /**
+       * Updates the time and word count displays on the UI for writing test.
+       * This function should be called frequently (e.g., every second by timer, on input change).
+       */
+      function updateWritingUI() {
+        const timerSpan = document.getElementById("writing-time-left");
+        if (timerSpan) {
+          timerSpan.textContent = formatTime(writingTestState.timeRemaining);
+        }
+        const task1CountSpan = document.getElementById(
+          "task1-current-word-count"
+        ); // Corrected ID
+        if (task1CountSpan) {
+          task1CountSpan.textContent = writingTestState.task1WordCount;
+          task1CountSpan.className =
+            writingTestState.task1WordCount < 150
+              ? "text-red-500 font-bold"
+              : "text-green-600 font-bold";
+        }
+        const task2CountSpan = document.getElementById(
+          "task2-current-word-count"
+        ); // Corrected ID
+        if (task2CountSpan) {
+          task2CountSpan.textContent = writingTestState.task2WordCount;
+          task2CountSpan.className =
+            writingTestState.task2WordCount < 250
+              ? "text-red-500"
+              : "text-green-600"; /* Fixed: keep font-bold */
+          task2CountSpan.classList.add(
+            "font-bold"
+          ); /* Add font-bold class here */
+        }
+        // Update submit button state
+        const submitBtn = document.getElementById("get-writing-feedback-btn");
+        if (submitBtn) {
+          submitBtn.disabled = writingTestState.isLoadingFeedback;
+          submitBtn.innerHTML = writingTestState.isLoadingFeedback
+            ? getLoadingSpinnerHtml()
+            : `${Icons.Activity.replace(
+                /width="24" height="24"/g,
+                'width="24" height="24" class="w-6 h-6 mr-3"'
+              )} Get AI Writing Feedback`;
+        }
+      }
+
+      /**
+       * Calls the Gemini API to simulate AI grading for writing tasks.
+       * @param {string} task1 - The user's Task 1 response.
+       * @param {string} task2 - The user's Task 2 response.
+       * @returns {Promise<Object>} A promise that resolves with the AI feedback.
+       */
+      async function simulateAIGrading(task1, task2) {
+        const prompt = `Evaluate the following IELTS Writing Task 1 and Task 2 responses. Provide a detailed band score estimation (e.g., Band 6.5) and specific feedback based on IELTS criteria (Task Achievement/Response, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy). Highlight strengths and areas for improvement for each task.
+
+Task 1 Response:
+"${task1}"
+
+Task 2 Response:
+"${task2}"
+
+Provide the response in a structured JSON format with fields: 'task1Feedback', 'task2Feedback', 'overallEstimatedBand', 'suggestionsForImprovement'.`;
+
+        let chatHistory = [];
+        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+        const payload = {
+          contents: chatHistory,
+          generationConfig: {
+            responseMimeType: "application/json",
+            responseSchema: {
+              type: "OBJECT",
+              properties: {
+                task1Feedback: { type: "STRING" },
+                task2Feedback: { type: "STRING" },
+                overallEstimatedBand: { type: "STRING" },
+                suggestionsForImprovement: { type: "STRING" },
+              },
+              propertyOrdering: [
+                "task1Feedback",
+                "task2Feedback",
+                "overallEstimatedBand",
+                "suggestionsForImprovement",
+              ],
+            },
+          },
+        };
+        const apiKey = ""; // Canvas will inject API key at runtime
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+        console.log("Calling Gemini API for writing feedback...");
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(
+              `API call failed: ${response.status} ${response.statusText} - ${errorText}`
+            );
+          }
+
+          const result = await response.json();
+          console.log("Gemini API response:", result);
+
+          if (
+            result.candidates &&
+            result.candidates.length > 0 &&
+            result.candidates[0].content &&
+            result.candidates[0].content.parts &&
+            result.candidates[0].content.parts.length > 0
+          ) {
+            const jsonString = result.candidates[0].content.parts[0].text;
+            try {
+              return JSON.parse(jsonString);
+            } catch (parseError) {
+              console.error(
+                "Failed to parse AI response JSON:",
+                parseError,
+                jsonString
+              );
+              throw new Error(
+                "Invalid AI response format. Raw response: " + jsonString
+              );
+            }
+          } else {
+            throw new Error(
+              "No valid AI response candidates received from Gemini API."
+            );
+          }
+        } catch (error) {
+          console.error("Error during Gemini API call for writing:", error);
+          throw error; // Re-throw to be caught by handleFinishWritingTest
+        }
+      }
+
+      /**
+       * Handles the submission of the writing test for AI feedback.
+       */
+      async function handleFinishWritingTest() {
+        clearInterval(writingTestState.timerInterval);
+        writingTestState.isLoadingFeedback = true;
+        writingTestState.feedback = null; // Clear previous feedback
+        updateWritingUI(); // Update UI to show loading state
+
+        showMessageModal(
+          "Submitting Writing Responses",
+          "Your writing is being sent for advanced AI evaluation. This may take a moment."
+        );
+
+        try {
+          const feedback = await simulateAIGrading(
+            writingTestState.task1Answer,
+            writingTestState.task2Answer
+          );
+          writingTestState.feedback = feedback;
+          hideMessageModal(); // Hide the submission modal
+          showMessageModal(
+            "AI Feedback Generated",
+            "Your detailed AI-generated feedback and estimated band score are now available below."
+          );
+        } catch (error) {
+          console.error("Error during AI grading:", error);
+          hideMessageModal();
+          showMessageModal(
+            "Grading Error",
+            `There was an error generating feedback: ${error.message}. Please check your input or try again later.`
+          );
+        } finally {
+          writingTestState.isLoadingFeedback = false;
+          renderWritingFeedbackSection(
+            document.querySelector("#writing-feedback-section")
+          ); // Ensure feedback section is rendered/updated
+          updateWritingUI(); // Update button state
+        }
+      }
+
+      /**
+       * Renders the Writing Test UI structure.
+       * @param {HTMLElement} parentDiv - The div to render the test into.
+       */
+      function renderWritingTest(parentDiv) {
+        const writingTestHtml = `
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 w-full max-w-5xl mx-auto my-8 animate-fade-in-up">
+                    <h2 class="text-4xl font-extrabold text-blue-800 mb-4 text-center tracking-tight">Writing Test</h2>
+                    <p class="text-xl text-gray-700 mb-8 text-center font-medium">${selectedTestTitle}</p>
+
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-100">
+                        <div class="text-lg font-semibold text-gray-700 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 102 0V6zm-3.707 5.707a1 1 0 001.414-1.414L9 8.586V7a1 1 0 10-2 0v2a1 1 0 00.293.707l3 3z" clip-rule="evenodd"></path></svg>
+                            Time Left: <span class="text-red-600 ml-1" id="writing-time-left">${formatTime(
+                              writingTestState.timeRemaining
+                            )}</span>
+                        </div>
+                        <div class="text-gray-700 font-semibold text-right text-base">
+                            Word Count: Task 1 (<span id="task1-current-word-count" class="${
+                              writingTestState.task1WordCount < 150
+                                ? "text-red-500"
+                                : "text-green-600"
+                            }">${
+          writingTestState.task1WordCount
+        }</span>), Task 2 (<span id="task2-current-word-count" class="${
+          writingTestState.task2WordCount < 250
+            ? "text-red-500"
+            : "text-green-600"
+        }">${writingTestState.task2WordCount}</span>)
+                        </div>
+                    </div>
+
+                    <div class="mb-8 p-6 bg-gray-50 rounded-2xl border border-gray-100 shadow-inner">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Task 1: Report/Letter <span class="text-base font-normal text-gray-600">(approx. 20 minutes)</span></h3>
+                        <p class="text-gray-700 mb-5 bg-blue-50 p-4 rounded-xl border border-blue-200 leading-relaxed text-lg shadow-sm">
+                            ${writingTasks.task1.prompt}
+                            <br/><br/>
+                            <img src="${
+                              writingTasks.task1.imageUrl
+                            }" alt="IELTS Task 1 Graph Example: Population Aged 65 and Over" class="rounded-lg my-3 mx-auto shadow-md w-full max-w-xl h-auto"/>
+                            (Source: Example IELTS Graph)
+                        </p>
+                        <textarea id="task1-answer"
+                            placeholder="Write your Task 1 response here. Aim for at least ${
+                              writingTasks.task1.wordCountMin
+                            } words."
+                            rows="10"
+                            class="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-blue-400 transition duration-300 text-gray-800 text-lg shadow-sm resize-y"
+                        >${writingTestState.task1Answer}</textarea>
+                    </div>
+
+                    <div class="mb-10 p-6 bg-gray-50 rounded-2xl border border-gray-100 shadow-inner">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Task 2: Essay <span class="text-base font-normal text-gray-600">(approx. 40 minutes)</span></h3>
+                        <p class="text-gray-700 mb-5 bg-blue-50 p-4 rounded-xl border border-blue-200 leading-relaxed text-lg shadow-sm">
+                            ${writingTasks.task2.prompt}
+                        </p>
+                        <textarea id="task2-answer"
+                            placeholder="Write your Task 2 essay here. Aim for at least ${
+                              writingTasks.task2.wordCountMin
+                            } words."
+                            rows="15"
+                            class="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-blue-400 transition duration-300 text-gray-800 text-lg shadow-sm resize-y"
+                        >${writingTestState.task2Answer}</textarea>
+                    </div>
+
+                    <div class="flex justify-center mt-10">
+                        <button id="get-writing-feedback-btn"
+                            class="bg-gradient-to-r from-purple-600 to-pink-700 hover:from-purple-700 hover:to-pink-800 text-white font-bold py-4 px-10 rounded-2xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105 text-xl flex items-center justify-center"
+                            ${
+                              writingTestState.isLoadingFeedback
+                                ? "disabled"
+                                : ""
+                            }
+                        >
+                            ${
+                              writingTestState.isLoadingFeedback
+                                ? getLoadingSpinnerHtml()
+                                : `${Icons.Activity.replace(
+                                    /width="24" height="24"/g,
+                                    'width="24" height="24" class="w-6 h-6 mr-3"'
+                                  )} Get AI Writing Feedback`
+                            }
+                        </button>
+                    </div>
+                    <div id="writing-feedback-section"></div>
+                </div>
+            `;
+        parentDiv.innerHTML = writingTestHtml;
+
+        startWritingTimer(); // Start the overall test timer
+
+        // Attach event listeners
+        document.getElementById("task1-answer").oninput = handleTask1Change;
+        document.getElementById("task2-answer").oninput = handleTask2Change;
+        document.getElementById(
+          "get-writing-feedback-btn"
+        ).onclick = handleFinishWritingTest;
+
+        // Initial UI update for timer and word counts
+        updateWritingUI();
+        // Render feedback section if already present (e.g., after navigation back)
+        renderWritingFeedbackSection(
+          document.querySelector("#writing-feedback-section")
+        );
+      }
+
+      /**
+       * Renders the AI Writing Feedback section.
+       * @param {HTMLElement} feedbackSectionDiv - The div to render feedback into.
+       */
+      function renderWritingFeedbackSection(feedbackSectionDiv) {
+        if (!writingTestState.feedback) {
+          feedbackSectionDiv.innerHTML = ""; // Clear if no feedback
+          return;
+        }
+
+        const writingFeedbackHtml = `
+                <div class="mt-16 bg-green-50 p-8 rounded-3xl shadow-xl border border-green-200 animate-fade-in">
+                    <h3 class="text-3xl font-extrabold text-green-800 mb-6 text-center tracking-tight">AI Writing Feedback</h3>
+                    <p class="text-center text-2xl font-bold text-green-700 mb-8">Estimated Overall Band: <span class="bg-green-200 px-4 py-2 rounded-lg">${
+                      writingTestState.feedback.overallEstimatedBand || "N/A"
+                    }</span></p>
+
+                    <div class="mb-8 p-6 bg-white rounded-2xl shadow-md border border-gray-100">
+                        <h4 class="text-xl font-bold text-gray-800 mb-3 flex items-center">${Icons.FileText.replace(
+                          /width="24" height="24"/g,
+                          'width="20" height="20" class="w-5 h-5 mr-2 text-blue-500"'
+                        )} Task 1 Feedback:</h4>
+                        <p class="text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">${
+                          writingTestState.feedback.task1Feedback ||
+                          "No feedback available."
+                        }</p>
+                    </div>
+
+                    <div class="mb-8 p-6 bg-white rounded-2xl shadow-md border border-gray-100">
+                        <h4 class="text-xl font-bold text-gray-800 mb-3 flex items-center">${Icons.FileText.replace(
+                          /width="24" height="24"/g,
+                          'width="20" height="20" class="w-5 h-5 mr-2 text-blue-500"'
+                        )} Task 2 Feedback:</h4>
+                        <p class="text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">${
+                          writingTestState.feedback.task2Feedback ||
+                          "No feedback available."
+                        }</p>
+                    </div>
+
+                    <div class="p-6 bg-white rounded-2xl shadow-md border border-gray-100">
+                        <h4 class="text-xl font-bold text-gray-800 mb-3 flex items-center">${Icons.Activity.replace(
+                          /width="24" height="24"/g,
+                          'width="20" height="20" class="w-5 h-5 mr-2 text-blue-500"'
+                        )} Suggestions for Improvement:</h4>
+                        <p class="text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">${
+                          writingTestState.feedback.suggestionsForImprovement ||
+                          "No suggestions available."
+                        }</p>
+                    </div>
+
+                    <div class="flex justify-center mt-10">
+                        <button id="writing-feedback-back-to-modules-btn"
+                            class="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105"
+                        >
+                            Back to Module Tests
+                        </button>
+                    </div>
+                </div>
+            `;
+        feedbackSectionDiv.innerHTML = writingFeedbackHtml;
+        document.getElementById(
+          "writing-feedback-back-to-modules-btn"
+        ).onclick = () => (window.location.href = `writing.html`); // Redirect to writing.html
+      }
+
+      // Speaking Test State & Functions
+      let speakingTestState = {
+        currentPart: 1,
+        currentQuestionIndex: 0,
+        recordingStatus: "idle", // 'idle', 'preparing', 'recording', 'processing', 'all_done'
+        timeRemaining: 15 * 60, // Overall test time: 15 minutes
+        responseTimer: 0, // Timer for individual response/prep
+        overallTimerInterval: null,
+        responseTimerInterval: null,
+        mediaRecorder: null,
+        audioChunks: [],
+        isLoadingFeedback: false,
+        allRecordedResponses: [], // Stores all recorded { question, audioBase64, transcribedText, aiFeedback }
+        finalFeedback: null, // Stores the aggregated feedback at the end
+        questions: speakingQuestions, // Use imported questions
+      };
+
+      /**
+       * Resets the speaking test state to initial values.
+       * Called only when a new test session begins.
+       */
+      function resetSpeakingTestState() {
+        stopAllSpeakingTimers(); // Ensure all timers are cleared
+        if (
+          speakingTestState.mediaRecorder &&
+          speakingTestState.mediaRecorder.state === "recording"
+        ) {
+          speakingTestState.mediaRecorder.stop();
+        }
+        speakingTestState = {
+          currentPart: 1,
+          currentQuestionIndex: 0,
+          recordingStatus: "idle",
+          timeRemaining: 15 * 60,
+          responseTimer: 0,
+          overallTimerInterval: null,
+          responseTimerInterval: null,
+          mediaRecorder: null,
+          audioChunks: [],
+          isLoadingFeedback: false,
+          allRecordedResponses: [],
+          finalFeedback: null,
+          questions: speakingQuestions,
+        };
+      }
+
+      /**
+       * Stops all active timers for the speaking test (overall and response timers).
+       */
+      function stopAllSpeakingTimers() {
+        if (speakingTestState.overallTimerInterval) {
+          clearInterval(speakingTestState.overallTimerInterval);
+          speakingTestState.overallTimerInterval = null;
+        }
+        if (speakingTestState.responseTimerInterval) {
+          clearInterval(speakingTestState.responseTimerInterval);
+          speakingTestState.responseTimerInterval = null;
+        }
+      }
+
+      /**
+       * Starts the individual response/preparation timer.
+       * @param {number} duration - The duration of the timer in seconds.
+       * @param {function} onTimerEndCallback - Callback function to execute when timer ends.
+       */
+      function startResponseTimerForSpeaking(
+        duration,
+        onTimerEndCallback = null
+      ) {
+        if (speakingTestState.responseTimerInterval)
+          clearInterval(speakingTestState.responseTimerInterval);
+        speakingTestState.responseTimer = duration;
+        speakingTestState.responseTimerInterval = setInterval(() => {
+          speakingTestState.responseTimer--;
+          if (speakingTestState.responseTimer <= 0) {
+            clearInterval(speakingTestState.responseTimerInterval);
+            speakingTestState.responseTimerInterval = null;
+            if (onTimerEndCallback) {
+              onTimerEndCallback();
+            }
+          }
+          updateSpeakingUI(); // Re-render to update response timer
+        }, 1000);
+      }
+
+      /**
+       * Starts the microphone recording.
+       */
+      async function startRecordingSpeaking() {
+        console.log("Attempting to start recording...");
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+          });
+          console.log("Microphone access granted.");
+          speakingTestState.mediaRecorder = new MediaRecorder(stream, {
+            mimeType: "audio/webm",
+          }); // Use webm for broader compatibility
+          speakingTestState.audioChunks = [];
+
+          speakingTestState.mediaRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) {
+              speakingTestState.audioChunks.push(event.data);
+              console.log("Audio data available:", event.data.size, "bytes");
+            } else {
+              console.warn("Received empty audio data chunk.");
+            }
+          };
+
+          speakingTestState.mediaRecorder.onstop = async () => {
+            console.log("MediaRecorder stopped.");
+            const audioBlob = new Blob(speakingTestState.audioChunks, {
+              type: "audio/webm",
+            }); // Match mimeType
+            console.log(
+              "Audio blob created:",
+              audioBlob.type,
+              audioBlob.size,
+              "bytes"
+            );
+
+            if (audioBlob.size === 0) {
+              console.warn(
+                "Recorded audio blob is empty. Microphone might not be capturing audio."
+              );
+              showMessageModal(
+                "No Audio Captured",
+                "It seems no audio was captured. Please ensure your microphone is working correctly and try again. Check your system's sound input settings."
+              );
+              // Important: If no audio, don't proceed with AI processing for this chunk
+              speakingTestState.recordingStatus = "idle";
+              updateSpeakingUI();
+              stream.getTracks().forEach((track) => track.stop()); // Stop tracks even if no audio
+              return;
+            }
+
+            const base64Audio = await blobToBase64(audioBlob);
+            console.log(
+              "Audio converted to Base64. Size (approx):",
+              base64Audio.length,
+              "characters"
+            );
+
+            const currentQuestionObj =
+              speakingTestState.currentPart === 2
+                ? speakingTestState.questions[speakingTestState.currentPart][
+                    speakingTestState.currentQuestionIndex
+                  ].cueCard
+                : speakingTestState.questions[speakingTestState.currentPart][
+                    speakingTestState.currentQuestionIndex
+                  ];
+
+            // Store audio and question for later AI processing
+            speakingTestState.allRecordedResponses.push({
+              question: currentQuestionObj,
+              audioBase64: base64Audio,
+              transcribedText: "", // Will be filled after transcription
+              aiFeedback: null, // Will be filled after evaluation
+            });
+
+            // Stop all tracks to release microphone
+            stream.getTracks().forEach((track) => track.stop());
+
+            speakingTestState.recordingStatus = "idle"; // Back to idle after recording stops
+            speakingTestState.responseTimer = 0; // Reset response timer
+            updateSpeakingUI(); // Re-render to update UI
+            console.log("Recording stopped and response saved to state.");
+          };
+
+          speakingTestState.mediaRecorder.onerror = (event) => {
+            console.error("MediaRecorder error:", event.error);
+            showMessageModal(
+              "Recording Error",
+              `An error occurred during recording: ${event.error.name} - ${event.error.message}`
+            );
+            speakingTestState.recordingStatus = "idle";
+            updateSpeakingUI();
+            stream.getTracks().forEach((track) => track.stop());
+          };
+
+          speakingTestState.mediaRecorder.start();
+          speakingTestState.recordingStatus = "recording";
+          updateSpeakingUI(); // Re-render to show recording status
+          console.log("Recording started successfully.");
+
+          let duration = 0;
+          if (speakingTestState.currentPart === 1) {
+            duration = 30; // Max 30 seconds for Part 1 questions
+          } else if (speakingTestState.currentPart === 2) {
+            duration =
+              speakingTestState.questions[speakingTestState.currentPart][
+                speakingTestState.currentQuestionIndex
+              ].talkTime;
+          } else if (speakingTestState.currentPart === 3) {
+            duration = 60; // Max 60 seconds for Part 3 questions
+          }
+          startResponseTimerForSpeaking(duration, stopRecordingSpeaking); // Auto-stop when timer runs out
+        } catch (err) {
+          console.error("Error accessing microphone:", err);
+          if (
+            err.name === "NotAllowedError" ||
+            err.name === "PermissionDeniedError"
+          ) {
+            showMessageModal(
+              "Microphone Access Denied",
+              "Microphone access was denied. Please enable it in your browser settings to proceed with the Speaking test. (e.g., in Chrome: click the lock icon in the address bar, then allow microphone)."
+            );
+          } else if (err.name === "NotFoundError") {
+            showMessageModal(
+              "No Microphone Found",
+              "No microphone device was found. Please ensure a microphone is connected and properly installed."
+            );
+          } else {
+            showMessageModal(
+              "Microphone Error",
+              `An unexpected error occurred accessing the microphone: ${err.message}. Please try again.`
+            );
+          }
+          speakingTestState.recordingStatus = "idle";
+          updateSpeakingUI();
+        }
+      }
+
+      /**
+       * Stops the microphone recording.
+       */
+      function stopRecordingSpeaking() {
+        console.log("Attempting to stop recording...");
+        if (
+          speakingTestState.mediaRecorder &&
+          speakingTestState.mediaRecorder.state === "recording"
+        ) {
+          speakingTestState.mediaRecorder.stop();
+          if (speakingTestState.responseTimerInterval)
+            clearInterval(speakingTestState.responseTimerInterval);
+          speakingTestState.responseTimer = 0; // Reset timer immediately
+          console.log("Stop signal sent to MediaRecorder.");
+          // State will be updated in onstop handler of mediaRecorder
+        } else {
+          console.log("MediaRecorder was not recording or is null.");
+        }
+      }
+
+      /**
+       * Converts an Audio Blob to a Base64 string.
+       * @param {Blob} blob - The audio blob.
+       * @returns {Promise<string>} A promise that resolves with the Base64 string.
+       */
+      function blobToBase64(blob) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            if (reader.result) {
+              resolve(reader.result.split(",")[1]);
+            } else {
+              reject(new Error("FileReader did not produce a result."));
+            }
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      }
+
+      /**
+       * Processes all recorded audio responses with AI for transcription and evaluation.
+       */
+      async function processAllResponsesWithAI() {
+        stopAllSpeakingTimers(); // Ensure all timers are stopped before processing
+        speakingTestState.isLoadingFeedback = true;
+        speakingTestState.finalFeedback = null;
+        speakingTestState.recordingStatus = "processing";
+        updateSpeakingUI(); // Update UI to show processing state
+
+        showMessageModal(
+          "Analyzing All Responses",
+          `Sending ${speakingTestState.allRecordedResponses.length} responses for AI evaluation. This may take a few moments.`
+        );
+
+        // Process each recorded response
+        for (
+          let i = 0;
+          i < speakingTestState.allRecordedResponses.length;
+          i++
+        ) {
+          const res = speakingTestState.allRecordedResponses[i];
+          try {
+            console.log(`Processing response for question: "${res.question}"`);
+
+            // 1. Transcribe Audio
+            const transcriptionPrompt = "Transcribe the following audio:";
+            let chatHistoryTranscription = [];
+            chatHistoryTranscription.push({
+              role: "user",
+              parts: [
+                { text: transcriptionPrompt },
+                {
+                  inlineData: {
+                    mimeType: "audio/webm", // Match the mimeType used during recording
+                    data: res.audioBase64,
+                  },
+                },
+              ],
+            });
+            const transcriptionPayload = { contents: chatHistoryTranscription };
+            const apiKey = ""; // Canvas will inject API key
+            const transcriptionApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            console.log("Calling transcription API...");
+            const transcriptionResponse = await fetch(transcriptionApiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(transcriptionPayload),
+            });
+
+            if (!transcriptionResponse.ok) {
+              const errorText = await transcriptionResponse.text();
+              throw new Error(
+                `Transcription API call failed: ${transcriptionResponse.status} ${transcriptionResponse.statusText} - ${errorText}`
+              );
+            }
+
+            const transcriptionResult = await transcriptionResponse.json();
+            console.log("Transcription API response:", transcriptionResult);
+
+            let transcribedText = "Could not transcribe your speech.";
+            if (
+              transcriptionResult.candidates &&
+              transcriptionResult.candidates.length > 0 &&
+              transcriptionResult.candidates[0].content &&
+              transcriptionResult.candidates[0].content.parts &&
+              transcriptionResult.candidates[0].content.parts.length > 0
+            ) {
+              transcribedText =
+                transcriptionResult.candidates[0].content.parts[0].text;
+              console.log("Transcribed text:", transcribedText);
+            } else {
+              console.warn(
+                "No transcription candidates found for question:",
+                res.question,
+                transcriptionResult
+              );
+            }
+            res.transcribedText = transcribedText; // Store transcribed text in the response object
+
+            // 2. Evaluate Transcribed Text
+            const evaluationPrompt = `You are an IELTS examiner. Evaluate the following spoken response to the question: "${res.question}".
+                    Response: "${transcribedText}"
+
+                    Provide a detailed band score estimation (e.g., Band 6.5) for Fluency & Coherence, Lexical Resource, Grammatical Range & Accuracy, and Pronunciation. Then give an overall estimated band score for this specific response. Also, provide specific feedback on strengths and areas for improvement, and suggest one or two alternative ways to phrase difficult sentences to achieve a higher score.
+                    Provide the response in a structured JSON format with fields: 'fluencyCoherence', 'lexicalResource', 'grammaticalRangeAccuracy', 'pronunciation', 'overallEstimatedBand', 'feedbackDetails', 'alternativePhrasingSuggestions'.`;
+
+            const evaluationPayload = {
+              contents: [{ role: "user", parts: [{ text: evaluationPrompt }] }],
+              generationConfig: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                  type: "OBJECT",
+                  properties: {
+                    fluencyCoherence: { type: "STRING" },
+                    lexicalResource: { type: "STRING" },
+                    grammaticalRangeAccuracy: { type: "STRING" },
+                    pronunciation: { type: "STRING" },
+                    overallEstimatedBand: { type: "STRING" },
+                    feedbackDetails: { type: "STRING" },
+                    alternativePhrasingSuggestions: { type: "STRING" },
+                  },
+                  propertyOrdering: [
+                    "fluencyCoherence",
+                    "lexicalResource",
+                    "grammaticalRangeAccuracy",
+                    "pronunciation",
+                    "overallEstimatedBand",
+                    "feedbackDetails",
+                    "alternativePhrasingSuggestions",
+                  ],
+                },
+              },
+            };
+
+            const evaluationApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            console.log("Calling evaluation API...");
+            const evaluationResponse = await fetch(evaluationApiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(evaluationPayload),
+            });
+
+            if (!evaluationResponse.ok) {
+              const errorText = await evaluationResponse.text();
+              throw new Error(
+                `Evaluation API call failed: ${evaluationResponse.status} ${evaluationResponse.statusText} - ${errorText}`
+              );
+            }
+
+            const evaluationResult = await evaluationResponse.json();
+            console.log("Evaluation API response:", evaluationResult);
+
+            if (
+              evaluationResult.candidates &&
+              evaluationResult.candidates.length > 0 &&
+              evaluationResult.candidates[0].content &&
+              evaluationResult.candidates[0].content.parts &&
+              evaluationResult.candidates[0].content.parts.length > 0
+            ) {
+              const jsonString =
+                evaluationResult.candidates[0].content.parts[0].text;
+              try {
+                res.aiFeedback = JSON.parse(jsonString); // Store AI feedback in the response object
+                console.log("AI feedback parsed successfully for question.");
+              } catch (parseError) {
+                console.error(
+                  "Failed to parse AI response JSON for evaluation:",
+                  parseError,
+                  jsonString
+                );
+                res.aiFeedback = {
+                  overallEstimatedBand: "N/A",
+                  feedbackDetails: "Error parsing AI feedback. Check console.",
+                };
+              }
+            } else {
+              console.warn(
+                "No AI evaluation candidates found for question:",
+                res.question,
+                evaluationResult
+              );
+              res.aiFeedback = {
+                overallEstimatedBand: "N/A",
+                feedbackDetails: "No AI evaluation received for this response.",
+              };
+            }
+          } catch (error) {
+            console.error(
+              `Error processing response for question "${res.question}":`,
+              error
+            );
+            res.transcribedText = `Error during transcription or evaluation: ${error.message}`;
+            res.aiFeedback = {
+              overallEstimatedBand: "N/A",
+              feedbackDetails: `An error occurred: ${error.message}.`,
+            };
+          }
+        }
+
+        // Aggregate overall band score
+        const bandScores = speakingTestState.allRecordedResponses
+          .map((res) =>
+            parseFloat(
+              String(res.aiFeedback?.overallEstimatedBand || "0.0").replace(
+                "Band ",
+                ""
+              )
+            )
+          )
+          .filter((score) => !isNaN(score) && score > 0);
+
+        let overallBand = "N/A";
+        if (bandScores.length > 0) {
+          const sum = bandScores.reduce((acc, score) => acc + score, 0);
+          const average = sum / bandScores.length;
+          // Round to the nearest .0 or .5
+          overallBand = `Band ${Math.round(average * 2) / 2}`;
+        }
+
+        speakingTestState.finalFeedback = {
+          individualFeedbacks: speakingTestState.allRecordedResponses,
+          overallBand: overallBand,
+        };
+
+        hideMessageModal();
+        showMessageModal(
+          "Speaking Feedback Ready",
+          "Your comprehensive AI-generated feedback for the entire test is now available below."
+        );
+        speakingTestState.isLoadingFeedback = false;
+        speakingTestState.recordingStatus = "all_done";
+        updateSpeakingUI(); // Final UI update to show feedback
+        console.log("All responses processed and final feedback set.");
+      }
+
+      /**
+       * Handles navigation to the next question in the speaking test.
+       */
+      function handleNextSpeakingQuestion() {
+        if (speakingTestState.recordingStatus === "idle") {
+          const currentQuestionsInPart =
+            speakingTestState.questions[speakingTestState.currentPart];
+          const nextQuestionIndex = speakingTestState.currentQuestionIndex + 1;
+
+          if (nextQuestionIndex < currentQuestionsInPart.length) {
+            speakingTestState.currentQuestionIndex = nextQuestionIndex;
+            speakingTestState.responseTimer = 0; // Reset response timer for new question
+            updateSpeakingUI();
+          } else {
+            if (speakingTestState.currentPart < 3) {
+              speakingTestState.currentPart++;
+              speakingTestState.currentQuestionIndex = 0; // Reset index for new part
+              speakingTestState.responseTimer = 0; // Reset response timer for new part
+              // If moving to Part 2, start preparation timer
+              if (speakingTestState.currentPart === 2) {
+                speakingTestState.recordingStatus = "preparing";
+                const cueCard =
+                  speakingTestState.questions[speakingTestState.currentPart][
+                    speakingTestState.currentQuestionIndex
+                  ];
+                startResponseTimerForSpeaking(cueCard.prepTime, () => {
+                  speakingTestState.recordingStatus = "idle"; // Allow recording after prep time
+                  updateSpeakingUI();
+                });
+              }
+              updateSpeakingUI();
+            } else {
+              // All parts and questions done, initiate final processing
+              handleFinishSpeakingTest();
+            }
+          }
+        } else {
+          showMessageModal(
+            "Action Required",
+            "Please stop recording your current response before moving to the next question."
+          );
+        }
+      }
+
+      /**
+       * Handles the completion and submission of the entire speaking test.
+       */
+      async function handleFinishSpeakingTest() {
+        stopAllSpeakingTimers();
+        if (
+          speakingTestState.mediaRecorder &&
+          speakingTestState.mediaRecorder.state === "recording"
+        ) {
+          stopRecordingSpeaking();
+          // Wait briefly for the onstop event to process the last audio chunk
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+        await processAllResponsesWithAI(); // Process all recorded responses
+        // After processing, render feedback instead of redirecting immediately
+        renderSpeakingFeedbackSection(
+          document.querySelector(".speaking-test-container")
+        );
+      }
+
+      /**
+       * Renders the Speaking Test UI structure and initiates overall timer.
+       * @param {HTMLElement} parentDiv - The div to render the test into.
+       */
+      function renderSpeakingTest(parentDiv) {
+        // Initial setup for the entire Speaking Test container
+        const speakingTestContainerHtml = `
+                <div class="speaking-test-container bg-white p-8 rounded-3xl shadow-xl border border-gray-100 w-full max-w-4xl mx-auto my-8 animate-fade-in-up">
+                    <h2 class="text-4xl font-extrabold text-blue-800 mb-4 text-center tracking-tight">Speaking Test</h2>
+                    <p class="text-xl text-gray-700 mb-8 text-center font-medium">${selectedTestTitle}</p>
+
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-100">
+                        <div class="text-lg font-semibold text-gray-700 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 102 0V6zm-3.707 5.707a1 1 0 001.414-1.414L9 8.586V7a1 1 0 10-2 0v2a1 1 0 00.293.707l3 3z" clip-rule="evenodd"></path></svg>
+                            Total Time Left: <span class="text-red-600 ml-1" id="speaking-overall-time-left">${formatTime(
+                              speakingTestState.timeRemaining
+                            )}</span>
+                        </div>
+                        <div class="text-lg font-semibold text-gray-700">
+                            Part: <span class="font-bold text-gray-800" id="speaking-current-part">${
+                              speakingTestState.currentPart
+                            }</span> / 3
+                        </div>
+                    </div>
+
+                    <div class="mb-8 p-6 bg-blue-50 rounded-2xl border border-blue-200 shadow-inner min-h-[150px] flex flex-col justify-center items-center text-center">
+                        <h3 class="text-2xl font-bold text-blue-800 mb-4" id="speaking-question-type"></h3>
+                        <p class="text-gray-800 text-3xl font-semibold leading-relaxed" id="speaking-current-question-text"></p>
+                        <div class="mt-4 text-gray-600 text-lg" id="speaking-part2-prep-time"></div>
+                    </div>
+
+                    <div class="flex flex-col items-center justify-center space-y-4 mb-10" id="speaking-controls"></div>
+
+                    <div class="flex justify-center mt-10">
+                        <button id="speaking-next-or-submit-btn"
+                            class="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105"
+                        ></button>
+                    </div>
+
+                    <div id="speaking-feedback-section"></div>
+                </div>
+            `;
+        parentDiv.innerHTML = speakingTestContainerHtml;
+
+        // Start overall timer only once per test session
+        if (!speakingTestState.overallTimerInterval) {
+          speakingTestState.overallTimerInterval = setInterval(() => {
+            speakingTestState.timeRemaining--;
+            if (speakingTestState.timeRemaining <= 0) {
+              clearInterval(speakingTestState.overallTimerInterval);
+              if (
+                speakingTestState.recordingStatus !== "processing" &&
+                speakingTestState.recordingStatus !== "all_done"
+              ) {
+                handleFinishSpeakingTest(); // Auto-submit on time ran out
+              }
+            }
+            updateSpeakingUI();
+          }, 1000);
+        }
+
+        updateSpeakingUI(); // Initial render and attach listeners
+        renderSpeakingFeedbackSection(
+          document.querySelector("#speaking-feedback-section")
+        ); // Render feedback if already processed
+      }
+
+      /**
+       * Updates the Speaking UI elements (timers, questions, buttons, status).
+       * This function is called frequently to keep the UI in sync with state.
+       */
+      function updateSpeakingUI() {
+        const currentQuestionsInPart =
+          speakingTestState.questions[speakingTestState.currentPart];
+        const currentQuestion =
+          speakingTestState.currentPart === 2
+            ? currentQuestionsInPart[speakingTestState.currentQuestionIndex]
+            : currentQuestionsInPart[speakingTestState.currentQuestionIndex];
+        const isLastQuestionInPart =
+          speakingTestState.currentQuestionIndex ===
+          currentQuestionsInPart.length - 1;
+        const isLastPart = speakingTestState.currentPart === 3;
+        const currentQuestionText =
+          speakingTestState.currentPart === 2
+            ? currentQuestion.cueCard
+            : currentQuestion;
+
+        // Update static elements that change based on state
+        const overallTimeLeftSpan = document.getElementById(
+          "speaking-overall-time-left"
+        );
+        if (overallTimeLeftSpan)
+          overallTimeLeftSpan.textContent = formatTime(
+            speakingTestState.timeRemaining
+          );
+
+        const currentPartSpan = document.getElementById(
+          "speaking-current-part"
+        );
+        if (currentPartSpan)
+          currentPartSpan.textContent = speakingTestState.currentPart;
+
+        const questionTypeH3 = document.getElementById(
+          "speaking-question-type"
+        );
+        if (questionTypeH3)
+          questionTypeH3.innerHTML =
+            speakingTestState.currentPart === 2
+              ? "Cue Card: Prepare for 1 minute, then speak for 1-2 minutes."
+              : "AI Examiner's Question:";
+
+        const currentQuestionTextP = document.getElementById(
+          "speaking-current-question-text"
+        );
+        if (currentQuestionTextP)
+          currentQuestionTextP.textContent = `"${currentQuestionText}"`;
+
+        const part2PrepTimeDiv = document.getElementById(
+          "speaking-part2-prep-time"
+        );
+        if (part2PrepTimeDiv) {
+          if (speakingTestState.currentPart === 2) {
+            if (speakingTestState.recordingStatus === "preparing") {
+              part2PrepTimeDiv.innerHTML = `<p class="font-medium">Preparation Time: <span class="font-bold text-blue-700">${formatTime(
+                speakingTestState.responseTimer
+              )}</span></p>`;
+            } else if (speakingTestState.recordingStatus === "idle") {
+              // After prep, show talk time info
+              part2PrepTimeDiv.innerHTML = `<p class="font-medium">Talk Time: <span class="font-bold text-green-700">${formatTime(
+                currentQuestion.talkTime
+              )}</span></p>`;
+            } else {
+              part2PrepTimeDiv.innerHTML = ""; // Clear when recording
+            }
+          } else {
+            part2PrepTimeDiv.innerHTML = ""; // Clear for other parts
+          }
+        }
+
+        const speakingControlsDiv = document.getElementById(
+          "speaking-controls"
+        );
+        let controlsHtml = "";
+        if (speakingTestState.recordingStatus === "idle") {
+          const isPart2PrepComplete =
+            (speakingTestState.currentPart === 2 &&
+              speakingTestState.responseTimer === 0) ||
+            speakingTestState.currentPart !== 2;
+          controlsHtml = `
+                    <button id="start-recording-btn"
+                        class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-10 rounded-full shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105 text-xl flex items-center"
+                        ${!isPart2PrepComplete ? "disabled" : ""}
+                    >
+                        ${Icons.Mic.replace(
+                          /width="24" height="24"/g,
+                          'width="24" height="24" class="w-6 h-6 mr-3"'
+                        )}
+                        Start Recording
+                    </button>
+                    ${
+                      !isPart2PrepComplete &&
+                      speakingTestState.currentPart === 2
+                        ? `<p class="text-sm text-gray-500">Wait for preparation time to end.</p>`
+                        : ""
+                    }
+                `;
+        } else if (speakingTestState.recordingStatus === "preparing") {
+          controlsHtml = `
+                    <div class="flex flex-col items-center">
+                        <button class="bg-gray-400 text-white font-bold py-4 px-10 rounded-full shadow-lg cursor-not-allowed text-xl flex items-center" disabled>
+                            ${Icons.Mic.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="w-6 h-6 mr-3"'
+                            )}
+                            Preparing...
+                        </button>
+                        <p class="mt-3 text-blue-600 font-semibold text-lg flex items-center">
+                            <span class="relative flex h-3 w-3 mr-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                            </span>
+                            Preparation Time: <span class="text-gray-700 ml-2">(${formatTime(
+                              speakingTestState.responseTimer
+                            )})</span>
+                        </p>
+                    </div>
+                 `;
+        } else if (speakingTestState.recordingStatus === "recording") {
+          controlsHtml = `
+                    <div class="flex flex-col items-center">
+                        <button id="stop-recording-btn"
+                            class="bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white font-bold py-4 px-10 rounded-full shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105 text-xl flex items-center"
+                        >
+                            ${Icons.Mic.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="w-6 h-6 mr-3"'
+                            )}
+                            Stop Recording
+                        </button>
+                        <p class="mt-3 text-red-600 font-semibold text-lg flex items-center">
+                            <span class="relative flex h-3 w-3 mr-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                            </span>
+                            Recording... <span class="text-gray-700 ml-2">(${formatTime(
+                              speakingTestState.responseTimer
+                            )})</span>
+                        </p>
+                    </div>
+                `;
+        } else if (speakingTestState.recordingStatus === "processing") {
+          controlsHtml = `
+                    <div class="flex flex-col items-center">
+                        ${getLoadingSpinnerHtml()}
+                        <p class="text-gray-700 mt-3 text-lg">Analyzing your response with AI...</p>
+                    </div>
+                `;
+        }
+        speakingControlsDiv.innerHTML = controlsHtml;
+
+        // Attach/Re-attach listeners to controls based on `recordingStatus`
+        if (speakingTestState.recordingStatus === "idle") {
+          const startBtn = document.getElementById("start-recording-btn");
+          if (startBtn) startBtn.onclick = startRecordingSpeaking;
+        } else if (speakingTestState.recordingStatus === "recording") {
+          const stopBtn = document.getElementById("stop-recording-btn");
+          if (stopBtn) stopBtn.onclick = stopRecordingSpeaking;
+        }
+
+        // Update Next/Submit button
+        const nextOrSubmitBtn = document.getElementById(
+          "speaking-next-or-submit-btn"
+        );
+        if (nextOrSubmitBtn) {
+          if (
+            isLastPart &&
+            isLastQuestionInPart &&
+            speakingTestState.recordingStatus === "idle"
+          ) {
+            nextOrSubmitBtn.className =
+              "bg-gradient-to-r from-purple-600 to-pink-700 hover:from-purple-700 hover:to-pink-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105";
+            nextOrSubmitBtn.textContent = "Submit Entire Speaking Test";
+            nextOrSubmitBtn.disabled =
+              speakingTestState.recordingStatus !== "idle" ||
+              speakingTestState.allRecordedResponses.length <
+                speakingTestState.questions[1].length +
+                  speakingTestState.questions[2].length +
+                  speakingTestState.questions[3].length; // Ensure all questions are recorded before final submission
+            nextOrSubmitBtn.onclick = handleFinishSpeakingTest;
+          } else {
+            nextOrSubmitBtn.className =
+              "bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105";
+            nextOrSubmitBtn.textContent = "Next Question →";
+            nextOrSubmitBtn.disabled =
+              speakingTestState.recordingStatus !== "idle"; // Disable if not idle (recording or processing)
+            nextOrSubmitBtn.onclick = handleNextSpeakingQuestion;
+          }
+        }
+      }
+
+      /**
+       * Renders the AI Speaking Feedback section.
+       * @param {HTMLElement} feedbackSectionDiv - The div to render feedback into.
+       */
+      function renderSpeakingFeedbackSection(feedbackSectionDiv) {
+        if (
+          !speakingTestState.finalFeedback ||
+          speakingTestState.recordingStatus !== "all_done"
+        ) {
+          feedbackSectionDiv.innerHTML = ""; // Clear if no feedback or not in 'all_done' state
+          return;
+        }
+
+        // Clear the main test content area before rendering feedback
+        const mainTestContainer = feedbackSectionDiv.closest(
+          ".speaking-test-container"
+        );
+        if (mainTestContainer) {
+          mainTestContainer.innerHTML = ""; // Clear everything inside the main container
+        }
+
+        let individualFeedbacksHtml = speakingTestState.finalFeedback.individualFeedbacks
+          .map((item, index) => {
+            const iconSizeForFeedback = 'width="16" height="16"'; // smaller icons for feedback
+            return `
+                    <div class="mb-10 p-6 bg-white rounded-2xl shadow-md border border-gray-100 animate-fade-in">
+                        <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><span class="text-blue-500 mr-2">Q${
+                          index + 1
+                        }:</span> ${
+              typeof item.question === "object"
+                ? item.question.cueCard
+                : item.question
+            }</h4>
+
+                        <div class="mb-4">
+                            <h5 class="font-bold text-lg text-gray-800">Your Transcribed Response:</h5>
+                            <p class="text-gray-700 italic leading-relaxed text-base bg-gray-100 p-3 rounded-lg border border-gray-200 whitespace-pre-wrap">${
+                              item.transcribedText ||
+                              "Transcription not available."
+                            }</p>
+                        </div>
+
+                        ${
+                          item.aiFeedback
+                            ? `
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="p-4 bg-gray-50 rounded-xl shadow-sm border border-gray-100">
+                                    <h6 class="font-bold text-base text-gray-800 mb-1">Fluency & Coherence:</h6>
+                                    <p class="text-gray-700 text-sm">${
+                                      item.aiFeedback.fluencyCoherence || "N/A"
+                                    }</p>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-xl shadow-sm border border-gray-100">
+                                    <h6 class="font-bold text-base text-gray-800 mb-1">Lexical Resource:</h6>
+                                    <p class="text-gray-700 text-sm">${
+                                      item.aiFeedback.lexicalResource || "N/A"
+                                    }</p>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-xl shadow-sm border border-gray-100">
+                                    <h6 class="font-bold text-base text-gray-800 mb-1">Grammatical Range & Accuracy:</h6>
+                                    <p class="text-gray-700 text-sm">${
+                                      item.aiFeedback
+                                        .grammaticalRangeAccuracy || "N/A"
+                                    }</p>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-xl shadow-sm border border-gray-100">
+                                    <h6 class="font-bold text-base text-gray-800 mb-1">Pronunciation:</h6>
+                                    <p class="text-gray-700 text-sm">${
+                                      item.aiFeedback.pronunciation || "N/A"
+                                    }</p>
+                                </div>
+                            </div>
+
+                            <p class="text-lg font-semibold text-gray-700 mb-4 text-right">Estimated Band for this question: <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-md">${
+                              item.aiFeedback.overallEstimatedBand || "N/A"
+                            }</span></p>
+
+                            <div class="mb-4 p-4 bg-gray-50 rounded-xl shadow-sm border border-gray-100">
+                                <h5 class="text-lg font-bold text-gray-800 mb-2 flex items-center">${Icons.Activity.replace(
+                                  /width="24" height="24"/g,
+                                  iconSizeForFeedback
+                                )} Detailed Feedback:</h5>
+                                <p class="text-gray-700 leading-relaxed text-base whitespace-pre-wrap">${
+                                  item.aiFeedback.feedbackDetails ||
+                                  "No detailed feedback available."
+                                }</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-xl shadow-sm border border-gray-100">
+                                <h5 class="text-lg font-bold text-gray-800 mb-2 flex items-center">${Icons.Lightbulb.replace(
+                                  /width="24" height="24"/g,
+                                  iconSizeForFeedback
+                                )} Alternative Phrasing:</h5>
+                                <p class="text-gray-700 leading-relaxed text-base whitespace-pre-wrap">${
+                                  item.aiFeedback
+                                    .alternativePhrasingSuggestions ||
+                                  "No suggestions available."
+                                }</p>
+                            </div>
+                        `
+                            : '<p class="text-red-600">AI Feedback for this question could not be generated.</p>'
+                        }
+                    </div>
+                `;
+          })
+          .join("");
+
+        // Render the entire feedback section into the main container
+        mainTestContainer.innerHTML = `
+                <div class="mt-8 bg-green-50 p-8 rounded-3xl shadow-xl border border-green-200 animate-fade-in">
+                    <h3 class="text-3xl font-extrabold text-green-800 mb-6 text-center tracking-tight">Comprehensive AI Speaking Feedback</h3>
+                    <p class="text-center text-2xl font-bold text-green-700 mb-8">Overall Estimated Band: <span class="bg-green-200 px-4 py-2 rounded-lg">${speakingTestState.finalFeedback.overallBand}</span></p>
+
+                    ${individualFeedbacksHtml}
+
+                    <div class="flex justify-center mt-10">
+                        <button id="speaking-feedback-back-to-modules-btn"
+                            class="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105"
+                        >
+                            Back to Module Tests
+                        </button>
+                    </div>
+                </div>
+            `;
+        document.getElementById(
+          "speaking-feedback-back-to-modules-btn"
+        ).onclick = () => {
+          window.location.href = `speaking.html`; // Redirect to speaking.html
+        };
+      }
+
+      // Function to render the specific test based on selectedModule
+      /**
+       * Renders the specific test UI based on the `selectedModule` state.
+       * This function acts as a router for individual test modules.
+       * @param {HTMLElement} parentDiv - The div to render the test into.
+       */
+      function renderTestInProgress(parentDiv) {
+        switch (selectedModule) {
+          case "listening":
+            renderListeningTest(parentDiv);
+            break;
+          case "reading":
+            renderReadingTest(parentDiv);
+            break;
+          case "writing":
+            renderWritingTest(parentDiv);
+            break;
+          case "speaking":
+            renderSpeakingTest(parentDiv);
+            break;
+          default:
+            parentDiv.innerHTML = `<p class="text-center text-red-500 text-xl mt-10">Error: No module selected or module not recognized.</p>`;
+            break;
+        }
+      }
+
+      // --- Initialization Logic ---
+      window.onload = async function () {
+        // Initialize Firebase Auth and listen for state changes
+        // The updateAuthUI callback will handle updating the header based on auth status.
+        initFirebaseAuth(updateAuthUI);
+
+        // Get URL parameters to determine which test to load
+        const urlParams = new URLSearchParams(window.location.search);
+        const module = urlParams.get("module");
+        const testId = urlParams.get("testId");
+        const title = urlParams.get("title");
+
+        if (module && testId && title) {
+          selectedModule = module;
+          selectedTestTitle = decodeURIComponent(title);
+          currentView = "test-in-progress"; // Directly go to test in progress
+          renderApp(); // Explicitly render the app content immediately
+        } else {
+          // If no parameters, redirect to the main mock test selection page
+          window.location.href = "mock-test.html";
+        }
+      };
+    </script>
+  </body>
+</html>

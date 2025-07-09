@@ -1,0 +1,2683 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel Dashboard</title>
+    <link rel="stylesheet" href="admin-panel-extra.css" />
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for a clean look -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts for Testimonials (Anton and Dancing Script) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Chart.js CDN for interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+  </head>
+  <body>
+    <!-- Overlay for mobile sidebar (hidden by default) -->
+    <div id="sidebar-overlay" class="lg:hidden hidden overlay"></div>
+
+    <!-- Sidebar -->
+    <aside
+      id="sidebar"
+      class="w-64 bg-white shadow-lg p-6 flex flex-col rounded-r-lg max-h-screen overflow-y-auto sidebar-menu fixed lg:static inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out"
+    >
+      <!-- Logo/Brand Section -->
+      <div class="flex items-center justify-center mb-10 mt-2">
+        <img
+          src="https://placehold.co/40x40/ED3A52/white?text=A"
+          alt="Admin Logo"
+          class="w-10 h-10 rounded-full mr-3 shadow-md"
+        />
+        <span class="text-xl font-bold text-gray-800">Admin Panel</span>
+      </div>
+
+      <!-- Search Bar for Sidebar (Visible on mobile when sidebar is open, hidden on desktop) -->
+      <div class="relative mb-6 lg:hidden">
+        <input
+          type="text"
+          id="sidebar-search"
+          placeholder="Search..."
+          class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-full"
+        />
+        <i
+          class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+        ></i>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="flex-grow">
+        <ul class="space-y-2">
+          <!-- Dashboard -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200 active-link"
+              data-page="dashboard"
+            >
+              <i class="fas fa-chart-line text-lg mr-4"></i>
+              Dashboard
+            </a>
+          </li>
+          <!-- Registration -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="registration"
+            >
+              <i class="fas fa-user-plus text-lg mr-4"></i>
+              Registration
+            </a>
+          </li>
+          <!-- Messages -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="messages"
+            >
+              <i class="fas fa-envelope text-lg mr-4"></i>
+              Messages
+            </a>
+          </li>
+          <!-- Our Teacher -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="our-teacher"
+            >
+              <i class="fas fa-chalkboard-teacher text-lg mr-4"></i>
+              Our Teacher
+            </a>
+          </li>
+          <!-- Student History -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="student-history"
+            >
+              <i class="fas fa-history text-lg mr-4"></i>
+              Student History
+            </a>
+          </li>
+          <!-- Courses -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="courses"
+            >
+              <i class="fas fa-book-open text-lg mr-4"></i>
+              Courses
+            </a>
+          </li>
+          <!-- Community Forum -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="community-forum"
+            >
+              <i class="fas fa-users text-lg mr-4"></i>
+              Community Forum
+            </a>
+          </li>
+          <!-- Blog -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="blog"
+            >
+              <i class="fas fa-blog text-lg mr-4"></i>
+              Blog
+            </a>
+          </li>
+          <!-- Free Resources -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="free-resources"
+            >
+              <i class="fas fa-file-alt text-lg mr-4"></i>
+              Free Resources
+            </a>
+          </li>
+          <!-- Mock Test -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="mock-test"
+            >
+              <i class="fas fa-clipboard-list text-lg mr-4"></i>
+              Mock Test
+            </a>
+          </li>
+          <!-- Quizzes -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="quizzes"
+            >
+              <i class="fas fa-question-circle text-lg mr-4"></i>
+              Quizzes
+            </a>
+          </li>
+          <!-- Testimonial -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="testimonial"
+            >
+              <i class="fas fa-star text-lg mr-4"></i>
+              Testimonial
+            </a>
+          </li>
+          <!-- Block List -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="block-list"
+            >
+              <i class="fas fa-ban text-lg mr-4"></i>
+              Block List
+            </a>
+          </li>
+          <!-- Home Page Link -->
+          <li>
+            <a
+              href="#"
+              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+              data-page="homepage"
+            >
+              <i class="fas fa-home text-lg mr-4"></i>
+              Home Page
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Log Out Button - Removed for now -->
+      <!-- <div class="mt-auto pt-6 border-t border-gray-200">
+        <a
+          href="#"
+          id="logout-btn"
+          class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+        >
+          <i class="fas fa-sign-out-alt text-lg mr-4"></i>
+          Log Out
+        </a>
+      </div> -->
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col bg-gray-50 h-full w-[100%]">
+      <!-- Removed max-h-screen -->
+      <!-- Header -->
+      <header
+        class="bg-white shadow-sm py-4 px-6 flex items-center justify-between flex-nowrap rounded-bl-lg"
+      >
+        <div class="flex items-center space-x-4 flex-shrink-0">
+          <!-- Hamburger Menu Icon for Mobile -->
+          <button
+            id="hamburger-menu"
+            class="lg:hidden text-gray-600 hover:text-red-600 text-2xl"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+          <!-- Date Picker -->
+          <div class="relative">
+            <input
+              type="date"
+              id="date-picker"
+              class="p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-32 sm:w-auto"
+            />
+          </div>
+          <!-- Export PDF Button -->
+          <button
+            id="export-pdf-btn"
+            class="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-md transition-colors duration-200 text-sm hidden md:flex"
+          >
+            <i class="fas fa-file-export mr-2"></i>
+            Export PDF
+          </button>
+        </div>
+
+        <div
+          class="flex items-center space-x-4 sm:space-x-6 flex-shrink-0 ml-auto"
+        >
+          <!-- Search Bar for Header (Hidden on small screens, shown on medium and up) -->
+          <div class="relative hidden md:block flex-grow-0">
+            <input
+              type="text"
+              placeholder="Search..."
+              class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-40 lg:w-64"
+            />
+            <i
+              class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            ></i>
+          </div>
+          <!-- Icons (e.g., Notifications, Settings) -->
+          <button
+            id="notifications-btn"
+            class="relative text-gray-600 hover:text-red-600 transition-colors duration-200"
+          >
+            <i class="fas fa-bell text-xl"></i>
+            <span
+              class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2"
+              >3</span
+            >
+          </button>
+          <button
+            id="settings-btn"
+            class="text-gray-600 hover:text-red-600 transition-colors duration-200"
+          >
+            <i class="fas fa-cog text-xl"></i>
+          </button>
+          <!-- User Avatar/Sign In - Modified to be always visible and not a dropdown trigger -->
+          <div class="relative group flex-shrink-0">
+            <img
+              src="https://placehold.co/40x40/9CA3AF/white?text=U"
+              alt="User Avatar"
+              class="w-10 h-10 rounded-full border-2 border-gray-300 transition-all duration-200"
+              title="Admin User"
+            />
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content Area -->
+      <main
+        id="content-area"
+        class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto custom-scrollbar"
+      >
+        <!-- Content will be loaded here dynamically -->
+      </main>
+    </div>
+
+    <!-- Message Box (replaces alert) -->
+    <div
+      id="message-box"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-[1000] hidden"
+    >
+      <div
+        class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center"
+      >
+        <p id="message-content" class="text-gray-800 text-lg mb-4"></p>
+        <button
+          id="close-message-box"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        doc,
+        addDoc,
+        updateDoc,
+        deleteDoc,
+        onSnapshot,
+        query,
+        where,
+        getDoc, // Added getDoc for fetching single testimonial
+        serverTimestamp, // Import serverTimestamp for consistent dates
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+      import {
+        getAuth,
+        signInAnonymously,
+        signInWithCustomToken,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+      // Firebase configuration and initialization
+      // Use the provided Firebase config for local development
+      const defaultAppId = "ielts-mahir-community-forum";
+      const defaultFirebaseConfig = {
+        apiKey: "AIzaSyAxsd0CnLsh7t7yFy3ZPp6saGD_YpLL1mY",
+        authDomain: "ielts-mahir-community-forum.firebaseapp.com",
+        projectId: "ielts-mahir-community-forum",
+        storageBucket: "ielts-mahir-community-forum.firebasestorage.app",
+        messagingSenderId: "1036043607546",
+        appId: "1:1036043607546:web:bd217e04cc0ec5f296d843",
+        measurementId: "G-YC4CG1WKD3",
+      };
+
+      const firebaseConfig =
+        typeof __firebase_config !== "undefined"
+          ? JSON.parse(__firebase_config)
+          : defaultFirebaseConfig;
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+      const appId = typeof __app_id !== "undefined" ? __app_id : defaultAppId;
+
+      let userId = null; // To store the authenticated user's ID
+      let isAuthReady = false; // Flag to indicate if auth is ready
+
+      // Authenticate anonymously on page load
+      async function authenticateFirebase() {
+        try {
+          if (typeof __initial_auth_token !== "undefined") {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+          userId = auth.currentUser.uid;
+          isAuthReady = true; // Only set to true on successful authentication
+          console.log("Firebase authenticated. User ID:", userId);
+        } catch (error) {
+          console.error("Firebase authentication failed:", error);
+          isAuthReady = false; // Keep false on failure
+          showMessage(
+            `Failed to connect to Firebase: ${error.message}. Please check your internet connection and Firebase setup.`
+          );
+        }
+      }
+
+      // --- Message Box Utility (replaces alert/confirm) ---
+      const showMessage = (message) => {
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        messageContent.textContent = message;
+        messageBox.classList.remove("hidden");
+      };
+
+      // --- Page Content Loading Function ---
+      // Function to generate common HTML elements for different pages
+      const generatePageHeader = (title) => `
+          <h1 class="text-3xl font-bold text-gray-800 mb-6">${title}</h1>
+          <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+              <p class="text-gray-600">This is the content for the <strong>${title}</strong> page. You can customize this section.</p>
+          </div>
+          `;
+
+      // Data storage for dynamic content (mock data) - primarily for demonstration before full Firebase integration
+      const mockRegistrations = [
+        { name: "John Doe", date: "2024-01-15" },
+        { name: "Jane Smith", date: "2024-01-10" },
+      ];
+
+      const mockCourses = [
+        {
+          name: "Advanced Math",
+          description:
+            "Comprehensive course covering advanced mathematical concepts.",
+          enrolled: 150,
+          rating: 4.8,
+        },
+        {
+          name: "Basic English",
+          description: "Essential English grammar and communication skills.",
+          enrolled: 200,
+          rating: 4.5,
+        },
+      ];
+
+      // Function to render registrations
+      const renderRegistrations = () => {
+        const registrationList = document.getElementById("registration-list");
+        if (!registrationList) return; // Ensure element exists
+
+        registrationList.innerHTML = ""; // Clear existing
+        mockRegistrations.forEach((reg) => {
+          const listItem = document.createElement("li");
+          listItem.className =
+            "flex justify-between items-center p-3 bg-gray-50 rounded-lg";
+          listItem.innerHTML = `
+                      <span>${reg.name} - <span class="text-gray-600">Registered on ${reg.date}</span></span>
+                      <button class="text-blue-500 hover:text-blue-700" onclick="showMessage('Editing ${reg.name}\'s registration.')"><i class="fas fa-edit"></i></button>
+                  `;
+          registrationList.appendChild(listItem);
+        });
+      };
+
+      // Function to render courses
+      const renderCourses = () => {
+        const coursesGrid = document.getElementById("courses-grid");
+        if (!coursesGrid) return; // Ensure element exists
+
+        coursesGrid.innerHTML = ""; // Clear existing
+        mockCourses.forEach((course) => {
+          const courseCard = document.createElement("div");
+          courseCard.className = "bg-gray-50 p-4 rounded-lg shadow-sm";
+          courseCard.innerHTML = `
+                      <h3 class="font-bold text-gray-800 text-lg mb-2">${course.name}</h3>
+                      <p class="text-gray-600 text-sm">${course.description}</p>
+                      <div class="flex justify-between items-center mt-3 text-sm">
+                          <span class="text-gray-500"><i class="fas fa-users mr-1"></i> ${course.enrolled} Enrolled</span>
+                          <span class="text-gray-500"><i class="fas fa-star mr-1"></i> ${course.rating} Rating</span>
+                      </div>
+                      <button class="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded-lg" onclick="showMessage('Editing ${course.name} course.')">Edit Course</button>
+                  `;
+          coursesGrid.appendChild(courseCard);
+        });
+      };
+
+      // --- Testimonial Management Functions (for Admin Panel) ---
+      // Function to close all open testimonial dropdowns
+      const closeAllKebabDropdowns = () => {
+        document
+          .querySelectorAll(".kebab-dropdown.active")
+          .forEach((dropdown) => {
+            dropdown.classList.remove("active");
+          });
+      };
+
+      // Global functions for testimonial management to be called from HTML onclick
+      window.updateTestimonialStatus = async (id, newStatus) => {
+        if (!isAuthReady) {
+          showMessage("Firebase not ready. Please try again.");
+          console.warn(
+            "Attempted to update testimonial status before Firebase auth was ready."
+          );
+          return;
+        }
+        closeAllKebabDropdowns(); // Close dropdown after action
+        try {
+          const testimonialDocRef = doc(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "testimonials",
+            id
+          );
+          await updateDoc(testimonialDocRef, { status: newStatus });
+          showMessage(`Testimonial status updated to '${newStatus}'.`);
+          console.log(
+            `Successfully updated testimonial ${id} status to ${newStatus}.`
+          );
+        } catch (error) {
+          console.error("Error updating testimonial status:", error);
+          showMessage(`Failed to update testimonial status: ${error.message}.`);
+        }
+      };
+
+      window.editTestimonial = async (id) => {
+        if (!isAuthReady) {
+          showMessage("Firebase not ready. Please try again.");
+          console.warn(
+            "Attempted to edit testimonial before Firebase auth was ready."
+          );
+          return;
+        }
+        closeAllKebabDropdowns(); // Close dropdown after action
+        try {
+          const testimonialDocRef = doc(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "testimonials",
+            id
+          );
+          const docSnap = await getDoc(testimonialDocRef);
+
+          if (docSnap.exists()) {
+            const testimonial = docSnap.data();
+            console.log("Fetched testimonial for editing:", testimonial);
+            // Populate the form for editing
+            document.getElementById("testimonial-id").value = id;
+            document.getElementById("testimonial-name").value =
+              testimonial.name;
+            document.getElementById("testimonial-role").value =
+              testimonial.role;
+            document.getElementById("testimonial-text").value =
+              testimonial.text || "";
+            document.getElementById("testimonial-avatar-src").value =
+              testimonial.avatarSrc || "";
+
+            // Handle type selection and video URL
+            const typeTextRadio = document.getElementById(
+              "testimonial-type-text"
+            );
+            const typeVideoRadio = document.getElementById(
+              "testimonial-type-video"
+            );
+            const videoUrlGroup = document.getElementById("video-url-group");
+            const testimonialVideoSrc = document.getElementById(
+              "testimonial-video-src"
+            );
+
+            if (testimonial.type === "video") {
+              typeVideoRadio.checked = true;
+              videoUrlGroup.classList.remove("hidden");
+              testimonialVideoSrc.value = testimonial.videoSrc || "";
+            } else {
+              typeTextRadio.checked = true;
+              videoUrlGroup.classList.add("hidden");
+              testimonialVideoSrc.value = "";
+            }
+
+            // Change button text for update
+            document.getElementById("add-testimonial-btn").textContent =
+              "Update Testimonial";
+            showMessage(
+              "Form populated for editing. Update and submit to save changes."
+            );
+          } else {
+            showMessage("Testimonial not found.");
+            console.warn("Testimonial document not found for ID:", id);
+          }
+        } catch (error) {
+          console.error("Error fetching testimonial for edit:", error);
+          showMessage(
+            `Failed to load testimonial for editing: ${error.message}.`
+          );
+        }
+      };
+
+      window.deleteTestimonial = async (id) => {
+        if (!isAuthReady) {
+          showMessage("Firebase not ready. Please try again.");
+          console.warn(
+            "Attempted to delete testimonial before Firebase auth was ready."
+          );
+          return;
+        }
+        closeAllKebabDropdowns(); // Close dropdown after action
+        // Using the custom message box for confirmation
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        const closeMessageBoxBtn = document.getElementById("close-message-box");
+
+        messageContent.textContent =
+          "Are you sure you want to delete this testimonial? This action cannot be undone.";
+        messageBox.classList.remove("hidden");
+
+        // Add a temporary confirm button to the message box
+        const confirmDeleteBtn = document.createElement("button");
+        confirmDeleteBtn.textContent = "Confirm Delete";
+        confirmDeleteBtn.className =
+          "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
+        confirmDeleteBtn.id = "confirm-delete-btn";
+        messageBox.querySelector(".text-center").appendChild(confirmDeleteBtn);
+
+        confirmDeleteBtn.addEventListener("click", async () => {
+          try {
+            const testimonialDocRef = doc(
+              db,
+              "artifacts",
+              appId,
+              "public",
+              "data",
+              "testimonials",
+              id
+            );
+            await deleteDoc(testimonialDocRef);
+            showMessage("Testimonial deleted successfully.");
+            console.log(`Successfully deleted testimonial ${id}.`);
+          } catch (error) {
+            console.error("Error deleting testimonial:", error);
+            showMessage(`Failed to delete testimonial: ${error.message}.`);
+          } finally {
+            // Clean up the temporary button
+            confirmDeleteBtn.remove();
+            messageBox.classList.add("hidden"); // Close after action
+          }
+        });
+
+        // Ensure the original close button also cleans up the temporary button
+        const originalCloseHandler = closeMessageBoxBtn.onclick; // Save original handler
+        closeMessageBoxBtn.onclick = () => {
+          confirmDeleteBtn.remove();
+          messageBox.classList.add("hidden");
+          if (originalCloseHandler) originalCloseHandler(); // Call original if exists
+          closeMessageBoxBtn.onclick = originalCloseHandler; // Restore original handler
+        };
+      };
+
+      const renderTestimonials = () => {
+        if (!isAuthReady) {
+          console.warn(
+            "Firebase Auth not ready for testimonials. Displaying warning to user."
+          );
+          showMessage(
+            "Testimonials cannot be loaded or managed because Firebase authentication is not ready. Please try refreshing the page."
+          );
+          return;
+        }
+
+        const pendingList = document.getElementById(
+          "pending-testimonials-list"
+        );
+        const approvedList = document.getElementById(
+          "approved-testimonials-list"
+        );
+        const rejectedList = document.getElementById(
+          "rejected-testimonials-list"
+        );
+
+        if (!pendingList || !approvedList || !rejectedList) {
+          console.error("Testimonial lists not found in DOM. Cannot render.");
+          return; // Ensure elements exist
+        }
+
+        // Real-time listener for testimonials
+        const testimonialsRef = collection(
+          db,
+          "artifacts",
+          appId,
+          "public",
+          "data",
+          "testimonials"
+        );
+        console.log(
+          `Setting up onSnapshot for testimonials at path: artifacts/${appId}/public/data/testimonials`
+        );
+
+        onSnapshot(
+          testimonialsRef,
+          (snapshot) => {
+            console.log("Testimonial data snapshot received.");
+            pendingList.innerHTML = "";
+            approvedList.innerHTML = "";
+            rejectedList.innerHTML = "";
+            const currentTestimonials = [];
+
+            if (snapshot.empty) {
+              console.log("Testimonials collection is empty.");
+              // Optionally show a message in the lists if they are empty
+              pendingList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No pending testimonials.</p>';
+              approvedList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No approved testimonials.</p>';
+              rejectedList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No rejected testimonials.</p>';
+            }
+
+            snapshot.forEach((doc) => {
+              const testimonial = { id: doc.id, ...doc.data() };
+              currentTestimonials.push(testimonial);
+              console.log("Fetched testimonial:", testimonial); // Log each fetched testimonial
+
+              const card = document.createElement("div");
+              card.classList.add("testimonial-card-admin");
+              card.dataset.id = testimonial.id; // Set data-id for easy lookup
+
+              let contentHtml = "";
+
+              if (testimonial.type === "video") {
+                card.classList.add("video-card-admin"); // Add specific class for video styling
+                contentHtml = `
+                              <img src="${testimonial.avatarSrc}" alt="${
+                  testimonial.name
+                }" class="avatar video-avatar" onerror="this.src='https://placehold.co/80x80/9CA3AF/white?text=User'">
+                              <video class="tes-video" src="${
+                                testimonial.videoSrc
+                              }" preload="metadata"></video>
+                              <div class="play-button" data-video-id="${
+                                testimonial.id
+                              }"><i class="fa-solid fa-play"></i></div>
+                              <div class="pause-button" data-video-id="${
+                                testimonial.id
+                              }" style="display:none;"><i class="fa-solid fa-pause"></i></div>
+                              <p class="name video-name">${testimonial.name}</p>
+                              <p class="role video-role">${testimonial.role}</p>
+                              <!-- Hidden text for editing purposes -->
+                              <p class="hidden-text" style="display:none;">${
+                                testimonial.text || ""
+                              }</p>
+                          `;
+              } else {
+                contentHtml = `
+                              <img src="${testimonial.avatarSrc}" alt="${testimonial.name}" class="avatar" onerror="this.src='https://placehold.co/80x80/9CA3AF/white?text=User'">
+                              <div class="text-content">
+                                  <p class="text">"${testimonial.text}"</p>
+                              </div>
+                              <p class="name">${testimonial.name}</p>
+                              <p class="role">${testimonial.role}</p>
+                          `;
+              }
+
+              // Kebab menu HTML structure
+              const kebabMenu = `
+                  <div class="kebab-menu-container">
+                      <button class="kebab-button" aria-label="Testimonial actions" data-testimonial-id="${
+                        testimonial.id
+                      }">
+                          <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <div class="kebab-dropdown">
+                          ${
+                            testimonial.status === "pending"
+                              ? `
+                              <button onclick="updateTestimonialStatus('${testimonial.id}', 'approved')"><i class="fas fa-check-circle"></i> Approve</button>
+                              <button onclick="updateTestimonialStatus('${testimonial.id}', 'rejected')"><i class="fas fa-times-circle"></i> Reject</button>
+                              `
+                              : ""
+                          }
+                          ${
+                            testimonial.status === "approved"
+                              ? `
+                              <button onclick="updateTestimonialStatus('${testimonial.id}', 'pending')"><i class="fas fa-ban"></i> Unpublish</button>
+                              `
+                              : ""
+                          }
+                          ${
+                            testimonial.status === "rejected"
+                              ? `
+                              <button onclick="updateTestimonialStatus('${testimonial.id}', 'approved')"><i class="fas fa-check-circle"></i> Approve</button>
+                              `
+                              : ""
+                          }
+                          <button onclick="editTestimonial('${
+                            testimonial.id
+                          }')"><i class="fas fa-edit"></i> Edit</button>
+                          <button onclick="deleteTestimonial('${
+                            testimonial.id
+                          }')"><i class="fas fa-trash-alt"></i> Delete</button>
+                      </div>
+                  </div>
+              `;
+
+              // Add kebab menu and testimonial content
+              card.innerHTML = contentHtml + kebabMenu;
+
+              if (testimonial.status === "pending") {
+                pendingList.appendChild(card);
+              } else if (testimonial.status === "approved") {
+                approvedList.appendChild(card);
+              } else if (testimonial.status === "rejected") {
+                rejectedList.appendChild(card);
+              }
+            });
+
+            // Add event listeners for video play/pause
+            document
+              .querySelectorAll(".testimonial-card-admin .play-button")
+              .forEach((button) => {
+                button.addEventListener("click", (e) => {
+                  const videoId = e.currentTarget.dataset.videoId;
+                  const videoElement = document.querySelector(
+                    `.testimonial-card-admin[data-id="${videoId}"] .tes-video`
+                  );
+                  const pauseButton = document.querySelector(
+                    `.testimonial-card-admin[data-id="${videoId}"] .pause-button`
+                  );
+
+                  if (videoElement) {
+                    videoElement.play();
+                    e.currentTarget.style.display = "none";
+                    if (pauseButton) pauseButton.style.display = "flex";
+                  }
+                });
+              });
+
+            document
+              .querySelectorAll(".testimonial-card-admin .pause-button")
+              .forEach((button) => {
+                button.addEventListener("click", (e) => {
+                  const videoId = e.currentTarget.dataset.videoId;
+                  const videoElement = document.querySelector(
+                    `.testimonial-card-admin[data-id="${videoId}"] .tes-video`
+                  );
+                  const playButton = document.querySelector(
+                    `.testimonial-card-admin[data-id="${videoId}"] .play-button`
+                  );
+
+                  if (videoElement) {
+                    videoElement.pause();
+                    e.currentTarget.style.display = "none";
+                    if (playButton) playButton.style.display = "flex";
+                  }
+                });
+              });
+
+            document
+              .querySelectorAll(".testimonial-card-admin .tes-video")
+              .forEach((video) => {
+                video.addEventListener("ended", (e) => {
+                  const videoId = e.target.closest(".testimonial-card-admin")
+                    .dataset.id;
+                  const playButton = document.querySelector(
+                    `.testimonial-card-admin[data-id="${videoId}"] .play-button`
+                  );
+                  const pauseButton = document.querySelector(
+                    `.testimonial-card-admin[data-id="${videoId}"] .pause-button`
+                  );
+                  if (playButton) playButton.style.display = "flex";
+                  if (pauseButton) pauseButton.style.display = "none";
+                });
+                video.addEventListener("play", (e) => {
+                  const videoId = e.target.closest(".testimonial-card-admin")
+                    .dataset.id;
+                  const playButton = document.querySelector(
+                    `.testimonial-card-admin[data-id="${videoId}"] .play-button`
+                  );
+                  const pauseButton = document.querySelector(
+                    `.testimonial-card-admin[data-id="${videoId}"] .pause-button`
+                  );
+                  if (playButton) playButton.style.display = "none";
+                  if (pauseButton) pauseButton.style.display = "flex";
+                });
+                video.addEventListener("pause", (e) => {
+                  const videoId = e.target.closest(".testimonial-card-admin")
+                    .dataset.id;
+                  const playButton = document.querySelector(
+                    `.testimonial-card-admin[data-id="${videoId}"] .play-button`
+                  );
+                  const pauseButton = document.querySelector(
+                    `.testimonial-card-admin[data-id="${videoId}"] .pause-button`
+                  );
+                  if (playButton) playButton.style.display = "flex";
+                  if (pauseButton) pauseButton.style.display = "none";
+                });
+              });
+
+            // Add event listener for kebab buttons
+            document.querySelectorAll(".kebab-button").forEach((button) => {
+              button.addEventListener("click", (event) => {
+                event.stopPropagation(); // Prevent document click from immediately closing it
+                const dropdown = button.nextElementSibling; // Get the dropdown div
+                closeAllKebabDropdowns(); // Close any other open dropdowns
+                dropdown.classList.toggle("active");
+              });
+            });
+          },
+          (error) => {
+            console.error("Error fetching testimonials:", error);
+            showMessage(
+              `Error loading testimonials: ${error.message}. Please try again.`
+            );
+          }
+        );
+      };
+
+      // --- Quiz Management Functions (for Admin Panel) ---
+      // Global functions for quiz management to be called from HTML onclick
+      window.updateQuizStatus = async (id, newStatus) => {
+        if (!isAuthReady) {
+          showMessage("Firebase not ready. Please try again.");
+          console.warn(
+            "Attempted to update quiz status before Firebase auth was ready."
+          );
+          return;
+        }
+        try {
+          const quizDocRef = doc(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "quizzes",
+            id
+          );
+          await updateDoc(quizDocRef, { status: newStatus });
+          showMessage(`Quiz status updated to '${newStatus}'.`);
+          console.log(
+            `Successfully updated quiz ${id} status to ${newStatus}.`
+          );
+        } catch (error) {
+          console.error("Error updating quiz status:", error);
+          showMessage(`Failed to update quiz status: ${error.message}.`);
+        }
+      };
+
+      window.editQuiz = async (id) => {
+        if (!isAuthReady) {
+          showMessage("Firebase not ready. Please try again.");
+          console.warn(
+            "Attempted to edit quiz before Firebase auth was ready."
+          );
+          return;
+        }
+        try {
+          const quizDocRef = doc(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "quizzes",
+            id
+          );
+          const docSnap = await getDoc(quizDocRef);
+
+          if (docSnap.exists()) {
+            const quiz = docSnap.data();
+            console.log("Fetched quiz for editing:", quiz);
+            // Populate the form for editing
+            document.getElementById("quiz-id").value = id;
+            document.getElementById("quiz-title").value = quiz.title;
+            document.getElementById("quiz-description").value =
+              quiz.description;
+            document.getElementById("quiz-questions-count").value =
+              quiz.questionsCount;
+
+            // Change button text for update
+            document.getElementById("add-quiz-btn").textContent = "Update Quiz";
+            showMessage(
+              "Form populated for editing. Update and submit to save changes."
+            );
+          } else {
+            showMessage("Quiz not found.");
+            console.warn("Quiz document not found for ID:", id);
+          }
+        } catch (error) {
+          console.error("Error fetching quiz for edit:", error);
+          showMessage(`Failed to load quiz for editing: ${error.message}.`);
+        }
+      };
+
+      window.deleteQuiz = async (id) => {
+        if (!isAuthReady) {
+          showMessage("Firebase not ready. Please try again.");
+          console.warn(
+            "Attempted to delete quiz before Firebase auth was ready."
+          );
+          return;
+        }
+        // Using the custom message box for confirmation
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        const closeMessageBoxBtn = document.getElementById("close-message-box");
+
+        messageContent.textContent =
+          "Are you sure you want to delete this quiz? This action cannot be undone.";
+        messageBox.classList.remove("hidden");
+
+        // Add a temporary confirm button to the message box
+        const confirmDeleteBtn = document.createElement("button");
+        confirmDeleteBtn.textContent = "Confirm Delete";
+        confirmDeleteBtn.className =
+          "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
+        confirmDeleteBtn.id = "confirm-delete-btn";
+        messageBox.querySelector(".text-center").appendChild(confirmDeleteBtn);
+
+        confirmDeleteBtn.addEventListener("click", async () => {
+          try {
+            const quizDocRef = doc(
+              db,
+              "artifacts",
+              appId,
+              "public",
+              "data",
+              "quizzes",
+              id
+            );
+            await deleteDoc(quizDocRef);
+            showMessage("Quiz deleted successfully.");
+            console.log(`Successfully deleted quiz ${id}.`);
+          } catch (error) {
+            console.error("Error deleting quiz:", error);
+            showMessage(`Failed to delete quiz: ${error.message}.`);
+          } finally {
+            // Clean up the temporary button
+            confirmDeleteBtn.remove();
+            messageBox.classList.add("hidden"); // Close after action
+          }
+        });
+
+        // Ensure the original close button also cleans up the temporary button
+        const originalCloseHandler = closeMessageBoxBtn.onclick; // Save original handler
+        closeMessageBoxBtn.onclick = () => {
+          confirmDeleteBtn.remove();
+          messageBox.classList.add("hidden");
+          if (originalCloseHandler) originalCloseHandler(); // Call original if exists
+          closeMessageBoxBtn.onclick = originalCloseHandler; // Restore original handler
+        };
+      };
+
+      const renderQuizzes = () => {
+        if (!isAuthReady) {
+          console.warn(
+            "Firebase Auth not ready for quizzes. Displaying warning to user."
+          );
+          showMessage(
+            "Quizzes cannot be loaded or managed because Firebase authentication is not ready. Please try refreshing the page."
+          );
+          return;
+        }
+
+        const publishedList = document.getElementById("published-quizzes-list");
+        const draftList = document.getElementById("draft-quizzes-list");
+
+        if (!publishedList || !draftList) {
+          console.error("Quiz lists not found in DOM. Cannot render.");
+          return;
+        }
+
+        const quizzesRef = collection(
+          db,
+          "artifacts",
+          appId,
+          "public",
+          "data",
+          "quizzes"
+        );
+        console.log(
+          `Setting up onSnapshot for quizzes at path: artifacts/${appId}/public/data/quizzes`
+        );
+
+        onSnapshot(
+          quizzesRef,
+          (snapshot) => {
+            console.log("Quiz data snapshot received.");
+            publishedList.innerHTML = "";
+            draftList.innerHTML = "";
+
+            if (snapshot.empty) {
+              console.log("Quizzes collection is empty.");
+              publishedList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No published quizzes.</p>';
+              draftList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No draft quizzes.</p>';
+            }
+
+            snapshot.forEach((doc) => {
+              const quiz = { id: doc.id, ...doc.data() };
+              console.log("Fetched quiz:", quiz);
+
+              const card = document.createElement("div");
+              card.classList.add(
+                "bg-white",
+                "p-4",
+                "rounded-lg",
+                "shadow-sm",
+                "flex",
+                "flex-col"
+              );
+              card.innerHTML = `
+                      <h3 class="font-bold text-gray-800 text-lg mb-2">${
+                        quiz.title
+                      }</h3>
+                      <p class="text-gray-600 text-sm flex-grow mb-2">${
+                        quiz.description
+                      }</p>
+                      <p class="text-gray-500 text-xs mb-4">Questions: ${
+                        quiz.questionsCount
+                      }</p>
+                      <div class="flex flex-wrap gap-2 mt-auto">
+                          ${
+                            quiz.status === "draft"
+                              ? `<button class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateQuizStatus('${quiz.id}', 'published')">Publish</button>`
+                              : `<button class="bg-orange-600 hover:bg-orange-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateQuizStatus('${quiz.id}', 'draft')">Unpublish</button>`
+                          }
+                          <button class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="editQuiz('${
+                            quiz.id
+                          }')">Edit</button>
+                          <button class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="deleteQuiz('${
+                            quiz.id
+                          }')">Delete</button>
+                      </div>
+                  `;
+
+              if (quiz.status === "published") {
+                publishedList.appendChild(card);
+              } else if (quiz.status === "draft") {
+                draftList.appendChild(card);
+              }
+            });
+          },
+          (error) => {
+            console.error("Error fetching quizzes:", error);
+            showMessage(
+              `Error loading quizzes: ${error.message}. Please try again.`
+            );
+          }
+        );
+      };
+
+      // --- Blog Management Functions (for Admin Panel) ---
+      // Global functions for blog management to be called from HTML onclick
+      window.updateBlogPostStatus = async (id, newStatus) => {
+        if (!isAuthReady) {
+          showMessage("Firebase not ready. Please try again.");
+          console.warn(
+            "Attempted to update blog post status before Firebase auth was ready."
+          );
+          return;
+        }
+        try {
+          const blogPostDocRef = doc(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "blogPosts",
+            id
+          );
+          await updateDoc(blogPostDocRef, { status: newStatus });
+          showMessage(`Blog post status updated to '${newStatus}'.`);
+          console.log(
+            `Successfully updated blog post ${id} status to ${newStatus}.`
+          );
+        } catch (error) {
+          console.error("Error updating blog post status:", error);
+          showMessage(`Failed to update blog post status: ${error.message}.`);
+        }
+      };
+
+      window.editBlogPost = async (id) => {
+        if (!isAuthReady) {
+          showMessage("Firebase not ready. Please try again.");
+          console.warn(
+            "Attempted to edit blog post before Firebase auth was ready."
+          );
+          return;
+        }
+        try {
+          const blogPostDocRef = doc(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "blogPosts",
+            id
+          );
+          const docSnap = await getDoc(blogPostDocRef);
+
+          if (docSnap.exists()) {
+            const blogPost = docSnap.data();
+            console.log("Fetched blog post for editing:", blogPost);
+
+            // Populate the form for editing
+            document.getElementById("blog-id").value = id;
+            document.getElementById("blog-title").value = blogPost.title;
+            document.getElementById("blog-category").value = blogPost.category;
+            document.getElementById("blog-content").value = blogPost.content;
+            document.getElementById("blog-author").value = blogPost.author;
+            document.getElementById("blog-author-img").value =
+              blogPost.authorImg || "";
+            document.getElementById("blog-image").value = blogPost.image || "";
+
+            // Change button text for update
+            document.getElementById("add-blog-btn").textContent =
+              "Update Blog Post";
+            showMessage(
+              "Form populated for editing. Update and submit to save changes."
+            );
+          } else {
+            showMessage("Blog post not found.");
+            console.warn("Blog post document not found for ID:", id);
+          }
+        } catch (error) {
+          console.error("Error fetching blog post for edit:", error);
+          showMessage(
+            `Failed to load blog post for editing: ${error.message}.`
+          );
+        }
+      };
+
+      window.deleteBlogPost = async (id) => {
+        if (!isAuthReady) {
+          showMessage("Firebase not ready. Please try again.");
+          console.warn(
+            "Attempted to delete blog post before Firebase auth was ready."
+          );
+          return;
+        }
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        const closeMessageBoxBtn = document.getElementById("close-message-box");
+
+        messageContent.textContent =
+          "Are you sure you want to delete this blog post? This action cannot be undone.";
+        messageBox.classList.remove("hidden");
+
+        const confirmDeleteBtn = document.createElement("button");
+        confirmDeleteBtn.textContent = "Confirm Delete";
+        confirmDeleteBtn.className =
+          "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
+        confirmDeleteBtn.id = "confirm-delete-btn";
+        messageBox.querySelector(".text-center").appendChild(confirmDeleteBtn);
+
+        confirmDeleteBtn.addEventListener("click", async () => {
+          try {
+            const blogPostDocRef = doc(
+              db,
+              "artifacts",
+              appId,
+              "public",
+              "data",
+              "blogPosts",
+              id
+            );
+            await deleteDoc(blogPostDocRef);
+            showMessage("Blog post deleted successfully.");
+            console.log(`Successfully deleted blog post ${id}.`);
+          } catch (error) {
+            console.error("Error deleting blog post:", error);
+            showMessage(`Failed to delete blog post: ${error.message}.`);
+          } finally {
+            confirmDeleteBtn.remove();
+            messageBox.classList.add("hidden");
+          }
+        });
+
+        const originalCloseHandler = closeMessageBoxBtn.onclick;
+        closeMessageBoxBtn.onclick = () => {
+          confirmDeleteBtn.remove();
+          messageBox.classList.add("hidden");
+          if (originalCloseHandler) originalCloseHandler();
+          closeMessageBoxBtn.onclick = originalCloseHandler;
+        };
+      };
+
+      const renderBlogPosts = () => {
+        if (!isAuthReady) {
+          console.warn(
+            "Firebase Auth not ready for blog posts. Displaying warning to user."
+          );
+          showMessage(
+            "Blog posts cannot be loaded or managed because Firebase authentication is not ready. Please try refreshing the page."
+          );
+          return;
+        }
+
+        const publishedList = document.getElementById(
+          "published-blog-posts-list"
+        );
+        const draftList = document.getElementById("draft-blog-posts-list");
+
+        if (!publishedList || !draftList) {
+          console.error("Blog post lists not found in DOM. Cannot render.");
+          return;
+        }
+
+        const blogPostsRef = collection(
+          db,
+          "artifacts",
+          appId,
+          "public",
+          "data",
+          "blogPosts"
+        );
+        console.log(
+          `Setting up onSnapshot for blogPosts at path: artifacts/${appId}/public/data/blogPosts`
+        );
+
+        onSnapshot(
+          blogPostsRef,
+          (snapshot) => {
+            console.log("Blog post data snapshot received.");
+            publishedList.innerHTML = "";
+            draftList.innerHTML = "";
+
+            if (snapshot.empty) {
+              console.log("Blog posts collection is empty.");
+              publishedList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full ">No published blog posts.</p>';
+              draftList.innerHTML =
+                '<p class="text-gray-500 text-center col-span-full">No draft blog posts.</p>';
+            }
+
+            snapshot.forEach((doc) => {
+              const blogPost = { id: doc.id, ...doc.data() };
+              console.log("Fetched blog post:", blogPost);
+
+              const dateObj = blogPost.timestamp
+                ? blogPost.timestamp.toDate()
+                : new Date(); // Convert Firebase Timestamp to Date
+              const formattedDate = dateObj.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              });
+
+              const card = document.createElement("div");
+              card.classList.add(
+                "bg-white",
+                "p-4",
+                "rounded-lg",
+                "shadow-sm",
+                "flex",
+                "flex-col",
+                "border",
+                "border-gray-300"
+              );
+              card.innerHTML = `
+                      <img src="${
+                        blogPost.image ||
+                        "https://placehold.co/400x200/cccccc/white?text=Blog+Image"
+                      }" alt="${
+                blogPost.title
+              }" class="w-full h-[40vw] md:h-[24vw] lg:h-[14vw] object-cover rounded-md mb-4 onerror="this.src='https://placehold.co/400x200/cccccc/white?text=Blog+Image'">
+                      <div class="flex items-center justify-between text-xs text-gray-500 mb-2">
+                          <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full">${
+                            blogPost.category
+                          }</span>
+                          <span>${formattedDate}</span>
+                      </div>
+                      <h3 class="font-bold text-gray-800 text-lg mb-2">${
+                        blogPost.title
+                      }</h3>
+                      <p class="text-gray-600 text-sm flex-grow mb-4">${blogPost.content.substring(
+                        0,
+                        100
+                      )}...</p>
+                      <div class="flex items-center text-sm text-gray-700 mb-4">
+                          <img src="${
+                            blogPost.authorImg ||
+                            "https://placehold.co/40x40/9CA3AF/white?text=A"
+                          }" alt="${
+                blogPost.author
+              }" class="w-8 h-8 rounded-full mr-2" onerror="this.src='https://placehold.co/40x40/9CA3AF/white?text=A'">
+                          <span>${blogPost.author}</span>
+                      </div>
+                      <div class="flex flex-wrap gap-2 mt-auto">
+                          ${
+                            blogPost.status === "draft"
+                              ? `<button class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateBlogPostStatus('${blogPost.id}', 'published')">Publish</button>`
+                              : `<button class="bg-orange-600 hover:bg-orange-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateBlogPostStatus('${blogPost.id}', 'draft')">Unpublish</button>`
+                          }
+                          <button class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="editBlogPost('${
+                            blogPost.id
+                          }')">Edit</button>
+                          <button class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="deleteBlogPost('${
+                            blogPost.id
+                          }')">Delete</button>
+                      </div>
+                  `;
+
+              if (blogPost.status === "published") {
+                publishedList.appendChild(card);
+              } else if (blogPost.status === "draft") {
+                draftList.appendChild(card);
+              }
+            });
+          },
+          (error) => {
+            console.error("Error fetching blog posts:", error);
+            showMessage(
+              `Error loading blog posts: ${error.message}. Please try again.`
+            );
+          }
+        );
+      };
+
+      // --- Chart Rendering Function ---
+      let overviewChartInstance = null; // Store chart instance to destroy/update
+      const renderCharts = () => {
+        const ctx = document.getElementById("overviewChart");
+
+        if (ctx) {
+          // Destroy existing chart if it exists to prevent re-rendering issues
+          if (overviewChartInstance) {
+            overviewChartInstance.destroy();
+          }
+
+          overviewChartInstance = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: [
+                "Dec 1",
+                "Dec 2",
+                "Dec 3",
+                "Dec 4",
+                "Dec 5",
+                "Dec 6",
+                "Dec 7",
+                "Dec 8",
+                "Dec 9",
+              ],
+              datasets: [
+                {
+                  label: "Completion Rate",
+                  data: [30, 60, 90, 70, 95, 50, 100, 80, 40], // Mock data
+                  backgroundColor: [
+                    "rgba(239, 68, 68, 0.8)", // Red-500
+                    "rgba(59, 130, 246, 0.8)", // Blue-500
+                    "rgba(16, 185, 129, 0.8)", // Green-500
+                    "rgba(245, 158, 11, 0.8)", // Yellow-500
+                    "rgba(239, 68, 68, 0.8)",
+                    "rgba(59, 130, 246, 0.8)",
+                    "rgba(16, 185, 129, 0.8)",
+                    "rgba(245, 158, 11, 0.8)",
+                    "rgba(239, 68, 68, 0.8)",
+                  ],
+                  borderColor: [
+                    "rgba(239, 68, 68, 1)",
+                    "rgba(59, 130, 246, 1)",
+                    "rgba(16, 185, 129, 1)",
+                    "rgba(245, 158, 11, 1)",
+                    "rgba(239, 68, 68, 1)",
+                    "rgba(59, 130, 246, 1)",
+                    "rgba(16, 185, 129, 1)",
+                    "rgba(245, 158, 11, 1)",
+                    "rgba(239, 68, 68, 1)",
+                  ],
+                  borderWidth: 1,
+                  borderRadius: 5, // Rounded corners for bars
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false, // Hide legend
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100,
+                  title: {
+                    display: true,
+                    text: "Percentage (%)",
+                  },
+                },
+                x: {
+                  grid: {
+                    display: false, // Hide vertical grid lines
+                  },
+                },
+              },
+            },
+          });
+        }
+      };
+
+      // Function to load content based on page name
+      const loadPageContent = (pageName) => {
+        const contentArea = document.getElementById("content-area");
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        // Remove active class from all links
+        navLinks.forEach((link) =>
+          link.classList.remove("active-link", "bg-red-50", "text-red-600")
+        );
+
+        // Add active class to the current link
+        const activeLink = document.querySelector(
+          `.nav-link[data-page="${pageName}"]`
+        );
+        if (activeLink) {
+          activeLink.classList.add("active-link", "bg-red-50", "text-red-600");
+        }
+
+        let contentHtml = "";
+
+        switch (pageName) {
+          case "dashboard":
+            contentHtml = `
+                              ${generatePageHeader("Dashboard")}
+
+                              <!-- Statistics Cards -->
+                              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                                  <div class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between">
+                                      <div>
+                                          <div class="text-3xl font-bold text-gray-800">13,500</div>
+                                          <div class="text-gray-500">Total Courses</div>
+                                      </div>
+                                      <i class="fas fa-book-open text-5xl text-red-200"></i>
+                                  </div>
+                                  <div class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between">
+                                      <div>
+                                          <div class="text-3xl font-bold text-gray-800">13,500</div>
+                                          <div class="text-gray-500">Total Students</div>
+                                      </div>
+                                      <i class="fas fa-users text-5xl text-blue-200"></i>
+                                  </div>
+                                  <div class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between">
+                                      <div>
+                                          <div class="text-3xl font-bold text-gray-800">$ 500</div>
+                                          <div class="text-gray-500">Revenue</div>
+                                      </div>
+                                      <i class="fas fa-dollar-sign text-5xl text-green-200"></i>
+                                  </div>
+                                  <div class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between">
+                                      <div>
+                                          <div class="text-3xl font-bold text-gray-800">8</div>
+                                          <div class="text-gray-500">Active Batches</div>
+                                      </div>
+                                      <i class="fas fa-layer-group text-5xl text-purple-200"></i>
+                                  </div>
+                              </div>
+
+                              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                                  <!-- Overview Chart Section -->
+                                  <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
+                                      <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4">
+                                          <h2 class="text-xl font-semibold text-gray-800 mb-2 sm:mb-0">Overview</h2>
+                                          <div class="relative w-full sm:w-auto">
+                                              <select class="p-2 border border-gray-300 rounded-md text-sm w-full">
+                                                  <option>Sort By Messages</option>
+                                                  <option>Sort By Date</option>
+                                              </select>
+                                              <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                                          </div>
+                                      </div>
+                                      <div class="h-64 mb-4">
+                                          <canvas id="overviewChart"></canvas>
+                                      </div>
+                                      <div class="flex flex-wrap justify-center sm:justify-between gap-2 mt-4">
+                                          <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto transition-colors duration-200" onclick="showMessage('Button December 1 clicked!')">December 1 80%</button>
+                                          <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto transition-colors duration-200" onclick="showMessage('Button December 2 clicked!')">December 2 80%</button>
+                                          <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto transition-colors duration-200" onclick="showMessage('Button December 3 clicked!')">December 3 80%</button>
+                                          <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto transition-colors duration-200" onclick="showMessage('Button December 4 clicked!')">December 4 80%</button>
+                                      </div>
+                                  </div>
+
+                                  <!-- Messages Section -->
+                                  <div class="bg-white p-6 rounded-xl shadow-md">
+                                      <div class="flex items-center justify-between mb-4">
+                                          <h2 class="text-xl font-semibold text-gray-800">Messages</h2>
+                                          <a href="#" class="text-red-500 hover:underline text-sm" onclick="showMessage('Viewing all messages!')">View All</a>
+                                      </div>
+                                      <div class="relative mb-4">
+                                          <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-full">
+                                          <i
+                                            class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                                          ></i>
+                                      </div>
+                                      <div class="space-y-4">
+                                          <!-- Message Item 1 -->
+                                          <div class="flex items-start">
+                                              <img src="https://placehold.co/40x40/9CA3AF/white?text=JJ" alt="Jacob Jones" class="w-10 h-10 rounded-full mr-3">
+                                              <div class="flex-1">
+                                                  <div class="flex justify-between items-center mb-1">
+                                                      <span class="font-semibold text-gray-800">Jacob Jones</span>
+                                                      <span class="text-xs text-gray-500">today 05:30PM</span>
+                                                  </div>
+                                                  <p class="text-gray-600 text-sm">Hey! Did you finish the Hi-Fi wireframes for flora app design?</p>
+                                              </div>
+                                          </div>
+                                          <!-- Message Item 2 -->
+                                          <div class="flex items-start">
+                                              <img src="https://placehold.co/40x40/9CA3AF/white?text=DL" alt="Devon Lane" class="w-10 h-10 rounded-full mr-3">
+                                              <div class="flex-1">
+                                                  <div class="flex justify-between items-center mb-1">
+                                                      <span class="font-semibold text-gray-800">Devon Lane</span>
+                                                      <span class="text-xs text-gray-500">today 05:30PM</span>
+                                                  </div>
+                                                  <p class="text-gray-600 text-sm">Hey! Did you finish the Hi-Fi wireframes for flora app design?</p>
+                                              </div>
+                                          </div>
+                                          <!-- Message Item 3 -->
+                                          <div class="flex items-start">
+                                              <img src="https://placehold.co/40x40/9CA3AF/white?text=AF" alt="Albert Flores" class="w-10 h-10 rounded-full mr-3">
+                                              <div class="flex-1">
+                                                  <div class="flex justify-between items-center mb-1">
+                                                      <span class="font-semibold text-gray-800">Albert Flores</span>
+                                                      <span class="text-xs text-gray-500">Today-PM</span>
+                                                  </div>
+                                                  <p class="text-gray-600 text-sm">Hey! Did you finish the Hi-Fi wireframes for flora app design?</p>
+                                              </div>
+                                          </div>
+                                          <!-- Message Item 4 -->
+                                          <div class="flex items-start">
+                                              <img src="https://placehold.co/40x40/9CA3AF/white?text=AM" alt="Arlene McCoy" class="w-10 h-10 rounded-full mr-3">
+                                              <div class="flex-1">
+                                                  <div class="flex justify-between items-center mb-1">
+                                                      <span class="font-semibold text-gray-800">Arlene McCoy</span>
+                                                      <span class="text-xs text-gray-500">1d</span>
+                                                  </div>
+                                                  <p class="text-gray-600 text-sm">Hey! Did you finish the Hi-Fi wireframes for flora app design?</p>
+                                              </div>
+                                          </div>
+                                          <!-- Message Item 5 -->
+                                          <div class="flex items-start">
+                                              <img src="https://placehold.co/40x40/9CA3AF/white?text=BC" alt="Bessie Cooper" class="w-10 h-10 rounded-full mr-3">
+                                              <div class="flex-1">
+                                                  <div class="flex justify-between items-center mb-1">
+                                                      <span class="font-semibold text-gray-800">Bessie Cooper</span>
+                                                      <span class="text-xs text-gray-500">2d</span>
+                                                  </div>
+                                                  <p class="text-gray-600 text-sm">Hey! Did you finish the Hi-Fi wireframes for flora app design?</p>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <!-- Course Analytics Table -->
+                              <div class="bg-white p-6 rounded-xl shadow-md">
+                                  <h2 class="text-xl font-semibold text-gray-800 mb-4">Course Analytics</h2>
+                                  <div class="overflow-x-auto">
+                                      <table class="min-w-full divide-y divide-gray-200">
+                                          <thead class="bg-gray-50">
+                                              <tr>
+                                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course Name</th>
+                                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purchases</th>
+                                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Views</th>
+                                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Completion Rate</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody class="bg-white divide-y divide-gray-200">
+                                              <tr>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Math</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">100</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5000</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">85%</td>
+                                              </tr>
+                                              <tr>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Science</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">120</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">6000</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">90%</td>
+                                              </tr>
+                                              <tr>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">History</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">80</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3000</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">75%</td>
+                                              </tr>
+                                              <tr>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">English</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">150</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">7500</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">92%</td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
+                          `;
+            break;
+          case "registration":
+            contentHtml = `
+                              ${generatePageHeader("Registration")}
+                              <div class="bg-white p-6 rounded-xl shadow-md">
+                                  <p class="text-gray-700">Manage user registrations here. Add new users, edit profiles, or view registration logs.</p>
+                                  <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                      <h3 class="text-lg font-semibold text-gray-800 mb-3">Add New User</h3>
+                                      <form id="add-user-form">
+                                          <div class="mb-4">
+                                              <label for="new-username" class="block text-gray-700 text-sm font-semibold mb-2">Username</label>
+                                              <input type="text" id="new-username" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Enter new username" required>
+                                          </div>
+                                          <div class="mb-4">
+                                              <label for="new-useremail" class="block text-gray-700 text-sm font-semibold mb-2">Email</label>
+                                              <input type="email" id="new-useremail" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Enter new user's email" required>
+                                          </div>
+                                          <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add New User</button>
+                                      </form>
+                                  </div>
+                                  <div class="mt-6">
+                                      <h3 class="text-lg font-semibold text-gray-800 mb-3">Recent Registrations</h3>
+                                      <ul id="registration-list" class="space-y-2">
+                                          <!-- Registrations will be rendered here -->
+                                      </ul>
+                                  </div>
+                              </div>
+                          `;
+            break;
+          case "messages":
+            contentHtml = `
+                              ${generatePageHeader("Messages")}
+                              <div class="bg-white p-6 rounded-xl shadow-md">
+                                  <p class="text-gray-700">View and manage all incoming and outgoing messages. Respond to inquiries and support requests.</p>
+                                  <div class="mt-4 space-y-4">
+                                      <div class="flex items-start p-3 bg-gray-50 rounded-lg">
+                                          <img src="https://placehold.co/40x40/9CA3AF/white?text=UI" alt="User Icon" class="w-10 h-10 rounded-full mr-3">
+                                          <div>
+                                              <h4 class="font-semibold text-gray-800">User Inquiry about Course Fees</h4>
+                                              <p class="text-gray-600 text-sm">"Hi, I'm interested in your science course. How much does it cost and what are the payment options?"</p>
+                                              <span class="text-xs text-gray-500">Received: 2024-06-20</span>
+                                          </div>
+                                          <button class="ml-auto text-red-500 hover:text-red-700" onclick="showMessage('Replying to user inquiry about course fees.')"><i class="fas fa-reply"></i> Reply</button>
+                                      </div>
+                                      <div class="flex items-start p-3 bg-gray-50 rounded-lg">
+                                          <img src="https://placehold.co/40x40/9CA3AF/white?text=FS" alt="Feedback Icon" class="w-10 h-10 rounded-full mr-3">
+                                          <div>
+                                              <h4 class="font-semibold text-gray-800">Feedback: Excellent Content!</h4>
+                                              <p class="text-gray-600 text-sm">"Just finished the English course, truly amazing content and teaching methods!"</p>
+                                              <span class="text-xs text-gray-500">Received: 2024-06-18</span>
+                                          </div>
+                                          <button class="ml-auto text-red-500 hover:text-red-700" onclick="showMessage('Acknowledging feedback from user.')"><i class="fas fa-thumbs-up"></i> Acknowledge</button>
+                                      </div>
+                                  </div>
+                              </div>
+                          `;
+            break;
+          case "our-teacher":
+            contentHtml = `
+                              ${generatePageHeader("Our Teachers")}
+                              <div class="bg-white p-6 rounded-xl shadow-md">
+                                  <p class="text-gray-700">Browse and manage profiles of all the teachers. Add new teachers or update existing details.</p>
+                                  <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                      <!-- Teacher Card 1 -->
+                                      <div class="bg-gray-50 p-4 rounded-lg shadow-sm text-center">
+                                          <img src="https://placehold.co/80x80/9CA3AF/white?text=T1" alt="Teacher 1" class="w-20 h-20 rounded-full mx-auto mb-3">
+                                          <h3 class="font-bold text-gray-800 text-lg">Dr. Emily White</h3>
+                                          <p class="text-gray-600 text-sm">Mathematics Expert</p>
+                                          <p class="text-xs text-gray-500 mt-2">Specializes in Calculus and Algebra.</p>
+                                          <button class="mt-4 bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded-lg" onclick="showMessage('Viewing Dr. Emily White\'s profile.')">View Profile</button>
+                                      </div>
+                                      <!-- Teacher Card 2 -->
+                                      <div class="bg-gray-50 p-4 rounded-lg shadow-sm text-center">
+                                          <img src="https://placehold.co/80x80/9CA3AF/white?text=T2" alt="Teacher 2" class="w-20 h-20 rounded-full mx-auto mb-3">
+                                          <h3 class="font-bold text-gray-800 text-lg">Prof. David Kim</h3>
+                                          <p class="text-gray-600 text-sm">Physics Educator</p>
+                                          <p class="text-xs text-gray-500 mt-2">Expert in Quantum Mechanics.</p>
+                                          <button class="mt-4 bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded-lg" onclick="showMessage('Viewing Prof. David Kim\'s profile.')">View Profile</button>
+                                      </div>
+                                  </div>
+                              </div>
+                          `;
+            break;
+          case "student-history":
+            contentHtml = `
+                              ${generatePageHeader("Student History")}
+                              <div class="bg-white p-6 rounded-xl shadow-md">
+                                  <p class="text-gray-700">Track student progress, course completions, and activity logs. Search for specific student records.</p>
+                                  <div class="mt-6 overflow-x-auto">
+                                      <table class="min-w-full divide-y divide-gray-200">
+                                          <thead class="bg-gray-50">
+                                              <tr>
+                                                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
+                                                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enrolled Courses</th>
+                                                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Activity</th>
+                                                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody class="bg-white divide-y divide-gray-200">
+                                              <tr>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Alice Johnson</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Math, English</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap">
+                                                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                                  </td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                      <button class="text-blue-600 hover:text-blue-900 mr-2" onclick="showMessage('Viewing Alice Johnson\'s history.')">View</button>
+                                                      <button class="text-red-600 hover:text-red-900" onclick="showMessage('Deleting Alice Johnson\'s record.')">Delete</button>
+                                                  </td>
+                                              </tr>
+                                              <tr>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Bob Williams</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Science</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap">
+                                                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">In Progress</span>
+                                                  </td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Yesterday</td>
+                                                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                      <button class="text-blue-600 hover:text-blue-900 mr-2" onclick="showMessage('Viewing Bob Williams\'s history.')">View</button>
+                                                      <button class="text-red-600 hover:text-red-900" onclick="showMessage('Deleting Bob Williams\'s record.')">Delete</button>
+                                                  </td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                              </div>
+                          `;
+            break;
+          case "courses":
+            contentHtml = `
+                              ${generatePageHeader("Courses")}
+                              <div class="bg-white p-6 rounded-xl shadow-md">
+                                  <p class="text-gray-700">Manage all available courses. Add new courses, update content, or archive old ones.</p>
+                                  <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                      <h3 class="text-lg font-semibold text-gray-800 mb-3">Create New Course</h3>
+                                      <form id="add-course-form">
+                                          <div class="mb-4">
+                                              <label for="new-course-name" class="block text-gray-700 text-sm font-semibold mb-2">Course Name</label>
+                                              <input type="text" id="new-course-name" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Enter course name" required>
+                                          </div>
+                                          <div class="mb-4">
+                                              <label for="new-course-description" class="block text-gray-700 text-sm font-semibold mb-2">Description</label>
+                                              <textarea id="new-course-description" rows="3" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Enter course description" required></textarea>
+                                          </div>
+                                          <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Create New Course</button>
+                                      </form>
+                                  </div>
+                                  <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="courses-grid">
+                                      <!-- Course Cards will be rendered here -->
+                                  </div>
+                              </div>
+                          `;
+            break;
+          case "community-forum":
+            contentHtml = `
+                              ${generatePageHeader("Community Forum")}
+                              <div class="bg-white p-6 rounded-xl shadow-md">
+                                  <p class="text-gray-700">Moderate forum discussions, manage topics, and respond to user queries in the community forum.</p>
+                                  <div class="mt-6 space-y-4">
+                                      <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+                                          <h3 class="font-bold text-gray-800 text-lg mb-2">Topic: Physics Help</h3>
+                                          <p class="text-gray-600 text-sm">Latest post: "Can someone explain Newton's third law in simple terms?" <span class="text-xs text-gray-500">by User123 (10 replies)</span></p>
+                                          <button class="mt-3 bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded-lg" onclick="showMessage('Viewing Physics Help topic.')">View Topic</button>
+                                      </div>
+                                      <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+                                          <h3 class="font-bold text-gray-800 text-lg mb-2">Topic: General Discussion</h3>
+                                          <p class="text-gray-600 text-sm">Latest post: "Any tips for staying motivated while studying?" <span class="text-xs text-gray-500">by StudentXYZ (5 replies)</span></p>
+                                          <button class="mt-3 bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded-lg" onclick="showMessage('Viewing General Discussion topic.')">View Topic</button>
+                                      </div>
+                                  </div>
+                              </div>
+                          `;
+            break;
+          case "blog":
+            contentHtml = `
+                                ${generatePageHeader("Blog Management")}
+                                <div class="bg-white p-6 rounded-xl shadow-md">
+                                    <p class="text-gray-700">Create, edit, and publish blog posts. Manage categories and comments.</p>
+                                    <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Add/Edit Blog Post</h3>
+                                        <form id="blog-form" class="space-y-4">
+                                            <input type="hidden" id="blog-id" value="">
+                                            <div>
+                                                <label for="blog-title" class="block text-gray-700 text-sm font-semibold mb-2">Blog Title</label>
+                                                <input type="text" id="blog-title" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., Top 5 Study Tips" required>
+                                            </div>
+                                            <div>
+                                                <label for="blog-category" class="block text-gray-700 text-sm font-semibold mb-2">Category</label>
+                                                <select id="blog-category" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" required>
+                                                    <option value="">Select Category</option>
+                                                    <option value="Preparation">Preparation</option>
+                                                    <option value="Listening">Listening</option>
+                                                    <option value="Speaking">Speaking</option>
+                                                    <option value="Writing">Writing</option>
+                                                    <option value="Reading">Reading</option>
+                                                    <option value="Grammar">Grammar</option>
+                                                    <option value="Study Plan">Study Plan</option>
+                                                    <option value="Higher Study">Higher Study</option>
+                                                    <option value="Motivation">IELTS Motivation</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label for="blog-content" class="block text-gray-700 text-sm font-semibold mb-2">Content</label>
+                                                <textarea id="blog-content" rows="6" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Write your blog post content here..." required></textarea>
+                                            </div>
+                                            <div>
+                                                <label for="blog-author" class="block text-gray-700 text-sm font-semibold mb-2">Author Name</label>
+                                                <input type="text" id="blog-author" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., Jane Cooper" required>
+                                            </div>
+                                            <div>
+                                                <label for="blog-author-img" class="block text-gray-700 text-sm font-semibold mb-2">Author Image URL (Optional)</label>
+                                                <input type="text" id="blog-author-img" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., https://placehold.co/40x40/9CA3AF/white?text=A">
+                                            </div>
+                                            <div>
+                                                <label for="blog-image" class="block text-gray-700 text-sm font-semibold mb-2">Main Blog Image URL (Optional)</label>
+                                                <input type="text" id="blog-image" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., https://placehold.co/400x200/cccccc/white?text=Blog+Image">
+                                            </div>
+                                            <button type="submit" id="add-blog-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Blog Post</button>
+                                        </form>
+                                    </div>
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 text-left px-4">Published Blog Posts</h3>
+                                    <div id="published-blog-posts-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                                        <!-- Published blog posts will be loaded here -->
+                                    </div>
+
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 text-left px-4">Draft Blog Posts</h3>
+                                    <div id="draft-blog-posts-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <!-- Draft blog posts will be loaded here -->
+                                    </div>
+                                </div>
+                            `;
+            break;
+          case "free-resources":
+            contentHtml = `
+                                ${generatePageHeader("Free Resources")}
+                                <div class="bg-white p-6 rounded-xl shadow-md">
+                                    <p class="text-gray-700">Upload and manage free educational resources like PDFs, videos, and articles.</p>
+                                    <div class="mt-4">
+                                        <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg" onclick="showMessage('Opening file upload dialog for new resource.')">Upload New Resource</button>
+                                    </div>
+                                    <div class="mt-6 space-y-4">
+                                        <div class="bg-gray-50 p-4 rounded-lg shadow-sm flex items-center justify-between">
+                                            <div>
+                                                <h3 class="font-bold text-gray-800 text-lg">Algebra Cheat Sheet.pdf</h3>
+                                                <p class="text-gray-600 text-sm">Type: PDF | Size: 2.5 MB | Downloads: 500</p>
+                                            </div>
+                                            <button class="bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded-lg" onclick="showMessage('Managing Algebra Cheat Sheet.')">Manage</button>
+                                        </div>
+                                        <div class="bg-gray-50 p-4 rounded-lg shadow-sm flex items-center justify-between">
+                                            <div>
+                                                <h3 class="font-bold text-gray-800 text-lg">Introduction to Python.mp4</h3>
+                                                <p class="text-gray-600 text-sm">Type: Video | Size: 150 MB | Views: 1200</p>
+                                            </div>
+                                            <button class="bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded-lg" onclick="showMessage('Managing Introduction to Python video.')">Manage</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+            break;
+          case "mock-test":
+            contentHtml = `
+                                ${generatePageHeader("Mock Test Management")}
+                                <div class="bg-white p-6 rounded-xl shadow-md">
+                                    <p class="text-gray-700">Create, configure, and analyze mock tests for various subjects.</p>
+                                    <div class="mt-4">
+                                        <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg" onclick="showMessage('Creating new mock test.')">Create New Mock Test</button>
+                                    </div>
+                                    <div class="mt-6 space-y-4">
+                                        <div class="bg-gray-50 p-4 rounded-lg shadow-sm flex items-center justify-between">
+                                            <div>
+                                                <h3 class="font-bold text-gray-800 text-lg">Math Final Exam Practice</h3>
+                                                <p class="text-gray-600 text-sm">Questions: 50 | Duration: 60 mins | Attempts: 300</p>
+                                            </div>
+                                            <button class="bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded-lg" onclick="showMessage('Viewing Math Final Exam Practice results.')">View Results</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+            break;
+          case "quizzes":
+            contentHtml = `
+                                ${generatePageHeader("Quizzes")}
+                                <div class="bg-white p-6 rounded-xl shadow-md">
+                                    <p class="text-gray-700">Manage interactive quizzes for different topics and courses. Track quiz performance.</p>
+                                    <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Add/Edit Quiz</h3>
+                                        <form id="quiz-form" class="space-y-4">
+                                            <input type="hidden" id="quiz-id" value="">
+                                            <div>
+                                                <label for="quiz-title" class="block text-gray-700 text-sm font-semibold mb-2">Quiz Title</label>
+                                                <input type="text" id="quiz-title" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., Science Basics" required>
+                                            </div>
+                                            <div>
+                                                <label for="quiz-description" class="block text-gray-700 text-sm font-semibold mb-2">Description</label>
+                                                <textarea id="quiz-description" rows="3" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Brief description of the quiz" required></textarea>
+                                            </div>
+                                            <div>
+                                                <label for="quiz-questions-count" class="block text-gray-700 text-sm font-semibold mb-2">Number of Questions</label>
+                                                <input type="number" id="quiz-questions-count" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., 15" min="1" required>
+                                            </div>
+                                            <button type="submit" id="add-quiz-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Quiz</button>
+                                        </form>
+                                    </div>
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 text-left px-4">Published Quizzes</h3>
+                                    <div id="published-quizzes-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                                        <!-- Published quizzes will be loaded here -->
+                                    </div>
+
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 text-left px-4">Draft Quizzes</h3>
+                                    <div id="draft-quizzes-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <!-- Draft quizzes will be loaded here -->
+                                    </div>
+                                </div>
+                            `;
+            break;
+          case "testimonial":
+            contentHtml = `
+                                ${generatePageHeader("Testimonial Management")}
+                                <div class="bg-white p-6 rounded-xl shadow-md mb-8 testimonials-section-admin">
+                                    <div class="testimonials-wrapper">
+                                        <div class="testimonials-header-admin">
+                                            <p class="label">TESTIMONIALS</p>
+                                            <h1 class="main-heading">Manage Student Testimonials and Success Stories</h1>
+                                        </div>
+
+                                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-left px-4">Add/Edit Testimonial</h3>
+                                        <form id="testimonial-form" class="space-y-4 p-4 mb-8 bg-gray-50 rounded-lg shadow-inner">
+                                            <input type="hidden" id="testimonial-id" value="">
+                                            <div>
+                                                <label for="testimonial-name" class="block text-gray-700 text-sm font-semibold mb-2">Name</label>
+                                                <input type="text" id="testimonial-name" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Student/Instructor Name" required>
+                                            </div>
+                                            <div>
+                                                <label for="testimonial-role" class="block text-gray-700 text-sm font-semibold mb-2">Role</label>
+                                                <input type="text" id="testimonial-role" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., IELTS Candidate, Instructor" required>
+                                            </div>
+                                            <div>
+                                                <label class="block text-gray-700 text-sm font-semibold mb-2">Testimonial Type</label>
+                                                <div class="flex items-center space-x-4">
+                                                    <label class="inline-flex items-center">
+                                                        <input type="radio" name="testimonial-type" id="testimonial-type-text" value="text" class="form-radio text-red-600" checked>
+                                                        <span class="ml-2 text-gray-700">Text</span>
+                                                    </label>
+                                                    <label class="inline-flex items-center">
+                                                        <input type="radio" name="testimonial-type" id="testimonial-type-video" value="video" class="form-radio text-red-600">
+                                                        <span class="ml-2 text-gray-700">Video</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label for="testimonial-text" class="block text-gray-700 text-sm font-semibold mb-2">Testimonial Text</label>
+                                                <textarea id="testimonial-text" rows="4" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Enter testimonial text" required></textarea>
+                                            </div>
+                                            <div>
+                                                <label for="testimonial-avatar-src" class="block text-gray-700 text-sm font-semibold mb-2">Avatar Image URL (Placeholder if empty)</label>
+                                                <input type="text" id="testimonial-avatar-src" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., https://placehold.co/80x80/9CA3AF/white?text=A">
+                                            </div>
+                                            <div id="video-url-group" class="hidden">
+                                                <label for="testimonial-video-src" class="block text-gray-700 text-sm font-semibold mb-2">Video URL</label>
+                                                <input type="text" id="testimonial-video-src" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., https://www.w3schools.com/html/mov_bbb.mp4">
+                                            </div>
+                                            <button type="submit" id="add-testimonial-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Testimonial</button>
+                                        </form>
+
+                                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-left px-4">Pending Testimonials</h3>
+                                        <div id="pending-testimonials-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                                            <!-- Pending testimonials will be loaded here -->
+                                        </div>
+
+                                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-left px-4">Approved Testimonials</h3>
+                                        <div id="approved-testimonials-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                                            <!-- Approved testimonials will be loaded here -->
+                                        </div>
+
+                                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-left px-4">Rejected Testimonials</h3>
+                                        <div id="rejected-testimonials-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            <!-- Rejected testimonials will be loaded here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+            break;
+          case "block-list":
+            contentHtml = `
+                                ${generatePageHeader("Block List")}
+                                <div class="bg-white p-6 rounded-xl shadow-md">
+                                    <p class="text-gray-700">Manage blocked users or IPs to maintain a safe and secure environment.</p>
+                                    <div class="mt-4">
+                                        <input type="text" id="block-input" placeholder="Add User ID or IP to Block" class="border border-gray-300 rounded-lg p-2 mr-2 w-full sm:w-64">
+                                        <button id="block-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg mt-2 sm:mt-0">Block</button>
+                                    </div>
+                                    <div class="mt-6">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Currently Blocked</h3>
+                                        <ul id="blocked-list" class="space-y-2">
+                                            <li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                                <span>User: user123 (Spamming)</span>
+                                                <button class="text-green-500 hover:text-green-700" onclick="showMessage('Unblocking user123.')"><i class="fas fa-unlock"></i> Unblock</button>
+                                            </li>
+                                            <li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                                <span>IP: 192.168.1.10 (Malicious Activity)</span>
+                                                <button class="text-green-500 hover:text-green-700" onclick="showMessage('Unblocking IP 192.168.1.10.')"><i class="fas fa-unlock"></i> Unblock</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            `;
+            break;
+          case "homepage":
+            contentHtml = `
+                ${generatePageHeader("Home Page Preview")}
+                <!-- ===== Page 3: Testimonials & Success Stories (Dynamically loaded) ===== -->
+                <div id="page3" class="bg-white p-6 rounded-xl shadow-md">
+                    <img class="page2-grapic-el page4-grapic-el w-full max-w-lg mx-auto mb-8 hidden" src="https://placehold.co/400x200/cccccc/white?text=Graphic+Element" alt="Graphic Element">
+                    <div class="testimonials-section">
+                        <div class="testimonials-wrapper">
+                            <div class="testimonials-header">
+                                <p class="label">TESTIMONIALS</p>
+                                <h1 class="main-heading">Don’t just take our word for it!<br>Listen to what our students say</h1>
+                            </div>
+                            <div class="testimonials-grid" id="testimonials-grid">
+                                <!-- Testimonial cards will be injected here by JavaScript -->
+                            </div>
+                            <!-- Mobile Flip Navigation (optional, can be implemented if needed) -->
+                            <div class="testimonial-flip-nav" id="testimonial-flip-nav">
+                                <div class="flip-indicators" id="testimonial-indicators"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              `;
+            break;
+          default:
+            contentHtml = `
+                                ${generatePageHeader("Page Not Found")}
+                                <div class="bg-white p-6 rounded-xl shadow-md text-center">
+                                    <p class="text-red-500 text-lg">The requested page could not be found.</p>
+                                </div>
+                            `;
+        }
+        console.log(
+          "loadPageContent: Setting content area HTML for page:",
+          pageName,
+          "Content length:",
+          contentHtml.length
+        );
+        contentArea.innerHTML = contentHtml;
+
+        // --- Post-render logic for specific pages ---
+        if (pageName === "dashboard") {
+          renderCharts(); // Render charts after dashboard content is loaded
+        } else if (pageName === "registration") {
+          renderRegistrations();
+          const addUserForm = document.getElementById("add-user-form");
+          addUserForm?.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const newUsername = document.getElementById("new-username").value;
+            const newUserEmail = document.getElementById("new-useremail").value;
+            if (newUsername && newUserEmail) {
+              mockRegistrations.push({
+                name: newUsername,
+                date: new Date().toISOString().slice(0, 10),
+              });
+              renderRegistrations();
+              addUserForm.reset();
+              showMessage(`User '${newUsername}' added successfully!`);
+            } else {
+              showMessage("Please fill in both username and email.");
+            }
+          });
+        } else if (pageName === "courses") {
+          renderCourses();
+          const addCourseForm = document.getElementById("add-course-form");
+          addCourseForm?.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const newCourseName = document.getElementById("new-course-name")
+              .value;
+            const newCourseDescription = document.getElementById(
+              "new-course-description"
+            ).value;
+            if (newCourseName && newCourseDescription) {
+              mockCourses.push({
+                name: newCourseName,
+                description: newCourseDescription,
+                enrolled: Math.floor(Math.random() * 100) + 50, // Random mock data
+                rating: (Math.random() * (5 - 3) + 3).toFixed(1), // Random mock data
+              });
+              renderCourses();
+              addCourseForm.reset();
+              showMessage(`Course '${newCourseName}' created successfully!`);
+            } else {
+              showMessage("Please fill in course name and description.");
+            }
+          });
+        } else if (pageName === "block-list") {
+          const blockBtn = document.getElementById("block-btn");
+          const blockInput = document.getElementById("block-input");
+          const blockedList = document.getElementById("blocked-list");
+
+          blockBtn?.addEventListener("click", () => {
+            const itemToBlock = blockInput.value.trim();
+            if (itemToBlock) {
+              const listItem = document.createElement("li");
+              listItem.className =
+                "flex justify-between items-center p-3 bg-gray-50 rounded-lg";
+              listItem.innerHTML = `
+                              <span>User/IP: ${itemToBlock} (Manually added)</span>
+                              <button class="text-green-500 hover:text-green-700" onclick="showMessage('Unblocking ${itemToBlock}.')"><i class="fas fa-unlock"></i> Unblock</button>
+                          `;
+              blockedList.appendChild(listItem);
+              blockInput.value = "";
+              showMessage(`'${itemToBlock}' added to block list.`);
+            } else {
+              showMessage("Please enter a user ID or IP to block.");
+            }
+          });
+        } else if (pageName === "testimonial") {
+          // Wait for Firebase authentication to be ready before rendering testimonials
+          const checkAuthAndRender = () => {
+            if (isAuthReady) {
+              renderTestimonials();
+
+              const testimonialForm = document.getElementById(
+                "testimonial-form"
+              );
+              const typeTextRadio = document.getElementById(
+                "testimonial-type-text"
+              );
+              const typeVideoRadio = document.getElementById(
+                "testimonial-type-video"
+              );
+              const videoUrlGroup = document.getElementById("video-url-group");
+              const testimonialText = document.getElementById(
+                "testimonial-text"
+              );
+              const testimonialVideoSrc = document.getElementById(
+                "testimonial-video-src"
+              );
+              const addTestimonialBtn = document.getElementById(
+                "add-testimonial-btn"
+              );
+
+              // Toggle video URL input based on testimonial type
+              const toggleVideoUrlInput = () => {
+                if (typeVideoRadio.checked) {
+                  videoUrlGroup.classList.remove("hidden");
+                  testimonialText.required = false; // Text is optional for video
+                  testimonialVideoSrc.required = true; // Video URL is required for video
+                  testimonialText.value = ""; // Clear text when switching to video
+                } else {
+                  videoUrlGroup.classList.add("hidden");
+                  testimonialText.required = true; // Text is required for text
+                  testimonialVideoSrc.required = false; // Video URL not required for text
+                  testimonialVideoSrc.value = ""; // Clear video URL when switching to text
+                }
+              };
+
+              typeTextRadio.addEventListener("change", toggleVideoUrlInput);
+              typeVideoRadio.addEventListener("change", toggleVideoUrlInput);
+
+              // Initial call to set visibility correctly on page load
+              toggleVideoUrlInput();
+
+              testimonialForm?.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const id = document.getElementById("testimonial-id").value;
+                const name = document.getElementById("testimonial-name").value;
+                const role = document.getElementById("testimonial-role").value;
+                const type = document.querySelector(
+                  'input[name="testimonial-type"]:checked'
+                ).value;
+                const text = testimonialText.value;
+                const avatarSrc =
+                  document.getElementById("testimonial-avatar-src").value ||
+                  `https://placehold.co/80x80/9CA3AF/white?text=${name
+                    .substring(0, 2)
+                    .toUpperCase()}`; // Default placeholder
+                const videoSrc = testimonialVideoSrc.value;
+
+                if (
+                  !name ||
+                  !role ||
+                  (type === "text" && !text.trim()) ||
+                  (type === "video" && !videoSrc.trim())
+                ) {
+                  showMessage(
+                    "Please fill in all required fields (Text is required for Text testimonials, Video URL for Video testimonials)."
+                  );
+                  return;
+                }
+
+                try {
+                  if (id) {
+                    // Editing existing testimonial
+                    const testimonialDocRef = doc(
+                      db,
+                      "artifacts",
+                      appId,
+                      "public",
+                      "data",
+                      "testimonials",
+                      id
+                    );
+                    console.log(
+                      `Attempting to update testimonial with ID: ${id}`
+                    );
+                    await updateDoc(testimonialDocRef, {
+                      name,
+                      role,
+                      type,
+                      text: type === "text" ? text : "", // Clear text if switching to video
+                      avatarSrc,
+                      videoSrc: type === "video" ? videoSrc : null, // Clear videoSrc if switching to text
+                    });
+                    showMessage("Testimonial updated successfully!");
+                    console.log(`Testimonial ${id} updated successfully.`);
+                  } else {
+                    // Adding new testimonial
+                    const testimonialsCollectionRef = collection(
+                      db,
+                      "artifacts",
+                      appId,
+                      "public",
+                      "data",
+                      "testimonials"
+                    );
+                    console.log(
+                      `Attempting to add new testimonial to path: artifacts/${appId}/public/data/testimonials`
+                    );
+                    await addDoc(testimonialsCollectionRef, {
+                      name,
+                      role,
+                      type,
+                      text,
+                      avatarSrc,
+                      videoSrc: type === "video" ? videoSrc : null,
+                      status: "pending", // New testimonials are pending by default
+                    });
+                    showMessage("Testimonial added for review!");
+                    console.log("New testimonial added successfully.");
+                  }
+                } catch (error) {
+                  console.error("Error saving testimonial:", error);
+                  // Provide specific error message to the user if possible
+                  showMessage(
+                    `Failed to save testimonial: ${
+                      error.message || error
+                    }. Please check console for details.`
+                  );
+                }
+
+                testimonialForm.reset();
+                document.getElementById("testimonial-id").value = ""; // Clear ID for next add
+                addTestimonialBtn.textContent = "Add Testimonial"; // Reset button text
+                typeTextRadio.checked = true; // Reset to text type
+                toggleVideoUrlInput(); // Hide video URL field
+                // renderTestimonials() is automatically called by onSnapshot
+              });
+            } else {
+              // If not authenticated, retry after a short delay
+              console.log(
+                "Firebase auth not ready on testimonial page load, retrying in 100ms..."
+              );
+              setTimeout(checkAuthAndRender, 100); // Retry after a short delay
+            }
+          };
+          checkAuthAndRender();
+        } else if (pageName === "quizzes") {
+          const checkAuthAndRenderQuizzes = () => {
+            if (isAuthReady) {
+              renderQuizzes();
+
+              const quizForm = document.getElementById("quiz-form");
+              const addQuizBtn = document.getElementById("add-quiz-btn");
+
+              quizForm?.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const id = document.getElementById("quiz-id").value;
+                const title = document.getElementById("quiz-title").value;
+                const description = document.getElementById("quiz-description")
+                  .value;
+                const questionsCount = parseInt(
+                  document.getElementById("quiz-questions-count").value,
+                  10
+                );
+
+                if (
+                  !title ||
+                  !description ||
+                  isNaN(questionsCount) ||
+                  questionsCount <= 0
+                ) {
+                  showMessage(
+                    "Please fill in all required fields and ensure 'Number of Questions' is a positive number."
+                  );
+                  return;
+                }
+
+                try {
+                  if (id) {
+                    // Editing existing quiz
+                    const quizDocRef = doc(
+                      db,
+                      "artifacts",
+                      appId,
+                      "public",
+                      "data",
+                      "quizzes",
+                      id
+                    );
+                    console.log(`Attempting to update quiz with ID: ${id}`);
+                    await updateDoc(quizDocRef, {
+                      title,
+                      description,
+                      questionsCount,
+                      timestamp: serverTimestamp(), // Update timestamp on edit
+                    });
+                    showMessage("Quiz updated successfully!");
+                    console.log(`Quiz ${id} updated successfully.`);
+                  } else {
+                    // Adding new quiz
+                    const quizzesCollectionRef = collection(
+                      db,
+                      "artifacts",
+                      appId,
+                      "public",
+                      "data",
+                      "quizzes"
+                    );
+                    console.log(
+                      `Attempting to add new quiz to path: artifacts/${appId}/public/data/quizzes`
+                    );
+                    await addDoc(quizzesCollectionRef, {
+                      title,
+                      description,
+                      questionsCount,
+                      status: "draft", // New quizzes are draft by default
+                      timestamp: serverTimestamp(),
+                    });
+                    showMessage("Quiz added successfully!");
+                    console.log("New quiz added successfully.");
+                  }
+                } catch (error) {
+                  console.error("Error saving quiz:", error);
+                  showMessage(
+                    `Failed to save quiz: ${
+                      error.message || error
+                    }. Please check console for details.`
+                  );
+                }
+
+                quizForm.reset();
+                document.getElementById("quiz-id").value = ""; // Clear ID for next add
+                addQuizBtn.textContent = "Add Quiz"; // Reset button text
+              });
+            } else {
+              console.log(
+                "Firebase auth not ready on quizzes page load, retrying in 100ms..."
+              );
+              setTimeout(checkAuthAndRenderQuizzes, 100);
+            }
+          };
+          checkAuthAndRenderQuizzes();
+        } else if (pageName === "blog") {
+          const checkAuthAndRenderBlogPosts = () => {
+            if (isAuthReady) {
+              renderBlogPosts();
+
+              const blogForm = document.getElementById("blog-form");
+              const addBlogBtn = document.getElementById("add-blog-btn");
+
+              blogForm?.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const id = document.getElementById("blog-id").value;
+                const title = document.getElementById("blog-title").value;
+                const category = document.getElementById("blog-category").value;
+                const content = document.getElementById("blog-content").value;
+                const author = document.getElementById("blog-author").value;
+                const authorImg = document.getElementById("blog-author-img")
+                  .value;
+                const image = document.getElementById("blog-image").value;
+
+                if (!title || !category || !content.trim() || !author.trim()) {
+                  showMessage(
+                    "Please fill in all required fields: Title, Category, Content, and Author."
+                  );
+                  return;
+                }
+
+                try {
+                  if (id) {
+                    // Editing existing blog post
+                    const blogPostDocRef = doc(
+                      db,
+                      "artifacts",
+                      appId,
+                      "public",
+                      "data",
+                      "blogPosts",
+                      id
+                    );
+                    console.log(
+                      `Attempting to update blog post with ID: ${id}`
+                    );
+                    await updateDoc(blogPostDocRef, {
+                      title,
+                      category,
+                      content,
+                      author,
+                      authorImg:
+                        authorImg ||
+                        `https://placehold.co/40x40/9CA3AF/white?text=${author
+                          .substring(0, 1)
+                          .toUpperCase()}`,
+                      image:
+                        image ||
+                        "https://placehold.co/400x200/cccccc/white?text=Blog+Image",
+                      timestamp: serverTimestamp(), // Update timestamp on edit
+                    });
+                    showMessage("Blog post updated successfully!");
+                    console.log(`Blog post ${id} updated successfully.`);
+                  } else {
+                    // Adding new blog post
+                    const blogPostsCollectionRef = collection(
+                      db,
+                      "artifacts",
+                      appId,
+                      "public",
+                      "data",
+                      "blogPosts"
+                    );
+                    console.log(
+                      `Attempting to add new blog post to path: artifacts/${appId}/public/data/blogPosts`
+                    );
+                    await addDoc(blogPostsCollectionRef, {
+                      title,
+                      category,
+                      content,
+                      author,
+                      authorImg:
+                        authorImg ||
+                        `https://placehold.co/40x40/9CA3AF/white?text=${author
+                          .substring(0, 1)
+                          .toUpperCase()}`,
+                      image:
+                        image ||
+                        "https://placehold.co/400x200/cccccc/white?text=Blog+Image",
+                      status: "draft", // New blog posts are draft by default
+                      timestamp: serverTimestamp(),
+                    });
+                    showMessage("Blog post added successfully!");
+                    console.log("New blog post added successfully.");
+                  }
+                } catch (error) {
+                  console.error("Error saving blog post:", error);
+                  showMessage(
+                    `Failed to save blog post: ${
+                      error.message || error
+                    }. Please check console for details.`
+                  );
+                }
+
+                blogForm.reset();
+                document.getElementById("blog-id").value = ""; // Clear ID for next add
+                addBlogBtn.textContent = "Add Blog Post"; // Reset button text
+              });
+            } else {
+              console.log(
+                "Firebase auth not ready on blog page load, retrying in 100ms..."
+              );
+              setTimeout(checkAuthAndRenderBlogPosts, 100);
+            }
+          };
+          checkAuthAndRenderBlogPosts();
+        } else if (pageName === "homepage") {
+          showMessage(
+            "Navigate to home.html to see the approved testimonials. For this preview, the home page testimonial section will display content as if it were loaded from Firebase."
+          );
+        }
+      };
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        const contentArea = document.getElementById("content-area");
+        const navLinks = document.querySelectorAll(".nav-link");
+        const hamburgerMenu = document.getElementById("hamburger-menu");
+        const sidebar = document.getElementById("sidebar");
+        const sidebarOverlay = document.getElementById("sidebar-overlay");
+        const closeMessageBoxBtn = document.getElementById("close-message-box");
+        const exportPdfBtn = document.getElementById("export-pdf-btn");
+        const notificationsBtn = document.getElementById("notifications-btn");
+        const settingsBtn = document.getElementById("settings-btn");
+
+        console.log("DOMContentLoaded fired. Authenticating Firebase...");
+        await authenticateFirebase(); // Ensure Firebase is authenticated before proceeding
+        console.log(
+          "Firebase authentication status (isAuthReady):",
+          isAuthReady
+        );
+
+        closeMessageBoxBtn.addEventListener("click", () => {
+          document.getElementById("message-box").classList.add("hidden");
+        });
+
+        // --- Sidebar Toggle for Mobile ---
+        hamburgerMenu.addEventListener("click", () => {
+          sidebar.classList.toggle("-translate-x-full");
+          sidebar.classList.toggle("translate-x-0");
+          sidebarOverlay.classList.toggle("hidden");
+        });
+
+        sidebarOverlay.addEventListener("click", () => {
+          sidebar.classList.add("-translate-x-full");
+          sidebar.classList.remove("translate-x-0");
+          sidebarOverlay.classList.add("hidden");
+        });
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            // Close sidebar on mobile after clicking a link
+            if (window.innerWidth < 1024) {
+              // 1024px is Tailwind's 'lg' breakpoint
+              sidebar.classList.add("-translate-x-full");
+              sidebar.classList.remove("translate-x-0");
+              sidebarOverlay.classList.add("hidden");
+            }
+          });
+        });
+
+        // Click listener for the entire document to close dropdowns when clicking outside
+        document.addEventListener("click", (event) => {
+          // Check if the click occurred inside a kebab menu container or on a kebab button
+          const isInsideKebab = event.target.closest(".kebab-menu-container");
+          const isKebabButton =
+            event.target.classList.contains("kebab-button") ||
+            event.target.closest(".kebab-button");
+
+          if (!isInsideKebab && !isKebabButton) {
+            closeAllKebabDropdowns();
+          }
+        });
+
+        // Header button dummy actions
+        exportPdfBtn.addEventListener("click", () =>
+          showMessage("Export PDF feature is under development!")
+        );
+        notificationsBtn.addEventListener("click", () =>
+          showMessage("Notifications clicked! You have 3 new messages.")
+        );
+        settingsBtn.addEventListener("click", () =>
+          showMessage("Settings page is coming soon!")
+        );
+
+        // Event Listeners for Navigation Links
+        navLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const page = e.currentTarget.dataset.page;
+            loadPageContent(page);
+          });
+        });
+
+        // Set initial date picker value to today
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+        const day = String(today.getDate()).padStart(2, 0);
+        document.getElementById(
+          "date-picker"
+        ).value = `${year}-${month}-${day}`;
+
+        // Load the dashboard by default on page load
+        loadPageContent("dashboard");
+
+        // Expose showMessage globally for inline onclick attributes
+        window.showMessage = showMessage;
+      });
+    </script>
+  </body>
+</html>

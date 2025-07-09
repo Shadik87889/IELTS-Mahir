@@ -1,0 +1,508 @@
+/* Base Styles */
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: #eef2f6; /* A slightly cooler, very light gray for a modern feel */
+  color: #334155; /* Darker charcoal for body text, less harsh than black */
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+  overflow-x: hidden;
+}
+nav {
+  position: absolute;
+}
+.container {
+  max-width: 95%; /* Consistent container width */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Hero Section (Updated based on user's provided structure and styles) */
+.content-header {
+  background-color: #063956; /* User's specified background color */
+  height: 62vh; /* User's specified height */
+  width: 100%;
+  position: relative;
+  overflow: hidden; /* Important for containing absolute positioned images */
+  border-bottom-left-radius: 1rem; /* Retain previous aesthetic */
+  border-bottom-right-radius: 1rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); /* Retain previous aesthetic */
+  z-index: 1;
+}
+
+/* Inner container for text to ensure centering */
+.content-header-inner {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  max-width: 900px; /* Max width for content within hero */
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+
+.content-header img {
+  width: 25vw; /* User's specified image width */
+  max-width: 250px; /* Cap image size on very large screens */
+  position: absolute;
+  bottom: 0;
+  z-index: 2; /* Ensure images are above the background but below text/button if needed */
+}
+
+.corner-one {
+  left: 0;
+}
+
+.corner-two {
+  right: 0;
+}
+
+/* Existing hero text and button styles adapted for the new structure */
+.hero-title {
+  font-family: "Anton", sans-serif;
+  text-transform: uppercase;
+  font-size: 4rem; /* Large and impactful */
+  font-weight: 999;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+  color: #fff; /* White text for visibility on dark background */
+  animation: fadeInDown 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  line-height: 1.1; /* Adjust line height for Anton */
+}
+
+.hero-subtitle {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
+  margin-bottom: 3.5rem;
+  color: #fff; /* White text */
+  animation: fadeInUp 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.95;
+  line-height: 1.8rem;
+}
+
+.hero-button {
+  background-color: #10b981; /* A rich emerald green accent */
+  color: #fff;
+  padding: 1.4rem 4rem; /* Larger, prominent button */
+  border-radius: 9999px; /* Pill shape */
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.4s ease, transform 0.4s ease,
+    box-shadow 0.4s ease;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  letter-spacing: 0.03em;
+  border: 2px solid rgba(255, 255, 255, 0.2); /* Subtle white border */
+  display: none;
+}
+
+.hero-button:hover {
+  background-color: #059669; /* Darker emerald on hover */
+  transform: translateY(-4px) scale(1.02); /* Noticeable lift and slight scale */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow on hover */
+}
+
+.hero-button i {
+  margin-left: 1rem;
+  font-size: 1.3rem;
+}
+
+/* Main Content Sections */
+main {
+  padding-top: 5rem; /* Generous top padding for main content */
+  padding-bottom: 6rem; /* Generous bottom padding */
+}
+
+.section {
+  margin-bottom: 3rem; /* Increased margin between sections */
+  background-color: #fff; /* White background for each section */
+  border-radius: 1.5rem; /* More rounded sections */
+  padding: 3rem; /* Generous internal padding for sections */
+  /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); */
+  transition: box-shadow 0.3s ease;
+}
+.section:hover {
+  /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);  */
+}
+
+.section-title {
+  font-family: "Anton", sans-serif;
+  font-size: 3.2rem; /* Larger and more impactful */
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin-bottom: 2.8rem; /* More space below title */
+  position: relative;
+  text-align: center;
+  color: #1f2937; /* Darker tone for titles */
+  text-transform: uppercase; /* Uppercase for a stronger look */
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 100px; /* Wider, bolder underline */
+  height: 6px; /* Thicker underline */
+  background-color: #0d9488; /* Teal accent */
+  margin: 15px auto 0; /* Centered and more space */
+  border-radius: 4px;
+}
+
+.grid-layout {
+  display: grid;
+  gap: 2rem; /* Consistent gap between cards */
+}
+
+.tip-card {
+  background-color: #f9fafb; /* Off-white for card background */
+  border-radius: 1rem; /* Consistent rounded corners */
+  /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); */
+  padding: 2.2rem; /* Increased padding inside cards */
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid #e2e8f0; /* Subtle light gray border */
+}
+
+.tip-card:hover {
+  transform: translateY(-8px); /* More significant lift on hover */
+  /* box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15); */
+  background-color: #ffffff; /* White background on hover */
+}
+
+.tip-card-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.7rem; /* Larger, more readable title */
+  font-weight: 700; /* Bolder font weight */
+  margin-bottom: 1.2rem; /* More space below title */
+  color: #1f2937; /* Vibrant blue for card titles */
+  display: flex;
+  align-items: center;
+  line-height: 1.3;
+}
+
+.tip-card-title i {
+  margin-right: 1rem; /* More space for the icon */
+  color: #0d9488; /* Teal accent for icons */
+  font-size: 2rem; /* Larger, more prominent icons */
+}
+
+.tip-card p {
+  font-size: 1.08rem; /* Slightly larger text for readability */
+  color: #4a5568; /* A common mid-gray for good contrast */
+  line-height: 1.7; /* Improved line height */
+}
+
+/* Writing Section Accordion */
+.accordion-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem; /* Slightly tighter gap for accordion items */
+}
+
+.accordion-item {
+  background-color: #fff;
+  border-radius: 1rem;
+  /* box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06); */
+  overflow: hidden;
+  border: 1px solid #dbeafe; /* Light blue border for accordions */
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.accordion-item:hover {
+  /* box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); */
+  border-color: #93c5fd; /* Light blue on hover */
+}
+
+.accordion-header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem; /* More horizontal padding */
+  background-color: #e0f2fe; /* Very light blue background for header */
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  transition: background-color 0.3s ease;
+  position: relative;
+  z-index: 2; /* Ensure header is on top of content when collapsed */
+}
+
+.accordion-header:hover {
+  background-color: #bfdbfe; /* Slightly darker on hover */
+}
+
+.accordion-header-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #1e40af; /* Darker blue for accordion titles */
+  display: flex;
+  align-items: center;
+}
+
+.accordion-header-title i {
+  margin-right: 1rem;
+  color: #0d9488; /* Teal accent for accordion icons */
+  font-size: 1.8rem;
+}
+
+.accordion-icon {
+  color: #2563eb; /* Blue for the chevron icon */
+  transition: transform 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.accordion-icon.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease-out, padding 0.6s ease-out; /* Slower, smoother transition */
+  padding: 0 2rem; /* Initially zero padding, consistent with header */
+  background-color: #fefefe; /* Pure white for content background */
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.accordion-content.active {
+  max-height: 1000px; /* Sufficiently large value */
+  padding-bottom: 2rem; /* More padding at the bottom when active */
+  padding-top: 1.5rem; /* Padding at the top when active */
+}
+
+.accordion-content ul {
+  list-style-type: disc;
+  padding-left: 2rem; /* More indent */
+  line-height: 1.8;
+  color: #4a5568;
+}
+
+.accordion-content ul li {
+  margin-bottom: 0.6rem; /* More space between list items */
+}
+
+.accordion-content ul strong {
+  font-weight: 700;
+  color: #334155;
+}
+
+/* Resources Section specific styling */
+.resource-card a {
+  color: #2563eb; /* Blue for links */
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+.resource-card a:hover {
+  text-decoration: underline;
+  color: #1e40af; /* Darker blue on hover */
+}
+.resource-card ul {
+  list-style: none; /* Remove default list style */
+  padding: 0;
+  margin: 0;
+}
+.resource-card ul li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem; /* Space between resource links */
+  padding-left: 0; /* Ensure no extra padding from parent UL */
+}
+.resource-card ul li::before {
+  content: "\f061"; /* Font Awesome arrow-right icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #0d9488; /* Teal accent color */
+  margin-right: 0.8rem;
+  font-size: 0.9em;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  /* Mobile specific adjustments */
+  .container {
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+  }
+  .content-header {
+    height: 55vh; /* Adjust height for smaller screens */
+    border-bottom-left-radius: 3vw;
+    border-bottom-right-radius: 3vw;
+  }
+  .content-header-inner {
+    top: 55%;
+  }
+  .hero-title {
+    font-size: 3rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 1.3rem;
+  }
+  .hero-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.3rem;
+  }
+  .hero-button {
+    padding: 1.1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+  .hero-button i {
+    margin-left: 0.8rem;
+    font-size: 1.1em;
+  }
+  .content-header img {
+    width: 30vw; /* Slightly larger images on mobile */
+  }
+  main {
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+  }
+  .section {
+    margin-bottom: 2rem;
+    padding: 2rem 1rem;
+    border-radius: 1rem;
+  }
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  .section-title::after {
+    width: 70px;
+    height: 4px;
+    margin-top: 10px;
+  }
+  .grid-layout {
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 1.5rem;
+  }
+  .tip-card {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+  .tip-card-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+  .tip-card-title i {
+    font-size: 1.6rem;
+    margin-right: 0.6rem;
+  }
+  .tip-card p {
+    font-size: 0.95rem;
+  }
+  .accordion-header {
+    padding: 1rem 1.2rem;
+    border-radius: 0.75rem;
+  }
+  .accordion-header-title {
+    font-size: 1.3rem;
+  }
+  .accordion-header-title i {
+    font-size: 1.5rem;
+    margin-right: 0.6rem;
+  }
+  .accordion-content {
+    padding: 0 1.2rem;
+  }
+  .accordion-content.active {
+    padding-bottom: 1.2rem;
+    padding-top: 1rem;
+  }
+  .accordion-content ul {
+    padding-left: 1.5rem;
+  }
+  .accordion-content ul li {
+    margin-bottom: 0.4rem;
+  }
+  .resource-card ul li::before {
+    margin-right: 0.6rem;
+  }
+
+  .resource-card ul li {
+    background-color: #e7ecec;
+    min-height: 25vw;
+    padding: 0.4vw 2.5vw;
+    border-radius: 2vw;
+  }
+  .resource-card.three ul li {
+    min-height: 30vw;
+  }
+  footer {
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 768px) {
+  /* md breakpoint */
+  .grid-layout.md-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .section-title {
+    font-size: 3.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* lg breakpoint */
+  .grid-layout.lg-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .section-title {
+    font-size: 4rem; /* Larger titles on large screens */
+  }
+}
+
+/* Custom scrollbar for aesthetics */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #e0e6ea; /* Lighter track */
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

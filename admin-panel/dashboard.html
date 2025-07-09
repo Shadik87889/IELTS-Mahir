@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | IELTS MAHIR</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <img
+            src="../assets/278115481_106536582034386_7446598694214552893_n.jpg"
+            alt="Ielts Mahir Logo"
+            class="dashboard-logo"
+          />
+          <h2>IELTS Mahir</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="dashboard.html">
+            <i class="fas fa-th-large"></i> Dashboard
+          </a>
+          <a href="registration.html">
+            <i class="fas fa-calendar-alt"></i> Registration
+          </a>
+          <a href="messages.html">
+            <i class="fas fa-comment-dots"></i> Messages
+          </a>
+          <a href="teachers.html">
+            <i class="fas fa-user-graduate"></i> Our Teacher
+          </a>
+          <a href="student-history.html">
+            <i class="fas fa-user-clock"></i> Student History
+          </a>
+          <a href="courses.html"> <i class="fas fa-book-open"></i> Courses </a>
+          <a href="forum.html">
+            <i class="fas fa-users"></i> Community Forum
+          </a>
+          <a href="blog.html"> <i class="fas fa-book"></i> Blog </a>
+          <a href="resources.html">
+            <i class="fas fa-folder-open"></i> Free Resources
+          </a>
+          <a href="mock-test.html"> <i class="fas fa-edit"></i> Mock Text </a>
+          <a href="quizzes.html"> <i class="fas fa-file-alt"></i> Quizzes </a>
+          <a href="testimonial.html">
+            <i class="fas fa-star"></i> Testimonial
+          </a>
+          <a href="block-list.html">
+            <i class="fas fa-user-slash"></i> Block List
+          </a>
+          <a href="logout.html"> <i class="fas fa-sign-out"></i> Log Out </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main">
+        <header class="topbar">
+          <input type="text" placeholder="Find invoices, clients, and more" />
+          <div class="top-actions">
+            <i class="fas fa-bell"></i>
+          </div>
+        </header>
+
+        <section class="dashboard-content">
+          <div class="chart-cus-flex">
+            <h1 class="page-name">Dashboard</h1>
+            <div class="chart-customization">
+              <select id="currencySelector">
+                <option value="$">$ - USD</option>
+                <option value="€">€ - EUR</option>
+                <option value="৳">৳ - BDT</option>
+              </select>
+              <div class="timeframe-controls">
+                <button class="timeframe-button active" data-timeframe="Day">
+                  Day
+                </button>
+                <button class="timeframe-button" data-timeframe="Week">
+                  Week
+                </button>
+                <button class="timeframe-button" data-timeframe="Month">
+                  Month
+                </button>
+              </div>
+              <input type="date" />
+            </div>
+          </div>
+          <!-- Summary Cards -->
+          <div
+            class="summary-cards"
+            style="display: flex; gap: 20px; flex-wrap: wrap;"
+          >
+            <!-- Total Courses -->
+            <div class="card">
+              <div class="card-info">
+                <h3>13,500</h3>
+                <p>Total Courses</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-book fa-2x" style="color: #ff9800;"></i>
+              </div>
+            </div>
+
+            <!-- Total Students -->
+            <div class="card">
+              <div class="card-info">
+                <h3>13,500</h3>
+                <p>Total Students</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-users fa-2x" style="color: #3f51b5;"></i>
+              </div>
+            </div>
+
+            <!-- Revenue -->
+            <div class="card">
+              <div class="card-info">
+                <h3>$500</h3>
+                <p>Revenue</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-chart-line fa-2x" style="color: #4caf50;"></i>
+              </div>
+            </div>
+
+            <!-- Active Batches -->
+            <div class="card">
+              <div class="card-info">
+                <h3>8</h3>
+                <p>Active Batches</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-layer-group fa-2x" style="color: #ff5722;"></i>
+              </div>
+            </div>
+
+            <!-- Growth Rate -->
+            <div class="card">
+              <div class="card-info">
+                <h3 style="color: green;">12%</h3>
+                <p>Growth Rate</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-arrow-up fa-2x" style="color: #8bc34a;"></i>
+              </div>
+            </div>
+
+            <!-- Avg. Completion -->
+            <div class="card">
+              <div class="card-info">
+                <h3>80%</h3>
+                <p>Avg. Completion</p>
+              </div>
+              <div class="card-icon">
+                <i
+                  class="fas fa-clipboard-check fa-2x"
+                  style="color: #03a9f4;"
+                ></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="all-contents">
+            <div class="chart-message">
+              <!-- Chart Canvas -->
+              <div class="chart-wrapper">
+                <div class="overview">
+                  <h1>Overview</h1>
+                  <div class="chart-toggle">
+                    <!-- <label for="cart-type">Type</label> -->
+                    <select id="chartTypeSwitch">
+                      <option value="bar" selected>Bar</option>
+                      <option value="line">Line</option>
+                    </select>
+                  </div>
+                </div>
+                <canvas id="dashboardChart"></canvas>
+              </div>
+              <!-- Messages Section -->
+              <div class="messages-wrapper">
+                <div class="messages-header">
+                  <h2>Recent Activity</h2>
+                  <a href="#">View All</a>
+                </div>
+                <div class="message-search">
+                  <input type="text" placeholder="🔍 Search...." />
+                  <button class="filter-btn">
+                    <i class="fas fa-sliders-h"></i>
+                  </button>
+                </div>
+                <div class="messages-list">
+                  <!-- Message Item -->
+                  <div class="message-item">
+                    <img src="assets/custoper-avater.jpg" class="avatar" />
+                    <div class="message-content">
+                      <strong>Shadik Hossain</strong>
+                      <p>
+                        Hey! I'm pretty curious about your IELTS course and you.
+                        You're a good looking dude.
+                      </p>
+                      <small>📅 Today | 05:30 PM</small>
+                    </div>
+                    <div class="message-meta">
+                      <span>1d</span>
+                      <i class="fas fa-check-double delivered"></i>
+                    </div>
+                  </div>
+                  <!-- Repeat for each message -->
+                  <!-- Sample with different avatar and name -->
+                  <div class="message-item">
+                    <img src="assets/custoper-avater.jpg" class="avatar" />
+                    <div class="message-content">
+                      <strong>Mahmuda Khan</strong>
+                      <p>
+                        Hey! I'm pretty curious about your IELTS course and you.
+                        You're a good looking dude.
+                      </p>
+                      <small>📅 Today | 05:30 PM</small>
+                    </div>
+                    <div class="message-meta">
+                      <span>1d</span>
+                      <i class="fas fa-check-double delivered"></i>
+                    </div>
+                  </div>
+                  <!-- Add more .message-item blocks as needed -->
+                  <!-- Message Item -->
+                  <div class="message-item">
+                    <img src="assets/custoper-avater.jpg" class="avatar" />
+                    <div class="message-content">
+                      <strong>Shadik Hossain</strong>
+                      <p>
+                        Hey! I'm pretty curious about your IELTS course and you.
+                        You're a good looking dude.
+                      </p>
+                      <small>📅 Today | 05:30 PM</small>
+                    </div>
+                    <div class="message-meta">
+                      <span>1d</span>
+                      <i class="fas fa-check-double delivered"></i>
+                    </div>
+                  </div>
+                  <div class="message-item">
+                    <img src="assets/custoper-avater.jpg" class="avatar" />
+                    <div class="message-content">
+                      <strong>Mahmuda Khan</strong>
+                      <p>
+                        Hey! I'm pretty curious about your IELTS course and you.
+                        You're a good looking dude.
+                      </p>
+                      <small>📅 Today | 05:30 PM</small>
+                    </div>
+                    <div class="message-meta">
+                      <span>1d</span>
+                      <i class="fas fa-check-double delivered"></i>
+                    </div>
+                  </div>
+                  <!-- Message Item -->
+                  <div class="message-item">
+                    <img src="assets/custoper-avater.jpg" class="avatar" />
+                    <div class="message-content">
+                      <strong>Shadik Hossain</strong>
+                      <p>
+                        Hey! I'm pretty curious about your IELTS course and you.
+                        You're a good looking dude.
+                      </p>
+                      <small>📅 Today | 05:30 PM</small>
+                    </div>
+                    <div class="message-meta">
+                      <span>1d</span>
+                      <i class="fas fa-check-double delivered"></i>
+                    </div>
+                  </div>
+                  <!-- Repeat for each message -->
+                  <!-- Sample with different avatar and name -->
+                  <div class="message-item">
+                    <img src="assets/custoper-avater.jpg" class="avatar" />
+                    <div class="message-content">
+                      <strong>Mahmuda Khan</strong>
+                      <p>
+                        Hey! I'm pretty curious about your IELTS course and you.
+                        You're a good looking dude.
+                      </p>
+                      <small>📅 Today | 05:30 PM</small>
+                    </div>
+                    <div class="message-meta">
+                      <span>1d</span>
+                      <i class="fas fa-check-double delivered"></i>
+                    </div>
+                  </div>
+                  <!-- Add more .message-item blocks as needed -->
+                  <!-- Message Item -->
+                  <div class="message-item">
+                    <img src="assets/custoper-avater.jpg" class="avatar" />
+                    <div class="message-content">
+                      <strong>Shadik Hossain</strong>
+                      <p>
+                        Hey! I'm pretty curious about your IELTS course and you.
+                        You're a good looking dude.
+                      </p>
+                      <small>📅 Today | 05:30 PM</small>
+                    </div>
+                    <div class="message-meta">
+                      <span>1d</span>
+                      <i class="fas fa-check-double delivered"></i>
+                    </div>
+                  </div>
+                  <div class="message-item">
+                    <img src="assets/custoper-avater.jpg" class="avatar" />
+                    <div class="message-content">
+                      <strong>Mahmuda Khan</strong>
+                      <p>
+                        Hey! I'm pretty curious about your IELTS course and you.
+                        You're a good looking dude.
+                      </p>
+                      <small>📅 Today | 05:30 PM</small>
+                    </div>
+                    <div class="message-meta">
+                      <span>1d</span>
+                      <i class="fas fa-check-double delivered"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Invoices Overview Section -->
+            <div class="invoices-overview">
+              <div class="invoices-header">
+                <h2>Top 5 Recent Invoices</h2>
+                <a href="#">View All</a>
+              </div>
+              <div class="invoices-table-wrapper">
+                <table class="invoices-table">
+                  <thead>
+                    <tr>
+                      <th>#Invoice</th>
+                      <th>Client</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#INV-00125</td>
+                      <td>Shadik Hossain</td>
+                      <td>$1,250</td>
+                      <td><span class="status paid">Paid</span></td>
+                      <td>May 20, 2025</td>
+                    </tr>
+                    <tr>
+                      <td>#INV-00124</td>
+                      <td>Mahmuda Khan</td>
+                      <td>$980</td>
+                      <td><span class="status pending">Pending</span></td>
+                      <td>May 19, 2025</td>
+                    </tr>
+                    <tr>
+                      <td>#INV-00123</td>
+                      <td>Esther Howard</td>
+                      <td>$640</td>
+                      <td><span class="status overdue">Overdue</span></td>
+                      <td>May 18, 2025</td>
+                    </tr>
+                    <tr>
+                      <td>#INV-00122</td>
+                      <td>Cody Fisher</td>
+                      <td>$1,800</td>
+                      <td><span class="status paid">Paid</span></td>
+                      <td>May 16, 2025</td>
+                    </tr>
+                    <tr>
+                      <td>#INV-00121</td>
+                      <td>Jenny Wilson</td>
+                      <td>$750</td>
+                      <td><span class="status pending">Pending</span></td>
+                      <td>May 15, 2025</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

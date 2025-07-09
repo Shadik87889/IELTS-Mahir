@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mahir - Home</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="assets/278115481_106536582034386_7446598694214552893_n.jpg"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main id="main">
+      <div id="page1">
+        <nav>
+          <div class="logo">
+            <img
+              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+              alt="Ielts mahir logo"
+            />
+          </div>
+          <div class="menu-item">
+            <a href="home.html">Home</a>
+
+            <div class="dropdown">
+              <a class="down-arrow" href="javascript:void(0)">
+                Free Resources <span class="arrow">&gt;</span>
+              </a>
+              <div class="submenu">
+                <a href="ielts-all.html" class="category-link">All</a>
+                <a href="ielts-speaking.html" class="category-link">Speaking</a>
+                <a href="ielts-writing.html" class="category-link">Writing</a>
+                <a href="ielts-reading.html" class="category-link">Reading</a>
+                <a href="ielts-listening.html" class="category-link"
+                  >Listening</a
+                >
+
+                <a href="ielts-grammar.html" class="category-link">Grammar</a>
+                <a href="ielts-study-plan.html" class="category-link"
+                  >Study Plan</a
+                >
+                <a href="higher-study.html" class="category-link"
+                  >higher Study</a
+                >
+                <a href="live-classes.html" class="category-link"
+                  >Live Classes</a
+                >
+                <a href="ielts-motivation.html" class="category-link"
+                  >IELTS Motivation</a
+                >
+              </div>
+            </div>
+
+            <a href="quizzes.html">Quizzes</a>
+
+            <div class="dropdown">
+              <a class="down-arrow" href="javascript:void(0)">
+                Services <span class="arrow">&gt;</span>
+              </a>
+              <div class="submenu">
+                <a href="#">1:1 Coaching</a>
+                <a href="#">Essay Checking</a>
+                <a href="#">Speaking Practice</a>
+              </div>
+            </div>
+
+            <a href="tips-tricks.html">IELTS Tips and Tricks</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </nav>
+
+        <!-- IELTS Spelling Test - Premium Experience -->
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap"
+          rel="stylesheet"
+        />
+        <style>
+          :root {
+            --primary: #5e60ce;
+            --accent: #48bfe3;
+            --bg: #f6f8ff;
+            --glass: rgba(255, 255, 255, 0.7);
+            --glass-dark: rgba(34, 34, 44, 0.7);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            --border: 1.5px solid rgba(94, 96, 206, 0.12);
+            --text: #22222c;
+            --text-light: #fff;
+            --success: #38d996;
+            --error: #ff5e5e;
+            --timer: #fbbf24;
+            --gradient: linear-gradient(135deg, #5e60ce 0%, #48bfe3 100%);
+            --glass-blur: blur(18px);
+          }
+          [data-theme="dark"] {
+            --bg: #181a23;
+            --glass: rgba(34, 34, 44, 0.7);
+            --glass-dark: rgba(255, 255, 255, 0.08);
+            --text: #f6f8ff;
+            --text-light: #181a23;
+            --border: 1.5px solid rgba(94, 96, 206, 0.22);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.28);
+          }
+          body {
+            background: var(--bg);
+            font-family: "Inter", Arial, sans-serif;
+            color: var(--text);
+            margin: 0;
+            min-height: 100vh;
+            transition: background 0.5s;
+          }
+          #spelling-app-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: var(--gradient);
+            opacity: 0.13;
+            animation: bgMove 16s linear infinite alternate;
+          }
+          @keyframes bgMove {
+            0% {
+              background-position: 0% 50%;
+            }
+            100% {
+              background-position: 100% 50%;
+            }
+          }
+          #spelling-app {
+            position: relative;
+            z-index: 1;
+            max-width: 420px;
+            margin: 48px auto 0 auto;
+            padding: 0 16px 48px 16px;
+          }
+          .spell-card {
+            background: var(--glass);
+            border-radius: 2.2rem;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            backdrop-filter: var(--glass-blur);
+            padding: 2.5rem 2rem 2rem 2rem;
+            margin-bottom: 2rem;
+            transition: background 0.4s, box-shadow 0.4s;
+            position: relative;
+            overflow: hidden;
+          }
+          .spell-card.neumorph {
+            box-shadow: 8px 8px 24px #d1d9e6, -8px -8px 24px #fff;
+          }
+          .spell-title {
+            font-family: "Playfair Display", serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            color: var(--primary);
+          }
+          .spell-desc {
+            font-size: 1.08rem;
+            text-align: center;
+            color: #6c6f93;
+            margin-bottom: 1.5rem;
+          }
+          .spell-btn,
+          .mode-toggle,
+          .restart-btn {
+            font-family: "Inter", Arial, sans-serif;
+            font-weight: 600;
+            font-size: 1.08rem;
+            border: none;
+            outline: none;
+            border-radius: 1.5rem;
+            padding: 0.7rem 1.7rem;
+            margin: 0.3rem;
+            background: var(--gradient);
+            color: var(--text-light);
+            cursor: pointer;
+            box-shadow: 0 2px 12px 0 rgba(94, 96, 206, 0.08);
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+          }
+          .spell-btn:hover,
+          .mode-toggle:hover,
+          .restart-btn:hover {
+            background: linear-gradient(135deg, #48bfe3 0%, #5e60ce 100%);
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 4px 24px 0 rgba(94, 96, 206, 0.14);
+          }
+          .mode-toggle {
+            position: absolute;
+            top: 1.3rem;
+            right: 1.3rem;
+            padding: 0.5rem 1.1rem;
+            font-size: 1rem;
+            background: var(--glass-dark);
+            color: var(--primary);
+            border: var(--border);
+            box-shadow: none;
+          }
+          .spell-audio-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 2.1rem;
+            cursor: pointer;
+            margin: 0 auto 1.2rem auto;
+            display: block;
+            transition: color 0.2s;
+          }
+          .spell-audio-btn:hover {
+            color: var(--accent);
+          }
+          .spell-input-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+          }
+          .spell-input {
+            font-size: 1.25rem;
+            padding: 0.7rem 1.2rem;
+            border-radius: 1.2rem;
+            border: var(--border);
+            outline: none;
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--text);
+            font-family: "Inter", Arial, sans-serif;
+            font-weight: 500;
+            width: 70%;
+            margin-right: 0.7rem;
+            transition: border 0.2s, background 0.2s;
+          }
+          [data-theme="dark"] .spell-input {
+            background: rgba(34, 34, 44, 0.5);
+            color: var(--text);
+          }
+          .spell-input:focus {
+            border: 2px solid var(--primary);
+            background: rgba(94, 96, 206, 0.07);
+          }
+          .spell-feedback {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.1rem;
+            min-height: 1.5em;
+            transition: color 0.3s;
+          }
+          .spell-feedback.correct {
+            color: var(--success);
+          }
+          .spell-feedback.incorrect {
+            color: var(--error);
+          }
+          .spell-feedback.neutral {
+            color: #6c6f93;
+          }
+          .spell-score {
+            text-align: center;
+            font-size: 1.08rem;
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+          }
+          .spell-timer {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--timer);
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+          }
+          .spell-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.2rem;
+          }
+          .spell-nav .spell-btn {
+            flex: 1 1 0;
+            margin: 0 0.3rem;
+          }
+          .spell-levels {
+            display: flex;
+            justify-content: center;
+            gap: 0.7rem;
+            margin-bottom: 1.2rem;
+          }
+          .spell-level-btn {
+            background: none;
+            border: var(--border);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border-radius: 1.2rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+          }
+          .spell-level-btn.active,
+          .spell-level-btn:hover {
+            background: var(--gradient);
+            color: var(--text-light);
+          }
+          .spell-hint {
+            display: block;
+            text-align: center;
+            font-size: 1rem;
+            color: #6c6f93;
+            margin-bottom: 0.7rem;
+            cursor: pointer;
+            text-decoration: underline dotted;
+            transition: color 0.2s;
+          }
+          .spell-hint:hover {
+            color: var(--primary);
+          }
+          .spell-dict-popup {
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translate(-50%, 1.2rem);
+            background: var(--glass);
+            border-radius: 1.2rem;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            padding: 1.1rem 1.2rem;
+            min-width: 220px;
+            z-index: 10;
+            font-size: 1rem;
+            color: var(--text);
+            animation: fadeInDict 0.3s;
+          }
+          @keyframes fadeInDict {
+            from {
+              opacity: 0;
+              transform: translate(-50%, 2.2rem);
+            }
+            to {
+              opacity: 1;
+              transform: translate(-50%, 1.2rem);
+            }
+          }
+          .spell-dict-popup strong {
+            color: var(--primary);
+          }
+          .spell-leaderboard {
+            margin-top: 2.2rem;
+            background: var(--glass);
+            border-radius: 1.2rem;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            padding: 1.2rem 1.2rem 0.7rem 1.2rem;
+          }
+          .spell-leaderboard h3 {
+            font-family: "Playfair Display", serif;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 0.7rem;
+          }
+          .spell-leaderboard ol {
+            margin: 0;
+            padding-left: 1.2rem;
+          }
+          .spell-leaderboard li {
+            font-size: 1rem;
+            color: #6c6f93;
+            margin-bottom: 0.3rem;
+          }
+          .spell-leaderboard li.top {
+            color: var(--primary);
+            font-weight: 700;
+          }
+          .spell-intro {
+            text-align: center;
+            padding: 3.2rem 1.2rem 2.2rem 1.2rem;
+            background: var(--glass);
+            border-radius: 2.2rem;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+          }
+          .spell-intro h1 {
+            font-family: "Playfair Display", serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.7rem;
+            letter-spacing: -1px;
+          }
+          .spell-intro p {
+            font-size: 1.1rem;
+            color: #6c6f93;
+            margin-bottom: 2.2rem;
+          }
+          .spell-intro .spell-btn {
+            font-size: 1.15rem;
+            padding: 0.9rem 2.2rem;
+          }
+          .spell-results {
+            text-align: center;
+            padding: 2.5rem 1.2rem 2.2rem 1.2rem;
+            background: var(--glass);
+            border-radius: 2.2rem;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInResults 0.7s;
+          }
+          @keyframes fadeInResults {
+            from {
+              opacity: 0;
+              transform: translateY(40px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          .spell-results h2 {
+            font-family: "Playfair Display", serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.7rem;
+          }
+          .spell-results .score {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+          }
+          .spell-results .motivation {
+            font-size: 1.1rem;
+            color: #6c6f93;
+            margin-bottom: 1.5rem;
+          }
+          .spell-results .restart-btn {
+            font-size: 1.1rem;
+            padding: 0.8rem 2rem;
+          }
+          @media (max-width: 600px) {
+            #spelling-app {
+              max-width: 100%;
+              padding: 0 2vw 48px 2vw;
+            }
+            .spell-card,
+            .spell-intro,
+            .spell-results {
+              padding: 1.5rem 0.7rem;
+            }
+            .spell-title {
+              font-size: 1.4rem;
+            }
+          }
+          ::-webkit-scrollbar {
+            width: 8px;
+            background: transparent;
+          }
+          ::-webkit-scrollbar-thumb {
+            background: #e0e7ff;
+            border-radius: 8px;
+          }
+          [data-theme="dark"] ::-webkit-scrollbar-thumb {
+            background: #23243a;
+          }
+        </style>
+        <div id="spelling-app-bg"></div>
+        <div id="spelling-app">
+          <!-- Intro Screen -->
+          <div class="spell-intro" id="spell-intro">
+            <button
+              class="mode-toggle"
+              id="mode-toggle"
+              title="Toggle light/dark mode"
+            >
+              🌙
+            </button>
+            <h1>IELTS Spelling Test</h1>
+            <p>
+              Sharpen your spelling skills for IELTS!<br />
+              Listen to each word, type the correct spelling, and get instant
+              feedback.<br />
+              Choose your level, beat the timer, and climb the leaderboard.<br />
+              <span style="color: var(--primary); font-weight: 600;"
+                >Ready for a premium challenge?</span
+              >
+            </p>
+            <div class="spell-levels" id="intro-levels"></div>
+            <button class="spell-btn" id="start-btn">Start Test</button>
+          </div>
+          <!-- Main Test Card -->
+          <div class="spell-card" id="spell-card" style="display: none;">
+            <button
+              class="mode-toggle"
+              id="mode-toggle2"
+              title="Toggle light/dark mode"
+            >
+              🌙
+            </button>
+            <div class="spell-score" id="spell-score"></div>
+            <div class="spell-timer" id="spell-timer"></div>
+            <div class="spell-levels" id="spell-levels"></div>
+            <button
+              class="spell-audio-btn"
+              id="audio-btn"
+              title="Play word audio"
+            >
+              🔊
+            </button>
+            <div class="spell-input-wrap">
+              <input
+                type="text"
+                class="spell-input"
+                id="spell-input"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+                placeholder="Type spelling..."
+              />
+              <button
+                class="spell-btn"
+                id="submit-btn"
+                style="padding: 0.7rem 1.2rem;"
+              >
+                ✔
+              </button>
+            </div>
+            <div class="spell-feedback neutral" id="spell-feedback"></div>
+            <div class="spell-hint" id="spell-hint" style="display: none;">
+              Show hint
+            </div>
+            <div
+              class="spell-dict-popup"
+              id="spell-dict"
+              style="display: none;"
+            ></div>
+            <div class="spell-nav">
+              <button class="spell-btn" id="prev-btn">← Prev</button>
+              <button class="spell-btn" id="next-btn">Next →</button>
+            </div>
+            <button
+              class="restart-btn"
+              id="restart-btn"
+              style="margin: 1.2rem auto 0 auto; display: block;"
+            >
+              Restart Test
+            </button>
+          </div>
+          <!-- Results Screen -->
+          <div class="spell-results" id="spell-results" style="display: none;">
+            <h2>Test Complete!</h2>
+            <div class="score" id="results-score"></div>
+            <div class="motivation" id="results-motivation"></div>
+            <button class="restart-btn" id="results-restart">Try Again</button>
+          </div>
+          <!-- Leaderboard -->
+          <div class="spell-leaderboard" id="spell-leaderboard">
+            <h3>🏆 Top Scores</h3>
+            <ol id="leaderboard-list"></ol>
+          </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+        <script>
+          /* ====== Data & Settings ====== */
+          const SPELL_WORDS = {
+            easy: [
+              {
+                word: "apple",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/apple--_gb_1.mp3",
+                hint: "A common fruit",
+                def: "A round fruit with red or green skin.",
+              },
+              {
+                word: "study",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/study--_gb_1.mp3",
+                hint: "What you do for IELTS",
+                def: "To learn about a subject.",
+              },
+              {
+                word: "music",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/music--_gb_1.mp3",
+                hint: "You listen to this",
+                def:
+                  "Vocal or instrumental sounds combined to produce harmony.",
+              },
+              {
+                word: "friend",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/friend--_gb_1.mp3",
+                hint: "A person you like",
+                def:
+                  "A person whom one knows and with whom one has a bond of mutual affection.",
+              },
+              {
+                word: "school",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/school--_gb_1.mp3",
+                hint: "Place to learn",
+                def: "An institution for educating children.",
+              },
+            ],
+            medium: [
+              {
+                word: "achievement",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/achievement--_gb_1.mp3",
+                hint: "A great result",
+                def:
+                  "A thing done successfully, typically by effort, courage, or skill.",
+              },
+              {
+                word: "environment",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/environment--_gb_1.mp3",
+                hint: "Nature around us",
+                def:
+                  "The surroundings or conditions in which a person, animal, or plant lives or operates.",
+              },
+              {
+                word: "pronunciation",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/pronunciation--_gb_1.mp3",
+                hint: "How you say words",
+                def: "The way in which a word is pronounced.",
+              },
+              {
+                word: "opportunity",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/opportunity--_gb_1.mp3",
+                hint: "A chance",
+                def:
+                  "A set of circumstances that makes it possible to do something.",
+              },
+              {
+                word: "recommendation",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/recommendation--_gb_1.mp3",
+                hint: "A suggestion",
+                def:
+                  "A suggestion or proposal as to the best course of action.",
+              },
+            ],
+            hard: [
+              {
+                word: "accommodation",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/accommodation--_gb_1.mp3",
+                hint: "A place to stay",
+                def:
+                  "A room, group of rooms, or building in which someone may live or stay.",
+              },
+              {
+                word: "entrepreneur",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/entrepreneur--_gb_1.mp3",
+                hint: "Business starter",
+                def: "A person who organizes and operates a business.",
+              },
+              {
+                word: "miscellaneous",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/miscellaneous--_gb_1.mp3",
+                hint: "Various types",
+                def:
+                  "Of items or people gathered or considered together of various types.",
+              },
+              {
+                word: "conscientious",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/conscientious--_gb_1.mp3",
+                hint: "Careful and diligent",
+                def:
+                  "Wishing to do what is right, especially to do one's work or duty well and thoroughly.",
+              },
+              {
+                word: "phenomenon",
+                audio:
+                  "https://ssl.gstatic.com/dictionary/static/sounds/oxford/phenomenon--_gb_1.mp3",
+                hint: "An observable event",
+                def: "A fact or situation that is observed to exist or happen.",
+              },
+            ],
+          };
+          const LEVELS = ["easy", "medium", "hard"];
+          const LEVEL_LABELS = { easy: "Easy", medium: "Medium", hard: "Hard" };
+          const TIMER_PER_LEVEL = { easy: 20, medium: 18, hard: 15 }; // seconds per word
+          const LS_KEY = "ielts_spelling_test_progress";
+          const LS_LB_KEY = "ielts_spelling_leaderboard";
+          const SOUND_CORRECT =
+            "https://cdn.pixabay.com/audio/2022/03/15/audio_115b9e4e2a.mp3";
+          const SOUND_WRONG =
+            "https://cdn.pixabay.com/audio/2022/03/15/audio_115b9e4e2a.mp3"; // Use same for demo, can change
+          /* ====== State ====== */
+          let state = {
+            level: "easy",
+            words: [],
+            current: 0,
+            answers: [],
+            score: 0,
+            timer: null,
+            timeLeft: 0,
+            showHint: false,
+            finished: false,
+          };
+          /* ====== DOM ====== */
+          const $ = (sel) => document.querySelector(sel);
+          const $$ = (sel) => document.querySelectorAll(sel);
+          const intro = $("#spell-intro");
+          const card = $("#spell-card");
+          const results = $("#spell-results");
+          const leaderboard = $("#spell-leaderboard");
+          const leaderboardList = $("#leaderboard-list");
+          const startBtn = $("#start-btn");
+          const introLevels = $("#intro-levels");
+          const cardLevels = $("#spell-levels");
+          const scoreEl = $("#spell-score");
+          const timerEl = $("#spell-timer");
+          const audioBtn = $("#audio-btn");
+          const input = $("#spell-input");
+          const submitBtn = $("#submit-btn");
+          const feedback = $("#spell-feedback");
+          const prevBtn = $("#prev-btn");
+          const nextBtn = $("#next-btn");
+          const restartBtn = $("#restart-btn");
+          const resultsScore = $("#results-score");
+          const resultsMotivation = $("#results-motivation");
+          const resultsRestart = $("#results-restart");
+          const hintBtn = $("#spell-hint");
+          const dictPopup = $("#spell-dict");
+          const modeToggle = $("#mode-toggle");
+          const modeToggle2 = $("#mode-toggle2");
+          /* ====== Utility ====== */
+          function shuffle(arr) {
+            return arr
+              .map((a) => [Math.random(), a])
+              .sort((a, b) => a[0] - b[0])
+              .map((a) => a[1]);
+          }
+          function saveProgress() {
+            localStorage.setItem(
+              LS_KEY,
+              JSON.stringify({
+                ...state,
+                finished: undefined,
+                timer: undefined,
+              })
+            );
+          }
+          function loadProgress() {
+            let d = localStorage.getItem(LS_KEY);
+            if (!d) return null;
+            try {
+              let s = JSON.parse(d);
+              if (!s.words || !s.level) return null;
+              return s;
+            } catch {
+              return null;
+            }
+          }
+          function clearProgress() {
+            localStorage.removeItem(LS_KEY);
+          }
+          function playSound(url) {
+            let a = new Audio(url);
+            a.volume = 0.25;
+            a.play();
+          }
+          function saveLeaderboard(score, level) {
+            let lb = JSON.parse(localStorage.getItem(LS_LB_KEY) || "[]");
+            lb.push({ score, level, date: Date.now() });
+            lb = lb.sort((a, b) => b.score - a.score).slice(0, 7);
+            localStorage.setItem(LS_LB_KEY, JSON.stringify(lb));
+          }
+          function getLeaderboard() {
+            let lb = JSON.parse(localStorage.getItem(LS_LB_KEY) || "[]");
+            return lb;
+          }
+          function formatDate(ts) {
+            let d = new Date(ts);
+            return d.toLocaleDateString();
+          }
+          /* ====== UI Functions ====== */
+          function renderLevels(container, active) {
+            container.innerHTML = "";
+            LEVELS.forEach((lvl) => {
+              let btn = document.createElement("button");
+              btn.className =
+                "spell-level-btn" + (lvl === active ? " active" : "");
+              btn.textContent = LEVEL_LABELS[lvl];
+              btn.onclick = () => setLevel(lvl);
+              container.appendChild(btn);
+            });
+          }
+          function setLevel(lvl) {
+            state.level = lvl;
+            renderLevels(introLevels, lvl);
+            renderLevels(cardLevels, lvl);
+            saveProgress();
+          }
+          function showIntro() {
+            intro.style.display = "";
+            card.style.display = "none";
+            results.style.display = "none";
+            gsap.fromTo(
+              intro,
+              { y: 40, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.7, ease: "power2.out" }
+            );
+          }
+          function showCard() {
+            intro.style.display = "none";
+            card.style.display = "";
+            results.style.display = "none";
+            gsap.fromTo(
+              card,
+              { y: 40, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.7, ease: "power2.out" }
+            );
+          }
+          function showResults() {
+            intro.style.display = "none";
+            card.style.display = "none";
+            results.style.display = "";
+            gsap.fromTo(
+              results,
+              { y: 40, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.7, ease: "power2.out" }
+            );
+          }
+          function renderLeaderboard() {
+            let lb = getLeaderboard();
+            leaderboardList.innerHTML = "";
+            if (!lb.length) {
+              leaderboardList.innerHTML =
+                "<li>No scores yet. Be the first!</li>";
+              return;
+            }
+            lb.forEach((item, i) => {
+              let li = document.createElement("li");
+              li.className = i === 0 ? "top" : "";
+              li.innerHTML = `<strong>${item.score}</strong> / 5 (${
+                LEVEL_LABELS[item.level]
+              }) <span style="font-size:0.9em;color:#b0b3d6;">${formatDate(
+                item.date
+              )}</span>`;
+              leaderboardList.appendChild(li);
+            });
+          }
+          /* ====== Test Logic ====== */
+          function startTest(newTest = true) {
+            state.words = shuffle([...SPELL_WORDS[state.level]]);
+            state.current = 0;
+            state.answers = [];
+            state.score = 0;
+            state.finished = false;
+            state.showHint = false;
+            state.timeLeft = TIMER_PER_LEVEL[state.level];
+            if (newTest) clearProgress();
+            saveProgress();
+            renderLevels(cardLevels, state.level);
+            renderWord();
+            showCard();
+            input.focus();
+          }
+          function renderWord() {
+            let w = state.words[state.current];
+            scoreEl.textContent = `Word ${state.current + 1} of ${
+              state.words.length
+            } | Score: ${state.score}`;
+            timerEl.textContent = `⏳ ${state.timeLeft}s`;
+            input.value = state.answers[state.current]?.input || "";
+            input.disabled = !!state.answers[state.current]?.correct;
+            submitBtn.disabled = !!state.answers[state.current]?.correct;
+            feedback.textContent = "";
+            feedback.className = "spell-feedback neutral";
+            hintBtn.style.display = "inline-block";
+            hintBtn.textContent = state.showHint ? w.hint : "Show hint";
+            dictPopup.style.display = "none";
+            // Animate in
+            gsap.fromTo(
+              card,
+              { scale: 0.97, opacity: 0.7 },
+              { scale: 1, opacity: 1, duration: 0.5, ease: "power2.out" }
+            );
+            // Timer
+            clearInterval(state.timer);
+            state.timeLeft = TIMER_PER_LEVEL[state.level];
+            timerEl.style.color = "var(--timer)";
+            state.timer = setInterval(() => {
+              state.timeLeft--;
+              timerEl.textContent = `⏳ ${state.timeLeft}s`;
+              if (state.timeLeft <= 5) timerEl.style.color = "var(--error)";
+              if (state.timeLeft <= 0) {
+                clearInterval(state.timer);
+                timerEl.textContent = "⏳ 0s";
+                checkAnswer("");
+              }
+            }, 1000);
+          }
+          function playAudio() {
+            let w = state.words[state.current];
+            let a = new Audio(w.audio);
+            a.play();
+          }
+          function checkAnswer(val) {
+            clearInterval(state.timer);
+            let w = state.words[state.current];
+            let correct = val.trim().toLowerCase() === w.word.toLowerCase();
+            state.answers[state.current] = { input: val, correct };
+            if (correct) {
+              feedback.textContent = "✅ Correct!";
+              feedback.className = "spell-feedback correct";
+              state.score++;
+              playSound(SOUND_CORRECT);
+            } else {
+              feedback.textContent = `❌ Incorrect. Correct: ${w.word}`;
+              feedback.className = "spell-feedback incorrect";
+              playSound(SOUND_WRONG);
+            }
+            input.disabled = true;
+            submitBtn.disabled = true;
+            saveProgress();
+            setTimeout(() => {
+              if (state.current < state.words.length - 1) {
+                nextWord();
+              } else {
+                finishTest();
+              }
+            }, 1200);
+          }
+          function nextWord() {
+            if (state.current < state.words.length - 1) {
+              state.current++;
+              state.showHint = false;
+              renderWord();
+              input.focus();
+            }
+          }
+          function prevWord() {
+            if (state.current > 0) {
+              state.current--;
+              renderWord();
+              input.focus();
+            }
+          }
+          function finishTest() {
+            state.finished = true;
+            clearInterval(state.timer);
+            saveLeaderboard(state.score, state.level);
+            clearProgress();
+            renderLeaderboard();
+            showResults();
+            resultsScore.textContent = `You scored ${state.score} out of ${state.words.length}`;
+            let msg = "";
+            if (state.score === state.words.length)
+              msg = "🌟 Perfect! You're a spelling master!";
+            else if (state.score >= state.words.length - 1)
+              msg = "👏 Great job! Just a little more practice for perfection.";
+            else if (state.score >= Math.floor(state.words.length / 2))
+              msg = "👍 Good effort! Keep practicing to improve.";
+            else msg = "💪 Don't give up! Review the words and try again.";
+            resultsMotivation.textContent = msg;
+          }
+          /* ====== Event Listeners ====== */
+          startBtn.onclick = () => startTest(true);
+          introLevels.onclick = (e) => {
+            if (e.target.classList.contains("spell-level-btn")) {
+              setLevel(LEVELS[[...introLevels.children].indexOf(e.target)]);
+            }
+          };
+          cardLevels.onclick = (e) => {
+            if (e.target.classList.contains("spell-level-btn")) {
+              setLevel(LEVELS[[...cardLevels.children].indexOf(e.target)]);
+              startTest(true);
+            }
+          };
+          audioBtn.onclick = playAudio;
+          submitBtn.onclick = () => checkAnswer(input.value);
+          input.onkeydown = (e) => {
+            if (e.key === "Enter" && !input.disabled) checkAnswer(input.value);
+          };
+          prevBtn.onclick = prevWord;
+          nextBtn.onclick = nextWord;
+          restartBtn.onclick = () => startTest(true);
+          resultsRestart.onclick = () => startTest(true);
+          hintBtn.onclick = () => {
+            state.showHint = !state.showHint;
+            let w = state.words[state.current];
+            hintBtn.textContent = state.showHint ? w.hint : "Show hint";
+            if (state.showHint) {
+              dictPopup.innerHTML = `<strong>Definition:</strong> ${w.def}`;
+              dictPopup.style.display = "block";
+              gsap.fromTo(
+                dictPopup,
+                { y: 20, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.4 }
+              );
+            } else {
+              dictPopup.style.display = "none";
+            }
+          };
+          input.onfocus = () => (dictPopup.style.display = "none");
+          document.body.addEventListener("click", (e) => {
+            if (!dictPopup.contains(e.target) && e.target !== hintBtn)
+              dictPopup.style.display = "none";
+          });
+          /* ====== Dark/Light Mode ====== */
+          function setTheme(mode) {
+            document.documentElement.setAttribute("data-theme", mode);
+            let icon = mode === "dark" ? "☀️" : "🌙";
+            modeToggle.textContent = icon;
+            modeToggle2.textContent = icon;
+            localStorage.setItem("spelling_theme", mode);
+          }
+          function toggleTheme() {
+            let mode =
+              document.documentElement.getAttribute("data-theme") === "dark"
+                ? "light"
+                : "dark";
+            setTheme(mode);
+          }
+          modeToggle.onclick = toggleTheme;
+          modeToggle2.onclick = toggleTheme;
+          /* ====== Init ====== */
+          function init() {
+            // Theme
+            let theme = localStorage.getItem("spelling_theme") || "light";
+            setTheme(theme);
+            // Levels
+            renderLevels(introLevels, state.level);
+            renderLevels(cardLevels, state.level);
+            // Leaderboard
+            renderLeaderboard();
+            // Restore progress
+            let saved = loadProgress();
+            if (saved && !saved.finished) {
+              Object.assign(state, saved);
+              showCard();
+              renderWord();
+            } else {
+              showIntro();
+            }
+          }
+          init();
+        </script>
+      </div>
+
+      <!-- IELTS Speaking Test Simulator END -->
+      <footer class="footer">
+        <div class="footer-top">
+          <div class="contact-banner">
+            <div class="contact-content">
+              <h2 class="anton">Achieve Your Desired IELTS Band</h2>
+              <p class="montserrat">
+                Certified mentors guiding you every step of the way
+              </p>
+              <div class="contact-buttons">
+                <button class="btn primary montserrat">
+                  Explore IELTS Modules
+                </button>
+                <a href="#" class="btn link montserrat"
+                  >Latest Success Stories →</a
+                >
+              </div>
+            </div>
+            <div class="contact-image">
+              <div class="bg-letter">
+                <span class="im-i">I</span>
+                <span class="im-m">M</span>
+              </div>
+              <img src="assets/LELTS-Mahir.png" alt="IELTS Student Image" />
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4 class="anton">Quick Access</h4>
+            <ul class="montserrat">
+              <li><a href="#">About IELTS Mahir</a></li>
+              <li><a href="#">Contact Support</a></li>
+              <li><a href="#">IELTS FAQs</a></li>
+              <li><a href="#">Terms & Conditions</a></li>
+              <li><a href="#">Privacy Guidelines</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4 class="anton">Learning Hub</h4>
+            <ul class="montserrat">
+              <li><a href="#">IELTS Blog</a></li>
+              <li><a href="#">Student Reviews</a></li>
+              <li><a href="#">Success Partners</a></li>
+              <li><a href="#">Live Support</a></li>
+              <li><a href="#">Help & Guidance</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4 class="anton">Free Resources</h4>
+            <ul class="montserrat">
+              <li><a href="#">Mock Tests</a></li>
+              <li><a href="#">IELTS Community</a></li>
+              <li><a href="#">Band Descriptors</a></li>
+              <li><a href="#">Weekly Tips</a></li>
+              <li><a href="#">Download Materials</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column subscribe">
+            <h4 class="anton">Get Weekly IELTS Tips</h4>
+            <p class="montserrat">
+              Subscribe and stay ahead with expert strategies
+            </p>
+            <div class="subscribe-form">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                class="montserrat"
+              />
+              <button class="montserrat">Subscribe</button>
+            </div>
+            <small class="montserrat"
+              >By subscribing, you agree to our
+              <a href="#">Privacy Policy</a></small
+            >
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="branding anton">IELTS MAHIR.</div>
+          <div class="footer-policy-links montserrat">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Cookies Notice</a>
+          </div>
+          <div class="footer-socials">
+            <a href="#"
+              ><img
+                src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png"
+                alt="Facebook"
+            /></a>
+            <a href="#"
+              ><img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png"
+                alt="Instagram"
+            /></a>
+            <a href="#"
+              ><img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png"
+                alt="LinkedIn"
+            /></a>
+            <a href="#"
+              ><img
+                src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png"
+                alt="YouTube"
+            /></a>
+          </div>
+          <p class="montserrat copyright">
+            © 2024 IELTS Mahir. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </main>
+
+    <!-- GSAP Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+    <script src="free-resourses-details.js"></script>
+    <script src="dropdown-settings.js"></script>
+    <script src="app.js"></script>
+    <script src="gsap.js"></script>
+  </body>
+</html>

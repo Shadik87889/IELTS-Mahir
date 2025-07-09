@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Student Dashboard</title>
+    <link rel="stylesheet" href="student-dashboard.css" />
+    <!-- Google Fonts: Anton for headings, Montserrat for body text -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <nav>
+        <div class="logo">
+          <img
+            src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+            alt="Ielts mahir logo"
+          />
+        </div>
+        <div class="hamburger-menu">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+        <div class="menu-item">
+          <a href="home.html">Home</a>
+
+          <div class="dropdown">
+            <a class="down-arrow" href="javascript:void(0)">
+              Free Resources <span class="arrow">&gt;</span>
+            </a>
+            <div class="submenu">
+              <a href="ielts-all.html" class="category-link">All</a>
+              <a href="ielts-speaking.html" class="category-link">Speaking</a>
+              <a href="ielts-writing.html" class="category-link">Writing</a>
+              <a href="ielts-reading.html" class="category-link">Reading</a>
+              <a href="ielts-listening.html" class="category-link">Listening</a>
+
+              <a href="ielts-grammar.html" class="category-link">Grammar</a>
+              <a href="ielts-study-plan.html" class="category-link"
+                >Study Plan</a
+              >
+              <a href="higher-study.html" class="category-link">higher Study</a>
+              <a href="live-classes.html" class="category-link">Live Classes</a>
+              <a href="ielts-motivation.html" class="category-link"
+                >IELTS Motivation</a
+              >
+            </div>
+          </div>
+
+          <a href="quizzes.html">Quizzes</a>
+
+          <div class="dropdown">
+            <a class="down-arrow" href="javascript:void(0)">
+              Services <span class="arrow">&gt;</span>
+            </a>
+            <div class="submenu">
+              <a href="#">1:1 Coaching</a>
+              <a href="#">Essay Checking</a>
+              <a href="#">Speaking Practice</a>
+            </div>
+          </div>
+
+          <a href="tips-tricks.html">IELTS Tips and Tricks</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </nav>
+      <!-- Dashboard Header/Welcome Section -->
+      <div class="dashboard-header">
+        <div class="header-bg-elements"></div>
+        <div class="header-content">
+          <p class="welcome-text">Welcome back to IELTS MAHIR!</p>
+          <h1 class="dashboard-title">Your IELTS Success Hub</h1>
+          <p class="dashboard-subtitle">
+            Track your progress, access resources, and get ready to ace your
+            exam with confidence.
+          </p>
+          <a href="#overall-progress" class="cta-button"
+            >View My Progress <i class="fas fa-arrow-down"></i
+          ></a>
+        </div>
+      </div>
+
+      <!-- Dashboard Main Content -->
+      <div class="dashboard-main">
+        <!-- Main Content Area (Left side on desktop) -->
+        <div class="main-content-area">
+          <section id="overall-progress" class="progress-overview section">
+            <h2 class="section-title">Key Insights</h2>
+            <div class="grid-layout">
+              <div class="card">
+                <div class="card-header">
+                  <i class="fas fa-bullseye"></i>
+                  <h3 class="card-title">Overall Target Band</h3>
+                </div>
+                <div class="card-content">
+                  <p class="large-text">
+                    7.5
+                  </p>
+                  <p>Current projected score based on recent practice.</p>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <i class="fas fa-calendar-alt"></i>
+                  <h3 class="card-title">Next Test Date</h3>
+                </div>
+                <div class="card-content">
+                  <p class="medium-text">
+                    July 25, 2025
+                  </p>
+                  <p>38 days left until exam day!</p>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <i class="fas fa-award"></i>
+                  <h3 class="card-title">Recent Achievement</h3>
+                </div>
+                <div class="card-content">
+                  <p class="highlight-text">
+                    Writing Task 2: Band 7.0
+                  </p>
+                  <p>Great improvement in argumentative essays!</p>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <i class="fas fa-star"></i>
+                  <h3 class="card-title">Study Streak</h3>
+                </div>
+                <div class="card-content">
+                  <p class="streak-text">
+                    14 <span style="font-size: 0.9em;">Days</span>
+                  </p>
+                  <p>Keep up the consistent effort!</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Module Progress -->
+          <section class="module-progress section">
+            <h2 class="section-title">Module Progress</h2>
+            <div class="grid-layout">
+              <div class="card">
+                <div class="card-header">
+                  <i class="fas fa-headphones"></i>
+                  <h3 class="card-title">Listening</h3>
+                </div>
+                <div class="card-content">
+                  <p>Current Score: <strong>7.5</strong> / Target: 8.0</p>
+                  <div class="progress-bar-container">
+                    <div class="progress-bar-fill" data-progress="75"></div>
+                  </div>
+                  <div class="progress-text">75% Complete</div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <i class="fas fa-book-open"></i>
+                  <h3 class="card-title">Reading</h3>
+                </div>
+                <div class="card-content">
+                  <p>Current Score: <strong>7.0</strong> / Target: 7.5</p>
+                  <div class="progress-bar-container">
+                    <div class="progress-bar-fill" data-progress="70"></div>
+                  </div>
+                  <div class="progress-text">70% Complete</div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <i class="fas fa-pencil-alt"></i>
+                  <h3 class="card-title">Writing</h3>
+                </div>
+                <div class="card-content">
+                  <p>Current Score: <strong>6.5</strong> / Target: 7.0</p>
+                  <div class="progress-bar-container">
+                    <div class="progress-bar-fill" data-progress="65"></div>
+                  </div>
+                  <div class="progress-text">65% Complete</div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <i class="fas fa-microphone-alt"></i>
+                  <h3 class="card-title">Speaking</h3>
+                </div>
+                <div class="card-content">
+                  <p>Current Score: <strong>7.0</strong> / Target: 7.0</p>
+                  <div class="progress-bar-container">
+                    <div class="progress-bar-fill" data-progress="100"></div>
+                  </div>
+                  <div class="progress-text">100% Complete</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Sidebar-like Content Area (Right side on desktop) -->
+        <div class="sidebar-content-area">
+          <!-- Quick Actions -->
+          <section class="quick-actions section">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="grid-layout md-cols-2">
+              <a href="#" class="card">
+                <i class="fas fa-play-circle"></i>
+                <h3 class="card-title">Start Practice Test</h3>
+              </a>
+              <a href="#" class="card">
+                <i class="fas fa-calendar-plus"></i>
+                <h3 class="card-title">Schedule New Exam</h3>
+              </a>
+              <a href="#" class="card">
+                <i class="fas fa-book"></i>
+                <h3 class="card-title">Review Study Plan</h3>
+              </a>
+              <a href="#" class="card">
+                <i class="fas fa-file-invoice"></i>
+                <h3 class="card-title">View Results History</h3>
+              </a>
+            </div>
+          </section>
+
+          <!-- Recent Activity -->
+          <section class="recent-activity section">
+            <h2 class="section-title">Recent Activity</h2>
+            <ul class="activity-list">
+              <li class="activity-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Completed Listening Practice Test 3</span>
+                <span class="date">2 hrs ago</span>
+              </li>
+              <li class="activity-item">
+                <i class="fas fa-upload"></i>
+                <span>Submitted Writing Task 1 for review</span>
+                <span class="date">Yesterday</span>
+              </li>
+              <li class="activity-item">
+                <i class="fas fa-bell"></i>
+                <span>New vocabulary list added to Reading module</span>
+                <span class="date">2 days ago</span>
+              </li>
+              <li class="activity-item">
+                <i class="fas fa-calendar-check"></i>
+                <span>Speaking mock test scheduled</span>
+                <span class="date">3 days ago</span>
+              </li>
+            </ul>
+          </section>
+
+          <!-- Recommended Resources -->
+          <section class="recommended-resources section">
+            <h2 class="section-title">Recommended Resources</h2>
+            <ul class="resource-list">
+              <li>
+                <a
+                  href="https://www.ielts.org/prepare/online-practice-tests"
+                  target="_blank"
+                  ><i class="fas fa-globe"></i> Official IELTS Practice Tests</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://www.youtube.com/c/IELTSEssentials"
+                  target="_blank"
+                  ><i class="fab fa-youtube"></i> IELTS Liz YouTube Channel</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://www.cambridge.org/gb/cambridgeenglish/exams-and-tests/ielts/preparation"
+                  target="_blank"
+                  ><i class="fas fa-book"></i> Cambridge IELTS Books</a
+                >
+              </li>
+              <li>
+                <a href="https://ieltsadvantage.com/" target="_blank"
+                  ><i class="fas fa-lightbulb"></i> IELTS Advantage Blog</a
+                >
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Animate progress bars on load
+        document.querySelectorAll(".progress-bar-fill").forEach((bar) => {
+          const progress = bar.dataset.progress;
+          if (progress) {
+            setTimeout(() => {
+              bar.style.width = progress + "%";
+            }, 500); // Delay for slight animation effect
+          }
+        });
+      });
+    </script>
+    <!-- GSAP Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+    <script src="dropdown-settings.js"></script>
+    <script src="app.js"></script>
+    <!-- <script src="gsap.js"></script> -->
+  </body>
+</html>

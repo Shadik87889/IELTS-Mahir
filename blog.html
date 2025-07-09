@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mahir - Home</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for a clean look -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome CDN for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="free-resourses-details.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="blog.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="assets/278115481_106536582034386_7446598694214552893_n.jpg"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main id="main">
+      <div id="page1">
+        <!-- Added flex classes to nav for proper alignment -->
+        <nav>
+          <!-- Hamburger menu first for mobile order -->
+          <div class="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+          <div class="logo">
+            <img
+              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+              alt="Ielts mahir logo"
+            />
+          </div>
+          <div class="menu-item">
+            <a href="home.html">Home</a>
+
+            <div class="dropdown">
+              <a class="down-arrow" href="javascript:void(0)">
+                Free Resources <span class="arrow">&gt;</span>
+              </a>
+              <div class="submenu">
+                <a href="ielts-all.html" class="category-link">All</a>
+                <a href="ielts-speaking.html" class="category-link">Speaking</a>
+                <a href="ielts-writing.html" class="category-link">Writing</a>
+                <a href="ielts-reading.html" class="category-link">Reading</a>
+                <a href="ielts-listening.html" class="category-link"
+                  >Listening</a
+                >
+
+                <a href="ielts-grammar.html" class="category-link">Grammar</a>
+                <a href="ielts-study-plan.html" class="category-link"
+                  >Study Plan</a
+                >
+                <a href="higher-study.html" class="category-link"
+                  >higher Study</a
+                >
+                <a href="live-classes.html" class="category-link"
+                  >Live Classes</a
+                >
+                <a href="ielts-motivation.html" class="category-link"
+                  >IELTS Motivation</a
+                >
+              </div>
+            </div>
+
+            <a href="quizzes.html">Quizzes</a>
+
+            <div class="dropdown">
+              <a class="down-arrow" href="javascript:void(0)">
+                Services <span class="arrow">&gt;</span>
+              </a>
+              <div class="submenu">
+                <a href="#">1:1 Coaching</a>
+                <a href="#">Essay Checking</a>
+                <a href="#">Speaking Practice</a>
+              </div>
+            </div>
+
+            <a href="tips-tricks.html">IELTS Tips and Tricks</a>
+            <a href="contact.html">Contact</a>
+          </div>
+          <!-- Authentication buttons container - now a direct child of nav -->
+          <div id="auth-buttons-container" class="auth-container">
+            <!-- Initial loading state, will be populated by JavaScript -->
+            <div class="auth-loading-pulse">
+              <div class="auth-loading-circle"></div>
+              <div class="auth-loading-content">
+                <div class="auth-loading-bar"></div>
+                <div class="auth-loading-grid">
+                  <div class="auth-loading-bar auth-loading-col-2"></div>
+                  <div class="auth-loading-bar auth-loading-col-1"></div>
+                </div>
+                <div class="auth-loading-bar"></div>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <!-- ===== Page 5: Blog & Resource Hub ===== -->
+
+        <div id="page5" class="blog-section">
+          <img
+            class="corner-nine"
+            src="assets/Picture-Corner-4@3x-BEacVk2M.png"
+            alt=""
+            onerror="this.src='https://placehold.co/100x100/cccccc/white?text=Corner'"
+          />
+          <div class="blog-hero-title">
+            <h1>Blog</h1>
+            <!-- Advanced Search Option -->
+            <div class="blog-search-advanced">
+              <form id="blog-search-form" autocomplete="off">
+                <input
+                  type="text"
+                  id="search-input"
+                  name="search"
+                  placeholder="Search articles, topics, or authors..."
+                  aria-label="Search blog"
+                />
+                <button type="submit" aria-label="Search">
+                  <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                </button>
+                <select
+                  id="category-select"
+                  name="category"
+                  aria-label="Filter by category"
+                >
+                  <option value="">All Categories</option>
+                  <option value="Preparation">Preparation</option>
+                  <option value="Speaking">Speaking</option>
+                  <option value="Writing">Writing</option>
+                  <option value="Reading">Reading</option>
+                  <option value="Listening">Listening</option>
+                  <option value="Grammar">Grammar</option>
+                  <option value="Study Plan">Study Plan</option>
+                  <option value="Higher Study">Higher Study</option>
+                  <option value="Motivation">IELTS Motivation</option>
+                </select>
+                <select id="sort-select" name="sort">
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="popular">Most Popular</option>
+                </select>
+              </form>
+            </div>
+          </div>
+          <!-- Top feature block will be rendered by JS -->
+          <div
+            id="top-feature-js"
+            class="min-h-[200px] flex items-center justify-center text-gray-500"
+          >
+            Loading featured article...
+          </div>
+          <!-- Blog article cards will be rendered by JS -->
+          <div
+            id="article-cards-js"
+            class="min-h-[300px] flex items-center justify-center text-gray-500"
+          >
+            Loading articles...
+          </div>
+        </div>
+        <!-- Advanced Pagination -->
+        <nav class="pagination-container" aria-label="Page navigation">
+          <ul class="pagination"></ul>
+        </nav>
+      </div>
+
+      <!-- Message Box (replaces alert) - Added this section -->
+      <div id="message-box" class="message-box hidden">
+        <div class="message-box-content">
+          <p id="message-content"></p>
+          <button id="close-message-box">OK</button>
+        </div>
+      </div>
+
+      <!-- IELTS Speaking Test Simulator END -->
+      <footer class="footer">
+        <div class="footer-top">
+          <div class="contact-banner">
+            <div class="contact-content">
+              <h2 class="anton">Achieve Your Desired IELTS Band</h2>
+              <p class="montserrat">
+                Certified mentors guiding you every step of the way
+              </p>
+              <div class="contact-buttons">
+                <button class="btn primary montserrat">
+                  Explore IELTS Modules
+                </button>
+                <a href="#" class="btn link montserrat"
+                  >Latest Success Stories →</a
+                >
+              </div>
+            </div>
+            <div class="contact-image">
+              <div class="bg-letter">
+                <span class="im-i">I</span>
+                <span class="im-m">M</span>
+              </div>
+              <img src="assets/LELTS-Mahir.png" alt="IELTS Student Image" />
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4 class="anton">Quick Access</h4>
+            <ul class="montserrat">
+              <li><a href="#">About IELTS Mahir</a></li>
+              <li><a href="#">Contact Support</a></li>
+              <li><a href="#">IELTS FAQs</a></li>
+              <li><a href="#">Terms & Conditions</a></li>
+              <li><a href="#">Privacy Guidelines</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4 class="anton">Learning Hub</h4>
+            <ul class="montserrat">
+              <li><a href="#">IELTS Blog</a></li>
+              <li><a href="#">Student Reviews</a></li>
+              <li><a href="#">Success Partners</a></li>
+              <li><a href="#">Live Support</a></li>
+              <li><a href="#">Help & Guidance</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4 class="anton">Free Resources</h4>
+            <ul class="montserrat">
+              <li><a href="#">Mock Tests</a></li>
+              <li><a href="#">IELTS Community</a></li>
+              <li><a href="#">Band Descriptors</a></li>
+              <li><a href="#">Weekly Tips</a></li>
+              <li><a href="#">Download Materials</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column subscribe">
+            <h4 class="anton">Get Weekly IELTS Tips</h4>
+            <p class="montserrat">
+              Subscribe and stay ahead with expert strategies
+            </p>
+            <div class="subscribe-form">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                class="montserrat"
+              />
+              <button class="montserrat">Subscribe</button>
+            </div>
+            <small class="montserrat"
+              >By subscribing, you agree to our
+              <a href="#">Privacy Policy</a></small
+            >
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="branding anton">IELTS MAHIR.</div>
+          <div class="footer-policy-links montserrat">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Cookies Notice</a>
+          </div>
+          <div class="footer-socials">
+            <a href="#"
+              ><img
+                src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png"
+                alt="Facebook"
+            /></a>
+            <a href="#"
+              ><img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png"
+                alt="Instagram"
+            /></a>
+            <a href="#"
+              ><img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png"
+                alt="LinkedIn"
+            /></a>
+            <a href="#"
+              ><img
+                src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png"
+                alt="YouTube"
+            /></a>
+          </div>
+          <p class="montserrat copyright">
+            © 2024 IELTS Mahir. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </main>
+
+    <!-- GSAP Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+    <script type="module" src="blog.js"></script>
+    <!-- <script src="free-resourses-details.js"></script> -->
+    <script src="dropdown-settings.js"></script>
+    <script src="app.js"></script>
+    <script src="gsap.js"></script>
+    <script type="module" src="./auth.js"></script>
+    <script type="module" src="./auth-page-loading.js"></script>
+  </body>
+</html>
