@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mahir - Quiz In Progress</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style id="common-styles">
+      /* Common styles will be injected here by JavaScript */
+    </style>
+  </head>
+  <body class="min-h-screen py-6 px-2 sm:py-8 sm:px-4 lg:py-12 lg:px-8">
+    <!-- Header / Navigation Bar -->
+    <header
+      id="app-header"
+      class="py-2 px-3 md:py-4 md:px-8 flex items-center justify-between rounded-b-xl transition-colors duration-300 sticky top-0 z-50 shadow-lg"
+    >
+      <div class="flex items-center gap-2 sm:gap-4">
+        <h1 class="font-bold text-xl md:text-3xl text-blue-600">
+          IELTS Mastery Hub
+        </h1>
+        <nav class="hidden md:flex gap-4">
+          <!-- Navigation links can be added here if needed -->
+        </nav>
+      </div>
+      <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
+        <!-- Authentication status will be handled by auth.js -->
+        <div class="animate-pulse flex space-x-4">
+          <div class="rounded-full bg-gray-200 h-8 w-8 sm:h-10 sm:w-10"></div>
+          <div class="flex-1 space-y-4 py-1 hidden sm:block">
+            <div class="h-2 bg-gray-200 rounded"></div>
+            <div class="space-y-2">
+              <div class="grid grid-cols-3 gap-2">
+                <div class="h-2 bg-gray-200 rounded col-span-2"></div>
+                <div class="h-2 bg-gray-200 rounded col-span-1"></div>
+              </div>
+              <div class="h-2 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="app" class="container mx-auto mt-8 sm:mt-12 lg:mt-16">
+      <!-- Application content will be rendered here by JavaScript -->
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-[100]"></div>
+
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
+
+    <script type="module">
+      // Import authentication functions and state from the central auth.js file
+      import {
+        initFirebaseAuth,
+        authAppState,
+        showToast,
+        Icons, // Assuming Icons are exported from auth.js or a common utility file
+        signOutUser, // Import signOutUser function
+      } from "./auth.js"; // Adjust path as necessary
+
+      // Import quiz data and common styles
+      import {
+        quizCategories,
+        allQuizTests,
+        commonStyles,
+        formatTime,
+        calculateWordCount,
+        QuizIcons,
+      } from "./quiz-test-data.js";
+
+      // Firebase imports
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        query,
+        where,
+        getDocs,
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      // Inject common styles from quiz-test-data.js
+      document.getElementById("common-styles").innerHTML = commonStyles;
+
+      // --- Global State for Quiz Test Page ---
+      let quizState = {
+        category: null,
+        testId: null,
+        testTitle: null,
+        questions: [],
+        currentQuestionIndex: 0,
+        userAnswers: {}, // Stores user answers: { questionId: answer }
+        timeRemaining: 0, // Will be set based on test duration
+        timerInterval: null,
+        isLoadingFeedback: false,
+        feedback: null, // Stores AI feedback after submission
+      };
+
+      // Firebase instances (will be populated by auth.js)
+      let db;
+      let auth;
+
+      /**
+       * Implements exponential backoff for retrying failed API calls.
+       * @param {Function} fetcher - The async function that performs the API call.
+       * @param {number} retries - The number of retries remaining.
+       * @param {number} delay - The current delay in milliseconds.
+       * @returns {Promise<any>} The result of the successful fetch.
+       */
+      async function retryFetch(fetcher, retries = 5, delay = 2000) {
+        // Increased retries and initial delay
+        try {
+          return await fetcher();
+        } catch (error) {
+          const isRateLimit =
+            error.message.includes("429") ||
+            error.message.includes("RESOURCE_EXHAUSTED") ||
+            error.message.includes("503");
+          const isNetworkError =
+            error.message.includes("Failed to fetch") ||
+            error.message.includes("NetworkError");
+
+          if ((isRateLimit || isNetworkError) && retries > 0) {
+            console.warn(
+              `API call failed (${error.message}). Retrying in ${
+                delay / 1000
+              }s... (Retries left: ${retries})`
+            );
+            await new Promise((resolve) => setTimeout(resolve, delay));
+            return retryFetch(fetcher, retries - 1, delay * 2); // Double the delay
+          } else {
+            throw error; // Re-throw if no retries left or not a retriable error
+          }
+        }
+      }
+
+      /**
+       * Updates the navigation bar and user ID display based on authentication status.
+       * @param {object|null} user - The Firebase User object or null if signed out.
+       */
+      function updateAuthUI(user) {
+        const authButtonsContainer = document.getElementById(
+          "auth-buttons-container"
+        );
+        if (authButtonsContainer) {
+          if (user) {
+            // User is signed in: Show profile dropdown
+            authButtonsContainer.innerHTML = `
+                        <div class="relative">
+                            <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-600 transition-colors">
+                                ${(
+                                  authAppState.userProfile?.name ||
+                                  user.email ||
+                                  user.uid
+                                )
+                                  .charAt(0)
+                                  .toUpperCase()}
+                            </button>
+                            <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden">
+                                <div class="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">Hello, ${
+                                  authAppState.userProfile?.name ||
+                                  user.email ||
+                                  user.uid.substring(0, 8)
+                                }</div>
+                                <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                    ${Icons.Dashboard} Dashboard
+                                </a>
+                                <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                    ${Icons.Forum} Forum
+                                </a>
+                                <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg">
+                                    ${Icons.SignOut} Sign Out
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+            const profileIconBtn = document.getElementById("profile-icon-btn");
+            const profileDropdown = document.getElementById("profile-dropdown");
+            const signOutDropdownBtn = document.getElementById(
+              "sign-out-dropdown-btn"
+            );
+
+            profileIconBtn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              profileDropdown.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", (event) => {
+              if (
+                !profileDropdown.contains(event.target) &&
+                !profileIconBtn.contains(event.target)
+              ) {
+                profileDropdown.classList.add("hidden");
+              }
+            });
+
+            signOutDropdownBtn.addEventListener("click", async () => {
+              await signOutUser();
+              // Redirect will happen via onAuthStateChanged in auth.js
+            });
+          } else {
+            // User is signed out: Show sign-in button
+            authButtonsContainer.innerHTML = `
+                        <a href="auth.html" id="sign-in-nav-btn" class="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-xs sm:text-sm font-semibold transform active:scale-95">
+                            ${Icons.SignIn} <span class="hidden sm:inline">Sign In</span>
+                        </a>
+                    `;
+          }
+        }
+      }
+
+      /**
+       * Displays a modal message.
+       * @param {string} title - Modal title.
+       * @param {string} message - Modal message.
+       */
+      function showMessageModal(title, message) {
+        let modalContainer = document.getElementById("modal-container");
+        if (!modalContainer) {
+          modalContainer = document.createElement("div");
+          modalContainer.id = "modal-container";
+          document.body.appendChild(modalContainer);
+        }
+
+        modalContainer.innerHTML = `
+                <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50 animate-fade-in">
+                    <div class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-sm transform scale-95 animate-zoom-in">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">${title}</h3>
+                        <p class="text-gray-600 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">${message}</p>
+                        <button id="modal-close-button"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-105 text-sm sm:text-base"
+                        >
+                            Got It!
+                        </button>
+                    </div>
+                </div>
+            `;
+        document.getElementById(
+          "modal-close-button"
+        ).onclick = hideMessageModal;
+      }
+
+      /**
+       * Hides the modal.
+       */
+      function hideMessageModal() {
+        const modalContainer = document.getElementById("modal-container");
+        if (modalContainer) {
+          modalContainer.innerHTML = "";
+        }
+      }
+
+      /**
+       * Returns HTML for a loading spinner.
+       * @returns {string} HTML string.
+       */
+      function getLoadingSpinnerHtml() {
+        return `
+                <div class="flex justify-center items-center">
+                    <div class="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-t-2 border-b-2 border-purple-500"></div>
+                    <p class="ml-2 sm:ml-3 text-sm sm:text-md text-gray-700">Processing...</p>
+                </div>
+            `;
+      }
+
+      /**
+       * Initializes the quiz state based on URL parameters.
+       * @returns {boolean} True if quiz initialized successfully, false otherwise.
+       */
+      function initializeQuizState() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryId = urlParams.get("category");
+        const testId = urlParams.get("testId");
+        const testTitle = decodeURIComponent(urlParams.get("title") || "");
+
+        if (!categoryId || !testId || !testTitle) {
+          console.error("Missing URL parameters for quiz.");
+          return false;
+        }
+
+        const selectedTest = allQuizTests.find(
+          (test) => test.id === testId && test.categoryId === categoryId
+        );
+
+        if (!selectedTest) {
+          console.error("Quiz test not found:", { categoryId, testId });
+          return false;
+        }
+
+        quizState.category = categoryId;
+        quizState.testId = testId;
+        quizState.testTitle = testTitle;
+        quizState.questions = selectedTest.questions;
+        quizState.timeRemaining = selectedTest.duration; // Set duration from data
+        quizState.currentQuestionIndex = 0;
+        quizState.userAnswers = {}; // Clear previous answers
+        quizState.feedback = null; // Clear previous feedback
+        quizState.isLoadingFeedback = false;
+
+        // Initialize userAnswers with empty strings for text inputs or null for others
+        quizState.questions.forEach((q) => {
+          if (q.type === "fill-in-the-blank" || q.type === "short-answer") {
+            quizState.userAnswers[q.id] = "";
+          } else {
+            quizState.userAnswers[q.id] = null;
+          }
+        });
+
+        return true;
+      }
+
+      /**
+       * Starts the overall quiz timer.
+       */
+      function startQuizTimer() {
+        if (quizState.timerInterval) clearInterval(quizState.timerInterval); // Clear any old timer
+        quizState.timerInterval = setInterval(() => {
+          quizState.timeRemaining--;
+          if (quizState.timeRemaining <= 0) {
+            clearInterval(quizState.timerInterval);
+            handleFinishTest(); // Auto-submit when time runs out
+          }
+          updateQuizUI(); // Update UI every second
+        }, 1000);
+      }
+
+      /**
+       * Stops the overall quiz timer.
+       */
+      function stopQuizTimer() {
+        if (quizState.timerInterval) {
+          clearInterval(quizState.timerInterval);
+          quizState.timerInterval = null;
+        }
+      }
+
+      /**
+       * Updates the quiz UI elements (timer, question, navigation buttons).
+       */
+      function updateQuizUI() {
+        const timerSpan = document.getElementById("quiz-time-left");
+        if (timerSpan) {
+          timerSpan.textContent = formatTime(quizState.timeRemaining);
+        }
+
+        const currentQuestionNumSpan = document.getElementById(
+          "current-question-number"
+        );
+        if (currentQuestionNumSpan) {
+          currentQuestionNumSpan.textContent =
+            quizState.currentQuestionIndex + 1;
+        }
+
+        const nextBtn = document.getElementById("next-question-btn");
+        const prevBtn = document.getElementById("previous-question-btn");
+        const submitBtn = document.getElementById("submit-test-btn");
+
+        if (prevBtn) {
+          prevBtn.disabled = quizState.currentQuestionIndex === 0;
+          prevBtn.classList.toggle(
+            "opacity-50",
+            quizState.currentQuestionIndex === 0
+          );
+          prevBtn.classList.toggle(
+            "cursor-not-allowed",
+            quizState.currentQuestionIndex === 0
+          );
+        }
+
+        if (nextBtn) {
+          nextBtn.style.display =
+            quizState.currentQuestionIndex < quizState.questions.length - 1
+              ? "inline-flex"
+              : "none";
+        }
+
+        if (submitBtn) {
+          submitBtn.style.display =
+            quizState.currentQuestionIndex === quizState.questions.length - 1
+              ? "inline-flex"
+              : "none";
+          submitBtn.disabled = quizState.isLoadingFeedback;
+          submitBtn.innerHTML = quizState.isLoadingFeedback
+            ? getLoadingSpinnerHtml()
+            : `${QuizIcons.CheckCircle.replace(
+                /width="24" height="24"/g,
+                'width="20" height="20" class="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3"'
+              )} Submit Test`;
+        }
+      }
+
+      /**
+       * Handles input changes for quiz questions and updates the state.
+       * @param {Event} e - The input event.
+       */
+      function handleInputChange(e) {
+        const { name, value, type, checked } = e.target;
+        if (type === "radio") {
+          if (checked) {
+            quizState.userAnswers[name] = value;
+            console.log(`Radio: Question ${name}, Selected Value: ${value}`); // Debugging line
+          }
+        } else {
+          quizState.userAnswers[name] = value;
+          console.log(`Text: Question ${name}, Value: ${value}`); // Debugging line
+        }
+        // console.log("User Answers:", quizState.userAnswers); // For debugging
+      }
+
+      /**
+       * Navigates to the next question.
+       */
+      function handleNextQuestion() {
+        if (quizState.currentQuestionIndex < quizState.questions.length - 1) {
+          quizState.currentQuestionIndex++;
+          renderQuizQuestion();
+          updateQuizUI();
+        }
+      }
+
+      /**
+       * Navigates to the previous question.
+       */
+      function handlePreviousQuestion() {
+        if (quizState.currentQuestionIndex > 0) {
+          quizState.currentQuestionIndex--;
+          renderQuizQuestion();
+          updateQuizUI();
+        }
+      }
+
+      /**
+       * Renders the current quiz question.
+       */
+      function renderQuizQuestion() {
+        const questionAreaDiv = document.getElementById("quiz-question-area");
+        if (!questionAreaDiv) return;
+
+        const currentQuestion =
+          quizState.questions[quizState.currentQuestionIndex];
+        let questionInputHtml = "";
+
+        if (currentQuestion.type === "multiple-choice") {
+          questionInputHtml = `
+                    <div class="space-y-3 question-options">
+                        ${currentQuestion.options
+                          .map(
+                            (option) => `
+                            <label class="flex items-center text-gray-700 cursor-pointer bg-white p-3 rounded-lg border border-gray-200 hover:bg-gray-100 transition duration-200 shadow-sm">
+                                <input
+                                    type="radio"
+                                    name="${currentQuestion.id}"
+                                    value="${option.charAt(0)}"
+                                    ${
+                                      quizState.userAnswers[
+                                        currentQuestion.id
+                                      ] === option.charAt(0)
+                                        ? "checked"
+                                        : ""
+                                    }
+                                    class="form-radio h-4 w-4 sm:h-5 sm:w-5 text-blue-600 rounded-full border-gray-300 focus:ring-blue-500 cursor-pointer"
+                                />
+                                <span class="ml-3 text-base sm:text-lg">${option}</span>
+                            </label>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                `;
+        } else if (
+          currentQuestion.type === "fill-in-the-blank" ||
+          currentQuestion.type === "short-answer"
+        ) {
+          questionInputHtml = `
+                    <input
+                        type="text"
+                        name="${currentQuestion.id}"
+                        value="${
+                          quizState.userAnswers[currentQuestion.id] || ""
+                        }"
+                        placeholder="Type your answer here..."
+                        class="w-full p-3 sm:p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-blue-400 transition duration-300 text-gray-800 text-base sm:text-lg shadow-sm"
+                    />
+                `;
+        }
+
+        questionAreaDiv.innerHTML = `
+                <div class="question-block animate-fade-in">
+                    <p class="question-prompt text-base sm:text-lg">Question ${
+                      quizState.currentQuestionIndex + 1
+                    }: ${currentQuestion.questionText}</p>
+                    ${questionInputHtml}
+                </div>
+            `;
+
+        // Re-attach event listener after content is updated
+        const inputElements = questionAreaDiv.querySelectorAll(
+          `[name="${currentQuestion.id}"]`
+        );
+        inputElements.forEach((inputElement) => {
+          if (inputElement.type === "radio") {
+            inputElement.onchange = handleInputChange;
+          } else {
+            inputElement.oninput = handleInputChange;
+          }
+        });
+      }
+
+      /**
+       * Simulates AI grading for quiz answers and generates explanations.
+       * @param {Object} userAnswers - Object containing user's answers.
+       * @param {Array} questions - Array of all questions for the test.
+       * @returns {Promise<Object>} Grading feedback.
+       */
+      async function simulateQuizAIGrading(userAnswers, questions) {
+        let correctCount = 0;
+        let totalQuestions = questions.length;
+        let feedbackDetails = [];
+
+        // First pass: Determine correctness and structure basic feedback details
+        questions.forEach((q) => {
+          let isCorrect = false;
+          let userAnswer = userAnswers[q.id] || "No Answer";
+          let correctAnswer = q.correctAnswer;
+
+          if (q.type === "multiple-choice") {
+            if (
+              String(userAnswer).toLowerCase().trim() ===
+              String(q.correctAnswer).toLowerCase().trim()
+            ) {
+              isCorrect = true;
+            }
+          } else if (
+            q.type === "fill-in-the-blank" ||
+            q.type === "short-answer"
+          ) {
+            if (
+              String(userAnswer).toLowerCase().trim() ===
+              String(q.correctAnswer).toLowerCase().trim()
+            ) {
+              isCorrect = true;
+            }
+          }
+
+          if (isCorrect) {
+            correctCount++;
+          }
+
+          feedbackDetails.push({
+            questionText: q.questionText,
+            userAnswer: userAnswer,
+            correctAnswer: correctAnswer,
+            isCorrect: isCorrect,
+            aiExplanation: "Generating explanation...", // Placeholder for AI explanation
+          });
+        });
+
+        const accuracyPercentage =
+          totalQuestions > 0 ? (correctCount / totalQuestions) * 100 : 0;
+
+        // Generate overall feedback from AI (without estimated band)
+        const overallPrompt = `Based on a quiz where the user answered ${correctCount} out of ${totalQuestions} questions correctly (Accuracy: ${accuracyPercentage.toFixed(
+          2
+        )}%), provide general feedback for an IELTS language quiz. Focus on common strengths and weaknesses related to ${
+          quizState.category
+        } concepts. Suggest 3-5 actionable areas for improvement. Format as JSON with fields: 'overallPerformanceSummary', 'strengths', 'areasForImprovement'.`;
+
+        const overallFetcher = async () => {
+          let chatHistory = [
+            { role: "user", parts: [{ text: overallPrompt }] },
+          ];
+          const payload = {
+            contents: chatHistory,
+            generationConfig: {
+              responseMimeType: "application/json",
+              responseSchema: {
+                type: "OBJECT",
+                properties: {
+                  overallPerformanceSummary: { type: "STRING" },
+                  strengths: { type: "STRING" },
+                  areasForImprovement: { type: "STRING" },
+                },
+                propertyOrdering: [
+                  "overallPerformanceSummary",
+                  "strengths",
+                  "areasForImprovement",
+                ],
+              },
+            },
+          };
+          const apiKey = "AIzaSyCsdeFOJrU43BZmnRP5WD1pm80fZH1cxN4"; // Set the provided API key
+          const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            let errorMessage = `API call failed: ${response.status} ${response.statusText}`;
+            if (response.status === 403) {
+              errorMessage += `. Permission Denied. If running locally, ensure your API Key is correctly configured.`;
+            }
+            throw new Error(errorMessage + ` - ${errorText}`);
+          }
+          return response.json();
+        };
+
+        let aiGeneratedOverallFeedback = {
+          overallPerformanceSummary: "AI feedback could not be generated.",
+          strengths: "N/A",
+          areasForImprovement: "N/A",
+        };
+
+        try {
+          const overallResult = await retryFetch(overallFetcher);
+          if (
+            overallResult.candidates &&
+            overallResult.candidates.length > 0 &&
+            overallResult.candidates[0].content &&
+            overallResult.candidates[0].content.parts &&
+            overallResult.candidates[0].content.parts.length > 0
+          ) {
+            aiGeneratedOverallFeedback = JSON.parse(
+              overallResult.candidates[0].content.parts[0].text
+            );
+          }
+        } catch (error) {
+          console.error(
+            "Error calling Gemini API for overall Quiz feedback:",
+            error
+          );
+          showToast(
+            `Error generating overall AI feedback: ${error.message}. Please try again later.`,
+            "error"
+          );
+        }
+
+        // Generate individual explanations for each question
+        for (const detail of feedbackDetails) {
+          const explanationPrompt = `Given the question "${detail.questionText}", the user's answer "${detail.userAnswer}", and the correct answer "${detail.correctAnswer}", provide a concise (2-3 sentences) explanation of why the correct answer is correct and/or why the user's answer might be incorrect, focusing on the grammatical/vocabulary/spelling rule involved.`;
+
+          const explanationFetcher = async () => {
+            let chatHistory = [
+              { role: "user", parts: [{ text: explanationPrompt }] },
+            ];
+            const payload = { contents: chatHistory };
+            const apiKey = "AIzaSyCsdeFOJrU43BZmnRP5WD1pm80fZH1cxN4"; // Set the provided API key
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            const response = await fetch(apiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+              const errorText = await response.text();
+              let errorMessage = `API call failed: ${response.status} ${response.statusText}`;
+              if (response.status === 403) {
+                errorMessage += `. Permission Denied. If running locally, ensure your API Key is correctly configured.`;
+              }
+              throw new Error(errorMessage + ` - ${errorText}`);
+            }
+            return response.json();
+          };
+
+          try {
+            const explanationResult = await retryFetch(explanationFetcher);
+            if (
+              explanationResult.candidates &&
+              explanationResult.candidates.length > 0 &&
+              explanationResult.candidates[0].content &&
+              explanationResult.candidates[0].content.parts &&
+              explanationResult.candidates[0].content.parts.length > 0
+            ) {
+              detail.aiExplanation =
+                explanationResult.candidates[0].content.parts[0].text;
+            } else {
+              detail.aiExplanation = "AI explanation could not be generated.";
+            }
+          } catch (error) {
+            console.error(
+              "Error calling Gemini API for question explanation:",
+              error
+            );
+            detail.aiExplanation = `Error generating explanation: ${error.message}`;
+          }
+        }
+
+        return {
+          correctCount,
+          totalQuestions,
+          accuracyPercentage,
+          feedbackDetails,
+          overallPerformanceSummary:
+            aiGeneratedOverallFeedback.overallPerformanceSummary,
+          strengths: aiGeneratedOverallFeedback.strengths,
+          areasForImprovement: aiGeneratedOverallFeedback.areasForImprovement,
+        };
+      }
+
+      /**
+       * Handles the completion and submission of the quiz test.
+       */
+      async function handleFinishTest() {
+        stopQuizTimer();
+        quizState.isLoadingFeedback = true;
+        updateQuizUI(); // Update button to show loading spinner
+
+        showMessageModal(
+          "Submitting Quiz Answers",
+          "Your answers are being processed for AI evaluation. This may take a moment."
+        );
+
+        try {
+          // Ensure authentication is ready before proceeding with Firestore
+          if (!authAppState.isAuthReady || !authAppState.userId) {
+            throw new Error(
+              "User not authenticated or authentication not ready. Cannot save quiz results."
+            );
+          }
+          console.log("Authenticated User ID:", authAppState.userId);
+
+          const feedback = await simulateQuizAIGrading(
+            quizState.userAnswers,
+            quizState.questions
+          );
+          quizState.feedback = feedback;
+          hideMessageModal(); // Hide the submission modal
+          showMessageModal(
+            "Quiz Feedback Generated",
+            "Your detailed AI-generated feedback and score are now available below."
+          );
+
+          // Save results to user's private collection
+          const appId =
+            typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+          const userId = authAppState.userId; // Use the authenticated user ID
+          const userName =
+            authAppState.userProfile?.name ||
+            authAppState.user?.email ||
+            userId.substring(0, 8); // Get user name from authAppState
+          const userEmail =
+            authAppState.userProfile?.email ||
+            authAppState.user?.email ||
+            "N/A"; // Get user email from authAppState
+
+          const privateQuizResultsCollectionRef = collection(
+            db,
+            `artifacts/${appId}/users/${userId}/quizResults`
+          );
+          await addDoc(privateQuizResultsCollectionRef, {
+            userId: userId,
+            userName: userName,
+            userEmail: userEmail,
+            categoryId: quizState.category,
+            testId: quizState.testId,
+            testTitle: quizState.testTitle,
+            timestamp: new Date(),
+            score: {
+              correctCount: feedback.correctCount,
+              totalQuestions: feedback.totalQuestions,
+              accuracyPercentage: feedback.accuracyPercentage,
+            },
+            userAnswers: quizState.userAnswers, // Store user answers for personal review
+            feedbackSummary: {
+              // Store a summary of AI feedback for personal review
+              overallPerformanceSummary: feedback.overallPerformanceSummary,
+              strengths: feedback.strengths,
+              areasForImprovement: feedback.areasForImprovement,
+            },
+          });
+          showToast(
+            "Your personal quiz results saved successfully!",
+            "success"
+          );
+
+          // Save results to public global collection for leaderboard
+          const publicQuizGlobalResultsCollectionRef = collection(
+            db,
+            `artifacts/${appId}/public/data/quizGlobalResults`
+          );
+          await addDoc(publicQuizGlobalResultsCollectionRef, {
+            userId: userId,
+            userName: userName,
+            userEmail: userEmail,
+            testId: quizState.testId,
+            testTitle: quizState.testTitle,
+            timestamp: new Date(),
+            score: {
+              correctCount: feedback.correctCount,
+              totalQuestions: feedback.totalQuestions,
+              accuracyPercentage: feedback.accuracyPercentage,
+            },
+          });
+          showToast("Quiz results submitted to global leaderboard!", "success");
+
+          // Fetch all results for ranking from the public global collection for this specific test
+          const q = query(
+            collection(db, `artifacts/${appId}/public/data/quizGlobalResults`),
+            where("testId", "==", quizState.testId)
+          );
+          const querySnapshot = await getDocs(q);
+          let allAttempts = [];
+          querySnapshot.forEach((docSnapshot) => {
+            const data = docSnapshot.data();
+            allAttempts.push({
+              ...data,
+              timestamp: data.timestamp.toDate(), // Convert Firestore timestamp to JS Date
+            });
+          });
+
+          // Sort attempts by accuracy percentage (descending) and then by timestamp (ascending for tie-breaking)
+          allAttempts.sort((a, b) => {
+            if (b.score.accuracyPercentage !== a.score.accuracyPercentage) {
+              return b.score.accuracyPercentage - a.score.accuracyPercentage;
+            }
+            return a.timestamp.getTime() - b.timestamp.getTime(); // Earlier timestamp ranks higher on tie
+          });
+
+          // Find the rank of the current attempt and store top performers
+          let currentAttemptRank = -1;
+          const topPerformers = [];
+          const maxLeaders = 5; // Display top 5 leaders
+
+          // Deduplicate by userId, keeping only the best score for each user
+          const bestScoresByUser = {};
+          allAttempts.forEach((attempt) => {
+            if (
+              !bestScoresByUser[attempt.userId] ||
+              attempt.score.accuracyPercentage >
+                bestScoresByUser[attempt.userId].score.accuracyPercentage
+            ) {
+              bestScoresByUser[attempt.userId] = attempt;
+            } else if (
+              attempt.score.accuracyPercentage ===
+                bestScoresByUser[attempt.userId].score.accuracyPercentage &&
+              attempt.timestamp.getTime() <
+                bestScoresByUser[attempt.userId].timestamp.getTime()
+            ) {
+              // If same accuracy, keep the earlier attempt
+              bestScoresByUser[attempt.userId] = attempt;
+            }
+          });
+
+          const uniqueSortedAttempts = Object.values(bestScoresByUser).sort(
+            (a, b) => {
+              if (b.score.accuracyPercentage !== a.score.accuracyPercentage) {
+                return b.score.accuracyPercentage - a.score.accuracyPercentage;
+              }
+              return a.timestamp.getTime() - b.timestamp.getTime();
+            }
+          );
+
+          for (let i = 0; i < uniqueSortedAttempts.length; i++) {
+            const leader = uniqueSortedAttempts[i];
+            if (leader.userId === userId) {
+              currentAttemptRank = i + 1;
+            }
+            if (topPerformers.length < maxLeaders) {
+              topPerformers.push({
+                rank: i + 1,
+                userName: leader.userName,
+                accuracy: leader.score.accuracyPercentage,
+                score: `${leader.score.correctCount}/${leader.score.totalQuestions}`,
+                date: leader.timestamp.toLocaleDateString(),
+                isCurrentUser: leader.userId === userId,
+              });
+            }
+          }
+
+          // If the current user is not in the top N, add their specific rank at the end
+          if (
+            currentAttemptRank > maxLeaders &&
+            !topPerformers.some((p) => p.isCurrentUser)
+          ) {
+            // Find the actual attempt that was just submitted (using score and a very recent timestamp)
+            const justSubmittedAttempt = allAttempts.find(
+              (attempt) =>
+                attempt.userId === userId &&
+                attempt.testId === quizState.testId &&
+                attempt.score.accuracyPercentage ===
+                  feedback.accuracyPercentage &&
+                attempt.score.correctCount === feedback.correctCount &&
+                new Date().getTime() - attempt.timestamp.getTime() < 5000 // Within 5 seconds
+            );
+
+            if (justSubmittedAttempt) {
+              // Find the rank of this specific attempt among all unique best scores
+              const actualRankOfSubmittedAttempt =
+                uniqueSortedAttempts.findIndex(
+                  (attempt) =>
+                    attempt.userId === justSubmittedAttempt.userId &&
+                    attempt.score.accuracyPercentage ===
+                      justSubmittedAttempt.score.accuracyPercentage &&
+                    attempt.timestamp.getTime() ===
+                      justSubmittedAttempt.timestamp.getTime()
+                ) + 1;
+
+              if (actualRankOfSubmittedAttempt > 0) {
+                topPerformers.push({
+                  rank: actualRankOfSubmittedAttempt,
+                  userName: justSubmittedAttempt.userName,
+                  accuracy: justSubmittedAttempt.score.accuracyPercentage,
+                  score: `${justSubmittedAttempt.score.correctCount}/${justSubmittedAttempt.score.totalQuestions}`,
+                  date: justSubmittedAttempt.timestamp.toLocaleDateString(),
+                  isCurrentUser: true,
+                });
+              }
+            }
+          }
+
+          quizState.feedback.userRank = currentAttemptRank;
+          quizState.feedback.totalParticipants = uniqueSortedAttempts.length; // Total unique participants
+          quizState.feedback.leaderboard = topPerformers;
+        } catch (error) {
+          console.error("Error during Quiz AI grading or saving:", error);
+          hideMessageModal();
+          showToast(
+            `Error processing quiz: ${error.message}. Please check console for details.`,
+            "error"
+          );
+        } finally {
+          quizState.isLoadingFeedback = false;
+          renderQuizFeedbackSection(document.getElementById("app")); // Render feedback into the main app div
+          updateQuizUI(); // Re-enable button
+        }
+      }
+
+      /**
+       * Renders the main Quiz Test UI structure.
+       * @param {HTMLElement} parentDiv - The div to render the test into.
+       */
+      function renderQuizTest(parentDiv) {
+        const quizTestContainerHtml = `
+                <div class="quiz-container test-card p-6 sm:p-10 w-full max-w-4xl mx-auto my-6 sm:my-8 animate-fade-in-up bg-white bg-opacity-90 backdrop-blur-sm relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 opacity-50 z-0 rounded-3xl"></div>
+                    <div class="relative z-10">
+                        <h2 class="text-3xl sm:text-5xl font-extrabold text-blue-900 mb-3 sm:mb-4 text-center tracking-tight leading-tight">
+                            ${quizState.testTitle}
+                        </h2>
+                        <p class="text-lg sm:text-2xl text-gray-700 mb-6 sm:mb-8 text-center font-medium">
+                            Category: <span class="font-semibold text-purple-700">${
+                              quizCategories.find(
+                                (cat) => cat.id === quizState.category
+                              )?.name || "N/A"
+                            }</span>
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 sm:mb-8 p-4 bg-blue-50 rounded-2xl border border-blue-200 shadow-inner">
+                            <div class="text-base sm:text-xl font-semibold text-gray-700 flex items-center mb-2 sm:mb-0">
+                                ${QuizIcons.Timer.replace(
+                                  /width="24" height="24"/g,
+                                  'width="24" height="24" class="w-6 h-6 mr-2 text-red-500"'
+                                )}
+                                Time Left: <span class="text-red-600 ml-2 font-extrabold" id="quiz-time-left">${formatTime(
+                                  quizState.timeRemaining
+                                )}</span>
+                            </div>
+                            <div class="text-base sm:text-xl font-semibold text-gray-700">
+                                Question <span class="font-bold text-blue-800" id="current-question-number">${
+                                  quizState.currentQuestionIndex + 1
+                                }</span> of <span class="font-bold text-blue-800">${
+          quizState.questions.length
+        }</span>
+                            </div>
+                        </div>
+
+                        <div id="quiz-question-area" class="mb-8 sm:mb-10 p-5 bg-white rounded-2xl shadow-lg border border-gray-100">
+                            <!-- Current question will be rendered here dynamically -->
+                        </div>
+
+                        <div class="flex justify-between mt-6 sm:mt-10">
+                            <button id="previous-question-btn"
+                                class="flex items-center justify-center bg-gray-200 text-gray-700 font-bold py-2 sm:py-3 px-4 sm:px-8 rounded-xl hover:bg-gray-300 transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 active:translate-y-0 active:shadow-sm text-sm sm:text-base"
+                            >
+                                ${QuizIcons.ChevronLeft.replace(
+                                  /width="24" height="24"/g,
+                                  'width="20" height="20" class="inline-block mr-1 sm:mr-2"'
+                                )} Previous
+                            </button>
+                            <button id="next-question-btn"
+                                class="flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-2 sm:py-3 px-4 sm:px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:-translate-y-1 active:translate-y-0 active:scale-98 text-sm sm:text-base"
+                            >
+                                Next Question &rarr;
+                            </button>
+                            <button id="submit-test-btn"
+                                class="flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-700 hover:from-purple-700 hover:to-pink-800 text-white font-bold py-2 sm:py-3 px-4 sm:px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-300 transform hover:-translate-y-1 active:translate-y-0 active:scale-98 text-sm sm:text-base"
+                                style="display: none;"
+                            >
+                                ${QuizIcons.CheckCircle.replace(
+                                  /width="24" height="24"/g,
+                                  'width="20" height="20" class="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3"'
+                                )} Submit Test
+                            </button>
+                        </div>
+                    </div>
+                    <div id="quiz-feedback-section"></div>
+                </div>
+            `;
+        parentDiv.innerHTML = quizTestContainerHtml;
+
+        // Attach event listeners
+        document.getElementById(
+          "previous-question-btn"
+        ).onclick = handlePreviousQuestion;
+        document.getElementById(
+          "next-question-btn"
+        ).onclick = handleNextQuestion;
+        document.getElementById("submit-test-btn").onclick = handleFinishTest;
+
+        // Initial render of the first question and UI update
+        renderQuizQuestion();
+        updateQuizUI();
+        startQuizTimer();
+      }
+
+      /**
+       * Renders the AI Quiz Feedback section.
+       * @param {HTMLElement} parentDiv - The div to render feedback into.
+       */
+      function renderQuizFeedbackSection(parentDiv) {
+        if (!quizState.feedback) {
+          parentDiv.innerHTML = ""; // Clear if no feedback
+          return;
+        }
+
+        // Directly clear the parentDiv (which is now #app) and render the new content
+        parentDiv.innerHTML = "";
+
+        let individualFeedbacksHtml = quizState.feedback.feedbackDetails
+          .map((detail, idx) => {
+            const statusIcon = detail.isCorrect
+              ? QuizIcons.CheckCircle.replace(
+                  /width="24" height="24"/g,
+                  'width="20" height="20" class="inline-block text-green-500 mr-2"'
+                )
+              : QuizIcons.XCircle.replace(
+                  /width="24" height="24"/g,
+                  'width="20" height="20" class="inline-block text-red-500 mr-2"'
+                );
+            const statusBg = detail.isCorrect
+              ? "bg-green-50 border-green-200"
+              : "bg-red-50 border-red-200";
+            const statusTextClass = detail.isCorrect
+              ? "text-green-700"
+              : "text-red-700";
+
+            return `
+                    <div class="feedback-detail-card animate-fade-in p-4 sm:p-6 rounded-xl shadow-md border ${statusBg} transition-all duration-300">
+                        <p class="text-base sm:text-lg font-semibold text-gray-800 mb-2">Question ${
+                          idx + 1
+                        }: ${detail.questionText}</p>
+                        <p class="text-sm sm:text-base text-gray-700 mb-1">Your Answer: <span class="font-medium ${
+                          detail.isCorrect ? "text-green-600" : "text-red-600"
+                        }">${detail.userAnswer}</span></p>
+                        <p class="text-sm sm:text-base text-gray-700 mb-2">Correct Answer: <span class="font-medium text-green-600">${
+                          detail.correctAnswer
+                        }</span></p>
+                        <p class="font-bold mt-2 ${statusTextClass} flex items-center">
+                            ${statusIcon} Status: ${
+              detail.isCorrect ? "Correct" : "Incorrect"
+            }
+                        </p>
+                        <div class="text-xs sm:text-sm text-gray-700 mt-3 p-3 bg-blue-100 rounded-lg border border-blue-200 shadow-inner">
+                            <span class="font-bold flex items-center mb-1">${QuizIcons.Lightbulb.replace(
+                              /width="24" height="24"/g,
+                              'width="16" height="16" class="inline-block mr-1 text-blue-600"'
+                            )} AI Explanation:</span>
+                            <p class="whitespace-pre-wrap">${
+                              detail.aiExplanation
+                            }</p>
+                        </div>
+                    </div>
+                `;
+          })
+          .join("");
+
+        const leaderboardHtml =
+          quizState.feedback.leaderboard &&
+          quizState.feedback.leaderboard.length > 0
+            ? `
+                <div class="leaderboard-card mb-8 sm:mb-10 p-4 sm:p-6 rounded-3xl shadow-xl animate-fade-in-up">
+                    <h4 class="text-xl sm:text-2xl font-extrabold text-indigo-800 mb-4 sm:mb-6 text-center flex items-center justify-center">
+                        ${QuizIcons.Trophy.replace(
+                          /width="24" height="24"/g,
+                          'width="28" height="28" class="text-yellow-500 mr-3"'
+                        )} Top Performers for This Test
+                    </h4>
+                    <p class="text-sm sm:text-base text-gray-700 text-center mb-4">
+                        Total Unique Participants: <span class="font-bold text-blue-800">${
+                          quizState.feedback.totalParticipants
+                        }</span>
+                    </p>
+                    <div class="space-y-3">
+                        ${quizState.feedback.leaderboard
+                          .map(
+                            (leader) => `
+                            <div class="leaderboard-item flex items-center p-3 sm:p-4 ${
+                              leader.isCurrentUser ? "current-user" : ""
+                            }">
+                                <span class="text-lg sm:text-xl font-bold text-gray-800 w-8 text-center mr-3">${
+                                  leader.rank
+                                }.</span>
+                                <div class="flex-grow">
+                                    <p class="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+                                        ${leader.userName
+                                          .charAt(0)
+                                          .toUpperCase()}
+                                        <span class="ml-2">${
+                                          leader.userName
+                                        }</span>
+                                    </p>
+                                    <p class="text-xs sm:text-sm text-gray-600 flex items-center mt-1">
+                                        ${QuizIcons.Calendar.replace(
+                                          /width="24" height="24"/g,
+                                          'width="14" height="14" class="text-gray-500 mr-1"'
+                                        )}
+                                        ${leader.date}
+                                    </p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-base sm:text-lg font-bold text-blue-700">${
+                                      leader.score
+                                    }</p>
+                                    <p class="text-xs sm:text-sm text-gray-600">${leader.accuracy.toFixed(
+                                      2
+                                    )}% Accuracy</p>
+                                </div>
+                            </div>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                    ${
+                      quizState.feedback.userRank &&
+                      quizState.feedback.userRank >
+                        quizState.feedback.leaderboard.length &&
+                      !quizState.feedback.leaderboard.some(
+                        (p) => p.isCurrentUser
+                      )
+                        ? `
+                        <div class="leaderboard-item current-user flex items-center p-3 sm:p-4 mt-4">
+                            <span class="text-lg sm:text-xl font-bold text-gray-800 w-8 text-center mr-3">${
+                              quizState.feedback.userRank
+                            }.</span>
+                            <div class="flex-grow">
+                                <p class="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+                                    ${
+                                      authAppState.userProfile?.name
+                                        ?.charAt(0)
+                                        .toUpperCase() ||
+                                      authAppState.user?.email
+                                        ?.charAt(0)
+                                        .toUpperCase() ||
+                                      authAppState.userId
+                                        .charAt(0)
+                                        .toUpperCase()
+                                    }
+                                    <span class="ml-2">You</span>
+                                </p>
+                                <p class="text-xs sm:text-sm text-gray-600 flex items-center mt-1">
+                                    ${QuizIcons.Calendar.replace(
+                                      /width="24" height="24"/g,
+                                      'width="14" height="14" class="text-gray-500 mr-1"'
+                                    )}
+                                    ${new Date().toLocaleDateString()}
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-base sm:text-lg font-bold text-blue-700">${
+                                  quizState.feedback.correctCount
+                                }/${quizState.feedback.totalQuestions}</p>
+                                <p class="text-xs sm:text-sm text-gray-600">${quizState.feedback.accuracyPercentage.toFixed(
+                                  2
+                                )}% Accuracy</p>
+                            </div>
+                        </div>
+                    `
+                        : ""
+                    }
+                </div>
+            `
+            : "";
+
+        const quizFeedbackHtml = `
+                <div class="feedback-card mt-8 p-6 sm:p-10 animate-fade-in bg-white bg-opacity-95 backdrop-blur-md rounded-3xl shadow-2xl border border-gray-200 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-50 to-blue-50 opacity-50 z-0 rounded-3xl"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-3xl sm:text-5xl font-extrabold text-green-800 mb-4 sm:mb-6 text-center tracking-tight leading-tight">Quiz Feedback</h3>
+                        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 mb-6 sm:mb-10 score-display p-4 sm:p-6 rounded-2xl">
+                            <div class="text-lg sm:text-3xl font-bold text-green-700 flex items-center gap-2">
+                                ${QuizIcons.CheckCircle.replace(
+                                  /width="24" height="24"/g,
+                                  'width="28" height="28" class="text-green-600"'
+                                )}
+                                Your Score: <span class="text-green-800 font-extrabold">${
+                                  quizState.feedback.correctCount
+                                } / ${quizState.feedback.totalQuestions}</span>
+                            </div>
+                            <div class="text-lg sm:text-3xl font-bold text-green-700 flex items-center gap-2">
+                                ${QuizIcons.Activity.replace(
+                                  /width="24" height="24"/g,
+                                  'width="28" height="28" class="text-green-600"'
+                                )}
+                                Accuracy: <span class="text-green-800 font-extrabold">${quizState.feedback.accuracyPercentage.toFixed(
+                                  2
+                                )}%</span>
+                            </div>
+                        </div>
+
+                        ${leaderboardHtml}
+
+                        <div class="feedback-summary-card mb-6 sm:mb-8 p-4 sm:p-6 bg-blue-100 rounded-2xl border border-blue-300 shadow-md animate-fade-in-up">
+                            <h4 class="text-lg sm:text-xl font-bold text-blue-800 mb-2 sm:mb-3 flex items-center">
+                                ${QuizIcons.FileText.replace(
+                                  /width="24" height="24"/g,
+                                  'width="20" height="20" class="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-blue-700"'
+                                )} Overall Performance Summary:
+                            </h4>
+                            <p class="text-sm sm:text-lg text-blue-900 leading-relaxed whitespace-pre-wrap">${
+                              quizState.feedback.overallPerformanceSummary
+                            }</p>
+                        </div>
+
+                        <div class="feedback-summary-card mb-6 sm:mb-8 p-4 sm:p-6 bg-green-100 rounded-2xl border border-green-300 shadow-md animate-fade-in-up">
+                            <h4 class="text-lg sm:text-xl font-bold text-green-800 mb-2 sm:mb-3 flex items-center">
+                                ${QuizIcons.CheckCircle.replace(
+                                  /width="24" height="24"/g,
+                                  'width="20" height="20" class="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-green-700"'
+                                )} Strengths (Conceptual):
+                            </h4>
+                            <p class="text-sm sm:text-lg text-green-900 leading-relaxed whitespace-pre-wrap">${
+                              quizState.feedback.strengths
+                            }</p>
+                        </div>
+
+                        <div class="feedback-summary-card p-4 sm:p-6 bg-purple-100 rounded-2xl border border-purple-300 shadow-md animate-fade-in-up">
+                            <h4 class="text-lg sm:text-xl font-bold text-purple-800 mb-2 sm:mb-3 flex items-center">
+                                ${QuizIcons.Lightbulb.replace(
+                                  /width="24" height="24"/g,
+                                  'width="20" height="20" class="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-purple-700"'
+                                )} Areas for Improvement (Conceptual):
+                            </h4>
+                            <p class="text-sm sm:text-lg text-purple-900 leading-relaxed whitespace-pre-wrap">${
+                              quizState.feedback.areasForImprovement
+                            }</p>
+                        </div>
+
+                        <div class="mt-8 sm:mt-10 p-4 sm:p-6 bg-gray-50 rounded-2xl border border-gray-200 shadow-inner">
+                            <h4 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4 text-center">Detailed Question-by-Question Review:</h4>
+                            <div class="space-y-4 sm:space-y-6">
+                                ${individualFeedbacksHtml}
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8 sm:mt-10">
+                            <button id="back-to-category-tests-btn"
+                                class="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-2 sm:py-3 px-4 sm:px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:-translate-y-1 active:translate-y-0 active:scale-98 text-sm sm:text-base"
+                            >
+                                Back to ${
+                                  quizCategories.find(
+                                    (cat) => cat.id === quizState.category
+                                  )?.name || "Category"
+                                } Tests
+                            </button>
+                            <button id="play-again-btn"
+                                class="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-8 rounded-xl shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300 transform hover:-translate-y-1 active:translate-y-0 active:scale-98 text-sm sm:text-base"
+                            >
+                                Play This Test Again!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        parentDiv.innerHTML = quizFeedbackHtml; // Render into the existing container
+        document.getElementById("back-to-category-tests-btn").onclick = () =>
+          (window.location.href = `quiz-category.html?category=${quizState.category}`);
+        document.getElementById("play-again-btn").onclick = () =>
+          window.location.reload(); // Reloads the page to restart the test
+      }
+
+      // --- Initialization Logic ---
+      window.onload = async function () {
+        // Initialize Firebase Auth and listen for state changes
+        initFirebaseAuth(updateAuthUI)
+          .then(({ db: firestoreDb, auth: firebaseAuth }) => {
+            db = firestoreDb;
+            auth = firebaseAuth;
+            console.log("Firebase initialized in quiz-test.html:", {
+              db,
+              auth,
+            });
+
+            if (initializeQuizState()) {
+              renderQuizTest(document.getElementById("app"));
+            } else {
+              document.getElementById("app").innerHTML = `
+                            <div class="text-center text-red-500 py-8 sm:py-16">
+                                <h2 class="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Error Loading Quiz</h2>
+                                <p class="text-sm sm:text-base">Could not load the selected quiz. Please ensure you navigated from the categories page.</p>
+                                <button onclick="window.location.href='quiz-home.html'"
+                                    class="mt-4 sm:mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 text-sm sm:text-base"
+                                >
+                                    Go to Categories
+                                </button>
+                            </div>
+                        `;
+            }
+          })
+          .catch((error) => {
+            console.error(
+              "Failed to initialize Firebase in quiz-test.html:",
+              error
+            );
+            showToast(
+              "Failed to initialize Firebase. Some features may not work.",
+              "error"
+            );
+            // Still attempt to load quiz even if Firebase fails, but saving won't work
+            if (initializeQuizState()) {
+              renderQuizTest(document.getElementById("app"));
+            } else {
+              document.getElementById("app").innerHTML = `
+                            <div class="text-center text-red-500 py-8 sm:py-16">
+                                <h2 class="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Error Loading Quiz</h2>
+                                <p class="text-sm sm:text-base">Could not load the selected quiz. Please ensure you navigated from the categories page. (Firebase Init Failed)</p>
+                                <button onclick="window.location.href='quiz-home.html'"
+                                    class="mt-4 sm:mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 text-sm sm:text-base"
+                                >
+                                    Go to Categories
+                                </button>
+                            </div>
+                        `;
+            }
+          });
+      };
+    </script>
+  </body>
+</html>

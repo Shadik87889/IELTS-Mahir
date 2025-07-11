@@ -69,6 +69,7 @@ export const Icons = {
   Forum: `<i class="fas fa-comments"></i>`,
   // Added for test-detail.html
   Headphones: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headphones"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2Z"/><path d="M18 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2Z"/><path d="M21 16v-4a9 9 0 0 0-18 0v4"/></svg>`,
+  BookOpen: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
   ChevronLeft: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>`,
   FileText: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>`,
   Activity: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucude-activity"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
@@ -150,6 +151,9 @@ export async function initFirebaseAuth(onAuthChangeCallback) {
           return; // onAuthStateChanged will be called again with null user
         }
 
+        // ✨ ADDED LINE: Force a reload of the user object to get the latest displayName
+        await user.reload();
+
         authAppState.userId = user.uid;
         const userRef = doc(
           authAppState.db,
@@ -160,10 +164,18 @@ export async function initFirebaseAuth(onAuthChangeCallback) {
         let newUserProfileData;
         if (userSnap.exists()) {
           newUserProfileData = userSnap.data();
+          // Ensure consistency with Firebase Auth displayName
+          if (
+            newUserProfileData.name !== user.displayName &&
+            user.displayName
+          ) {
+            await updateDoc(userRef, { name: user.displayName });
+            newUserProfileData.name = user.displayName;
+          }
         } else {
           // Create a default profile if it's a new user or profile doesn't exist
           newUserProfileData = {
-            name: user.displayName || `User-${user.uid.substring(0, 5)}`, // Use user.displayName if available
+            name: user.displayName || `User-${user.uid.substring(0, 5)}`, // Now user.displayName should be updated
             email: user.email || "",
             bandGoal: "N/A",
             preparationStatus: "New Learner",
@@ -295,7 +307,8 @@ export async function signUpEmailPassword(email, password, name = "") {
       `artifacts/${defaultAppId}/users/${user.uid}/userProfile/profile`
     );
     await setDoc(userRef, {
-      name: name || `User-${user.uid.substring(0, 5)}`, // Use provided name or default
+      // ✨ UPDATED LINE: Use the provided 'name' directly here
+      name: name || `User-${user.uid.substring(0, 5)}`,
       email: user.email || "",
       bandGoal: "N/A",
       preparationStatus: "New Learner",

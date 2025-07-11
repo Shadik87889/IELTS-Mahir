@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mahir - Quiz Test</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Tone.js for sound effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style id="common-styles">
+      /* Common styles for the entire application */
+      body {
+        font-family: "Inter", sans-serif; /* Stupendous font family UI */
+        background: linear-gradient(
+          135deg,
+          #e0f2fe 0%,
+          #f0f9ff 100%
+        ); /* Lighter, softer blue gradient */
+        color: #334155; /* Default text color */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Custom styles for professional look */
+      .quiz-card {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes zoomIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+
+      .animate-zoom-in {
+        animation: zoomIn 0.4s ease-out forwards;
+      }
+
+      /* Custom scrollbar for feedback section */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      /* Specific styles for quiz elements */
+      .option-button {
+        transition: all 0.2s ease-in-out;
+        border-radius: 0.75rem; /* More rounded */
+      }
+      .option-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      }
+      .option-button.selected {
+        border-color: #3b82f6; /* blue-500 */
+        background-color: #eff6ff; /* blue-50 */
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.4); /* Stronger focus ring */
+      }
+      .option-button.correct {
+        background-color: #dcfce7; /* green-100 */
+        border-color: #22c55e; /* green-500 */
+        color: #16a34a; /* green-600 */
+        font-weight: bold;
+      }
+      .option-button.incorrect {
+        background-color: #fee2e2; /* red-100 */
+        border-color: #ef4444; /* red-500 */
+        color: #dc2626; /* red-600 */
+        font-weight: bold;
+      }
+
+      /* Gamification specific styles */
+      .level-badge {
+        background: linear-gradient(
+          45deg,
+          #f97316,
+          #fbbf24
+        ); /* Orange to yellow gradient */
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px; /* Full rounded */
+        font-weight: bold;
+        font-size: 0.75rem; /* text-xs */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 3;
+      }
+
+      .points-display {
+        background: linear-gradient(
+          45deg,
+          #84cc16,
+          #22c55e
+        ); /* Lime to green gradient */
+        color: white;
+        padding: 0.35rem 0.9rem;
+        border-radius: 9999px;
+        font-weight: bold;
+        font-size: 0.875rem; /* text-sm */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .feedback-section .correct-answer {
+        color: #16a34a; /* green-600 */
+        font-weight: bold;
+      }
+
+      .feedback-section .incorrect-answer {
+        color: #dc2626; /* red-600 */
+        font-weight: bold;
+      }
+
+      .feedback-section .explanation {
+        background-color: #f0f9ff; /* blue-50 */
+        border-left: 4px solid #3b82f6; /* blue-500 */
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+        font-style: italic;
+        color: #475569; /* slate-600 */
+      }
+
+      /* Progress bar styles */
+      .progress-bar-container {
+        width: 100%;
+        background-color: #e2e8f0; /* gray-200 */
+        border-radius: 9999px;
+        height: 8px;
+        overflow: hidden;
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          #3b82f6,
+          #6366f1
+        ); /* Blue to indigo gradient */
+        border-radius: 9999px;
+        transition: width 0.3s ease-out;
+      }
+
+      /* Toast notification styles */
+      .toast {
+        position: fixed;
+        top: 1rem; /* Adjust as needed for desired vertical position */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 600;
+        opacity: 0;
+        animation: toast-fade-in 0.3s ease-out forwards,
+          toast-fade-out 0.5s ease-out 2.5s forwards; /* Fade in, then fade out after 2.5s */
+        width: auto; /* Allow content to dictate width initially */
+        min-width: 200px; /* Minimum width */
+        max-width: 90%; /* Max width for responsiveness on small screens */
+      }
+
+      .toast.success {
+        background-color: #dcfce7; /* green-100 */
+        color: #16a34a; /* green-600 */
+        border: 1px solid #22c55e; /* green-500 */
+      }
+
+      .toast.error {
+        background-color: #fee2e2; /* red-100 */
+        color: #dc2626; /* red-600 */
+        border: 1px solid #ef4444; /* red-500 */
+      }
+
+      .toast.warning {
+        background-color: #fffbeb; /* yellow-100 */
+        color: #d97706; /* yellow-600 */
+        border: 1px solid #f59e0b; /* yellow-500 */
+      }
+
+      .toast.info {
+        background-color: #e0f2fe; /* blue-100 */
+        color: #2563eb; /* blue-600 */
+        border: 1px solid #3b82f6; /* blue-500 */
+      }
+
+      @keyframes toast-fade-in {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+
+      @keyframes toast-fade-out {
+        from {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+        to {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+      }
+
+      /* Leaderboard specific styles */
+      .leaderboard-table-container {
+        overflow-x: auto; /* Enable horizontal scrolling for the table */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .leaderboard-table {
+        min-width: 600px; /* Ensure table has a minimum width to enable scroll */
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .leaderboard-table th,
+      .leaderboard-table td {
+        padding: 1rem 1.5rem;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0; /* light gray border */
+      }
+
+      .leaderboard-table th {
+        background-color: #f8fafc; /* light background for header */
+        font-weight: 700;
+        color: #475569; /* slate-700 */
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+      }
+
+      .leaderboard-table tbody tr:last-child td {
+        border-bottom: none; /* No border for the last row */
+      }
+
+      .leaderboard-table tbody tr:hover {
+        background-color: #f0f9ff; /* blue-50 on hover */
+      }
+
+      .leaderboard-table tbody tr.current-user-row {
+        background-color: #e0f2fe; /* blue-100 for current user */
+        font-weight: 600;
+        color: #1e40af; /* blue-800 */
+      }
+
+      .leaderboard-table tbody tr.current-user-row:hover {
+        background-color: #bfdbfe; /* blue-200 on hover for current user */
+      }
+
+      .rank-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 0.875rem;
+        color: white;
+        margin-right: 0.5rem;
+      }
+
+      .rank-1 {
+        background: linear-gradient(
+          45deg,
+          #ffbf00,
+          #f7dc6f
+        ); /* Gold gradient */
+        box-shadow: 0 2px 6px rgba(255, 191, 0, 0.4);
+      }
+      .rank-2 {
+        background: linear-gradient(
+          45deg,
+          #a7a7ad,
+          #d4d4d8
+        ); /* Silver gradient */
+        box-shadow: 0 2px 6px rgba(167, 167, 173, 0.4);
+      }
+      .rank-3 {
+        background: linear-gradient(
+          45deg,
+          #cd7f32,
+          #e6a25b
+        ); /* Bronze gradient */
+        box-shadow: 0 2px 6px rgba(205, 127, 50, 0.4);
+      }
+      /* New style for ranks 4 and above */
+      .rank-common {
+        background-color: #94a3b8; /* Slate 400 */
+        box-shadow: 0 2px 4px rgba(148, 163, 184, 0.4);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen py-6 px-2 sm:py-8 sm:px-4 lg:py-12 lg:px-8">
+    <!-- Header / Navigation Bar -->
+    <header
+      id="app-header"
+      class="py-2 px-3 md:py-4 md:px-8 flex items-center justify-between rounded-b-xl transition-colors duration-300 sticky top-0 z-50 shadow-lg bg-white bg-opacity-90 backdrop-blur-md"
+    >
+      <div class="flex items-center gap-2 sm:gap-4">
+        <a
+          href="quiz-home.html"
+          class="text-blue-600 hover:text-blue-800 transition-colors text-xl md:text-2xl p-2 rounded-full hover:bg-gray-100"
+        >
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <h1 class="font-bold text-xl md:text-3xl text-blue-600">
+          IELTS Mastery Hub
+        </h1>
+      </div>
+      <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
+        <!-- Authentication status will be handled by auth.js -->
+        <div class="animate-pulse flex space-x-4">
+          <div class="rounded-full bg-gray-200 h-8 w-8 sm:h-10 sm:w-10"></div>
+          <div class="flex-1 space-y-4 py-1 hidden sm:block">
+            <div class="h-2 bg-gray-200 rounded"></div>
+            <div class="space-y-2">
+              <div class="grid grid-cols-3 gap-2">
+                <div class="h-2 bg-gray-200 rounded col-span-2"></div>
+                <div class="h-2 bg-gray-200 rounded col-span-1"></div>
+              </div>
+              <div class="h-2 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="app" class="container mx-auto mt-8 sm:mt-12 lg:mt-16 flex-grow">
+      <!-- Application content will be rendered here by JavaScript -->
+      <div class="flex justify-center items-center h-full">
+        <div
+          class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"
+        ></div>
+      </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div
+      id="toast-container"
+      class="fixed top-4 left-1/2 -translate-x-1/2 z-[100]"
+    ></div>
+
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
+
+    <script type="module">
+      // Import authentication functions and state from the central auth.js file
+      import {
+        initFirebaseAuth,
+        authAppState,
+        showToast as originalShowToast, // Renamed to avoid conflict
+        Icons, // Keep Icons for general UI elements not specific to quiz
+        signOutUser,
+      } from "./auth.js"; // Adjust path as necessary
+
+      // Import quiz data and common styles
+      import {
+        quizCategories,
+        allQuizTests,
+        commonStyles,
+        QuizIcons, // Now importing QuizIcons from quiz-test-data.js
+        formatTime,
+        calculateWordCount,
+      } from "./quiz-test-data.js";
+
+      // Firebase imports for Firestore
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        setDoc, // Added setDoc for updating user stats
+        updateDoc, // Added updateDoc for updating user stats
+        collection,
+        query,
+        where,
+        getDocs,
+        addDoc,
+        serverTimestamp, // For timestamping quiz results
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      // Inject common styles from quiz-test-data.js
+      document.getElementById("common-styles").innerHTML += commonStyles;
+
+      // Firebase instances (will be populated by auth.js)
+      let db;
+      let auth;
+
+      // Tone.js setup for sound effects
+      const correctSound = new Tone.Synth().toDestination();
+      const incorrectSound = new Tone.Synth().toDestination();
+      const levelUpSound = new Tone.Synth().toDestination();
+
+      // Configure sounds
+      correctSound.oscillator.type = "sine";
+      correctSound.envelope.attack = 0.005;
+      correctSound.envelope.decay = 0.1;
+      correctSound.envelope.sustain = 0.05;
+      correctSound.envelope.release = 0.1;
+
+      incorrectSound.oscillator.type = "sawtooth";
+      incorrectSound.envelope.attack = 0.005;
+      incorrectSound.envelope.decay = 0.1;
+      incorrectSound.envelope.sustain = 0.05;
+      incorrectSound.envelope.release = 0.1;
+
+      levelUpSound.oscillator.type = "triangle";
+      levelUpSound.envelope.attack = 0.01;
+      levelUpSound.envelope.decay = 0.2;
+      levelUpSound.envelope.sustain = 0.1;
+      levelUpSound.envelope.release = 0.5;
+
+      // Quiz state management
+      const quizState = {
+        categoryId: null,
+        testId: null,
+        test: null,
+        questions: [],
+        currentQuestionIndex: 0,
+        userAnswers: {}, // Stores user's selected option for each question
+        timer: null,
+        timeLeft: 0,
+        isLoading: true,
+        feedback: null, // Stores feedback details after quiz completion
+        leaderboard: [], // Stores leaderboard data
+        userRank: null,
+        userGameStats: {
+          totalPoints: 0,
+          level: 1,
+          completedTests: [],
+          badges: [], // New: Store earned badges
+        },
+      };
+
+      // Points configuration
+      const POINTS_PER_CORRECT_ANSWER = 10;
+      const LEVEL_UP_THRESHOLDS = [
+        0,
+        50,
+        150,
+        300,
+        500,
+        800,
+        1200,
+        1700,
+        2300,
+        3000,
+      ]; // Points needed for Level 1, 2, 3...
+      const BADGES = {
+        first_quiz: {
+          name: "First Step",
+          description: "Completed your first quiz!",
+          icon: QuizIcons.BadgeStar,
+        },
+        grammar_master: {
+          name: "Grammar Guru",
+          description: "Scored 100% on a Grammar test!",
+          icon: QuizIcons.BadgeCheck,
+        },
+        vocabulary_expert: {
+          name: "Vocabulary Virtuoso",
+          description: "Scored 100% on a Vocabulary test!",
+          icon: QuizIcons.BadgeCheck,
+        },
+        speed_demon: {
+          name: "Speed Demon",
+          description: "Completed a quiz in record time!",
+          icon: QuizIcons.BadgeFast,
+        },
+        quiz_champion: {
+          name: "Quiz Champion",
+          description: "Completed 5 quizzes!",
+          icon: QuizIcons.BadgeTrophy,
+        },
+        // Add more badges as needed
+      };
+
+      /**
+       * Displays a custom toast message.
+       * @param {string} message - The message to display.
+       * @param {'success'|'error'|'warning'|'info'} type - Type of toast.
+       */
+      function showToast(message, type = "info") {
+        const toastContainer = document.getElementById("toast-container");
+        if (!toastContainer) return;
+
+        const toastElement = document.createElement("div");
+        toastElement.className = `toast ${type}`;
+        toastElement.innerHTML = `
+            ${
+              type === "success"
+                ? QuizIcons.CheckCircle.replace(
+                    /width="24" height="24"/g,
+                    'width="20" height="20"'
+                  )
+                : type === "error"
+                ? QuizIcons.XCircle.replace(
+                    /width="24" height="24"/g,
+                    'width="20" height="20"'
+                  )
+                : type === "warning"
+                ? QuizIcons.ExclamationTriangle.replace(
+                    /width="24" height="24"/g,
+                    'width="20" height="20"'
+                  )
+                : QuizIcons.InfoCircle.replace(
+                    /width="24" height="24"/g,
+                    'width="20" height="20"'
+                  )
+            }
+            <span>${message}</span>
+        `;
+
+        toastContainer.appendChild(toastElement);
+
+        // Remove the toast after animation completes
+        toastElement.addEventListener("animationend", (event) => {
+          if (event.animationName === "toast-fade-out") {
+            toastElement.remove();
+          }
+        });
+      }
+
+      /**
+       * Updates the navigation bar and user ID display based on authentication status.
+       * @param {object|null} user - The Firebase User object or null if signed out.
+       */
+      async function updateAuthUI(user) {
+        const authButtonsContainer = document.getElementById(
+          "auth-buttons-container"
+        );
+        if (authButtonsContainer) {
+          if (user) {
+            // Fetch game stats if user is logged in
+            if (db && user.uid) {
+              await fetchUserGameStats(user.uid);
+            }
+
+            // User is signed in: Show profile dropdown and game stats
+            authButtonsContainer.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="points-display flex items-center gap-2 px-3 py-1.5 rounded-full shadow-md text-white bg-gradient-to-br from-green-500 to-lime-600">
+                                ${QuizIcons.Trophy.replace(
+                                  /width="24" height="24"/g,
+                                  'width="16" height="16" class="text-white fill-current"'
+                                )}
+                                <span class="text-sm font-semibold">${
+                                  quizState.userGameStats.totalPoints
+                                } Pts</span>
+                                <span class="text-xs text-green-200">|</span>
+                                <span class="text-sm font-semibold">Lvl ${
+                                  quizState.userGameStats.level
+                                }</span>
+                            </div>
+                            <div class="relative">
+                                <button id="profile-icon-btn" class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-600 transition-colors duration-200 ease-in-out transform active:scale-95">
+                                    ${(
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid
+                                    )
+                                      .charAt(0)
+                                      .toUpperCase()}
+                                </button>
+                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden animate-fade-in-up">
+                                    <div class="px-4 py-2 text-sm text-gray-700 font-medium border-b border-gray-100">Hello, ${
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid.substring(0, 8)
+                                    }</div>
+                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">Level: ${
+                                      quizState.userGameStats.level
+                                    }</div>
+                                    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
+                                        ${QuizIcons.Dashboard.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-gray-600"'
+                                        )} Dashboard
+                                    </a>
+                                    <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
+                                        ${QuizIcons.Forum.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-gray-600"'
+                                        )} Forum
+                                    </a>
+                                    <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg transition-colors">
+                                        ${QuizIcons.SignOut.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-red-500"'
+                                        )} Sign Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            const profileIconBtn = document.getElementById("profile-icon-btn");
+            const profileDropdown = document.getElementById("profile-dropdown");
+            const signOutDropdownBtn = document.getElementById(
+              "sign-out-dropdown-btn"
+            );
+
+            profileIconBtn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              profileDropdown.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", (event) => {
+              if (
+                !profileDropdown.contains(event.target) &&
+                !profileIconBtn.contains(event.target)
+              ) {
+                profileDropdown.classList.add("hidden");
+              }
+            });
+
+            signOutDropdownBtn.addEventListener("click", async () => {
+              await signOutUser();
+              // Redirect will happen via onAuthStateChanged in auth.js
+            });
+          } else {
+            // User is signed out: Show sign-in button
+            authButtonsContainer.innerHTML = `
+                        <a href="auth.html" id="sign-in-nav-btn" class="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                            ${QuizIcons.SignIn.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} <span class="hidden sm:inline">Sign In</span>
+                        </a>
+                    `;
+          }
+        }
+      }
+
+      /**
+       * Displays a custom message modal.
+       * @param {string} title - The title of the modal.
+       * @param {string} message - The message content.
+       * @param {boolean} showConfirm - Whether to show a confirm button.
+       * @returns {Promise<boolean>} Resolves true if confirmed, false if cancelled.
+       */
+      function showMessageModal(title, message, showConfirm = false) {
+        return new Promise((resolve) => {
+          const modalContainer = document.getElementById("modal-container");
+          if (!modalContainer) return resolve(false);
+
+          modalContainer.innerHTML = `
+                    <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[1000] animate-fade-in">
+                        <div class="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md animate-zoom-in">
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">${title}</h3>
+                            <p class="text-gray-700 mb-6 text-sm sm:text-base">${message}</p>
+                            <div class="flex justify-end gap-3">
+                                ${
+                                  showConfirm
+                                    ? `<button id="modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium">Cancel</button>`
+                                    : ""
+                                }
+                                <button id="modal-ok-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+          const okButton = document.getElementById("modal-ok-btn");
+          okButton.onclick = () => {
+            hideMessageModal();
+            resolve(true);
+          };
+
+          if (showConfirm) {
+            const cancelButton = document.getElementById("modal-cancel-btn");
+            cancelButton.onclick = () => {
+              hideMessageModal();
+              resolve(false);
+            };
+          }
+        });
+      }
+
+      /**
+       * Hides the custom message modal.
+       */
+      function hideMessageModal() {
+        const modalContainer = document.getElementById("modal-container");
+        if (modalContainer) {
+          modalContainer.innerHTML = "";
+        }
+      }
+
+      /**
+       * Returns HTML for a loading spinner.
+       * @returns {string} HTML string for a loading spinner.
+       */
+      function getLoadingSpinnerHtml() {
+        return `
+                <div class="flex justify-center items-center h-full">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+                </div>
+            `;
+      }
+
+      /**
+       * Fetches user's game stats from Firestore.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchUserGameStats(userId) {
+        if (!db || !userId) return;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userStatsDocRef = doc(
+          db,
+          `artifacts/${appId}/users/${userId}/gameStats/summary`
+        );
+
+        try {
+          const docSnap = await getDoc(userStatsDocRef);
+          if (docSnap.exists()) {
+            quizState.userGameStats = {
+              ...quizState.userGameStats,
+              ...docSnap.data(),
+            };
+            console.log("Fetched user game stats:", quizState.userGameStats);
+          } else {
+            console.log("No game stats found for user, initializing defaults.");
+            // If no stats exist, create a new document with initial stats
+            await setDoc(userStatsDocRef, quizState.userGameStats);
+          }
+        } catch (error) {
+          console.error("Error fetching user game stats:", error);
+          showToast("Failed to load your game progress.", "error");
+        }
+      }
+
+      /**
+       * Updates user's game stats in Firestore.
+       */
+      async function updateUserGameStats() {
+        if (!db || !authAppState.userId) return;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userStatsDocRef = doc(
+          db,
+          `artifacts/${appId}/users/${authAppState.userId}/gameStats/summary`
+        );
+
+        try {
+          await setDoc(userStatsDocRef, quizState.userGameStats, {
+            merge: true,
+          });
+          console.log("User game stats updated successfully.");
+        } catch (error) {
+          console.error("Error updating user game stats:", error);
+          showToast("Failed to save your game progress.", "error");
+        }
+      }
+
+      /**
+       * Awards points and checks for level up.
+       * @param {number} points - Points to award.
+       */
+      async function awardPoints(points) {
+        quizState.userGameStats.totalPoints += points;
+        console.log(
+          `Awarded ${points} points. Total: ${quizState.userGameStats.totalPoints}`
+        );
+
+        let newLevel = quizState.userGameStats.level;
+        for (let i = 0; i < LEVEL_UP_THRESHOLDS.length; i++) {
+          if (quizState.userGameStats.totalPoints >= LEVEL_UP_THRESHOLDS[i]) {
+            newLevel = i + 1;
+          } else {
+            break;
+          }
+        }
+
+        if (newLevel > quizState.userGameStats.level) {
+          quizState.userGameStats.level = newLevel;
+          showToast(`Level Up! You are now Level ${newLevel}!`, "success");
+          levelUpSound.triggerAttackRelease("C5", "8n"); // Play a level up sound
+          console.log(`User leveled up to Level ${newLevel}`);
+        }
+
+        await updateUserGameStats(); // Save updated stats to Firestore
+      }
+
+      /**
+       * Awards a badge to the user.
+       * @param {string} badgeId - The ID of the badge to award.
+       */
+      async function awardBadge(badgeId) {
+        if (!quizState.userGameStats.badges.includes(badgeId)) {
+          quizState.userGameStats.badges.push(badgeId);
+          const badgeInfo = BADGES[badgeId];
+          if (badgeInfo) {
+            showToast(`New Badge Unlocked: ${badgeInfo.name}!`, "info");
+            // No specific sound for badge, level up sound is enough for now
+          }
+          await updateUserGameStats(); // Save updated stats to Firestore
+        }
+      }
+
+      /**
+       * Initializes the quiz state by parsing URL parameters and loading quiz data.
+       */
+      async function initializeQuizState() {
+        quizState.isLoading = true;
+        renderApp(); // Show loading spinner
+
+        const urlParams = new URLSearchParams(window.location.search);
+        quizState.categoryId = urlParams.get("category");
+        quizState.testId = urlParams.get("test");
+
+        if (!quizState.categoryId || !quizState.testId) {
+          showMessageModal(
+            "Error",
+            "Quiz category or test ID is missing from the URL."
+          );
+          quizState.isLoading = false;
+          renderApp();
+          return;
+        }
+
+        quizState.test = allQuizTests.find(
+          (t) =>
+            t.categoryId === quizState.categoryId && t.id === quizState.testId
+        );
+
+        if (!quizState.test) {
+          showMessageModal("Error", "Quiz test not found.");
+          quizState.isLoading = false;
+          renderApp();
+          return;
+        }
+
+        // Filter questions to only include multiple-choice for now
+        quizState.questions = quizState.test.questions.filter(
+          (q) => q.type === "multiple-choice"
+        );
+        quizState.timeLeft = quizState.test.duration * 60; // Convert minutes to seconds
+        quizState.currentQuestionIndex = 0;
+        quizState.userAnswers = {}; // Reset answers for a new test
+        quizState.feedback = null; // Reset feedback
+        quizState.leaderboard = []; // Reset leaderboard
+
+        quizState.isLoading = false;
+        renderApp(); // Render quiz UI
+        startQuizTimer();
+      }
+
+      /**
+       * Starts the quiz countdown timer.
+       */
+      function startQuizTimer() {
+        if (quizState.timer) clearInterval(quizState.timer); // Clear existing timer
+
+        quizState.timer = setInterval(() => {
+          if (quizState.timeLeft > 0) {
+            quizState.timeLeft--;
+            updateQuizUI(); // Update timer display
+          } else {
+            clearInterval(quizState.timer);
+            showMessageModal(
+              "Time's Up!",
+              "You've run out of time. The quiz will now be submitted."
+            ).then(() => {
+              handleFinishTest();
+            });
+          }
+        }, 1000);
+      }
+
+      /**
+       * Stops the quiz countdown timer.
+       */
+      function stopQuizTimer() {
+        if (quizState.timer) {
+          clearInterval(quizState.timer);
+          quizState.timer = null;
+        }
+      }
+
+      /**
+       * Updates the quiz UI elements like timer and question number.
+       */
+      function updateQuizUI() {
+        const timerDisplay = document.getElementById("timer-display");
+        if (timerDisplay) {
+          timerDisplay.textContent = formatTime(quizState.timeLeft);
+        }
+        const questionNumberDisplay = document.getElementById(
+          "question-number-display"
+        );
+        if (questionNumberDisplay) {
+          questionNumberDisplay.textContent = `Question ${
+            quizState.currentQuestionIndex + 1
+          } of ${quizState.questions.length}`;
+        }
+
+        const progressBarFill = document.getElementById("progress-bar-fill");
+        if (progressBarFill && quizState.questions.length > 0) {
+          const progress =
+            ((quizState.currentQuestionIndex + 1) /
+              quizState.questions.length) *
+            100;
+          progressBarFill.style.width = `${progress}%`;
+        }
+
+        // Update navigation button states
+        const prevBtn = document.getElementById("prev-question-btn");
+        const nextBtn = document.getElementById("next-question-btn");
+        const finishBtn = document.getElementById("finish-test-btn");
+
+        if (prevBtn) {
+          prevBtn.disabled = quizState.currentQuestionIndex === 0;
+        }
+        if (nextBtn) {
+          nextBtn.disabled =
+            quizState.currentQuestionIndex === quizState.questions.length - 1;
+        }
+        if (finishBtn) {
+          // Enable finish button only if all questions have been answered
+          const allAnswered = quizState.questions.every(
+            (q, index) => quizState.userAnswers[index] !== undefined
+          );
+          finishBtn.disabled = !allAnswered;
+        }
+      }
+
+      /**
+       * Extracts the option letter (e.g., "A", "B") from a full option string (e.g., "A) Option Text").
+       * @param {string} optionString - The full option string.
+       * @returns {string} The extracted option letter.
+       */
+      function getOptionLetter(optionString) {
+        const match = optionString.match(/^([A-Z])\)/);
+        return match ? match[1] : "";
+      }
+
+      /**
+       * Handles input change for quiz questions (e.g., selecting an option).
+       * @param {Event} e - The event object.
+       */
+      function handleInputChange(e) {
+        const questionIndex = quizState.currentQuestionIndex;
+        // The radio button's value is now directly the option letter (e.g., "A", "B")
+        const selectedValue = e.target.value;
+        quizState.userAnswers[questionIndex] = selectedValue;
+
+        // Visually update selected option
+        const optionsContainer = e.target.closest(".options-container");
+        if (optionsContainer) {
+          optionsContainer.querySelectorAll(".option-button").forEach((btn) => {
+            btn.classList.remove("selected");
+          });
+          e.target.closest(".option-button").classList.add("selected");
+        }
+
+        updateQuizUI(); // Update UI to potentially enable/disable finish button
+      }
+
+      /**
+       * Navigates to the next question.
+       */
+      function handleNextQuestion() {
+        if (quizState.currentQuestionIndex < quizState.questions.length - 1) {
+          quizState.currentQuestionIndex++;
+          renderQuizQuestion();
+        }
+      }
+
+      /**
+       * Navigates to the previous question.
+       */
+      function handlePreviousQuestion() {
+        if (quizState.currentQuestionIndex > 0) {
+          quizState.currentQuestionIndex--;
+          renderQuizQuestion();
+        }
+      }
+
+      /**
+       * Renders the current quiz question based on its type.
+       */
+      function renderQuizQuestion() {
+        const questionContainer = document.getElementById("question-container");
+        if (!questionContainer) return;
+
+        const question = quizState.questions[quizState.currentQuestionIndex];
+        if (!question) {
+          questionContainer.innerHTML =
+            "<p class='text-center text-gray-600'>No question found.</p>";
+          return;
+        }
+
+        let questionHtml = "";
+
+        switch (question.type) {
+          case "multiple-choice":
+            questionHtml = `
+                        <div class="animate-fade-in-up">
+                            <p class="text-lg sm:text-xl font-semibold mb-6 text-gray-800">${
+                              question.questionText
+                            }</p>
+                            <div class="options-container grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                ${question.options
+                                  .map((option, index) => {
+                                    const optionLetter = getOptionLetter(
+                                      option
+                                    ); // Extract 'A', 'B', etc.
+                                    const isSelected =
+                                      quizState.userAnswers[
+                                        quizState.currentQuestionIndex
+                                      ] === optionLetter;
+                                    return `
+                                    <label class="option-button flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200
+                                        ${isSelected ? "selected" : ""}
+                                    ">
+                                        <input type="radio" name="question-${
+                                          quizState.currentQuestionIndex
+                                        }" value="${optionLetter}" class="form-radio h-5 w-5 text-blue-600"
+                                            ${isSelected ? "checked" : ""}
+                                            onchange="window.handleInputChange(event)"
+                                        >
+                                        <span class="ml-3 text-gray-700 text-base sm:text-lg">${option}</span>
+                                    </label>
+                                `;
+                                  })
+                                  .join("")}
+                            </div>
+                        </div>
+                    `;
+            break;
+          // Add other question types here if needed (e.g., 'fill-in-the-blank', 'matching')
+          default:
+            questionHtml = `<p class="text-center text-red-500">Unsupported question type: ${question.type}</p>`;
+        }
+
+        questionContainer.innerHTML = questionHtml;
+        updateQuizUI(); // Update button states after rendering question
+      }
+
+      // Make handleInputChange globally accessible for onchange attribute
+      window.handleInputChange = handleInputChange;
+
+      /**
+       * Handles the completion of the test, calculates score, and displays feedback.
+       */
+      async function handleFinishTest() {
+        stopQuizTimer(); // Stop the timer
+
+        const confirmation = await showMessageModal(
+          "Finish Test?",
+          "Are you sure you want to finish the test and view your results?",
+          true
+        );
+        if (!confirmation) {
+          startQuizTimer(); // Resume timer if cancelled
+          return;
+        }
+
+        quizState.isLoading = true;
+        renderApp(); // Show loading spinner
+
+        let score = 0;
+        const feedbackDetails = [];
+        let correctAnswersCount = 0;
+        let incorrectAnswersCount = 0;
+        let unattemptedCount = 0;
+
+        quizState.questions.forEach((question, index) => {
+          // user answer is now just the letter (e.g., "A", "B")
+          const userAnswer = (quizState.userAnswers[index] || "")
+            .trim()
+            .toUpperCase(); // Ensure uppercase for comparison
+          const correctAnswer = (question.correctAnswer || "")
+            .trim()
+            .toUpperCase(); // Ensure uppercase for comparison
+
+          const isCorrect = userAnswer === correctAnswer;
+          const status = isCorrect
+            ? "correct"
+            : userAnswer !== "" // Check if user attempted (empty string means unattempted after trim)
+            ? "incorrect"
+            : "unattempted";
+
+          feedbackDetails.push({
+            questionText: question.questionText,
+            userAnswer: quizState.userAnswers[index] || "Unattempted", // Keep original user input for display, or "Unattempted"
+            correctAnswer: question.correctAnswer,
+            explanation: question.explanation,
+            isCorrect: isCorrect,
+            status: status,
+          });
+
+          if (isCorrect) {
+            score += POINTS_PER_CORRECT_ANSWER; // Award points for correct answers
+            correctAnswersCount++;
+          } else if (userAnswer !== "") {
+            // Only count as incorrect if an attempt was made
+            incorrectAnswersCount++;
+          } else {
+            unattemptedCount++;
+          }
+        });
+
+        // Calculate percentage, ensuring it's a valid number even if no questions or division by zero
+        let percentage = 0;
+        if (quizState.questions.length > 0) {
+          percentage = (correctAnswersCount / quizState.questions.length) * 100;
+        }
+        percentage = isFinite(percentage)
+          ? parseFloat(percentage.toFixed(2))
+          : 0; // Ensure it's a number and fixed to 2 decimal places
+
+        const timeTaken = quizState.test.duration * 60 - quizState.timeLeft;
+
+        const overallPerformanceSummary = {
+          score: score,
+          percentage: percentage, // Use the already processed percentage
+          totalQuestions: quizState.questions.length,
+          correct: correctAnswersCount,
+          incorrect: incorrectAnswersCount,
+          unattempted: unattemptedCount,
+          timeTaken: formatTime(timeTaken),
+        };
+
+        // Determine strengths and areas for improvement (simplified logic)
+        const strengths = [];
+        const areasForImprovement = [];
+        if (percentage >= 80) strengths.push("Excellent overall performance!");
+        if (correctAnswersCount > incorrectAnswersCount)
+          strengths.push("Strong grasp of concepts.");
+        if (incorrectAnswersCount > 0)
+          areasForImprovement.push("Review incorrect answers carefully.");
+        if (unattemptedCount > 0)
+          areasForImprovement.push(
+            "Work on time management to attempt all questions."
+          );
+
+        // Update user game stats
+        await awardPoints(score); // Award the calculated score
+
+        // Award badges based on performance
+        if (
+          correctAnswersCount === quizState.questions.length &&
+          quizState.questions.length > 0
+        ) {
+          // Perfect score badge
+          if (quizState.test.categoryId === "grammar")
+            await awardBadge("grammar_master");
+          if (quizState.test.categoryId === "vocabulary")
+            await awardBadge("vocabulary_expert");
+        }
+        if (quizState.userGameStats.completedTests.length === 0) {
+          await awardBadge("first_quiz"); // First quiz completion
+        }
+        // Track completed tests to award "quiz_champion" badge
+        if (
+          !quizState.userGameStats.completedTests.includes(quizState.testId)
+        ) {
+          quizState.userGameStats.completedTests.push(quizState.testId);
+          await updateUserGameStats(); // Save the updated completed tests list
+        }
+        if (quizState.userGameStats.completedTests.length >= 5) {
+          await awardBadge("quiz_champion");
+        }
+        // "Speed Demon" badge (simplified: if time taken is less than 20% of duration)
+        if (timeTaken < quizState.test.duration * 60 * 0.2) {
+          await awardBadge("speed_demon");
+        }
+
+        quizState.feedback = {
+          overallPerformanceSummary,
+          feedbackDetails,
+          strengths,
+          areasForImprovement,
+        };
+
+        // Save result to Firestore
+        await saveQuizResultToFirestore(overallPerformanceSummary, timeTaken);
+        await fetchLeaderboard(); // Fetch updated leaderboard
+
+        quizState.isLoading = false;
+        renderApp(); // Render feedback section
+      }
+
+      /**
+       * Saves the quiz result to Firestore.
+       * @param {object} summary - The overall performance summary.
+       * @param {number} timeTaken - Time taken in seconds.
+       */
+      async function saveQuizResultToFirestore(summary, timeTaken) {
+        if (!db || !authAppState.userId) {
+          showToast(
+            "Not logged in. Quiz results will not be saved.",
+            "warning"
+          );
+          return;
+        }
+
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userId = authAppState.userId;
+        const userEmail = authAppState.user?.email || "Anonymous";
+        const userName =
+          authAppState.userProfile?.name || userEmail.split("@")[0]; // Use name if available, else part of email
+
+        const resultData = {
+          userId: userId,
+          userName: userName,
+          userEmail: userEmail,
+          categoryId: quizState.categoryId,
+          testId: quizState.testId,
+          testTitle: quizState.test.title,
+          score: summary.score,
+          // Ensure percentage is a valid number before saving
+          percentage: isFinite(summary.percentage) ? summary.percentage : 0,
+          correctAnswers: summary.correct,
+          totalQuestions: summary.totalQuestions,
+          timeTakenSeconds: timeTaken,
+          timestamp: serverTimestamp(), // Use server timestamp
+        };
+
+        try {
+          // Save to private user results collection
+          await addDoc(
+            collection(db, `artifacts/${appId}/users/${userId}/quizResults`),
+            resultData
+          );
+          console.log("Quiz result saved to private collection.");
+
+          // Save to public global results collection for leaderboard
+          await addDoc(
+            collection(db, `artifacts/${appId}/public/data/quizGlobalResults`),
+            resultData
+          );
+          console.log("Quiz result saved to public collection.");
+          showToast("Quiz results saved successfully!", "success");
+        } catch (error) {
+          console.error("Error saving quiz result:", error);
+          showToast("Failed to save quiz results.", "error");
+        }
+      }
+
+      /**
+       * Fetches and updates the leaderboard for the current test.
+       */
+      async function fetchLeaderboard() {
+        if (!db) return;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const leaderboardRef = collection(
+          db,
+          `artifacts/${appId}/public/data/quizGlobalResults`
+        );
+        const q = query(
+          leaderboardRef,
+          where("testId", "==", quizState.testId)
+          // orderBy("percentage", "desc"), // Removed orderBy to avoid index issues
+          // orderBy("timeTakenSeconds", "asc")
+        );
+
+        try {
+          const querySnapshot = await getDocs(q);
+          let rawResults = [];
+          querySnapshot.forEach((doc) => {
+            rawResults.push(doc.data());
+          });
+
+          // Deduplicate results by userId, keeping the best score (highest percentage, then lowest time)
+          const bestResultsMap = new Map(); // Map<userId, bestResult>
+          rawResults.forEach((result) => {
+            // Ensure percentage is a number, default to 0 if undefined/null/NaN
+            const currentPercentage = parseFloat(result.percentage) || 0;
+            const existingBest = bestResultsMap.get(result.userId);
+            const existingPercentage = existingBest
+              ? parseFloat(existingBest.percentage) || 0
+              : -1; // Default to -1 for comparison
+
+            if (
+              !existingBest ||
+              currentPercentage > existingPercentage ||
+              (currentPercentage === existingPercentage &&
+                result.timeTakenSeconds < (existingBest.timeTakenSeconds || 0)) // Ensure timeTakenSeconds is also a number for comparison
+            ) {
+              bestResultsMap.set(result.userId, {
+                ...result,
+                percentage: currentPercentage,
+              }); // Store cleaned percentage
+            }
+          });
+
+          let leaderboard = Array.from(bestResultsMap.values());
+
+          // Sort in memory: highest percentage first, then lowest time taken
+          leaderboard.sort((a, b) => {
+            // Ensure comparison values are numbers
+            const aPercentage = parseFloat(a.percentage) || 0;
+            const bPercentage = parseFloat(b.percentage) || 0;
+            const aTime = parseFloat(a.timeTakenSeconds) || 0;
+            const bTime = parseFloat(b.timeTakenSeconds) || 0;
+
+            if (bPercentage !== aPercentage) {
+              return bPercentage - aPercentage; // Higher percentage first
+            }
+            return aTime - bTime; // Lower time taken first
+          });
+
+          quizState.leaderboard = leaderboard.slice(0, 10); // Get top 10
+
+          // Find user's rank
+          if (authAppState.userId) {
+            const userEntry = leaderboard.find(
+              (entry) => entry.userId === authAppState.userId
+            );
+            if (userEntry) {
+              quizState.userRank = leaderboard.indexOf(userEntry) + 1;
+            } else {
+              quizState.userRank = null; // User not on leaderboard
+            }
+          } else {
+            quizState.userRank = null;
+          }
+
+          console.log("Leaderboard fetched:", quizState.leaderboard);
+        } catch (error) {
+          console.error("Error fetching leaderboard:", error);
+          showToast("Failed to load leaderboard.", "error");
+        }
+      }
+
+      /**
+       * Renders the main quiz test interface.
+       * @param {HTMLElement} parentDiv - The div to render the quiz into.
+       */
+      function renderQuizTest(parentDiv) {
+        if (!quizState.test) {
+          parentDiv.innerHTML = getLoadingSpinnerHtml(); // Fallback to spinner if test not loaded
+          return;
+        }
+
+        parentDiv.innerHTML = `
+                <div class="max-w-3xl mx-auto quiz-card p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in-up">
+                    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 pb-4 border-b border-gray-200">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-blue-700 mb-4 sm:mb-0">${
+                          quizState.test.title
+                        }</h2>
+                        <div class="text-xl sm:text-2xl font-bold text-red-600 flex items-center gap-2 bg-red-50 px-4 py-2 rounded-full shadow-inner">
+                            ${QuizIcons.Clock.replace(
+                              /width="24" height="24"/g,
+                              'width="20" height="20" class="w-5 h-5 text-red-500"'
+                            )}
+                            <span id="timer-display">${formatTime(
+                              quizState.timeLeft
+                            )}</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-bar-container mb-6">
+                        <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
+                    </div>
+
+                    <div class="mb-6">
+                        <p id="question-number-display" class="text-md sm:text-lg text-gray-600 font-medium mb-4 text-center">
+                            Question ${quizState.currentQuestionIndex + 1} of ${
+          quizState.questions.length
+        }
+                        </p>
+                        <div id="question-container" class="min-h-[150px] flex items-center justify-center p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <!-- Question will be rendered here by renderQuizQuestion() -->
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-8 pt-4 border-t border-gray-200">
+                        <button id="prev-question-btn" class="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-5 sm:py-2.5 bg-gray-200 text-gray-800 rounded-lg shadow-md hover:bg-gray-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base transform active:scale-95">
+                            ${QuizIcons.ChevronLeft.replace(
+                              /width="24" height="24"/g,
+                              'width="16" height="16" sm:w="18" sm:h="18"'
+                            )} <span class="hidden sm:inline">Previous</span>
+                        </button>
+                        <button id="finish-test-btn" class="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-5 sm:py-2.5 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base transform active:scale-95">
+                            ${QuizIcons.Flag.replace(
+                              /width="24" height="24"/g,
+                              'width="16" height="16" sm:w="18" sm:h="18"'
+                            )} <span class="hidden sm:inline">Finish Test</span>
+                        </button>
+                        <button id="next-question-btn" class="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-5 sm:py-2.5 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base transform active:scale-95">
+                            <span class="hidden sm:inline">Next</span> ${QuizIcons.ChevronRight.replace(
+                              /width="24" height="24"/g,
+                              'width="16" height="16" sm:w="18" sm:h="18"'
+                            )}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+        document
+          .getElementById("prev-question-btn")
+          .addEventListener("click", handlePreviousQuestion);
+        document
+          .getElementById("next-question-btn")
+          .addEventListener("click", handleNextQuestion);
+        document
+          .getElementById("finish-test-btn")
+          .addEventListener("click", handleFinishTest);
+
+        updateQuizUI(); // Initial update for progress bar and buttons
+        renderQuizQuestion(); // Render the first question
+      }
+
+      /**
+       * Renders the quiz feedback section after the test is completed.
+       * @param {HTMLElement} parentDiv - The div to render the feedback into.
+       */
+      function renderQuizFeedbackSection(parentDiv) {
+        if (!quizState.feedback) {
+          parentDiv.innerHTML =
+            "<p class='text-center text-red-500'>No feedback data available.</p>";
+          return;
+        }
+
+        const {
+          overallPerformanceSummary,
+          feedbackDetails,
+          strengths,
+          areasForImprovement,
+        } = quizState.feedback;
+
+        parentDiv.innerHTML = `
+                <div class="max-w-4xl mx-auto quiz-card p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in-up">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-center text-blue-700 mb-6">
+                        Quiz Results
+                    </h2>
+
+                    <!-- Overall Performance Summary -->
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg mb-8 shadow-md">
+                        <h3 class="text-xl sm:text-2xl font-bold text-blue-800 mb-3 flex items-center gap-2">
+                            ${QuizIcons.ChartBar.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="w-6 h-6 text-blue-600"'
+                            )} Overall Performance
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
+                            <p><strong>Score:</strong> ${
+                              overallPerformanceSummary.score
+                            } points</p>
+                            <p><strong>Percentage:</strong> ${
+                              overallPerformanceSummary.percentage
+                            }%</p>
+                            <p><strong>Correct Answers:</strong> ${
+                              overallPerformanceSummary.correct
+                            } / ${overallPerformanceSummary.totalQuestions}</p>
+                            <p><strong>Incorrect Answers:</strong> ${
+                              overallPerformanceSummary.incorrect
+                            }</p>
+                            <p><strong>Unattempted:</strong> ${
+                              overallPerformanceSummary.unattempted
+                            }</p>
+                            <p><strong>Time Taken:</strong> ${
+                              overallPerformanceSummary.timeTaken
+                            }</p>
+                            <p class="col-span-1 sm:col-span-2">
+                                <strong>Your Current Level:</strong> <span class="font-bold text-blue-600">Level ${
+                                  quizState.userGameStats.level
+                                }</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Strengths and Areas for Improvement -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-green-800 mb-3 flex items-center gap-2">
+                                ${QuizIcons.ThumbsUp.replace(
+                                  /width="24" height="24"/g,
+                                  'width="24" height="24" class="w-6 h-6 text-green-600"'
+                                )} Strengths
+                            </h3>
+                            <ul class="list-disc pl-5 text-gray-700">
+                                ${
+                                  strengths.length > 0
+                                    ? strengths
+                                        .map((s) => `<li>${s}</li>`)
+                                        .join("")
+                                    : "<li>No specific strengths identified for this quiz.</li>"
+                                }
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-red-800 mb-3 flex items-center gap-2">
+                                ${QuizIcons.Warning.replace(
+                                  /width="24" height="24"/g,
+                                  'width="24" height="24" class="w-6 h-6 text-red-600"'
+                                )} Areas for Improvement
+                            </h3>
+                            <ul class="list-disc pl-5 text-gray-700">
+                                ${
+                                  areasForImprovement.length > 0
+                                    ? areasForImprovement
+                                        .map((a) => `<li>${a}</li>`)
+                                        .join("")
+                                    : "<li>Keep up the great work!</li>"
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Earned Badges -->
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg mb-8 shadow-md">
+                        <h3 class="text-xl sm:text-2xl font-bold text-yellow-800 mb-3 flex items-center gap-2">
+                            ${QuizIcons.Badge.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="w-6 h-6 text-yellow-600"'
+                            )} Your Badges
+                        </h3>
+                        <div class="flex flex-wrap gap-4">
+                            ${
+                              quizState.userGameStats.badges.length > 0
+                                ? quizState.userGameStats.badges
+                                    .map((badgeId) => {
+                                      const badge = BADGES[badgeId];
+                                      return badge
+                                        ? `
+                                        <div class="flex items-center gap-2 bg-yellow-100 text-yellow-800 px-3 py-1.5 rounded-full text-sm font-semibold shadow-sm">
+                                            ${badge.icon.replace(
+                                              /width="24" height="24"/g,
+                                              'width="16" height="16"'
+                                            )}
+                                            <span>${badge.name}</span>
+                                        </div>
+                                    `
+                                        : "";
+                                    })
+                                    .join("")
+                                : '<p class="text-gray-700">No badges earned yet. Keep practicing!</p>'
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Question-by-Question Review -->
+                    <div class="mb-8">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            ${QuizIcons.Review.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="w-6 h-6 text-gray-600"'
+                            )} Question Review
+                        </h3>
+                        <div class="space-y-6 custom-scrollbar max-h-96 overflow-y-auto pr-2">
+                            ${feedbackDetails
+                              .map(
+                                (detail, index) => `
+                                <div class="p-4 rounded-lg shadow-sm border ${
+                                  detail.isCorrect
+                                    ? "border-green-300 bg-green-50"
+                                    : "border-red-300 bg-red-50"
+                                }">
+                                    <p class="font-semibold text-gray-900 mb-2">
+                                        Question ${index + 1}: ${
+                                  detail.questionText
+                                }
+                                    </p>
+                                    <p class="text-sm text-gray-700">
+                                        Your Answer: <span class="${
+                                          detail.isCorrect
+                                            ? "correct-answer"
+                                            : "incorrect-answer"
+                                        }">${
+                                  detail.userAnswer || "Unattempted"
+                                }</span>
+                                    </p>
+                                    <p class="text-sm text-gray-700">
+                                        Correct Answer: <span class="correct-answer">${
+                                          detail.correctAnswer
+                                        }</span>
+                                    </p>
+                                    ${
+                                      detail.explanation
+                                        ? `<div class="explanation">
+                                            <strong>Explanation:</strong> ${detail.explanation}
+                                        </div>`
+                                        : ""
+                                    }
+                                </div>
+                            `
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+
+                    <!-- Leaderboard Section -->
+                    <div class="mb-8">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            ${QuizIcons.Leaderboard.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="w-6 h-6 text-gray-600"'
+                            )} Leaderboard for This Test
+                        </h3>
+                        <div class="leaderboard-table-container">
+                            <table class="leaderboard-table">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Player</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Accuracy</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    ${
+                                      quizState.leaderboard.length > 0
+                                        ? quizState.leaderboard
+                                            .map(
+                                              (entry, index) => `
+                                            <tr class="${
+                                              authAppState.userId &&
+                                              entry.userId ===
+                                                authAppState.userId
+                                                ? "current-user-row"
+                                                : ""
+                                            }">
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                    ${
+                                                      index === 0
+                                                        ? `<span class="rank-badge rank-1">${
+                                                            index + 1
+                                                          }</span>`
+                                                        : index === 1
+                                                        ? `<span class="rank-badge rank-2">${
+                                                            index + 1
+                                                          }</span>`
+                                                        : index === 2
+                                                        ? `<span class="rank-badge rank-3">${
+                                                            index + 1
+                                                          }</span>`
+                                                        : `<span class="rank-badge rank-common">${
+                                                            index + 1
+                                                          }</span>` // Applied common badge for ranks 4+
+                                                    }
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${
+                                                  entry.userName ||
+                                                  entry.userEmail.split("@")[0]
+                                                }</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${
+                                                  entry.score
+                                                }</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${(
+                                                  entry.percentage || 0
+                                                ).toFixed(2)}%</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatTime(
+                                                  entry.timeTakenSeconds
+                                                )}</td>
+                                            </tr>
+                                        `
+                                            )
+                                            .join("")
+                                        : `<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">No results yet. Be the first!</td></tr>`
+                                    }
+                                    ${
+                                      quizState.userRank &&
+                                      quizState.userRank > 10 &&
+                                      authAppState.userId
+                                        ? `
+                                        <tr>
+                                            <td colspan="5" class="px-6 py-4 text-center text-gray-600 italic">... Your Rank: ${quizState.userRank} ...</td>
+                                        </tr>
+                                        `
+                                        : ""
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center mt-8">
+                        <a href="quiz-home.html" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95">
+                            ${QuizIcons.Home.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} Back to Categories
+                        </a>
+                    </div>
+                </div>
+            `;
+      }
+
+      /**
+       * Main render function for the application.
+       */
+      function renderApp() {
+        const appDiv = document.getElementById("app");
+        if (!appDiv) return;
+
+        if (quizState.isLoading) {
+          appDiv.innerHTML = getLoadingSpinnerHtml();
+        } else if (quizState.feedback) {
+          renderQuizFeedbackSection(appDiv);
+        } else {
+          renderQuizTest(appDiv);
+        }
+      }
+
+      // Initialization Logic
+      window.onload = async function () {
+        // Initialize Firebase Auth and listen for state changes
+        initFirebaseAuth(updateAuthUI)
+          .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
+            db = firestoreDb;
+            auth = firebaseAuth;
+            console.log("Firebase initialized in quiz-test.html:", {
+              db,
+              auth,
+            });
+
+            // Fetch user game stats after Firebase is initialized and user is authenticated
+            auth.onAuthStateChanged(async (user) => {
+              if (user) {
+                await fetchUserGameStats(user.uid);
+              }
+              // Initialize quiz state only after auth and stats are ready
+              await initializeQuizState();
+            });
+          })
+          .catch((error) => {
+            console.error(
+              "Failed to initialize Firebase in quiz-test.html:",
+              error
+            );
+            showToast(
+              "Failed to initialize Firebase. Some features may not work.",
+              "error"
+            );
+            quizState.isLoading = false;
+            renderApp(); // Render with error message or limited functionality
+          });
+      };
+    </script>
+  </body>
+</html>

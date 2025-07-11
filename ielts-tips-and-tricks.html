@@ -521,19 +521,21 @@
   <body>
     <!-- Hero Section -->
     <nav>
+      <!-- Hamburger menu first for mobile order -->
+      <div class="hamburger-menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
       <div class="logo">
         <img
           src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
           alt="Ielts mahir logo"
         />
       </div>
-      <div class="hamburger-menu">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-      </div>
       <div class="menu-item">
         <a href="home.html">Home</a>
+
         <div class="dropdown">
           <a class="down-arrow" href="javascript:void(0)">
             Free Resources <span class="arrow">&gt;</span>
@@ -544,6 +546,7 @@
             <a href="ielts-writing.html" class="category-link">Writing</a>
             <a href="ielts-reading.html" class="category-link">Reading</a>
             <a href="ielts-listening.html" class="category-link">Listening</a>
+
             <a href="ielts-grammar.html" class="category-link">Grammar</a>
             <a href="ielts-study-plan.html" class="category-link">Study Plan</a>
             <a href="higher-study.html" class="category-link">higher Study</a>
@@ -553,7 +556,9 @@
             >
           </div>
         </div>
+
         <a href="quizzes.html">Quizzes</a>
+
         <div class="dropdown">
           <a class="down-arrow" href="javascript:void(0)">
             Services <span class="arrow">&gt;</span>
@@ -564,8 +569,24 @@
             <a href="#">Speaking Practice</a>
           </div>
         </div>
+
         <a href="tips-tricks.html">IELTS Tips and Tricks</a>
         <a href="contact.html">Contact</a>
+      </div>
+      <!-- Authentication buttons container - now a direct child of nav -->
+      <div id="auth-buttons-container" class="auth-container">
+        <!-- Initial loading state, will be populated by JavaScript -->
+        <div class="auth-loading-pulse">
+          <div class="auth-loading-circle"></div>
+          <div class="auth-loading-content">
+            <div class="auth-loading-bar"></div>
+            <div class="auth-loading-grid">
+              <div class="auth-loading-bar auth-loading-col-2"></div>
+              <div class="auth-loading-bar auth-loading-col-1"></div>
+            </div>
+            <div class="auth-loading-bar"></div>
+          </div>
+        </div>
       </div>
     </nav>
     <div class="content-header">
@@ -1259,6 +1280,8 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
     <script src="ielts-tips-and-tricks.js"></script>
     <script src="dropdown-settings.js"></script>
+    <script type="module" src="./auth.js"></script>
+    <script type="module" src="auth-page-loading.js"></script>
     <!-- <script src="app.js"></script> -->
   </body>
 </html>
