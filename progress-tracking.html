@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mahir - Progress Tracking</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Phosphor Icons for additional UI elements -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Lordicon for animated icons (if used) -->
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <!-- Tabler Icons for additional UI elements -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style id="common-styles">
+      /* Common styles for the entire application, consistent with other pages */
+      body {
+        font-family: "Inter", sans-serif; /* Consistent font family */
+        background: linear-gradient(
+          135deg,
+          #e0f2fe 0%,
+          #f0f9ff 100%
+        ); /* Lighter, softer blue gradient background */
+        color: #334155; /* Default text color */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .container {
+        padding: 0 0.4rem;
+      }
+      /* Custom font classes */
+      .font-anton {
+        font-family: "Anton", sans-serif;
+      }
+      .font-inter {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Custom styles for professional light theme look */
+      .quiz-card {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes zoomIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+
+      .animate-zoom-in {
+        animation: zoomIn 0.4s ease-out forwards;
+      }
+
+      /* Gamification specific styles */
+      .points-display {
+        background: linear-gradient(
+          45deg,
+          #84cc16,
+          #22c55e
+        ); /* Lime to green gradient */
+        color: white;
+        padding: 0.35rem 0.9rem;
+        border-radius: 9999px;
+        font-weight: bold;
+        font-size: 0.875rem; /* text-sm */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Toast notification styles */
+      .toast {
+        position: fixed;
+        top: 1rem; /* Adjust as needed for desired vertical position */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 600;
+        opacity: 0;
+        animation: toast-fade-in 0.3s ease-out forwards,
+          toast-fade-out 0.5s ease-out 2.5s forwards; /* Fade in, then fade out after 2.5s */
+        width: auto; /* Allow content to dictate width initially */
+        min-width: 200px; /* Minimum width */
+        max-width: 90%; /* Max width for responsiveness on small screens */
+      }
+
+      .toast.success {
+        background-color: #dcfce7; /* green-100 */
+        color: #16a34a; /* green-600 */
+        border: 1px solid #22c55e; /* green-500 */
+      }
+
+      .toast.error {
+        background-color: #fee2e2; /* red-100 */
+        color: #dc2626; /* red-600 */
+        border: 1px solid #ef4444; /* red-500 */
+      }
+
+      .toast.warning {
+        background-color: #fffbeb; /* yellow-100 */
+        color: #d97706; /* yellow-600 */
+        border: 1px solid #f59e0b; /* yellow-500 */
+      }
+
+      .toast.info {
+        background-color: #e0f2fe; /* blue-100 */
+        color: #2563eb; /* blue-600 */
+        border: 1px solid #3b82f6; /* blue-500 */
+      }
+
+      @keyframes toast-fade-in {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+
+      @keyframes toast-fade-out {
+        from {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+        to {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+      }
+
+      /* Styles for the header section, consistent with other pages */
+      .site-header {
+        background-color: #ffffff; /* White header background */
+        border-bottom: 1px solid #e0e0e0; /* Lighter border */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+      }
+
+      .site-header .nav-link {
+        font-weight: 500; /* Medium font weight */
+        color: #555555; /* Darker gray for links */
+      }
+
+      .site-header .nav-link:hover {
+        color: #1d4ed8; /* Blue on hover */
+        transform: translateY(-1px);
+      }
+
+      /* Hero section styles (consistent with quiz-category.html) */
+      .hero-section-new {
+        min-height: 300px; /* Slightly reduced height for history page */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center; /* Center text within this section */
+      }
+
+      .hero-section-new .text-shadow-lg {
+        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow for text */
+      }
+
+      /* General text shadows */
+      .text-shadow-lg {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+      }
+
+      .text-shadow-md {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Progress Tracking Specific Styles */
+      .stat-card {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        transition: all 0.3s ease-in-out;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .stat-card .icon-wrapper {
+        background-color: #e0f2fe; /* blue-100 */
+        color: #3b82f6; /* blue-600 */
+        border-radius: 50%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+      }
+
+      .stat-card h3 {
+        font-size: 1.25rem; /* text-xl */
+        font-weight: 600;
+        color: #475569; /* slate-700 */
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-card p {
+        font-size: 1.75rem; /* text-3xl */
+        font-weight: 800;
+        color: #1e40af; /* blue-800 */
+      }
+
+      .chart-container {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        padding: 1.5rem;
+        min-height: 300px; /* Ensure charts have space */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .chart-container h3 {
+        font-size: 1.5rem; /* text-2xl */
+        font-weight: 700;
+        color: #334155; /* slate-800 */
+        margin-bottom: 1rem;
+      }
+
+      .insights-section {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        padding: 2rem;
+      }
+
+      .insights-section h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 1.5rem;
+      }
+
+      .insights-section ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .insights-section ul li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        color: #475569;
+      }
+
+      .insights-section ul li svg {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+      }
+
+      .insights-section .strength-item svg {
+        color: #22c55e; /* green-500 */
+      }
+
+      .insights-section .weakness-item svg {
+        color: #ef4444; /* red-500 */
+      }
+
+      .badges-section {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        padding: 2rem;
+      }
+
+      .badges-section h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 1.5rem;
+      }
+
+      .badge-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.5rem;
+        background-color: #fffbeb; /* yellow-100 */
+        border: 1px solid #f59e0b; /* yellow-500 */
+        border-radius: 0.75rem;
+        padding: 1rem;
+        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+      }
+
+      .badge-item svg {
+        width: 48px;
+        height: 48px;
+        color: #d97706; /* yellow-600 */
+      }
+
+      .badge-item .badge-name {
+        font-weight: 600;
+        color: #d97706;
+      }
+
+      .badge-item .badge-description {
+        font-size: 0.875rem;
+        color: #b45309;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .stat-card {
+          padding: 1rem;
+        }
+        .stat-card h3 {
+          font-size: 1.125rem; /* text-lg */
+        }
+        .stat-card p {
+          font-size: 1.5rem; /* text-2xl */
+        }
+        .chart-container {
+          padding: 1rem;
+        }
+        .chart-container h3 {
+          font-size: 1.25rem; /* text-xl */
+        }
+        .insights-section,
+        .badges-section {
+          padding: 1.5rem;
+        }
+        .insights-section h3,
+        .badges-section h3 {
+          font-size: 1.25rem;
+        }
+        .insights-section ul li {
+          font-size: 0.9rem;
+        }
+        .badge-item {
+          padding: 0.75rem;
+        }
+        .badge-item svg {
+          width: 40px;
+          height: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen py-0 px-0">
+    <!-- Header / Navigation Bar (Consistent with other pages) -->
+    <header
+      id="app-header"
+      class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
+    >
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Replaced text with image logo -->
+        <img
+          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+          alt="IELTS Mahir Logo"
+          class="h-8 md:h-10 w-auto"
+          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+        />
+        <nav class="hidden md:flex gap-6 ml-8 font-inter">
+          <a href="#" class="nav-link transition-all">Inspiration</a>
+          <a href="quiz-home.html" class="nav-link transition-all"
+            >Quiz Categories</a
+          >
+          <a href="#" class="nav-link transition-all">Resources</a>
+          <a href="quiz-history.html" class="nav-link transition-all"
+            >Quiz History</a
+          >
+          <a href="progress-tracking.html" class="nav-link transition-all"
+            >Progress</a
+          >
+        </nav>
+      </div>
+      <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
+        <!-- Authentication status will be handled by auth.js -->
+        <div class="animate-pulse flex space-x-4">
+          <div class="rounded-full bg-gray-300 h-8 w-8 sm:h-10 sm:w-10"></div>
+          <div class="flex-1 space-y-4 py-1 hidden sm:block">
+            <div class="h-2 bg-gray-300 rounded"></div>
+            <div class="space-y-2">
+              <div class="grid grid-cols-3 gap-2">
+                <div class="h-2 bg-gray-300 rounded col-span-2"></div>
+                <div class="h-2 bg-gray-300 rounded col-span-1"></div>
+              </div>
+              <div class="h-2 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="app" class="container mx-auto mt-8 sm:mt-12 lg:mt-16 flex-grow">
+      <!-- Application content will be rendered here by JavaScript -->
+      <div class="flex justify-center items-center h-full">
+        <div
+          class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"
+        ></div>
+      </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div
+      id="toast-container"
+      class="fixed top-4 left-1/2 -translate-x-1/2 z-[100]"
+    ></div>
+
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
+
+    <script type="module">
+      // Import authentication functions and state from the central auth.js file
+      import {
+        initFirebaseAuth,
+        authAppState,
+        showToast,
+        Icons, // General icons
+        signOutUser,
+      } from "./auth.js"; // Adjust path as necessary
+
+      // Import quiz data and common utilities
+      import {
+        quizCategories, // Needed to map categoryId to category name
+        QuizIcons, // Icons specific to quiz UI
+        formatTime, // Utility for formatting time
+        BADGES, // Import BADGES from quiz-test-data.js
+      } from "./quiz-test-data.js";
+
+      // Firebase imports for Firestore
+      import {
+        getFirestore,
+        collection,
+        query,
+        getDocs,
+        doc, // Added for fetching single document (user stats)
+        getDoc, // Added for fetching single document (user stats)
+        setDoc, // Added for initializing user stats if not exists
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      // Firebase instances (will be populated by auth.js)
+      let db;
+      let auth;
+
+      // Progress Tracking state management
+      const progressState = {
+        isLoading: true,
+        quizResults: [],
+        userGameStats: {
+          totalPoints: 0,
+          level: 1,
+          completedTests: [],
+          badges: [],
+        },
+        performanceMetrics: {
+          totalQuizzesCompleted: 0,
+          averageScore: 0,
+          averageAccuracy: 0,
+          categoryPerformance: [], // CHANGED: Initialized as an empty array
+          scoreTrend: [], // [{ date: 'YYYY-MM-DD', score: X }]
+        },
+      };
+
+      /**
+       * Fetches user's game stats from Firestore.
+       * This function is specifically for this page to ensure header display is correct.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchUserGameStats(userId) {
+        if (!db || !userId) return;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userStatsDocRef = doc(
+          db,
+          `artifacts/${appId}/users/${userId}/gameStats/summary`
+        );
+
+        try {
+          const docSnap = await getDoc(userStatsDocRef);
+          if (docSnap.exists()) {
+            progressState.userGameStats = {
+              ...progressState.userGameStats,
+              ...docSnap.data(),
+            };
+            console.log(
+              "Fetched local user game stats:",
+              progressState.userGameStats
+            );
+          } else {
+            console.log("No game stats found for user, initializing defaults.");
+            // If no stats exist, create a new document with initial stats
+            await setDoc(userStatsDocRef, progressState.userGameStats);
+          }
+        } catch (error) {
+          console.error("Error fetching user game stats:", error);
+          showToast("Failed to load your game progress.", "error");
+        }
+      }
+
+      /**
+       * Updates the navigation bar and user ID display based on authentication status.
+       * @param {object|null} user - The Firebase User object or null if signed out.
+       */
+      async function updateAuthUI(user) {
+        const authButtonsContainer = document.getElementById(
+          "auth-buttons-container"
+        );
+        if (authButtonsContainer) {
+          if (user) {
+            // Await fetching user game stats before rendering the header
+            if (db && user.uid) {
+              await fetchUserGameStats(user.uid);
+            }
+
+            // User is signed in: Show profile dropdown and game stats (simplified for history page)
+            authButtonsContainer.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="points-display flex items-center gap-2 px-3 py-1.5 rounded-full shadow-md text-white bg-gradient-to-br from-green-500 to-lime-600">
+                                ${QuizIcons.Trophy.replace(
+                                  /width="24" height="24"/g,
+                                  'width="16" height="16" class="text-white fill-current"'
+                                )}
+                                <span class="text-sm font-semibold">${
+                                  progressState.userGameStats.totalPoints || 0
+                                } Pts</span>
+                                <span class="text-xs text-green-200">|</span>
+                                <span class="text-sm font-semibold">Lvl ${
+                                  progressState.userGameStats.level || 1
+                                }</span>
+                            </div>
+                            <div class="relative">
+                                <button id="profile-icon-btn" class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-600 transition-colors duration-200 ease-in-out transform active:scale-95">
+                                    ${(
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid
+                                    )
+                                      .charAt(0)
+                                      .toUpperCase()}
+                                </button>
+                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden animate-fade-in-up">
+                                    <div class="px-4 py-2 text-sm text-gray-700 font-medium border-b border-gray-100">Hello, ${
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid.substring(0, 8)
+                                    }</div>
+                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">Level: ${
+                                      progressState.userGameStats.level || 1
+                                    }</div>
+                                    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
+                                        ${QuizIcons.Dashboard.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-gray-600"'
+                                        )} Dashboard
+                                    </a>
+                                    <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
+                                        ${QuizIcons.Forum.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-gray-600"'
+                                        )} Forum
+                                    </a>
+                                    <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg transition-colors">
+                                        ${QuizIcons.SignOut.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-red-500"'
+                                        )} Sign Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            const profileIconBtn = document.getElementById("profile-icon-btn");
+            const profileDropdown = document.getElementById("profile-dropdown");
+            const signOutDropdownBtn = document.getElementById(
+              "sign-out-dropdown-btn"
+            );
+
+            profileIconBtn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              profileDropdown.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", (event) => {
+              if (
+                !profileDropdown.contains(event.target) &&
+                !profileIconBtn.contains(event.target)
+              ) {
+                profileDropdown.classList.add("hidden");
+              }
+            });
+
+            signOutDropdownBtn.addEventListener("click", async () => {
+              await signOutUser();
+              // Redirect will happen via onAuthStateChanged in auth.js
+            });
+          } else {
+            // User is signed out: Show sign-in button
+            authButtonsContainer.innerHTML = `
+                        <a href="auth.html" id="sign-in-nav-btn" class="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                            ${QuizIcons.SignIn.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} <span class="hidden sm:inline">Sign In</span>
+                        </a>
+                    `;
+          }
+        }
+      }
+
+      /**
+       * Displays a custom message modal.
+       * @param {string} title - The title of the modal.
+       * @param {string} message - The message content.
+       * @param {boolean} showConfirm - Whether to show a confirm button.
+       * @returns {Promise<boolean>} Resolves true if confirmed, false if cancelled.
+       */
+      function showMessageModal(title, message, showConfirm = false) {
+        return new Promise((resolve) => {
+          const modalContainer = document.getElementById("modal-container");
+          if (!modalContainer) return resolve(false);
+
+          modalContainer.innerHTML = `
+                    <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[1000] animate-fade-in">
+                        <div class="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md animate-zoom-in">
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">${title}</h3>
+                            <p class="text-gray-700 mb-6 text-sm sm:text-base">${message}</p>
+                            <div class="flex justify-end gap-3">
+                                ${
+                                  showConfirm
+                                    ? `<button id="modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium">Cancel</button>`
+                                    : ""
+                                }
+                                <button id="modal-ok-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+          const okButton = document.getElementById("modal-ok-btn");
+          okButton.onclick = () => {
+            hideMessageModal();
+            resolve(true);
+          };
+
+          if (showConfirm) {
+            const cancelButton = document.getElementById("modal-cancel-btn");
+            cancelButton.onclick = () => {
+              hideMessageModal();
+              resolve(false);
+            };
+          }
+        });
+      }
+
+      /**
+       * Hides the custom message modal.
+       */
+      function hideMessageModal() {
+        const modalContainer = document.getElementById("modal-container");
+        if (modalContainer) {
+          modalContainer.innerHTML = "";
+        }
+      }
+
+      /**
+       * Returns HTML for a loading spinner.
+       * @returns {string} HTML string for a loading spinner.
+       */
+      function getLoadingSpinnerHtml() {
+        return `
+                <div class="flex justify-center items-center h-full min-h-[200px]">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+                </div>
+            `;
+      }
+
+      /**
+       * Fetches quiz results for the current user from Firestore.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchQuizResults(userId) {
+        if (!db || !userId) {
+          progressState.isLoading = false;
+          progressState.quizResults = [];
+          showToast("Please sign in to view your progress.", "info");
+          return;
+        }
+
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const quizResultsRef = collection(
+          db,
+          `artifacts/${appId}/users/${userId}/quizResults`
+        );
+
+        try {
+          const q = query(quizResultsRef);
+          const querySnapshot = await getDocs(q);
+          let results = [];
+          querySnapshot.forEach((doc) => {
+            results.push({ id: doc.id, ...doc.data() });
+          });
+          progressState.quizResults = results;
+          console.log("Quiz results fetched:", progressState.quizResults);
+        } catch (error) {
+          console.error("Error fetching quiz results:", error);
+          showToast(
+            "Failed to load quiz results for progress tracking.",
+            "error"
+          );
+        }
+      }
+
+      /**
+       * Processes fetched quiz data to calculate performance metrics.
+       */
+      function processQuizData() {
+        const results = progressState.quizResults;
+        const metrics = progressState.performanceMetrics;
+
+        metrics.totalQuizzesCompleted = results.length;
+
+        if (results.length === 0) {
+          metrics.averageScore = 0;
+          metrics.averageAccuracy = 0;
+          metrics.categoryPerformance = []; // Ensure it's an array for consistency
+          metrics.scoreTrend = [];
+          return;
+        }
+
+        let totalScoreSum = 0;
+        let totalAccuracySum = 0;
+        const categoryPerformanceMap = {}; // { categoryId: { totalScore: X, totalAccuracy: Y, count: Z } }
+        const scoreTrendData = [];
+
+        results.forEach((result) => {
+          totalScoreSum += result.score || 0;
+          totalAccuracySum += result.percentage || 0;
+
+          // Process for category performance
+          if (!categoryPerformanceMap[result.categoryId]) {
+            categoryPerformanceMap[result.categoryId] = {
+              totalScore: 0,
+              totalAccuracy: 0,
+              count: 0,
+            };
+          }
+          categoryPerformanceMap[result.categoryId].totalScore +=
+            result.score || 0;
+          categoryPerformanceMap[result.categoryId].totalAccuracy +=
+            result.percentage || 0;
+          categoryPerformanceMap[result.categoryId].count++;
+
+          // Process for score trend
+          if (result.timestamp) {
+            const date = new Date(result.timestamp.toDate()).toLocaleDateString(
+              "en-CA"
+            ); // YYYY-MM-DD
+            scoreTrendData.push({
+              date: date,
+              score: result.score || 0,
+              accuracy: result.percentage || 0,
+            });
+          }
+        });
+
+        metrics.averageScore = (totalScoreSum / results.length).toFixed(2);
+        metrics.averageAccuracy = (totalAccuracySum / results.length).toFixed(
+          2
+        );
+
+        // Convert category performance map to a more usable array and calculate averages
+        metrics.categoryPerformance = Object.keys(categoryPerformanceMap).map(
+          (categoryId) => {
+            const data = categoryPerformanceMap[categoryId];
+            const categoryName =
+              quizCategories.find((cat) => cat.id === categoryId)?.name ||
+              "Unknown";
+            return {
+              categoryId: categoryId,
+              categoryName: categoryName,
+              averageScore: (data.totalScore / data.count).toFixed(2),
+              averageAccuracy: (data.totalAccuracy / data.count).toFixed(2),
+              count: data.count,
+            };
+          }
+        );
+
+        // Sort score trend data by date
+        scoreTrendData.sort((a, b) => new Date(a.date) - new Date(b.date));
+        metrics.scoreTrend = scoreTrendData;
+
+        console.log("Performance Metrics:", metrics);
+      }
+
+      /**
+       * Renders the charts using Chart.js.
+       */
+      function renderCharts() {
+        const {
+          categoryPerformance,
+          scoreTrend,
+        } = progressState.performanceMetrics;
+
+        // Common Chart.js defaults for consistent styling
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = "#475569"; // slate-600
+
+        // Category Performance Bar Chart
+        const categoryCtx = document.getElementById("categoryPerformanceChart");
+        if (categoryCtx) {
+          const categoryLabels = categoryPerformance.map(
+            (cp) => cp.categoryName
+          );
+          const categoryData = categoryPerformance.map((cp) =>
+            parseFloat(cp.averageAccuracy)
+          );
+
+          new Chart(categoryCtx, {
+            type: "bar",
+            data: {
+              labels: categoryLabels,
+              datasets: [
+                {
+                  label: "Average Accuracy (%)",
+                  data: categoryData,
+                  backgroundColor: "rgba(59, 130, 246, 0.8)", // blue-500 with more opacity
+                  borderColor: "rgba(59, 130, 246, 1)",
+                  borderWidth: 1,
+                  borderRadius: 8, // Rounded bars
+                  hoverBackgroundColor: "rgba(37, 99, 235, 0.9)", // blue-600 on hover
+                  hoverBorderColor: "rgba(37, 99, 235, 1)",
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false,
+                },
+                title: {
+                  display: true,
+                  text: "Average Accuracy by Category",
+                  font: {
+                    size: 18, // Slightly larger title
+                    weight: "bold",
+                  },
+                  color: "#334155", // dark slate
+                },
+                tooltip: {
+                  backgroundColor: "#334155", // Darker tooltip background
+                  titleColor: "#fff",
+                  bodyColor: "#fff",
+                  borderColor: "#64748b", // slate-500
+                  borderWidth: 1,
+                  cornerRadius: 8,
+                  displayColors: false, // Don't show color box in tooltip
+                  padding: 12,
+                  callbacks: {
+                    label: function (context) {
+                      return `${context.dataset.label}: ${context.parsed.y}%`;
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100,
+                  title: {
+                    display: true,
+                    text: "Accuracy (%)",
+                    font: {
+                      weight: "bold",
+                    },
+                    color: "#475569",
+                  },
+                  grid: {
+                    color: "#e2e8f0", // Lighter grid lines
+                    drawBorder: false, // Remove axis line
+                  },
+                  ticks: {
+                    color: "#475569",
+                  },
+                },
+                x: {
+                  grid: {
+                    display: false, // No vertical grid lines
+                  },
+                  ticks: {
+                    color: "#475569",
+                  },
+                },
+              },
+            },
+          });
+        }
+
+        // Score Trend Line Chart
+        const trendCtx = document.getElementById("scoreTrendChart");
+        if (trendCtx) {
+          const trendLabels = scoreTrend.map((st) => st.date);
+          const trendScores = scoreTrend.map((st) => st.score);
+          const trendAccuracy = scoreTrend.map((st) => st.accuracy);
+
+          new Chart(trendCtx, {
+            type: "line",
+            data: {
+              labels: trendLabels,
+              datasets: [
+                {
+                  label: "Score Trend",
+                  data: trendScores,
+                  borderColor: "rgb(75, 192, 192)", // Teal
+                  backgroundColor: "rgba(75, 192, 192, 0.4)", // Lighter fill
+                  tension: 0.4, // More pronounced curve
+                  fill: true,
+                  pointRadius: 5, // Larger points
+                  pointBackgroundColor: "rgb(75, 192, 192)",
+                  pointBorderColor: "#fff",
+                  pointBorderWidth: 2,
+                  pointHoverRadius: 7, // Larger hover points
+                  pointHoverBackgroundColor: "#fff",
+                  pointHoverBorderColor: "rgb(75, 192, 192)",
+                },
+                {
+                  label: "Accuracy Trend (%)",
+                  data: trendAccuracy,
+                  borderColor: "rgb(153, 102, 255)", // Purple
+                  backgroundColor: "rgba(153, 102, 255, 0.4)", // Lighter fill
+                  tension: 0.4,
+                  fill: true,
+                  pointRadius: 5,
+                  pointBackgroundColor: "rgb(153, 102, 255)",
+                  pointBorderColor: "#fff",
+                  pointBorderWidth: 2,
+                  pointHoverRadius: 7,
+                  pointHoverBackgroundColor: "#fff",
+                  pointHoverBorderColor: "rgb(153, 102, 255)",
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: "top",
+                  labels: {
+                    font: {
+                      size: 14,
+                      weight: "bold",
+                    },
+                    color: "#334155",
+                  },
+                },
+                title: {
+                  display: true,
+                  text: "Quiz Score & Accuracy Trend Over Time",
+                  font: {
+                    size: 18,
+                    weight: "bold",
+                  },
+                  color: "#334155",
+                },
+                tooltip: {
+                  backgroundColor: "#334155", // Darker tooltip background
+                  titleColor: "#fff",
+                  bodyColor: "#fff",
+                  borderColor: "#64748b", // slate-500
+                  borderWidth: 1,
+                  cornerRadius: 8,
+                  padding: 12,
+                  callbacks: {
+                    label: function (context) {
+                      let label = context.dataset.label || "";
+                      if (label) {
+                        label += ": ";
+                      }
+                      if (context.dataset.label === "Accuracy Trend (%)") {
+                        label += `${context.parsed.y}%`;
+                      } else {
+                        label += context.parsed.y;
+                      }
+                      return label;
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: "Value",
+                    font: {
+                      weight: "bold",
+                    },
+                    color: "#475569",
+                  },
+                  grid: {
+                    color: "#e2e8f0", // Lighter grid lines
+                    drawBorder: false,
+                  },
+                  ticks: {
+                    color: "#475569",
+                  },
+                },
+                x: {
+                  grid: {
+                    display: false, // No vertical grid lines
+                  },
+                  ticks: {
+                    color: "#475569",
+                  },
+                },
+              },
+            },
+          });
+        }
+      }
+
+      /**
+       * Determines strengths and areas for improvement based on category performance.
+       * @returns {object} An object containing arrays for strengths and weaknesses.
+       */
+      function getInsights() {
+        const insights = {
+          strengths: [],
+          weaknesses: [],
+        };
+
+        const categoryThreshold = 75; // Example: above 75% is a strength
+        const overallAverageAccuracy = parseFloat(
+          progressState.performanceMetrics.averageAccuracy
+        );
+
+        if (overallAverageAccuracy >= 85) {
+          insights.strengths.push("Outstanding overall accuracy!");
+        } else if (overallAverageAccuracy >= 70) {
+          insights.strengths.push("Solid overall performance.");
+        } else {
+          insights.weaknesses.push(
+            "Consider focusing on improving overall accuracy."
+          );
+        }
+
+        // Ensure categoryPerformance is an array before iterating
+        if (
+          Array.isArray(progressState.performanceMetrics.categoryPerformance)
+        ) {
+          progressState.performanceMetrics.categoryPerformance.forEach(
+            (cat) => {
+              const accuracy = parseFloat(cat.averageAccuracy);
+              if (accuracy >= categoryThreshold) {
+                insights.strengths.push(
+                  `Strong performance in ${cat.categoryName}.`
+                );
+              } else if (accuracy < categoryThreshold && cat.count > 0) {
+                insights.weaknesses.push(
+                  `Consider reviewing ${cat.categoryName} concepts.`
+                );
+              }
+            }
+          );
+        }
+
+        if (progressState.performanceMetrics.totalQuizzesCompleted === 0) {
+          insights.weaknesses.push(
+            "No quizzes completed yet. Start practicing to see your progress!"
+          );
+        } else if (progressState.performanceMetrics.totalQuizzesCompleted < 5) {
+          insights.weaknesses.push(
+            "Keep taking more quizzes to get a clearer picture of your progress."
+          );
+        }
+
+        return insights;
+      }
+
+      /**
+       * Main render function for the application.
+       */
+      function renderApp() {
+        const appDiv = document.getElementById("app");
+        if (!appDiv) return;
+
+        if (progressState.isLoading) {
+          appDiv.innerHTML = getLoadingSpinnerHtml();
+          return;
+        }
+
+        const {
+          totalQuizzesCompleted,
+          averageScore,
+          averageAccuracy,
+        } = progressState.performanceMetrics;
+        const { totalPoints, level, badges } = progressState.userGameStats;
+        const insights = getInsights();
+
+        appDiv.innerHTML = `
+                <!-- Hero Section -->
+                <section class="hero-section-new max-w-6xl mx-auto my-2 relative overflow-hidden rounded-3xl">
+                    <!-- Background image and overlay -->
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/5428830/pexels-photo-5428830.jpeg');">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-600/70 to-cyan-600/70"></div>
+                    </div>
+
+                    <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                        <p class="font-inter text-xl sm:text-2xl font-medium mb-2 text-shadow-lg">Your Learning Journey</p>
+                        <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                            PROGRESS TRACKER
+                        </h1>
+                        <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                            Visualize your growth and identify areas for mastery.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="mt-12 mb-8 max-w-6xl mx-auto px-4">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Your Performance Overview</h2>
+
+                    <!-- Overall Statistics Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                        <div class="stat-card animate-fade-in-up" style="animation-delay: 0.1s;">
+                            <div class="icon-wrapper">
+                                ${QuizIcons.Quiz.replace(
+                                  /width="24" height="24"/g,
+                                  'width="32" height="32"'
+                                )}
+                            </div>
+                            <h3>Quizzes Completed</h3>
+                            <p>${totalQuizzesCompleted}</p>
+                        </div>
+                        <div class="stat-card animate-fade-in-up" style="animation-delay: 0.2s;">
+                            <div class="icon-wrapper">
+                                ${QuizIcons.Score.replace(
+                                  /width="24" height="24"/g,
+                                  'width="32" height="32"'
+                                )}
+                            </div>
+                            <h3>Average Score</h3>
+                            <p>${averageScore}</p>
+                        </div>
+                        <div class="stat-card animate-fade-in-up" style="animation-delay: 0.3s;">
+                            <div class="icon-wrapper">
+                                ${QuizIcons.Accuracy.replace(
+                                  /width="24" height="24"/g,
+                                  'width="32" height="32"'
+                                )}
+                            </div>
+                            <h3>Average Accuracy</h3>
+                            <p>${averageAccuracy}%</p>
+                        </div>
+                        <div class="stat-card animate-fade-in-up" style="animation-delay: 0.4s;">
+                            <div class="icon-wrapper">
+                                ${QuizIcons.Trophy.replace(
+                                  /width="24" height="24"/g,
+                                  'width="32" height="32"'
+                                )}
+                            </div>
+                            <h3>Total Points</h3>
+                            <p>${totalPoints}</p>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                        <div class="chart-container animate-fade-in-up" style="animation-delay: 0.5s;">
+                            <canvas id="categoryPerformanceChart"></canvas>
+                            ${
+                              totalQuizzesCompleted === 0
+                                ? '<p class="text-gray-500 mt-4">No data to display. Complete some quizzes!</p>'
+                                : ""
+                            }
+                        </div>
+                        <div class="chart-container animate-fade-in-up" style="animation-delay: 0.6s;">
+                            <canvas id="scoreTrendChart"></canvas>
+                            ${
+                              totalQuizzesCompleted === 0
+                                ? '<p class="text-gray-500 mt-4">No data to display. Complete some quizzes!</p>'
+                                : ""
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Strengths and Weaknesses Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                        <div class="insights-section animate-fade-in-up" style="animation-delay: 0.7s;">
+                            <h3 class="flex items-center gap-2">
+                                ${QuizIcons.ThumbsUp.replace(
+                                  /width="24" height="24"/g,
+                                  'width="24" height="24" class="text-green-600"'
+                                )} Your Strengths
+                            </h3>
+                            <ul>
+                                ${
+                                  insights.strengths.length > 0
+                                    ? insights.strengths
+                                        .map(
+                                          (s) =>
+                                            `<li class="strength-item">${QuizIcons.CheckCircle.replace(
+                                              /width="24" height="24"/g,
+                                              'width="20" height="20"'
+                                            )} <span>${s}</span></li>`
+                                        )
+                                        .join("")
+                                    : "<li>No specific strengths identified yet. Keep practicing!</li>"
+                                }
+                            </ul>
+                        </div>
+                        <div class="insights-section animate-fade-in-up" style="animation-delay: 0.8s;">
+                            <h3 class="flex items-center gap-2">
+                                ${QuizIcons.Warning.replace(
+                                  /width="24" height="24"/g,
+                                  'width="24" height="24" class="text-red-600"'
+                                )} Areas for Improvement
+                            </h3>
+                            <ul>
+                                ${
+                                  insights.weaknesses.length > 0
+                                    ? insights.weaknesses
+                                        .map(
+                                          (w) =>
+                                            `<li class="weakness-item">${QuizIcons.XCircle.replace(
+                                              /width="24" height="24"/g,
+                                              'width="20" height="20"'
+                                            )} <span>${w}</span></li>`
+                                        )
+                                        .join("")
+                                    : "<li>Great job! No major areas for improvement detected.</li>"
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Earned Badges Section -->
+                    <div class="badges-section animate-fade-in-up" style="animation-delay: 0.9s;">
+                        <h3 class="flex items-center gap-2">
+                            ${QuizIcons.Badge.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="text-yellow-600"'
+                            )} Your Earned Badges
+                        </h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6">
+                            ${
+                              badges.length > 0
+                                ? badges
+                                    .map((badgeId) => {
+                                      const badgeInfo = BADGES[badgeId];
+                                      return badgeInfo
+                                        ? `
+                                        <div class="badge-item">
+                                            ${badgeInfo.icon.replace(
+                                              /width="24" height="24"/g,
+                                              'width="48" height="48"'
+                                            )}
+                                            <span class="badge-name">${
+                                              badgeInfo.name
+                                            }</span>
+                                            <span class="badge-description">${
+                                              badgeInfo.description
+                                            }</span>
+                                        </div>
+                                    `
+                                        : "";
+                                    })
+                                    .join("")
+                                : '<p class="text-gray-700 col-span-full text-center">No badges earned yet. Complete quizzes to unlock them!</p>'
+                            }
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center mt-12">
+                        <a href="quiz-home.html" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95">
+                            ${QuizIcons.Home.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} Back to Categories
+                        </a>
+                    </div>
+                </section>
+            `;
+
+        if (totalQuizzesCompleted > 0) {
+          renderCharts(); // Only render charts if there's data
+        }
+      }
+
+      // Initialization Logic
+      window.onload = async function () {
+        progressState.isLoading = true;
+        renderApp(); // Show loading spinner immediately
+
+        // Initialize Firebase Auth and listen for state changes
+        initFirebaseAuth(updateAuthUI)
+          .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
+            db = firestoreDb;
+            auth = firebaseAuth;
+            console.log("Firebase initialized in progress-tracking.html:", {
+              db,
+              auth,
+            });
+
+            // Fetch user game stats and quiz results after Firebase is initialized and user is authenticated
+            auth.onAuthStateChanged(async (user) => {
+              if (user) {
+                await fetchUserGameStats(user.uid); // Fetch user game stats for header and badges
+                await fetchQuizResults(user.uid); // Fetch quiz results for charts and metrics
+                processQuizData(); // Process data after fetching both
+              } else {
+                progressState.quizResults = [];
+                progressState.userGameStats = {
+                  totalPoints: 0,
+                  level: 1,
+                  completedTests: [],
+                  badges: [],
+                };
+                processQuizData(); // Process with empty data
+                showToast(
+                  "Please sign in to view your personalized progress.",
+                  "info"
+                );
+              }
+              progressState.isLoading = false;
+              renderApp(); // Render the app after all data is fetched and processed
+            });
+          })
+          .catch((error) => {
+            console.error(
+              "Failed to initialize Firebase in progress-tracking.html:",
+              error
+            );
+            showToast(
+              "Failed to initialize Firebase. Some features may not work.",
+              "error"
+            );
+            progressState.isLoading = false;
+            renderApp(); // Render with error message or limited functionality
+          });
+      };
+    </script>
+  </body>
+</html>

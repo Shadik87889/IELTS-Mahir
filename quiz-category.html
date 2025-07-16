@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IELTS Mahir - Quiz Category</title>
     <!-- Tailwind CSS CDN -->
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
     <!-- Font Awesome for icons -->
     <link
       rel="stylesheet"
@@ -21,62 +29,66 @@
       /* Common styles for the entire application */
       body {
         font-family: "Inter", sans-serif;
-        background: linear-gradient(
-          135deg,
-          #f0f9ff 0%,
-          #e0f2fe 100%
-        ); /* Light blue gradient background */
-        color: #334155; /* Default text color */
+        background-color: #f0f2f5; /* Lighter background color, matching quiz-home */
+        color: #333333; /* Default text color for light theme */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
       }
 
-      /* Custom styles for professional look */
-      .test-card {
-        background: linear-gradient(
-          145deg,
-          #ffffff 0%,
-          #f8faff 100%
-        ); /* Subtle gradient for cards */
-        border: 1px solid #e2e8f0; /* Light border */
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05),
-          0 2px 5px rgba(0, 0, 0, 0.03); /* Soft shadow */
+      /* Custom font classes */
+      .font-anton {
+        font-family: "Anton", sans-serif;
+      }
+      .font-inter {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Custom styles for professional light theme look */
+      .category-card {
+        background: #ffffff; /* White background for cards */
+        border: 1px solid #e0e0e0; /* Lighter border */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
         transition: all 0.3s ease-in-out;
       }
 
-      .test-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1),
-          0 6px 12px rgba(0, 0, 0, 0.06); /* Deeper shadow on hover */
+      .category-card:hover {
+        transform: translateY(-8px); /* More pronounced lift on hover */
+        box-shadow: 0 16px 35px rgba(0, 0, 0, 0.15),
+          0 8px 18px rgba(0, 0, 0, 0.1); /* Deeper shadow on hover */
+        border-color: #a0c3f8; /* Subtle blue border on hover */
       }
 
-      /* Styles for the new thumbnail area */
-      .test-card-thumbnail-area {
+      /* Styles for the new thumbnail area (renamed from test-card-thumbnail-area) */
+      .category-card-thumbnail-area {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%; /* Full width of the card */
-        height: 120px; /* Fixed height for the thumbnail area */
-        border-top-left-radius: 1rem; /* rounded-xl */
-        border-top-right-radius: 1rem; /* rounded-xl */
-        font-size: 3rem; /* Larger icon size */
-        color: white;
-        box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.15); /* Inner shadow for depth */
+        height: 160px; /* Fixed height for the thumbnail area (h-40), matching quiz-home */
+        border-top-left-radius: 1.5rem; /* rounded-3xl */
+        border-top-right-radius: 1.5rem; /* rounded-3xl */
+        font-size: 4rem; /* Larger icon size */
+        color: white; /* Icon color */
+        box-shadow: inset 0 -8px 15px rgba(0, 0, 0, 0.25); /* More pronounced inner shadow for depth */
         position: relative; /* For potential overlay effects */
         overflow: hidden; /* Ensure content doesn't spill */
       }
 
-      .test-card-thumbnail-area::before {
+      .category-card-thumbnail-area::before {
         content: "";
         position: absolute;
         inset: 0;
         background: linear-gradient(
           to bottom,
-          rgba(0, 0, 0, 0.05) 0%,
-          rgba(0, 0, 0, 0.2) 100%
-        ); /* Subtle overlay for depth */
+          rgba(0, 0, 0, 0.15) 0%,
+          rgba(0, 0, 0, 0.3) 100%
+        ); /* Stronger overlay for depth */
         z-index: 1;
       }
 
-      .test-card-thumbnail-area i {
+      .category-card-thumbnail-area i {
         position: relative; /* To be above the ::before overlay */
         z-index: 2;
       }
@@ -110,31 +122,12 @@
         animation: fadeInUp 0.6s ease-out forwards;
       }
 
-      /* Gamification specific styles */
-      .level-badge {
-        background: linear-gradient(
-          45deg,
-          #f97316,
-          #fbbf24
-        ); /* Orange to yellow gradient */
-        color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 9999px; /* Full rounded */
-        font-weight: bold;
-        font-size: 0.75rem; /* text-xs */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        position: absolute;
-        top: 0.75rem; /* Adjusted for test cards */
-        right: 0.75rem; /* Adjusted for test cards */
-        z-index: 3;
-      }
-
       .points-display {
         background: linear-gradient(
           45deg,
           #84cc16,
           #22c55e
-        ); /* Lime to green gradient */
+        ); /* Lime to green gradient (can remain) */
         color: white;
         padding: 0.35rem 0.9rem;
         border-radius: 9999px;
@@ -145,44 +138,123 @@
         align-items: center;
         gap: 0.5rem;
       }
+
+      /* Styles for the header section, matching quiz-home */
+      .site-header {
+        background-color: #ffffff; /* White header background */
+        border-bottom: 1px solid #e0e0e0; /* Lighter border */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+      }
+
+      .site-header .nav-link {
+        font-weight: 500; /* Medium font weight */
+        color: #555555; /* Darker gray for links */
+      }
+
+      .site-header .nav-link:hover {
+        color: #1d4ed8; /* Blue on hover */
+        transform: translateY(-1px);
+      }
+
+      /* User ID display styling, matching quiz-home */
+      .user-id-display {
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.7
+        ); /* Lighter, more transparent background */
+        border: 1px solid #d1d5db; /* Lighter border */
+        color: #4b5563; /* Darker text */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+        backdrop-filter: blur(3px); /* Added blur for a modern look */
+      }
+
+      /* NEW: Styles for the locked test overlay */
+      @keyframes pulse-slow {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 0.8;
+        }
+      }
+
+      .animate-pulse-slow {
+        animation: pulse-slow 3s infinite ease-in-out;
+      }
+
+      /* Styles for the new hero section (copied from quiz-home.html) */
+      .hero-section-new {
+        min-height: 400px; /* Adjust height as needed */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: left; /* Align text to left within the section */
+      }
+
+      .hero-section-new .text-shadow-lg {
+        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow for text */
+      }
+
+      /* General text shadows */
+      .text-shadow-lg {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+      }
+
+      .text-shadow-md {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      }
+      @media (max-width: 768px) {
+        .footer {
+          margin-top: 6rem;
+          overflow-x: hidden;
+        }
+      }
     </style>
   </head>
-  <body class="min-h-screen py-6 px-2 sm:py-8 sm:px-4 lg:py-12 lg:px-8">
-    <!-- Header / Navigation Bar -->
+  <body class="py-0 px-0">
+    <!-- Header / Navigation Bar (Now identical to quiz-home.html) -->
     <header
       id="app-header"
-      class="py-2 px-3 md:py-4 md:px-8 flex items-center justify-between rounded-b-xl transition-colors duration-300 sticky top-0 z-50 shadow-lg"
+      class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
     >
       <div class="flex items-center gap-2 sm:gap-4">
-        <a
-          href="quiz-home.html"
-          class="text-blue-600 hover:text-blue-800 transition-colors"
-        >
-          <i class="fas fa-arrow-left text-xl md:text-2xl"></i>
-        </a>
-        <h1 class="font-bold text-xl md:text-3xl text-blue-600">
-          IELTS Mastery Hub
-        </h1>
+        <!-- Replaced text with image logo -->
+        <img
+          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+          alt="IELTS Mahir Logo"
+          class="h-8 md:h-10 w-auto"
+          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+        />
+        <nav class="hidden md:flex gap-6 ml-8 font-inter">
+          <a href="#" class="nav-link transition-all">Inspiration</a>
+          <a href="#" class="nav-link transition-all">Quiz Categories</a>
+          <a href="#" class="nav-link transition-all">Resources</a>
+        </nav>
       </div>
       <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
         <!-- Authentication status will be handled by auth.js -->
         <div class="animate-pulse flex space-x-4">
-          <div class="rounded-full bg-gray-200 h-8 w-8 sm:h-10 sm:w-10"></div>
+          <div class="rounded-full bg-gray-300 h-8 w-8 sm:h-10 sm:w-10"></div>
           <div class="flex-1 space-y-4 py-1 hidden sm:block">
-            <div class="h-2 bg-gray-200 rounded"></div>
+            <div class="h-2 bg-gray-300 rounded"></div>
             <div class="space-y-2">
               <div class="grid grid-cols-3 gap-2">
-                <div class="h-2 bg-gray-200 rounded col-span-2"></div>
-                <div class="h-2 bg-gray-200 rounded col-span-1"></div>
+                <div class="h-2 bg-gray-300 rounded col-span-2"></div>
+                <div class="h-2 bg-gray-300 rounded col-span-1"></div>
               </div>
-              <div class="h-2 bg-gray-200 rounded"></div>
+              <div class="h-2 bg-gray-300 rounded"></div>
             </div>
           </div>
         </div>
       </div>
     </header>
 
-    <div id="app" class="container mx-auto mt-8 sm:mt-12 lg:mt-16">
+    <div id="app" class="container mx-auto px-4 sm:px-6 lg:px-8 flex-grow">
       <!-- Application content will be rendered here by JavaScript -->
     </div>
 
@@ -191,7 +263,111 @@
 
     <!-- Modal Container -->
     <div id="modal-container"></div>
+    <!-- IELTS Speaking Test Simulator END -->
+    <footer class="footer">
+      <div class="footer-top">
+        <div class="contact-banner">
+          <div class="contact-content">
+            <h2 class="anton">Achieve Your Desired IELTS Band</h2>
+            <p class="montserrat">
+              Certified mentors guiding you every step of the way
+            </p>
+            <div class="contact-buttons">
+              <button class="btn primary montserrat">
+                Explore IELTS Modules
+              </button>
+              <a href="#" class="btn link montserrat"
+                >Latest Success Stories →</a
+              >
+            </div>
+          </div>
+          <div class="contact-image">
+            <div class="bg-letter">
+              <span class="im-i">I</span>
+              <span class="im-m">M</span>
+            </div>
+            <img src="assets/LELTS-Mahir.png" alt="IELTS Student Image" />
+          </div>
+        </div>
+      </div>
 
+      <div class="footer-links">
+        <div class="footer-column">
+          <h4 class="anton">Quick Access</h4>
+          <ul class="montserrat">
+            <li><a href="#">About IELTS Mahir</a></li>
+            <li><a href="#">Contact Support</a></li>
+            <li><a href="#">IELTS FAQs</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Privacy Guidelines</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4 class="anton">Learning Hub</h4>
+          <ul class="montserrat">
+            <li><a href="#">IELTS Blog</a></li>
+            <li><a href="#">Student Reviews</a></li>
+            <li><a href="#">Success Partners</a></li>
+            <li><a href="#">Live Support</a></li>
+            <li><a href="#">Help & Guidance</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column subscribe">
+          <h4 class="anton">Get Weekly IELTS Tips</h4>
+          <p class="montserrat">
+            Subscribe and stay ahead with expert strategies
+          </p>
+          <div class="subscribe-form">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              class="montserrat"
+            />
+            <button class="montserrat">Subscribe</button>
+          </div>
+          <small class="montserrat"
+            >By subscribing, you agree to our
+            <a href="#">Privacy Policy</a></small
+          >
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="branding anton">IELTS MAHIR.</div>
+        <div class="footer-policy-links montserrat">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Cookies Notice</a>
+        </div>
+        <div class="footer-socials">
+          <a href="#"
+            ><img
+              src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png"
+              alt="Facebook"
+          /></a>
+          <a href="#"
+            ><img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png"
+              alt="Instagram"
+          /></a>
+          <a href="#"
+            ><img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png"
+              alt="LinkedIn"
+          /></a>
+          <a href="#"
+            ><img
+              src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png"
+              alt="YouTube"
+          /></a>
+        </div>
+        <p class="montserrat copyright">
+          © 2024 IELTS Mahir. All rights reserved.
+        </p>
+      </div>
+    </footer>
     <script type="module">
       // Import authentication functions and state from the central auth.js file
       import {
@@ -206,7 +382,6 @@
       import {
         quizCategories,
         allQuizTests,
-        commonStyles,
         QuizIcons, // RE-ADDED: Import QuizIcons for category thumbnails
         formatTime,
       } from "./quiz-test-data.js";
@@ -222,9 +397,6 @@
         where,
         getDocs,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-      // Inject common styles from quiz-test-data.js
-      document.getElementById("common-styles").innerHTML += commonStyles;
 
       // Firebase instances (will be populated by auth.js)
       let db;
@@ -299,12 +471,16 @@
                                   /width="24" height="24"/g,
                                   'width="18" height="18" class="text-yellow-300"'
                                 )}
-                                <span id="header-points-display">${
+                                <span class="text-sm font-semibold">${
                                   userGameStats.totalPoints
-                                } Points</span>
+                                } Pts</span>
+                                <span class="text-xs text-green-200">|</span>
+                                <span class="text-sm font-semibold">Lvl ${
+                                  userGameStats.level
+                                }</span>
                             </div>
                             <div class="relative">
-                                <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-600 transition-colors">
+                                <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-700 transition-colors">
                                     ${(
                                       authAppState.userProfile?.name ||
                                       user.email ||
@@ -313,23 +489,32 @@
                                       .charAt(0)
                                       .toUpperCase()}
                                 </button>
-                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden">
-                                    <div class="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">Hello, ${
+                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden text-gray-800">
+                                    <div class="px-4 py-2 text-sm border-b border-gray-200">Hello, ${
                                       authAppState.userProfile?.name ||
                                       user.email ||
                                       user.uid.substring(0, 8)
                                     }</div>
-                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">Level: ${
+                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-200">Level: ${
                                       userGameStats.level
                                     }</div>
-                                    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100">
-                                        ${Icons.Dashboard} Dashboard
+                                    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                        ${Icons.Dashboard.replace(
+                                          /stroke="currentColor"/g,
+                                          'stroke="gray"'
+                                        )} Dashboard
                                     </a>
-                                    <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100">
-                                        ${Icons.Forum} Forum
+                                    <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                        ${Icons.Forum.replace(
+                                          /stroke="currentColor"/g,
+                                          'stroke="gray"'
+                                        )} Forum
                                     </a>
-                                    <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg">
-                                        ${Icons.SignOut} Sign Out
+                                    <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-b-lg">
+                                        ${Icons.SignOut.replace(
+                                          /stroke="currentColor"/g,
+                                          'stroke="red"'
+                                        )} Sign Out
                                     </button>
                                 </div>
                             </div>
@@ -371,8 +556,8 @@
           } else {
             // User is signed out: Show sign-in button
             authButtonsContainer.innerHTML = `
-                        <a href="auth.html" id="sign-in-nav-btn" class="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-xs sm:text-sm font-semibold transform active:scale-95">
-                            ${Icons.SignIn} <span class="hidden sm:inline">Sign In</span>
+                        <a href="auth.html" id="sign-in-nav-btn" class="px-4 py-2 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                            Join beta user
                         </a>
                     `;
           }
@@ -417,27 +602,35 @@
         );
 
         appDiv.innerHTML = `
-                <header class="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-blue-900 drop-shadow-lg leading-tight">
-                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-700">
-                            ${category.name} Quizzes
-                        </span>
-                    </h1>
-                    <p class="text-lg sm:text-xl lg:text-2xl text-gray-700 mt-2 sm:mt-4 max-w-2xl mx-auto">
-                        ${category.description}
-                    </p>
-                    ${
-                      authAppState.isAuthReady && authAppState.userId
-                        ? `
-                    <p class="mt-4 sm:mt-6 text-sm sm:text-lg text-gray-600 font-mono bg-white bg-opacity-70 backdrop-blur-sm inline-block px-3 py-1 sm:px-4 sm:py-2 rounded-xl shadow-md border border-gray-200">
-                        User ID: <span class="font-semibold text-gray-800">${authAppState.userId}</span>
-                    </p>
-                    `
-                        : ""
-                    }
-                </header>
+                <!-- Hero Section (Updated to match the provided image from quiz-home.html) -->
+                <section class="hero-section-new max-w-6xl mx-auto my-8 relative overflow-hidden rounded-3xl">
+                    <!-- Background image and overlay -->
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/5428830/pexels-photo-5428830.jpeg');">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-600/70 to-yellow-600/70"></div>
+                    </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-6xl mx-auto">
+                    <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                        <!-- Centered content for category header -->
+                        <p class="font-inter text-xl sm:text-2xl font-medium mb-2 text-shadow-lg">Category Quizzes</p>
+                        <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                            ${category.name}
+                        </h1>
+                        <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                            ${category.description}
+                        </p>
+                        ${
+                          authAppState.isAuthReady && authAppState.userId
+                            ? `
+                        <p class="mt-8 text-sm sm:text-lg font-mono user-id-display inline-block px-3 py-1 sm:px-4 sm:py-2 rounded-xl animate-fade-in">
+                            User ID: <span class="font-semibold text-gray-800">${authAppState.userId}</span>
+                        </p>
+                        `
+                            : ""
+                        }
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-6xl mx-auto py-8">
                     ${
                       testsInThisCategory.length > 0
                         ? testsInThisCategory
@@ -446,10 +639,19 @@
                               const isLocked = userGameStats.level < testLevel;
                               const lockOverlay = isLocked
                                 ? `
-                                    <div class="absolute inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center rounded-xl z-40">
-                                        <span class="text-white text-2xl font-bold flex items-center">
-                                            <i class="fas fa-lock mr-2"></i> Level ${testLevel} Required
+                                    <div class="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center rounded-3xl z-40 p-4">
+                                        <div class="relative mb-4">
+                                            <i class="fas fa-lock text-6xl text-yellow-400 drop-shadow-lg animate-pulse-slow"></i>
+                                        </div>
+                                        <span class="text-white text-3xl font-extrabold text-shadow-lg mb-2 font-anton">
+                                            Test Locked!
                                         </span>
+                                        <span class="text-blue-200 text-xl font-semibold text-shadow-md font-inter">
+                                            Unlock at Level ${testLevel}
+                                        </span>
+                                        <p class="text-gray-300 text-sm mt-2 text-center max-w-xs font-inter">
+                                            Complete more quizzes to gain points and level up!
+                                        </p>
                                     </div>
                                 `
                                 : "";
@@ -460,13 +662,13 @@
                                     ? "#"
                                     : `quiz-test.html?category=${currentCategoryId}&test=${test.id}`
                                 }"
-                                   class="test-card relative block overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in p-0 flex flex-col items-center text-center ${
+                                   class="category-card relative block overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in p-0 flex flex-col items-center text-center ${
                                      isLocked
                                        ? "cursor-not-allowed opacity-70"
                                        : ""
                                    }">
                                     ${lockOverlay}
-                                    <div class="test-card-thumbnail-area ${
+                                    <div class="category-card-thumbnail-area ${
                                       category.color || "bg-blue-600"
                                     }">
                                         <!-- ICON FIX: Use category.icon directly -->
@@ -474,16 +676,15 @@
                                           category.icon ||
                                           '<i class="fas fa-question-circle"></i>'
                                         }
-                                        <!-- REMOVED: <span class="level-badge">Level ${testLevel}</span> -->
                                     </div>
-                                    <div class="p-4 sm:p-6 flex-grow flex flex-col justify-between w-full">
-                                        <h2 class="text-xl sm:text-2xl font-bold mb-2 leading-tight text-gray-900">${
+                                    <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between w-full">
+                                        <h2 class="text-2xl sm:text-3xl font-bold lg:font-extrabold mb-2 leading-tight text-gray-800 font-anton">${
                                           test.title
                                         }</h2>
-                                        <p class="text-sm sm:text-base text-gray-700 mb-3 flex-grow">${
+                                        <p class="text-sm sm:text-base text-gray-600 mb-4 flex-grow font-inter">${
                                           test.description
                                         }</p>
-                                        <div class="flex justify-between items-center text-gray-600 text-sm">
+                                        <div class="flex justify-between items-center text-gray-600 text-sm font-inter">
                                             <span class="flex items-center gap-1">
                                                 ${ClockIconSVG}
                                                 ${test.duration} mins
@@ -499,7 +700,7 @@
                             })
                             .join("")
                         : `
-                        <div class="md:col-span-3 text-center text-gray-600 py-8">
+                        <div class="md:col-span-3 text-center text-gray-600 py-8 font-inter">
                             <p class="text-lg sm:text-xl">No tests available for this category yet.</p>
                         </div>
                     `

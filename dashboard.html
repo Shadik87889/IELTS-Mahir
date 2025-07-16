@@ -1,0 +1,3719 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mahir - Ultimate Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style id="common-styles">
+      /* Common styles for the entire application, consistent with other pages */
+      body {
+        font-family: "Inter", sans-serif; /* Consistent font family */
+        background: linear-gradient(
+          135deg,
+          #e0f2fe 0%,
+          #f0f9ff 100%
+        ); /* Lighter, softer blue gradient background */
+        color: #334155; /* Default text color */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .container {
+        padding: 0 0.4rem;
+      }
+      /* Custom font classes */
+      .font-anton {
+        font-family: "Anton", sans-serif;
+      }
+      .font-inter {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Custom styles for professional light theme look */
+      .dashboard-card {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes zoomIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+
+      .animate-zoom-in {
+        animation: zoomIn 0.4s ease-out forwards;
+      }
+
+      /* Gamification specific styles */
+      .points-display {
+        background: linear-gradient(
+          45deg,
+          #84cc16,
+          #22c55e
+        ); /* Lime to green gradient */
+        color: white;
+        padding: 0.35rem 0.9rem;
+        border-radius: 9999px;
+        font-weight: bold;
+        font-size: 0.875rem; /* text-sm */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Toast notification styles */
+      #toast-container {
+        position: fixed;
+        top: 1rem; /* Adjust as needed for desired vertical position */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .toast {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 600;
+        opacity: 0;
+        animation: toast-fade-in 0.3s ease-out forwards,
+          toast-fade-out 0.5s ease-out 2.5s forwards; /* Fade in, then fade out after 2.5s */
+        width: auto; /* Allow content to dictate width initially */
+        min-width: 200px; /* Minimum width */
+        max-width: 90%; /* Max width for responsiveness on small screens */
+      }
+
+      .toast.success {
+        background-color: #dcfce7; /* green-100 */
+        color: #16a34a; /* green-600 */
+        border: 1px solid #22c55e; /* green-500 */
+      }
+
+      .toast.error {
+        background-color: #fee2e2; /* red-100 */
+        color: #dc2626; /* red-600 */
+        border: 1px solid #ef4444; /* red-500 */
+      }
+
+      .toast.warning {
+        background-color: #fffbeb; /* yellow-100 */
+        color: #d97706; /* yellow-600 */
+        border: 1px solid #f59e0b; /* yellow-500 */
+      }
+
+      .toast.info {
+        background-color: #e0f2fe; /* blue-100 */
+        color: #2563eb; /* blue-600 */
+        border: 1px solid #3b82f6; /* blue-500 */
+      }
+
+      @keyframes toast-fade-in {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+
+      @keyframes toast-fade-out {
+        from {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+        to {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+      }
+
+      /* Styles for the header section, consistent with other pages */
+      .site-header {
+        background-color: #ffffff; /* White header background */
+        border-bottom: 1px solid #e0e0e0; /* Lighter border */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+        position: fixed; /* Changed from sticky to fixed */
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        width: 100%; /* Ensure it spans full width */
+      }
+
+      .site-header .nav-link {
+        font-weight: 500; /* Medium font weight */
+        color: #555555; /* Darker gray for links */
+      }
+
+      .site-header .nav-link:hover {
+        color: #1d4ed8; /* Blue on hover */
+        transform: translateY(-1px);
+      }
+
+      /* Hero section styles (consistent with quiz-category.html) */
+      .hero-section-new {
+        min-height: 300px; /* Slightly reduced height for history page */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center; /* Center text within this section */
+      }
+
+      .hero-section-new .text-shadow-lg {
+        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow for text */
+      }
+
+      /* General text shadows */
+      .text-shadow-lg {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+      }
+
+      .text-shadow-md {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Dashboard Specific Styles */
+      .stat-card {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        transition: all 0.3s ease-in-out;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .stat-card .icon-wrapper {
+        background-color: #e0f2fe; /* blue-100 */
+        color: #3b82f6; /* blue-600 */
+        border-radius: 50%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+      }
+
+      .stat-card h3 {
+        font-size: 1.25rem; /* text-xl */
+        font-weight: 600;
+        color: #475569; /* slate-700 */
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-card p {
+        font-size: 1.75rem; /* text-3xl */
+        font-weight: 800;
+        color: #1e40af; /* blue-800 */
+      }
+
+      .chart-container {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        padding: 1.5rem;
+        min-height: 300px; /* Ensure charts have space */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .chart-container h3 {
+        font-size: 1.5rem; /* text-2xl */
+        font-weight: 700;
+        color: #334155; /* slate-800 */
+        margin-bottom: 1rem;
+      }
+
+      .insights-section {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        padding: 2rem;
+      }
+
+      .insights-section h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 1.5rem;
+      }
+
+      .insights-section ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .insights-section ul li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        color: #475569;
+      }
+
+      .insights-section ul li svg {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+      }
+
+      .insights-section .strength-item svg {
+        color: #22c55e; /* green-500 */
+      }
+
+      .insights-section .weakness-item svg {
+        color: #ef4444; /* red-500 */
+      }
+
+      .badges-section {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        padding: 2rem;
+      }
+
+      .badges-section h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 1.5rem;
+      }
+
+      .badge-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.5rem;
+        background-color: #fffbeb; /* yellow-100 */
+        border: 1px solid #f59e0b; /* yellow-500 */
+        border-radius: 0.75rem;
+        padding: 1rem;
+        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+      }
+
+      .badge-item svg {
+        width: 48px;
+        height: 48px;
+        color: #d97706; /* yellow-600 */
+      }
+
+      .badge-item .badge-name {
+        font-weight: 600;
+        color: #d97706;
+      }
+
+      .badge-item .badge-description {
+        font-size: 0.875rem;
+        color: #b45309;
+      }
+
+      /* Recent Activity Table Specific Styles */
+      .recent-activity-table-container {
+        overflow-x: auto; /* Enable horizontal scrolling for the table */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .recent-activity-table {
+        min-width: 600px; /* Ensure table has a minimum width to enable scroll */
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .recent-activity-table th,
+      .recent-activity-table td {
+        padding: 0.75rem 1rem; /* Smaller padding for mobile */
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0; /* light gray border */
+      }
+      @media (min-width: 640px) {
+        /* sm breakpoint */
+        .recent-activity-table th,
+        .recent-activity-table td {
+          padding: 1rem 1.5rem; /* Original padding for larger screens */
+        }
+      }
+
+      .recent-activity-table th {
+        background-color: #f8fafc; /* light background for header */
+        font-weight: 700;
+        color: #475569; /* slate-700 */
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+      }
+
+      .recent-activity-table tbody tr:last-child td {
+        border-bottom: none; /* No border for the last row */
+      }
+
+      .recent-activity-table tbody tr:hover {
+        background-color: #f0f9ff; /* blue-50 on hover */
+        cursor: pointer; /* Indicate clickable row */
+      }
+
+      .recent-activity-table tbody tr.no-data-row td {
+        text-align: center;
+        font-style: italic;
+        color: #6b7280;
+      }
+
+      /* Current User Rank Card for Leaderboard Snippet */
+      .current-user-leaderboard-card {
+        background: linear-gradient(
+          145deg,
+          #e0f2fe 0%,
+          #bfdbfe 100%
+        ); /* Blue gradient */
+        border: 1px solid #93c5fd;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        text-align: center;
+        animation: fadeInUp 0.7s ease-out forwards;
+      }
+
+      /* Mobile bottom navigation */
+      #mobile-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        border-top: 1px solid #e2e8f0;
+        z-index: 50;
+        display: flex; /* Default for mobile */
+        justify-content: space-around;
+        padding: 0.5rem 0;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      @media (min-width: 768px) {
+        /* md breakpoint and up */
+        #mobile-bottom-nav {
+          display: none !important; /* Force hide on desktop */
+        }
+      }
+
+      #mobile-bottom-nav button {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        color: #64748b;
+        transition: color 0.2s;
+        position: relative; /* Added for badge positioning */
+      }
+      #mobile-bottom-nav button.active {
+        color: #2563eb;
+      }
+      #mobile-bottom-nav button:hover {
+        color: #2563eb;
+      }
+      #mobile-bottom-nav button i {
+        font-size: 1.25rem;
+        margin-bottom: 0.25rem;
+      }
+      #mobile-bottom-nav button span {
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .notification-badge {
+        position: absolute;
+        top: 0px; /* Adjusted */
+        right: 8px; /* Adjusted */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        px-1.5 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full;
+      }
+
+      /* New Left Sidebar Styles */
+      #left-sidebar {
+        /* Mobile defaults (hidden off-screen) */
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 50; /* Higher than main content, lower than modals */
+        width: 256px; /* w-64 */
+        padding: 1.5rem; /* p-6 */
+        background-color: #ffffff; /* bg-white */
+        border-right: 1px solid #e0e0e0; /* border-r border-gray-100 */
+        transform: translateX(-100%); /* Hidden by default */
+        transition: transform 0.3s ease-in-out; /* Smooth slide animation */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); /* Subtle shadow for mobile */
+        overflow-y: auto; /* Enable scrolling for sidebar content */
+      }
+
+      #left-sidebar.open {
+        transform: translateX(0); /* Slide in */
+      }
+
+      @media (min-width: 1024px) {
+        /* lg breakpoint and up (desktop) */
+        #left-sidebar {
+          position: fixed; /* Changed from sticky to fixed */
+          top: 64px; /* Adjust to be below the header (header height is ~64px) */
+          left: 0; /* Fixed to the left */
+          height: calc(100vh - 64px); /* Full height minus header */
+          transform: translateX(0); /* Always visible */
+          box-shadow: none; /* No shadow on desktop */
+          border-radius: 0 1.5rem 1.5rem 0; /* Rounded right corners */
+          flex-shrink: 0; /* Prevent it from shrinking */
+        }
+      }
+
+      #left-sidebar .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        color: #475569; /* slate-700 */
+        font-weight: 500;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+        margin-bottom: 0.5rem;
+      }
+
+      #left-sidebar .nav-item:hover {
+        background-color: #e0f2fe; /* blue-100 */
+        color: #1d4ed8; /* blue-700 */
+        transform: translateX(3px);
+      }
+
+      #left-sidebar .nav-item.active {
+        background-color: #dbeafe; /* blue-200 */
+        color: #1d4ed8; /* blue-700 */
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+      }
+
+      #left-sidebar .nav-item i {
+        font-size: 1.25rem;
+      }
+
+      /* Sidebar Overlay for Mobile */
+      #sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.75); /* Dark semi-transparent overlay */
+        z-index: 40; /* Below sidebar, above main content */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+      }
+
+      #sidebar-overlay.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      @media (min-width: 1024px) {
+        /* Hide overlay on desktop */
+        #sidebar-overlay {
+          display: none !important;
+        }
+      }
+
+      /* Adjust main content to account for fixed sidebar on desktop */
+      @media (min-width: 1024px) {
+        #app-content {
+          margin-left: 256px; /* Push content right by sidebar width */
+        }
+      }
+
+      /* New styles for professional leaderboard table */
+      .leaderboard-table-container {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        overflow-x: auto; /* Enable horizontal scrolling for the table */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+      }
+
+      .leaderboard-table {
+        min-width: 600px; /* Ensure table has a minimum width to enable scroll */
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .leaderboard-table th,
+      .leaderboard-table td {
+        padding: 1rem 1.5rem;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0; /* Light gray border */
+      }
+
+      .leaderboard-table th {
+        background-color: #f8fafc; /* Light background for header */
+        font-weight: 700;
+        color: #475569; /* Slate-700 */
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+      }
+
+      .leaderboard-table tbody tr:last-child td {
+        border-bottom: none; /* No border for the last row */
+      }
+
+      .leaderboard-table tbody tr:hover {
+        background-color: #f0f9ff; /* Blue-50 on hover */
+        cursor: pointer; /* Indicate clickable row */
+      }
+
+      .leaderboard-table tbody tr.current-user-row {
+        background: linear-gradient(
+          90deg,
+          #e0f2fe 0%,
+          #bfdbfe 100%
+        ); /* Highlight current user */
+        font-weight: 600;
+        color: #1e40af;
+      }
+
+      .leaderboard-table tbody tr.no-data-row td {
+        text-align: center;
+        font-style: italic;
+        color: #6b7280;
+      }
+
+      /* Pagination Styles */
+      .pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+      }
+
+      .pagination-controls button {
+        padding: 0.5rem 1rem;
+        border-radius: 0.75rem;
+        background-color: #e2e8f0; /* Gray-200 */
+        color: #475569; /* Slate-700 */
+        font-weight: 600;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .pagination-controls button:hover:not(:disabled) {
+        background-color: #cbd5e1; /* Gray-300 */
+        transform: translateY(-1px);
+      }
+
+      .pagination-controls button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .pagination-controls .page-number {
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        color: #475569;
+      }
+
+      .pagination-controls .page-number.active {
+        background-color: #3b82f6; /* Blue-500 */
+        color: white;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+      }
+
+      /* Daily Reset Timer Styles */
+      .daily-timer-card {
+        background: linear-gradient(
+          145deg,
+          #f0f9ff 0%,
+          #e0f2fe 100%
+        ); /* Light blue gradient */
+        border: 1px solid #93c5fd;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+      }
+
+      .daily-timer-card .timer-icon {
+        color: #2563eb; /* Blue-600 */
+        font-size: 2.5rem;
+      }
+
+      .daily-timer-card .timer-text {
+        font-size: 1.25rem; /* text-xl */
+        font-weight: 600;
+        color: #334155;
+      }
+
+      .daily-timer-card .countdown {
+        font-family: "Anton", sans-serif;
+        font-size: 3rem; /* text-5xl */
+        font-weight: bold;
+        color: #1e40af; /* Blue-800 */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        animation: pulse 1.5s infinite; /* Subtle pulse animation */
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen py-0 px-0 flex flex-col">
+    <!-- Header / Navigation Bar (Consistent with other pages) -->
+    <header
+      id="app-header"
+      class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300"
+    >
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Hamburger Menu Button (Mobile Only) -->
+        <button
+          id="mobile-menu-button"
+          class="lg:hidden text-gray-600 hover:text-blue-600 text-2xl p-2 rounded-lg transition-colors"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+        <!-- Replaced text with image logo -->
+        <img
+          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+          alt="IELTS Mahir Logo"
+          class="h-8 md:h-10 w-auto"
+          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+        />
+        <!-- Top navigation links (hidden on desktop, now handled by left sidebar) -->
+        <nav class="hidden md:flex gap-6 ml-8 font-inter">
+          <a href="#" id="nav-dashboard-top" class="nav-link transition-all"
+            >Dashboard</a
+          >
+          <a
+            href="#"
+            id="nav-quiz-categories-top"
+            class="nav-link transition-all"
+            >Quiz Categories</a
+          >
+          <a href="#" id="nav-quiz-history-top" class="nav-link transition-all"
+            >Quiz History</a
+          >
+          <a
+            href="#"
+            id="nav-progress-tracking-top"
+            class="nav-link transition-all"
+            >Progress</a
+          >
+          <a href="#" id="nav-leaderboard-top" class="nav-link transition-all"
+            >Leaderboard</a
+          >
+          <a
+            href="#"
+            id="nav-daily-leaderboard-top"
+            class="nav-link transition-all"
+            >Daily Leaderboard</a
+          >
+          <a href="#" id="nav-profile-top" class="nav-link transition-all"
+            >Profile</a
+          >
+        </nav>
+      </div>
+      <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
+        <!-- Authentication status will be handled by auth.js -->
+        <div class="animate-pulse flex space-x-4">
+          <div class="rounded-full bg-gray-300 h-8 w-8 sm:h-10 sm:w-10"></div>
+          <div class="flex-1 space-y-4 py-1 hidden sm:block">
+            <div class="h-2 bg-gray-300 rounded"></div>
+            <div class="space-y-2">
+              <div class="grid grid-cols-3 gap-2">
+                <div class="h-2 bg-gray-300 rounded col-span-2"></div>
+                <div class="h-2 bg-gray-300 rounded col-span-1"></div>
+              </div>
+              <div class="h-2 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main content area: This div will hold both the fixed sidebar and the scrollable main content -->
+    <!-- It needs to start below the header -->
+    <div class="flex flex-1 mt-16">
+      <!-- Left Sidebar for Desktop and Mobile -->
+      <aside id="left-sidebar">
+        <!-- Close button for mobile -->
+        <button
+          id="sidebar-close-button"
+          class="lg:hidden absolute top-4 right-4 text-gray-600 hover:text-red-600 text-2xl p-2 rounded-lg transition-colors"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+        <!-- Content will be rendered by JS -->
+      </aside>
+
+      <main id="app-content" class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <!-- Application content will be rendered here by JavaScript -->
+        <div class="flex justify-center items-center h-full w-full">
+          <div
+            class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"
+          ></div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Sidebar Overlay (Mobile Only) -->
+    <div id="sidebar-overlay" class="lg:hidden"></div>
+
+    <!-- Toast Container -->
+    <div
+      id="toast-container"
+      class="fixed top-4 left-1/2 -translate-x-1/2 z-[100]"
+    ></div>
+
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
+
+    <!-- Mobile Bottom Navigation -->
+    <footer id="mobile-bottom-nav" class="lg:hidden"></footer>
+
+    <script type="module">
+      // Import authentication functions and state from the central auth.js file
+      import {
+        initFirebaseAuth,
+        authAppState,
+        showToast,
+        signOutUser,
+      } from "./auth.js"; // Adjust path as necessary
+
+      // Import quiz data and common utilities
+      import {
+        quizCategories, // Needed to map categoryId to category name
+        allQuizTests, // Needed for test titles etc.
+        BADGES, // Import BADGES from quiz-test-data.js
+        LEVEL_UP_THRESHOLDS, // Import level thresholds
+      } from "./quiz-test-data.js";
+
+      // Firebase imports for Firestore
+      import {
+        collection,
+        query,
+        getDocs,
+        doc,
+        getDoc,
+        setDoc,
+        where,
+        updateDoc,
+        serverTimestamp,
+        onSnapshot,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      // Dashboard state management
+      const dashboardState = {
+        isLoading: true,
+        userId: null,
+        userProfile: null, // User profile from Firestore
+        quizResults: [],
+        userGameStats: {
+          totalPoints: 0,
+          level: 1,
+          completedTests: [],
+          badges: [],
+        },
+        performanceMetrics: {
+          totalQuizzesCompleted: 0,
+          totalTimeSpent: 0,
+          averageScore: 0,
+          averageAccuracy: 0,
+          categoryPerformance: [],
+          scoreTrend: [],
+        },
+        dailyLeaderboardData: [], // New: for full daily leaderboard data
+        dailyLeaderboardRank: null,
+        globalLeaderboard: [], // New: for global leaderboard data
+        userGlobalRank: null, // New: To store user's global rank
+        unsubscribeAll: [], // To manage all Firestore listeners
+        currentView: "dashboard", // Default view: 'dashboard', 'quizCategories', 'profile', 'quizHistory', 'progressTracking', 'globalLeaderboard', 'dailyLeaderboard'
+        globalLeaderboardCurrentPage: 1, // Pagination state for global leaderboard
+        dailyLeaderboardCurrentPage: 1, // Pagination state for daily leaderboard
+        leaderboardItemsPerPage: 10, // Number of items per page for leaderboards
+        dailyResetTimerInterval: null, // Interval ID for the daily reset timer
+        dailyResetTime: null, // Next daily reset timestamp
+      };
+
+      // Sidebar state for mobile
+      let isSidebarOpen = false;
+      const sidebar = document.getElementById("left-sidebar");
+      const sidebarOverlay = document.getElementById("sidebar-overlay");
+
+      /**
+       * Toggles the mobile sidebar open/closed.
+       */
+      function toggleMobileSidebar() {
+        isSidebarOpen = !isSidebarOpen;
+        if (isSidebarOpen) {
+          sidebar.classList.add("open");
+          sidebarOverlay.classList.add("visible");
+          document.body.style.overflow = "hidden"; // Prevent scrolling main content
+        } else {
+          sidebar.classList.remove("open");
+          sidebarOverlay.classList.remove("visible");
+          document.body.style.overflow = ""; // Restore scrolling
+        }
+      }
+
+      /**
+       * Closes the mobile sidebar.
+       */
+      function closeMobileSidebar() {
+        if (isSidebarOpen) {
+          toggleMobileSidebar();
+        }
+      }
+
+      // Helper Icons (Font Awesome classes)
+      const Icons = {
+        Sun: `<i class="fas fa-sun"></i>`,
+        Moon: `<i class="fas fa-moon"></i>`,
+        Plus: `<i class="fas fa-plus"></i>`,
+        Search: `<i class="fas fa-search"></i>`,
+        ChevronDown: `<i class="fas fa-chevron-down"></i>`,
+        ChevronRight: `<i class="fas fa-chevron-right"></i>`,
+        Award: `<i class="fas fa-award"></i>`,
+        Zap: `<i class="fas fa-bolt"></i>`,
+        CheckCircle: `<i class="fas fa-check-circle"></i>`,
+        ThumbsUp: `<i class="far fa-thumbs-up"></i>`,
+        ThumbsUpSolid: `<i class="fas fa-thumbs-up"></i>`,
+        ThumbsDown: `<i class="far fa-thumbs-down"></i>`,
+        ThumbsDownSolid: `<i class="fas fa-thumbs-down"></i>`,
+        ArrowLeft: `<i class="fas fa-arrow-left"></i>`,
+        Menu: `<i class="fas fa-bars"></i>`,
+        X: `<i class="fas fa-times"></i>`,
+        Target: `<i class="fas fa-bullseye"></i>`,
+        Activity: `<i class="fas fa-chart-line"></i>`,
+        Edit: `<i class="fas fa-edit"></i>`,
+        Save: `<i class="fas fa-save"></i>`,
+        Cancel: `<i class="fas fa-times-circle"></i>`,
+        Link: `<i class="fas fa-external-link-alt"></i>`,
+        Trash: `<i class="fas fa-trash-alt"></i>`,
+        Star: `<i class="fas fa-star"></i>`,
+        Home: `<i class="fas fa-home"></i>`,
+        Trophy: `<i class="fas fa-trophy"></i>`,
+        Score: `<i class="fas fa-star"></i>`,
+        Accuracy: `<i class="fas fa-bullseye"></i>`,
+        Time: `<i class="fas fa-clock"></i>`,
+        LevelUp: `<i class="fas fa-level-up-alt"></i>`,
+        View: `<i class="fas fa-eye"></i>`,
+        Play: `<i class="fas fa-play-circle"></i>`,
+        History: `<i class="fas fa-history"></i>`,
+        Badge: `<i class="fas fa-certificate"></i>`,
+        SignIn: `<i class="fas fa-sign-in-alt"></i>`,
+        SignOut: `<i class="fas fa-sign-out-alt"></i>`,
+        Leaderboard: `<i class="fas fa-users"></i>`,
+        User: `<i class="fas fa-user-circle"></i>`,
+        Globe: `<i class="fas fa-globe"></i>`,
+        CalendarDay: `<i class="fas fa-calendar-day"></i>`, // New icon for daily leaderboard
+      };
+
+      /**
+       * Formats time in seconds to a human-readable string (e.g., "1h 30m 15s").
+       * @param {number} totalSeconds - The total time in seconds.
+       * @returns {string} Formatted time string.
+       */
+      function formatTime(totalSeconds) {
+        if (typeof totalSeconds !== "number" || isNaN(totalSeconds)) {
+          return "N/A";
+        }
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = Math.floor(totalSeconds % 60);
+
+        let parts = [];
+        if (hours > 0) {
+          parts.push(`${hours}h`);
+        }
+        if (minutes > 0 || (hours > 0 && seconds === 0)) {
+          // Include minutes if > 0, or if hours > 0 and seconds is 0 (e.g., 1h 0m)
+          parts.push(`${minutes}m`);
+        }
+        if (seconds > 0 || (hours === 0 && minutes === 0)) {
+          // Include seconds if > 0, or if both hours and minutes are 0 (e.g., 5s)
+          parts.push(`${seconds}s`);
+        }
+
+        return parts.join(" ") || "0s";
+      }
+
+      /**
+       * Displays a custom message modal.
+       * @param {string} title - The title of the modal.
+       * @param {string} message - The message content.
+       * @param {boolean} showConfirm - Whether to show a confirm button.
+       * @returns {Promise<boolean>} Resolves true if confirmed, false if cancelled.
+       */
+      function showMessageModal(title, message, showConfirm = false) {
+        return new Promise((resolve) => {
+          const modalContainer = document.getElementById("modal-container");
+          if (!modalContainer) return resolve(false);
+
+          modalContainer.innerHTML = `
+                    <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[1000] animate-fade-in">
+                        <div class="dashboard-card p-6 sm:p-8 w-full max-w-md animate-zoom-in">
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">${title}</h3>
+                            <p class="text-gray-700 mb-6 text-sm sm:text-base">${message}</p>
+                            <div class="flex justify-end gap-3">
+                                ${
+                                  showConfirm
+                                    ? `<button id="modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium">Cancel</button>`
+                                    : ""
+                                }
+                                <button id="modal-ok-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+          const okButton = document.getElementById("modal-ok-btn");
+          okButton.onclick = () => {
+            hideMessageModal();
+            resolve(true);
+          };
+
+          if (showConfirm) {
+            const cancelButton = document.getElementById("modal-cancel-btn");
+            cancelButton.onclick = () => {
+              hideMessageModal();
+              resolve(false);
+            };
+          }
+        });
+      }
+
+      /**
+       * Hides the custom message modal.
+       */
+      function hideMessageModal() {
+        const modalContainer = document.getElementById("modal-container");
+        if (modalContainer) {
+          modalContainer.innerHTML = "";
+        }
+      }
+
+      /**
+       * Shows a modal for editing user profile (name and band goal).
+       */
+      async function showEditProfileModal() {
+        const modalContainer = document.getElementById("modal-container");
+        if (!modalContainer) return;
+
+        const currentName = dashboardState.userProfile?.name || "";
+        const currentBandGoal = dashboardState.userProfile?.bandGoal || "";
+
+        modalContainer.innerHTML = `
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[1000] animate-fade-in">
+                <div class="dashboard-card p-6 sm:p-8 w-full max-w-md animate-zoom-in">
+                    <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Edit Profile</h3>
+                    <div class="mb-4">
+                        <label for="profile-name-input" class="block text-gray-700 text-sm font-bold mb-2">Your Name:</label>
+                        <input type="text" id="profile-name-input" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" value="${currentName}" placeholder="Enter your name">
+                    </div>
+                    <div class="mb-6">
+                        <label for="profile-band-goal-input" class="block text-gray-700 text-sm font-bold mb-2">Target IELTS Band:</label>
+                        <select id="profile-band-goal-input" class="shadow border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Select Band</option>
+                            ${[5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0]
+                              .map(
+                                (band) =>
+                                  `<option value="${band}" ${
+                                    currentBandGoal == band ? "selected" : ""
+                                  }>${band}</option>`
+                              )
+                              .join("")}
+                        </select>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button id="modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium">Cancel</button>
+                        <button id="modal-save-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">Save</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const saveButton = document.getElementById("modal-save-btn");
+        const cancelButton = document.getElementById("modal-cancel-btn");
+        const nameInput = document.getElementById("profile-name-input");
+        const bandGoalInput = document.getElementById(
+          "profile-band-goal-input"
+        );
+
+        saveButton.onclick = async () => {
+          const newName = nameInput.value.trim();
+          const newBandGoal = bandGoalInput.value;
+
+          if (!dashboardState.userId || !authAppState.db) {
+            showToast("User not authenticated.", "error");
+            hideMessageModal();
+            return;
+          }
+
+          const appId =
+            typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+          const userProfileRef = doc(
+            authAppState.db,
+            `artifacts/${appId}/users/${dashboardState.userId}/userProfile/profile`
+          );
+
+          try {
+            await updateDoc(userProfileRef, {
+              name: newName,
+              bandGoal: newBandGoal,
+            });
+            dashboardState.userProfile = {
+              ...dashboardState.userProfile,
+              name: newName,
+              bandGoal: newBandGoal,
+            };
+            showToast("Profile updated successfully!", "success");
+            hideMessageModal();
+            renderApp(); // Re-render to reflect changes
+          } catch (error) {
+            console.error("Error updating profile:", error);
+            showToast("Failed to update profile.", "error");
+          }
+        };
+
+        cancelButton.onclick = () => {
+          hideMessageModal();
+        };
+      }
+
+      /**
+       * Returns HTML for a loading spinner.
+       * @returns {string} HTML string for a loading spinner.
+       */
+      function getLoadingSpinnerHtml() {
+        return `
+                <div class="flex justify-center items-center h-full min-h-[200px] w-full">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+                </div>
+            `;
+      }
+
+      /**
+       * Fetches user's game stats from Firestore.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchUserGameStats(userId) {
+        if (!authAppState.db || !userId) return;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userStatsDocRef = doc(
+          authAppState.db,
+          `artifacts/${appId}/users/${userId}/gameStats/summary`
+        );
+
+        try {
+          const docSnap = await getDoc(userStatsDocRef);
+          if (docSnap.exists()) {
+            dashboardState.userGameStats = {
+              ...dashboardState.userGameStats,
+              ...docSnap.data(),
+            };
+            console.log(
+              "Fetched local user game stats:",
+              dashboardState.userGameStats
+            );
+          } else {
+            console.log("No game stats found for user, initializing defaults.");
+            // If no stats exist, it means the user hasn't completed any quizzes yet.
+            // The default values in dashboardState.userGameStats will be used.
+          }
+        } catch (error) {
+          console.error("Error fetching user game stats:", error);
+          showToast("Failed to load your game progress.", "error");
+        }
+      }
+
+      /**
+       * Fetches quiz results for the current user from Firestore.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchQuizResults(userId) {
+        if (!authAppState.db || !userId) {
+          dashboardState.quizResults = [];
+          return;
+        }
+
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const quizResultsRef = collection(
+          authAppState.db,
+          `artifacts/${appId}/users/${userId}/quizResults`
+        );
+
+        try {
+          const q = query(quizResultsRef);
+          const querySnapshot = await getDocs(q);
+          let results = [];
+          querySnapshot.forEach((doc) => {
+            results.push({ id: doc.id, ...doc.data() });
+          });
+          // Sort by timestamp descending (most recent first)
+          results.sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate());
+          dashboardState.quizResults = results;
+          console.log("Quiz results fetched:", dashboardState.quizResults);
+        } catch (error) {
+          console.error("Error fetching quiz results:", error);
+          showToast(
+            "Failed to load quiz results for progress tracking.",
+            "error"
+          );
+        }
+      }
+
+      /**
+       * Gets the start of the current day in UTC.
+       * @returns {Date} A Date object representing the start of the current day in UTC.
+       */
+      function getStartOfTodayUTC() {
+        const now = new Date();
+        const startOfToday = new Date(
+          Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+        );
+        return startOfToday;
+      }
+
+      /**
+       * Fetches and updates the daily leaderboard data and rank for the current user.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchDailyLeaderboardData(userId) {
+        if (!authAppState.db) {
+          dashboardState.dailyLeaderboardData = [];
+          dashboardState.dailyLeaderboardRank = null;
+          return;
+        }
+
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const dailyResultsRef = collection(
+          authAppState.db,
+          `artifacts/${appId}/public/data/quizGlobalResults`
+        );
+
+        const startOfToday = getStartOfTodayUTC();
+
+        const q = query(
+          dailyResultsRef,
+          where("timestamp", ">=", startOfToday)
+        );
+
+        try {
+          const querySnapshot = await getDocs(q);
+          let rawResults = [];
+          querySnapshot.forEach((doc) => {
+            rawResults.push(doc.data());
+          });
+
+          const dailyScoresMap = new Map();
+          rawResults.forEach((result) => {
+            const currentScore = parseInt(result.score) || 0; // Ensure score is a number
+            if (dailyScoresMap.has(result.userId)) {
+              dailyScoresMap.get(result.userId).totalDailyScore += currentScore;
+            } else {
+              dailyScoresMap.set(result.userId, {
+                userId: result.userId,
+                userName: result.userName || result.userEmail.split("@")[0],
+                totalDailyScore: currentScore,
+              });
+            }
+          });
+
+          let dailyLeaderboard = Array.from(dailyScoresMap.values());
+          dailyLeaderboard.sort(
+            (a, b) => b.totalDailyScore - a.totalDailyScore
+          );
+
+          dashboardState.dailyLeaderboardData = dailyLeaderboard;
+
+          const userEntry = dailyLeaderboard.find(
+            (entry) => entry.userId === userId
+          );
+          if (userEntry) {
+            dashboardState.dailyLeaderboardRank =
+              dailyLeaderboard.indexOf(userEntry) + 1;
+          } else {
+            dashboardState.dailyLeaderboardRank = null;
+          }
+          console.log(
+            "Daily Leaderboard Data:",
+            dashboardState.dailyLeaderboardData
+          );
+          console.log(
+            "Daily Leaderboard Rank:",
+            dashboardState.dailyLeaderboardRank
+          );
+        } catch (error) {
+          console.error("Error fetching daily leaderboard data:", error);
+          showToast("Failed to load daily leaderboard.", "error");
+        }
+      }
+
+      /**
+       * Fetches and updates the global leaderboard.
+       */
+      async function fetchGlobalLeaderboard() {
+        if (!authAppState.db) {
+          console.warn(
+            "Firestore DB not initialized. Cannot fetch global leaderboard."
+          );
+          dashboardState.globalLeaderboard = [];
+          return;
+        }
+
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const quizGlobalResultsRef = collection(
+          authAppState.db,
+          `artifacts/${appId}/public/data/quizGlobalResults`
+        );
+        const userGameStatsCollectionRef = collection(
+          authAppState.db,
+          `artifacts/${appId}/users`
+        ); // Collection of user data
+
+        console.log(
+          `Attempting to fetch global leaderboard from: artifacts/${appId}/public/data/quizGlobalResults`
+        );
+
+        try {
+          // Step 1: Aggregate total points from quizGlobalResults
+          const quizResultsSnapshot = await getDocs(quizGlobalResultsRef);
+          const globalScoresMap = new Map(); // Map<userId, {userName, totalGlobalScore}>
+
+          quizResultsSnapshot.forEach((doc) => {
+            const result = doc.data();
+            const userId = result.userId;
+            const userName = result.userName || result.userEmail.split("@")[0];
+            const score = parseInt(result.score) || 0;
+
+            if (globalScoresMap.has(userId)) {
+              globalScoresMap.get(userId).totalGlobalScore += score;
+            } else {
+              globalScoresMap.set(userId, {
+                userId: userId,
+                userName: userName,
+                totalGlobalScore: score,
+                level: 1, // Default level, will be updated
+                totalPoints: 0, // Default totalPoints, will be updated
+              });
+            }
+          });
+
+          // Step 2: Fetch gameStats/summary for each user to get their actual totalPoints and level
+          const userIds = Array.from(globalScoresMap.keys());
+          const fetchPromises = userIds.map(async (userId) => {
+            const userStatsDocRef = doc(
+              userGameStatsCollectionRef,
+              `${userId}/gameStats/summary`
+            );
+            try {
+              const docSnap = await getDoc(userStatsDocRef);
+              if (docSnap.exists()) {
+                const stats = docSnap.data();
+                const entry = globalScoresMap.get(userId);
+                if (entry) {
+                  entry.totalPoints = parseInt(stats.totalPoints) || 0;
+                  entry.level = parseInt(stats.level) || 1;
+                  globalScoresMap.set(userId, entry);
+                }
+              }
+            } catch (error) {
+              console.error(
+                `Error fetching game stats for user ${userId}:`,
+                error
+              );
+              // If there's an error or no stats, keep default level and points
+            }
+          });
+
+          await Promise.all(fetchPromises);
+
+          let globalLeaderboard = Array.from(globalScoresMap.values());
+
+          // Step 3: Sort the leaderboard by totalPoints (from gameStats/summary)
+          globalLeaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
+
+          dashboardState.globalLeaderboard = globalLeaderboard;
+
+          // Find user's global rank based on totalPoints
+          if (authAppState.userId) {
+            const userEntry = globalLeaderboard.find(
+              (entry) => entry.userId === authAppState.userId
+            );
+            if (userEntry) {
+              dashboardState.userGlobalRank =
+                globalLeaderboard.indexOf(userEntry) + 1;
+            } else {
+              dashboardState.userGlobalRank = null; // User not on global leaderboard
+            }
+          } else {
+            dashboardState.userGlobalRank = null;
+          }
+
+          console.log(
+            "Global Leaderboard fetched for dashboard:",
+            dashboardState.globalLeaderboard
+          );
+        } catch (error) {
+          console.error(
+            "Error fetching global leaderboard for dashboard:",
+            error
+          );
+          showToast("Failed to load global ranking.", "error");
+        }
+      }
+
+      /**
+       * Processes fetched quiz data to calculate performance metrics.
+       */
+      function processDashboardData() {
+        const results = dashboardState.quizResults;
+        const metrics = dashboardState.performanceMetrics;
+
+        metrics.totalQuizzesCompleted = results.length;
+
+        if (results.length === 0) {
+          metrics.totalTimeSpent = 0;
+          metrics.averageScore = 0;
+          metrics.averageAccuracy = 0;
+          metrics.categoryPerformance = [];
+          metrics.scoreTrend = [];
+          return;
+        }
+
+        let totalScoreSum = 0;
+        let totalAccuracySum = 0;
+        let totalTimeSeconds = 0;
+        const categoryPerformanceMap = {};
+        const scoreTrendData = [];
+
+        results.forEach((result) => {
+          totalScoreSum += parseFloat(result.score) || 0; // Ensure score is a number
+          totalAccuracySum += parseFloat(result.percentage) || 0; // Ensure percentage is a number
+          totalTimeSeconds += parseFloat(result.timeTakenSeconds) || 0; // Ensure time is a number
+
+          // Process for category performance
+          if (!categoryPerformanceMap[result.categoryId]) {
+            categoryPerformanceMap[result.categoryId] = {
+              totalScore: 0,
+              totalAccuracy: 0,
+              count: 0,
+            };
+          }
+          categoryPerformanceMap[result.categoryId].totalScore +=
+            parseFloat(result.score) || 0;
+          categoryPerformanceMap[result.categoryId].totalAccuracy +=
+            parseFloat(result.percentage) || 0;
+          categoryPerformanceMap[result.categoryId].count++;
+
+          // Process for score trend
+          if (result.timestamp) {
+            const date = new Date(result.timestamp.toDate()).toLocaleDateString(
+              "en-CA"
+            ); // YYYY-MM-DD
+            scoreTrendData.push({
+              date: date,
+              score: parseFloat(result.score) || 0,
+              accuracy: parseFloat(result.percentage) || 0,
+            });
+          }
+        });
+
+        metrics.totalTimeSpent = totalTimeSeconds;
+        metrics.averageScore = (totalScoreSum / results.length).toFixed(2);
+        metrics.averageAccuracy = (totalAccuracySum / results.length).toFixed(
+          2
+        );
+
+        metrics.categoryPerformance = Object.keys(categoryPerformanceMap).map(
+          (categoryId) => {
+            const data = categoryPerformanceMap[categoryId];
+            const categoryName =
+              quizCategories.find((cat) => cat.id === categoryId)?.name ||
+              "Unknown";
+            return {
+              categoryId: categoryId,
+              categoryName: categoryName,
+              averageScore: (data.totalScore / data.count).toFixed(2),
+              averageAccuracy: (data.totalAccuracy / data.count).toFixed(2),
+              count: data.count,
+            };
+          }
+        );
+
+        scoreTrendData.sort((a, b) => new Date(a.date) - new Date(b.date));
+        metrics.scoreTrend = scoreTrendData;
+
+        console.log("Performance Metrics:", metrics);
+      }
+
+      /**
+       * Renders the charts using Chart.js.
+       */
+      function renderCharts() {
+        const {
+          categoryPerformance,
+          scoreTrend,
+        } = dashboardState.performanceMetrics;
+
+        // Destroy existing charts if they exist to prevent duplicates
+        if (window.categoryChartInstance) {
+          window.categoryChartInstance.destroy();
+        }
+        if (window.scoreTrendChartInstance) {
+          window.scoreTrendChartInstance.destroy();
+        }
+
+        // Common Chart.js defaults for consistent styling
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = "#475569"; // slate-600
+
+        // Category Performance Bar Chart
+        const categoryCtx = document.getElementById("categoryPerformanceChart");
+        if (categoryCtx) {
+          const categoryLabels = categoryPerformance.map(
+            (cp) => cp.categoryName
+          );
+          const categoryData = categoryPerformance.map((cp) =>
+            parseFloat(cp.averageAccuracy)
+          );
+
+          window.categoryChartInstance = new Chart(categoryCtx, {
+            type: "bar",
+            data: {
+              labels: categoryLabels,
+              datasets: [
+                {
+                  label: "Average Accuracy (%)",
+                  data: categoryData,
+                  backgroundColor: "rgba(59, 130, 246, 0.8)", // blue-500 with more opacity
+                  borderColor: "rgba(59, 130, 246, 1)",
+                  borderWidth: 1,
+                  borderRadius: 8, // Rounded bars
+                  hoverBackgroundColor: "rgba(37, 99, 235, 0.9)", // blue-600 on hover
+                  hoverBorderColor: "rgba(37, 99, 235, 1)",
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false,
+                },
+                title: {
+                  display: true,
+                  text: "Average Accuracy by Category",
+                  font: {
+                    size: 18, // Slightly larger title
+                    weight: "bold",
+                  },
+                  color: "#334155", // dark slate
+                },
+                tooltip: {
+                  backgroundColor: "#334155", // Darker tooltip background
+                  titleColor: "#fff",
+                  bodyColor: "#fff",
+                  borderColor: "#64748b", // slate-500
+                  borderWidth: 1,
+                  cornerRadius: 8,
+                  displayColors: false, // Don't show color box in tooltip
+                  padding: 12,
+                  callbacks: {
+                    label: function (context) {
+                      return `${context.dataset.label}: ${context.parsed.y}%`;
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100,
+                  title: {
+                    display: true,
+                    text: "Accuracy (%)",
+                    font: {
+                      weight: "bold",
+                    },
+                    color: "#475569",
+                  },
+                  grid: {
+                    color: "#e2e8f0", // Lighter grid lines
+                    drawBorder: false, // Remove axis line
+                  },
+                  ticks: {
+                    color: "#475569",
+                  },
+                },
+                x: {
+                  grid: {
+                    display: false, // No vertical grid lines
+                  },
+                  ticks: {
+                    color: "#475569",
+                  },
+                },
+              },
+            },
+          });
+        }
+
+        // Score Trend Line Chart
+        const trendCtx = document.getElementById("scoreTrendChart");
+        if (trendCtx) {
+          const trendLabels = scoreTrend.map((st) => st.date);
+          const trendScores = scoreTrend.map((st) => st.score);
+          const trendAccuracy = scoreTrend.map((st) => st.accuracy);
+
+          window.scoreTrendChartInstance = new Chart(trendCtx, {
+            type: "line",
+            data: {
+              labels: trendLabels,
+              datasets: [
+                {
+                  label: "Score Trend",
+                  data: trendScores,
+                  borderColor: "rgb(75, 192, 192)", // Teal
+                  backgroundColor: "rgba(75, 192, 192, 0.4)", // Lighter fill
+                  tension: 0.4, // More pronounced curve
+                  fill: true,
+                  pointRadius: 5, // Larger points
+                  pointBackgroundColor: "rgb(75, 192, 192)",
+                  pointBorderColor: "#fff",
+                  pointBorderWidth: 2,
+                  pointHoverRadius: 7, // Larger hover points
+                  pointHoverBackgroundColor: "#fff",
+                  pointHoverBorderColor: "rgb(75, 192, 192)",
+                },
+                {
+                  label: "Accuracy Trend (%)",
+                  data: trendAccuracy,
+                  borderColor: "rgb(153, 102, 255)", // Purple
+                  backgroundColor: "rgba(153, 102, 255, 0.4)", // Lighter fill
+                  tension: 0.4,
+                  fill: true,
+                  pointRadius: 5,
+                  pointBackgroundColor: "rgb(153, 102, 255)",
+                  pointBorderColor: "#fff",
+                  pointBorderWidth: 2,
+                  pointHoverRadius: 7,
+                  pointHoverBackgroundColor: "#fff",
+                  pointHoverBorderColor: "rgb(153, 102, 255)",
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: "top",
+                  labels: {
+                    font: {
+                      size: 14,
+                      weight: "bold",
+                    },
+                    color: "#334155",
+                  },
+                },
+                title: {
+                  display: true,
+                  text: "Quiz Score & Accuracy Trend Over Time",
+                  font: {
+                    size: 18,
+                    weight: "bold",
+                  },
+                  color: "#334155",
+                },
+                tooltip: {
+                  backgroundColor: "#334155", // Darker tooltip background
+                  titleColor: "#fff",
+                  bodyColor: "#fff",
+                  borderColor: "#64748b", // slate-500
+                  borderWidth: 1,
+                  cornerRadius: 8,
+                  padding: 12,
+                  callbacks: {
+                    label: function (context) {
+                      let label = context.dataset.label || "";
+                      if (label) {
+                        label += ": ";
+                      }
+                      if (context.dataset.label === "Accuracy Trend (%)") {
+                        label += `${context.parsed.y}%`;
+                      } else {
+                        label += context.parsed.y;
+                      }
+                      return label;
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: "Value",
+                    font: {
+                      weight: "bold",
+                    },
+                    color: "#475569",
+                  },
+                  grid: {
+                    color: "#e2e8f0", // Lighter grid lines
+                    drawBorder: false,
+                  },
+                  ticks: {
+                    color: "#475569",
+                  },
+                },
+                x: {
+                  grid: {
+                    display: false, // No vertical grid lines
+                  },
+                  ticks: {
+                    color: "#475569",
+                  },
+                },
+              },
+            },
+          });
+        }
+      }
+
+      /**
+       * Determines strengths and areas for improvement based on category performance.
+       * @returns {object} An object containing arrays for strengths and weaknesses.
+       */
+      function getInsights() {
+        const insights = {
+          strengths: [],
+          weaknesses: [],
+        };
+
+        const categoryThreshold = 75; // Example: above 75% is a strength
+        const overallAverageAccuracy = parseFloat(
+          dashboardState.performanceMetrics.averageAccuracy
+        );
+
+        if (dashboardState.performanceMetrics.totalQuizzesCompleted === 0) {
+          insights.weaknesses.push(
+            "No quizzes completed yet. Start practicing to see your progress!"
+          );
+          return insights;
+        }
+
+        if (overallAverageAccuracy >= 85) {
+          insights.strengths.push("Outstanding overall accuracy!");
+        } else if (overallAverageAccuracy >= 70) {
+          insights.strengths.push("Solid overall performance.");
+        } else {
+          insights.weaknesses.push(
+            "Consider focusing on improving overall accuracy."
+          );
+        }
+
+        if (
+          Array.isArray(dashboardState.performanceMetrics.categoryPerformance)
+        ) {
+          // Corrected typo: dashboardState.performancePerformance -> dashboardState.performanceMetrics.categoryPerformance
+          dashboardState.performanceMetrics.categoryPerformance.forEach(
+            (cat) => {
+              const accuracy = parseFloat(cat.averageAccuracy);
+              if (accuracy >= categoryThreshold) {
+                insights.strengths.push(
+                  `Strong performance in ${cat.categoryName}.`
+                );
+              } else if (accuracy < categoryThreshold && cat.count > 0) {
+                insights.weaknesses.push(
+                  `Consider reviewing ${cat.categoryName} concepts.`
+                );
+              }
+            }
+          );
+        }
+
+        if (dashboardState.performanceMetrics.totalQuizzesCompleted < 5) {
+          insights.weaknesses.push(
+            "Keep taking more quizzes to get a clearer picture of your progress."
+          );
+        }
+
+        return insights;
+      }
+
+      /**
+       * Calculates the progress towards the next level.
+       * @returns {object} An object with currentLevel, nextLevel, progressPercentage, pointsToNextLevel.
+       */
+      function getLevelProgress() {
+        const currentLevel = dashboardState.userGameStats.level;
+        const totalPoints = dashboardState.userGameStats.totalPoints;
+
+        let nextLevelThreshold = 0;
+        let previousLevelThreshold = 0;
+        let nextLevel = currentLevel + 1;
+
+        if (currentLevel < LEVEL_UP_THRESHOLDS.length) {
+          nextLevelThreshold = LEVEL_UP_THRESHOLDS[currentLevel]; // Threshold for the next level
+          previousLevelThreshold = LEVEL_UP_THRESHOLDS[currentLevel - 1] || 0;
+        } else {
+          // Max level reached or beyond defined thresholds
+          nextLevelThreshold = totalPoints; // Effectively no next level
+          previousLevelThreshold =
+            LEVEL_UP_THRESHOLDS[LEVEL_UP_THRESHOLDS.length - 1] || 0;
+          nextLevel = currentLevel; // Stay at current level
+        }
+
+        const pointsInCurrentLevel = totalPoints - previousLevelThreshold;
+        const pointsNeededForNextLevel =
+          nextLevelThreshold - previousLevelThreshold;
+
+        let progressPercentage = 0;
+        let pointsToNextLevel = 0;
+
+        if (nextLevelThreshold > previousLevelThreshold) {
+          progressPercentage =
+            (pointsInCurrentLevel / pointsNeededForNextLevel) * 100;
+          pointsToNextLevel = nextLevelThreshold - totalPoints;
+        } else {
+          progressPercentage = 100; // Max level reached or no further levels defined
+          pointsToNextLevel = 0;
+        }
+
+        progressPercentage = Math.min(100, Math.max(0, progressPercentage)); // Clamp between 0 and 100
+
+        return {
+          currentLevel: currentLevel,
+          nextLevel: nextLevel,
+          progressPercentage: progressPercentage.toFixed(2),
+          pointsToNextLevel: Math.max(0, pointsToNextLevel),
+          isMaxLevel: currentLevel >= LEVEL_UP_THRESHOLDS.length,
+        };
+      }
+
+      /**
+       * Updates the navigation bar and user ID display based on authentication status.
+       * @param {object|null} user - The Firebase User object or null if signed out.
+       */
+      async function updateAuthUI(user) {
+        const authButtonsContainer = document.getElementById(
+          "auth-buttons-container"
+        );
+        if (authButtonsContainer) {
+          if (user) {
+            // Await fetching user game stats before rendering the header
+            if (authAppState.db && user.uid) {
+              await fetchUserGameStats(user.uid);
+            }
+
+            authButtonsContainer.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="points-display flex items-center gap-2 px-3 py-1.5 rounded-full shadow-md text-white bg-gradient-to-br from-green-500 to-lime-600">
+                                ${Icons.Trophy}
+                                <span class="text-sm font-semibold">${
+                                  dashboardState.userGameStats.totalPoints || 0
+                                } Pts</span>
+                                <span class="text-xs text-green-200">|</span>
+                                <span class="text-sm font-semibold">Lvl ${
+                                  dashboardState.userGameStats.level || 1
+                                }</span>
+                            </div>
+                            <div class="relative">
+                                <button id="profile-icon-btn" class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-600 transition-colors duration-200 ease-in-out transform active:scale-95">
+                                    ${(
+                                      dashboardState.userProfile?.name?.charAt(
+                                        0
+                                      ) || // Use first char of name if available
+                                      user.email?.charAt(0) || // Use first char of email if name is not available
+                                      user.uid.charAt(0)
+                                    ).toUpperCase()}
+                                </button>
+                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden animate-fade-in-up">
+                                    <div class="px-4 py-2 text-sm text-gray-700 font-medium border-b border-gray-100">Hello, ${
+                                      dashboardState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid.substring(0, 8)
+                                    }</div>
+                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">Level: ${
+                                      dashboardState.userGameStats.level || 1
+                                    }</div>
+                                    <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg transition-colors">
+                                        ${Icons.SignOut} Sign Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            const profileIconBtn = document.getElementById("profile-icon-btn");
+            const profileDropdown = document.getElementById("profile-dropdown");
+            const signOutDropdownBtn = document.getElementById(
+              "sign-out-dropdown-btn"
+            );
+
+            profileIconBtn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              profileDropdown.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", (event) => {
+              if (
+                !profileDropdown.contains(event.target) &&
+                !profileIconBtn.contains(event.target)
+              ) {
+                profileDropdown.classList.add("hidden");
+              }
+            });
+
+            signOutDropdownBtn.addEventListener("click", async () => {
+              await signOutUser();
+              // Redirect will happen via onAuthStateChanged in auth.js
+            });
+          } else {
+            // User is signed out: Show sign-in button
+            authButtonsContainer.innerHTML = `
+                        <a href="auth.html" id="sign-in-nav-btn" class="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                            ${Icons.SignIn} <span class="hidden sm:inline">Sign In</span>
+                        </a>
+                    `;
+          }
+        }
+      }
+
+      /**
+       * Renders the left sidebar navigation.
+       */
+      function renderLeftSidebar() {
+        const sidebar = document.getElementById("left-sidebar");
+        if (!sidebar) return;
+
+        // Hide sidebar if not authenticated
+        if (!dashboardState.userId) {
+          sidebar.innerHTML = "";
+          // Do not set display: none here, CSS handles transform for mobile and sticky for desktop
+          return;
+        }
+
+        const navItems = [
+          {
+            id: "nav-dashboard",
+            icon: Icons.Activity,
+            text: "Dashboard",
+            view: "dashboard",
+          },
+          {
+            id: "nav-quiz-categories",
+            icon: Icons.Play,
+            text: "Quiz Categories",
+            view: "quizCategories",
+          },
+          {
+            id: "nav-quiz-history",
+            icon: Icons.History,
+            text: "Quiz History",
+            view: "quizHistory",
+          },
+          {
+            id: "nav-progress",
+            icon: Icons.Target,
+            text: "Progress Tracking",
+            view: "progressTracking",
+          },
+          {
+            id: "nav-leaderboard",
+            icon: Icons.Leaderboard,
+            text: "Global Leaderboard",
+            view: "globalLeaderboard",
+          },
+          {
+            id: "nav-daily-leaderboard",
+            icon: Icons.CalendarDay,
+            text: "Daily Leaderboard",
+            view: "dailyLeaderboard",
+          },
+          {
+            id: "nav-profile",
+            icon: Icons.User,
+            text: "Profile",
+            view: "profile",
+          },
+        ];
+
+        const currentUser = dashboardState.userProfile;
+        // Safely access authAppState.auth.currentUser.email only if authAppState.auth and authAppState.auth.currentUser are defined
+        const userName =
+          currentUser?.name ||
+          (authAppState.auth && authAppState.auth.currentUser
+            ? authAppState.auth.currentUser.email?.split("@")[0]
+            : "Guest") ||
+          "Guest";
+
+        sidebar.innerHTML = `
+            <!-- Close button for mobile (re-rendered here to ensure it's always present) -->
+            <button
+                id="sidebar-close-button"
+                class="lg:hidden absolute top-4 right-4 text-gray-600 hover:text-red-600 text-2xl p-2 rounded-lg transition-colors"
+            >
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="mb-6 p-4 rounded-xl bg-blue-50 border border-blue-100 text-center shadow-sm">
+                <div class="w-16 h-16 mx-auto mb-3 flex items-center justify-center rounded-full bg-blue-500 text-white text-2xl font-bold shadow-lg">
+                    ${userName.charAt(0).toUpperCase()}
+                </div>
+                <h3 class="text-xl font-semibold text-blue-800 mb-1">${userName}</h3>
+                <p class="text-sm text-blue-600">Level: ${
+                  dashboardState.userGameStats.level || 1
+                } | Points: ${dashboardState.userGameStats.totalPoints || 0}</p>
+            </div>
+            <nav class="space-y-1">
+                ${navItems
+                  .map(
+                    (item) => `
+                    <button id="${item.id}" class="nav-item w-full text-left ${
+                      dashboardState.currentView === item.view ? "active" : ""
+                    }" data-view="${item.view}">
+                        ${item.icon}
+                        <span>${item.text}</span>
+                    </button>
+                `
+                  )
+                  .join("")}
+            </nav>
+        `;
+      }
+
+      function renderMobileBottomNav() {
+        const bottomNav = document.getElementById("mobile-bottom-nav");
+        // Only show bottom nav if user is authenticated
+        if (!dashboardState.userId) {
+          bottomNav.innerHTML = "";
+          bottomNav.style.display = "none";
+          return;
+        }
+        bottomNav.style.display = "flex"; // Ensure it's visible if authenticated
+
+        const navItems = [
+          {
+            id: "nav-home-mobile",
+            icon: Icons.Home,
+            text: "Home",
+            view: "dashboard",
+          },
+          {
+            id: "nav-quiz-mobile",
+            icon: Icons.Play,
+            text: "Quiz",
+            view: "quizCategories",
+          },
+          {
+            id: "nav-leaderboard-mobile",
+            icon: Icons.Leaderboard,
+            text: "Rank",
+            view: "globalLeaderboard", // Changed to internal view
+          },
+          {
+            id: "nav-profile-mobile",
+            icon: Icons.User,
+            text: "Profile",
+            view: "profile",
+          },
+        ];
+        bottomNav.innerHTML = navItems
+          .map(
+            (item) => `
+          <button id="${item.id}" class="${
+              dashboardState.currentView === item.view ? "active" : ""
+            } flex-1 flex flex-col items-center justify-center p-2 text-gray-600 hover:text-blue-600 transition-colors" data-view="${
+              item.view
+            }">
+            ${item.icon}
+            <span class="text-xs font-semibold">${item.text}</span>
+          </button>
+        `
+          )
+          .join("");
+
+        // Event listeners are now set up in setupGlobalEventListeners
+      }
+
+      /**
+       * Renders the main dashboard overview content.
+       */
+      function renderDashboardOverview() {
+        const appContentDiv = document.getElementById("app-content");
+        if (!appContentDiv) return;
+
+        const {
+          totalQuizzesCompleted,
+          totalTimeSpent,
+          averageScore,
+          averageAccuracy,
+        } = dashboardState.performanceMetrics;
+        const { totalPoints, level, badges } = dashboardState.userGameStats;
+        const insights = getInsights();
+        const levelProgress = getLevelProgress();
+        const currentUserRank = dashboardState.userGlobalRank; // Get global rank
+        const globalLeaderboardSnippet = dashboardState.globalLeaderboard.slice(
+          0,
+          3
+        ); // Top 3 players
+
+        // Safely access authAppState.auth.currentUser.email only if authAppState.auth and authAppState.auth.currentUser are defined
+        const userName =
+          dashboardState.userProfile?.name ||
+          (authAppState.auth && authAppState.auth.currentUser
+            ? authAppState.auth.currentUser.email?.split("@")[0]
+            : "Guest") ||
+          "Guest";
+
+        appContentDiv.innerHTML = `
+            <div class="flex-1 flex flex-col">
+                <!-- Hero Section -->
+                <section class="hero-section-new max-w-6xl mx-auto my-2 relative overflow-hidden rounded-3xl w-full">
+                    <!-- Background image and overlay -->
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/5428830/pexels-photo-5428830.jpeg');">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-600/70 to-cyan-600/70"></div>
+                    </div>
+
+                    <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                        <p class="font-inter text-xl sm:text-2xl font-medium mb-2 text-shadow-lg">Welcome, ${userName}!</p>
+                        <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                            YOUR DASHBOARD
+                        </h1>
+                        <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                            Track your progress, celebrate achievements, and discover new challenges.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Your Performance Overview</h2>
+
+                    <!-- Overall Statistics Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                        <div class="stat-card animate-fade-in-up" style="animation-delay: 0.1s;">
+                            <div class="icon-wrapper">
+                                ${Icons.Home}
+                            </div>
+                            <h3>Quizzes Completed</h3>
+                            <p>${totalQuizzesCompleted}</p>
+                        </div>
+                        <div class="stat-card animate-fade-in-up" style="animation-delay: 0.2s;">
+                            <div class="icon-wrapper">
+                                ${Icons.Score}
+                            </div>
+                            <h3>Total Points</h3>
+                            <p>${totalPoints}</p>
+                        </div>
+                        <div class="stat-card animate-fade-in-up" style="animation-delay: 0.3s;">
+                            <div class="icon-wrapper">
+                                ${Icons.Accuracy}
+                            </div>
+                            <h3>Average Accuracy</h3>
+                            <p>${averageAccuracy}%</p>
+                        </div>
+                        <div class="stat-card animate-fade-in-up" style="animation-delay: 0.4s;">
+                            <div class="icon-wrapper">
+                                ${Icons.Time}
+                            </div>
+                            <h3>Time Spent</h3>
+                            <p>${formatTime(totalTimeSpent)}</p>
+                        </div>
+                    </div>
+
+                    <!-- Level Progress, Daily Rank, and Global Rank -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                        <div class="dashboard-card p-6 animate-fade-in-up" style="animation-delay: 0.5s;">
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                ${Icons.LevelUp} Level Progress
+                            </h3>
+                            <p class="text-gray-700 mb-2">Current Level: <span class="font-bold text-purple-700">Level ${
+                              levelProgress.currentLevel
+                            }</span></p>
+                            ${
+                              levelProgress.isMaxLevel
+                                ? `
+                                <p class="text-green-600 font-semibold text-lg">You've reached the maximum level! Keep up the great work!</p>
+                                <div class="w-full bg-gray-200 rounded-full h-4 mt-4 overflow-hidden">
+                                    <div class="bg-green-500 h-full rounded-full" style="width: 100%;"></div>
+                                </div>
+                            `
+                                : `
+                                <p class="text-gray-700 mb-4">Points to next level (Level ${levelProgress.nextLevel}): <span class="font-bold text-blue-600">${levelProgress.pointsToNextLevel} Pts</span></p>
+                                <div class="w-full bg-gray-200 rounded-full h-4 mt-2 overflow-hidden">
+                                    <div class="bg-blue-500 h-full rounded-full transition-all duration-500 ease-out" style="width: ${levelProgress.progressPercentage}%;"></div>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">${levelProgress.progressPercentage}% to Level ${levelProgress.nextLevel}</p>
+                            `
+                            }
+                        </div>
+                        <div class="dashboard-card p-6 animate-fade-in-up" style="animation-delay: 0.6s;">
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                ${Icons.Award} Daily Leaderboard
+                            </h3>
+                            ${
+                              dashboardState.dailyLeaderboardRank
+                                ? `
+                                <p class="text-gray-700 text-lg mb-2">Your current rank today:</p>
+                                <p class="text-5xl font-anton text-orange-600 font-bold mb-4">#${dashboardState.dailyLeaderboardRank}</p>
+                                <button id="view-daily-leaderboard-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-sm transform active:scale-95" data-view="dailyLeaderboard">
+                                    ${Icons.CalendarDay} View Daily Ranks
+                                </button>
+                            `
+                                : `
+                                <p class="text-gray-600 text-lg mb-4">You haven't ranked on the daily leaderboard yet.</p>
+                                <p class="text-gray-500 text-sm mb-4">Complete a quiz today to see your rank!</p>
+                                <button id="start-quiz-dashboard-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-sm transform active:scale-95" data-view="quizCategories">
+                                    ${Icons.Play} Start a Quiz
+                                </button>
+                            `
+                            }
+                        </div>
+                        <!-- New Global Rank Card -->
+                        <div class="dashboard-card p-6 animate-fade-in-up" style="animation-delay: 0.7s;">
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                ${Icons.Globe} Global Ranking
+                            </h3>
+                            ${
+                              currentUserRank
+                                ? `
+                                <p class="text-gray-700 text-lg mb-2">Your global rank:</p>
+                                <p class="text-5xl font-anton text-indigo-600 font-bold mb-4">#${currentUserRank}</p>
+                                <p class="text-gray-700 text-md">Total Points: <span class="font-bold text-green-600">${totalPoints}</span></p>
+                                <p class="text-gray-500 text-sm mt-2">Top 3 Players:</p>
+                                <ul class="list-none p-0 mt-2 text-sm text-gray-700">
+                                    ${
+                                      globalLeaderboardSnippet.length > 0
+                                        ? globalLeaderboardSnippet
+                                            .map(
+                                              (player, idx) => `
+                                                <li class="flex justify-between items-center py-1">
+                                                    <span class="font-semibold">#${
+                                                      idx + 1
+                                                    } ${player.userName}</span>
+                                                    <span>${
+                                                      player.totalPoints
+                                                    } Pts</span>
+                                                </li>
+                                            `
+                                            )
+                                            .join("")
+                                        : '<li class="text-gray-500">No global players yet.</li>'
+                                    }
+                                </ul>
+                                <button id="view-global-leaderboard-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition-colors duration-200 font-semibold text-sm transform active:scale-95" data-view="globalLeaderboard">
+                                    ${Icons.Leaderboard} View All Ranks
+                                </button>
+                            `
+                                : `
+                                <p class="text-gray-600 text-lg mb-4">You are not yet ranked globally.</p>
+                                <p class="text-gray-500 text-sm mb-4">Complete quizzes to earn points and climb the ranks!</p>
+                                <button id="view-global-leaderboard-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition-colors duration-200 font-semibold text-sm transform active:scale-95" data-view="globalLeaderboard">
+                                    ${Icons.Leaderboard} View All Ranks
+                                </button>
+                            `
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                        <div class="chart-container animate-fade-in-up" style="animation-delay: 0.8s;">
+                            <canvas id="categoryPerformanceChart"></canvas>
+                            ${
+                              totalQuizzesCompleted === 0
+                                ? '<p class="text-gray-500 mt-4">No category data to display. Complete some quizzes!</p>'
+                                : ""
+                            }
+                        </div>
+                        <div class="chart-container animate-fade-in-up" style="animation-delay: 0.9s;">
+                            <canvas id="scoreTrendChart"></canvas>
+                            ${
+                              totalQuizzesCompleted === 0
+                                ? '<p class="text-gray-500 mt-4">No trend data to display. Complete some quizzes!</p>'
+                                : ""
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Strengths and Weaknesses Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                        <div class="insights-section dashboard-card animate-fade-in-up" style="animation-delay: 1.0s;">
+                            <h3 class="flex items-center gap-2">
+                                ${Icons.ThumbsUp} Your Strengths
+                            </h3>
+                            <ul>
+                                ${
+                                  insights.strengths.length > 0
+                                    ? insights.strengths
+                                        .map(
+                                          (s) =>
+                                            `<li class="strength-item">${Icons.CheckCircle} <span>${s}</span></li>`
+                                        )
+                                        .join("")
+                                    : "<li>No specific strengths identified yet. Keep practicing!</li>"
+                                }
+                            </ul>
+                        </div>
+                        <div class="insights-section dashboard-card animate-fade-in-up" style="animation-delay: 1.1s;">
+                            <h3 class="flex items-center gap-2">
+                                ${Icons.Award} Areas for Improvement
+                            </h3>
+                            <ul>
+                                ${
+                                  insights.weaknesses.length > 0
+                                    ? insights.weaknesses
+                                        .map(
+                                          (w) =>
+                                            `<li class="weakness-item">${Icons.X} <span>${w}</span></li>`
+                                        )
+                                        .join("")
+                                    : "<li>Great job! No major areas for improvement detected.</li>"
+                                }
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Earned Badges Section -->
+                <div class="badges-section dashboard-card animate-fade-in-up" style="animation-delay: 1.2s;">
+                    <h3 class="flex items-center gap-2">
+                        ${Icons.Badge} Your Earned Badges
+                    </h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6">
+                        ${
+                          badges.length > 0
+                            ? badges
+                                .map((badgeId) => {
+                                  const badgeInfo = BADGES[badgeId];
+                                  return badgeInfo
+                                    ? `
+                                        <div class="badge-item">
+                                            <span class="text-4xl">${badgeInfo.icon}</span>
+                                            <span class="badge-name">${badgeInfo.name}</span>
+                                            <span class="badge-description">${badgeInfo.description}</span>
+                                        </div>
+                                    `
+                                    : "";
+                                })
+                                .join("")
+                            : '<p class="text-gray-700 col-span-full text-center">No badges earned yet. Complete quizzes to unlock them!</p>'
+                        }
+                    </div>
+                </div>
+
+                <!-- Recent Activity Section -->
+                <div class="mt-12 mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Recent Quiz Activity</h2>
+                    <div class="recent-activity-table-container dashboard-card">
+                        <table class="recent-activity-table">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Test Title</th>
+                                    <th scope="col">Score</th>
+                                    <th scope="col">Accuracy</th>
+                                    <th scope="col">Time Taken</th>
+                                    <th scope="col"></th> <!-- For View Details button -->
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${
+                                  dashboardState.quizResults.length > 0
+                                    ? dashboardState.quizResults
+                                        .slice(0, 5) // Show only the 5 most recent
+                                        .map((result) => {
+                                          const category = quizCategories.find(
+                                            (cat) =>
+                                              cat.id === result.categoryId
+                                          );
+                                          const categoryName = category
+                                            ? category.name
+                                            : "N/A";
+                                          const date = result.timestamp
+                                            ? new Date(
+                                                result.timestamp.toDate()
+                                              ).toLocaleDateString()
+                                            : "N/A";
+                                          // Robust Test Title Lookup
+                                          const foundTest = allQuizTests.find(
+                                            (test) =>
+                                              String(test.id) ===
+                                              String(result.testId)
+                                          );
+                                          const testTitle =
+                                            foundTest?.title ||
+                                            `Test ID: ${result.testId} (Title Not Found)`;
+
+                                          console.log(
+                                            `Dashboard Recent Activity - result.testId: ${result.testId}, resolved testTitle: ${testTitle}`
+                                          );
+
+                                          return `
+                                                <tr data-quiz-result-id="${
+                                                  result.id
+                                                }">
+                                                    <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
+                                                    <td class="whitespace-nowrap text-sm text-gray-900">${categoryName}</td>
+                                                    <td class="whitespace-nowrap text-sm text-gray-900">${testTitle}</td>
+                                                    <td class="whitespace-nowrap text-sm text-gray-900">${
+                                                      result.score
+                                                    }</td>
+                                                    <td class="whitespace-nowrap text-sm text-gray-900">${(
+                                                      result.percentage || 0
+                                                    ).toFixed(2)}%</td>
+                                                    <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
+                                                      result.timeTakenSeconds
+                                                    )}</td>
+                                                    <td class="whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="quiz-detail-review.html?resultId=${
+                                                          result.id
+                                                        }" class="text-blue-600 hover:text-blue-900">View Details</a>
+                                                    </td>
+                                                </tr>
+                                            `;
+                                        })
+                                        .join("")
+                                    : `
+                                        <tr class="no-data-row">
+                                            <td colspan="7" class="py-12 text-lg text-gray-500">
+                                                ${
+                                                  dashboardState.userId
+                                                    ? "No recent quiz activity. Start a quiz to see your results here!"
+                                                    : "Please sign in to view your quiz activity."
+                                                }
+                                            </td>
+                                        </tr>
+                                        `
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    ${
+                      dashboardState.quizResults.length > 5
+                        ? `
+                            <div class="flex justify-center mt-6">
+                                <button id="view-all-history-btn" class="flex items-center gap-2 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg shadow-md hover:bg-gray-300 transition-colors duration-200 font-semibold text-base transform active:scale-95" data-view="quizHistory">
+                                    ${Icons.History} View All History
+                                </button>
+                            </div>
+                        `
+                        : ""
+                    }
+                </div>
+
+                <div class="flex justify-center mt-12">
+                    <button id="start-new-quiz-btn" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95" data-view="quizCategories">
+                        ${Icons.Play} Start a New Quiz
+                    </button>
+                </div>
+            </section>
+        </div>
+        `;
+
+        if (totalQuizzesCompleted > 0) {
+          renderCharts(); // Only render charts if there's data
+        }
+
+        // Event listeners are now set up in setupGlobalEventListeners
+      }
+
+      /**
+       * Renders the Quiz Categories view.
+       */
+      function renderQuizHomeView() {
+        const appContentDiv = document.getElementById("app-content");
+        if (!appContentDiv) return;
+
+        appContentDiv.innerHTML = `
+            <section class="hero-section-new max-w-6xl mx-auto my-2 relative overflow-hidden rounded-3xl w-full">
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/3762804/pexels-photo-3762804.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-600/70 to-pink-600/70"></div>
+                </div>
+                <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                    <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                        QUIZ CATEGORIES
+                    </h1>
+                    <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                        Choose a category to test your IELTS knowledge!
+                    </p>
+                </div>
+            </section>
+
+            <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Available Quizzes</h2>
+                <div id="quiz-categories-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    ${quizCategories
+                      .map(
+                        (category) => `
+                        <div class="dashboard-card p-6 flex flex-col items-center text-center animate-fade-in-up">
+                            <div class="icon-wrapper bg-gradient-to-br from-blue-500 to-purple-600 text-white text-4xl mb-4">
+                                ${category.icon}
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">${category.name}</h3>
+                            <p class="text-gray-600 text-sm mb-4">${category.description}</p>
+                            <button data-category-id="${category.id}" class="start-quiz-btn px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
+                                Start Quiz
+                            </button>
+                        </div>
+                    `
+                      )
+                      .join("")}
+                </div>
+            </section>
+        `;
+
+        // Event listeners are now set up in setupGlobalEventListeners
+      }
+
+      /**
+       * Renders the Quiz History view.
+       */
+      function renderQuizHistoryView() {
+        const appContentDiv = document.getElementById("app-content");
+        if (!appContentDiv) return;
+
+        appContentDiv.innerHTML = `
+            <section class="hero-section-new max-w-6xl mx-auto my-2 relative overflow-hidden rounded-3xl w-full">
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/3762804/pexels-photo-3762804.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');">
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-600/70 to-teal-600/70"></div>
+                </div>
+                <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                    <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                        QUIZ HISTORY
+                    </h1>
+                    <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                        Review your past quiz performances.
+                    </p>
+                </div>
+            </section>
+
+            <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">All Quiz Results</h2>
+                <div class="recent-activity-table-container dashboard-card">
+                    <table class="recent-activity-table">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Test Title</th>
+                                <th scope="col">Score</th>
+                                <th scope="col">Accuracy</th>
+                                <th scope="col">Time Taken</th>
+                                <th scope="col"></th> <!-- For View Details button -->
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${
+                              dashboardState.quizResults.length > 0
+                                ? dashboardState.quizResults
+                                    .map((result) => {
+                                      const category = quizCategories.find(
+                                        (cat) => cat.id === result.categoryId
+                                      );
+                                      const categoryName = category
+                                        ? category.name
+                                        : "N/A";
+                                      const date = result.timestamp
+                                        ? new Date(
+                                            result.timestamp.toDate()
+                                          ).toLocaleDateString()
+                                        : "N/A";
+                                      // Robust Test Title Lookup
+                                      const foundTest = allQuizTests.find(
+                                        (test) =>
+                                          String(test.id) ===
+                                          String(result.testId)
+                                      );
+                                      const testTitle =
+                                        foundTest?.title ||
+                                        `Test ID: ${result.testId} (Title Not Found)`;
+
+                                      console.log(
+                                        `Quiz History - result.testId: ${result.testId}, resolved testTitle: ${testTitle}`
+                                      );
+
+                                      return `
+                                        <tr data-quiz-result-id="${result.id}">
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${categoryName}</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${testTitle}</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${
+                                              result.score
+                                            }</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${(
+                                              result.percentage || 0
+                                            ).toFixed(2)}%</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
+                                              result.timeTakenSeconds
+                                            )}</td>
+                                            <td class="whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="quiz-detail-review.html?resultId=${
+                                                  result.id
+                                                }" class="text-blue-600 hover:text-blue-900">View Details</a>
+                                            </td>
+                                        </tr>
+                                    `;
+                                    })
+                                    .join("")
+                                : `
+                                <tr class="no-data-row">
+                                    <td colspan="7" class="py-12 text-lg text-gray-500">
+                                        ${
+                                          dashboardState.userId
+                                            ? "No quiz history available. Complete some quizzes!"
+                                            : "Please sign in to view your quiz history."
+                                        }
+                                    </td>
+                                </tr>
+                                `
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        `;
+
+        // Event listeners are now set up in setupGlobalEventListeners
+      }
+
+      /**
+       * Renders the Progress Tracking view.
+       * (Placeholder for now, could expand with more detailed charts/goals)
+       */
+      function renderProgressTrackingView() {
+        const appContentDiv = document.getElementById("app-content");
+        if (!appContentDiv) return;
+
+        const {
+          totalQuizzesCompleted,
+          totalTimeSpent,
+          averageScore,
+          averageAccuracy,
+          categoryPerformance,
+          scoreTrend,
+        } = dashboardState.performanceMetrics;
+        const { totalPoints, level, badges } = dashboardState.userGameStats;
+        const levelProgress = getLevelProgress();
+        const insights = getInsights();
+
+        appContentDiv.innerHTML = `
+            <section class="hero-section-new max-w-6xl mx-auto my-2 relative overflow-hidden rounded-3xl w-full">
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/3762804/pexels-photo-3762804.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-700/70 to-blue-700/70"></div>
+                </div>
+                <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                    <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                        PROGRESS TRACKING
+                    </h1>
+                    <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                        Visualize your journey and set new goals.
+                    </p>
+                </div>
+            </section>
+
+            <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Your Progress Summary</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                    <div class="dashboard-card p-6 animate-fade-in-up">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            ${Icons.LevelUp} Level Progress
+                        </h3>
+                        <p class="text-gray-700 mb-2">Current Level: <span class="font-bold text-purple-700">Level ${
+                          levelProgress.currentLevel
+                        }</span></p>
+                        ${
+                          levelProgress.isMaxLevel
+                            ? `
+                                <p class="text-green-600 font-semibold text-lg">You've reached the maximum level! Keep up the great work!</p>
+                                <div class="w-full bg-gray-200 rounded-full h-4 mt-4 overflow-hidden">
+                                    <div class="bg-green-500 h-full rounded-full" style="width: 100%;"></div>
+                                </div>
+                            `
+                            : `
+                                <p class="text-gray-700 mb-4">Points to next level (Level ${levelProgress.nextLevel}): <span class="font-bold text-blue-600">${levelProgress.pointsToNextLevel} Pts</span></p>
+                                <div class="w-full bg-gray-200 rounded-full h-4 mt-2 overflow-hidden">
+                                    <div class="bg-blue-500 h-full rounded-full transition-all duration-500 ease-out" style="width: ${levelProgress.progressPercentage}%;"></div>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">${levelProgress.progressPercentage}% to Level ${levelProgress.nextLevel}</p>
+                            `
+                        }
+                    </div>
+                     <div class="dashboard-card p-6 animate-fade-in-up">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            ${Icons.Target} Your Target Band
+                        </h3>
+                        <p class="text-gray-700 text-lg mb-4">Your current target: <span class="font-bold text-blue-600">${
+                          dashboardState.userProfile?.bandGoal || "Not Set"
+                        }</span></p>
+                        <button id="set-update-target-btn" class="px-4 py-2 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition-colors font-semibold text-sm">
+                            Set/Update Target
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Charts Section (reused from dashboard overview) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                    <div class="chart-container animate-fade-in-up">
+                        <canvas id="categoryPerformanceChart"></canvas>
+                        ${
+                          totalQuizzesCompleted === 0
+                            ? '<p class="text-gray-500 mt-4">No category data to display. Complete some quizzes!</p>'
+                            : ""
+                        }
+                    </div>
+                    <div class="chart-container animate-fade-in-up">
+                        <canvas id="scoreTrendChart"></canvas>
+                        ${
+                          totalQuizzesCompleted === 0
+                            ? '<p class="text-gray-500 mt-4">No trend data to display. Complete some quizzes!</p>'
+                            : ""
+                        }
+                    </div>
+                </div>
+
+                <!-- Insights Section (reused from dashboard overview) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="insights-section dashboard-card animate-fade-in-up">
+                        <h3 class="flex items-center gap-2">
+                            ${Icons.ThumbsUp} Your Strengths
+                        </h3>
+                        <ul>
+                            ${
+                              insights.strengths.length > 0
+                                ? insights.strengths
+                                    .map(
+                                      (s) =>
+                                        `<li class="strength-item">${Icons.CheckCircle} <span>${s}</span></li>`
+                                    )
+                                    .join("")
+                                : "<li>No specific strengths identified yet. Keep practicing!</li>"
+                            }
+                        </ul>
+                    </div>
+                    <div class="insights-section dashboard-card animate-fade-in-up">
+                        <h3 class="flex items-center gap-2">
+                            ${Icons.Award} Areas for Improvement
+                        </h3>
+                        <ul>
+                            ${
+                              insights.weaknesses.length > 0
+                                ? insights.weaknesses
+                                    .map(
+                                      (w) =>
+                                        `<li class="weakness-item">${Icons.X} <span>${w}</span></li>`
+                                    )
+                                    .join("")
+                                : "<li>Great job! No major areas for improvement detected.</li>"
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        `;
+        if (totalQuizzesCompleted > 0) {
+          renderCharts();
+        }
+        // Event listeners are now set up in setupGlobalEventListeners
+      }
+
+      /**
+       * Renders a paginated leaderboard table.
+       * @param {Array<Object>} data - The full array of leaderboard data.
+       * @param {number} currentPage - The current page number.
+       * @param {number} itemsPerPage - Number of items per page.
+       * @param {string} tableId - The ID of the table element.
+       * @param {string} paginationId - The ID of the pagination controls container.
+       * @param {boolean} isDaily - True if it's the daily leaderboard, false for global.
+       * @returns {string} HTML string for the table and pagination.
+       */
+      function renderLeaderboardTable(
+        data,
+        currentPage,
+        itemsPerPage,
+        tableId,
+        paginationId,
+        isDaily = false
+      ) {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedData = data.slice(startIndex, endIndex);
+        const totalPages = Math.ceil(data.length / itemsPerPage);
+
+        let tableRowsHtml = "";
+        if (paginatedData.length > 0) {
+          tableRowsHtml = paginatedData
+            .map((entry, index) => {
+              const rank = startIndex + index + 1;
+              const isCurrentUser = entry.userId === dashboardState.userId;
+              const scoreDisplay = isDaily
+                ? `${entry.totalDailyScore || 0}`
+                : `${entry.totalPoints || 0}`;
+              const levelDisplay = isDaily
+                ? ""
+                : `<td class="whitespace-nowrap text-sm text-gray-900">Lvl ${
+                    entry.level || 1
+                  }</td>`;
+
+              return `
+                    <tr class="${isCurrentUser ? "current-user-row" : ""}">
+                        <td class="whitespace-nowrap text-sm text-gray-900">${rank}</td>
+                        <td class="whitespace-nowrap text-sm text-gray-900 flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center text-blue-800 font-semibold text-sm">
+                                ${entry.userName.charAt(0).toUpperCase()}
+                            </div>
+                            ${entry.userName}
+                            ${
+                              isCurrentUser
+                                ? `<span class="ml-2 text-xs bg-blue-600 text-white px-2 py-1 rounded-full">You</span>`
+                                : ""
+                            }
+                        </td>
+                        <td class="whitespace-nowrap text-sm text-gray-900">${scoreDisplay}</td>
+                        ${levelDisplay}
+                    </tr>
+                `;
+            })
+            .join("");
+        } else {
+          tableRowsHtml = `
+                <tr class="no-data-row">
+                    <td colspan="${
+                      isDaily ? 3 : 4
+                    }" class="py-12 text-lg text-gray-500">
+                        ${
+                          dashboardState.userId
+                            ? `No leaderboard data available yet. ${
+                                isDaily
+                                  ? "Be the first to score some points today!"
+                                  : "Be the first to score some points!"
+                              }`
+                            : "Please sign in to view the leaderboard."
+                        }
+                    </td>
+                </tr>
+            `;
+        }
+
+        const paginationControlsHtml = `
+            <div id="${paginationId}" class="pagination-controls">
+                <button data-page="prev" data-leaderboard-type="${
+                  isDaily ? "daily" : "global"
+                }" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
+                ${Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .map(
+                    (page) => `
+                    <button class="page-number ${
+                      page === currentPage ? "active" : ""
+                    }" data-page="${page}" data-leaderboard-type="${
+                      isDaily ? "daily" : "global"
+                    }">${page}</button>
+                `
+                  )
+                  .join("")}
+                <button data-page="next" data-leaderboard-type="${
+                  isDaily ? "daily" : "global"
+                }" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
+            </div>
+        `;
+
+        return `
+            <div class="leaderboard-table-container">
+                <table class="leaderboard-table" id="${tableId}">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col">Rank</th>
+                            <th scope="col">Player</th>
+                            <th scope="col">${
+                              isDaily ? "Total Daily Score" : "Total Points"
+                            }</th>
+                            ${isDaily ? "" : '<th scope="col">Level</th>'}
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        ${tableRowsHtml}
+                    </tbody>
+                </table>
+            </div>
+            ${totalPages > 1 ? paginationControlsHtml : ""}
+        `;
+      }
+
+      /**
+       * Renders the Global Leaderboard view.
+       */
+      function renderGlobalLeaderboardView() {
+        const appContentDiv = document.getElementById("app-content");
+        if (!appContentDiv) return;
+
+        const currentUserRank = dashboardState.userGlobalRank;
+        const userPoints =
+          dashboardState.userGameStats.totalPoints !== undefined
+            ? dashboardState.userGameStats.totalPoints
+            : "N/A";
+
+        appContentDiv.innerHTML = `
+            <section class="hero-section-new max-w-6xl mx-auto my-2 relative overflow-hidden rounded-3xl w-full">
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/5428830/pexels-photo-5428830.jpeg');">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/70 to-purple-600/70"></div>
+                </div>
+                <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                    <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                        GLOBAL LEADERBOARD
+                    </h1>
+                    <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                        See how you stack up against other IELTS Mahir users!
+                    </p>
+                </div>
+            </section>
+
+            <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Top Players</h2>
+
+                <!-- Current User Rank Card -->
+                <div class="current-user-leaderboard-card mb-12 animate-fade-in-up">
+                    <h3 class="text-xl sm:text-2xl font-bold text-blue-800 mb-4 flex items-center justify-center gap-2">
+                        ${Icons.Leaderboard} Your Rank
+                    </h3>
+                    ${
+                      currentUserRank
+                        ? `
+                        <p class="text-gray-700 text-lg mb-2">You are currently ranked:</p>
+                        <p class="text-5xl font-anton text-blue-700 font-bold mb-4">#${currentUserRank}</p>
+                        <p class="text-gray-700 text-lg">With <span class="font-bold text-green-600">${userPoints}</span> Total Points</p>
+                    `
+                        : `
+                        <p class="text-gray-600 text-lg mb-4">You are not yet ranked globally.</p>
+                        <p class="text-gray-500 text-sm mb-4">Complete quizzes to earn points and climb the ranks!</p>
+                        <button id="start-quiz-global-leaderboard-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-sm transform active:scale-95" data-view="quizCategories">
+                            ${Icons.Play} Start a Quiz
+                        </button>
+                    `
+                    }
+                </div>
+
+                ${renderLeaderboardTable(
+                  dashboardState.globalLeaderboard,
+                  dashboardState.globalLeaderboardCurrentPage,
+                  dashboardState.leaderboardItemsPerPage,
+                  "global-leaderboard-table",
+                  "global-pagination-controls"
+                )}
+            </section>
+        `;
+      }
+
+      /**
+       * Renders the Daily Leaderboard view.
+       */
+      function renderDailyLeaderboardView() {
+        const appContentDiv = document.getElementById("app-content");
+        if (!appContentDiv) return;
+
+        const currentDailyRank = dashboardState.dailyLeaderboardRank;
+        const userDailyScore = dashboardState.dailyLeaderboardData.find(
+          (entry) => entry.userId === dashboardState.userId
+        )?.totalDailyScore;
+
+        appContentDiv.innerHTML = `
+            <section class="hero-section-new max-w-6xl mx-auto my-2 relative overflow-hidden rounded-3xl w-full">
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/3762804/pexels-photo-3762804.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');">
+                    <div class="absolute inset-0 bg-gradient-to-br from-orange-600/70 to-yellow-600/70"></div>
+                </div>
+                <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                    <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                        DAILY LEADERBOARD
+                    </h1>
+                    <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                        Compete for the top spot today!
+                    </p>
+                </div>
+            </section>
+
+            <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Today's Top Players</h2>
+
+                <!-- Daily Reset Timer -->
+                <div class="daily-timer-card animate-fade-in-up">
+                    <span class="timer-icon">${Icons.Time}</span>
+                    <span class="timer-text">Leaderboard resets in:</span>
+                    <span id="daily-reset-countdown" class="countdown">--:--:--</span>
+                </div>
+
+                <!-- Current User Daily Rank Card -->
+                <div class="current-user-leaderboard-card mb-12 animate-fade-in-up">
+                    <h3 class="text-xl sm:text-2xl font-bold text-blue-800 mb-4 flex items-center justify-center gap-2">
+                        ${Icons.CalendarDay} Your Daily Rank
+                    </h3>
+                    ${
+                      currentDailyRank
+                        ? `
+                        <p class="text-gray-700 text-lg mb-2">You are currently ranked today:</p>
+                        <p class="text-5xl font-anton text-orange-600 font-bold mb-4">#${currentDailyRank}</p>
+                        <p class="text-gray-700 text-lg">With <span class="font-bold text-green-600">${userDailyScore}</span> Points Today</p>
+                    `
+                        : `
+                        <p class="text-gray-600 text-lg mb-4">You haven't ranked on the daily leaderboard yet.</p>
+                        <p class="text-gray-500 text-sm mb-4">Complete a quiz today to see your rank!</p>
+                        <button id="start-quiz-daily-leaderboard-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-sm transform active:scale-95" data-view="quizCategories">
+                            ${Icons.Play} Start a Quiz
+                        </button>
+                    `
+                    }
+                </div>
+
+                ${renderLeaderboardTable(
+                  dashboardState.dailyLeaderboardData,
+                  dashboardState.dailyLeaderboardCurrentPage,
+                  dashboardState.leaderboardItemsPerPage,
+                  "daily-leaderboard-table",
+                  "daily-pagination-controls",
+                  true
+                )}
+            </section>
+        `;
+        // Start the timer when the daily leaderboard view is rendered
+        startDailyResetTimer();
+      }
+
+      /**
+       * Renders the User Profile view.
+       */
+      function renderProfileView() {
+        const appContentDiv = document.getElementById("app-content");
+        if (!appContentDiv) return;
+
+        const user = authAppState.auth?.currentUser;
+        const userName =
+          dashboardState.userProfile?.name ||
+          user?.email?.split("@")[0] ||
+          "N/A";
+        const userEmail = user?.email || "N/A";
+        const userBandGoal = dashboardState.userProfile?.bandGoal || "Not Set";
+        const userLevel = dashboardState.userGameStats.level || 1;
+        const userTotalPoints = dashboardState.userGameStats.totalPoints || 0;
+        const memberSince = user?.metadata?.creationTime
+          ? new Date(user.metadata.creationTime).toLocaleDateString()
+          : "N/A";
+        const lastLogin = user?.metadata?.lastSignInTime
+          ? new Date(user.metadata.lastSignInTime).toLocaleDateString()
+          : "N/A";
+
+        appContentDiv.innerHTML = `
+            <section class="hero-section-new max-w-4xl mx-auto my-2 relative overflow-hidden rounded-3xl w-full">
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/3762804/pexels-photo-3762804.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');">
+                    <div class="absolute inset-0 bg-gradient-to-br from-teal-600/70 to-blue-600/70"></div>
+                </div>
+                <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                    <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                        YOUR PROFILE
+                    </h1>
+                    <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                        Manage your account and personal details.
+                    </p>
+                </div>
+            </section>
+
+            <section class="mt-12 mb-8 max-w-4xl mx-auto px-4 w-full">
+                <div class="dashboard-card p-6 sm:p-8 flex flex-col items-center text-center animate-fade-in-up">
+                    <div class="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-6 flex items-center justify-center rounded-full bg-blue-500 text-white text-5xl sm:text-6xl font-bold shadow-lg">
+                        ${userName.charAt(0).toUpperCase()}
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 font-anton mb-4">${userName}</h2>
+                    <p class="text-gray-700 text-lg mb-2"><span class="font-semibold">Email:</span> ${userEmail}</p>
+                    <p class="text-gray-700 text-lg mb-2"><span class="font-semibold">Level:</span> ${userLevel}</p>
+                    <p class="text-gray-700 text-lg mb-2"><span class="font-semibold">Total Points:</span> ${userTotalPoints}</p>
+                    <p class="text-gray-700 text-lg mb-4"><span class="font-semibold">Target Band:</span> ${userBandGoal}</p>
+                    <p class="text-gray-500 text-sm mb-2">Member Since: ${memberSince}</p>
+                    <p class="text-gray-500 text-sm mb-6">Last Login: ${lastLogin}</p>
+
+                    <button id="edit-profile-btn" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
+                        ${Icons.Edit} Edit Profile
+                    </button>
+                </div>
+            </section>
+        `;
+        // Event listeners are now set up in setupGlobalEventListeners
+      }
+
+      /**
+       * Main render function for the application, dispatches to different views.
+       */
+      function renderApp() {
+        // Pass authAppState.auth.currentUser to updateAuthUI to ensure it's defined
+        // Ensure authAppState.auth is defined before attempting to access authAppState.auth.currentUser
+        updateAuthUI(authAppState.auth ? authAppState.auth.currentUser : null);
+        renderLeftSidebar();
+        renderMobileBottomNav();
+
+        const appContentDiv = document.getElementById("app-content");
+        if (!appContentDiv) return;
+
+        if (dashboardState.isLoading) {
+          appContentDiv.innerHTML = getLoadingSpinnerHtml();
+          return;
+        }
+
+        // Clear any existing timer when switching views, unless it's the daily leaderboard view
+        if (
+          dashboardState.dailyResetTimerInterval &&
+          dashboardState.currentView !== "dailyLeaderboard"
+        ) {
+          clearInterval(dashboardState.dailyResetTimerInterval);
+          dashboardState.dailyResetTimerInterval = null;
+        }
+
+        switch (dashboardState.currentView) {
+          case "dashboard":
+            renderDashboardOverview();
+            break;
+          case "quizCategories":
+            renderQuizHomeView();
+            break;
+          case "quizHistory":
+            renderQuizHistoryView();
+            break;
+          case "progressTracking":
+            renderProgressTrackingView();
+            break;
+          case "globalLeaderboard":
+            renderGlobalLeaderboardView();
+            break;
+          case "dailyLeaderboard":
+            renderDailyLeaderboardView();
+            break;
+          case "profile":
+            renderProfileView();
+            break;
+          default:
+            renderDashboardOverview(); // Fallback to dashboard
+            break;
+        }
+        setupGlobalEventListeners(); // Setup listeners after rendering content
+      }
+
+      /**
+       * Sets up all global event listeners for navigation and dynamic content.
+       * This function should be called after `renderApp()` to ensure elements exist.
+       */
+      function setupGlobalEventListeners() {
+        // Mobile Sidebar Toggle
+        document
+          .getElementById("mobile-menu-button")
+          ?.addEventListener("click", toggleMobileSidebar);
+        document
+          .getElementById("sidebar-close-button")
+          ?.addEventListener("click", closeMobileSidebar);
+        document
+          .getElementById("sidebar-overlay")
+          ?.addEventListener("click", closeMobileSidebar);
+
+        // Top navigation links
+        document.querySelectorAll("#app-header .nav-link").forEach((link) => {
+          link.addEventListener("click", (event) => {
+            event.preventDefault();
+            const viewId = event.currentTarget.id
+              .replace("nav-", "")
+              .replace("-top", "");
+            dashboardState.currentView = viewId;
+            renderApp();
+            closeMobileSidebar(); // Close sidebar after navigation
+          });
+        });
+
+        // Left sidebar navigation items
+        document
+          .querySelectorAll("#left-sidebar .nav-item")
+          .forEach((button) => {
+            button.addEventListener("click", (event) => {
+              event.preventDefault(); // Prevent default anchor behavior
+              const view = event.currentTarget.dataset.view;
+              dashboardState.currentView = view;
+              renderApp();
+              closeMobileSidebar(); // Close sidebar after navigation
+              // Update active state
+              document
+                .querySelectorAll("#left-sidebar .nav-item")
+                .forEach((btn) => {
+                  btn.classList.remove("active");
+                });
+              event.currentTarget.classList.add("active");
+            });
+          });
+
+        // Mobile bottom navigation items
+        document
+          .querySelectorAll("#mobile-bottom-nav button")
+          .forEach((button) => {
+            button.addEventListener("click", (event) => {
+              event.preventDefault(); // Prevent default anchor behavior
+              const view = event.currentTarget.dataset.view;
+              dashboardState.currentView = view;
+              renderApp();
+              // Update active state
+              document
+                .querySelectorAll("#mobile-bottom-nav button")
+                .forEach((btn) => {
+                  btn.classList.remove("active");
+                });
+              event.currentTarget.classList.add("active");
+            });
+          });
+
+        // Dashboard Overview specific buttons
+        document
+          .getElementById("start-quiz-dashboard-btn")
+          ?.addEventListener("click", (event) => {
+            event.preventDefault();
+            dashboardState.currentView = "quizCategories";
+            renderApp();
+            closeMobileSidebar();
+          });
+        document
+          .getElementById("view-global-leaderboard-btn")
+          ?.addEventListener("click", (event) => {
+            event.preventDefault();
+            dashboardState.currentView = "globalLeaderboard";
+            renderApp();
+            closeMobileSidebar();
+          });
+        document
+          .getElementById("view-daily-leaderboard-btn")
+          ?.addEventListener("click", (event) => {
+            event.preventDefault();
+            dashboardState.currentView = "dailyLeaderboard";
+            renderApp();
+            closeMobileSidebar();
+          });
+
+        document
+          .getElementById("start-new-quiz-btn")
+          ?.addEventListener("click", (event) => {
+            event.preventDefault();
+            dashboardState.currentView = "quizCategories";
+            renderApp();
+            closeMobileSidebar();
+          });
+
+        // Quiz Categories specific buttons
+        document.querySelectorAll(".start-quiz-btn").forEach((button) => {
+          button.addEventListener("click", (event) => {
+            const categoryId = event.target.dataset.categoryId;
+            if (categoryId) {
+              window.location.href = `quiz-test.html?categoryId=${categoryId}`;
+            }
+          });
+        });
+
+        // Quiz History "View Details" buttons (still navigates to external detail page)
+        document.querySelectorAll(".view-details-btn").forEach((button) => {
+          // This button is now an anchor in the HTML, so no explicit JS listener needed if href is set.
+          // However, if they were still buttons, this would be the place:
+          // button.addEventListener("click", (event) => {
+          //   const quizResultId = event.target.dataset.quizResultId;
+          //   if (quizResultId) {
+          //     window.location.href = `quiz-detail-review.html?resultId=${quizResultId}`;
+          //   }
+          // });
+        });
+
+        // "View All History" button
+        document
+          .getElementById("view-all-history-btn")
+          ?.addEventListener("click", (event) => {
+            event.preventDefault();
+            dashboardState.currentView = "quizHistory";
+            renderApp();
+            closeMobileSidebar();
+          });
+
+        // Progress Tracking specific buttons
+        document
+          .getElementById("set-update-target-btn")
+          ?.addEventListener("click", () => {
+            showEditProfileModal();
+          });
+
+        // Profile View specific buttons
+        document
+          .getElementById("edit-profile-btn")
+          ?.addEventListener("click", () => {
+            showEditProfileModal();
+          });
+
+        // Daily Leaderboard specific buttons
+        document
+          .getElementById("start-quiz-daily-leaderboard-btn")
+          ?.addEventListener("click", (event) => {
+            event.preventDefault();
+            dashboardState.currentView = "quizCategories";
+            renderApp();
+            closeMobileSidebar();
+          });
+
+        // Pagination event listeners (delegated to document for dynamic elements)
+        document
+          .querySelectorAll(".pagination-controls button")
+          .forEach((button) => {
+            button.onclick = (event) => {
+              const pageAction = event.currentTarget.dataset.page;
+              const leaderboardType =
+                event.currentTarget.dataset.leaderboardType;
+              let currentPage =
+                leaderboardType === "daily"
+                  ? dashboardState.dailyLeaderboardCurrentPage
+                  : dashboardState.globalLeaderboardCurrentPage;
+              const totalPages = Math.ceil(
+                (leaderboardType === "daily"
+                  ? dashboardState.dailyLeaderboardData.length
+                  : dashboardState.globalLeaderboard.length) /
+                  dashboardState.leaderboardItemsPerPage
+              );
+
+              if (pageAction === "prev") {
+                currentPage = Math.max(1, currentPage - 1);
+              } else if (pageAction === "next") {
+                currentPage = Math.min(totalPages, currentPage + 1);
+              } else {
+                currentPage = parseInt(pageAction);
+              }
+
+              if (leaderboardType === "daily") {
+                dashboardState.dailyLeaderboardCurrentPage = currentPage;
+              } else {
+                dashboardState.globalLeaderboardCurrentPage = currentPage;
+              }
+              renderApp(); // Re-render the current view to update the table
+            };
+          });
+      }
+
+      /**
+       * Calculates the next midnight UTC timestamp.
+       * @returns {number} Timestamp of the next midnight UTC.
+       */
+      function calculateNextDailyReset() {
+        const now = new Date();
+        const nextMidnightUTC = new Date(
+          Date.UTC(
+            now.getUTCFullYear(),
+            now.getUTCMonth(),
+            now.getUTCDate() + 1, // Next day
+            0, // 00 hours
+            0, // 00 minutes
+            0, // 00 seconds
+            0 // 000 milliseconds
+          )
+        );
+        return nextMidnightUTC.getTime(); // Return timestamp in milliseconds
+      }
+
+      /**
+       * Updates the daily reset countdown display.
+       */
+      async function updateDailyResetCountdown() {
+        const countdownElement = document.getElementById(
+          "daily-reset-countdown"
+        );
+        if (!countdownElement) {
+          clearInterval(dashboardState.dailyResetTimerInterval);
+          dashboardState.dailyResetTimerInterval = null;
+          return;
+        }
+
+        const now = new Date().getTime();
+        const timeLeft = dashboardState.dailyResetTime - now;
+
+        if (timeLeft <= 0) {
+          countdownElement.textContent = "00:00:00";
+          clearInterval(dashboardState.dailyResetTimerInterval);
+          dashboardState.dailyResetTimerInterval = null;
+          showToast("Daily leaderboard has reset!", "info");
+          // Re-fetch daily leaderboard data and restart timer
+          await fetchDailyLeaderboardData(dashboardState.userId);
+          dashboardState.dailyLeaderboardCurrentPage = 1; // Reset to first page
+          renderApp(); // Re-render the daily leaderboard view
+          startDailyResetTimer(); // Start timer for the next day
+          return;
+        }
+
+        const hours = Math.floor(
+          (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        countdownElement.textContent = `${String(hours).padStart(
+          2,
+          "0"
+        )}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+          2,
+          "0"
+        )}`;
+      }
+
+      /**
+       * Starts the daily reset timer.
+       */
+      function startDailyResetTimer() {
+        if (dashboardState.dailyResetTimerInterval) {
+          clearInterval(dashboardState.dailyResetTimerInterval);
+        }
+        dashboardState.dailyResetTime = calculateNextDailyReset();
+        updateDailyResetCountdown(); // Initial call to display immediately
+        dashboardState.dailyResetTimerInterval = setInterval(
+          updateDailyResetCountdown,
+          1000
+        );
+      }
+
+      function setupFirestoreListeners() {
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+
+        // Unsubscribe all previous listeners before setting up new ones
+        if (dashboardState.unsubscribeAll) {
+          dashboardState.unsubscribeAll.forEach((unsub) => unsub());
+        }
+        dashboardState.unsubscribeAll = []; // Initialize to store new unsubscribes
+
+        // Since authentication is removed, these listeners won't be set up based on userId
+        // They will effectively be no-ops unless userId is set by other means.
+        if (dashboardState.userId) {
+          // Listener for current user's profile
+          const unsubscribeUserProfile = onSnapshot(
+            doc(
+              authAppState.db,
+              `artifacts/${appId}/users/${dashboardState.userId}/userProfile/profile`
+            ),
+            (docSnap) => {
+              if (docSnap.exists()) {
+                dashboardState.userProfile = {
+                  ...docSnap.data(),
+                };
+              } else {
+                console.warn(
+                  "User profile not found in listener, attempting to create default."
+                );
+                // Create a default profile with a name if it doesn't exist
+                const defaultProfile = {
+                  name:
+                    authAppState.auth.currentUser?.displayName ||
+                    authAppState.auth.currentUser?.email?.split("@")[0] ||
+                    `User-${authAppState.auth.currentUser?.uid.substring(
+                      0,
+                      5
+                    )}`,
+                  bandGoal: "", // Initialize band goal
+                };
+                setDoc(
+                  doc(
+                    authAppState.db,
+                    `artifacts/${appId}/users/${dashboardState.userId}/userProfile/profile`
+                  ),
+                  defaultProfile,
+                  { merge: true }
+                )
+                  .then(() => (dashboardState.userProfile = defaultProfile))
+                  .catch((e) =>
+                    console.error(
+                      "Error creating default profile in listener:",
+                      e
+                    )
+                  );
+              }
+              // Re-render relevant parts of the UI after profile update
+              updateAuthUI(
+                authAppState.auth ? authAppState.auth.currentUser : null
+              ); // Pass authAppState.auth.currentUser safely
+              renderLeftSidebar(); // Update left sidebar with user stats
+              renderMobileBottomNav(); // Update profile button active state
+              renderApp(); // Re-render current view if profile data affects it
+            },
+            (error) =>
+              console.error("Error fetching current user profile:", error)
+          );
+          dashboardState.unsubscribeAll.push(unsubscribeUserProfile); // Store unsubscribe function
+
+          // Listener for user's game stats
+          const unsubscribeGameStats = onSnapshot(
+            doc(
+              authAppState.db,
+              `artifacts/${appId}/users/${dashboardState.userId}/gameStats/summary`
+            ),
+            (docSnap) => {
+              if (docSnap.exists()) {
+                dashboardState.userGameStats = {
+                  totalPoints: 0,
+                  level: 1,
+                  completedTests: [],
+                  badges: [],
+                  ...docSnap.data(),
+                };
+              } else {
+                dashboardState.userGameStats = {
+                  totalPoints: 0,
+                  level: 1,
+                  completedTests: [],
+                  badges: [],
+                };
+              }
+              updateAuthUI(
+                authAppState.auth ? authAppState.auth.currentUser : null
+              ); // Pass authAppState.auth.currentUser safely
+              renderLeftSidebar(); // Update points/level in left sidebar
+              renderApp(); // Re-render to update dashboard stats
+            },
+            (error) => console.error("Error fetching game stats:", error)
+          );
+          dashboardState.unsubscribeAll.push(unsubscribeGameStats);
+
+          // Listener for user's quiz results
+          const unsubscribeQuizResults = onSnapshot(
+            collection(
+              authAppState.db,
+              `artifacts/${appId}/users/${dashboardState.userId}/quizResults`
+            ),
+            (snapshot) => {
+              const results = [];
+              snapshot.forEach((doc) => {
+                results.push({ id: doc.id, ...doc.data() });
+              });
+              // Sort by timestamp descending for recent activity
+              results.sort(
+                (a, b) =>
+                  (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0)
+              );
+              dashboardState.quizResults = results;
+              processDashboardData(); // Re-process performance metrics
+              renderApp(); // Re-render to update quiz history/charts
+            },
+            (error) => console.error("Error fetching quiz results:", error)
+          );
+          dashboardState.unsubscribeAll.push(unsubscribeQuizResults);
+
+          // Listener for global leaderboard (no real-time updates needed, can be fetched on demand)
+          // For a truly world-class app, this might be a cloud function that aggregates data.
+          // For now, we'll fetch it when the leaderboard view is rendered.
+        }
+      }
+
+      // Initialization Logic
+      window.onload = async function () {
+        dashboardState.isLoading = true;
+        renderApp(); // Show loading spinner immediately
+
+        try {
+          await initFirebaseAuth(async (user) => {
+            if (user) {
+              dashboardState.userId = user.uid;
+
+              const appId =
+                typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+              const userProfileRef = doc(
+                authAppState.db,
+                `artifacts/${appId}/users/${user.uid}/userProfile/profile`
+              );
+              const userProfileSnap = await getDoc(userProfileRef);
+
+              if (userProfileSnap.exists()) {
+                dashboardState.userProfile = {
+                  ...userProfileSnap.data(),
+                };
+              } else {
+                // Create a default profile with a name if it doesn't exist
+                const defaultProfile = {
+                  name:
+                    user.displayName ||
+                    user.email?.split("@")[0] ||
+                    `User-${user.uid.substring(0, 5)}`,
+                  bandGoal: "", // Initialize band goal
+                };
+                await setDoc(userProfileRef, defaultProfile);
+                dashboardState.userProfile = defaultProfile;
+              }
+
+              // Update last login timestamp
+              await updateDoc(userProfileRef, { lastLogin: serverTimestamp() });
+            } else {
+              dashboardState.userId = null;
+              dashboardState.userProfile = null; // Clear user profile if signed out
+            }
+
+            // Fetch game stats, quiz results, and daily rank only if a user is present
+            if (dashboardState.userId) {
+              await fetchUserGameStats(dashboardState.userId);
+              await fetchQuizResults(dashboardState.userId);
+              await fetchDailyLeaderboardData(dashboardState.userId); // Fetch full daily leaderboard data
+              await fetchGlobalLeaderboard(); // Fetch global leaderboard on load
+            } else {
+              // Clear data if no user is signed in
+              dashboardState.userGameStats = {
+                totalPoints: 0,
+                level: 1,
+                completedTests: [],
+                badges: [],
+              };
+              dashboardState.quizResults = [];
+              dashboardState.dailyLeaderboardData = []; // Clear daily leaderboard data
+              dashboardState.dailyLeaderboardRank = null;
+              dashboardState.globalLeaderboard = [];
+            }
+
+            processDashboardData(); // Process data (will be empty if no user)
+            setupFirestoreListeners(); // Setup listeners (will be no-op if no userId)
+
+            dashboardState.isLoading = false;
+            renderApp(); // Render the app after data is processed
+          });
+        } catch (error) {
+          console.error(
+            "Failed to initialize Firebase in dashboard.html:",
+            error
+          );
+          showToast(
+            "Failed to initialize Firebase. Some features may not work.",
+            "error"
+          );
+          dashboardState.isLoading = false;
+          renderApp();
+        }
+      };
+    </script>
+  </body>
+</html>

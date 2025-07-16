@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mahir - Quiz Result Review</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Phosphor Icons for additional UI elements -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Lordicon for animated icons (if used) -->
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <!-- Tabler Icons for additional UI elements -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+
+    <style id="common-styles">
+      /* Common styles for the entire application, consistent with other pages */
+      body {
+        font-family: "Inter", sans-serif; /* Consistent font family */
+        background: linear-gradient(
+          135deg,
+          #e0f2fe 0%,
+          #f0f9ff 100%
+        ); /* Lighter, softer blue gradient background */
+        color: #334155; /* Default text color */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Custom font classes */
+      .font-anton {
+        font-family: "Anton", sans-serif;
+      }
+      .font-inter {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Custom styles for professional light theme look */
+      .quiz-card {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes zoomIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+
+      .animate-zoom-in {
+        animation: zoomIn 0.4s ease-out forwards;
+      }
+
+      /* Gamification specific styles */
+      .points-display {
+        background: linear-gradient(
+          45deg,
+          #84cc16,
+          #22c55e
+        ); /* Lime to green gradient */
+        color: white;
+        padding: 0.35rem 0.9rem;
+        border-radius: 9999px;
+        font-weight: bold;
+        font-size: 0.875rem; /* text-sm */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Toast notification styles */
+      .toast {
+        position: fixed;
+        top: 1rem; /* Adjust as needed for desired vertical position */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 600;
+        opacity: 0;
+        animation: toast-fade-in 0.3s ease-out forwards,
+          toast-fade-out 0.5s ease-out 2.5s forwards; /* Fade in, then fade out after 2.5s */
+        width: auto; /* Allow content to dictate width initially */
+        min-width: 200px; /* Minimum width */
+        max-width: 90%; /* Max width for responsiveness on small screens */
+      }
+
+      .toast.success {
+        background-color: #dcfce7; /* green-100 */
+        color: #16a34a; /* green-600 */
+        border: 1px solid #22c55e; /* green-500 */
+      }
+
+      .toast.error {
+        background-color: #fee2e2; /* red-100 */
+        color: #dc2626; /* red-600 */
+        border: 1px solid #ef4444; /* red-500 */
+      }
+
+      .toast.warning {
+        background-color: #fffbeb; /* yellow-100 */
+        color: #d97706; /* yellow-600 */
+        border: 1px solid #f59e0b; /* yellow-500 */
+      }
+
+      .toast.info {
+        background-color: #e0f2fe; /* blue-100 */
+        color: #2563eb; /* blue-600 */
+        border: 1px solid #3b82f6; /* blue-500 */
+      }
+
+      @keyframes toast-fade-in {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+
+      @keyframes toast-fade-out {
+        from {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+        to {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+      }
+
+      /* Styles for the header section, consistent with other pages */
+      .site-header {
+        background-color: #ffffff; /* White header background */
+        border-bottom: 1px solid #e0e0e0; /* Lighter border */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+      }
+
+      .site-header .nav-link {
+        font-weight: 500; /* Medium font weight */
+        color: #555555; /* Darker gray for links */
+      }
+
+      .site-header .nav-link:hover {
+        color: #1d4ed8; /* Blue on hover */
+        transform: translateY(-1px);
+      }
+
+      /* Hero section styles (consistent with quiz-category.html) */
+      .hero-section-new {
+        min-height: 300px; /* Slightly reduced height for history page */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center; /* Center text within this section */
+      }
+
+      .hero-section-new .text-shadow-lg {
+        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow for text */
+      }
+
+      /* General text shadows */
+      .text-shadow-lg {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+      }
+
+      .text-shadow-md {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Specific styles for feedback review */
+      .feedback-section .correct-answer {
+        color: #16a34a; /* green-600 */
+        font-weight: bold;
+      }
+
+      .feedback-section .incorrect-answer {
+        color: #dc2626; /* red-600 */
+        font-weight: bold;
+      }
+
+      .feedback-section .explanation {
+        background-color: #f0f9ff; /* blue-50 */
+        border-left: 4px solid #3b82f6; /* blue-500 */
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+        font-style: italic;
+        color: #475569; /* slate-600 */
+      }
+
+      /* Custom scrollbar for feedback section */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen py-0 px-0">
+    <!-- Header / Navigation Bar (Consistent with other pages) -->
+    <header
+      id="app-header"
+      class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
+    >
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Replaced text with image logo -->
+        <img
+          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+          alt="IELTS Mahir Logo"
+          class="h-8 md:h-10 w-auto"
+          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+        />
+        <nav class="hidden md:flex gap-6 ml-8 font-inter">
+          <a href="#" class="nav-link transition-all">Inspiration</a>
+          <a href="quiz-home.html" class="nav-link transition-all"
+            >Quiz Categories</a
+          >
+          <a href="#" class="nav-link transition-all">Resources</a>
+          <a href="quiz-history.html" class="nav-link transition-all"
+            >Quiz History</a
+          >
+        </nav>
+      </div>
+      <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
+        <!-- Authentication status will be handled by auth.js -->
+        <div class="animate-pulse flex space-x-4">
+          <div class="rounded-full bg-gray-300 h-8 w-8 sm:h-10 sm:w-10"></div>
+          <div class="flex-1 space-y-4 py-1 hidden sm:block">
+            <div class="h-2 bg-gray-300 rounded"></div>
+            <div class="space-y-2">
+              <div class="grid grid-cols-3 gap-2">
+                <div class="h-2 bg-gray-300 rounded col-span-2"></div>
+                <div class="h-2 bg-gray-300 rounded col-span-1"></div>
+              </div>
+              <div class="h-2 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="app" class="container mx-auto mt-8 sm:mt-12 lg:mt-16 flex-grow">
+      <!-- Application content will be rendered here by JavaScript -->
+      <div class="flex justify-center items-center h-full">
+        <div
+          class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"
+        ></div>
+      </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div
+      id="toast-container"
+      class="fixed top-4 left-1/2 -translate-x-1/2 z-[100]"
+    ></div>
+
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
+
+    <script type="module">
+      // Import authentication functions and state from the central auth.js file
+      import {
+        initFirebaseAuth,
+        authAppState,
+        showToast,
+        Icons,
+        signOutUser,
+      } from "./auth.js"; // Adjust path as necessary
+
+      // Import quiz data and common utilities
+      import {
+        quizCategories, // Needed for category name lookup
+        allQuizTests, // Needed to get question details from original test data
+        QuizIcons,
+        formatTime,
+      } from "./quiz-test-data.js";
+
+      // Firebase imports for Firestore
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        setDoc, // For initializing user stats if needed in header
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      // Firebase instances (will be populated by auth.js)
+      let db;
+      let auth;
+
+      // State for detailed review
+      const reviewState = {
+        isLoading: true,
+        quizResult: null, // Stores the fetched quiz result document
+        originalTest: null, // Stores the original test data from allQuizTests
+        userGameStats: {
+          totalPoints: 0,
+          level: 1,
+        }, // For header display
+      };
+
+      /**
+       * Fetches user's game stats from Firestore.
+       * This function is specifically for this page to ensure header display is correct.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchUserGameStats(userId) {
+        if (!db || !userId) return;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userStatsDocRef = doc(
+          db,
+          `artifacts/${appId}/users/${userId}/gameStats/summary`
+        );
+
+        try {
+          const docSnap = await getDoc(userStatsDocRef);
+          if (docSnap.exists()) {
+            reviewState.userGameStats = {
+              ...reviewState.userGameStats,
+              ...docSnap.data(),
+            };
+            console.log(
+              "Fetched local user game stats:",
+              reviewState.userGameStats
+            );
+          } else {
+            console.log("No game stats found for user, initializing defaults.");
+            await setDoc(userStatsDocRef, reviewState.userGameStats);
+          }
+        } catch (error) {
+          console.error("Error fetching user game stats:", error);
+          showToast("Failed to load your game progress.", "error");
+        }
+      }
+
+      /**
+       * Updates the navigation bar and user ID display based on authentication status.
+       * @param {object|null} user - The Firebase User object or null if signed out.
+       */
+      async function updateAuthUI(user) {
+        const authButtonsContainer = document.getElementById(
+          "auth-buttons-container"
+        );
+        if (authButtonsContainer) {
+          if (user) {
+            if (db && user.uid) {
+              await fetchUserGameStats(user.uid);
+            }
+
+            authButtonsContainer.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="points-display flex items-center gap-2 px-3 py-1.5 rounded-full shadow-md text-white bg-gradient-to-br from-green-500 to-lime-600">
+                                ${QuizIcons.Trophy.replace(
+                                  /width="24" height="24"/g,
+                                  'width="16" height="16" class="text-white fill-current"'
+                                )}
+                                <span class="text-sm font-semibold">${
+                                  reviewState.userGameStats.totalPoints || 0
+                                } Pts</span>
+                                <span class="text-xs text-green-200">|</span>
+                                <span class="text-sm font-semibold">Lvl ${
+                                  reviewState.userGameStats.level || 1
+                                }</span>
+                            </div>
+                            <div class="relative">
+                                <button id="profile-icon-btn" class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-600 transition-colors duration-200 ease-in-out transform active:scale-95">
+                                    ${(
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid
+                                    )
+                                      .charAt(0)
+                                      .toUpperCase()}
+                                </button>
+                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden animate-fade-in-up">
+                                    <div class="px-4 py-2 text-sm text-gray-700 font-medium border-b border-gray-100">Hello, ${
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid.substring(0, 8)
+                                    }</div>
+                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">Level: ${
+                                      reviewState.userGameStats.level || 1
+                                    }</div>
+                                    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
+                                        ${QuizIcons.Dashboard.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-gray-600"'
+                                        )} Dashboard
+                                    </a>
+                                    <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
+                                        ${QuizIcons.Forum.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-gray-600"'
+                                        )} Forum
+                                    </a>
+                                    <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg transition-colors">
+                                        ${QuizIcons.SignOut.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-red-500"'
+                                        )} Sign Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            const profileIconBtn = document.getElementById("profile-icon-btn");
+            const profileDropdown = document.getElementById("profile-dropdown");
+            const signOutDropdownBtn = document.getElementById(
+              "sign-out-dropdown-btn"
+            );
+
+            profileIconBtn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              profileDropdown.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", (event) => {
+              if (
+                !profileDropdown.contains(event.target) &&
+                !profileIconBtn.contains(event.target)
+              ) {
+                profileDropdown.classList.add("hidden");
+              }
+            });
+
+            signOutDropdownBtn.addEventListener("click", async () => {
+              await signOutUser();
+            });
+          } else {
+            authButtonsContainer.innerHTML = `
+                        <a href="auth.html" id="sign-in-nav-btn" class="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                            ${QuizIcons.SignIn.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} <span class="hidden sm:inline">Sign In</span>
+                        </a>
+                    `;
+          }
+        }
+      }
+
+      /**
+       * Displays a custom message modal.
+       * @param {string} title - The title of the modal.
+       * @param {string} message - The message content.
+       * @param {boolean} showConfirm - Whether to show a confirm button.
+       * @returns {Promise<boolean>} Resolves true if confirmed, false if cancelled.
+       */
+      function showMessageModal(title, message, showConfirm = false) {
+        return new Promise((resolve) => {
+          const modalContainer = document.getElementById("modal-container");
+          if (!modalContainer) return resolve(false);
+
+          modalContainer.innerHTML = `
+                    <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[1000] animate-fade-in">
+                        <div class="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md animate-zoom-in">
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">${title}</h3>
+                            <p class="text-gray-700 mb-6 text-sm sm:text-base">${message}</p>
+                            <div class="flex justify-end gap-3">
+                                ${
+                                  showConfirm
+                                    ? `<button id="modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium">Cancel</button>`
+                                    : ""
+                                }
+                                <button id="modal-ok-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+          const okButton = document.getElementById("modal-ok-btn");
+          okButton.onclick = () => {
+            hideMessageModal();
+            resolve(true);
+          };
+
+          if (showConfirm) {
+            const cancelButton = document.getElementById("modal-cancel-btn");
+            cancelButton.onclick = () => {
+              hideMessageModal();
+              resolve(false);
+            };
+          }
+        });
+      }
+
+      /**
+       * Hides the custom message modal.
+       */
+      function hideMessageModal() {
+        const modalContainer = document.getElementById("modal-container");
+        if (modalContainer) {
+          modalContainer.innerHTML = "";
+        }
+      }
+
+      /**
+       * Returns HTML for a loading spinner.
+       * @returns {string} HTML string for a loading spinner.
+       */
+      function getLoadingSpinnerHtml() {
+        return `
+                <div class="flex justify-center items-center h-full min-h-[200px]">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+                </div>
+            `;
+      }
+
+      /**
+       * Fetches a specific quiz result document from Firestore.
+       * @param {string} quizResultId - The ID of the quiz result document.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchQuizResultDetails(quizResultId, userId) {
+        if (!db || !quizResultId || !userId) {
+          showToast("Invalid quiz result ID or user ID.", "error");
+          reviewState.isLoading = false;
+          renderApp();
+          return;
+        }
+
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const resultDocRef = doc(
+          db,
+          `artifacts/${appId}/users/${userId}/quizResults`,
+          quizResultId
+        );
+
+        try {
+          const docSnap = await getDoc(resultDocRef);
+          if (docSnap.exists()) {
+            const resultData = docSnap.data();
+            reviewState.quizResult = resultData;
+            console.log("Fetched quiz result details:", resultData);
+
+            // Now, fetch the original test questions to get correct answers and explanations
+            const originalTest = allQuizTests.find(
+              (test) =>
+                test.categoryId === resultData.categoryId &&
+                test.id === resultData.testId
+            );
+
+            if (originalTest) {
+              reviewState.originalTest = originalTest;
+              console.log("Fetched original test data:", originalTest);
+            } else {
+              console.warn("Original test data not found for this result.");
+              showToast(
+                "Could not find original test data for detailed review.",
+                "warning"
+              );
+            }
+          } else {
+            showToast("Quiz result not found.", "error");
+            console.error("No such document:", quizResultId);
+          }
+        } catch (error) {
+          console.error("Error fetching quiz result details:", error);
+          showToast("Failed to load quiz result details.", "error");
+        } finally {
+          reviewState.isLoading = false;
+          renderApp();
+        }
+      }
+
+      /**
+       * Renders the detailed quiz review section.
+       * @param {HTMLElement} parentDiv - The div to render the review into.
+       */
+      function renderDetailedQuizReview(parentDiv) {
+        if (!reviewState.quizResult) {
+          parentDiv.innerHTML = `<p class="text-center text-red-500 text-xl mt-12">No quiz result data available for review.</p>`;
+          return;
+        }
+
+        const result = reviewState.quizResult;
+        const originalTest = reviewState.originalTest;
+
+        if (!originalTest) {
+          parentDiv.innerHTML = `<p class="text-center text-red-500 text-xl mt-12">Original test details are missing. Cannot provide detailed question review.</p>
+                                  <div class="flex justify-center mt-8">
+                                    <a href="quiz-history.html" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95">
+                                        ${QuizIcons.History.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18"'
+                                        )} Back to History
+                                    </a>
+                                  </div>`;
+          return;
+        }
+
+        // Reconstruct feedback details similar to quiz-test.html
+        const feedbackDetails = originalTest.questions.map(
+          (question, index) => {
+            // Assuming `result.userAnswers` is stored in the quizResult document
+            // If not, you'd need to store user answers in Firestore when the quiz is submitted.
+            // For now, we'll use a placeholder or assume it's available.
+            // IMPORTANT: You need to ensure user answers are saved in Firestore when quiz is completed.
+            // The current `quiz-test.html` saves a summary, but not detailed user answers.
+            // For this to work perfectly, `quiz-test.html`'s `saveQuizResultToFirestore`
+            // would need to save `quizState.userAnswers` and `feedbackDetails`.
+            // For demonstration, I'll use a simplified mapping or assume `result.userAnswers` exists.
+
+            // If `result.userAnswers` is not stored, this part will need adjustment.
+            // Let's assume for now that `result.userAnswers` is an array/object
+            // that maps question index to the user's selected option letter.
+            const userAnswerLetter = result.userAnswers
+              ? result.userAnswers[index]
+              : "N/A";
+            const correctAnswerLetter = question.correctAnswer; // Assuming correctAnswer is the letter (A, B, C, D)
+
+            const isCorrect = userAnswerLetter === correctAnswerLetter;
+            const status = isCorrect
+              ? "correct"
+              : userAnswerLetter !== "N/A"
+              ? "incorrect"
+              : "unattempted";
+
+            // Find the full option text for user's answer and correct answer
+            const userOptionText =
+              question.options.find((opt) =>
+                opt.startsWith(`${userAnswerLetter})`)
+              ) || `N/A (${userAnswerLetter})`;
+            const correctOptionText =
+              question.options.find((opt) =>
+                opt.startsWith(`${correctAnswerLetter})`)
+              ) || `N/A (${correctAnswerLetter})`;
+
+            return {
+              questionText: question.questionText,
+              userAnswer: userOptionText, // Display full option text
+              correctAnswer: correctOptionText, // Display full option text
+              explanation: question.explanation,
+              isCorrect: isCorrect,
+              status: status,
+            };
+          }
+        );
+
+        const category = quizCategories.find(
+          (cat) => cat.id === result.categoryId
+        );
+        const categoryName = category ? category.name : "Unknown Category";
+
+        parentDiv.innerHTML = `
+                <section class="hero-section-new max-w-6xl mx-auto my-8 relative overflow-hidden rounded-3xl">
+                    <!-- Background image and overlay -->
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/5428830/pexels-photo-5428830.jpeg');">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-600/70 to-cyan-600/70"></div>
+                    </div>
+
+                    <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                        <p class="font-inter text-xl sm:text-2xl font-medium mb-2 text-shadow-lg">Detailed Review</p>
+                        <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                            ${result.testTitle}
+                        </h1>
+                        <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                            Category: ${categoryName} | Score: ${
+          result.score
+        } | Accuracy: ${result.percentage}%
+                        </p>
+                    </div>
+                </section>
+
+                <div class="max-w-4xl mx-auto quiz-card p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in-up mt-12">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-center text-blue-700 mb-6">
+                        Question-by-Question Breakdown
+                    </h2>
+
+                    <div class="space-y-6 custom-scrollbar max-h-[70vh] overflow-y-auto pr-2">
+                        ${feedbackDetails
+                          .map(
+                            (detail, index) => `
+                            <div class="p-4 rounded-lg shadow-sm border ${
+                              detail.isCorrect
+                                ? "border-green-300 bg-green-50"
+                                : "border-red-300 bg-red-50"
+                            }">
+                                <p class="font-semibold text-gray-900 mb-2">
+                                    Question ${index + 1}: ${
+                              detail.questionText
+                            }
+                                </p>
+                                <p class="text-sm text-gray-700">
+                                    Your Answer: <span class="${
+                                      detail.isCorrect
+                                        ? "correct-answer"
+                                        : "incorrect-answer"
+                                    }">${detail.userAnswer}</span>
+                                </p>
+                                <p class="text-sm text-gray-700">
+                                    Correct Answer: <span class="correct-answer">${
+                                      detail.correctAnswer
+                                    }</span>
+                                </p>
+                                ${
+                                  detail.explanation
+                                    ? `<div class="explanation">
+                                        <strong>Explanation:</strong> ${detail.explanation}
+                                    </div>`
+                                    : ""
+                                }
+                            </div>
+                        `
+                          )
+                          .join("")}
+                    </div>
+
+                    <div class="flex justify-center mt-8">
+                        <a href="quiz-history.html" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95">
+                            ${QuizIcons.History.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} Back to History
+                        </a>
+                    </div>
+                </div>
+            `;
+      }
+
+      /**
+       * Main render function for the application.
+       */
+      function renderApp() {
+        const appDiv = document.getElementById("app");
+        if (!appDiv) return;
+
+        if (reviewState.isLoading) {
+          appDiv.innerHTML = getLoadingSpinnerHtml();
+        } else {
+          renderDetailedQuizReview(appDiv);
+        }
+      }
+
+      // Initialization Logic
+      window.onload = async function () {
+        reviewState.isLoading = true;
+        renderApp(); // Show loading spinner
+
+        // Initialize Firebase Auth and listen for state changes
+        initFirebaseAuth(updateAuthUI)
+          .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
+            db = firestoreDb;
+            auth = firebaseAuth;
+            console.log("Firebase initialized in quiz-detail-review.html:", {
+              db,
+              auth,
+            });
+
+            // Get quizResultId from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const quizResultId = urlParams.get("resultId");
+
+            auth.onAuthStateChanged(async (user) => {
+              if (user) {
+                await fetchUserGameStats(user.uid); // For header
+                await fetchQuizResultDetails(quizResultId, user.uid);
+              } else {
+                showToast("Please sign in to view quiz details.", "info");
+                reviewState.isLoading = false;
+                renderApp(); // Render with error/sign-in message
+              }
+            });
+          })
+          .catch((error) => {
+            console.error(
+              "Failed to initialize Firebase in quiz-detail-review.html:",
+              error
+            );
+            showToast(
+              "Failed to initialize Firebase. Some features may not work.",
+              "error"
+            );
+            reviewState.isLoading = false;
+            renderApp();
+          });
+      };
+    </script>
+  </body>
+</html>

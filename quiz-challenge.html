@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IELTS Mahir - Quiz Test</title>
+    <title>IELTS Mahir - Daily Challenge</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
@@ -18,25 +18,27 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <!-- Tone.js for sound effects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
     />
+    <!-- Tone.js for sound effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
 
     <style id="common-styles">
-      /* Common styles for the entire application */
+      /* Common styles for the entire application (copied from quiz-test.html) */
       body {
-        font-family: "Inter", sans-serif; /* Stupendous font family UI */
-        background: linear-gradient(
-          135deg,
-          #e0f2fe 0%,
-          #f0f9ff 100%
-        ); /* Lighter, softer blue gradient */
-        color: #334155; /* Default text color */
+        font-family: "Inter", sans-serif;
+        background: radial-gradient(
+            circle at top left,
+            #e0f7fa 0%,
+            transparent 30%
+          ),
+          radial-gradient(circle at bottom right, #e3f2fd 0%, transparent 30%),
+          linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        color: #334155;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -50,17 +52,13 @@
         font-family: "Inter", sans-serif;
       }
 
-      /* Custom styles for professional look */
-      .quiz-card {
-        background: linear-gradient(
-          145deg,
-          #ffffff 0%,
-          #f8faff 100%
-        ); /* Subtle gradient for cards */
-        border: 1px solid #e2e8f0; /* Light border */
-        border-radius: 1.5rem; /* More rounded corners */
+      /* Card styles */
+      .challenge-card {
+        background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
+        border: 1px solid #e2e8f0;
+        border-radius: 1.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
-          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+          0 4px 10px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease-in-out;
       }
 
@@ -108,7 +106,7 @@
         animation: zoomIn 0.4s ease-out forwards;
       }
 
-      /* Custom scrollbar for feedback section */
+      /* Custom scrollbar */
       .custom-scrollbar::-webkit-scrollbar {
         width: 8px;
         height: 8px;
@@ -128,7 +126,126 @@
         background: #555;
       }
 
-      /* Specific styles for quiz elements */
+      /* Toast notification styles */
+      .toast {
+        position: fixed;
+        top: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 600;
+        opacity: 0;
+        animation: toast-fade-in 0.3s ease-out forwards,
+          toast-fade-out 0.5s ease-out 2.5s forwards;
+        width: auto;
+        min-width: 200px;
+        max-width: 90%;
+      }
+
+      .toast.success {
+        background-color: #dcfce7;
+        color: #16a34a;
+        border: 1px solid #22c55e;
+      }
+
+      .toast.error {
+        background-color: #fee2e2;
+        color: #dc2626;
+        border: 1px solid #ef4444;
+      }
+
+      .toast.warning {
+        background-color: #fffbeb;
+        color: #d97706;
+        border: 1px solid #f59e0b;
+      }
+
+      .toast.info {
+        background-color: #e0f2fe;
+        color: #2563eb;
+        border: 1px solid #3b82f6;
+      }
+
+      @keyframes toast-fade-in {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+
+      @keyframes toast-fade-out {
+        from {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+        to {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+      }
+
+      /* Header styles */
+      .site-header {
+        background-color: #ffffff;
+        border-bottom: 1px solid #e0e0e0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .site-header .nav-link {
+        font-weight: 500;
+        color: #555555;
+      }
+
+      .site-header .nav-link:hover {
+        color: #1d4ed8;
+        transform: translateY(-1px);
+      }
+
+      .points-display {
+        background: linear-gradient(45deg, #84cc16, #22c55e);
+        color: white;
+        padding: 0.35rem 0.9rem;
+        border-radius: 9999px;
+        font-weight: bold;
+        font-size: 0.875rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Specific styles for quiz feedback elements (reused from quiz-test.html) */
+      .feedback-section .correct-answer {
+        color: #16a34a; /* green-600 */
+        font-weight: bold;
+      }
+
+      .feedback-section .incorrect-answer {
+        color: #dc2626; /* red-600 */
+        font-weight: bold;
+      }
+
+      .feedback-section .explanation {
+        background-color: #f0f9ff; /* blue-50 */
+        border-left: 4px solid #3b82f6; /* blue-500 */
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+        font-style: italic;
+        color: #475569; /* slate-600 */
+      }
+
+      /* Option button styles for quiz */
       .option-button {
         transition: all 0.2s ease-in-out;
         border-radius: 0.75rem; /* More rounded */
@@ -155,62 +272,6 @@
         font-weight: bold;
       }
 
-      /* Gamification specific styles */
-      .level-badge {
-        background: linear-gradient(
-          45deg,
-          #f97316,
-          #fbbf24
-        ); /* Orange to yellow gradient */
-        color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 9999px; /* Full rounded */
-        font-weight: bold;
-        font-size: 0.75rem; /* text-xs */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        z-index: 3;
-      }
-
-      .points-display {
-        background: linear-gradient(
-          45deg,
-          #84cc16,
-          #22c55e
-        ); /* Lime to green gradient */
-        color: white;
-        padding: 0.35rem 0.9rem;
-        border-radius: 9999px;
-        font-weight: bold;
-        font-size: 0.875rem; /* text-sm */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .feedback-section .correct-answer {
-        color: #16a34a; /* green-600 */
-        font-weight: bold;
-      }
-
-      .feedback-section .incorrect-answer {
-        color: #dc2626; /* red-600 */
-        font-weight: bold;
-      }
-
-      .feedback-section .explanation {
-        background-color: #f0f9ff; /* blue-50 */
-        border-left: 4px solid #3b82f6; /* blue-500 */
-        padding: 0.75rem 1rem;
-        border-radius: 0.5rem;
-        margin-top: 0.5rem;
-        font-style: italic;
-        color: #475569; /* slate-600 */
-      }
-
       /* Progress bar styles */
       .progress-bar-container {
         width: 100%;
@@ -231,75 +292,7 @@
         transition: width 0.3s ease-out;
       }
 
-      /* Toast notification styles */
-      .toast {
-        position: fixed;
-        top: 1rem; /* Adjust as needed for desired vertical position */
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.75rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        font-weight: 600;
-        opacity: 0;
-        animation: toast-fade-in 0.3s ease-out forwards,
-          toast-fade-out 0.5s ease-out 2.5s forwards; /* Fade in, then fade out after 2.5s */
-        width: auto; /* Allow content to dictate width initially */
-        min-width: 200px; /* Minimum width */
-        max-width: 90%; /* Max width for responsiveness on small screens */
-      }
-
-      .toast.success {
-        background-color: #dcfce7; /* green-100 */
-        color: #16a34a; /* green-600 */
-        border: 1px solid #22c55e; /* green-500 */
-      }
-
-      .toast.error {
-        background-color: #fee2e2; /* red-100 */
-        color: #dc2626; /* red-600 */
-        border: 1px solid #ef4444; /* red-500 */
-      }
-
-      .toast.warning {
-        background-color: #fffbeb; /* yellow-100 */
-        color: #d97706; /* yellow-600 */
-        border: 1px solid #f59e0b; /* yellow-500 */
-      }
-
-      .toast.info {
-        background-color: #e0f2fe; /* blue-100 */
-        color: #2563eb; /* blue-600 */
-        border: 1px solid #3b82f6; /* blue-500 */
-      }
-
-      @keyframes toast-fade-in {
-        from {
-          opacity: 0;
-          transform: translate(-50%, -20px);
-        }
-        to {
-          opacity: 1;
-          transform: translate(-50%, 0);
-        }
-      }
-
-      @keyframes toast-fade-out {
-        from {
-          opacity: 1;
-          transform: translate(-50%, 0);
-        }
-        to {
-          opacity: 0;
-          transform: translate(-50%, -20px);
-        }
-      }
-
-      /* Leaderboard specific styles */
+      /* Leaderboard specific styles (copied from quiz-test.html) */
       .leaderboard-table-container {
         overflow-x: auto; /* Enable horizontal scrolling for the table */
         -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
@@ -389,66 +382,10 @@
         background-color: #94a3b8; /* Slate 400 */
         box-shadow: 0 2px 4px rgba(148, 163, 184, 0.4);
       }
-
-      /* Styles for the header section, matching quiz-home */
-      .site-header {
-        background-color: #ffffff; /* White header background */
-        border-bottom: 1px solid #e0e0e0; /* Lighter border */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* More prominent shadow */
-      }
-
-      .site-header .nav-link {
-        font-weight: 500; /* Medium font weight */
-        color: #555555; /* Darker gray for links */
-      }
-
-      .site-header .nav-link:hover {
-        color: #1d4ed8; /* Blue on hover */
-        transform: translateY(-1px);
-      }
-
-      /* New style for highlighted words */
-      .highlight-word {
-        font-weight: 700; /* Bold */
-        color: #1d4ed8; /* A distinct blue color */
-        background-color: #e0f2fe; /* Light blue background */
-        padding: 0.1em 0.3em; /* Small padding around the word */
-        border-radius: 0.25em; /* Slightly rounded corners */
-        text-decoration: underline; /* Underline for emphasis */
-        text-decoration-color: #93c5fd; /* Lighter blue underline */
-        text-underline-offset: 0.2em; /* Offset underline slightly */
-        transition: all 0.2s ease-in-out; /* Smooth transition */
-      }
-
-      /* Animation for points/level gain */
-      @keyframes pointsGainPop {
-        0% {
-          transform: scale(1);
-          color: inherit;
-        }
-        50% {
-          transform: scale(1.15);
-          color: #ffeb3b; /* Bright yellow for pop effect */
-          text-shadow: 0 0 8px rgba(255, 235, 59, 0.7);
-        }
-        100% {
-          transform: scale(1);
-          color: inherit;
-        }
-      }
-
-      .animate-points-gain {
-        animation: pointsGainPop 0.6s ease-out; /* Short, punchy animation */
-      }
-
-      /* You can use the same animation for level or create a slightly different one */
-      .animate-level-gain {
-        animation: pointsGainPop 0.6s ease-out;
-      }
     </style>
   </head>
   <body class="min-h-screen py-0 px-0">
-    <!-- Header / Navigation Bar (Now identical to quiz-category.html and quiz-home.html) -->
+    <!-- Header / Navigation Bar -->
     <header
       id="app-header"
       class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
@@ -462,8 +399,10 @@
           onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
         />
         <nav class="hidden md:flex gap-6 ml-8 font-inter">
-          <a href="#" class="nav-link transition-all">Inspiration</a>
-          <a href="#" class="nav-link transition-all">Quiz Categories</a>
+          <a href="quiz-home.html" class="nav-link transition-all">Home</a>
+          <a href="quiz-home.html" class="nav-link transition-all"
+            >Quiz Categories</a
+          >
           <a href="#" class="nav-link transition-all">Resources</a>
         </nav>
       </div>
@@ -504,42 +443,33 @@
     <div id="modal-container"></div>
 
     <script type="module">
-      // Import authentication functions and state from the central auth.js file
-      import {
-        initFirebaseAuth,
-        authAppState,
-        showToast as originalShowToast, // Renamed to avoid conflict
-        Icons, // Keep Icons for general UI elements not specific to quiz
-        signOutUser,
-      } from "./auth.js"; // Adjust path as necessary
+      // IMPORTANT: Ensure 'auth.js' and 'quiz-test-data.js' are present in the same directory
+      // or adjust the import paths accordingly. These files are crucial for the app's functionality.
 
-      // Import quiz data and common styles
+      // Import authentication functions and state from the central auth.js file
+      import { initFirebaseAuth, authAppState, signOutUser } from "./auth.js"; // Adjust path as necessary
+
+      // Import quiz data and common styles (QuizIcons are needed for header)
       import {
-        quizCategories,
-        allQuizTests, // This will now be the updated data with 'highlightWord'
-        commonStyles,
-        QuizIcons, // Now importing QuizIcons from quiz-test-data.js
+        QuizIcons,
         formatTime,
-        calculateWordCount,
-      } from "./quiz-test-data.js";
+        allQuizTests, // Needed to get question details for review
+      } from "./quiz-test-data.js"; // Corrected import for QuizIcons
 
       // Firebase imports for Firestore
       import {
         getFirestore,
         doc,
         getDoc,
-        setDoc, // Added setDoc for updating user stats
-        updateDoc, // Added updateDoc for updating user stats
+        setDoc,
+        updateDoc,
         collection,
         query,
         where,
         getDocs,
         addDoc,
-        serverTimestamp, // For timestamping quiz results
+        serverTimestamp,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-      // Inject common styles from quiz-test-data.js
-      document.getElementById("common-styles").innerHTML += commonStyles;
 
       // Firebase instances (will be populated by auth.js)
       let db;
@@ -569,35 +499,30 @@
       levelUpSound.envelope.sustain = 0.1;
       levelUpSound.envelope.release = 0.5;
 
-      // Quiz state management
-      const quizState = {
-        categoryId: null,
-        testId: null,
-        test: null,
+      // Challenge State Management
+      const challengeState = {
+        currentChallenge: null, // Stores the active daily challenge data
+        challengeQuiz: null, // Stores the actual quiz test data for the challenge
         questions: [],
         currentQuestionIndex: 0,
-        userAnswers: {}, // Stores user's selected option for each question
+        userAnswers: {},
         timer: null,
         timeLeft: 0,
-        isLoading: true,
-        feedback: null, // Stores feedback details after quiz completion
-        leaderboard: [], // Stores leaderboard data
+        isLoading: true, // Initially true to show spinner
+        feedback: null,
+        leaderboard: [],
         userRank: null,
+        hasAttempted: false, // Flag to check if user has already attempted this challenge
         userGameStats: {
           totalPoints: 0,
           level: 1,
           completedTests: [],
-          badges: [], // New: Store earned badges
-        },
-        // To track previous stats for animation purposes
-        previousUserGameStats: {
-          totalPoints: 0,
-          level: 1,
+          badges: [],
         },
       };
 
-      // Points configuration
-      const POINTS_PER_CORRECT_ANSWER = 2; // Changed from 10 to 2
+      // Points configuration (copied from quiz-test.html)
+      const POINTS_PER_CORRECT_ANSWER = 2;
       const LEVEL_UP_THRESHOLDS = [
         0,
         50,
@@ -609,7 +534,7 @@
         1700,
         2300,
         3000,
-      ]; // Points needed for Level 1, 2, 3...
+      ];
       const BADGES = {
         first_quiz: {
           name: "First Step",
@@ -634,6 +559,11 @@
         quiz_champion: {
           name: "Quiz Champion",
           description: "Completed 5 quizzes!",
+          icon: QuizIcons.BadgeTrophy,
+        },
+        challenge_master: {
+          name: "Challenge Master",
+          description: "Completed a daily challenge!",
           icon: QuizIcons.BadgeTrophy,
         },
         // Add more badges as needed
@@ -694,35 +624,11 @@
           "auth-buttons-container"
         );
         if (authButtonsContainer) {
-          // Capture old stats before potential update
-          const oldPoints = quizState.previousUserGameStats.totalPoints;
-          const oldLevel = quizState.previousUserGameStats.level;
-
           if (user) {
             // Fetch game stats if user is logged in
             if (db && user.uid) {
-              await fetchUserGameStats(user.uid); // This updates quizState.userGameStats
+              await fetchUserGameStats(user.uid);
             }
-
-            const currentPoints = quizState.userGameStats.totalPoints;
-            const currentLevel = quizState.userGameStats.level;
-
-            // Determine if points or level increased to trigger animation
-            const pointsIncreased = currentPoints > oldPoints;
-            const levelIncreased = currentLevel > oldLevel;
-
-            // Play sound effects if points or level increased
-            if (pointsIncreased) {
-              correctSound.triggerAttackRelease("E5", "8n"); // Play a sound for points gain
-            }
-            // levelUpSound is already played in awardPoints function, no need to duplicate here
-
-            const pointsAnimationClass = pointsIncreased
-              ? "animate-points-gain"
-              : "";
-            const levelAnimationClass = levelIncreased
-              ? "animate-level-gain"
-              : "";
 
             // User is signed in: Show profile dropdown and game stats
             authButtonsContainer.innerHTML = `
@@ -732,13 +638,13 @@
                                   /width="24" height="24"/g,
                                   'width="16" height="16" class="text-white fill-current"'
                                 )}
-                                <span id="total-points-display" class="text-sm font-semibold ${pointsAnimationClass}">${
-              quizState.userGameStats.totalPoints
-            } Pts</span>
+                                <span class="text-sm font-semibold">${
+                                  challengeState.userGameStats.totalPoints
+                                } Pts</span>
                                 <span class="text-xs text-green-200">|</span>
-                                <span id="level-display" class="text-sm font-semibold ${levelAnimationClass}">Lvl ${
-              quizState.userGameStats.level
-            }</span>
+                                <span class="text-sm font-semibold">Lvl ${
+                                  challengeState.userGameStats.level
+                                }</span>
                             </div>
                             <div class="relative">
                                 <button id="profile-icon-btn" class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-600 transition-colors duration-200 ease-in-out transform active:scale-95">
@@ -757,7 +663,7 @@
                                       user.uid.substring(0, 8)
                                     }</div>
                                     <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">Level: ${
-                                      quizState.userGameStats.level
+                                      challengeState.userGameStats.level
                                     }</div>
                                     <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
                                         ${QuizIcons.Dashboard.replace(
@@ -781,10 +687,6 @@
                             </div>
                         </div>
                     `;
-
-            // Update previous stats after rendering for the next comparison
-            quizState.previousUserGameStats.totalPoints = currentPoints;
-            quizState.previousUserGameStats.level = currentLevel;
 
             const profileIconBtn = document.getElementById("profile-icon-btn");
             const profileDropdown = document.getElementById("profile-dropdown");
@@ -820,11 +722,6 @@
                             )} <span class="hidden sm:inline">Sign In</span>
                         </a>
                     `;
-            // Reset previous stats if user signs out
-            quizState.previousUserGameStats = {
-              totalPoints: 0,
-              level: 1,
-            };
           }
         }
       }
@@ -912,18 +809,18 @@
         try {
           const docSnap = await getDoc(userStatsDocRef);
           if (docSnap.exists()) {
-            quizState.userGameStats = {
-              ...quizState.userGameStats,
+            challengeState.userGameStats = {
+              ...challengeState.userGameStats,
               ...docSnap.data(),
             };
-            // Initialize previous stats with current stats on first fetch
-            quizState.previousUserGameStats = { ...quizState.userGameStats };
-            console.log("Fetched user game stats:", quizState.userGameStats);
+            console.log(
+              "Fetched user game stats:",
+              challengeState.userGameStats
+            );
           } else {
             console.log("No game stats found for user, initializing defaults.");
             // If no stats exist, create a new document with initial stats
-            await setDoc(userStatsDocRef, quizState.userGameStats);
-            quizState.previousUserGameStats = { ...quizState.userGameStats }; // Also initialize previous stats
+            await setDoc(userStatsDocRef, challengeState.userGameStats);
           }
         } catch (error) {
           console.error("Error fetching user game stats:", error);
@@ -944,7 +841,7 @@
         );
 
         try {
-          await setDoc(userStatsDocRef, quizState.userGameStats, {
+          await setDoc(userStatsDocRef, challengeState.userGameStats, {
             merge: true,
           });
           console.log("User game stats updated successfully.");
@@ -959,22 +856,24 @@
        * @param {number} points - Points to award.
        */
       async function awardPoints(points) {
-        quizState.userGameStats.totalPoints += points;
+        challengeState.userGameStats.totalPoints += points;
         console.log(
-          `Awarded ${points} points. Total: ${quizState.userGameStats.totalPoints}`
+          `Awarded ${points} points. Total: ${challengeState.userGameStats.totalPoints}`
         );
 
-        let newLevel = quizState.userGameStats.level;
+        let newLevel = challengeState.userGameStats.level;
         for (let i = 0; i < LEVEL_UP_THRESHOLDS.length; i++) {
-          if (quizState.userGameStats.totalPoints >= LEVEL_UP_THRESHOLDS[i]) {
+          if (
+            challengeState.userGameStats.totalPoints >= LEVEL_UP_THRESHOLDS[i]
+          ) {
             newLevel = i + 1;
           } else {
             break;
           }
         }
 
-        if (newLevel > quizState.userGameStats.level) {
-          quizState.userGameStats.level = newLevel;
+        if (newLevel > challengeState.userGameStats.level) {
+          challengeState.userGameStats.level = newLevel;
           showToast(`Level Up! You are now Level ${newLevel}!`, "success");
           levelUpSound.triggerAttackRelease("C5", "8n"); // Play a level up sound
           console.log(`User leveled up to Level ${newLevel}`);
@@ -988,8 +887,8 @@
        * @param {string} badgeId - The ID of the badge to award.
        */
       async function awardBadge(badgeId) {
-        if (!quizState.userGameStats.badges.includes(badgeId)) {
-          quizState.userGameStats.badges.push(badgeId);
+        if (!challengeState.userGameStats.badges.includes(badgeId)) {
+          challengeState.userGameStats.badges.push(badgeId);
           const badgeInfo = BADGES[badgeId];
           if (badgeInfo) {
             showToast(`New Badge Unlocked: ${badgeInfo.name}!`, "info");
@@ -1000,111 +899,200 @@
       }
 
       /**
-       * Initializes the quiz state by parsing URL parameters and loading quiz data.
+       * Fetches the current daily challenge from Firestore.
+       * For simplicity, we'll fetch the most recent challenge. In a real app,
+       * you'd fetch the challenge active for the current date.
        */
-      async function initializeQuizState() {
-        quizState.isLoading = true;
-        renderApp(); // Show loading spinner
-
-        const urlParams = new URLSearchParams(window.location.search);
-        quizState.categoryId = urlParams.get("category");
-        quizState.testId = urlParams.get("test");
-
-        if (!quizState.categoryId || !quizState.testId) {
-          showMessageModal(
-            "Error",
-            "Quiz category or test ID is missing from the URL."
+      async function fetchCurrentChallenge() {
+        if (!db) {
+          showToast(
+            "Firestore not initialized. Cannot fetch challenge.",
+            "error"
           );
-          quizState.isLoading = false;
-          renderApp();
           return;
         }
-
-        // Ensure allQuizTests is available. It's imported from quiz-test-data.js
-        // If it's not immediately available (e.g., due to async loading),
-        // you might need to ensure it's loaded before this point.
-        // For this scenario, assuming allQuizTests is globally available after import.
-        quizState.test = allQuizTests.find(
-          (t) =>
-            t.categoryId === quizState.categoryId && t.id === quizState.testId
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const challengesRef = collection(
+          db,
+          `artifacts/${appId}/public/data/dailyChallenges`
         );
+        // For demonstration, let's just get the first challenge available.
+        // In a real app, you'd query by date: where('startDate', '<=', now) and where('endDate', '>=', now)
+        try {
+          const querySnapshot = await getDocs(query(challengesRef));
+          if (!querySnapshot.empty) {
+            // Get the first challenge found (or implement logic to pick the current one)
+            challengeState.currentChallenge = {
+              id: querySnapshot.docs[0].id,
+              ...querySnapshot.docs[0].data(),
+            };
+            console.log(
+              "Current challenge fetched:",
+              challengeState.currentChallenge
+            );
 
-        if (!quizState.test) {
-          showMessageModal("Error", "Quiz test not found.");
-          quizState.isLoading = false;
-          renderApp();
-          return;
+            // Now fetch the actual quiz test associated with this challenge
+            const quizTest = allQuizTests.find(
+              (t) => t.id === challengeState.currentChallenge.quizTestId
+            );
+            if (quizTest) {
+              challengeState.challengeQuiz = quizTest;
+              challengeState.questions = quizTest.questions.filter(
+                (q) => q.type === "multiple-choice"
+              );
+              challengeState.timeLeft = quizTest.duration * 60; // Use quiz duration for challenge
+            } else {
+              showToast("Associated quiz for challenge not found!", "error");
+              challengeState.currentChallenge = null; // Invalidate challenge if quiz not found
+            }
+          } else {
+            showToast("No active daily challenges found.", "info");
+          }
+        } catch (error) {
+          console.error("Error fetching current challenge:", error);
+          showToast("Failed to load daily challenge.", "error");
+          throw error; // Re-throw to be caught by initializeChallengeState's try-catch
         }
-
-        // Filter questions to only include multiple-choice for now
-        quizState.questions = quizState.test.questions.filter(
-          (q) => q.type === "multiple-choice"
-        );
-        quizState.timeLeft = quizState.test.duration * 60; // Convert minutes to seconds
-        quizState.currentQuestionIndex = 0;
-        quizState.userAnswers = {}; // Reset answers for a new test
-        quizState.feedback = null; // Reset feedback
-        quizState.leaderboard = []; // Reset leaderboard
-
-        quizState.isLoading = false;
-        renderApp(); // Render quiz UI
-        startQuizTimer();
       }
 
       /**
-       * Starts the quiz countdown timer.
+       * Checks if the user has already attempted the current challenge.
        */
-      function startQuizTimer() {
-        if (quizState.timer) clearInterval(quizState.timer); // Clear existing timer
+      async function checkUserAttempt() {
+        if (!db || !authAppState.userId || !challengeState.currentChallenge) {
+          challengeState.hasAttempted = false;
+          return;
+        }
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userAttemptsRef = collection(
+          db,
+          `artifacts/${appId}/users/${authAppState.userId}/challengeAttempts`
+        );
+        const q = query(
+          userAttemptsRef,
+          where("challengeId", "==", challengeState.currentChallenge.id)
+        );
 
-        quizState.timer = setInterval(() => {
-          if (quizState.timeLeft > 0) {
-            quizState.timeLeft--;
-            updateQuizUI(); // Update timer display
+        try {
+          const querySnapshot = await getDocs(q);
+          challengeState.hasAttempted = !querySnapshot.empty;
+          console.log(
+            "User has attempted this challenge:",
+            challengeState.hasAttempted
+          );
+        } catch (error) {
+          console.error("Error checking user attempt:", error);
+          showToast("Failed to check your challenge attempts.", "error");
+          challengeState.hasAttempted = false; // Assume not attempted on error to allow retrying
+          throw error; // Re-throw to be caught by initializeChallengeState's try-catch
+        }
+      }
+
+      /**
+       * Initializes the challenge state.
+       */
+      async function initializeChallengeState() {
+        console.log("initializeChallengeState: Starting initialization.");
+        challengeState.isLoading = true;
+        renderApp(); // Show loading spinner immediately
+
+        if (!authAppState.userId) {
+          console.log(
+            "initializeChallengeState: User not logged in, cannot initialize challenge."
+          );
+          challengeState.isLoading = false;
+          renderApp(); // Render access denied if not logged in
+          return;
+        }
+
+        try {
+          await fetchCurrentChallenge();
+          if (challengeState.currentChallenge) {
+            await checkUserAttempt();
           } else {
-            clearInterval(quizState.timer);
+            console.log("No current challenge found after fetch.");
+          }
+        } catch (error) {
+          console.error(
+            "Error fetching challenge data or checking user attempt:",
+            error
+          );
+          showToast("Failed to load daily challenge data.", "error");
+          // Do not re-throw here, as we want to proceed to finally block
+        } finally {
+          challengeState.currentQuestionIndex = 0;
+          challengeState.userAnswers = {};
+          challengeState.feedback = null;
+          challengeState.leaderboard = []; // Will be fetched after quiz completion
+
+          console.log(
+            "initializeChallengeState: Finished fetching initial data."
+          );
+          challengeState.isLoading = false; // Set loading to false after all data is fetched
+          renderApp(); // Render challenge UI or attempt message
+
+          if (challengeState.challengeQuiz && !challengeState.hasAttempted) {
+            startChallengeTimer();
+          }
+        }
+      }
+
+      /**
+       * Starts the challenge countdown timer.
+       */
+      function startChallengeTimer() {
+        if (challengeState.timer) clearInterval(challengeState.timer);
+
+        challengeState.timer = setInterval(() => {
+          if (challengeState.timeLeft > 0) {
+            challengeState.timeLeft--;
+            updateChallengeUI();
+          } else {
+            clearInterval(challengeState.timer);
             showMessageModal(
               "Time's Up!",
-              "You've run out of time. The quiz will now be submitted."
+              "You've run out of time. Your challenge will now be submitted."
             ).then(() => {
-              handleFinishTest();
+              handleFinishChallenge();
             });
           }
         }, 1000);
       }
 
       /**
-       * Stops the quiz countdown timer.
+       * Stops the challenge countdown timer.
        */
-      function stopQuizTimer() {
-        if (quizState.timer) {
-          clearInterval(quizState.timer);
-          quizState.timer = null;
+      function stopChallengeTimer() {
+        if (challengeState.timer) {
+          clearInterval(challengeState.timer);
+          challengeState.timer = null;
         }
       }
 
       /**
-       * Updates the quiz UI elements like timer and question number.
+       * Updates the challenge UI elements like timer and question number.
        */
-      function updateQuizUI() {
+      function updateChallengeUI() {
         const timerDisplay = document.getElementById("timer-display");
         if (timerDisplay) {
-          timerDisplay.textContent = formatTime(quizState.timeLeft);
+          timerDisplay.textContent = formatTime(challengeState.timeLeft);
         }
         const questionNumberDisplay = document.getElementById(
           "question-number-display"
         );
         if (questionNumberDisplay) {
           questionNumberDisplay.textContent = `Question ${
-            quizState.currentQuestionIndex + 1
-          } of ${quizState.questions.length}`;
+            challengeState.currentQuestionIndex + 1
+          } of ${challengeState.questions.length}`;
         }
 
         const progressBarFill = document.getElementById("progress-bar-fill");
-        if (progressBarFill && quizState.questions.length > 0) {
+        if (progressBarFill && challengeState.questions.length > 0) {
           const progress =
-            ((quizState.currentQuestionIndex + 1) /
-              quizState.questions.length) *
+            ((challengeState.currentQuestionIndex + 1) /
+              challengeState.questions.length) *
             100;
           progressBarFill.style.width = `${progress}%`;
         }
@@ -1112,19 +1100,19 @@
         // Update navigation button states
         const prevBtn = document.getElementById("prev-question-btn");
         const nextBtn = document.getElementById("next-question-btn");
-        const finishBtn = document.getElementById("finish-test-btn");
+        const finishBtn = document.getElementById("finish-challenge-btn");
 
         if (prevBtn) {
-          prevBtn.disabled = quizState.currentQuestionIndex === 0;
+          prevBtn.disabled = challengeState.currentQuestionIndex === 0;
         }
         if (nextBtn) {
           nextBtn.disabled =
-            quizState.currentQuestionIndex === quizState.questions.length - 1;
+            challengeState.currentQuestionIndex ===
+            challengeState.questions.length - 1;
         }
         if (finishBtn) {
-          // Enable finish button only if all questions have been answered
-          const allAnswered = quizState.questions.every(
-            (q, index) => quizState.userAnswers[index] !== undefined
+          const allAnswered = challengeState.questions.every(
+            (q, index) => challengeState.userAnswers[index] !== undefined
           );
           finishBtn.disabled = !allAnswered;
         }
@@ -1145,10 +1133,9 @@
        * @param {Event} e - The event object.
        */
       function handleInputChange(e) {
-        const questionIndex = quizState.currentQuestionIndex;
-        // The radio button's value is now directly the option letter (e.g., "A", "B")
+        const questionIndex = challengeState.currentQuestionIndex;
         const selectedValue = e.target.value;
-        quizState.userAnswers[questionIndex] = selectedValue;
+        challengeState.userAnswers[questionIndex] = selectedValue;
 
         // Visually update selected option
         const optionsContainer = e.target.closest(".options-container");
@@ -1159,16 +1146,19 @@
           e.target.closest(".option-button").classList.add("selected");
         }
 
-        updateQuizUI(); // Update UI to potentially enable/disable finish button
+        updateChallengeUI();
       }
 
       /**
        * Navigates to the next question.
        */
       function handleNextQuestion() {
-        if (quizState.currentQuestionIndex < quizState.questions.length - 1) {
-          quizState.currentQuestionIndex++;
-          renderQuizQuestion();
+        if (
+          challengeState.currentQuestionIndex <
+          challengeState.questions.length - 1
+        ) {
+          challengeState.currentQuestionIndex++;
+          renderChallengeQuestion();
         }
       }
 
@@ -1176,20 +1166,21 @@
        * Navigates to the previous question.
        */
       function handlePreviousQuestion() {
-        if (quizState.currentQuestionIndex > 0) {
-          quizState.currentQuestionIndex--;
-          renderQuizQuestion();
+        if (challengeState.currentQuestionIndex > 0) {
+          challengeState.currentQuestionIndex--;
+          renderChallengeQuestion();
         }
       }
 
       /**
-       * Renders the current quiz question based on its type.
+       * Renders the current challenge question.
        */
-      function renderQuizQuestion() {
+      function renderChallengeQuestion() {
         const questionContainer = document.getElementById("question-container");
         if (!questionContainer) return;
 
-        const question = quizState.questions[quizState.currentQuestionIndex];
+        const question =
+          challengeState.questions[challengeState.currentQuestionIndex];
         if (!question) {
           questionContainer.innerHTML =
             "<p class='text-center text-gray-600'>No question found.</p>";
@@ -1197,51 +1188,30 @@
         }
 
         let questionHtml = "";
-        let formattedQuestionText = question.questionText;
-
-        // Apply highlighting if highlightWord is defined
-        if (question.highlightWord) {
-          const regex = new RegExp(`\\b(${question.highlightWord})\\b`, "gi"); // Case-insensitive, whole word match
-          formattedQuestionText = question.questionText.replace(
-            regex,
-            `<span class="highlight-word">$&</span>`
-          );
-        }
-
-        // Add image if imageUrl is present
-        let imageHtml = "";
-        if (question.imageUrl) {
-          imageHtml = `
-                <div class="mb-6 flex justify-center">
-                    <img src="${question.imageUrl}" alt="Quiz Image" class="max-w-full h-auto rounded-lg shadow-md border border-gray-200"
-                        onerror="this.onerror=null; this.src='https://placehold.co/600x400/E0E0E0/333333?text=Image+Not+Found';"
-                    >
-                </div>
-            `;
-        }
 
         switch (question.type) {
           case "multiple-choice":
             questionHtml = `
                         <div class="animate-fade-in-up">
-                            ${imageHtml} <!-- Image displayed here -->
-                            <p class="text-lg sm:text-xl font-semibold mb-6 text-gray-800">${formattedQuestionText}</p>
+                            <p class="text-lg sm:text-xl font-semibold mb-6 text-gray-800">${
+                              question.questionText
+                            }</p>
                             <div class="options-container grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 ${question.options
                                   .map((option, index) => {
                                     const optionLetter = getOptionLetter(
                                       option
-                                    ); // Extract 'A', 'B', etc.
+                                    );
                                     const isSelected =
-                                      quizState.userAnswers[
-                                        quizState.currentQuestionIndex
+                                      challengeState.userAnswers[
+                                        challengeState.currentQuestionIndex
                                       ] === optionLetter;
                                     return `
                                     <label class="option-button flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200
                                         ${isSelected ? "selected" : ""}
                                     ">
                                         <input type="radio" name="question-${
-                                          quizState.currentQuestionIndex
+                                          challengeState.currentQuestionIndex
                                         }" value="${optionLetter}" class="form-radio h-5 w-5 text-blue-600"
                                             ${isSelected ? "checked" : ""}
                                             onchange="window.handleInputChange(event)"
@@ -1255,36 +1225,34 @@
                         </div>
                     `;
             break;
-          // Add other question types here if needed (e.g., 'fill-in-the-blank', 'matching')
           default:
             questionHtml = `<p class="text-center text-red-500">Unsupported question type: ${question.type}</p>`;
         }
 
         questionContainer.innerHTML = questionHtml;
-        updateQuizUI(); // Update button states after rendering question
+        updateChallengeUI();
       }
 
-      // Make handleInputChange globally accessible for onchange attribute
-      window.handleInputChange = handleInputChange;
+      window.handleInputChange = handleInputChange; // Make globally accessible
 
       /**
-       * Handles the completion of the test, calculates score, and displays feedback.
+       * Handles the completion of the challenge, calculates score, and displays feedback.
        */
-      async function handleFinishTest() {
-        stopQuizTimer(); // Stop the timer
+      async function handleFinishChallenge() {
+        stopChallengeTimer();
 
         const confirmation = await showMessageModal(
-          "Finish Test?",
-          "Are you sure you want to finish the test and view your results?",
+          "Finish Challenge?",
+          "Are you sure you want to finish the challenge and view your results?",
           true
         );
         if (!confirmation) {
-          startQuizTimer(); // Resume timer if cancelled
+          startChallengeTimer();
           return;
         }
 
-        quizState.isLoading = true;
-        renderApp(); // Show loading spinner
+        challengeState.isLoading = true;
+        renderApp();
 
         let score = 0;
         const feedbackDetails = [];
@@ -1292,64 +1260,62 @@
         let incorrectAnswersCount = 0;
         let unattemptedCount = 0;
 
-        quizState.questions.forEach((question, index) => {
-          // user answer is now just the letter (e.g., "A", "B")
-          const userAnswer = (quizState.userAnswers[index] || "")
+        challengeState.questions.forEach((question, index) => {
+          const userAnswer = (challengeState.userAnswers[index] || "")
             .trim()
-            .toUpperCase(); // Ensure uppercase for comparison
+            .toUpperCase();
           const correctAnswer = (question.correctAnswer || "")
             .trim()
-            .toUpperCase(); // Ensure uppercase for comparison
+            .toUpperCase();
 
           const isCorrect = userAnswer === correctAnswer;
           const status = isCorrect
             ? "correct"
-            : userAnswer !== "" // Check if user attempted (empty string means unattempted after trim)
+            : userAnswer !== ""
             ? "incorrect"
             : "unattempted";
 
           feedbackDetails.push({
             questionText: question.questionText,
-            userAnswer: quizState.userAnswers[index] || "", // Store only the letter, will fetch full text for display
-            correctAnswer: question.correctAnswer, // Store only the letter, will fetch full text for display
+            userAnswer: challengeState.userAnswers[index] || "Unattempted",
+            correctAnswer: question.correctAnswer,
             explanation: question.explanation,
             isCorrect: isCorrect,
             status: status,
           });
 
           if (isCorrect) {
-            score += POINTS_PER_CORRECT_ANSWER; // Award points for correct answers
+            score += POINTS_PER_CORRECT_ANSWER;
             correctAnswersCount++;
           } else if (userAnswer !== "") {
-            // Only count as incorrect if an attempt was made
             incorrectAnswersCount++;
           } else {
             unattemptedCount++;
           }
         });
 
-        // Calculate percentage, ensuring it's a valid number even if no questions or division by zero
         let percentage = 0;
-        if (quizState.questions.length > 0) {
-          percentage = (correctAnswersCount / quizState.questions.length) * 100;
+        if (challengeState.questions.length > 0) {
+          percentage =
+            (correctAnswersCount / challengeState.questions.length) * 100;
         }
         percentage = isFinite(percentage)
           ? parseFloat(percentage.toFixed(2))
-          : 0; // Ensure it's a number and fixed to 2 decimal places
+          : 0;
 
-        const timeTaken = quizState.test.duration * 60 - quizState.timeLeft;
+        const timeTaken =
+          challengeState.challengeQuiz.duration * 60 - challengeState.timeLeft;
 
         const overallPerformanceSummary = {
           score: score,
-          percentage: percentage, // Use the already processed percentage
-          totalQuestions: quizState.questions.length,
+          percentage: percentage,
+          totalQuestions: challengeState.questions.length,
           correct: correctAnswersCount,
           incorrect: incorrectAnswersCount,
           unattempted: unattemptedCount,
           timeTaken: formatTime(timeTaken),
         };
 
-        // Determine strengths and areas for improvement (simplified logic)
         const strengths = [];
         const areasForImprovement = [];
         if (percentage >= 80) strengths.push("Excellent overall performance!");
@@ -1362,65 +1328,38 @@
             "Work on time management to attempt all questions."
           );
 
-        // Update user game stats
-        await awardPoints(score); // Award the calculated score
-
-        // Award badges based on performance
-        if (
-          correctAnswersCount === quizState.questions.length &&
-          quizState.questions.length > 0
-        ) {
-          // Perfect score badge
-          if (quizState.test.categoryId === "grammar")
-            await awardBadge("grammar_master");
-          if (quizState.test.categoryId === "vocabulary")
-            await awardBadge("vocabulary_expert");
+        try {
+          await awardPoints(score);
+          await awardBadge("challenge_master"); // Award challenge master badge
+          await saveChallengeResultToFirestore(
+            overallPerformanceSummary,
+            timeTaken
+          );
+          await fetchChallengeLeaderboard();
+        } catch (error) {
+          console.error("Error during challenge completion process:", error);
+          showToast("There was an error saving your results.", "error");
+        } finally {
+          challengeState.feedback = {
+            overallPerformanceSummary,
+            feedbackDetails,
+            strengths,
+            areasForImprovement,
+          };
+          challengeState.isLoading = false;
+          renderApp();
         }
-        if (quizState.userGameStats.completedTests.length === 0) {
-          await awardBadge("first_quiz"); // First quiz completion
-        }
-        // Track completed tests to award "quiz_champion" badge
-        if (
-          !quizState.userGameStats.completedTests.includes(quizState.testId)
-        ) {
-          quizState.userGameStats.completedTests.push(quizState.testId);
-          await updateUserGameStats(); // Save the updated completed tests list
-        }
-        if (quizState.userGameStats.completedTests.length >= 5) {
-          await awardBadge("quiz_champion");
-        }
-        // "Speed Demon" badge (simplified: if time taken is less than 20% of duration)
-        if (timeTaken < quizState.test.duration * 60 * 0.2) {
-          await awardBadge("speed_demon");
-        }
-
-        quizState.feedback = {
-          overallPerformanceSummary,
-          feedbackDetails,
-          strengths,
-          areasForImprovement,
-        };
-
-        // Save result to Firestore
-        await saveQuizResultToFirestore(overallPerformanceSummary, timeTaken);
-        await fetchLeaderboard(); // Fetch updated leaderboard
-
-        // IMPORTANT: Update auth UI to reflect new points/level immediately
-        updateAuthUI(auth.currentUser);
-
-        quizState.isLoading = false;
-        renderApp(); // Render feedback section
       }
 
       /**
-       * Saves the quiz result to Firestore.
+       * Saves the challenge result to Firestore.
        * @param {object} summary - The overall performance summary.
        * @param {number} timeTaken - Time taken in seconds.
        */
-      async function saveQuizResultToFirestore(summary, timeTaken) {
-        if (!db || !authAppState.userId) {
+      async function saveChallengeResultToFirestore(summary, timeTaken) {
+        if (!db || !authAppState.userId || !challengeState.currentChallenge) {
           showToast(
-            "Not logged in. Quiz results will not be saved.",
+            "Not logged in or no active challenge. Challenge results will not be saved.",
             "warning"
           );
           return;
@@ -1431,148 +1370,268 @@
         const userId = authAppState.userId;
         const userEmail = authAppState.user?.email || "Anonymous";
         const userName =
-          authAppState.userProfile?.name || userEmail.split("@")[0]; // Use name if available, else part of email
+          authAppState.userProfile?.name || userEmail.split("@")[0];
 
         const resultData = {
           userId: userId,
           userName: userName,
           userEmail: userEmail,
-          categoryId: quizState.categoryId,
-          testId: quizState.testId,
-          testTitle: quizState.test.title,
+          challengeId: challengeState.currentChallenge.id,
+          challengeTitle: challengeState.currentChallenge.title,
           score: summary.score,
-          // Ensure percentage is a valid number before saving
           percentage: isFinite(summary.percentage) ? summary.percentage : 0,
           correctAnswers: summary.correct,
           totalQuestions: summary.totalQuestions,
           timeTakenSeconds: timeTaken,
-          timestamp: serverTimestamp(), // Use server timestamp
-          userAnswers: quizState.userAnswers, // <--- ADDED: Save userAnswers
+          timestamp: serverTimestamp(),
         };
 
         try {
-          // Save to private user results collection
+          // Save to private user challenge attempts collection
           await addDoc(
-            collection(db, `artifacts/${appId}/users/${userId}/quizResults`),
+            collection(
+              db,
+              `artifacts/${appId}/users/${userId}/challengeAttempts`
+            ),
             resultData
           );
-          console.log("Quiz result saved to private collection.");
+          console.log("Challenge result saved to private collection.");
 
-          // Save to public global results collection for leaderboard
-          await addDoc(
-            collection(db, `artifacts/${appId}/public/data/quizGlobalResults`),
-            resultData
+          // Update public leaderboard for this specific challenge
+          const leaderboardDocRef = doc(
+            db,
+            `artifacts/${appId}/public/data/challengeLeaderboards/${challengeState.currentChallenge.id}/entries/${userId}`
           );
-          console.log("Quiz result saved to public collection.");
-          showToast("Quiz results saved successfully!", "success");
+          // Fetch existing entry to compare score/time
+          const docSnap = await getDoc(leaderboardDocRef);
+          if (docSnap.exists()) {
+            const existingData = docSnap.data();
+            // Only update if current score is better or same score with less time
+            if (
+              resultData.percentage > existingData.percentage ||
+              (resultData.percentage === existingData.percentage &&
+                resultData.timeTakenSeconds < existingData.timeTakenSeconds)
+            ) {
+              await setDoc(leaderboardDocRef, resultData, { merge: true });
+              console.log("Leaderboard entry updated.");
+            } else {
+              console.log("Existing leaderboard entry is better or equal.");
+            }
+          } else {
+            await setDoc(leaderboardDocRef, resultData);
+            console.log("New leaderboard entry created.");
+          }
+
+          showToast("Challenge results saved successfully!", "success");
         } catch (error) {
-          console.error("Error saving quiz result:", error);
-          showToast("Failed to save quiz results.", "error");
+          console.error("Error saving challenge result:", error);
+          showToast("Failed to save challenge results.", "error");
+          throw error; // Re-throw to be caught by handleFinishChallenge's try-catch
         }
       }
 
       /**
-       * Fetches and updates the leaderboard for the current test.
+       * Fetches and updates the leaderboard for the current challenge.
        */
-      async function fetchLeaderboard() {
-        if (!db) return;
+      async function fetchChallengeLeaderboard() {
+        if (!db || !challengeState.currentChallenge) return;
         const appId =
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const leaderboardRef = collection(
           db,
-          `artifacts/${appId}/public/data/quizGlobalResults`
-        );
-        const q = query(
-          leaderboardRef,
-          where("testId", "==", quizState.testId)
-          // orderBy("percentage", "desc"), // Removed orderBy to avoid index issues
-          // orderBy("timeTakenSeconds", "asc")
+          `artifacts/${appId}/public/data/challengeLeaderboards/${challengeState.currentChallenge.id}/entries`
         );
 
         try {
-          const querySnapshot = await getDocs(q);
+          const querySnapshot = await getDocs(query(leaderboardRef));
           let rawResults = [];
           querySnapshot.forEach((doc) => {
             rawResults.push(doc.data());
           });
 
-          // Deduplicate results by userId, keeping the best score (highest percentage, then lowest time)
-          const bestResultsMap = new Map(); // Map<userId, bestResult>
-          rawResults.forEach((result) => {
-            // Ensure percentage is a number, default to 0 if undefined/null/NaN
-            const currentPercentage = parseFloat(result.percentage) || 0;
-            const existingBest = bestResultsMap.get(result.userId);
-            const existingPercentage = existingBest
-              ? parseFloat(existingBest.percentage) || 0
-              : -1; // Default to -1 for comparison
-
-            if (
-              !existingBest ||
-              currentPercentage > existingPercentage ||
-              (currentPercentage === existingPercentage &&
-                result.timeTakenSeconds < (existingBest.timeTakenSeconds || 0)) // Ensure timeTakenSeconds is also a number for comparison
-            ) {
-              bestResultsMap.set(result.userId, {
-                ...result,
-                percentage: currentPercentage,
-              }); // Store cleaned percentage
-            }
-          });
-
-          let leaderboard = Array.from(bestResultsMap.values());
-
           // Sort in memory: highest percentage first, then lowest time taken
-          leaderboard.sort((a, b) => {
-            // Ensure comparison values are numbers
+          rawResults.sort((a, b) => {
             const aPercentage = parseFloat(a.percentage) || 0;
             const bPercentage = parseFloat(b.percentage) || 0;
             const aTime = parseFloat(a.timeTakenSeconds) || 0;
             const bTime = parseFloat(b.timeTakenSeconds) || 0;
 
             if (bPercentage !== aPercentage) {
-              return bPercentage - aPercentage; // Higher percentage first
+              return bPercentage - aPercentage;
             }
-            return aTime - bTime; // Lower time taken first
+            return aTime - bTime; // Fixed typo: bBPM to bTime
           });
 
-          quizState.leaderboard = leaderboard.slice(0, 10); // Get top 10
+          challengeState.leaderboard = rawResults.slice(0, 10); // Get top 10
 
-          // Find user's rank
           if (authAppState.userId) {
-            const userEntry = leaderboard.find(
+            const userEntry = rawResults.find(
               (entry) => entry.userId === authAppState.userId
             );
             if (userEntry) {
-              quizState.userRank = leaderboard.indexOf(userEntry) + 1;
+              challengeState.userRank = rawResults.indexOf(userEntry) + 1;
             } else {
-              quizState.userRank = null; // User not on leaderboard
+              challengeState.userRank = null;
             }
           } else {
-            quizState.userRank = null;
+            challengeState.userRank = null;
           }
 
-          console.log("Leaderboard fetched:", quizState.leaderboard);
+          console.log(
+            "Challenge Leaderboard fetched:",
+            challengeState.leaderboard
+          );
         } catch (error) {
-          console.error("Error fetching leaderboard:", error);
-          showToast("Failed to load leaderboard.", "error");
+          console.error("Error fetching challenge leaderboard:", error);
+          showToast("Failed to load challenge leaderboard.", "error");
+          throw error; // Re-throw to be caught by handleFinishChallenge's try-catch
         }
       }
 
       /**
-       * Renders the main quiz test interface.
+       * Renders the main challenge interface (quiz or messages).
+       * @param {HTMLElement} parentDiv - The div to render the content into.
+       */
+      function renderChallengePage(parentDiv) {
+        if (challengeState.isLoading) {
+          parentDiv.innerHTML = getLoadingSpinnerHtml();
+          return;
+        }
+
+        if (!authAppState.isAuthReady || !authAppState.userId) {
+          parentDiv.innerHTML = `
+                    <div class="max-w-xl mx-auto challenge-card p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in-up text-center">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-blue-700 mb-4">Access Denied</h2>
+                        <p class="text-gray-700 mb-6">Please sign in to participate in daily challenges.</p>
+                        <a href="auth.html" class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95">
+                            ${QuizIcons.SignIn.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} <span class="hidden sm:inline">Sign In</span>
+                        </a>
+                    </div>
+                `;
+          return;
+        }
+
+        if (!challengeState.currentChallenge || !challengeState.challengeQuiz) {
+          parentDiv.innerHTML = `
+                <div class="max-w-xl mx-auto challenge-card p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in-up text-center">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-blue-700 mb-4">No Active Challenge</h2>
+                    <p class="text-gray-700 mb-6">Please check back later for a new daily challenge!</p>
+                    <a href="quiz-home.html" class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95">
+                        ${QuizIcons.Home.replace(
+                          /width="24" height="24"/g,
+                          'width="18" height="18"'
+                        )} Back to Home
+                    </a>
+                </div>
+            `;
+          return;
+        }
+
+        if (challengeState.hasAttempted && !challengeState.feedback) {
+          parentDiv.innerHTML = `
+                    <div class="max-w-xl mx-auto challenge-card p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in-up text-center">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-yellow-700 mb-4">Challenge Completed!</h2>
+                        <p class="text-gray-700 mb-6">You have already attempted today's challenge. Check back tomorrow for a new one!</p>
+                        <button id="view-results-btn" class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95">
+                            ${QuizIcons.ChartBar.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} View My Results
+                        </button>
+                        <a href="quiz-home.html" class="inline-flex items-center gap-2 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg shadow-md hover:bg-gray-300 transition-colors duration-200 font-semibold text-lg transform active:scale-95 mt-4 ml-2">
+                            ${QuizIcons.Home.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} Back to Home
+                        </a>
+                    </div>
+                `;
+          document
+            .getElementById("view-results-btn")
+            .addEventListener("click", async () => {
+              challengeState.isLoading = true;
+              renderApp();
+              try {
+                await fetchChallengeLeaderboard(); // Ensure leaderboard is fetched for feedback display
+                // For a specific user's past result, you'd fetch from userChallengeAttempts
+                // For simplicity, we'll just show the leaderboard and a general message.
+                // A more robust solution would fetch the specific attempt details.
+                const appId =
+                  typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+                const userAttemptsRef = collection(
+                  db,
+                  `artifacts/${appId}/users/${authAppState.userId}/challengeAttempts`
+                );
+                const q = query(
+                  userAttemptsRef,
+                  where("challengeId", "==", challengeState.currentChallenge.id)
+                );
+                const querySnapshot = await getDocs(q);
+                if (!querySnapshot.empty) {
+                  const attemptData = querySnapshot.docs[0].data();
+                  challengeState.feedback = {
+                    overallPerformanceSummary: {
+                      score: attemptData.score,
+                      percentage: attemptData.percentage,
+                      totalQuestions: attemptData.totalQuestions,
+                      correct: attemptData.correctAnswers,
+                      incorrect:
+                        attemptData.totalQuestions -
+                        attemptData.correctAnswers -
+                        (attemptData.unattempted || 0), // Assuming unattempted is saved
+                      unattempted: attemptData.unattempted || 0,
+                      timeTaken: formatTime(attemptData.timeTakenSeconds || 0),
+                    },
+                    feedbackDetails: [], // Can't reconstruct full details without saving them
+                    strengths: ["Review your previous attempt."],
+                    areasForImprovement: ["Aim for a higher score next time!"],
+                  };
+                } else {
+                  challengeState.feedback = null; // No previous attempt found (shouldn't happen if hasAttempted is true)
+                  showToast(
+                    "Could not retrieve previous attempt details.",
+                    "warning"
+                  );
+                }
+              } catch (error) {
+                console.error("Error viewing past results:", error);
+                showToast(
+                  "Failed to load your past challenge results.",
+                  "error"
+                );
+              } finally {
+                challengeState.isLoading = false;
+                renderApp();
+              }
+            });
+          return;
+        }
+
+        if (challengeState.feedback) {
+          renderChallengeFeedbackSection(parentDiv);
+        } else {
+          renderChallengeQuiz(parentDiv);
+        }
+      }
+
+      /**
+       * Renders the quiz portion of the challenge.
        * @param {HTMLElement} parentDiv - The div to render the quiz into.
        */
-      function renderQuizTest(parentDiv) {
-        if (!quizState.test) {
-          parentDiv.innerHTML = getLoadingSpinnerHtml(); // Fallback to spinner if test not loaded
+      function renderChallengeQuiz(parentDiv) {
+        if (!challengeState.challengeQuiz) {
+          parentDiv.innerHTML = getLoadingSpinnerHtml();
           return;
         }
 
         parentDiv.innerHTML = `
-                <div class="max-w-3xl mx-auto quiz-card p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in-up">
+                <div class="max-w-3xl mx-auto challenge-card p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in-up">
                     <div class="flex flex-col sm:flex-row justify-between items-center mb-6 pb-4 border-b border-gray-200">
                         <h2 class="text-2xl sm:text-3xl font-bold text-blue-700 mb-4 sm:mb-0">${
-                          quizState.test.title
+                          challengeState.currentChallenge.title
                         }</h2>
                         <div class="text-xl sm:text-2xl font-bold text-red-600 flex items-center gap-2 bg-red-50 px-4 py-2 rounded-full shadow-inner">
                             ${QuizIcons.Clock.replace(
@@ -1580,7 +1639,7 @@
                               'width="20" height="20" class="w-5 h-5 text-red-500"'
                             )}
                             <span id="timer-display">${formatTime(
-                              quizState.timeLeft
+                              challengeState.timeLeft
                             )}</span>
                         </div>
                     </div>
@@ -1591,12 +1650,12 @@
 
                     <div class="mb-6">
                         <p id="question-number-display" class="text-md sm:text-lg text-gray-600 font-medium mb-4 text-center">
-                            Question ${quizState.currentQuestionIndex + 1} of ${
-          quizState.questions.length
-        }
+                            Question ${
+                              challengeState.currentQuestionIndex + 1
+                            } of ${challengeState.questions.length}
                         </p>
-                        <div id="question-container" class="min-h-[150px] flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg border border-gray-200">
-                            <!-- Question will be rendered here by renderQuizQuestion() -->
+                        <div id="question-container" class="min-h-[150px] flex items-center justify-center p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <!-- Question will be rendered here by renderChallengeQuestion() -->
                         </div>
                     </div>
 
@@ -1607,11 +1666,11 @@
                               'width="16" height="16" sm:w="18" sm:h="18"'
                             )} <span class="hidden sm:inline">Previous</span>
                         </button>
-                        <button id="finish-test-btn" class="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-5 sm:py-2.5 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base transform active:scale-95">
+                        <button id="finish-challenge-btn" class="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-5 sm:py-2.5 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base transform active:scale-95">
                             ${QuizIcons.Flag.replace(
                               /width="24" height="24"/g,
                               'width="16" height="16" sm:w="18" sm:h="18"'
-                            )} <span class="hidden sm:inline">Finish Test</span>
+                            )} <span class="hidden sm:inline">Finish Challenge</span>
                         </button>
                         <button id="next-question-btn" class="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-5 sm:py-2.5 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base transform active:scale-95">
                             <span class="hidden sm:inline">Next</span> ${QuizIcons.ChevronRight.replace(
@@ -1630,19 +1689,19 @@
           .getElementById("next-question-btn")
           .addEventListener("click", handleNextQuestion);
         document
-          .getElementById("finish-test-btn")
-          .addEventListener("click", handleFinishTest);
+          .getElementById("finish-challenge-btn")
+          .addEventListener("click", handleFinishChallenge);
 
-        updateQuizUI(); // Initial update for progress bar and buttons
-        renderQuizQuestion(); // Render the first question
+        updateChallengeUI();
+        renderChallengeQuestion();
       }
 
       /**
-       * Renders the quiz feedback section after the test is completed.
+       * Renders the challenge feedback section after completion.
        * @param {HTMLElement} parentDiv - The div to render the feedback into.
        */
-      function renderQuizFeedbackSection(parentDiv) {
-        if (!quizState.feedback) {
+      function renderChallengeFeedbackSection(parentDiv) {
+        if (!challengeState.feedback) {
           parentDiv.innerHTML =
             "<p class='text-center text-red-500'>No feedback data available.</p>";
           return;
@@ -1653,21 +1712,12 @@
           feedbackDetails,
           strengths,
           areasForImprovement,
-        } = quizState.feedback;
-
-        // Helper function to get the full option text from the option letter
-        const getFullOptionTextFromLetter = (letter, questionOptions) => {
-          if (!letter || !questionOptions) return "N/A"; // Handle unattempted or missing data
-          const foundOption = questionOptions.find((opt) =>
-            opt.startsWith(`${letter})`)
-          );
-          return foundOption || letter; // Return full option or just the letter if not found
-        };
+        } = challengeState.feedback;
 
         parentDiv.innerHTML = `
-                <div class="max-w-4xl mx-auto quiz-card p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in-up">
+                <div class="max-w-4xl mx-auto challenge-card p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in-up">
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-center text-blue-700 mb-6">
-                        Quiz Results
+                        Challenge Results
                     </h2>
 
                     <!-- Overall Performance Summary -->
@@ -1699,7 +1749,7 @@
                             }</p>
                             <p class="col-span-1 sm:col-span-2">
                                 <strong>Your Current Level:</strong> <span class="font-bold text-blue-600">Level ${
-                                  quizState.userGameStats.level
+                                  challengeState.userGameStats.level
                                 }</span>
                             </p>
                         </div>
@@ -1720,7 +1770,7 @@
                                     ? strengths
                                         .map((s) => `<li>${s}</li>`)
                                         .join("")
-                                    : "<li>No specific strengths identified for this quiz.</li>"
+                                    : "<li>No specific strengths identified for this challenge.</li>"
                                 }
                             </ul>
                         </div>
@@ -1753,8 +1803,8 @@
                         </h3>
                         <div class="flex flex-wrap gap-4">
                             ${
-                              quizState.userGameStats.badges.length > 0
-                                ? quizState.userGameStats.badges
+                              challengeState.userGameStats.badges.length > 0
+                                ? challengeState.userGameStats.badges
                                     .map((badgeId) => {
                                       const badge = BADGES[badgeId];
                                       return badge
@@ -1775,7 +1825,7 @@
                         </div>
                     </div>
 
-                    <!-- Question-by-Question Review -->
+                    <!-- Question-by-Question Review (Simplified for challenge) -->
                     <div class="mb-8">
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                             ${QuizIcons.Review.replace(
@@ -1785,73 +1835,31 @@
                         </h3>
                         <div class="space-y-6 custom-scrollbar max-h-96 overflow-y-auto pr-2">
                             ${feedbackDetails
-                              .map((detail, index) => {
-                                let reviewQuestionText = detail.questionText;
-                                // Re-apply highlighting for review section
-                                const originalQuestion =
-                                  quizState.questions[index]; // Get the original question object
-                                if (
-                                  originalQuestion &&
-                                  originalQuestion.highlightWord
-                                ) {
-                                  const regex = new RegExp(
-                                    `\\b(${originalQuestion.highlightWord})\\b`,
-                                    "gi"
-                                  );
-                                  reviewQuestionText = detail.questionText.replace(
-                                    regex,
-                                    `<span class="highlight-word">$&</span>`
-                                  );
-                                }
-
-                                // Add image to review section if imageUrl is present
-                                let reviewImageHtml = "";
-                                if (
-                                  originalQuestion &&
-                                  originalQuestion.imageUrl
-                                ) {
-                                  reviewImageHtml = `
-                                        <div class="mb-4 flex justify-center">
-                                            <img src="${originalQuestion.imageUrl}" alt="Quiz Image" class="max-w-full h-auto rounded-lg shadow-sm border border-gray-100"
-                                                onerror="this.onerror=null; this.src='https://placehold.co/400x200/E0E0E0/333333?text=Image+Not+Found';"
-                                            >
-                                        </div>
-                                    `;
-                                }
-
-                                // Get full option text for display
-                                const displayUserAnswer = detail.userAnswer
-                                  ? getFullOptionTextFromLetter(
-                                      detail.userAnswer,
-                                      originalQuestion.options
-                                    )
-                                  : "Unattempted";
-                                const displayCorrectAnswer = getFullOptionTextFromLetter(
-                                  detail.correctAnswer,
-                                  originalQuestion.options
-                                );
-
-                                return `
+                              .map(
+                                (detail, index) => `
                                 <div class="p-4 rounded-lg shadow-sm border ${
                                   detail.isCorrect
                                     ? "border-green-300 bg-green-50"
                                     : "border-red-300 bg-red-50"
                                 }">
-                                    ${reviewImageHtml} <!-- Image displayed here in review -->
                                     <p class="font-semibold text-gray-900 mb-2">
-                                        Question ${
-                                          index + 1
-                                        }: ${reviewQuestionText}
+                                        Question ${index + 1}: ${
+                                  detail.questionText
+                                }
                                     </p>
                                     <p class="text-sm text-gray-700">
                                         Your Answer: <span class="${
                                           detail.isCorrect
                                             ? "correct-answer"
                                             : "incorrect-answer"
-                                        }">${displayUserAnswer}</span>
+                                        }">${
+                                  detail.userAnswer || "Unattempted"
+                                }</span>
                                     </p>
                                     <p class="text-sm text-gray-700">
-                                        Correct Answer: <span class="correct-answer">${displayCorrectAnswer}</span>
+                                        Correct Answer: <span class="correct-answer">${
+                                          detail.correctAnswer
+                                        }</span>
                                     </p>
                                     ${
                                       detail.explanation
@@ -1861,8 +1869,8 @@
                                         : ""
                                     }
                                 </div>
-                            `;
-                              })
+                            `
+                              )
                               .join("")}
                         </div>
                     </div>
@@ -1873,7 +1881,7 @@
                             ${QuizIcons.Leaderboard.replace(
                               /width="24" height="24"/g,
                               'width="24" height="24" class="w-6 h-6 text-gray-600"'
-                            )} Leaderboard for This Test
+                            )} Leaderboard for This Challenge
                         </h3>
                         <div class="leaderboard-table-container">
                             <table class="leaderboard-table">
@@ -1888,8 +1896,8 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     ${
-                                      quizState.leaderboard.length > 0
-                                        ? quizState.leaderboard
+                                      challengeState.leaderboard.length > 0
+                                        ? challengeState.leaderboard
                                             .map(
                                               (entry, index) => `
                                             <tr class="${
@@ -1915,7 +1923,7 @@
                                                           }</span>`
                                                         : `<span class="rank-badge rank-common">${
                                                             index + 1
-                                                          }</span>` // Applied common badge for ranks 4+
+                                                          }</span>`
                                                     }
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${
@@ -1938,12 +1946,12 @@
                                         : `<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">No results yet. Be the first!</td></tr>`
                                     }
                                     ${
-                                      quizState.userRank &&
-                                      quizState.userRank > 10 &&
+                                      challengeState.userRank &&
+                                      challengeState.userRank > 10 &&
                                       authAppState.userId
                                         ? `
                                         <tr>
-                                            <td colspan="5" class="px-6 py-4 text-center text-gray-600 italic">... Your Rank: ${quizState.userRank} ...</td>
+                                            <td colspan="5" class="px-6 py-4 text-center text-gray-600 italic">... Your Rank: ${challengeState.userRank} ...</td>
                                         </tr>
                                         `
                                         : ""
@@ -1953,13 +1961,13 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-center mt-8 gap-3 flex-wrap">
-                        <a href="quiz-home.html" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
-                        <i class="fas fa-home w-5 h-5"></i> Back to Categories
+                    <div class="flex justify-center mt-8">
+                        <a href="quiz-home.html" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95">
+                            ${QuizIcons.Home.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} Back to Home
                         </a>
-                         <a href="daily-leaderboard.html" class="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
-                         <i class="fas fa-list-ol w-5 h-5"></i> Daily Leaderboard
-                         </a>
                     </div>
                 </div>
             `;
@@ -1972,60 +1980,124 @@
         const appDiv = document.getElementById("app");
         if (!appDiv) return;
 
-        if (quizState.isLoading) {
-          appDiv.innerHTML = getLoadingSpinnerHtml();
-        } else if (quizState.feedback) {
-          renderQuizFeedbackSection(appDiv);
-        } else {
-          renderQuizTest(appDiv);
+        renderChallengePage(appDiv);
+      }
+
+      /**
+       * Sets up initial daily challenge data if none exists.
+       * This is for demonstration purposes to ensure the app has content to display.
+       */
+      async function setupInitialChallengeData() {
+        if (!db) return;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const challengesRef = collection(
+          db,
+          `artifacts/${appId}/public/data/dailyChallenges`
+        );
+
+        try {
+          const querySnapshot = await getDocs(query(challengesRef));
+          if (querySnapshot.empty) {
+            console.log("No daily challenges found. Adding a default one.");
+            const defaultChallenge = {
+              title: "Daily IELTS Grammar Challenge",
+              description: "Test your grammar skills with today's challenge!",
+              quizTestId: "grammar_test_1", // This ID must match an ID in your allQuizTests array in quiz-test-data.js
+              startDate: new Date().toISOString().split("T")[0], // Today's date
+              endDate: new Date(new Date().setDate(new Date().getDate() + 1))
+                .toISOString()
+                .split("T")[0], // Tomorrow's date
+              createdAt: serverTimestamp(),
+            };
+            await addDoc(challengesRef, defaultChallenge);
+            console.log("Default daily challenge added.");
+          } else {
+            console.log("Daily challenges already exist.");
+          }
+        } catch (error) {
+          console.error("Error setting up initial challenge data:", error);
+          showToast("Failed to set up initial challenge data.", "error");
         }
       }
 
       // Initialization Logic
       window.onload = async function () {
-        // Start Tone.js audio context
+        const appDiv = document.getElementById("app");
+        appDiv.innerHTML = getLoadingSpinnerHtml(); // Show spinner immediately
+
         try {
-          await Tone.start();
-          console.log("Tone.js audio context started successfully.");
-        } catch (error) {
-          console.error("Error starting Tone.js audio context:", error);
-          showToast(
-            "Audio might not play. Please interact with the page to enable sound.",
-            "warning"
-          );
-        }
-
-        // Initialize Firebase Auth and listen for state changes
-        initFirebaseAuth(updateAuthUI)
-          .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
-            db = firestoreDb;
-            auth = firebaseAuth;
-            console.log("Firebase initialized in quiz-test.html:", {
-              db,
-              auth,
-            });
-
-            // Fetch user game stats after Firebase is initialized and user is authenticated
-            auth.onAuthStateChanged(async (user) => {
-              if (user) {
-                await fetchUserGameStats(user.uid);
-              }
-              // Initialize quiz state only after auth and stats are ready
-              await initializeQuizState();
-            });
-          })
-          .catch((error) => {
-            console.error(
-              "Failed to initialize Firebase in quiz-test.html:",
-              error
-            );
-            showToast(
-              "Failed to initialize Firebase. Some features may not work.",
-              "error"
-            );
-            quizState.isLoading = false;
-            renderApp(); // Render with error message or limited functionality
+          const {
+            db: firestoreDb,
+            auth: firebaseAuth,
+          } = await initFirebaseAuth(updateAuthUI);
+          db = firestoreDb;
+          auth = firebaseAuth;
+          console.log("Firebase initialized in quiz-challenge.html:", {
+            db,
+            auth,
           });
+
+          // This listener manages the main content rendering based on authentication state
+          auth.onAuthStateChanged(async (user) => {
+            console.log(
+              "onAuthStateChanged triggered. User:",
+              user ? user.uid : "null"
+            );
+            // Explicitly set authAppState.isAuthReady to true once onAuthStateChanged fires.
+            // This ensures the app proceeds with rendering even if auth.js has a delay in updating this flag.
+            authAppState.isAuthReady = true;
+            authAppState.userId = user ? user.uid : null; // Ensure userId is updated immediately
+            authAppState.user = user; // Ensure user object is updated immediately
+
+            console.log(
+              "authAppState.isAuthReady (after explicit set):",
+              authAppState.isAuthReady
+            );
+            console.log(
+              "authAppState.userId (after explicit set):",
+              authAppState.userId
+            );
+
+            if (authAppState.isAuthReady) {
+              console.log(
+                "authAppState.isAuthReady is TRUE. Proceeding with challenge initialization."
+              );
+              challengeState.isLoading = true; // Show spinner while fetching user/challenge data
+              renderApp(); // Render spinner
+
+              if (user) {
+                // Setup initial challenge data only if a user is logged in (to ensure `db` is ready)
+                await setupInitialChallengeData();
+                await fetchUserGameStats(user.uid);
+                await initializeChallengeState(); // This function will handle setting isLoading to false and calling renderApp()
+              } else {
+                // User is not logged in
+                console.log("User not logged in. Displaying access denied.");
+                challengeState.isLoading = false; // Finished loading for unauthenticated user
+                renderApp(); // Render the "Access Denied" state
+              }
+            } else {
+              // This block should ideally not be hit after the explicit set above.
+              console.log(
+                "authAppState.isAuthReady is FALSE. Keeping spinner."
+              );
+              challengeState.isLoading = true; // Keep loading spinner if auth not ready
+              renderApp(); // Ensure spinner is shown
+            }
+          });
+        } catch (error) {
+          console.error(
+            "Failed to initialize Firebase in quiz-challenge.html:",
+            error
+          );
+          showToast(
+            "Failed to initialize Firebase. Some features may not work. Check console for details.",
+            "error"
+          );
+          challengeState.isLoading = false; // Ensure spinner is removed on Firebase init error
+          renderApp(); // Render a state indicating Firebase failure
+        }
       };
     </script>
   </body>

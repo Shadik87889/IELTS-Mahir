@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mahir - Quiz History</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Phosphor Icons for additional UI elements -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Lordicon for animated icons (if used) -->
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <!-- Tabler Icons for additional UI elements -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+
+    <style id="common-styles">
+      /* Common styles for the entire application, consistent with other pages */
+      body {
+        font-family: "Inter", sans-serif; /* Consistent font family */
+        background: linear-gradient(
+          135deg,
+          #e0f2fe 0%,
+          #f0f9ff 100%
+        ); /* Lighter, softer blue gradient background */
+        color: #334155; /* Default text color */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Utility classes for common styles */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 0.4rem;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .text-gray-700 {
+        color: #374151; /* slate-700 */
+      }
+      .text-blue-600 {
+        color: #2563eb; /* blue-600 */
+      }
+      .bg-white {
+        background-color: #ffffff; /* White background */
+      }
+      .rounded-lg {
+        border-radius: 0.5rem; /* Rounded corners */
+      }
+      /* Custom font classes */
+      .font-anton {
+        font-family: "Anton", sans-serif;
+      }
+      .font-inter {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Custom styles for professional light theme look */
+      .quiz-card {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes zoomIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+
+      .animate-zoom-in {
+        animation: zoomIn 0.4s ease-out forwards;
+      }
+
+      /* Gamification specific styles (copied from quiz-test.html for consistency) */
+      .points-display {
+        background: linear-gradient(
+          45deg,
+          #84cc16,
+          #22c55e
+        ); /* Lime to green gradient */
+        color: white;
+        padding: 0.35rem 0.9rem;
+        border-radius: 9999px;
+        font-weight: bold;
+        font-size: 0.875rem; /* text-sm */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Toast notification styles (copied from quiz-test.html for consistency) */
+      .toast {
+        position: fixed;
+        top: 1rem; /* Adjust as needed for desired vertical position */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 600;
+        opacity: 0;
+        animation: toast-fade-in 0.3s ease-out forwards,
+          toast-fade-out 0.5s ease-out 2.5s forwards; /* Fade in, then fade out after 2.5s */
+        width: auto; /* Allow content to dictate width initially */
+        min-width: 200px; /* Minimum width */
+        max-width: 90%; /* Max width for responsiveness on small screens */
+      }
+
+      .toast.success {
+        background-color: #dcfce7; /* green-100 */
+        color: #16a34a; /* green-600 */
+        border: 1px solid #22c55e; /* green-500 */
+      }
+
+      .toast.error {
+        background-color: #fee2e2; /* red-100 */
+        color: #dc2626; /* red-600 */
+        border: 1px solid #ef4444; /* red-500 */
+      }
+
+      .toast.warning {
+        background-color: #fffbeb; /* yellow-100 */
+        color: #d97706; /* yellow-600 */
+        border: 1px solid #f59e0b; /* yellow-500 */
+      }
+
+      .toast.info {
+        background-color: #e0f2fe; /* blue-100 */
+        color: #2563eb; /* blue-600 */
+        border: 1px solid #3b82f6; /* blue-500 */
+      }
+
+      @keyframes toast-fade-in {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+
+      @keyframes toast-fade-out {
+        from {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+        to {
+          opacity: 0;
+          transform: translate(-50%, -20px);
+        }
+      }
+
+      /* Styles for the header section, consistent with other pages */
+      .site-header {
+        background-color: #ffffff; /* White header background */
+        border-bottom: 1px solid #e0e0e0; /* Lighter border */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+      }
+
+      .site-header .nav-link {
+        font-weight: 500; /* Medium font weight */
+        color: #555555; /* Darker gray for links */
+      }
+
+      .site-header .nav-link:hover {
+        color: #1d4ed8; /* Blue on hover */
+        transform: translateY(-1px);
+      }
+
+      /* Hero section styles (consistent with quiz-category.html) */
+      .hero-section-new {
+        min-height: 300px; /* Slightly reduced height for history page */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center; /* Center text within this section */
+      }
+
+      .hero-section-new .text-shadow-lg {
+        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow for text */
+      }
+
+      /* General text shadows */
+      .text-shadow-lg {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+      }
+
+      .text-shadow-md {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      }
+
+      /* User ID display styling */
+      .user-id-display {
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.7
+        ); /* Lighter, more transparent background */
+        border: 1px solid #d1d5db; /* Lighter border */
+        color: #4b5563; /* Darker text */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+        backdrop-filter: blur(3px); /* Added blur for a modern look */
+      }
+
+      /* History Table Specific Styles */
+      .history-table-container {
+        overflow-x: auto; /* Enable horizontal scrolling for the table */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .history-table {
+        min-width: 700px; /* Ensure table has a minimum width to enable scroll */
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .history-table th,
+      .history-table td {
+        padding: 0.75rem 1rem; /* Smaller padding for mobile */
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0; /* light gray border */
+      }
+      @media (min-width: 640px) {
+        /* sm breakpoint */
+        .history-table th,
+        .history-table td {
+          padding: 1rem 1.5rem; /* Original padding for larger screens */
+        }
+      }
+
+      .history-table th {
+        background-color: #f8fafc; /* light background for header */
+        font-weight: 700;
+        color: #475569; /* slate-700 */
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+      }
+
+      .history-table tbody tr:last-child td {
+        border-bottom: none; /* No border for the last row */
+      }
+
+      .history-table tbody tr:hover {
+        background-color: #f0f9ff; /* blue-50 on hover */
+        cursor: pointer; /* Indicate clickable row */
+      }
+
+      .history-table tbody tr.no-data-row td {
+        text-align: center;
+        font-style: italic;
+        color: #6b7280;
+      }
+
+      /* Pagination styles (consistent with quiz-home.html) */
+      .pagination-button {
+        background-color: #ffffff; /* White for pagination buttons */
+        color: #555555; /* Darker text */
+        border-radius: 0.75rem; /* rounded-xl */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
+        transition: all 0.3s ease-in-out;
+        border: 1px solid #e0e0e0; /* Added border */
+      }
+
+      .pagination-button:hover:not(:disabled) {
+        background-color: #f0f0f0;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      }
+
+      .pagination-button.active {
+        background-color: #3b82f6; /* Blue for active page */
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4); /* Blue shadow for active */
+      }
+
+      /* New styles for ranking badges */
+      .rank-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px; /* Slightly smaller for default */
+        height: 28px;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 0.8rem; /* Smaller font for default */
+        color: white;
+        margin-right: 0.5rem; /* Smaller margin */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease-out;
+      }
+
+      .rank-badge:hover {
+        transform: scale(1.1);
+      }
+
+      @media (min-width: 640px) {
+        /* sm breakpoint */
+        .rank-badge {
+          width: 32px; /* Original size for larger screens */
+          height: 32px;
+          font-size: 0.9rem; /* Original font size for larger screens */
+          margin-right: 0.75rem;
+        }
+      }
+
+      .rank-1 {
+        background: linear-gradient(
+          45deg,
+          #ffd700,
+          #ffec80
+        ); /* Gold gradient */
+      }
+      .rank-2 {
+        background: linear-gradient(
+          45deg,
+          #c0c0c0,
+          #e0e0e0
+        ); /* Silver gradient */
+      }
+      .rank-3 {
+        background: linear-gradient(
+          45deg,
+          #cd7f32,
+          #e6a25b
+        ); /* Bronze gradient */
+      }
+      .rank-common {
+        background-color: #94a3b8; /* Slate 400 */
+      }
+
+      /* Highlight current user row */
+      .history-table tbody tr.current-user-row {
+        background-color: #e0f2fe; /* Light blue for current user */
+        font-weight: 600;
+        color: #1e40af; /* Darker blue text */
+        border-left: 4px solid #3b82f6; /* Blue border on left */
+      }
+
+      .history-table tbody tr.current-user-row:hover {
+        background-color: #bfdbfe; /* Slightly darker blue on hover */
+      }
+    </style>
+  </head>
+  <body class="min-h-screen py-0 px-0">
+    <!-- Header / Navigation Bar (Consistent with other pages) -->
+    <header
+      id="app-header"
+      class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
+    >
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Replaced text with image logo -->
+        <img
+          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+          alt="IELTS Mahir Logo"
+          class="h-8 md:h-10 w-auto"
+          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+        />
+        <nav class="hidden md:flex gap-6 ml-8 font-inter">
+          <a href="#" class="nav-link transition-all">Inspiration</a>
+          <a href="quiz-home.html" class="nav-link transition-all"
+            >Quiz Categories</a
+          >
+          <a href="#" class="nav-link transition-all">Resources</a>
+          <a href="quiz-history.html" class="nav-link transition-all"
+            >Quiz History</a
+          >
+        </nav>
+      </div>
+      <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
+        <!-- Authentication status will be handled by auth.js -->
+        <div class="animate-pulse flex space-x-4">
+          <div class="rounded-full bg-gray-300 h-8 w-8 sm:h-10 sm:w-10"></div>
+          <div class="flex-1 space-y-4 py-1 hidden sm:block">
+            <div class="h-2 bg-gray-300 rounded"></div>
+            <div class="space-y-2">
+              <div class="grid grid-cols-3 gap-2">
+                <div class="h-2 bg-gray-300 rounded col-span-2"></div>
+                <div class="h-2 bg-gray-300 rounded col-span-1"></div>
+              </div>
+              <div class="h-2 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="app" class="container mx-auto mt-8 sm:mt-12 lg:mt-16 flex-grow">
+      <!-- Application content will be rendered here by JavaScript -->
+      <div class="flex justify-center items-center h-full">
+        <div
+          class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"
+        ></div>
+      </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div
+      id="toast-container"
+      class="fixed top-4 left-1/2 -translate-x-1/2 z-[100]"
+    ></div>
+
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
+
+    <script type="module">
+      // Import authentication functions and state from the central auth.js file
+      import {
+        initFirebaseAuth,
+        authAppState,
+        showToast,
+        Icons, // General icons
+        signOutUser,
+      } from "./auth.js"; // Adjust path as necessary
+
+      // Import quiz data and common utilities
+      import {
+        quizCategories, // Needed to map categoryId to category name
+        QuizIcons, // Icons specific to quiz UI
+        formatTime, // Utility for formatting time
+      } from "./quiz-test-data.js";
+
+      // Firebase imports for Firestore
+      import {
+        getFirestore,
+        collection,
+        query,
+        where,
+        getDocs,
+        doc, // Added for fetching single document (user stats)
+        getDoc, // Added for fetching single document (user stats)
+        setDoc, // Added for initializing user stats if not exists
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      // Firebase instances (will be populated by auth.js)
+      let db;
+      let auth;
+
+      // Quiz History state management
+      const quizHistoryState = {
+        isLoading: true,
+        historyData: [],
+        currentPage: 1,
+        resultsPerPage: 10, // Number of results to display per page
+        totalPages: 1,
+        userGameStats: {
+          totalPoints: 0,
+          level: 1,
+        }, // Initialize userGameStats locally
+        sortKey: "timestamp", // Default sort key
+        sortDirection: "desc", // Default sort direction
+      };
+
+      /**
+       * Fetches user's game stats from Firestore.
+       * This function is specifically for this page to ensure header display is correct.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchUserGameStats(userId) {
+        if (!db || !userId) return;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userStatsDocRef = doc(
+          db,
+          `artifacts/${appId}/users/${userId}/gameStats/summary`
+        );
+
+        try {
+          const docSnap = await getDoc(userStatsDocRef);
+          if (docSnap.exists()) {
+            quizHistoryState.userGameStats = {
+              ...quizHistoryState.userGameStats,
+              ...docSnap.data(),
+            };
+            console.log(
+              "Fetched local user game stats:",
+              quizHistoryState.userGameStats
+            );
+          } else {
+            console.log("No game stats found for user, initializing defaults.");
+            // If no stats exist, create a new document with initial stats
+            await setDoc(userStatsDocRef, quizHistoryState.userGameStats);
+          }
+        } catch (error) {
+          console.error("Error fetching user game stats:", error);
+          showToast("Failed to load your game progress.", "error");
+        }
+      }
+
+      /**
+       * Updates the navigation bar and user ID display based on authentication status.
+       * @param {object|null} user - The Firebase User object or null if signed out.
+       */
+      async function updateAuthUI(user) {
+        const authButtonsContainer = document.getElementById(
+          "auth-buttons-container"
+        );
+        if (authButtonsContainer) {
+          if (user) {
+            // Await fetching user game stats before rendering the header
+            if (db && user.uid) {
+              await fetchUserGameStats(user.uid);
+            }
+
+            // User is signed in: Show profile dropdown and game stats (simplified for history page)
+            authButtonsContainer.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="points-display flex items-center gap-2 px-3 py-1.5 rounded-full shadow-md text-white bg-gradient-to-br from-green-500 to-lime-600">
+                                ${QuizIcons.Trophy.replace(
+                                  /width="24" height="24"/g,
+                                  'width="16" height="16" class="text-white fill-current"'
+                                )}
+                                <span class="text-sm font-semibold">${
+                                  quizHistoryState.userGameStats.totalPoints ||
+                                  0
+                                } Pts</span>
+                                <span class="text-xs text-green-200">|</span>
+                                <span class="text-sm font-semibold">Lvl ${
+                                  quizHistoryState.userGameStats.level || 1
+                                }</span>
+                            </div>
+                            <div class="relative">
+                                <button id="profile-icon-btn" class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-600 transition-colors duration-200 ease-in-out transform active:scale-95">
+                                    ${(
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid
+                                    )
+                                      .charAt(0)
+                                      .toUpperCase()}
+                                </button>
+                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden animate-fade-in-up">
+                                    <div class="px-4 py-2 text-sm text-gray-700 font-medium border-b border-gray-100">Hello, ${
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid.substring(0, 8)
+                                    }</div>
+                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">Level: ${
+                                      quizHistoryState.userGameStats.level || 1
+                                    }</div>
+                                    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
+                                        ${QuizIcons.Dashboard.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-gray-600"'
+                                        )} Dashboard
+                                    </a>
+                                    <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
+                                        ${QuizIcons.Forum.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-gray-600"'
+                                        )} Forum
+                                    </a>
+                                    <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg transition-colors">
+                                        ${QuizIcons.SignOut.replace(
+                                          /width="24" height="24"/g,
+                                          'width="18" height="18" class="text-red-500"'
+                                        )} Sign Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            const profileIconBtn = document.getElementById("profile-icon-btn");
+            const profileDropdown = document.getElementById("profile-dropdown");
+            const signOutDropdownBtn = document.getElementById(
+              "sign-out-dropdown-btn"
+            );
+
+            profileIconBtn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              profileDropdown.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", (event) => {
+              if (
+                !profileDropdown.contains(event.target) &&
+                !profileIconBtn.contains(event.target)
+              ) {
+                profileDropdown.classList.add("hidden");
+              }
+            });
+
+            signOutDropdownBtn.addEventListener("click", async () => {
+              await signOutUser();
+              // Redirect will happen via onAuthStateChanged in auth.js
+            });
+          } else {
+            // User is signed out: Show sign-in button
+            authButtonsContainer.innerHTML = `
+                        <a href="auth.html" id="sign-in-nav-btn" class="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                            ${QuizIcons.SignIn.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} <span class="hidden sm:inline">Sign In</span>
+                        </a>
+                    `;
+          }
+        }
+      }
+
+      /**
+       * Displays a custom message modal.
+       * @param {string} title - The title of the modal.
+       * @param {string} message - The message content.
+       * @param {boolean} showConfirm - Whether to show a confirm button.
+       * @returns {Promise<boolean>} Resolves true if confirmed, false if cancelled.
+       */
+      function showMessageModal(title, message, showConfirm = false) {
+        return new Promise((resolve) => {
+          const modalContainer = document.getElementById("modal-container");
+          if (!modalContainer) return resolve(false);
+
+          modalContainer.innerHTML = `
+                    <div class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[1000] animate-fade-in">
+                        <div class="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md animate-zoom-in">
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">${title}</h3>
+                            <p class="text-gray-700 mb-6 text-sm sm:text-base">${message}</p>
+                            <div class="flex justify-end gap-3">
+                                ${
+                                  showConfirm
+                                    ? `<button id="modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium">Cancel</button>`
+                                    : ""
+                                }
+                                <button id="modal-ok-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+          const okButton = document.getElementById("modal-ok-btn");
+          okButton.onclick = () => {
+            hideMessageModal();
+            resolve(true);
+          };
+
+          if (showConfirm) {
+            const cancelButton = document.getElementById("modal-cancel-btn");
+            cancelButton.onclick = () => {
+              hideMessageModal();
+              resolve(false);
+            };
+          }
+        });
+      }
+
+      /**
+       * Hides the custom message modal.
+       */
+      function hideMessageModal() {
+        const modalContainer = document.getElementById("modal-container");
+        if (modalContainer) {
+          modalContainer.innerHTML = "";
+        }
+      }
+
+      /**
+       * Returns HTML for a loading spinner.
+       * @returns {string} HTML string for a loading spinner.
+       */
+      function getLoadingSpinnerHtml() {
+        return `
+                <div class="flex justify-center items-center h-full min-h-[200px]">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+                </div>
+            `;
+      }
+
+      /**
+       * Fetches quiz history for the current user from Firestore.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchQuizHistory(userId) {
+        if (!db || !userId) {
+          quizHistoryState.isLoading = false;
+          quizHistoryState.historyData = [];
+          showToast("Please sign in to view your quiz history.", "info");
+          renderApp();
+          return;
+        }
+
+        quizHistoryState.isLoading = true;
+        renderApp(); // Show loading spinner
+
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const quizResultsRef = collection(
+          db,
+          `artifacts/${appId}/users/${userId}/quizResults`
+        );
+
+        try {
+          const q = query(quizResultsRef);
+          const querySnapshot = await getDocs(q);
+          let rawHistory = [];
+          querySnapshot.forEach((doc) => {
+            rawHistory.push({ id: doc.id, ...doc.data() });
+          });
+
+          quizHistoryState.historyData = rawHistory; // Store raw data
+          applySorting(); // Apply initial sorting
+          quizHistoryState.totalPages = Math.ceil(
+            quizHistoryState.historyData.length /
+              quizHistoryState.resultsPerPage
+          );
+          quizHistoryState.isLoading = false;
+          renderApp();
+          console.log("Quiz history fetched:", quizHistoryState.historyData);
+        } catch (error) {
+          console.error("Error fetching quiz history:", error);
+          showToast("Failed to load quiz history.", "error");
+          quizHistoryState.isLoading = false;
+          renderApp();
+        }
+      }
+
+      /**
+       * Applies sorting to the history data based on current sortKey and sortDirection.
+       */
+      function applySorting() {
+        quizHistoryState.historyData.sort((a, b) => {
+          let valA, valB;
+
+          switch (quizHistoryState.sortKey) {
+            case "timestamp":
+              valA = a.timestamp ? a.timestamp.toDate().getTime() : 0;
+              valB = b.timestamp ? b.timestamp.toDate().getTime() : 0;
+              break;
+            case "score":
+              valA = a.score || 0;
+              valB = b.score || 0;
+              break;
+            case "percentage":
+              valA = a.percentage || 0;
+              valB = b.percentage || 0;
+              break;
+            case "timeTakenSeconds":
+              valA = a.timeTakenSeconds || 0;
+              valB = b.timeTakenSeconds || 0;
+              break;
+            default:
+              valA = a.timestamp ? a.timestamp.toDate().getTime() : 0;
+              valB = b.timestamp ? b.timestamp.toDate().getTime() : 0;
+              break;
+          }
+
+          if (quizHistoryState.sortDirection === "asc") {
+            return valA - valB;
+          } else {
+            return valB - valA;
+          }
+        });
+      }
+
+      /**
+       * Handles change in sort order.
+       * @param {Event} event - The change event from the select element.
+       */
+      function handleSortChange(event) {
+        const [key, direction] = event.target.value.split("-");
+        quizHistoryState.sortKey = key;
+        quizHistoryState.sortDirection = direction;
+        applySorting();
+        quizHistoryState.currentPage = 1; // Reset to first page after sorting
+        renderApp();
+      }
+
+      /**
+       * Handles clicking on a quiz result row to view details.
+       * @param {string} quizResultId - The ID of the quiz result to view.
+       */
+      function handleViewDetails(quizResultId) {
+        window.location.href = `quiz-detail-review.html?resultId=${quizResultId}`;
+      }
+
+      /**
+       * Renders the pagination controls.
+       * @returns {string} HTML string for pagination controls.
+       */
+      function renderPaginationControls() {
+        const { currentPage, totalPages } = quizHistoryState;
+        if (totalPages <= 1) return ""; // Don't show pagination if only one page
+
+        let paginationHtml = `<div class="flex justify-center items-center gap-2 sm:gap-3 mt-8 font-inter">`;
+
+        // Previous Button
+        paginationHtml += `<button id="prev-page-btn" class="pagination-button flex items-center px-4 py-2 text-sm sm:text-base" ${
+          currentPage === 1 ? "disabled" : ""
+        }>
+            ${QuizIcons.ChevronLeft.replace(
+              /width="24" height="24"/g,
+              'width="16" height="16" class="w-4 h-4 mr-1"'
+            )} Previous
+        </button>`;
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+          paginationHtml += `<button class="page-number-btn pagination-button px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base ${
+            currentPage === i ? "active" : ""
+          }" data-page="${i}">
+            ${i}
+        </button>`;
+        }
+
+        // Next Button
+        paginationHtml += `<button id="next-page-btn" class="pagination-button flex items-center px-4 py-2 text-sm sm:text-base" ${
+          currentPage === totalPages ? "disabled" : ""
+        }>
+            Next ${QuizIcons.ChevronRight.replace(
+              /width="24" height="24"/g,
+              'width="16" height="16" class="w-4 h-4 ml-1"'
+            )}
+        </button>`;
+
+        paginationHtml += `</div>`;
+        return paginationHtml;
+      }
+
+      /**
+       * Navigates to a specific page of results.
+       * @param {number} pageNumber - The page number to navigate to.
+       */
+      function goToPage(pageNumber) {
+        quizHistoryState.currentPage = pageNumber;
+        renderApp(); // Re-render the app with the new page
+        window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top
+      }
+
+      /**
+       * Main render function for the application.
+       */
+      function renderApp() {
+        const appDiv = document.getElementById("app");
+        if (!appDiv) return;
+
+        if (quizHistoryState.isLoading) {
+          appDiv.innerHTML = getLoadingSpinnerHtml();
+          return;
+        }
+
+        const {
+          historyData,
+          currentPage,
+          resultsPerPage,
+          totalPages,
+        } = quizHistoryState;
+        const startIndex = (currentPage - 1) * resultsPerPage;
+        const endIndex = startIndex + resultsPerPage;
+        const currentResults = historyData.slice(startIndex, endIndex);
+
+        appDiv.innerHTML = `
+                <!-- Hero Section -->
+                <section class="hero-section-new max-w-6xl mx-auto my-2 relative overflow-hidden rounded-3xl">
+                    <!-- Background image and overlay -->
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/5428830/pexels-photo-5428830.jpeg');">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-600/70 to-indigo-600/70"></div>
+                    </div>
+
+                    <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                        <p class="font-inter text-xl sm:text-2xl font-medium mb-2 text-shadow-lg">Your Journey</p>
+                        <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                            QUIZ HISTORY
+                        </h1>
+                        <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                            Track your progress and review past quiz performances.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="mt-12 mb-8 max-w-6xl mx-auto px-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left">Your Past Quizzes</h2>
+                        <div class="flex items-center gap-2">
+                            <label for="sort-by" class="text-gray-700 text-sm sm:text-base font-medium">Sort By:</label>
+                            <select id="sort-by" class="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base">
+                                <option value="timestamp-desc" ${
+                                  quizHistoryState.sortKey === "timestamp" &&
+                                  quizHistoryState.sortDirection === "desc"
+                                    ? "selected"
+                                    : ""
+                                }>Date (Newest First)</option>
+                                <option value="timestamp-asc" ${
+                                  quizHistoryState.sortKey === "timestamp" &&
+                                  quizHistoryState.sortDirection === "asc"
+                                    ? "selected"
+                                    : ""
+                                }>Date (Oldest First)</option>
+                                <option value="score-desc" ${
+                                  quizHistoryState.sortKey === "score" &&
+                                  quizHistoryState.sortDirection === "desc"
+                                    ? "selected"
+                                    : ""
+                                }>Score (Highest)</option>
+                                <option value="percentage-desc" ${
+                                  quizHistoryState.sortKey === "percentage" &&
+                                  quizHistoryState.sortDirection === "desc"
+                                    ? "selected"
+                                    : ""
+                                }>Accuracy (Highest)</option>
+                                <option value="timeTakenSeconds-asc" ${
+                                  quizHistoryState.sortKey ===
+                                    "timeTakenSeconds" &&
+                                  quizHistoryState.sortDirection === "asc"
+                                    ? "selected"
+                                    : ""
+                                }>Time Taken (Lowest)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="history-table-container quiz-card">
+                        <table class="history-table">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col">Rank</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th> <!-- New Time column -->
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Test Title</th>
+                                    <th scope="col">Score</th>
+                                    <th scope="col">Accuracy</th>
+                                    <th scope="col">Time Taken</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${
+                                  currentResults.length > 0
+                                    ? currentResults
+                                        .map((result, index) => {
+                                          const category = quizCategories.find(
+                                            (cat) =>
+                                              cat.id === result.categoryId
+                                          );
+                                          const categoryName = category
+                                            ? category.name
+                                            : "N/A";
+                                          const date = result.timestamp
+                                            ? new Date(
+                                                result.timestamp.toDate()
+                                              ).toLocaleDateString()
+                                            : "N/A";
+                                          const time = result.timestamp
+                                            ? new Date(
+                                                result.timestamp.toDate()
+                                              ).toLocaleTimeString([], {
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                                hour12: true, // Ensure AM/PM format
+                                              })
+                                            : "";
+
+                                          const isCurrentUser =
+                                            authAppState.userId &&
+                                            result.userId ===
+                                              authAppState.userId;
+                                          const rankClass =
+                                            startIndex + index === 0
+                                              ? "rank-1"
+                                              : startIndex + index === 1
+                                              ? "rank-2"
+                                              : startIndex + index === 2
+                                              ? "rank-3"
+                                              : "rank-common";
+
+                                          return `
+                                            <tr class="${
+                                              isCurrentUser
+                                                ? "current-user-row"
+                                                : ""
+                                            }" data-quiz-result-id="${
+                                            result.id
+                                          }">
+                                                <td class="whitespace-nowrap text-sm text-gray-900">
+                                                    <span class="rank-badge ${rankClass}">${
+                                            startIndex + index + 1
+                                          }</span>
+                                                </td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${time}</td> <!-- New Time cell -->
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${categoryName}</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${
+                                                  result.testTitle
+                                                }</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${
+                                                  result.score
+                                                }</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${(
+                                                  result.percentage || 0
+                                                ).toFixed(2)}%</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
+                                                  result.timeTakenSeconds
+                                                )}</td>
+                                            </tr>
+                                        `;
+                                        })
+                                        .join("")
+                                    : `
+                                    <tr class="no-data-row">
+                                        <td colspan="8" class="py-12 text-lg text-gray-500"> <!-- colspan updated to 8 -->
+                                            ${
+                                              authAppState.userId
+                                                ? "No quiz history found yet. Start a quiz to see your results here!"
+                                                : "Please sign in to view your quiz history."
+                                            }
+                                        </td>
+                                    </tr>
+                                    `
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    ${renderPaginationControls()}
+
+                    <div class="flex justify-center mt-12">
+                        <a href="quiz-home.html" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95">
+                            ${QuizIcons.Home.replace(
+                              /width="24" height="24"/g,
+                              'width="18" height="18"'
+                            )} Back to Categories
+                        </a>
+                    </div>
+                </section>
+            `;
+
+        // Attach event listeners for pagination buttons after rendering
+        const prevBtn = document.getElementById("prev-page-btn");
+        if (prevBtn) {
+          prevBtn.onclick = () => goToPage(currentPage - 1);
+        }
+
+        const nextBtn = document.getElementById("next-page-btn");
+        if (nextBtn) {
+          nextBtn.onclick = () => goToPage(currentPage + 1);
+        }
+
+        document.querySelectorAll(".page-number-btn").forEach((button) => {
+          button.onclick = (e) => goToPage(parseInt(e.target.dataset.page));
+        });
+
+        // Attach event listener for sort dropdown
+        const sortBySelect = document.getElementById("sort-by");
+        if (sortBySelect) {
+          sortBySelect.onchange = handleSortChange;
+        }
+
+        // Attach event listeners for quiz result rows
+        document.querySelectorAll(".history-table tbody tr").forEach((row) => {
+          if (!row.classList.contains("no-data-row")) {
+            row.addEventListener("click", (event) => {
+              const quizResultId = row.dataset.quizResultId;
+              if (quizResultId) {
+                handleViewDetails(quizResultId);
+              }
+            });
+          }
+        });
+      }
+
+      // Initialization Logic
+      window.onload = async function () {
+        // Initialize Firebase Auth and listen for state changes
+        initFirebaseAuth(updateAuthUI)
+          .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
+            db = firestoreDb;
+            auth = firebaseAuth;
+            console.log("Firebase initialized in quiz-history.html:", {
+              db,
+              auth,
+            });
+
+            // Fetch quiz history and user game stats after Firebase is initialized and user is authenticated
+            auth.onAuthStateChanged(async (user) => {
+              if (user) {
+                await fetchUserGameStats(user.uid); // Fetch user game stats for header
+                await fetchQuizHistory(user.uid); // Fetch quiz history
+              } else {
+                quizHistoryState.isLoading = false;
+                quizHistoryState.historyData = [];
+                // Reset user game stats if signed out
+                quizHistoryState.userGameStats = { totalPoints: 0, level: 1 };
+                renderApp(); // Render with empty history/sign-in message
+              }
+            });
+          })
+          .catch((error) => {
+            console.error(
+              "Failed to initialize Firebase in quiz-history.html:",
+              error
+            );
+            showToast(
+              "Failed to initialize Firebase. Some features may not work.",
+              "error"
+            );
+            quizHistoryState.isLoading = false;
+            renderApp(); // Render with error message or limited functionality
+          });
+      };
+    </script>
+  </body>
+</html>
