@@ -3,285 +3,2414 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IELTS Mastery Hub - Mock Tests</title>
+    <title>IELTS Mahir - Mock Test</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <style id="common-styles"></style>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+    <style id="mock-test-styles">
+      /* General body styles - Enhanced gradient for a premium feel */
+      body {
+        font-family: "Inter", sans-serif;
+        /* Adjusted radial gradient for a softer, more professional look */
+        background: radial-gradient(at top left, #eef5fc, #ffffff, #eef5fc);
+        color: #1a202c; /* Darker text for better contrast */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden; /* Prevent horizontal scroll */
+        padding: 0; /* Ensure no default body padding on mobile */
+      }
+
+      .font-anton {
+        font-family: "Anton", sans-serif;
+      }
+      .font-inter {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Header styles - More prominent and sleek */
+      .site-header {
+        background-color: #ffffff;
+        border-bottom: 1px solid #e0e0e0;
+        /* Reduced shadow */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+        padding: 0.5rem 0.5rem; /* Further reduced padding for very small screens */
+      }
+
+      @media (min-width: 640px) {
+        .site-header {
+          padding: 1rem 2rem; /* Original padding for larger screens */
+          /* Reduced shadow */
+          box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+        }
+      }
+
+      .site-header .nav-link {
+        font-weight: 600; /* Slightly bolder */
+        color: #4a5568; /* Darker gray for links */
+        transition: all 0.2s ease-in-out;
+      }
+
+      .site-header .nav-link:hover {
+        color: #0056b3; /* Richer blue on hover */
+        transform: translateY(-2px) scale(1.02); /* More pronounced hover */
+      }
+
+      .user-id-display {
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid #cbd5e0;
+        color: #2d3748;
+        /* Removed shadow */
+        box-shadow: none;
+        backdrop-filter: blur(2px); /* Slightly less blur */
+        padding: 0.25rem 0.5rem; /* Adjusted padding */
+        border-radius: 9999px;
+        font-size: 0.7rem; /* Adjusted font size */
+        font-weight: 500;
+      }
+
+      .points-display {
+        /* Refined green gradient for a more sophisticated look */
+        background: linear-gradient(90deg, #28a745, #218838);
+        color: white;
+        padding: 0.2rem 0.6rem; /* Adjusted padding */
+        border-radius: 9999px;
+        font-weight: bold;
+        font-size: 0.7rem; /* Adjusted font size */
+        /* Removed shadow */
+        box-shadow: none;
+        display: flex;
+        align-items: center;
+        gap: 0.2rem; /* Adjusted gap */
+        transition: all 0.2s ease-in-out;
+      }
+
+      @media (min-width: 640px) {
+        .user-id-display {
+          padding: 0.5rem 1rem;
+          font-size: 0.9rem;
+        }
+        .points-display {
+          padding: 0.4rem 1rem;
+          font-size: 0.9rem;
+          gap: 0.6rem;
+          /* Reduced shadow */
+          box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+        }
+      }
+
+      .points-display:hover {
+        transform: translateY(-2px) scale(1.02);
+        /* Reduced shadow */
+        box-shadow: 0 3px 6px rgba(16, 185, 129, 0.3);
+      }
+
+      /* Main test container layout */
+      .test-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: calc(
+          100vh - 64px
+        ); /* Adjusted for new header height (approx) */
+        padding: 0.25rem; /* Further reduced padding for mobile */
+        gap: 0.25rem; /* Further reduced gap for mobile */
+      }
+
+      @media (min-width: 1024px) {
+        .test-layout {
+          flex-direction: row;
+          padding: 1.5rem; /* Original padding around the main layout */
+          gap: 1.5rem; /* Original space between sidebar and content */
+          min-height: calc(100vh - 88px); /* Adjusted for new header height */
+        }
+      }
+
+      /* Sidebar styles - Clean and structured */
+      .test-sidebar {
+        background-color: #ffffff;
+        /* Reduced border-radius */
+        border-radius: 0.5rem;
+        /* Reduced shadow */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+        padding: 0.75rem; /* Further reduced padding for mobile */
+        flex-shrink: 0;
+        width: 100%;
+        max-height: none;
+        overflow-y: visible;
+        margin-bottom: 0.4rem; /* Reduced margin */
+      }
+
+      @media (min-width: 1024px) {
+        .test-sidebar {
+          width: 320px; /* Wider sidebar */
+          min-height: calc(100vh - 120px);
+          position: sticky;
+          top: 100px;
+          margin-bottom: 0;
+          padding: 2rem; /* Original padding for desktop */
+          /* Reduced shadow */
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+          /* Reduced border-radius */
+          border-radius: 1rem;
+        }
+      }
+
+      .test-sidebar h2 {
+        color: #1a202c;
+        margin-bottom: 0.6rem; /* Reduced margin */
+        font-size: 1.4rem; /* Adjusted for mobile */
+      }
+
+      @media (min-width: 640px) {
+        .test-sidebar h2 {
+          font-size: 2.25rem;
+          margin-bottom: 1.5rem;
+        }
+      }
+
+      /* Timer */
+      .timer-display-container {
+        /* Refined blue gradient for a deeper, richer feel */
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        color: white;
+        padding: 0.5rem 0.7rem; /* Reduced padding for mobile */
+        /* Reduced border-radius */
+        border-radius: 0.5rem;
+        /* Reduced shadow */
+        box-shadow: 0 1px 4px rgba(59, 130, 246, 0.15);
+        margin-bottom: 0.7rem; /* Reduced margin */
+        font-family: "Anton", sans-serif;
+        font-size: 1.2rem; /* Adjusted for mobile */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      @media (min-width: 640px) {
+        .timer-display-container {
+          padding: 1rem 1.5rem;
+          font-size: 1.875rem;
+          margin-bottom: 1.5rem;
+          /* Reduced shadow */
+          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+          /* Reduced border-radius */
+          border-radius: 0.75rem;
+        }
+      }
+
+      .timer-display-container span {
+        font-weight: 700;
+      }
+
+      /* Audio player styles - More integrated */
+      .audio-player-container {
+        background-color: #f7fafc;
+        /* Reduced border-radius */
+        border-radius: 0.5rem;
+        padding: 0.5rem; /* Reduced padding for mobile */
+        /* Removed shadow */
+        box-shadow: none;
+        margin-bottom: 0.7rem; /* Reduced margin */
+        border: 1px solid #e2e8f0;
+      }
+
+      @media (min-width: 640px) {
+        .audio-player-container {
+          padding: 1rem;
+          margin-bottom: 1.5rem;
+          /* Reduced border-radius */
+          border-radius: 0.75rem;
+          /* Removed shadow */
+          box-shadow: none;
+        }
+      }
+
+      .audio-player-container audio {
+        width: 100%;
+        outline: none;
+        /* Custom styling for native audio controls (limited browser support) */
+        /* For full custom styling, you would hide default controls and build your own with JS */
+        background-color: #f0f4f8; /* Lighter background for the control bar */
+        border-radius: 0.5rem;
+        /* Removed shadow */
+        box-shadow: none;
+        padding: 0.5rem; /* Add some padding around the controls */
+      }
+
+      /* Attempt to style specific parts (limited browser support) */
+      .audio-player-container audio::-webkit-media-controls-panel {
+        background-color: #f0f4f8; /* Background of the control panel */
+        border-radius: 0.5rem;
+      }
+
+      .audio-player-container audio::-webkit-media-controls-play-button {
+        color: #2563eb; /* Blue play button */
+      }
+
+      .audio-player-container
+        audio::-webkit-media-controls-current-time-display,
+      .audio-player-container
+        audio::-webkit-media-controls-time-remaining-display {
+        color: #4a5568; /* Darker time text */
+      }
+
+      .audio-player-container audio::-webkit-media-controls-timeline {
+        background-color: #e2e8f0; /* Progress bar background */
+        border-radius: 5px;
+      }
+
+      .audio-player-container audio::-webkit-media-controls-volume-slider {
+        background-color: #e2e8f0; /* Volume slider background */
+        border-radius: 5px;
+      }
+
+      /* Section Navigation - Modern buttons */
+      .section-navigation button {
+        background-color: #edf2f7;
+        color: #4a5568;
+        padding: 0.4rem 0.6rem; /* Further reduced padding for mobile */
+        /* Reduced border-radius */
+        border-radius: 0.4rem;
+        font-weight: 600;
+        transition: all 0.2s ease-in-out;
+        /* Removed shadow */
+        box-shadow: none;
+        font-size: 0.8rem; /* Adjusted font size */
+      }
+
+      @media (min-width: 640px) {
+        .section-navigation button {
+          padding: 0.8rem 1.2rem;
+          font-size: 1rem;
+          /* Reduced border-radius */
+          border-radius: 0.6rem;
+          /* Removed shadow */
+          box-shadow: none;
+        }
+      }
+
+      .section-navigation button.bg-blue-600 {
+        /* Refined blue gradient for active state */
+        background: linear-gradient(90deg, #007bff, #0056b3);
+        /* Reduced shadow */
+        box-shadow: 0 1px 3px rgba(37, 99, 235, 0.15);
+      }
+
+      .section-navigation button.bg-blue-600:hover {
+        background: linear-gradient(90deg, #0056b3, #004085);
+        transform: translateY(-2px);
+        /* Reduced shadow */
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+      }
+
+      /* Action Buttons - Bold and inviting */
+      .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem; /* Increased gap for mobile */
+        margin-top: 1.5rem; /* Added margin to separate from content */
+      }
+
+      @media (min-width: 640px) {
+        .action-buttons {
+          gap: 1.5rem; /* Increased gap for desktop */
+          margin-top: 3rem; /* Increased margin for desktop */
+        }
+      }
+
+      .action-buttons button {
+        padding: 0.5rem 0.8rem; /* Further reduced padding for mobile */
+        border-radius: 9999px;
+        font-size: 0.85rem; /* Adjusted for mobile */
+        font-weight: 700;
+        transition: all 0.2s ease-in-out;
+        /* Reduced shadow */
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      }
+
+      @media (min-width: 640px) {
+        .action-buttons button {
+          padding: 1rem 1.5rem;
+          font-size: 1.125rem;
+          /* Reduced shadow */
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      #submit-test-btn-desktop,
+      #submit-test-btn-mobile {
+        /* Refined green gradient */
+        background: linear-gradient(90deg, #28a745, #218838);
+      }
+      #submit-test-btn-desktop:hover,
+      #submit-test-btn-mobile:hover {
+        background: linear-gradient(90deg, #218838, #1e7e34);
+        transform: translateY(-2px) scale(1.01);
+        /* Reduced shadow */
+        box-shadow: 0 3px 8px rgba(16, 185, 129, 0.3);
+      }
+
+      #exit-test-btn-desktop,
+      #exit-test-btn-mobile {
+        /* Refined gray gradient */
+        background: linear-gradient(90deg, #e2e8f0, #cbd5e0);
+        color: #2d3748;
+      }
+      #exit-test-btn-desktop:hover,
+      #exit-test-btn-mobile:hover {
+        background: linear-gradient(90deg, #cbd5e0, #a0aec0);
+        transform: translateY(-2px) scale(1.01);
+        /* Reduced shadow */
+        box-shadow: 0 3px 8px rgba(160, 174, 192, 0.3);
+      }
+
+      /* Main content area - Clean and spacious */
+      .test-content-area {
+        flex-grow: 1;
+        padding: 0.3rem; /* Further reduced padding for mobile */
+        background-color: #ffffff;
+        /* Reduced border-radius */
+        border-radius: 0.5rem;
+        /* Reduced shadow */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin: 0;
+      }
+
+      @media (min-width: 1024px) {
+        .test-content-area {
+          padding: 2.5rem;
+          /* Reduced border-radius */
+          border-radius: 1rem;
+          /* Reduced shadow */
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+      }
+
+      .test-content-area h1 {
+        font-size: 1.6rem; /* Adjusted for mobile */
+        line-height: 1.2;
+        margin-bottom: 0.4rem; /* Reduced margin */
+        color: #0d1a26; /* Darker, more professional heading color */
+        font-weight: 800; /* Made bolder */
+      }
+
+      @media (min-width: 640px) {
+        .test-content-area h1 {
+          font-size: 3.5rem;
+          margin-bottom: 1rem;
+        }
+      }
+
+      .test-content-area p.text-lg {
+        color: #4a5568;
+        font-size: 0.8rem; /* Adjusted for mobile */
+        line-height: 1.5; /* Slightly increased line-height for better readability */
+      }
+
+      @media (min-width: 640px) {
+        .test-content-area p.text-lg {
+          font-size: 1.125rem;
+        }
+      }
+
+      /* Section Header */
+      .section-header {
+        margin-bottom: 0.6rem; /* Reduced margin for mobile */
+        padding-bottom: 0.2rem; /* Reduced padding for mobile */
+        border-bottom: 1px solid #e2e8f0; /* Lighter border */
+      }
+
+      @media (min-width: 640px) {
+        .section-header {
+          margin-bottom: 1.5rem;
+          padding-bottom: 0.75rem;
+          border-bottom: 2px solid #e2e8f0; /* Stronger border for desktop */
+        }
+      }
+
+      .section-header h2 {
+        font-size: 1.3rem; /* Adjusted for mobile */
+        color: #25384d; /* Darker color for section headings */
+        margin-bottom: 0.15rem; /* Reduced margin */
+        font-weight: 700; /* Made bolder */
+      }
+
+      @media (min-width: 640px) {
+        .section-header h2 {
+          font-size: 2.5rem;
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      .section-header p.text-xl {
+        font-size: 0.8rem; /* Adjusted for mobile */
+        color: #5a6a7c; /* Slightly darker gray for better contrast */
+      }
+
+      @media (min-width: 640px) {
+        .section-header p.text-xl {
+          font-size: 1.25rem;
+        }
+      }
+
+      /* Context block - Visually distinct */
+      .context-block {
+        /* Refined background for a softer, slightly distinct look */
+        background-color: #f8faff;
+        border: 1px solid #dbeafe;
+        padding: 0rem;
+        border-radius: 0.6rem;
+        /* Removed shadow */
+        box-shadow: none;
+        margin-bottom: 0.8rem; /* Reduced margin for mobile */
+        line-height: 1.4; /* Slightly reduced line-height */
+        color: #2d3748;
+        overflow-x: auto;
+      }
+
+      @media (min-width: 640px) {
+        .context-block {
+          padding: 0rem;
+          margin-bottom: 2rem;
+          /* Reduced border-radius */
+          border-radius: 1rem;
+          /* Reduced shadow */
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+      }
+
+      .context-block h3 {
+        font-size: 1.1rem; /* Adjusted for mobile */
+        font-weight: 700;
+        margin-bottom: 0.5rem; /* Reduced margin */
+        color: #2d3748;
+      }
+
+      @media (min-width: 640px) {
+        .context-block h3 {
+          font-size: 1.75rem;
+          margin-bottom: 1.5rem;
+        }
+      }
+
+      .context-block p.font-semibold {
+        font-size: 0.8rem; /* Adjusted for mobile */
+        color: #2563eb;
+        margin-bottom: 0.3rem; /* Reduced margin */
+      }
+
+      @media (min-width: 640px) {
+        .context-block p.font-semibold {
+          font-size: 1.125rem;
+          margin-bottom: 1rem;
+        }
+      }
+
+      .context-block ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .context-block li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.3rem; /* Reduced margin */
+        line-height: 1.7; /* Adjusted line-height */
+      }
+
+      .context-block li span.mr-2 {
+        flex-shrink: 0;
+        margin-top: 0.1rem; /* Align icon better */
+      }
+
+      /* Question specific styles - Card-like appearance */
+      .question-block {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        /* Reduced border-radius */
+        border-radius: 0.5rem;
+        padding: 0.6rem; /* Further reduced padding for mobile */
+        margin-bottom: 0.7rem; /* Reduced margin for mobile */
+        /* Removed shadow */
+        box-shadow: none;
+      }
+
+      @media (min-width: 640px) {
+        .question-block {
+          padding: 2rem;
+          margin-bottom: 1.5rem;
+          /* Reduced border-radius */
+          border-radius: 0.75rem;
+          /* Reduced shadow */
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
+      }
+
+      .question-number {
+        font-size: 0.85rem; /* Adjusted for mobile */
+        font-weight: 800;
+        color: #2563eb;
+        margin-right: 0.3rem; /* Reduced margin for mobile */
+      }
+
+      @media (min-width: 640px) {
+        .question-number {
+          font-size: 1.5rem;
+          margin-right: 1rem;
+        }
+      }
+
+      .question-text {
+        font-size: 0.95rem; /* Increased font size for mobile */
+        line-height: 1.5; /* Increased line-height for readability */
+        color: #333333;
+      }
+
+      @media (min-width: 640px) {
+        .question-text {
+          font-size: 1.15rem;
+        }
+      }
+
+      /* Inline input fields - Sleek and integrated */
+      .note-completion-inline-input {
+        display: inline-block;
+        width: 100px; /* Increased width for better touch target */
+        max-width: 120px; /* Increased max-width */
+        padding: 0.5rem 0.8rem; /* Increased padding for better touch target */
+        border: 1px solid #a0aec0;
+        /* Reduced border-radius */
+        border-radius: 0.3rem;
+        font-size: 1rem; /* Increased font size for readability */
+        color: #2d3748;
+        background-color: #ffffff;
+        transition: all 0.2s ease-in-out;
+        /* Reduced shadow */
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        vertical-align: middle;
+      }
+
+      @media (min-width: 640px) {
+        .note-completion-inline-input {
+          max-width: 210px;
+          padding: 0.6rem 0.8rem;
+          font-size: 1.05rem;
+          /* Reduced border-radius */
+          border-radius: 0.4rem;
+          /* Reduced shadow */
+          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+      }
+
+      .note-completion-inline-input:focus {
+        outline: none;
+        border-color: #4299e1;
+        /* Reduced shadow */
+        box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2),
+          inset 0 1px 2px rgba(0, 0, 0, 0.04);
+      }
+
+      /* Standard note completion input (if still used) */
+      .note-completion-input {
+        border: 1px solid #cbd5e0;
+        /* Reduced border-radius */
+        border-radius: 0.5rem;
+        padding: 0.8rem 1rem; /* Increased padding */
+        font-size: 1.1rem; /* Increased font size */
+        width: 100%;
+        max-width: 350px; /* Increased max-width */
+        transition: border-color 0.2s, box-shadow 0.2s;
+        background-color: #fefefe;
+        /* Reduced shadow */
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .note-completion-input:focus {
+        outline: none;
+        border-color: #2563eb;
+        /* Reduced shadow */
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2),
+          inset 0 1px 2px rgba(0, 0, 0, 0.04);
+      }
+
+      /* Multiple Choice Options - Interactive and clear */
+      .multiple-choice-option {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 0.5rem; /* Increased spacing for mobile */
+        cursor: pointer;
+        padding: 0.6rem; /* Increased padding for mobile */
+        /* Reduced border-radius */
+        border-radius: 0.4rem;
+        transition: background-color 0.2s, box-shadow 0.2s;
+        background-color: #f0f4f8;
+        border: 1px solid #cbd5e0;
+        /* Removed shadow */
+        box-shadow: none;
+      }
+
+      @media (min-width: 640px) {
+        .multiple-choice-option {
+          margin-bottom: 1rem;
+          padding: 1.2rem;
+          /* Reduced border-radius */
+          border-radius: 0.6rem;
+          /* Removed shadow */
+          box-shadow: none;
+        }
+      }
+
+      .multiple-choice-option:hover {
+        background-color: #e2e8f0;
+        /* Reduced shadow */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .multiple-choice-option input[type="radio"],
+      .multiple-choice-option input[type="checkbox"] {
+        margin-top: 0.2rem; /* Adjusted margin */
+        margin-right: 0.6rem; /* Adjusted space for mobile */
+        flex-shrink: 0;
+        transform: scale(1.1); /* Slightly larger radio/checkbox for mobile */
+        accent-color: #2563eb;
+      }
+
+      @media (min-width: 640px) {
+        .multiple-choice-option input[type="radio"],
+        .multiple-choice-option input[type="checkbox"] {
+          margin-right: 1rem;
+          transform: scale(1.3);
+        }
+      }
+
+      .multiple-choice-option span {
+        font-weight: 500;
+        color: #333333;
+        font-size: 1rem; /* Increased font size for readability */
+      }
+
+      @media (min-width: 640px) {
+        .multiple-choice-option span {
+          font-size: 1.1rem;
+        }
+      }
+
+      /* Matching Items - Structured and clean */
+      .matching-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 0.7rem; /* Increased spacing for mobile */
+        background-color: #f9fafb;
+        padding: 0.6rem; /* Increased padding for mobile */
+        /* Reduced border-radius */
+        border-radius: 0.4rem;
+        border: 1px solid #e5e7eb;
+        /* Removed shadow */
+        box-shadow: none;
+      }
+
+      @media (min-width: 640px) {
+        .matching-item {
+          flex-direction: row;
+          align-items: center;
+          margin-bottom: 1.2rem;
+          padding: 1rem 1.5rem;
+          /* Reduced border-radius */
+          border-radius: 0.6rem;
+          /* Removed shadow */
+          box-shadow: none;
+        }
+      }
+
+      .matching-item span {
+        flex-shrink: 0;
+        margin-right: 0;
+        margin-bottom: 0.2rem; /* Adjusted vertical spacing on mobile */
+        font-weight: 600;
+        color: #333;
+        font-size: 1rem; /* Increased font size for readability */
+      }
+
+      @media (min-width: 640px) {
+        .matching-item span {
+          margin-right: 1.5rem;
+          margin-bottom: 0;
+          font-size: 1.05rem;
+        }
+      }
+
+      .matching-item select {
+        flex-grow: 1;
+        border: 1px solid #cbd5e0;
+        /* Reduced border-radius */
+        border-radius: 0.3rem;
+        padding: 0.5rem 0.8rem; /* Increased padding */
+        font-size: 1rem; /* Increased font size */
+        background-color: white;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%234A5568' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.7rem center; /* Adjusted position */
+        background-size: 0.8em; /* Adjusted size */
+        width: 100%;
+      }
+
+      @media (min-width: 640px) {
+        .matching-item select {
+          width: auto;
+          max-width: none;
+          padding: 0.6rem 1rem;
+          font-size: 1rem;
+          /* Reduced border-radius */
+          border-radius: 0.4rem;
+          background-position: right 0.75rem center;
+          background-size: 0.8em;
+        }
+      }
+
+      .matching-item select:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); /* Enhanced focus shadow */
+      }
+
+      /* Navigation buttons - Modern and inviting */
+      .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem; /* Increased margin */
+        gap: 0.6rem; /* Increased gap */
+      }
+
+      @media (min-width: 640px) {
+        .nav-buttons {
+          margin-top: 3rem;
+          gap: 1rem;
+        }
+      }
+
+      .nav-buttons button {
+        padding: 0.6rem 1rem; /* Increased padding */
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 0.9rem; /* Increased font size */
+        transition: all 0.2s ease-in-out;
+        /* Reduced shadow */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      @media (min-width: 640px) {
+        .nav-buttons button {
+          padding: 0.9rem 1.8rem;
+          font-size: 1.05rem;
+          /* Reduced shadow */
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+        }
+      }
+
+      #prev-section-btn {
+        background-color: #e2e8f0;
+        color: #2d3748;
+      }
+      #prev-section-btn:hover:not(:disabled) {
+        background-color: #cbd5e0;
+        transform: translateY(-2px);
+        /* Reduced shadow */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      }
+
+      #next-section-btn {
+        /* Refined blue gradient */
+        background: linear-gradient(90deg, #007bff, #0056b3);
+        color: white;
+      }
+      #next-section-btn:hover:not(:disabled) {
+        background: linear-gradient(90deg, #0056b3, #004085);
+        transform: translateY(-2px);
+        /* Reduced shadow */
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+      }
+
+      .nav-buttons button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      /* Modal styles - Elegant and centered */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* Reduced opacity */
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 1rem; /* Increased padding for mobile */
+        /* Reduced border-radius */
+        border-radius: 0.75rem;
+        /* Reduced shadow */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        max-width: 300px; /* Increased max-width for mobile */
+        width: 90%;
+        text-align: center;
+        animation: fadeInUp 0.3s ease-out;
+      }
+
+      @media (min-width: 640px) {
+        .modal-content {
+          padding: 2.5rem;
+          max-width: 550px;
+          /* Reduced border-radius */
+          border-radius: 1rem;
+          /* Reduced shadow */
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      .modal-content h3 {
+        font-size: 1.4rem; /* Increased for mobile */
+        font-weight: 800;
+        margin-bottom: 0.4rem; /* Adjusted for mobile */
+        color: #1a202c;
+      }
+
+      @media (min-width: 640px) {
+        .modal-content h3 {
+          font-size: 2.5rem;
+          margin-bottom: 1rem;
+        }
+      }
+
+      .modal-content p {
+        font-size: 0.9rem; /* Increased for mobile */
+        color: #4a5568;
+        margin-bottom: 0.8rem; /* Adjusted for mobile */
+        line-height: 1.4;
+      }
+
+      @media (min-width: 640px) {
+        .modal-content p {
+          font-size: 1.15rem;
+          margin-bottom: 2rem;
+        }
+      }
+
+      .modal-content button {
+        padding: 0.5rem 1rem; /* Increased for mobile */
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 0.85rem; /* Increased for mobile */
+        transition: all 0.2s ease-in-out;
+        /* Reduced shadow */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      @media (min-width: 640px) {
+        .modal-content button {
+          padding: 0.8rem 1.6rem;
+          font-size: 1rem;
+          /* Reduced shadow */
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+        }
+      }
+
+      #modal-confirm-btn {
+        /* Refined blue gradient */
+        background: linear-gradient(90deg, #007bff, #0056b3);
+        color: white;
+      }
+      #modal-confirm-btn:hover {
+        background: linear-gradient(90deg, #0056b3, #004085);
+        transform: translateY(-2px);
+        /* Reduced shadow */
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+      }
+
+      #modal-cancel-btn {
+        background-color: #e2e8f0;
+        color: #2d3748;
+      }
+      #modal-cancel-btn:hover {
+        background-color: #cbd5e0;
+        transform: translateY(-2px);
+        /* Reduced shadow */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Specific styles for the content within context blocks */
+      .context-block .note-completion-inline-input {
+        width: 160px; /* Increased width */
+        max-width: 160px; /* Increased max-width */
+        padding: 0.5rem 0.8rem; /* Increased padding */
+        border: 1px solid #a0aec0;
+        /* Reduced border-radius */
+        border-radius: 0.3rem;
+        background-color: #ffffff;
+        /* Reduced shadow */
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        font-size: 1rem; /* Increased font size */
+        color: #2d3748;
+      }
+
+      @media (min-width: 640px) {
+        .context-block .note-completion-inline-input {
+          max-width: 210px;
+          padding: 0.6rem 0.8rem;
+          font-size: 1.05rem;
+          /* Reduced border-radius */
+          border-radius: 0.4rem;
+          /* Reduced shadow */
+          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+      }
+
+      .context-block .note-completion-inline-input:focus {
+        border-color: #4299e1;
+        /* Reduced shadow */
+        box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2),
+          inset 0 1px 2px rgba(0, 0, 0, 0.04);
+      }
+
+      .context-block .multiple-choice-option {
+        background-color: #f0f4f8;
+        border: 1px solid #cbd5e0;
+        padding: 0.6rem; /* Increased padding */
+        margin-bottom: 0.5rem; /* Increased margin */
+        /* Reduced border-radius */
+        border-radius: 0.4rem;
+        /* Removed shadow */
+        box-shadow: none;
+      }
+
+      @media (min-width: 640px) {
+        .context-block .multiple-choice-option {
+          padding: 1.2rem;
+          margin-bottom: 1rem;
+          /* Reduced border-radius */
+          border-radius: 0.75rem;
+          /* Removed shadow */
+          box-shadow: none;
+        }
+      }
+
+      .context-block .multiple-choice-option:hover {
+        background-color: #e2e8f0;
+        /* Reduced shadow */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .context-block .multiple-choice-option input[type="radio"],
+      .context-block .multiple-choice-option input[type="checkbox"] {
+        transform: scale(1.1); /* Slightly larger radio/checkbox */
+        margin-top: 0.2rem;
+        margin-right: 0.6rem;
+      }
+
+      @media (min-width: 640px) {
+        .context-block .multiple-choice-option input[type="radio"],
+        .context-block .multiple-choice-option input[type="checkbox"] {
+          transform: scale(1.3);
+        }
+      }
+
+      .context-block .multiple-choice-option span {
+        font-size: 1rem; /* Increased font size */
+        font-weight: 600;
+        color: #2d3748;
+      }
+
+      @media (min-width: 640px) {
+        .context-block .multiple-choice-option span {
+          font-size: 1.1rem;
+        }
+      }
+
+      /* Table styling for Part 3 of Listening Test 5 */
+      .context-block table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        /* Reduced border-radius */
+        border-radius: 0.6rem;
+        overflow: hidden;
+        /* Reduced shadow */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin-top: 0.8rem; /* Increased margin */
+      }
+
+      @media (min-width: 640px) {
+        .context-block table {
+          margin-top: 1.5rem;
+          /* Reduced border-radius */
+          border-radius: 0.75rem;
+          /* Reduced shadow */
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+        }
+      }
+
+      .context-block th,
+      .context-block td {
+        padding: 0.5rem 0.7rem; /* Increased padding */
+        border-bottom: 1px solid #e2e8f0;
+        text-align: left;
+        font-size: 0.9rem; /* Increased font size */
+      }
+
+      @media (min-width: 640px) {
+        .context-block th,
+        .context-block td {
+          padding: 1.2rem 1.5rem;
+          font-size: 1.05rem;
+        }
+      }
+
+      .context-block th {
+        background-color: #edf2f7;
+        font-weight: 700;
+        color: #4a5568;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .context-block tr:last-child td {
+        border-bottom: none;
+      }
+
+      .context-block tr:nth-child(even) {
+        background-color: #f7fafc;
+      }
+
+      .context-block tr:hover {
+        background-color: #e0f2fe;
+      }
+
+      .context-block table .note-completion-inline-input {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* NEW CSS for Container Diagram in Context Block */
+      .size-container-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem; /* Increased gap */
+      }
+
+      @media (min-width: 640px) {
+        .size-container-section {
+          flex-direction: row;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 2rem;
+        }
+      }
+
+      .container-diagram {
+        width: 70vw; /* Increased width */
+        height: 60vw; /* Increased height */
+        background-color: #e2e8f0;
+        border: 1px solid #a0aec0; /* Lighter border */
+        /* Reduced border-radius */
+        border-radius: 0.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #4a5568;
+        /* Reduced shadow */
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        flex-shrink: 0;
+        font-size: 0.85rem; /* Increased font size */
+      }
+
+      @media (min-width: 640px) {
+        .container-diagram {
+          width: 30vw;
+          height: 25vw;
+          border: 2px solid #a0aec0;
+          /* Reduced border-radius */
+          border-radius: 0.6rem;
+          /* Reduced shadow */
+          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+          font-size: 1rem;
+        }
+      }
+
+      .size-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem; /* Increased gap */
+        width: 100%;
+      }
+
+      @media (min-width: 640px) {
+        .size-details {
+          width: auto;
+        }
+      }
+
+      .size-details .flex {
+        align-items: center;
+      }
+
+      .size-details label {
+        flex-shrink: 0;
+        width: 50px; /* Increased width */
+        text-align: right;
+        font-weight: 500;
+        color: #2d3748;
+        font-size: 0.8rem; /* Increased font size */
+      }
+
+      @media (min-width: 640px) {
+        .size-details label {
+          width: 60px;
+          font-size: 1rem;
+        }
+      }
+
+      .size-details .note-completion-inline-input {
+        flex-grow: 1;
+        max-width: none;
+      }
+    </style>
   </head>
-  <body
-    class="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 py-6 px-2 sm:py-8 sm:px-4 lg:py-12 lg:px-8"
-  >
+  <body class="py-0 px-0">
+    <!-- Header / Navigation Bar -->
     <header
       id="app-header"
-      class="py-2 px-3 md:py-4 md:px-8 flex items-center justify-between bg-white border-b border-gray-100 rounded-b-xl transition-colors duration-300 sticky top-0 z-50 shadow-lg"
+      class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
     >
       <div class="flex items-center gap-2 sm:gap-4">
-        <h1 class="font-bold text-xl md:text-3xl text-blue-600">
-          IELTS Mastery Hub
-        </h1>
-        <nav class="hidden md:flex gap-4"></nav>
+        <img
+          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+          alt="IELTS Mahir Logo"
+          class="h-8 md:h-10 w-auto"
+          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+        />
+        <nav class="hidden md:flex gap-6 ml-8 font-inter">
+          <a href="quiz-home.html" class="nav-link transition-all"
+            >Quiz System</a
+          >
+          <a href="mock-test-home.html" class="nav-link transition-all"
+            >Mock Tests</a
+          >
+          <a href="#" class="nav-link transition-all">Resources</a>
+        </nav>
       </div>
-      <!-- Modified auth-buttons-container for stable size and content toggling -->
-      <div
-        id="auth-buttons-container"
-        class="flex items-center justify-end h-10 min-w-[100px] sm:min-w-[150px]"
-      >
-        <!-- Signed-in state container (initially hidden) -->
-        <div id="signed-in-controls" class="relative hidden">
-          <button
-            id="profile-icon-btn"
-            class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-600 transition-colors"
-          >
-            <!-- Initial character will be set by JS -->
-          </button>
-          <div
-            id="profile-dropdown"
-            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden"
-          >
-            <div
-              id="profile-dropdown-user-info"
-              class="px-4 py-2 text-sm text-gray-700 border-b border-gray-100"
-            ></div>
-            <a
-              href="dashboard.html"
-              class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100"
-              >${Icons.Dashboard} Dashboard</a
-            >
-            <a
-              href="ielts-mahir-community-forum.html"
-              class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100"
-              >${Icons.Forum} Forum</a
-            >
-            <button
-              id="sign-out-dropdown-btn"
-              class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg"
-            >
-              ${Icons.SignOut} Sign Out
-            </button>
-          </div>
-        </div>
-
-        <!-- Signed-out state container (initially hidden, shown by JS if not signed in) -->
-        <div
-          id="signed-out-controls"
-          class="flex items-center gap-2 sm:gap-4 hidden"
-        >
-          <a
-            href="auth.html"
-            id="sign-in-nav-btn"
-            class="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-xs sm:text-sm font-semibold transform active:scale-95"
-          >
-            ${Icons.SignIn} <span class="hidden sm:inline">Sign In</span>
-          </a>
-        </div>
-
-        <!-- Loading placeholder (only shown initially, hidden once auth state is determined) -->
-        <div
-          id="auth-loading-placeholder"
-          class="animate-pulse flex space-x-4 items-center"
-        >
-          <div class="rounded-full bg-gray-200 h-8 w-8 sm:h-10 sm:w-10"></div>
-          <div class="flex-1 space-y-2 py-1 hidden sm:block w-[80px]">
-            <div class="h-2 bg-gray-200 rounded"></div>
-            <div class="h-2 bg-gray-200 rounded w-2/3"></div>
+      <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
+        <!-- Authentication status will be handled by auth.js -->
+        <div class="animate-pulse flex space-x-4">
+          <div class="rounded-full bg-gray-300 h-8 w-8 sm:h-10 sm:w-10"></div>
+          <div class="flex-1 space-y-4 py-1 hidden sm:block">
+            <div class="h-2 bg-gray-300 rounded"></div>
+            <div class="space-y-2">
+              <div class="grid grid-cols-3 gap-2">
+                <div class="h-2 bg-gray-300 rounded col-span-2"></div>
+                <div class="h-2 bg-gray-300 rounded col-span-1"></div>
+              </div>
+              <div class="h-2 bg-gray-300 rounded"></div>
+            </div>
           </div>
         </div>
       </div>
     </header>
 
-    <div id="app"></div>
-    <div id="toast-container"></div>
+    <div id="app" class="flex-grow flex flex-col lg:flex-row">
+      <!-- Loading Spinner -->
+      <div
+        id="loading-spinner"
+        class="flex justify-center items-center h-full w-full absolute inset-0 bg-gray-100 bg-opacity-75 z-50"
+      >
+        <div
+          class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"
+        ></div>
+      </div>
+
+      <!-- Test Layout -->
+      <div id="test-layout" class="test-layout w-full hidden">
+        <!-- Sidebar for Navigation and Timer -->
+        <aside class="test-sidebar lg:w-1/4 xl:w-1/5">
+          <h2 class="text-2xl font-anton text-gray-800 mb-6">Test Controls</h2>
+
+          <!-- Timer -->
+          <div class="timer-display-container">
+            <span class="font-semibold text-lg flex items-center gap-2">
+              <i class="ph-bold ph-clock text-blue-200"></i> Time Left:
+            </span>
+            <span id="timer-display" class="font-anton text-3xl text-white"
+              >00:00</span
+            >
+          </div>
+
+          <!-- Audio Player (for Listening tests) -->
+          <div id="audio-player-section" class="mb-6 hidden">
+            <h3 class="font-semibold text-lg mb-3 text-gray-700">Audio</h3>
+            <div class="audio-player-container">
+              <audio id="test-audio-player" controls class="w-full">
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+          </div>
+
+          <!-- Section Navigation -->
+          <h3 class="font-semibold text-lg mb-3 text-gray-700">Sections</h3>
+          <nav
+            id="section-navigation"
+            class="space-y-2 mb-6 section-navigation"
+          >
+            <!-- Section buttons will be rendered here -->
+          </nav>
+
+          <!-- Action Buttons (Desktop Only) -->
+          <div class="flex-col gap-4 mt-8 action-buttons hidden lg:flex">
+            <button id="submit-test-btn-desktop" class="w-full text-white">
+              Submit Test
+            </button>
+            <button id="exit-test-btn-desktop" class="w-full">
+              Exit Test
+            </button>
+          </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="test-content-area flex-grow">
+          <h1
+            id="test-title"
+            class="font-anton text-4xl sm:text-5xl text-gray-800 mb-4 leading-tight"
+          >
+            <!-- Test Title -->
+          </h1>
+          <p
+            id="test-description"
+            class="text-lg text-gray-600 mb-8 font-inter"
+          >
+            <!-- Test Description -->
+          </p>
+
+          <!-- Current Section Content -->
+          <div id="current-section-content">
+            <!-- Section title, instructions, questions will be rendered here -->
+          </div>
+
+          <!-- Navigation Buttons for Sections -->
+          <div class="nav-buttons">
+            <button
+              id="prev-section-btn"
+              class="px-6 py-3 bg-gray-200 text-gray-800 rounded-full font-semibold hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <i class="ph-bold ph-caret-left mr-2"></i> Previous Section
+            </button>
+            <button
+              id="next-section-btn"
+              class="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next Section <i class="ph-bold ph-caret-right ml-2"></i>
+            </button>
+          </div>
+
+          <!-- Action Buttons (Mobile Only) -->
+          <div class="flex flex-col gap-4 mt-8 action-buttons lg:hidden">
+            <button id="submit-test-btn-mobile" class="w-full text-white">
+              Submit Test
+            </button>
+            <button id="exit-test-btn-mobile" class="w-full">
+              Exit Test
+            </button>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-[100]"></div>
+
+    <!-- Modal Container -->
     <div id="modal-container"></div>
 
     <script type="module">
+      // Import authentication functions and state from the central auth.js file
       import {
         initFirebaseAuth,
         authAppState,
-        signOutUser,
         showToast,
-      } from "./auth.js"; // Removed Icons import
-      import { allMockTests, commonStyles } from "./mock-test-data.js";
+        Icons,
+        signOutUser,
+        // Removed showModal and hideModal imports as they are now handled locally
+      } from "./auth.js"; // Adjust path as necessary
 
-      // Define Icons directly in this file to ensure availability
-      const Icons = {
-        Headphones: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headphones"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2Z"/><path d="M21 14h-3a2 2 0 0 1-2 2v3a2 2 0 0 1 2 2h3a2 2 0 0 1 2-2v-3a2 2 0 0 1-2-2Z"/><path d="M7 14V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v9"/></svg>`,
-        BookOpen: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
-        Edit: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg>`,
-        Mic: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mic"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>`,
-        Activity: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
-        Dashboard: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>`,
-        Forum: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
-        SignOut: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="17 16 22 12 17 8"/><line x1="22" x2="10" y1="12" y2="12"/></svg>`,
-        SignIn: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-in"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>`,
-        ChevronLeft: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>`,
-        FileText: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>`,
-        Lightbulb: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lightbulb"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 3c0 1.3.5 2.6 1.5 3.5.8.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/><path d="M11 17h2"/><path d="M12 14v8"/></svg>`,
+      // Import mock test data
+      import {
+        MockTestModules,
+        allMockTests,
+        MockTestIcons,
+        formatTime,
+      } from "./mock-test-data.js";
+
+      // Firebase imports for Firestore
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        setDoc,
+        updateDoc,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      // Firebase instances
+      let db;
+      let auth;
+
+      // Current test data
+      let currentTest = null;
+      let currentModule = null;
+      let currentSectionIndex = 0;
+      let timerInterval;
+      let timeLeft = 0; // In seconds
+
+      // Store user answers
+      let userAnswers = {}; // { questionId: answer, ... } for note completion/MCQ, { qId: { itemNum: ans }, ... } for matching
+
+      // User game stats (will be fetched from Firestore)
+      let userGameStats = {
+        totalPoints: 0,
+        level: 1,
+        completedTests: [], // Array of test IDs
       };
 
-      let db, auth; // Firestore and Auth instances
-
-      function updateAuthUI(user) {
-        const signedInControls = document.getElementById("signed-in-controls");
-        const signedOutControls = document.getElementById(
-          "signed-out-controls"
+      /**
+       * Fetches user's game stats from Firestore.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchUserGameStats(userId) {
+        if (!db || !userId) return;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userStatsDocRef = doc(
+          db,
+          `artifacts/${appId}/users/${userId}/gameStats/summary`
         );
-        const authLoadingPlaceholder = document.getElementById(
-          "auth-loading-placeholder"
-        );
 
-        // Hide the loading placeholder once the auth state is determined
-        if (authLoadingPlaceholder) {
-          authLoadingPlaceholder.classList.add("hidden");
+        try {
+          const docSnap = await getDoc(userStatsDocRef);
+          if (docSnap.exists()) {
+            userGameStats = { ...userGameStats, ...docSnap.data() };
+            console.log("Fetched user game stats:", userGameStats);
+          } else {
+            console.log(
+              "No game stats found for user, initializing defaults in Firestore."
+            );
+            await setDoc(userStatsDocRef, userGameStats);
+          }
+        } catch (error) {
+          console.error("Error fetching user game stats:", error);
+          showToast("Failed to load your game progress.", "error");
         }
+      }
 
-        if (user) {
-          // User is signed in: Show profile dropdown
-          if (signedInControls) signedInControls.classList.remove("hidden");
-          if (signedOutControls) signedOutControls.classList.add("hidden");
+      /**
+       * Updates user's game stats in Firestore.
+       * @param {string} userId - The ID of the current user.
+       * @param {object} updates - Object containing fields to update.
+       */
+      async function updateUserGameStats(userId, updates) {
+        if (!db || !userId) return;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userStatsDocRef = doc(
+          db,
+          `artifacts/${appId}/users/${userId}/gameStats/summary`
+        );
 
-          const profileIconBtn = document.getElementById("profile-icon-btn");
-          const profileDropdown = document.getElementById("profile-dropdown");
-          const signOutDropdownBtn = document.getElementById(
-            "sign-out-dropdown-btn"
-          );
-          const profileDropdownUserInfo = document.getElementById(
-            "profile-dropdown-user-info"
-          );
+        try {
+          await updateDoc(userStatsDocRef, updates);
+          userGameStats = { ...userGameStats, ...updates }; // Update local state
+          console.log("User game stats updated:", userGameStats);
+          // Re-render auth UI to reflect new points/level
+          updateAuthUI(auth.currentUser);
+        } catch (error) {
+          console.error("Error updating user game stats:", error);
+          showToast("Failed to save your game progress.", "error");
+        }
+      }
 
-          if (profileIconBtn) {
-            profileIconBtn.innerHTML = (
-              authAppState.userProfile?.name ||
-              user.email ||
-              user.uid
-            )
-              .charAt(0)
-              .toUpperCase();
-          }
-          if (profileDropdownUserInfo) {
-            profileDropdownUserInfo.textContent = `Hello, ${
-              authAppState.userProfile?.name ||
-              user.email ||
-              user.uid.substring(0, 8)
-            }`;
-          }
+      /**
+       * Updates the navigation bar and user ID display based on authentication status.
+       * @param {object|null} user - The Firebase User object or null if signed out.
+       */
+      async function updateAuthUI(user) {
+        const authButtonsContainer = document.getElementById(
+          "auth-buttons-container"
+        );
+        if (authButtonsContainer) {
+          if (user) {
+            // Fetch game stats if user is logged in and db is available
+            if (db && user.uid) {
+              await fetchUserGameStats(user.uid); // Await this to ensure userGameStats is updated
+            }
 
-          if (profileIconBtn && profileDropdown) {
-            profileIconBtn.onclick = (event) => {
+            // User is signed in: Show profile dropdown and game stats
+            authButtonsContainer.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="points-display">
+                                ${
+                                  MockTestIcons.Trophy ||
+                                  '<i class="fas fa-trophy"></i>'
+                                }
+                                <span class="text-sm font-semibold">${
+                                  userGameStats.totalPoints
+                                } Pts</span>
+                                <span class="text-xs text-green-200">|</span>
+                                <span class="text-sm font-semibold">Lvl ${
+                                  userGameStats.level
+                                }</span>
+                            </div>
+                            <div class="relative">
+                                <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-700 transition-colors">
+                                    ${(
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid
+                                    )
+                                      .charAt(0)
+                                      .toUpperCase()}
+                                </button>
+                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden text-gray-800">
+                                    <div class="px-4 py-2 text-sm border-b border-gray-200">Hello, ${
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid.substring(0, 8)
+                                    }</div>
+                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-200">Level: ${
+                                      userGameStats.level
+                                    }</div>
+                                    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                        ${Icons.Dashboard.replace(
+                                          /stroke="currentColor"/g,
+                                          'stroke="gray"'
+                                        )} Dashboard
+                                    </a>
+                                    <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                        ${Icons.Forum.replace(
+                                          /stroke="currentColor"/g,
+                                          'stroke="gray"'
+                                        )} Forum
+                                    </a>
+                                    <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-b-lg">
+                                        ${Icons.SignOut.replace(
+                                          /stroke="currentColor"/g,
+                                          'stroke="red"'
+                                        )} Sign Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            const profileIconBtn = document.getElementById("profile-icon-btn");
+            const profileDropdown = document.getElementById("profile-dropdown");
+            const signOutDropdownBtn = document.getElementById(
+              "sign-out-dropdown-btn"
+            );
+
+            profileIconBtn.addEventListener("click", (event) => {
               event.stopPropagation();
               profileDropdown.classList.toggle("hidden");
-            };
-            // Use document.onclick for closing the dropdown when clicking outside
-            document.onclick = (event) => {
+            });
+
+            document.addEventListener("click", (event) => {
               if (
                 !profileDropdown.contains(event.target) &&
                 !profileIconBtn.contains(event.target)
               ) {
                 profileDropdown.classList.add("hidden");
               }
-            };
-          }
+            });
 
-          if (signOutDropdownBtn) {
-            signOutDropdownBtn.onclick = async () => {
+            signOutDropdownBtn.addEventListener("click", async () => {
               await signOutUser();
-            };
+              // Redirect will happen via onAuthStateChanged in auth.js
+            });
+          } else {
+            // User is signed out: Show sign-in button
+            authButtonsContainer.innerHTML = `
+                        <a href="auth.html" id="sign-in-nav-btn" class="px-4 py-2 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                            Join beta user
+                        </a>
+                    `;
           }
-        } else {
-          // User is signed out: Show sign-in button
-          if (signedInControls) signedInControls.classList.add("hidden");
-          if (signedOutControls) signedOutControls.classList.remove("hidden");
         }
       }
 
-      function renderApp() {
-        const appDiv = document.getElementById("app");
-        if (!appDiv) return;
-        appDiv.innerHTML = `
-          <header class="text-center mb-8 sm:mb-12 lg:mb-16">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-blue-900 drop-shadow-lg leading-tight">
-              <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-700">IELTS Mastery Hub</span>
-            </h1>
-            <p class="text-lg sm:text-xl lg:text-2xl text-gray-700 mt-2 sm:mt-4 max-w-2xl mx-auto">Your ultimate destination for world-class IELTS preparation.</p>
-            ${
-              authAppState.isAuthReady && authAppState.userId
-                ? `
-              <p class="mt-4 sm:mt-6 text-sm sm:text-lg text-gray-600 font-mono bg-white bg-opacity-70 backdrop-blur-sm inline-block px-3 py-1 sm:px-4 sm:py-2 rounded-xl shadow-md border border-gray-200">
-                User ID: <span class="font-semibold text-gray-800">${authAppState.userId}</span>
-              </p>`
-                : ""
-            }
-          </header>
-
-          <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto px-4">
-            <!-- Module Card: Listening -->
-            <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-8 flex flex-col items-center text-center border border-blue-100 transform hover:scale-105 transition duration-300">
-              <div class="text-blue-500 mb-4">${Icons.Headphones.replace(
-                /width="24" height="24"/g,
-                'width="48" height="48" class="w-12 h-12"'
-              )}</div>
-              <h2 class="text-2xl sm:text-3xl font-bold text-blue-800 mb-3">Listening</h2>
-              <p class="text-gray-600 mb-6 text-sm sm:text-base">Develop your ability to understand spoken English in various contexts.</p>
-              <button onclick="window.location.href='listening.html'" class="mt-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform active:scale-95 text-sm sm:text-base">Start Test</button>
-            </div>
-
-            <!-- Module Card: Reading -->
-            <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-8 flex flex-col items-center text-center border border-green-100 transform hover:scale-105 transition duration-300">
-              <div class="text-green-500 mb-4">${Icons.BookOpen.replace(
-                /width="24" height="24"/g,
-                'width="48" height="48" class="w-12 h-12"'
-              )}</div>
-              <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-3">Reading</h2>
-              <p class="text-gray-600 mb-6 text-sm sm:text-base">Enhance your comprehension of academic and general texts.</p>
-              <button onclick="window.location.href='reading.html'" class="mt-auto bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300 transform active:scale-95 text-sm sm:text-base">Start Test</button>
-            </div>
-
-            <!-- Module Card: Writing -->
-            <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-8 flex flex-col items-center text-center border border-purple-100 transform hover:scale-105 transition duration-300">
-              <div class="text-purple-500 mb-4">${Icons.Edit.replace(
-                /width="24" height="24"/g,
-                'width="48" height="48" class="w-12 h-12"'
-              )}</div>
-              <h2 class="text-2xl sm:text-3xl font-bold text-purple-800 mb-3">Writing</h2>
-              <p class="text-gray-600 mb-6 text-sm sm:text-base">Master the art of effective report, letter, and essay writing.</p>
-              <button onclick="window.location.href='writing.html'" class="mt-auto bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-300 transform active:scale-95 text-sm sm:text-base">Start Test</button>
-            </div>
-
-            <!-- Module Card: Speaking -->
-            <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-8 flex flex-col items-center text-center border border-red-100 transform hover:scale-105 transition duration-300">
-              <div class="text-red-500 mb-4">${Icons.Mic.replace(
-                /width="24" height="24"/g,
-                'width="48" height="48" class="w-12 h-12"'
-              )}</div>
-              <h2 class="text-2xl sm:text-3xl font-bold text-red-800 mb-3">Speaking</h2>
-              <p class="text-gray-600 mb-6 text-sm sm:text-base">Practice your spoken English with interactive AI feedback.</p>
-              <button onclick="window.location.href='speaking.html'" class="mt-auto bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-300 transform active:scale-95 text-sm sm:text-base">Start Test</button>
-            </div>
-
-            <!-- My Progress Card -->
-            <div class="md:col-span-2 lg:col-span-3 bg-white rounded-3xl shadow-xl p-6 sm:p-8 flex flex-col items-center text-center border border-gray-200 transform hover:scale-105 transition duration-300">
-              <div class="text-gray-500 mb-4">${Icons.Activity.replace(
-                /width="24" height="24"/g,
-                'width="48" height="48" class="w-12 h-12"'
-              )}</div>
-              <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">My Progress</h2>
-              <p class="text-gray-600 mb-6 text-sm sm:text-base">Track your performance, review past tests, and see your improvements over time.</p>
-              <button onclick="window.location.href='test-detail.html?view=my-progress'" class="mt-auto bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300 transform active:scale-95 text-sm sm:text-base">View Progress</button>
-            </div>
-          </main>
-        `;
+      /**
+       * Renders a note completion question.
+       * @param {object} question - The question object.
+       * @returns {string} HTML string for the question.
+       */
+      function renderNoteCompletion(question) {
+        const inputId = `answer-${question.id}`;
+        const existingAnswer = userAnswers[question.id] || "";
+        return `
+                <div class="flex items-baseline mb-3">
+                    <span class="question-number">${
+                      question.questionNumber
+                    }.</span>
+                    <p class="question-text flex-grow">
+                        ${question.text.replace(
+                          /_{3,}/g,
+                          `<input type="text" id="${inputId}" name="${question.id}" value="${existingAnswer}"
+                                   class="note-completion-input inline-block mx-2 p-1 border-b-2 border-gray-300 focus:border-blue-500 focus:outline-none"
+                                   onchange="handleAnswerChange(event, '${question.id}', 'note_completion')" />`
+                        )}
+                    </p>
+                </div>
+            `;
       }
 
+      /**
+       * Renders a single choice multiple choice question.
+       * @param {object} question - The question object.
+       * @returns {string} HTML string for the question.
+       */
+      function renderMultipleChoiceSingle(question) {
+        const inputId = `answer-${question.id}`; // Ensure unique ID for the input group
+        const existingAnswer = userAnswers[question.id] || "";
+        return `
+                <div class="mb-4">
+                    <div class="flex items-baseline mb-3">
+                        <span class="question-number">${
+                          question.questionNumber
+                        }.</span>
+                        <p class="question-text flex-grow">${question.text}</p>
+                    </div>
+                    <div class="ml-8">
+                        ${question.options
+                          .map(
+                            (option) => `
+                            <label class="multiple-choice-option">
+                                <input type="radio" name="${
+                                  question.id
+                                }" value="${option.key}"
+                                       ${
+                                         existingAnswer === option.key
+                                           ? "checked"
+                                           : ""
+                                       }
+                                       onchange="handleAnswerChange(event, '${
+                                         question.id
+                                       }', 'multiple_choice_single')"
+                                       class="form-radio h-5 w-5 text-blue-600" />
+                                <span class="ml-2">${option.key}. ${
+                              option.text
+                            }</span>
+                            </label>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                </div>
+            `;
+      }
+
+      /**
+       * Renders a multiple choice question with multiple correct answers.
+       * @param {object} question - The question object.
+       * @returns {string} HTML string for the question.
+       */
+      function renderMultipleChoiceMultiple(question) {
+        const inputId = `answer-${question.id}`; // Ensure unique ID for the input group
+        const existingAnswers = userAnswers[question.id] || [];
+        return `
+                <div class="mb-4">
+                    <div class="flex items-baseline mb-3">
+                        <span class="question-number">${
+                          question.questionNumbers
+                        }.</span>
+                        <p class="question-text flex-grow">${question.text}</p>
+                    </div>
+                    <div class="ml-8">
+                        ${question.options
+                          .map(
+                            (option) => `
+                            <label class="multiple-choice-option">
+                                <input type="checkbox" name="${
+                                  question.id
+                                }" value="${option.key}"
+                                       ${
+                                         existingAnswers.includes(option.key)
+                                           ? "checked"
+                                           : ""
+                                       }
+                                       onchange="handleAnswerChange(event, '${
+                                         question.id
+                                       }', 'multiple_choice_multiple')"
+                                       class="form-checkbox h-5 w-5 text-blue-600 rounded" />
+                                <span class="ml-2">${option.key}. ${
+                              option.text
+                            }</span>
+                            </label>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                </div>
+            `;
+      }
+
+      /**
+       * Renders a matching information question.
+       * @param {object} question - The question object.
+       * @returns {string} HTML string for the question.
+       */
+      function renderMatchingInformation(question) {
+        return `
+                <div class="mb-4">
+                    <h3 class="font-semibold text-lg mb-3 text-gray-800">${
+                      question.instructions
+                    }</h3>
+                    <div class="ml-8 mb-4">
+                        <p class="font-medium text-gray-700 mb-2">Options:</p>
+                        <ul class="list-disc list-inside ml-4 mb-4">
+                            ${question.options
+                              .map(
+                                (option) =>
+                                  `<li><strong>${option.key}</strong> ${option.text}</li>`
+                              )
+                              .join("")}
+                        </ul>
+                    </div>
+                    <div class="space-y-3">
+                        ${question.itemsToMatch
+                          .map((item) => {
+                            const inputId = `match-${question.id}-${item.number}`;
+                            const existingAnswer =
+                              userAnswers[question.id]?.[item.number] || "";
+                            return `
+                                <div class="matching-item">
+                                    <span class="w-12 flex-shrink-0">${
+                                      item.number
+                                    }.</span>
+                                    <span class="flex-grow">${item.text}</span>
+                                    <select id="${inputId}" name="${
+                              question.id
+                            }-${item.number}"
+                                            onchange="handleAnswerChange(event, '${
+                                              question.id
+                                            }', 'matching_information', ${
+                              item.number
+                            })"
+                                            class="w-32">
+                                        <option value="">Select...</option>
+                                        ${question.options
+                                          .map(
+                                            (opt) => `
+                                            <option value="${opt.key}" ${
+                                              existingAnswer === opt.key
+                                                ? "selected"
+                                                : ""
+                                            }>${opt.key}</option>
+                                        `
+                                          )
+                                          .join("")}
+                                    </select>
+                                </div>
+                            `;
+                          })
+                          .join("")}
+                    </div>
+                </div>
+            `;
+      }
+
+      // Global handler for answer changes
+      window.handleAnswerChange = (
+        event,
+        questionId,
+        type,
+        itemNumber = null
+      ) => {
+        if (type === "note_completion") {
+          userAnswers[questionId] = event.target.value;
+        } else if (type === "multiple_choice_single") {
+          userAnswers[questionId] = event.target.value;
+        } else if (type === "multiple_choice_multiple") {
+          if (!userAnswers[questionId]) {
+            userAnswers[questionId] = [];
+          }
+          if (event.target.checked) {
+            if (!userAnswers[questionId].includes(event.target.value)) {
+              userAnswers[questionId].push(event.target.value);
+            }
+          } else {
+            userAnswers[questionId] = userAnswers[questionId].filter(
+              (ans) => ans !== event.target.value
+            );
+          }
+        } else if (type === "matching_information") {
+          if (!userAnswers[questionId]) {
+            userAnswers[questionId] = {};
+          }
+          userAnswers[questionId][itemNumber] = event.target.value;
+        }
+        // console.log("User Answers:", userAnswers); // For debugging
+      };
+
+      /**
+       * Renders the current section of the test.
+       */
+      function renderCurrentSection() {
+        if (!currentTest || !currentTest.sections) return;
+
+        const section = currentTest.sections[currentSectionIndex];
+        const contentDiv = document.getElementById("current-section-content");
+        if (!contentDiv || !section) {
+          contentDiv.innerHTML = `<p class="text-center text-red-500">Error: Section not found.</p>`;
+          return;
+        }
+
+        let sectionHtml = `
+                <div class="section-header mb-6 pb-4 border-b border-gray-200">
+                    <h2 class="font-anton text-3xl text-gray-700 mb-2">${
+                      section.title
+                    }</h2>
+                    <p class="text-xl font-semibold text-gray-700 mb-2">${
+                      section.instructions
+                    }</p>
+                    ${
+                      section.subInstructions
+                        ? `<p class="text-md text-gray-500">${section.subInstructions}</p>`
+                        : ""
+                    }
+                </div>
+            `;
+
+        // Always render the main passage/context first if it exists
+        if (section.context) {
+          sectionHtml += `<div class="context-block">${section.context}</div>`;
+        }
+
+        // Filter questions that should be rendered separately (not embedded in context HTML)
+        const questionsToRenderSeparately = section.questions
+          .filter((q) => {
+            // Define conditions for questions that ARE embedded in context HTML
+            const isEmbedded =
+              (currentTest.id === "listening-test-5" &&
+                ((section.id === "part1" &&
+                  (q.id === "q1" ||
+                    q.id === "q2" ||
+                    q.id === "q3" ||
+                    q.id === "q4" ||
+                    q.id === "q5" ||
+                    q.id === "q6" ||
+                    q.id === "q7" ||
+                    q.id === "q8")) || // Q1-8 are embedded in context for LT5-P1
+                (section.id === "part2" &&
+                  (q.id === "q11" ||
+                    q.id === "q12" ||
+                    q.id === "q13" ||
+                    q.id === "q14" ||
+                    q.id === "q15")) || // Q11-15 are embedded in context for LT5-P2
+                section.id === "part3" || // All of Part 3 is embedded in table
+                  (section.id === "part4" &&
+                    (q.id === "q36" ||
+                      q.id === "q37" ||
+                      q.id === "q38" ||
+                      q.id === "q39" ||
+                      q.id === "q40")))) || // Q36-40 are embedded in context for LT5-P4
+              (currentTest.id === "listening-test-4" &&
+                (section.id === "part1" || // All of Part 1 is embedded
+                  section.id === "part4")) || // All of Part 4 is embedded
+              (currentTest.id === "reading-test-1" &&
+                ((section.id === "part1" &&
+                  (q.id === "q7" ||
+                    q.id === "q8" ||
+                    q.id === "q9" ||
+                    q.id === "q10" ||
+                    q.id === "q11" ||
+                    q.id === "q12" ||
+                    q.id === "q13")) || // Q7-13 are embedded in context for RT1-P1
+                (section.id === "part2" &&
+                  (q.id === "q14" ||
+                    q.id === "q15" ||
+                    q.id === "q16" ||
+                    q.id === "q17" ||
+                    q.id === "q18" ||
+                    q.id === "q19")) || // Q14-19 are embedded in context for RT1-P2
+                  (section.id === "part3" &&
+                    (q.id === "q33" ||
+                      q.id === "q34" ||
+                      q.id === "q35" ||
+                      q.id === "q36" ||
+                      q.id === "q37")))); // Q33-37 are embedded in context for RT1-P3
+
+            return !isEmbedded; // Return true if NOT embedded (meaning it should be rendered separately)
+          })
+          .sort((a, b) => {
+            // Sort questions to be rendered separately by questionNumber
+            const numA = Array.isArray(a.questionNumbers)
+              ? Math.min(...a.questionNumbers)
+              : a.questionNumber;
+            const numB = Array.isArray(b.questionNumbers)
+              ? Math.min(...b.questionNumbers)
+              : b.questionNumber;
+            return numA - numB;
+          });
+
+        if (questionsToRenderSeparately.length > 0) {
+          sectionHtml += `<div class="questions-container space-y-6">`;
+          questionsToRenderSeparately.forEach((question) => {
+            sectionHtml += `<div class="question-block">`;
+            switch (question.type) {
+              case "note_completion":
+                sectionHtml += renderNoteCompletion(question);
+                break;
+              case "multiple_choice_single":
+                sectionHtml += renderMultipleChoiceSingle(question);
+                break;
+              case "multiple_choice_multiple":
+                sectionHtml += renderMultipleChoiceMultiple(question);
+                break;
+              case "matching_information":
+                sectionHtml += renderMatchingInformation(question);
+                break;
+              default:
+                sectionHtml += `<p class="text-red-500">Unsupported question type: ${question.type}</p>`;
+            }
+            sectionHtml += `</div>`; // Close question-block
+          });
+          sectionHtml += `</div>`; // Close questions-container
+        }
+
+        contentDiv.innerHTML = sectionHtml;
+        updateSectionNavigation();
+        updateNavigationButtons();
+
+        // After rendering, populate the embedded inputs with existing answers for sections that use them
+        // This block should run regardless of whether questionsToRenderSeparately was true,
+        // as it specifically targets inputs within the `context` HTML.
+        if (section.context) {
+          section.questions.forEach((question) => {
+            // This is the same logic as `isEmbedded` above, but used for populating inputs
+            const isQuestionEmbedded =
+              (currentTest.id === "listening-test-5" &&
+                ((section.id === "part1" &&
+                  (question.id === "q1" ||
+                    question.id === "q2" ||
+                    question.id === "q3" ||
+                    question.id === "q4" ||
+                    question.id === "q5" ||
+                    question.id === "q6" ||
+                    question.id === "q7" ||
+                    question.id === "q8")) ||
+                  (section.id === "part2" &&
+                    (question.id === "q11" ||
+                      question.id === "q12" ||
+                      question.id === "q13" ||
+                      question.id === "q14" ||
+                      question.id === "q15")) ||
+                  section.id === "part3" ||
+                  (section.id === "part4" &&
+                    (question.id === "q36" ||
+                      question.id === "q37" ||
+                      question.id === "q38" ||
+                      question.id === "q39" ||
+                      question.id === "q40")))) ||
+              (currentTest.id === "listening-test-4" &&
+                (section.id === "part1" || section.id === "part4")) ||
+              (currentTest.id === "reading-test-1" &&
+                ((section.id === "part1" &&
+                  (question.id === "q7" ||
+                    question.id === "q8" ||
+                    question.id === "q9" ||
+                    question.id === "q10" ||
+                    question.id === "q11" ||
+                    question.id === "q12" ||
+                    question.id === "q13")) ||
+                  (section.id === "part2" &&
+                    (question.id === "q14" ||
+                      question.id === "q15" ||
+                      question.id === "q16" ||
+                      question.id === "q17" ||
+                      question.id === "q18" ||
+                      question.id === "q19")) ||
+                  (section.id === "part3" &&
+                    (question.id === "q33" ||
+                      question.id === "q34" ||
+                      question.id === "q35" ||
+                      question.id === "q36" ||
+                      question.id === "q37"))));
+
+            if (isQuestionEmbedded) {
+              // For note_completion, directly populate the input
+              if (question.type === "note_completion") {
+                const inputElement = document.getElementById(
+                  `answer-${question.id}`
+                );
+                if (inputElement) {
+                  inputElement.value = userAnswers[question.id] || "";
+                }
+              }
+              // For multiple_choice_single/multiple within context, handle radio/checkboxes
+              else if (
+                question.type === "multiple_choice_single" ||
+                question.type === "multiple_choice_multiple"
+              ) {
+                const inputs = document.querySelectorAll(
+                  `input[name="${question.id}"]`
+                );
+                inputs.forEach((input) => {
+                  if (question.type === "multiple_choice_single") {
+                    input.checked = userAnswers[question.id] === input.value;
+                  } else if (question.type === "multiple_choice_multiple") {
+                    input.checked = (userAnswers[question.id] || []).includes(
+                      input.value
+                    );
+                  }
+                });
+              }
+              // For matching_information within context (if any, though typically rendered separately)
+              else if (
+                question.type === "matching_information" &&
+                question.itemsToMatch
+              ) {
+                question.itemsToMatch.forEach((item) => {
+                  const selectElement = document.getElementById(
+                    `match-${question.id}-${item.number}`
+                  );
+                  if (selectElement) {
+                    selectElement.value =
+                      userAnswers[question.id]?.[item.number] || "";
+                  }
+                });
+              }
+            }
+          });
+        }
+      }
+
+      /**
+       * Updates the state of the Previous/Next section buttons.
+       */
+      function updateNavigationButtons() {
+        const prevBtn = document.getElementById("prev-section-btn");
+        const nextBtn = document.getElementById("next-section-btn");
+
+        prevBtn.disabled = currentSectionIndex === 0;
+        nextBtn.disabled =
+          currentSectionIndex === currentTest.sections.length - 1;
+      }
+
+      /**
+       * Handles navigation to the next section.
+       */
+      function goToNextSection() {
+        if (currentSectionIndex < currentTest.sections.length - 1) {
+          currentSectionIndex++;
+          renderCurrentSection();
+        }
+      }
+
+      /**
+       * Handles navigation to the previous section.
+       */
+      function goToPreviousSection() {
+        if (currentSectionIndex > 0) {
+          currentSectionIndex--;
+          renderCurrentSection();
+        }
+      }
+
+      /**
+       * Handles direct navigation to a specific section.
+       * @param {number} index - The index of the section to navigate to.
+       */
+      function goToSection(index) {
+        if (index >= 0 && index < currentTest.sections.length) {
+          currentSectionIndex = index;
+          renderCurrentSection();
+        }
+      }
+
+      /**
+       * Renders the section navigation in the sidebar.
+       */
+      function updateSectionNavigation() {
+        const navContainer = document.getElementById("section-navigation");
+        if (!navContainer || !currentTest || !currentTest.sections) return;
+
+        navContainer.innerHTML = currentTest.sections
+          .map(
+            (section, index) => `
+                <button
+                    class="w-full text-left p-3 rounded-lg transition-colors duration-200
+                    ${
+                      index === currentSectionIndex
+                        ? "bg-blue-600 text-white shadow-md"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }"
+                    onclick="goToSection(${index})"
+                >
+                    ${section.title}
+                </button>
+            `
+          )
+          .join("");
+      }
+
+      /**
+       * Starts the test timer.
+       */
+      function startTimer() {
+        const timerDisplay = document.getElementById("timer-display");
+        if (!timerDisplay) return;
+
+        clearInterval(timerInterval); // Clear any existing timer
+
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            timeLeft = 0;
+            timerDisplay.textContent = formatTime(timeLeft);
+            showToast("Time's up! The test has ended.", "info");
+            handleSubmitTest(); // Automatically submit when time runs out
+          } else {
+            timerDisplay.textContent = formatTime(timeLeft);
+          }
+        }, 1000);
+      }
+
+      /**
+       * Stops the test timer.
+       */
+      function stopTimer() {
+        clearInterval(timerInterval);
+      }
+
+      /**
+       * Hides the modal by removing it from the DOM.
+       */
+      function hideCurrentModal() {
+        const modalOverlay = document.querySelector(".modal-overlay");
+        if (modalOverlay) {
+          modalOverlay.remove();
+        }
+      }
+
+      /**
+       * Displays a generic modal with customizable content and actions.
+       * @param {object} options - Configuration for the modal.
+       * @param {string} options.title - The title of the modal.
+       * @param {string} options.message - The main message content.
+       * @param {string} [options.confirmText='OK'] - Text for the confirm button.
+       * @param {string} [options.cancelText='Cancel'] - Text for the cancel button.
+       * @param {function} [options.onConfirm=() => {}] - Callback function when confirm is clicked.
+       * @param {function} [options.onCancel=() => {}] - Callback function when cancel is clicked or modal is closed.
+       */
+      function showModal({
+        title,
+        message,
+        confirmText = "OK",
+        cancelText = "Cancel",
+        onConfirm = () => {},
+        onCancel = () => {},
+      }) {
+        hideCurrentModal(); // Ensure only one modal is active at a time
+
+        const modalContainer = document.getElementById("modal-container");
+        if (!modalContainer) {
+          console.error("Modal container not found!");
+          return;
+        }
+
+        const modalOverlay = document.createElement("div");
+        modalOverlay.className = "modal-overlay";
+        modalOverlay.innerHTML = `
+                <div class="modal-content">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">${title}</h3>
+                    <p class="text-gray-700 mb-6">${message}</p>
+                    <div class="flex justify-center gap-4">
+                        <button id="modal-cancel-btn" class="px-6 py-2 bg-gray-300 text-gray-800 rounded-full font-semibold hover:bg-gray-400 transition-colors">
+                            ${cancelText}
+                        </button>
+                        <button id="modal-confirm-btn" class="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors">
+                            ${confirmText}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+        modalContainer.appendChild(modalOverlay);
+
+        document.getElementById("modal-confirm-btn").onclick = () => {
+          onConfirm();
+          hideCurrentModal();
+        };
+
+        document.getElementById("modal-cancel-btn").onclick = () => {
+          onCancel();
+          hideCurrentModal();
+        };
+
+        // Close modal if clicking outside content
+        modalOverlay.addEventListener("click", (event) => {
+          if (event.target === modalOverlay) {
+            onCancel(); // Treat clicking outside as a cancel
+            hideCurrentModal();
+          }
+        });
+      }
+
+      /**
+       * Displays a confirmation modal before submitting the test.
+       */
+      function confirmSubmitTest() {
+        showModal({
+          title: "Confirm Submission",
+          message: "Are you sure you want to submit the test?",
+          confirmText: "Submit",
+          cancelText: "Cancel",
+          onConfirm: handleSubmitTest,
+        });
+      }
+
+      /**
+       * Handles test submission.
+       * For now, it just logs answers and shows a success message.
+       * Future: Send answers to backend, calculate score, update user stats.
+       */
+      async function handleSubmitTest() {
+        stopTimer();
+        hideCurrentModal(); // Use the local hide function
+
+        // Placeholder for scoring logic
+        console.log("Test Submitted!");
+        console.log("User Answers:", userAnswers);
+        console.log("Time Left:", formatTime(timeLeft));
+
+        // Example: Award points for completing the test (dummy logic)
+        if (authAppState.userId) {
+          const pointsAwarded = 100; // Example points
+          const newTotalPoints = userGameStats.totalPoints + pointsAwarded;
+          const newLevel = userGameStats.level; // Logic to calculate new level based on thresholds would go here
+          const updatedCompletedTests = [
+            ...userGameStats.completedTests,
+            currentTest.id,
+          ];
+
+          await updateUserGameStats(authAppState.userId, {
+            totalPoints: newTotalPoints,
+            level: newLevel, // Update if level changes
+            completedTests: updatedCompletedTests,
+          });
+          showToast(
+            `Test submitted! You earned ${pointsAwarded} points.`,
+            "success"
+          );
+        } else {
+          showToast(
+            "Test submitted! Sign in to save your progress.",
+            "success"
+          );
+        }
+
+        // Redirect or show results page
+        setTimeout(() => {
+          window.location.href = `mock-test-results.html?testId=${currentTest.id}`; // Example redirect
+        }, 2000);
+      }
+
+      /**
+       * Displays a confirmation modal before exiting the test.
+       */
+      function confirmExitTest() {
+        showModal({
+          title: "Exit Test",
+          message:
+            "Are you sure you want to exit? Your progress will not be saved.",
+          confirmText: "Exit",
+          cancelText: "Stay",
+          onConfirm: () => {
+            stopTimer();
+            hideCurrentModal(); // Use the local hide function
+            window.location.href = "mock-test-home.html"; // Redirect to home
+          },
+        });
+      }
+
+      // Initialization Logic
       window.onload = async function () {
+        const loadingSpinner = document.getElementById("loading-spinner");
+        const testLayout = document.getElementById("test-layout");
+        loadingSpinner.classList.remove("hidden");
+        testLayout.classList.add("hidden");
+
+        // Initialize Firebase Auth and listen for state changes
         initFirebaseAuth(updateAuthUI)
-          .then(({ db: firestoreDb, auth: firebaseAuth }) => {
-            db = firestoreDb; // Assign to global db
-            auth = firebaseAuth; // Assign to global auth
+          .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
+            db = firestoreDb;
+            auth = firebaseAuth;
             console.log("Firebase initialized in mock-test.html:", {
               db,
               auth,
+            });
+
+            // Fetch user game stats after Firebase is initialized and user is authenticated
+            auth.onAuthStateChanged(async (user) => {
+              if (user) {
+                await fetchUserGameStats(user.uid);
+              }
+
+              // Parse URL parameters
+              const urlParams = new URLSearchParams(window.location.search);
+              const testId = urlParams.get("test");
+              const moduleId = urlParams.get("module");
+
+              if (!testId || !moduleId) {
+                document.getElementById("app").innerHTML = `
+                                <div class="text-center text-red-500 text-xl mt-12 w-full">
+                                    Error: Test ID or Module ID not specified in the URL.
+                                    <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
+                                </div>
+                            `;
+                loadingSpinner.classList.add("hidden");
+                return;
+              }
+
+              currentTest = allMockTests.find((test) => test.id === testId);
+              currentModule = MockTestModules.find(
+                (mod) => mod.id === moduleId
+              );
+
+              if (!currentTest || !currentModule) {
+                document.getElementById("app").innerHTML = `
+                                <div class="text-center text-red-500 text-xl mt-12 w-full">
+                                    Error: Mock test or module not found.
+                                    <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
+                                </div>
+                            `;
+                loadingSpinner.classList.add("hidden");
+                return;
+              }
+
+              // Initialize userAnswers object based on the test structure
+              currentTest.sections.forEach((section) => {
+                section.questions.forEach((question) => {
+                  if (question.type === "multiple_choice_multiple") {
+                    userAnswers[question.id] = []; // Initialize as empty array for multiple selections
+                  } else if (question.type === "matching_information") {
+                    userAnswers[question.id] = {}; // Initialize as empty object for matching pairs
+                  } else {
+                    userAnswers[question.id] = ""; // Initialize as empty string for single answers
+                  }
+                });
+              });
+
+              // Set up test details
+              document.getElementById("test-title").textContent =
+                currentTest.title;
+              document.getElementById("test-description").textContent =
+                currentTest.description;
+
+              // Set up audio player if it's a listening test
+              const audioPlayerSection = document.getElementById(
+                "audio-player-section"
+              );
+              const testAudioPlayer = document.getElementById(
+                "test-audio-player"
+              );
+              if (currentModule.id === "listening" && currentTest.audioUrl) {
+                testAudioPlayer.src = currentTest.audioUrl;
+                audioPlayerSection.classList.remove("hidden");
+              } else {
+                audioPlayerSection.classList.add("hidden");
+              }
+
+              // Set initial time and start timer
+              timeLeft = currentTest.duration * 60; // Convert minutes to seconds
+              document.getElementById("timer-display").textContent = formatTime(
+                timeLeft
+              );
+              startTimer();
+
+              // Render the first section
+              renderCurrentSection();
+
+              // Add event listeners for navigation
+              document
+                .getElementById("prev-section-btn")
+                .addEventListener("click", goToPreviousSection);
+              document
+                .getElementById("next-section-btn")
+                .addEventListener("click", goToNextSection);
+
+              // Attach listeners to both desktop and mobile submit/exit buttons
+              document
+                .getElementById("submit-test-btn-desktop")
+                .addEventListener("click", confirmSubmitTest);
+              document
+                .getElementById("exit-test-btn-desktop")
+                .addEventListener("click", confirmExitTest);
+
+              document
+                .getElementById("submit-test-btn-mobile")
+                .addEventListener("click", confirmSubmitTest);
+              document
+                .getElementById("exit-test-btn-mobile")
+                .addEventListener("click", confirmExitTest);
+
+              loadingSpinner.classList.add("hidden");
+              testLayout.classList.remove("hidden");
             });
           })
           .catch((error) => {
@@ -293,9 +2422,14 @@
               "Failed to initialize Firebase. Some features may not work.",
               "error"
             );
+            loadingSpinner.classList.add("hidden");
+            document.getElementById("app").innerHTML = `
+                        <div class="text-center text-red-500 text-xl mt-12 w-full">
+                            Failed to load the test due to an initialization error.
+                            <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
+                        </div>
+                    `;
           });
-
-        renderApp();
       };
     </script>
   </body>

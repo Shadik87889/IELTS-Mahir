@@ -1,1485 +1,1396 @@
 // mock-test-data.js
 
-/**
- * @file This file contains all the mock test data for IELTS Listening, Reading, Writing, and Speaking modules,
- * along with utility functions for time formatting and word counting.
- * It also includes common CSS styles and SVG icons.
- */
+export const MockTestModules = [
+  {
+    id: "listening",
+    name: "Listening",
+    description: "Practice your listening comprehension skills.",
+    icon: '<i class="ph-bold ph-headphones"></i>',
+    image: "https://placehold.co/400x200/60a5fa/ffffff?text=Listening",
+    color: "bg-blue-500",
+  },
+  {
+    id: "reading",
+    name: "Reading",
+    description: "Improve your reading speed and comprehension.",
+    icon: '<i class="ph-bold ph-book-open"></i>',
+    image: "https://placehold.co/400x200/34d399/ffffff?text=Reading",
+    color: "bg-green-500",
+  },
+  {
+    id: "writing",
+    name: "Writing",
+    description: "Develop your essay and report writing abilities.",
+    icon: '<i class="ph-bold ph-pencil"></i>',
+    image: "https://placehold.co/400x200/fcd34d/ffffff?text=Writing",
+    color: "bg-yellow-500",
+  },
+  {
+    id: "speaking",
+    name: "Speaking",
+    description: "Enhance your fluency and pronunciation.",
+    icon: '<i class="ph-bold ph-microphone-stage"></i>',
+    image: "https://placehold.co/400x200/fb7185/ffffff?text=Speaking",
+    color: "bg-red-500",
+  },
+];
 
-// --- 1. Mock Test Definitions ---
-/**
- * Defines all available mock tests. Each test has an ID, title, module, and specific audio files if it's a Listening test.
- * @type {Array<Object>}
- */
 export const allMockTests = [
   {
-    id: "L_M_1",
-    title: "Listening Mock Test 1: Daily Life and Academic Lectures",
-    module: "listening",
-    audioFiles: [
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Part 1
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", // Part 2
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", // Part 3
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", // Part 4
+    id: "listening-test-5",
+    moduleId: "listening",
+    title: "Listening Test 5",
+    description: "Another full IELTS Listening practice test.",
+    duration: 40, // 30 mins listening + 10 mins transfer time
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", // Placeholder audio
+    sections: [
+      {
+        id: "part1",
+        title: "PART 1",
+        instructions: "Questions 1-10",
+        subInstructions:
+          "Complete the form below. Write NO MORE THAN THREE WORDS AND/OR A NUMBER for each answer.",
+        questions: [
+          // Questions 1-8 are handled in the context HTML for this part
+          {
+            id: "q9",
+            type: "multiple_choice_single",
+            questionNumber: 9,
+            text: "What is the minimum recommended cover by delivered?",
+            options: [
+              { key: "A", text: "Premium" },
+              { key: "B", text: "Standard" },
+              { key: "C", text: "Economy" },
+            ],
+            answerKey: "B",
+          },
+          {
+            id: "q10",
+            type: "multiple_choice_single",
+            questionNumber: 10,
+            text: "Where does the customer want the goods the agency?",
+            options: [
+              { key: "A", text: "Port" },
+              { key: "B", text: "Home" },
+              { key: "C", text: "Business" },
+            ],
+            answerKey: "B",
+          },
+        ],
+        context: `
+          <div class="mb-0 p-6 bg-white border border-gray-200 rounded-xl shadow-lg font-inter text-gray-800">
+            <h3 class="font-bold text-xl mb-4 text-gray-900">DENHAM'S SHIPPING AGENCY</h3>
+            <p class="font-semibold text-lg mb-3 text-blue-700">Customer quotation form</p>
+            <ul class="list-none pl-0 space-y-2">
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-user"></i></span>
+                <span>Name: Tim 1. <input type="text" id="answer-q1" name="q1" onchange="handleAnswerChange(event, 'q1', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> </span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-map-pin"></i></span>
+                <span>Address to be collected from: 2. <input type="text" id="answer-q2" name="q2" onchange="handleAnswerChange(event, 'q2', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> University</span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-city"></i></span>
+                <span>Town: Brighton</span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-hash"></i></span>
+                <span>Postcode: 3. <input type="text" id="answer-q3" name="q3" onchange="handleAnswerChange(event, 'q3', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></span>
+              </li>
+            </ul>
+            <p class="font-semibold text-lg mt-6 mb-3 text-blue-700">Size of container:</p>
+            <!-- UPDATED STRUCTURE FOR SIZE OF CONTAINER -->
+            <div class="size-container-section mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-around gap-4 w-full">
+                    <div class="flex flex-col items-center flex-shrink-0">
+                        <img src="assets/pexels-nguyendesigner-239548.jpg" alt="Container Diagram" class="container-diagram rounded-md shadow-inner" onerror="this.onerror=null; this.src='https://placehold.co/100x75/E0E0E0/333333?text=Container';">
+                        <p class="text-sm text-gray-600 mt-2">Diagram</p>
+                    </div>
+                    <div class="size-details flex-grow">
+                        <div class="flex items-center gap-2">
+                            <label for="answer-length" class="text-gray-700 w-20 text-right">Length:</label>
+                            <span class="text-gray-800 font-semibold">2.5m</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="answer-q4" class="text-gray-700 w-20 text-right">4. Width:</label>
+                            <span><input type="text" id="answer-q4" name="q4" onchange="handleAnswerChange(event, 'q4', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="answer-q5" class="text-gray-700 w-20 text-right">5. Depth:</label>
+                            <span><input type="text" id="answer-q5" name="q5" onchange="handleAnswerChange(event, 'q5', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END UPDATED STRUCTURE -->
+
+            <p class="font-semibold text-lg mt-6 mb-3 text-blue-700">Contents:</p>
+            <ul class="list-none pl-0 space-y-2">
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-book"></i></span>
+                <span>Books</span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-shirt"></i></span>
+                <span>6. <input type="text" id="answer-q6" name="q6" onchange="handleAnswerChange(event, 'q6', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-teddy-bear"></i></span>
+                <span>7. <input type="text" id="answer-q7" name="q7" onchange="handleAnswerChange(event, 'q7', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></span>
+              </li>
+            </ul>
+            <p class="font-semibold text-lg mt-6 mb-3 text-blue-700">Total estimated value: £ 8. <input type="text" id="answer-q8" name="q8" onchange="handleAnswerChange(event, 'q8', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></p>
+            <p class="font-semibold text-lg mt-6 mb-3 text-blue-700">Questions 9-10</p>
+            <p class="text-md text-gray-500 mb-4">Choose the correct letter, A, B or C.</p>
+            <div class="space-y-4">
+              <div class="question-block">
+                <div class="flex items-baseline mb-3">
+                  <span class="question-number">9.</span>
+                  <p class="question-text flex-grow">What is the minimum recommended cover by delivered?</p>
+                </div>
+                <div class="ml-8">
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q9" value="A" onchange="handleAnswerChange(event, 'q9', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">A. Premium</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q9" value="B" onchange="handleAnswerChange(event, 'q9', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">B. Standard</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q9" value="C" onchange="handleAnswerChange(event, 'q9', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">C. Economy</span>
+                  </label>
+                </div>
+              </div>
+              <div class="question-block">
+                <div class="flex items-baseline mb-3">
+                  <span class="question-number">10.</span>
+                  <p class="question-text flex-grow">Where does the customer want the goods the agency?</p>
+                </div>
+                <div class="ml-8">
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q10" value="A" onchange="handleAnswerChange(event, 'q10', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">A. Port</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q10" value="B" onchange="handleAnswerChange(event, 'q10', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">B. Home</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q10" value="C" onchange="handleAnswerChange(event, 'q10', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">C. Business</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+      },
+      {
+        id: "part2",
+        title: "PART 2",
+        instructions: "Questions 11-20",
+        subInstructions:
+          "What does the tour guide tell her tour group about each of the following places on the day’s itinerary? Write the correct letter, A, B or C next to questions 16-20 below. N.B: You may choose any letter more than once.",
+        questions: [
+          // Questions 11-15 are handled in the context HTML for this part
+          {
+            id: "q16-20",
+            type: "matching_information",
+            questionNumbers: "16-20",
+            instructions:
+              "Which way of reducing staff turnover was used in each of the following hotels?",
+            options: [
+              { key: "A", text: "They'll definitely go there." },
+              { key: "B", text: "They might go there if time allows." },
+              { key: "C", text: "They certainly won't go there." },
+            ],
+            itemsToMatch: [
+              { number: 16, text: "The Aquarium", answerKey: "A" },
+              { number: 17, text: "Solheim Country Club", answerKey: "C" },
+              { number: 18, text: "Milltown Winery", answerKey: "B" },
+              { number: 19, text: "The Zoological Gardens", answerKey: "A" },
+              { number: 20, text: "The Stout Brewery", answerKey: "C" },
+            ],
+          },
+        ],
+        context: `
+          <div class="mb-4 p-6 bg-white border border-gray-200 rounded-xl shadow-lg font-inter text-gray-800">
+            <h3 class="font-bold text-xl mb-4 text-gray-900">Map of the Tour</h3>
+            <div class="flex justify-center mb-4">
+              <img src="https://placehold.co/400x250/E0E0E0/333333?text=Map" alt="Tour Map" class="rounded-lg shadow-md">
+            </div>
+            <p class="font-semibold text-lg mb-3 text-blue-700">Questions 11-15</p>
+            <p class="text-md text-gray-500 mb-4">Label the plan below. Write NO MORE THAN THREE WORDS for each answer.</p>
+            <ul class="list-none pl-0 space-y-2">
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-map-pin"></i></span>
+                <span>11. <input type="text" id="answer-q11" name="q11" onchange="handleAnswerChange(event, 'q11', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-map-pin"></i></span>
+                <span>12. <input type="text" id="answer-q12" name="q12" onchange="handleAnswerChange(event, 'q12', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-map-pin"></i></span>
+                <span>13. <input type="text" id="answer-q13" name="q13" onchange="handleAnswerChange(event, 'q13', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-map-pin"></i></span>
+                <span>14. <input type="text" id="answer-q14" name="q14" onchange="handleAnswerChange(event, 'q14', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-map-pin"></i></span>
+                <span>15. <input type="text" id="answer-q15" name="q15" onchange="handleAnswerChange(event, 'q15', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></span>
+              </li>
+            </ul>
+          </div>
+        `,
+      },
+      {
+        id: "part3",
+        title: "PART 3",
+        instructions: "Questions 21-30",
+        subInstructions:
+          "Complete the sentences below. Write NO MORE THAN TWO WORDS for each answer.",
+        questions: [
+          {
+            id: "q21",
+            type: "note_completion",
+            questionNumber: 21,
+            text:
+              "Gyroscopes are used in laser devices and are found in many consumer 21. ___________.",
+            blankCount: 1,
+            answerKey: "products",
+          },
+          {
+            id: "q22",
+            type: "note_completion",
+            questionNumber: 22,
+            text:
+              "The purpose of the project is to design a functional 22. ___________ and beneficial consumer product.",
+            blankCount: 1,
+            answerKey: "new",
+          },
+          {
+            id: "q23",
+            type: "note_completion",
+            questionNumber: 23,
+            text:
+              "The gyroscopic exercise ball can be set in motion by movements of the 23. ___________ and wrist together in synch.",
+            blankCount: 1,
+            answerKey: "hand",
+          },
+          {
+            id: "q24",
+            type: "note_completion",
+            questionNumber: 24,
+            text:
+              "The gyroscopic ball could help people in 24. ___________ who have lower-arm injuries.",
+            blankCount: 1,
+            answerKey: "rehabilitation",
+          },
+          {
+            id: "q25",
+            type: "note_completion",
+            questionNumber: 25,
+            text:
+              "The product could also be aimed at 25. ___________ for whom lower-arm strength is very important.",
+            blankCount: 1,
+            answerKey: "athletes",
+          },
+          {
+            id: "q26",
+            type: "note_completion",
+            questionNumber: 26,
+            text: "Estimated Cost: £ 26. ___________",
+            blankCount: 1,
+            answerKey: "3000",
+          },
+          {
+            id: "q27",
+            type: "note_completion",
+            questionNumber: 27,
+            text: "Number of Weeks: 27. ___________",
+            blankCount: 1,
+            answerKey: "4",
+          },
+          {
+            id: "q28",
+            type: "note_completion",
+            questionNumber: 28,
+            text: "Number of test subjects: 28. ___________",
+            blankCount: 1,
+            answerKey: "5",
+          },
+          {
+            id: "q29",
+            type: "note_completion",
+            questionNumber: 29,
+            text:
+              "Breakdown of test subjects: 5 professional athletes, 29. ___________",
+            blankCount: 1,
+            answerKey: "20",
+          },
+          {
+            id: "q30",
+            type: "note_completion",
+            questionNumber: 30,
+            text: "30. ___________",
+            blankCount: 1,
+            answerKey: "25",
+          },
+        ],
+        context: `
+          <div class="mb-4 p-6 bg-white border border-gray-200 rounded-xl shadow-lg font-inter text-gray-800">
+            <h3 class="font-bold text-xl mb-4 text-gray-900">Questions 21-25</h3>
+            <p class="text-md text-gray-500 mb-4">Complete the sentences below. Write NO MORE THAN TWO WORDS for each answer.</p>
+            <ul class="list-none pl-0 space-y-2">
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-dot-outline"></i></span>
+                <span>Gyroscopes are used in laser devices and are found in many consumer 21. <input type="text" id="answer-q21" name="q21" onchange="handleAnswerChange(event, 'q21', 'note_completion')" class="note-completion-inline-input" placeholder="Type here">.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-dot-outline"></i></span>
+                <span>The purpose of the project is to design a functional 22. <input type="text" id="answer-q22" name="q22" onchange="handleAnswerChange(event, 'q22', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> and beneficial consumer product.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-dot-outline"></i></span>
+                <span>The gyroscopic exercise ball can be set in motion by movements of the 23. <input type="text" id="answer-q23" name="q23" onchange="handleAnswerChange(event, 'q23', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> and wrist together in synch.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-dot-outline"></i></span>
+                <span>The gyroscopic ball could help people in 24. <input type="text" id="answer-q24" name="q24" onchange="handleAnswerChange(event, 'q24', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> who have lower-arm injuries.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-dot-outline"></i></span>
+                <span>The product could also be aimed at 25. <input type="text" id="answer-q25" name="q25" onchange="handleAnswerChange(event, 'q25', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> for whom lower-arm strength is very important.</span>
+              </li>
+            </ul>
+            <h3 class="font-bold text-xl mt-6 mb-4 text-gray-900">Questions 26-30</h3>
+            <p class="text-md text-gray-500 mb-4">Complete the table below. Write NO MORE THAN THREE WORDS AND/OR A NUMBER for each answer.</p>
+            <div class="overflow-x-auto">
+              <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                <thead>
+                  <tr class="bg-gray-100 border-b">
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Prototype Design</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Testing</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b">
+                    <td class="py-3 px-4">Estimated Cost</td>
+                    <td class="py-3 px-4">£ 26. <input type="text" id="answer-q26" name="q26" onchange="handleAnswerChange(event, 'q26', 'note_completion')" class="note-completion-inline-input w-24" placeholder="Type here"></td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 px-4">Number of Weeks</td>
+                    <td class="py-3 px-4">27. <input type="text" id="answer-q27" name="q27" onchange="handleAnswerChange(event, 'q27', 'note_completion')" class="note-completion-inline-input w-24" placeholder="Type here"></td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 px-4">Number of test subjects</td>
+                    <td class="py-3 px-4">28. <input type="text" id="answer-q28" name="q28" onchange="handleAnswerChange(event, 'q28', 'note_completion')" class="note-completion-inline-input w-24" placeholder="Type here"></td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 px-4">Breakdown of test subjects</td>
+                    <td class="py-3 px-4">5 professional athletes</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 px-4"></td>
+                    <td class="py-3 px-4">29. <input type="text" id="answer-q29" name="q29" onchange="handleAnswerChange(event, 'q29', 'note_completion')" class="note-completion-inline-input w-24" placeholder="Type here"></td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 px-4"></td>
+                    <td class="py-3 px-4">30. <input type="text" id="answer-q30" name="q30" onchange="handleAnswerChange(event, 'q30', 'note_completion')" class="note-completion-inline-input w-24" placeholder="Type here"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `,
+      },
+      {
+        id: "part4",
+        title: "PART 4",
+        instructions: "Questions 31-40",
+        subInstructions: "Choose the correct letter, A, B or C.",
+        questions: [
+          {
+            id: "q31",
+            type: "multiple_choice_single",
+            questionNumber: 31,
+            text: "Speakers have to know",
+            options: [
+              { key: "A", text: "Their material." },
+              { key: "B", text: "Their audience." },
+              { key: "C", text: "Their limitations." },
+            ],
+            answerKey: "A",
+          },
+          {
+            id: "q32",
+            type: "multiple_choice_single",
+            questionNumber: 32,
+            text: "Experienced speakers",
+            options: [
+              { key: "A", text: "always try to wing it." },
+              { key: "B", text: "Never arrive unprepared." },
+              { key: "C", text: "Give the best presentations." },
+            ],
+            answerKey: "B",
+          },
+          {
+            id: "q33",
+            type: "multiple_choice_single",
+            questionNumber: 33,
+            text: "You should always rehearse",
+            options: [
+              { key: "A", text: "With friends who can advise you." },
+              { key: "B", text: "With all the equipment you plan on using." },
+              { key: "C", text: "More than once." },
+            ],
+            answerKey: "C",
+          },
+          {
+            id: "q34",
+            type: "multiple_choice_single",
+            questionNumber: 34,
+            text: "It is a good idea to",
+            options: [
+              { key: "A", text: "Be discreet with your audience." },
+              { key: "B", text: "Meet your fans." },
+              { key: "C", text: "Meet and welcome your audience." },
+            ],
+            answerKey: "C",
+          },
+          {
+            id: "q35",
+            type: "multiple_choice_single",
+            questionNumber: 35,
+            text: "Taking a few deep breaths before you begin",
+            options: [
+              { key: "A", text: "Will stop you having a panic attack." },
+              { key: "B", text: "Will guarantee that you feel more relaxed." },
+              {
+                key: "C",
+                text: "Will help turn your tension into enthusiasm.",
+              },
+            ],
+            answerKey: "C",
+          },
+          {
+            id: "q36",
+            type: "note_completion",
+            questionNumber: 36,
+            text:
+              "Try to 36. ___________ yourself making a speech and imagine your voice loud and confident.",
+            blankCount: 1,
+            answerKey: "visualize",
+          },
+          {
+            id: "q37",
+            type: "note_completion",
+            questionNumber: 37,
+            text: "Even if you make mistakes avoid making 37. ___________",
+            blankCount: 1,
+            answerKey: "excuses",
+          },
+          {
+            id: "q38",
+            type: "note_completion",
+            questionNumber: 38,
+            text:
+              "Pay attention to your 38. ___________ - your words carry less meaning than your delivery.",
+            blankCount: 1,
+            answerKey: "body language",
+          },
+          {
+            id: "q39",
+            type: "note_completion",
+            questionNumber: 39,
+            text:
+              "People usually remember less than 39. ___________ of what they hear.",
+            blankCount: 1,
+            answerKey: "half",
+          },
+          {
+            id: "q40",
+            type: "note_completion",
+            questionNumber: 40,
+            text:
+              "Be 40. ___________ about yourself; you don't become a perfect speaker overnight.",
+            blankCount: 1,
+            answerKey: "patient",
+          },
+        ],
+        context: `
+          <div class="mb-4 p-6 bg-white border border-gray-200 rounded-xl shadow-lg font-inter text-gray-800">
+            <h3 class="font-bold text-xl mb-4 text-gray-900">Useful Tips for a Successful Presentation</h3>
+            <p class="font-semibold text-lg mb-3 text-blue-700">Questions 31-35</p>
+            <p class="text-md text-gray-500 mb-4">Choose the correct letter, A, B or C.</p>
+            <div class="space-y-4">
+              <div class="question-block">
+                <div class="flex items-baseline mb-3">
+                  <span class="question-number">31.</span>
+                  <p class="question-text flex-grow">Speakers have to know</p>
+                </div>
+                <div class="ml-8">
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q31" value="A" onchange="handleAnswerChange(event, 'q31', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">A. Their material.</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q31" value="B" onchange="handleAnswerChange(event, 'q31', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">B. Their audience.</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q31" value="C" onchange="handleAnswerChange(event, 'q31', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">C. Their limitations.</span>
+                  </label>
+                </div>
+              </div>
+              <div class="question-block">
+                <div class="flex items-baseline mb-3">
+                  <span class="question-number">32.</span>
+                  <p class="question-text flex-grow">Experienced speakers</p>
+                </div>
+                <div class="ml-8">
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q32" value="A" onchange="handleAnswerChange(event, 'q32', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">A. always try to wing it.</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q32" value="B" onchange="handleAnswerChange(event, 'q32', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">B. Never arrive unprepared.</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q32" value="C" onchange="handleAnswerChange(event, 'q32', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">C. Give the best presentations.</span>
+                  </label>
+                </div>
+              </div>
+              <div class="question-block">
+                <div class="flex items-baseline mb-3">
+                  <span class="question-number">33.</span>
+                  <p class="question-text flex-grow">You should always rehearse</p>
+                </div>
+                <div class="ml-8">
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q33" value="A" onchange="handleAnswerChange(event, 'q33', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">A. With friends who can advise you.</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q33" value="B" onchange="handleAnswerChange(event, 'q33', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">B. With all the equipment you plan on using.</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q33" value="C" onchange="handleAnswerChange(event, 'q33', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">C. More than once.</span>
+                  </label>
+                </div>
+              </div>
+              <div class="question-block">
+                <div class="flex items-baseline mb-3">
+                  <span class="question-number">34.</span>
+                  <p class="question-text flex-grow">It is a good idea to</p>
+                </div>
+                <div class="ml-8">
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q34" value="A" onchange="handleAnswerChange(event, 'q34', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">A. Be discreet with your audience.</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q34" value="B" onchange="handleAnswerChange(event, 'q34', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">B. Meet your fans.</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q34" value="C" onchange="handleAnswerChange(event, 'q34', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">C. Meet and welcome your audience.</span>
+                  </label>
+                </div>
+              </div>
+              <div class="question-block">
+                <div class="flex items-baseline mb-3">
+                  <span class="question-number">35.</span>
+                  <p class="question-text flex-grow">Taking a few deep breaths before you begin</p>
+                </div>
+                <div class="ml-8">
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q35" value="A" onchange="handleAnswerChange(event, 'q35', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">A. Will stop you having a panic attack.</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q35" value="B" onchange="handleAnswerChange(event, 'q35', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">B. Will guarantee that you feel more relaxed.</span>
+                  </label>
+                  <label class="multiple-choice-option">
+                    <input type="radio" name="q35" value="C" onchange="handleAnswerChange(event, 'q35', 'multiple_choice_single')" class="form-radio h-5 w-5 text-blue-600" />
+                    <span class="ml-2">C. Will help turn your tension into enthusiasm.</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <p class="font-semibold text-lg mt-6 mb-3 text-blue-700">Questions 36-40</p>
+            <p class="text-md text-gray-500 mb-4">Complete the sentences below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.</p>
+            <ul class="list-none pl-0 space-y-2">
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-dot-outline"></i></span>
+                <span>Try to 36. <input type="text" id="answer-q36" name="q36" onchange="handleAnswerChange(event, 'q36', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> yourself making a speech and imagine your voice loud and confident.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-dot-outline"></i></span>
+                <span>Even if you make mistakes avoid making 37. <input type="text" id="answer-q37" name="q37" onchange="handleAnswerChange(event, 'q37', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"></span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-dot-outline"></i></span>
+                <span>Pay attention to your 38. <input type="text" id="answer-q38" name="q38" onchange="handleAnswerChange(event, 'q38', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> - your words carry less meaning than your delivery.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-dot-outline"></i></span>
+                <span>People usually remember less than 39. <input type="text" id="answer-q39" name="q39" onchange="handleAnswerChange(event, 'q39', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> of what they hear.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="mr-2 text-blue-500"><i class="ph-bold ph-dot-outline"></i></span>
+                <span>Be 40. <input type="text" id="answer-q40" name="q40" onchange="handleAnswerChange(event, 'q40', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> about yourself; you don't become a perfect speaker overnight.</span>
+              </li>
+            </ul>
+          </div>
+        `,
+      },
     ],
   },
   {
-    id: "L_M_2",
-    title: "Listening Mock Test 2: Social Conversations and University Talks",
-    module: "listening",
-    audioFiles: [
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3", // Part 1
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", // Part 2
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3", // Part 3
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3", // Part 4
+    id: "reading-test-1",
+    moduleId: "reading",
+    title: "Reading Test 1",
+    description: "A full IELTS Reading practice test.",
+    duration: 60, // Reading tests are typically 60 minutes
+    audioUrl: null, // No audio for reading tests
+    sections: [
+      {
+        id: "part1",
+        title: "PART 1",
+        instructions: "Questions 1-13",
+        subInstructions:
+          "You should spend about 20 minutes on Questions 1 -13, which are based on Reading Passage 1 below.",
+        questions: [
+          {
+            id: "q1",
+            type: "note_completion",
+            questionNumber: 1,
+            text: "Categorizations of fish by swimming speed (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "G", // Actual answer
+          },
+          {
+            id: "q2",
+            type: "note_completion",
+            questionNumber: 2,
+            text:
+              "An example of fish capable of maintaining fast swimming for a long time (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "G", // Actual answer
+          },
+          {
+            id: "q3",
+            type: "note_completion",
+            questionNumber: 3,
+            text: "How fish control stability (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "E", // Actual answer
+          },
+          {
+            id: "q4",
+            type: "note_completion",
+            questionNumber: 4,
+            text: "Frequency of the muscle movement of fish (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "C", // Actual answer
+          },
+          {
+            id: "q5",
+            type: "note_completion",
+            questionNumber: 5,
+            text: "A mechanical model of fish skeleton (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "B", // Actual answer
+          },
+          {
+            id: "q6",
+            type: "note_completion",
+            questionNumber: 6,
+            text: "Energy storage devices in a fish (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "D", // Actual answer
+          },
+          {
+            id: "q7",
+            type: "note_completion",
+            questionNumber: 7,
+            text:
+              "7. <input type='text' id='answer-q7' name='q7' onchange='handleAnswerChange(event, \"q7\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "tail fin",
+          },
+          {
+            id: "q8",
+            type: "note_completion",
+            questionNumber: 8,
+            text:
+              "8. <input type='text' id='answer-q8' name='q8' onchange='handleAnswerChange(event, \"q8\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "median fins",
+          },
+          {
+            id: "q9",
+            type: "note_completion",
+            questionNumber: 9,
+            text:
+              "9. <input type='text' id='answer-q9' name='q9' onchange='handleAnswerChange(event, \"q9\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "paired fins",
+          },
+          {
+            id: "q10",
+            type: "note_completion",
+            questionNumber: 10,
+            text:
+              "10. <input type='text' id='answer-q10' name='q10' onchange='handleAnswerChange(event, \"q10\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "pectoral fins",
+          },
+          {
+            id: "q11",
+            type: "note_completion",
+            questionNumber: 11,
+            text:
+              "The majority of a fish’s body comprises the 11. <input type='text' id='answer-q11' name='q11' onchange='handleAnswerChange(event, \"q11\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "white muscle",
+          },
+          {
+            id: "q12",
+            type: "note_completion",
+            questionNumber: 12,
+            text:
+              "For most of its routine movements, the fish uses a lot of its 12. <input type='text' id='answer-q12' name='q12' onchange='handleAnswerChange(event, \"q12\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'> saved in body",
+            blankCount: 1,
+            answerKey: "fat and glycogen",
+          },
+          {
+            id: "q13",
+            type: "note_completion",
+            questionNumber: 13,
+            text:
+              "white muscle is mostly used for short-term, fast swimming, such as escaping from 13. <input type='text' id='answer-q13' name='q13' onchange='handleAnswerChange(event, \"q13\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "a predator",
+          },
+        ],
+        context: `
+          <div class="mb-4 p-6 bg-white border border-gray-200 rounded-xl shadow-lg font-inter text-gray-800">
+            <h3 class="font-bold text-xl mb-4 text-gray-900">READING PASSAGE 1: Undersea Movement</h3>
+            <p class="text-md text-gray-500 mb-4">A. The underwater world holds many challenges. The most basic of these is movement. The density of water
+makes it difficult for animals to move. Forward movement is a complex interaction of underwater forces.
+Additionally, water itself has movement. Strong currents carry incredible power that can easily sweep creatures
+away. The challenges to aquatic movement result in a variety of swimming methods, used by a wide range of
+animals. The result is a dazzling underwater ballet.</p>
+            <p class="text-md text-gray-500 mb-4">B. Fish rely on their skeleton, fins, and muscles to move. The primary function of the skeleton is to aid movement
+of other parts. Their skull acts as a fulcrum and their vertebrae act as levers. The vertebral column consists of a
+series of vertebrae held together by ligaments, but not so tightly as to prevent slight sideways movement between
+each pair of vertebrae. The whole spine is, therefore, flexible. The skull is the only truly fixed part of a fish. It
+does not move in and off itself but acts as a point of stability for other bones. These other bones act as levers that
+cause movement of the fish’s body.</p>
+            <p class="text-md text-gray-500 mb-4">C. While the bones provide the movement, the muscles supply the power. A typical fish has hundreds of muscles
+running in all directions around its body. This is why a fish can turn and twist and change directions quickly. The
+muscles on each side of the spine contract in a series from head to tail and down each side alternately, causing a
+wave-like movement to pass down the body. Such a movement may be very pronounced in fish such as eels, but
+hardly perceptible in others, e.g. mackerel. The frequency of the waves varies from about 50/min in the dogfish
+to 170/min in the mackerel. The sideways and backward thrust of the head and body against the water results in
+the resistance of the water pushing the fish sideways and forwards in a direction opposed to the thrust. When the
+corresponding set of muscles on the other side contracts, the fish experiences a similar force from the water on
+that side. The two sideways forces are equal and opposite unless the fish is making a turn, so they cancel out,
+leaving the sum of the two forward forces</p>
+            <p class="text-md text-gray-500 mb-4">D. The muscles involved in swimming are of two main types. The bulk of a fish’s body is composed of the so-
+called white muscle, while the much smaller areas at the roots of the fins and in a strip along the centre of each
+
+flank comprise red muscle. The red muscle receives a good supply of blood and contains ampler quantities of fat
+and glycogen, the storage form of glucose, which is used for most day-to-day swimming movements. In contrast,
+the white muscle has a poor blood supply and few energy stores, and it is used largely for short-term, fast
+swimming. It might seem odd that the body of an animal which adapts adapted so efficiently to its environment
+should be composed almost entirely of a type of muscle it rarely uses. However, this huge auxiliary power pack
+carried by a fish is of crucial significance if the life of the fish is threatened-by a predator, for instance-because it
+enables the fish to swim rapidly away from danger.</p>
+            <p class="text-md text-gray-500 mb-4">E. The fins are the most distinctive features of a fish, composed of bony spines protruding from the body with
+skin covering them and joining them together, either in a webbed fashion, as seen in most bony fish, or more
+similar to a flipper, as seen in sharks. These usually serve as a means for the fish to swim. But it must be
+emphasized that the swimming movements are produced by the whole of the muscular body, and in only a few
+fish do the fins contribute any propulsive force! Their main function is to control the stability and direction of the
+fish: as water passes over its body, a fish uses its fins to thrust in the direction it wishes to go.</p>
+            <p class="text-md text-gray-500 mb-4">F. Fins located in different places on a fish serve different purposes, such as moving forward, turning, and keeping
+an upright position. The tail fin, in its final lash may contribute as much as 40 per cent of the forward thrust. The
+median fins, that is, the dorsal, anal and ventral fins, control the rolling and yawing movements of the fish by
+increasing the vertical surface area presented to the water. The paired fins, pectoral and pelvic act as hydroplanes
+and control the pitch of the ash, causing it to swim downwards or upwards according to the angle to the water at
+which they are held by their muscles. The pectoral fins lie in front of the centre of gravity and, being readily
+mobile, are chiefly responsible for sending the ash up or down. The paired ins are also the means by which the
+fish slows down and stops.</p>
+            <p class="text-md text-gray-500 mb-4">G. The swimming speed of fish is not so fast as one would expect from watching their rapid movements in aquaria
+or ponds. Tuna seems to be the fastest at 44 mph, trout are recorded as doing 23 mph, pike 20 mph for short bursts
+and roach about 10 mph, while the majority of small fish probably do not exceed 2 or 3 mph. Many people have
+attempted to make accurate measurements of the speed at which various fish swim, either by timing them over
+known distances in their natural environment or by determining their performance in man-made swimming
+channels. From these studies, we can broadly categorise fish into four groups: “sneakers”, such as eels that are
+only capable of slow speeds but possess some staying power; “stayers”, that can swim quite fast over long periods;
+“sprinters” that can generate fast bursts of speed (e.g. pike); and “crawlers” that are sluggish swimmers, although
+they can accelerate slightly (bream, for example).</p>
+            <p class="text-md text-gray-500 mb-4">H. One type of sailfish is considered to be the fastest species of fish over short distances, achieving 68 mph over
+a three-second period, and anglers have recorded speeds in excess of 40 mph over longer periods for several
+species of tuna. One is likely to consider a fish’s swimming capabilities in relation to its size. However, it is
+generally true that a small fish is a more able swimmer than a much larger one. On the other hand in terms of
+speed in miles per hour, a big fish will, all other things being equal, be able to swim faster than a smaller fish.</p>
+            <p class="font-semibold text-lg mb-3 text-blue-700">Questions 7-10</p>
+            <p class="text-md text-gray-500 mb-4">The diagram below gives information about fish fins and their purposes. Complete the diagram with NO MORE THAN THREE WORDS from the passage for each blank.</p>
+            <div class="flex justify-center items-center flex-col my-6">
+                <img src="https://placehold.co/400x300/E0E0E0/333333?text=Fish+Fin+Diagram" alt="Fish Fin Diagram" class="rounded-lg shadow-md mb-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-md">
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold">7. Tail Fin:</span> <input type="text" id="answer-q7" name="q7" onchange="handleAnswerChange(event, 'q7', 'note_completion')" class="note-completion-inline-input flex-grow" placeholder="Type here">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold">8. Median Fins:</span> <input type="text" id="answer-q8" name="q8" onchange="handleAnswerChange(event, 'q8', 'note_completion')" class="note-completion-inline-input flex-grow" placeholder="Type here">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold">9. Paired Fins:</span> <input type="text" id="answer-q9" name="q9" onchange="handleAnswerChange(event, 'q9', 'note_completion')" class="note-completion-inline-input flex-grow" placeholder="Type here">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold">10. Pectoral Fins:</span> <input type="text" id="answer-q10" name="q10" onchange="handleAnswerChange(event, 'q10', 'note_completion')" class="note-completion-inline-input flex-grow" placeholder="Type here">
+                    </div>
+                </div>
+            </div>
+            <p class="font-semibold text-lg mt-6 mb-3 text-blue-700">Questions 11-13</p>
+            <p class="text-md text-gray-500 mb-4">Complete the summary below using NO MORE THAN THREE WORDS from the passage for each blank.</p>
+            <p class="text-gray-800 leading-relaxed">
+                Two types of muscles are involved in fish swimming. The majority of a fish’s body comprises the 11. <input type="text" id="answer-q11" name="q11" onchange="handleAnswerChange(event, 'q11', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> and the red muscle is found only at the roots of the fins and in a strip along the centre of each flank. For most of its routine movements, the fish uses a lot of its 12. <input type="text" id="answer-q12" name="q12" onchange="handleAnswerChange(event, 'q12', 'note_completion')" class="note-completion-inline-input" placeholder="Type here"> saved in body, and white muscle is mostly used for short-term, fast swimming, such as escaping from 13. <input type="text" id="answer-q13" name="q13" onchange="handleAnswerChange(event, 'q13', 'note_completion')" class="note-completion-inline-input" placeholder="Type here">.
+            </p>
+          </div>
+        `,
+      },
+      {
+        id: "part2",
+        title: "PART 2",
+        instructions: "Questions 14-27",
+        subInstructions:
+          "You should spend about 20 minutes on Questions 14-26, which are based on Reading Passage 2 below.",
+        questions: [
+          {
+            id: "q14",
+            type: "note_completion",
+            questionNumber: 14,
+            text:
+              "Symptoms of a 14. <input type='text' id='answer-q14' name='q14' onchange='handleAnswerChange(event, \"q14\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'> and tiredness",
+            blankCount: 1,
+            answerKey: "bad cough",
+          },
+          {
+            id: "q15",
+            type: "note_completion",
+            questionNumber: 15,
+            text:
+              "Doctor’s measurement by taking 15. <input type='text' id='answer-q15' name='q15' onchange='handleAnswerChange(event, \"q15\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'> and temperature",
+            blankCount: 1,
+            answerKey: "blood pressure",
+          },
+          {
+            id: "q16",
+            type: "note_completion",
+            questionNumber: 16,
+            text:
+              "Common judgment from around you (e.g., 'you do look ill' or 'that’s a bad cough')",
+            blankCount: 0, // No blank for this one, just a placeholder for the row
+            answerKey: "",
+          },
+          {
+            id: "q17",
+            type: "note_completion",
+            questionNumber: 17,
+            text:
+              "Medical knowledge from the general 17. <input type='text' id='answer-q17' name='q17' onchange='handleAnswerChange(event, \"q17\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "practitioner",
+          },
+          {
+            id: "q18",
+            type: "note_completion",
+            questionNumber: 18,
+            text:
+              "e.g. doctor’s medical 18. <input type='text' id='answer-q18' name='q18' onchange='handleAnswerChange(event, \"q18\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "training and experience",
+          },
+          {
+            id: "q19",
+            type: "note_completion",
+            questionNumber: 19,
+            text:
+              "Examine the medical hypothesis with the previous drill and 19. <input type='text' id='answer-q19' name='q19' onchange='handleAnswerChange(event, \"q19\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>.",
+            blankCount: 1,
+            answerKey: "interpret it",
+          },
+          {
+            id: "q20",
+            type: "note_completion",
+            questionNumber: 20,
+            text:
+              "the contrast between the nature of personal judgment and the nature of doctor’s diagnosis (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "D",
+          },
+          {
+            id: "q21",
+            type: "note_completion",
+            questionNumber: 21,
+            text: "a reference of culture about pressure (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "F",
+          },
+          {
+            id: "q22",
+            type: "note_completion",
+            questionNumber: 22,
+            text:
+              "sick leave will not be permitted without the professional diagnosis (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "H",
+          },
+          {
+            id: "q23",
+            type: "note_completion",
+            questionNumber: 23,
+            text:
+              "how doctors’ opinions are regarded in society (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "H",
+          },
+          {
+            id: "q24",
+            type: "note_completion",
+            questionNumber: 24,
+            text:
+              "the illness of patients can become part of new knowledge (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "I",
+          },
+          {
+            id: "q25",
+            type: "note_completion",
+            questionNumber: 25,
+            text:
+              "a description of knowledge drawn from non-specialized sources other than personal knowledge (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "G",
+          },
+          {
+            id: "q26",
+            type: "note_completion",
+            questionNumber: 26,
+            text:
+              "an example of collective judgment from personal experience and professional doctor (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "D",
+          },
+          {
+            id: "q27",
+            type: "note_completion",
+            questionNumber: 27,
+            text:
+              "a reference that some people do not realize they are ill (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "B",
+          },
+        ],
+        context: `
+          <div class="mb-4 p-6 bg-white border border-gray-200 rounded-xl shadow-lg font-inter text-gray-800">
+            <h3 class="font-bold text-xl mb-4 text-gray-900">READING PASSAGE 2: Knowledge in medicine</h3>
+            <p class="text-md text-gray-500 mb-4">A. What counts as knowledge? What do we mean when we say that we know something? What is the status of
+different kinds of knowledge? In order to explore these questions, we are going to focus on one particular area of
+knowledge – medicine.</p>
+            <p class="text-md text-gray-500 mb-4">B. How do you know when you are ill? This may seem to be an absurd question. You know you are ill because
+you feel ill; your body tells you that you are ill. You may know that you feel pain or discomfort but knowing you
+are ill is a bit more complex. At times, people experience the symptoms of illness, but in fact, they are simply
+tired or over-worked or they may just have a hangover. At other times, people may be suffering from a disease
+and fail to be aware of the illness until it has reached a late stage in its development. So how do we know we are
+ill, and what counts as knowledge?</p>
+            <p class="text-md text-gray-500 mb-4">C. Think about this example. You feel unwell. You have a bad cough and always seem to be tired. Perhaps it
+could be stress at work, or maybe you should give up smoking. You feel worse. You visit the doctor who listens
+to your chest and heart, takes your temperature and blood pressure, and then finally prescribes antibiotics for your
+cough.</p>
+            <p class="text-md text-gray-500 mb-4">D. Things do not improve but you struggle on thinking you should pull yourself together, perhaps things will ease
+off at work soon. A return visit to your doctor shocks you. This time the doctor, drawing on years of training and
+experience, diagnoses pneumonia. This means that you will need bed rest and a considerable time off work. The
+scenario is transformed. Although you still have the same symptoms, you no longer think that these are caused
+by pressure at work. You know have proof that you are ill. This is the result of the combination of your own
+subjective experience and the diagnosis of someone who has the status of a medical expert. You have a medically
+authenticated diagnosis and it appears that you are seriously ill; you know you are ill and have the evidence upon
+which to base this knowledge.</p>
+            <p class="text-md text-gray-500 mb-4">E. This scenario shows many different sources of knowledge. For example, you decide to consult the doctor in
+the first place because you feel unwell – this is personal knowledge about your own body. However, the doctor’s
+expert diagnosis is based on experience and training, with sources of knowledge as diverse as other experts,
+laboratory reports, medical textbooks and years of experience.</p>
+            <p class="text-md text-gray-500 mb-4">F. One source of knowledge is the experience of our own bodies; the personal knowledge we have of changes
+that might be significant, as well as the subjective experiences are mediated by other forms of knowledge such as
+the words we have available to describe our experience, and the common sense of our families and friends as well
+as that drawn from popular culture. Over the past decade, for example, Western culture has seen a significant
+emphasis on stress-related illness in the media. Reference to being ‘stressed out’ has become a common response
+in daily exchanges in the workplace and has become part of popular common-sense knowledge. It is thus not
+surprising that we might seek such an explanation of physical symptoms of discomfort.</p>
+            <p class="text-md text-gray-500 mb-4">G. We might also rely on the observations of others who know us. Comments from friends and family such as
+‘you do look ill’ or ‘that’s a bad cough’ might be another source of knowledge. Complementary health practices,
+such as holistic medicine, produce their own sets of knowledge upon which we might also draw in deciding the
+nature and degree of our ill health and about possible treatments.</p>
+            <p class="text-md text-gray-500 mb-4">H. Perhaps the most influential and authoritative source of knowledge is the medical knowledge provided by the
+general practitioner. We expect the doctor to have access to expert knowledge. This is socially sanctioned. It
+would not be acceptable to notify our employer that we simply felt too unwell to turn up for work or that our faith
+healer, astrologer, therapist or even our priest thought it was not a good idea. We need an expert medical diagnosis
+in order to obtain the necessary certificate if we need to be off work for more than the statutory self-certification
+period. The knowledge of the medical sciences is privileged in this respect in contemporary Western culture.
+Medical practitioners are also seen as having the required expert knowledge that permits them legally to prescribe
+drugs and treatment to which patients would not otherwise have access. However, there is a range of different
+knowledge upon which we draw when making decisions about our own state of health.</p>
+            <p class="text-md text-gray-500 mb-4">I. However, there is more than existing knowledge in this little story; new knowledge is constructed within it.
+Given the doctor’s medical training and background, she may hypothesize ‘is this now pneumonia?’ and then
+proceed to look for evidence about it. She will use observations and instruments to assess the evidence and –
+critically – interpret it in light of her training and experience. This results in new knowledge and new experience
+both for you and for the doctor. This will then be added to the doctor’s medical knowledge and may help in the
+future diagnosis of pneumonia.</p>
+            <p class="font-semibold text-lg mb-3 text-blue-700">Questions 14-19</p>
+            <p class="text-md text-gray-500 mb-4">Complete the table. Choose NO MORE THAN THREE WORDS from the passage for each blank.</p>
+            <div class="overflow-x-auto">
+              <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                <thead>
+                  <tr class="bg-gray-100 border-b">
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Source of knowledge</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700">Examples</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b">
+                    <td class="py-3 px-4">Personal experience</td>
+                    <td class="py-3 px-4">Symptoms of a 14. <input type="text" id="answer-q14" name="q14" onchange="handleAnswerChange(event, 'q14', 'note_completion')" class="note-completion-inline-input w-24" placeholder="Type here"> and tiredness</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 px-4">Doctor’s measurement</td>
+                    <td class="py-3 px-4">by taking 15. <input type="text" id="answer-q15" name="q15" onchange="handleAnswerChange(event, 'q15', 'note_completion')" class="note-completion-inline-input w-24" placeholder="Type here"> and temperature</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 px-4">Common judgment from around you</td>
+                    <td class="py-3 px-4">e.g. 'you do look ill' or 'that’s a bad cough'</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 px-4">Scientific evidence</td>
+                    <td class="py-3 px-4">Medical knowledge from the general 17. <input type="text" id="answer-q17" name="q17" onchange="handleAnswerChange(event, 'q17', 'note_completion')" class="note-completion-inline-input w-24" placeholder="Type here"></td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 px-4"></td>
+                    <td class="py-3 px-4">e.g. doctor’s medical 18. <input type="text" id="answer-q18" name="q18" onchange="handleAnswerChange(event, 'q18', 'note_completion')" class="note-completion-inline-input w-24" placeholder="Type here"></td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 px-4"></td>
+                    <td class="py-3 px-4">Examine the medical hypothesis with the previous drill and 19. <input type="text" id="answer-q19" name="q19" onchange="handleAnswerChange(event, 'q19', 'note_completion')" class="note-completion-inline-input w-24" placeholder="Type here">.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `,
+      },
+      {
+        id: "part3",
+        title: "PART 3",
+        instructions: "Questions 28-40",
+        subInstructions:
+          "You should spend about 20 minutes on Questions 28 - 40, which are based on Reading Passage 3 below.",
+        questions: [
+          {
+            id: "q28",
+            type: "note_completion",
+            questionNumber: 28,
+            text:
+              "A comparison of the ways two materials are used to replace silk-producing glands (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "E",
+          },
+          {
+            id: "q29",
+            type: "note_completion",
+            questionNumber: 29,
+            text:
+              "Predictions regarding the availability of the synthetic silk (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "H",
+          },
+          {
+            id: "q30",
+            type: "note_completion",
+            questionNumber: 30,
+            text:
+              "Ongoing research into other synthetic materials (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "I",
+          },
+          {
+            id: "q31",
+            type: "note_completion",
+            questionNumber: 31,
+            text:
+              "The research into the part of the spider that manufactures silk (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "D",
+          },
+          {
+            id: "q32",
+            type: "note_completion",
+            questionNumber: 32,
+            text:
+              "The possible application of the silk in civil engineering (Paragraph: ____)",
+            blankCount: 1,
+            answerKey: "G",
+          },
+          {
+            id: "q33",
+            type: "note_completion",
+            questionNumber: 33,
+            text:
+              "Synthetic gene grown in 33. <input type='text' id='answer-q33' name='q33' onchange='handleAnswerChange(event, \"q33\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "yeast",
+          },
+          {
+            id: "q34",
+            type: "note_completion",
+            questionNumber: 34,
+            text:
+              "or 34. <input type='text' id='answer-q34' name='q34' onchange='handleAnswerChange(event, \"q34\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "bacteria",
+          },
+          {
+            id: "q35",
+            type: "note_completion",
+            questionNumber: 35,
+            text:
+              "globules of 35. <input type='text' id='answer-q35' name='q35' onchange='handleAnswerChange(event, \"q35\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "protein",
+          },
+          {
+            id: "q36",
+            type: "note_completion",
+            questionNumber: 36,
+            text:
+              "dissolved in 36. <input type='text' id='answer-q36' name='q36' onchange='handleAnswerChange(event, \"q36\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "chemical solvents",
+          },
+          {
+            id: "q37",
+            type: "note_completion",
+            questionNumber: 37,
+            text:
+              "passed through 37. <input type='text' id='answer-q37' name='q37' onchange='handleAnswerChange(event, \"q37\", \"note_completion\")' class='note-completion-inline-input' placeholder='Type here'>",
+            blankCount: 1,
+            answerKey: "small holes",
+          },
+          {
+            id: "q38",
+            type: "multiple_choice_single",
+            questionNumber: 38,
+            text:
+              "Biosilk has already replaced nylon in parachute manufacture.",
+            options: [
+              { key: "A", text: "TRUE" },
+              { key: "B", text: "FALSE" },
+              { key: "C", text: "NOT GIVEN" },
+            ],
+            answerKey: "B",
+          },
+          {
+            id: "q39",
+            type: "multiple_choice_single",
+            questionNumber: 39,
+            text: "The spider produces silk of varying strengths.",
+            options: [
+              { key: "A", text: "TRUE" },
+              { key: "B", text: "FALSE" },
+              { key: "C", text: "NOT GIVEN" },
+            ],
+            answerKey: "A",
+          },
+          {
+            id: "q40",
+            type: "multiple_choice_single",
+            questionNumber: 40,
+            text:
+              "Lewis and Dorsch co-operated in the synthetic production of silk.",
+            options: [
+              { key: "A", text: "TRUE" },
+              { key: "B", text: "FALSE" },
+              { key: "C", text: "NOT GIVEN" },
+            ],
+            answerKey: "C",
+          },
+        ],
+        context: `
+          <div class="mb-4 p-6 bg-white border border-gray-200 rounded-xl shadow-lg font-inter text-gray-800">
+            <h3 class="font-bold text-xl mb-4 text-gray-900">READING PASSAGE 3: Spider silk 2</h3>
+            <p class="text-md text-gray-500 mb-4">A. Scientists have succeeded in copying the silk-producing genes of the Golden Orb Weaver spider and are using
+them to create a synthetic material which they believe is the model for a new generation of advanced bio-materials.
+The new material, biosilk, which has been spun for the first time by researchers at DuPont, has an enormous range
+of potential uses in construction and manufacturing.</p>
+            <p class="text-md text-gray-500 mb-4">B. The attraction of the silk spun by the spider is a combination of great strength and enormous elasticity, which
+man-made fibres have been unable to replicate. On an equal-weight basis, spider silk is far stronger than steel and
+it is estimated that if a single strand could be made about 10m in diameter, it would be strong enough to stop a
+jumbo jet in flight. A third important factor is that it is extremely light. Army scientists are already looking at the
+possibilities of using it for lightweight, bulletproof vests and parachutes.</p>
+            <p class="text-md text-gray-500 mb-4">C. For some time, biochemists have been trying to synthesise the drag-line silk of the Golden Orb Weaver. The
+drag-line silk, which forms the radial arms of the web, is stronger than the other parts of the web and some
+biochemists believe a synthetic version could prove to be as important a material as nylon, which has been around
+for 50 years, since the discoveries of Wallace Carothers and his team ushered in the age of polymers.</p>
+            <p class="text-md text-gray-500 mb-4">D. To recreate the material, scientists, including Randolph Lewis at the University of Wyoming, first examined
+the silk-producing gland of the spider. ‘We took out the glands that produce the silk and looked at the coding for
+the protein material they make, which is spun into a web. We then went looking for clones with the right DNA,’
+he says.</p>
+            <p class="text-md text-gray-500 mb-4">E. At DuPont, researchers have used both yeast and bacteria as hosts to grow the raw material, which they have
+spun into fibres. Robert Dorsch, DuPont’s director of biochemical development, says the globules of protein,
+comparable with marbles in an egg, are harvested and processed. ‘We break open the bacteria, separate out the
+globules of protein and use them as the raw starting material. With yeast, the gene system can be designed so that
+the material excretes the protein outside the yeast for better access,’ he says.</p>
+            <p class="text-md text-gray-500 mb-4">F. ‘The bacteria and the yeast produce the same protein, equivalent to that which the spider uses in the draglines
+of the web. The spider mixes the protein into a water-based solution and then spins it into a solid fibre in one go.
+
+Since we are not as clever as the spider and we are not using such sophisticated organisms, we substituted man-
+made approaches and dissolved the protein in chemical solvents, which are then spun to push the material through
+
+small holes to form the solid fibre.’</p>
+            <p class="text-md text-gray-500 mb-4">G. Researchers at DuPont say they envisage many possible uses for a new biosilk material. They say that
+earthquake-resistant suspension bridges hung from cables of synthetic spider silk fibres may become a reality.
+Stronger ropes, safer seat belts, shoe soles that do not wear out so quickly and tough new clothing are among the
+other applications. Biochemists such as Lewis see the potential range of uses of biosilk as almost limitless. ‘It is
+very strong and retains elasticity: there are no man-made materials that can mimic both these properties. It is also
+a biological material with all the advantages that have over petrochemicals,’ he says.</p>
+            <p class="text-md text-gray-500 mb-4">H. At DuPont’s laboratories, Dorsch is excited by the prospect of new super-strong materials but he warns they
+are many years away. ‘We are at an early stage but theoretical predictions are that we will wind up with a very
+strong, tough material, with an ability to absorb shock, which is stronger and tougher than the man-made materials
+that are conventionally available to us,’ he says.</p>
+            <p class="text-md text-gray-500 mb-4">I. The spider is not the only creature that has aroused the interest of material scientists. They have also become
+envious of the natural adhesive secreted by the sea mussel. It produces a protein adhesive to attach itself to rocks.
+It is tedious and expensive to extract the protein from the mussel, so researchers have already produced a synthetic
+gene for use in surrogate bacteria.</p>
+            <p class="font-semibold text-lg mb-3 text-blue-700">Questions 33-37</p>
+            <p class="text-md text-gray-500 mb-4">Complete the flow-chart below. Choose NO MORE THAN TWO WORDS from the passage for each blank.</p>
+            <div class="flex flex-col items-center justify-center space-y-4 my-6">
+                <div class="bg-blue-100 p-4 rounded-lg shadow-sm border border-blue-200 text-center">
+                    <p class="font-semibold">Synthetic gene grown in 33. <input type="text" id="answer-q33" name="q33" onchange="handleAnswerChange(event, 'q33', 'note_completion')" class="note-completion-inline-input w-32" placeholder="Type here"> or 34. <input type="text" id="answer-q34" name="q34" onchange="handleAnswerChange(event, 'q34', 'note_completion')" class="note-completion-inline-input w-32" placeholder="Type here"></p>
+                </div>
+                <i class="ph-bold ph-arrow-down text-blue-500 text-2xl"></i>
+                <div class="bg-blue-100 p-4 rounded-lg shadow-sm border border-blue-200 text-center">
+                    <p class="font-semibold">globules of 35. <input type="text" id="answer-q35" name="q35" onchange="handleAnswerChange(event, 'q35', 'note_completion')" class="note-completion-inline-input w-32" placeholder="Type here"></p>
+                </div>
+                <i class="ph-bold ph-arrow-down text-blue-500 text-2xl"></i>
+                <div class="bg-blue-100 p-4 rounded-lg shadow-sm border border-blue-200 text-center">
+                    <p class="font-semibold">dissolved in 36. <input type="text" id="answer-q36" name="q36" onchange="handleAnswerChange(event, 'q36', 'note_completion')" class="note-completion-inline-input w-32" placeholder="Type here"></p>
+                </div>
+                <i class="ph-bold ph-arrow-down text-blue-500 text-2xl"></i>
+                <div class="bg-blue-100 p-4 rounded-lg shadow-sm border border-blue-200 text-center">
+                    <p class="font-semibold">passed through 37. <input type="text" id="answer-q37" name="q37" onchange="handleAnswerChange(event, 'q37', 'note_completion')" class="note-completion-inline-input w-32" placeholder="Type here"></p>
+                </div>
+                <i class="ph-bold ph-arrow-down text-blue-500 text-2xl"></i>
+                <div class="bg-blue-100 p-4 rounded-lg shadow-sm border border-blue-200 text-center">
+                    <p class="font-semibold">to produce a solid fibre</p>
+                </div>
+            </div>
+          </div>
+        `,
+      },
     ],
-  },
-  {
-    id: "R_M_1",
-    title: "Reading Mock Test 1: General Training - Sections 1-3",
-    module: "reading",
-  },
-  {
-    id: "R_M_2",
-    title: "Reading Mock Test 2: Academic - Passages 1-3",
-    module: "reading",
-  },
-  {
-    id: "W_M_1",
-    title: "Writing Mock Test 1: Academic - Tasks 1 & 2",
-    module: "writing",
-  },
-  {
-    id: "W_M_2",
-    title: "Writing Mock Test 2: General Training - Tasks 1 & 2",
-    module: "writing",
-  },
-  {
-    id: "S_M_1",
-    title: "Speaking Mock Test 1: General Interview & Cue Card",
-    module: "speaking",
-  },
-  {
-    id: "S_M_2",
-    title: "Speaking Mock Test 2: Abstract Discussion & Personal Experience",
-    module: "speaking",
   },
 ];
 
-// --- 2. Listening Questions ---
-/**
- * Comprehensive list of IELTS Listening questions.
- * Each question has an ID, type, question text, and correct answer.
- * IDs are structured (e.g., L1, L2) to allow filtering by test.
- * L1-L40 for Test 1, L41-L80 for Test 2.
- * @type {Array<Object>}
- */
-export const listeningQuestions = [
-  // --- Listening Mock Test 1 (L1-L40) ---
-  // Part 1: Conversation (Questions 1-10) - Form Completion / Note Completion
-  {
-    id: "L1",
-    type: "form-completion",
-    questionText: "Complete the form below.",
-    audioPrompt: "Listen to a conversation about booking a holiday.",
-    gaps: [
-      { number: 1, text: "Destination: Melbourne" },
-      { number: 2, text: "Departure Date: 15th" },
-      { number: 3, text: "Number of people: 2 adults and 1" },
-      { number: 4, text: "Accommodation: The" },
-      { number: 5, text: "Contact Number: 07700" },
-    ],
-    correctAnswers: {
-      1: "January",
-      2: "February",
-      3: "child",
-      4: "Grand Hotel",
-      5: "900789",
-    },
-  },
-  {
-    id: "L6",
-    type: "short-answer",
-    questionText: "What is the main reason for the customer's call today?",
-    correctAnswer: "booking a holiday",
-    audioPrompt: "Listen to a conversation about booking a holiday.",
-  },
-  {
-    id: "L7",
-    type: "multiple-choice",
-    questionText: "What type of accommodation does the customer prefer?",
-    options: ["A. Hotel", "B. Apartment", "C. Villa"],
-    correctAnswer: "A",
-    audioPrompt: "Listen to a conversation about booking a holiday.",
-  },
-  {
-    id: "L8",
-    type: "sentence-completion",
-    questionText: "The customer is interested in a trip to __________.",
-    correctAnswer: "Australia",
-    audioPrompt: "Listen to a conversation about booking a holiday.",
-  },
-  {
-    id: "L9",
-    type: "short-answer",
-    questionText: "What is the total cost of the trip?",
-    correctAnswer: "$2500",
-    audioPrompt: "Listen to a conversation about booking a holiday.",
-  },
-  {
-    id: "L10",
-    type: "fill-in-the-blank",
-    questionText: "The customer needs to pay a deposit of __________.",
-    correctAnswer: "$500",
-    audioPrompt: "Listen to a conversation about booking a holiday.",
-  },
-
-  // Part 2: Monologue (Questions 11-20) - Map Labelling / Multiple Choice
-  {
-    id: "L11",
-    type: "map-labelling",
-    questionText: "Label the map of the park below.",
-    instruction:
-      "Choose the correct letters A-H and write them next to questions 11-15.",
-    imageUrl: "https://placehold.co/400x300/e0e0e0/333333?text=Park+Map",
-    imageAlt: "Map of a park with numbered locations",
-    labels: [
-      { number: 11, label: "Café" },
-      { number: 12, label: "Playground" },
-      { number: 13, label: "Rose Garden" },
-      { number: 14, label: "Tennis Courts" },
-      { number: 15, label: "Main Entrance" },
-    ],
-    correctAnswers: {
-      "L11-11": "C",
-      "L11-12": "E",
-      "L11-13": "A",
-      "L11-14": "G",
-      "L11-15": "B",
-    },
-    audioPrompt: "Listen to a guide describing a public park.",
-  },
-  {
-    id: "L16",
-    type: "multiple-choice",
-    questionText: "What is the main purpose of the talk?",
-    options: [
-      "A. To introduce new park facilities",
-      "B. To provide a historical overview of the park",
-      "C. To guide visitors around the park",
-    ],
-    correctAnswer: "C",
-    audioPrompt: "Listen to a guide describing a public park.",
-  },
-  {
-    id: "L17",
-    type: "multiple-choice",
-    questionText: "Which activity is NOT allowed in the park?",
-    options: ["A. Cycling", "B. Dog walking", "C. Picnics"],
-    correctAnswer: "B",
-    audioPrompt: "Listen to a guide describing a public park.",
-  },
-  {
-    id: "L18",
-    type: "short-answer",
-    questionText: "What is the name of the nearest bus stop?",
-    correctAnswer: "Central Avenue",
-    audioPrompt: "Listen to a guide describing a public park.",
-  },
-  {
-    id: "L19",
-    type: "sentence-completion",
-    questionText:
-      "The park is particularly famous for its collection of __________.",
-    correctAnswer: "rare birds",
-    audioPrompt: "Listen to a guide describing a public park.",
-  },
-  {
-    id: "L20",
-    type: "fill-in-the-blank",
-    questionText: "Visitors can rent boats from the __________.",
-    correctAnswer: "boathouse",
-    audioPrompt: "Listen to a guide describing a public park.",
-  },
-
-  // Part 3: Conversation (Questions 21-30) - Matching / Multiple Choice Multi
-  {
-    id: "L21",
-    type: "matching",
-    questionText: "What is the main topic of each student's presentation?",
-    instruction:
-      "Choose FIVE answers from the box and write the correct letter, A-H, next to questions 21-25.",
-    items: ["21. Sarah", "22. Mark", "23. Emily", "24. David", "25. Chloe"],
-    options: [
-      "A. Climate Change",
-      "B. Renewable Energy",
-      "C. Urban Planning",
-      "D. Water Conservation",
-      "E. Sustainable Agriculture",
-      "F. Waste Management",
-      "G. Public Transport",
-      "H. Green Architecture",
-    ],
-    correctMapping: {
-      "21. Sarah": "D",
-      "22. Mark": "B",
-      "23. Emily": "F",
-      "24. David": "A",
-      "25. Chloe": "H",
-    },
-    audioPrompt: "Listen to two students discussing their research projects.",
-  },
-  {
-    id: "L26",
-    type: "multiple-choice-multi",
-    questionText:
-      "Which TWO challenges do the students mention about group work?",
-    options: [
-      "A. Difficulty in scheduling meetings",
-      "B. Disagreements over research methods",
-      "C. Unequal contribution from members",
-      "D. Lack of clear leadership",
-      "E. Finding relevant resources",
-    ],
-    correctAnswer: ["A", "C"],
-    audioPrompt: "Listen to two students discussing their research projects.",
-  },
-  {
-    id: "L28",
-    type: "short-answer",
-    questionText:
-      "What is the professor's main advice for their presentations?",
-    correctAnswer: "focus on practical solutions",
-    audioPrompt: "Listen to two students discussing their research projects.",
-  },
-  {
-    id: "L29",
-    type: "sentence-completion",
-    questionText:
-      "The students need to submit their final report by the end of __________.",
-    correctAnswer: "next week",
-    audioPrompt: "Listen to two students discussing their research projects.",
-  },
-  {
-    id: "L30",
-    type: "fill-in-the-blank",
-    questionText: "They decided to meet again on __________.",
-    correctAnswer: "Friday",
-    audioPrompt: "Listen to two students discussing their research projects.",
-  },
-
-  // Part 4: Monologue (Questions 31-40) - Summary Completion / Note Completion
-  {
-    id: "L31",
-    type: "summary-completion-text",
-    questionText: "Complete the summary below.",
-    audioPrompt: "Listen to a lecture on the history of chocolate.",
-    gaps: [
-      {
-        number: 31,
-        text:
-          "Chocolate originated in ancient Mesoamerica, where it was consumed as a bitter __________.",
-      },
-      {
-        number: 32,
-        text:
-          "The Maya and Aztec civilizations used cocoa beans as a form of __________.",
-      },
-      {
-        number: 33,
-        text:
-          "When chocolate arrived in Europe, it was initially a drink for the __________.",
-      },
-      {
-        number: 34,
-        text: "The first chocolate bar was created in the __________ century.",
-      },
-      {
-        number: 35,
-        text:
-          "Today, chocolate is a global industry, but concerns remain about ethical __________ practices.",
-      },
-    ],
-    correctAnswers: {
-      31: "drink",
-      32: "currency",
-      33: "elite",
-      34: "19th",
-      35: "sourcing",
-    },
-  },
-  {
-    id: "L36",
-    type: "multiple-choice",
-    questionText:
-      "What was the primary use of cocoa beans in ancient civilizations?",
-    options: [
-      "A. Sweet dessert",
-      "B. Medicinal purposes",
-      "C. Ritualistic drink",
-    ],
-    correctAnswer: "C",
-    audioPrompt: "Listen to a lecture on the history of chocolate.",
-  },
-  {
-    id: "L37",
-    type: "short-answer",
-    questionText: "Which European country first introduced chocolate?",
-    correctAnswer: "Spain",
-    audioPrompt: "Listen to a lecture on the history of chocolate.",
-  },
-  {
-    id: "L38",
-    type: "sentence-completion",
-    questionText:
-      "The industrial revolution made chocolate __________ to the general public.",
-    correctAnswer: "accessible",
-    audioPrompt: "Listen to a lecture on the history of chocolate.",
-  },
-  {
-    id: "L39",
-    type: "fill-in-the-blank",
-    questionText:
-      "Modern chocolate production often involves the addition of __________ and sugar.",
-    correctAnswer: "milk",
-    audioPrompt: "Listen to a lecture on the history of chocolate.",
-  },
-  {
-    id: "L40",
-    type: "multiple-choice",
-    questionText: "What is a current challenge facing the chocolate industry?",
-    options: [
-      "A. Lack of demand",
-      "B. Supply chain issues",
-      "C. Overproduction",
-    ],
-    correctAnswer: "B",
-    audioPrompt: "Listen to a lecture on the history of chocolate.",
-  },
-
-  // --- Listening Mock Test 2 (L41-L80) ---
-  // Part 1: Conversation (Questions 41-50) - Note Completion / Short Answer
-  {
-    id: "L41",
-    type: "note-completion",
-    questionText: "Complete the notes below about a library membership.",
-    audioPrompt: "Listen to a conversation about joining a local library.",
-    gaps: [
-      { number: 41, text: "Name: Sarah" },
-      { number: 42, text: "Address: 24" },
-      { number: 43, text: "Postcode: SW1A" },
-      { number: 44, text: "Date of Birth: 15th July" },
-      { number: 45, text: "Type of membership: Full" },
-    ],
-    correctAnswers: {
-      41: "Jenkins",
-      42: "Oak Street",
-      43: "0AA",
-      44: "1995",
-      45: "annual",
-    },
-  },
-  {
-    id: "L46",
-    type: "short-answer",
-    questionText: "What document is required to prove address?",
-    correctAnswer: "utility bill",
-    audioPrompt: "Listen to a conversation about joining a local library.",
-  },
-  {
-    id: "L47",
-    type: "multiple-choice",
-    questionText: "How many books can a new member borrow at a time?",
-    options: ["A. Two", "B. Four", "C. Six"],
-    correctAnswer: "B",
-    audioPrompt: "Listen to a conversation about joining a local library.",
-  },
-  {
-    id: "L48",
-    type: "sentence-completion",
-    questionText: "The library offers free __________ classes on Saturdays.",
-    correctAnswer: "computer",
-    audioPrompt: "Listen to a conversation about joining a local library.",
-  },
-  {
-    id: "L49",
-    type: "fill-in-the-blank",
-    questionText: "The library is open until __________ on weekdays.",
-    correctAnswer: "7 PM",
-    audioPrompt: "Listen to a conversation about joining a local library.",
-  },
-  {
-    id: "L50",
-    type: "short-answer",
-    questionText: "What is the annual membership fee?",
-    correctAnswer: "$30",
-    audioPrompt: "Listen to a conversation about joining a local library.",
-  },
-
-  // Part 2: Monologue (Questions 51-60) - Diagram Labelling / Multiple Choice
-  {
-    id: "L51",
-    type: "diagram-labelling",
-    questionText: "Label the parts of the new university building.",
-    instruction:
-      "Choose the correct letters A-G and write them next to questions 51-55.",
-    imageUrl: "https://placehold.co/400x300/e0e0e0/333333?text=Building+Plan",
-    imageAlt: "Diagram of a university building plan",
-    labels: [
-      { number: 51, label: "Lecture Theatre" },
-      { number: 52, label: "Student Lounge" },
-      { number: 53, label: "Library" },
-      { number: 54, label: "Cafeteria" },
-      { number: 55, label: "Main Entrance" },
-    ],
-    correctAnswers: {
-      "L51-51": "D",
-      "L51-52": "A",
-      "L51-53": "F",
-      "L51-54": "B",
-      "L51-55": "C",
-    },
-    audioPrompt:
-      "Listen to a university administrator giving a tour of a new building.",
-  },
-  {
-    id: "L56",
-    type: "multiple-choice",
-    questionText: "What is unique about the building's design?",
-    options: [
-      "A. It uses recycled materials.",
-      "B. It has a green roof.",
-      "C. It features a modern art collection.",
-    ],
-    correctAnswer: "B",
-    audioPrompt:
-      "Listen to a university administrator giving a tour of a new building.",
-  },
-  {
-    id: "L57",
-    type: "multiple-choice",
-    questionText: "Which service is available on the ground floor?",
-    options: ["A. Bookshop", "B. IT Support", "C. Career Services"],
-    correctAnswer: "A",
-    audioPrompt:
-      "Listen to a university administrator giving a tour of a new building.",
-  },
-  {
-    id: "L58",
-    type: "short-answer",
-    questionText: "What is the capacity of the largest lecture theatre?",
-    correctAnswer: "200",
-    audioPrompt:
-      "Listen to a university administrator giving a tour of a new building.",
-  },
-  {
-    id: "L59",
-    type: "sentence-completion",
-    questionText: "Students can access the building using their __________.",
-    correctAnswer: "ID cards",
-    audioPrompt:
-      "Listen to a university administrator giving a tour of a new building.",
-  },
-  {
-    id: "L60",
-    type: "fill-in-the-blank",
-    questionText: "The building officially opens on __________.",
-    correctAnswer: "September 1st",
-    audioPrompt:
-      "Listen to a university administrator giving a tour of a new building.",
-  },
-
-  // Part 3: Conversation (Questions 61-70) - Table Completion / Multiple Choice Multi
-  {
-    id: "L61",
-    type: "table-completion",
-    questionText: "Complete the table about student projects.",
-    audioPrompt:
-      "Listen to a conversation between a tutor and two students about their project.",
-    table: {
-      headers: ["Student Name", "Project Topic", "Deadline"],
-      rows: [
-        ["Maria", "Renewable Energy", "61. "],
-        ["Tom", "62. ", "Next Friday"],
-        ["63. ", "Sustainable Tourism", "64. "],
-      ],
-    },
-    correctAnswers: {
-      61: "Wednesday",
-      62: "Urban Farming",
-      63: "Lena",
-      64: "End of Month",
-    },
-  },
-  {
-    id: "L65",
-    type: "multiple-choice-multi",
-    questionText:
-      "Which TWO aspects should students focus on for their presentations?",
-    options: [
-      "A. Visual aids",
-      "B. Detailed statistics",
-      "C. Personal anecdotes",
-      "D. Practical applications",
-      "E. Academic theories",
-    ],
-    correctAnswer: ["A", "D"],
-    audioPrompt:
-      "Listen to a conversation between a tutor and two students about their project.",
-  },
-  {
-    id: "L67",
-    type: "short-answer",
-    questionText: "What is the maximum length for each presentation?",
-    correctAnswer: "15 minutes",
-    audioPrompt:
-      "Listen to a conversation between a tutor and two students about their project.",
-  },
-  {
-    id: "L68",
-    type: "sentence-completion",
-    questionText:
-      "The tutor suggests using __________ to make the data more engaging.",
-    correctAnswer: "infographics",
-    audioPrompt:
-      "Listen to a conversation between a tutor and two students about their project.",
-  },
-  {
-    id: "L69",
-    type: "fill-in-the-blank",
-    questionText:
-      "Students can book a consultation with the tutor on __________.",
-    correctAnswer: "Tuesday",
-    audioPrompt:
-      "Listen to a conversation between a tutor and two students about their project.",
-  },
-  {
-    id: "L70",
-    type: "multiple-choice",
-    questionText: "What is the tutor's final piece of advice?",
-    options: [
-      "A. Practice their timing",
-      "B. Research more deeply",
-      "C. Collaborate more",
-    ],
-    correctAnswer: "A",
-    audioPrompt:
-      "Listen to a conversation between a tutor and two students about their project.",
-  },
-
-  // Part 4: Monologue (Questions 71-80) - Flow-chart Completion / Multiple Choice
-  {
-    id: "L71",
-    type: "flow-chart-completion",
-    questionText:
-      "Complete the flow-chart below showing the process of water purification.",
-    audioPrompt: "Listen to a lecture on water purification methods.",
-    gaps: [
-      { number: 71, text: "Source Water Collection" },
-      { number: 72, text: "Coagulation and Flocculation (adding chemicals)" },
-      { number: 73, text: "Sedimentation (heavy particles settle)" },
-      { number: 74, text: "Filtration (water passes through sand and gravel)" },
-      { number: 75, text: "Disinfection (adding chlorine or UV light)" },
-    ],
-    correctAnswers: {
-      71: "Reservoir",
-      72: "Alum",
-      73: "Clarifier",
-      74: "Sand Filters",
-      75: "Chlorination",
-    },
-  },
-  {
-    id: "L76",
-    type: "multiple-choice",
-    questionText: "What is the primary goal of coagulation?",
-    options: [
-      "A. To remove large debris",
-      "B. To make small particles clump together",
-      "C. To kill bacteria",
-    ],
-    correctAnswer: "B",
-    audioPrompt: "Listen to a lecture on water purification methods.",
-  },
-  {
-    id: "L77",
-    type: "short-answer",
-    questionText:
-      "What material is typically used in the final filtration stage?",
-    correctAnswer: "charcoal",
-    audioPrompt: "Listen to a lecture on water purification methods.",
-  },
-  {
-    id: "L78",
-    type: "sentence-completion",
-    questionText: "Chlorine is added to water to __________.",
-    correctAnswer: "kill microorganisms",
-    audioPrompt: "Listen to a lecture on water purification methods.",
-  },
-  {
-    id: "L79",
-    type: "fill-in-the-blank",
-    questionText:
-      "The purified water is then stored in a __________ before distribution.",
-    correctAnswer: "clearwell",
-    audioPrompt: "Listen to a lecture on water purification methods.",
-  },
-  {
-    id: "L80",
-    type: "multiple-choice",
-    questionText:
-      "What is a potential disadvantage of using chlorine for disinfection?",
-    options: [
-      "A. It is very expensive.",
-      "B. It can produce harmful byproducts.",
-      "C. It does not kill all viruses.",
-    ],
-    correctAnswer: "B",
-    audioPrompt: "Listen to a lecture on water purification methods.",
-  },
-];
-
-// --- 3. Reading Passages ---
-/**
- * Comprehensive list of IELTS Reading passages.
- * Each passage has an ID, title, text, and an array of questions.
- * Questions are embedded within their respective passages.
- * R1-R13 for Test 1 (General Training), R14-R26 for Test 2 (Academic).
- * @type {Array<Object>}
- */
-export const readingPassages = [
-  // --- Reading Mock Test 1 (General Training) ---
-  {
-    id: "R_M_1_P1",
-    testId: "R_M_1",
-    title: "The Benefits of Volunteering",
-    text: `Volunteering offers a wide range of benefits, not only to the communities it serves but also to the volunteers themselves. Engaging in voluntary work can significantly boost an individual's well-being and personal development.
-
-Firstly, volunteering provides an excellent opportunity to acquire new skills. Whether it's learning how to organise events, manage finances, or communicate effectively with diverse groups of people, the practical experience gained is invaluable. These skills are often transferable to professional settings, enhancing career prospects. For instance, someone volunteering at a local charity might develop strong leadership and problem-solving abilities.
-
-Secondly, volunteering helps in expanding one's social network. By working alongside like-minded individuals, volunteers can form new friendships and professional connections. This sense of community and belonging can combat feelings of isolation and improve mental health. Many volunteers report feeling more connected to their local area and a greater sense of purpose.
-
-Furthermore, contributing to a cause greater than oneself can lead to immense personal satisfaction and a feeling of accomplishment. Knowing that one's efforts are making a tangible difference to others' lives is a powerful motivator and a source of deep contentment. This positive emotional impact can reduce stress and increase overall happiness.
-
-Finally, volunteering can offer a fresh perspective on life. It often exposes individuals to different social issues and challenges, fostering empathy and understanding. This broadened worldview can lead to a greater appreciation for one's own circumstances and a desire to contribute further to societal improvement.`,
-    questions: [
-      {
-        id: "R1",
-        type: "true-false-not-given",
-        questionText: "Volunteering primarily benefits the community.",
-        statement: "Volunteering primarily benefits the community.",
-        correctAnswer: "False", // It benefits both community and volunteers
-      },
-      {
-        id: "R2",
-        type: "short-answer",
-        questionText:
-          "Name one type of skill that can be gained through volunteering.",
-        correctAnswer: "organising events",
-      },
-      {
-        id: "R3",
-        type: "sentence-completion",
-        questionText: "Volunteering can help combat feelings of __________.",
-        correctAnswer: "isolation",
-      },
-      {
-        id: "R4",
-        type: "multiple-choice",
-        questionText: "What is a key emotional benefit of volunteering?",
-        options: [
-          "A. Increased income",
-          "B. Feeling of accomplishment",
-          "C. Reduced workload",
-        ],
-        correctAnswer: "B",
-      },
-      {
-        id: "R5",
-        type: "true-false-not-given",
-        questionText: "Volunteering always leads to immediate job offers.",
-        statement: "Volunteering always leads to immediate job offers.",
-        correctAnswer: "Not Given",
-      },
-      {
-        id: "R6",
-        type: "fill-in-the-blank",
-        questionText: "Volunteering can foster __________ and understanding.",
-        correctAnswer: "empathy",
-      },
-    ],
-  },
-  {
-    id: "R_M_1_P2",
-    testId: "R_M_1",
-    title: "Job Advertisements",
-    text: `**A. Customer Service Assistant - Part-time**
-A busy retail store in the city centre is seeking a friendly and enthusiastic Customer Service Assistant. Duties include assisting customers with queries, processing sales, and maintaining a tidy store environment. Previous retail experience is preferred but not essential, as full training will be provided. Must be available to work weekends and some evenings. Excellent communication skills are a must. Apply with CV to jobs@retailstore.com.
-
-**B. Office Administrator - Full-time**
-A dynamic marketing agency requires an experienced Office Administrator. Responsibilities include managing office supplies, scheduling appointments, handling correspondence, and supporting the team with various administrative tasks. Proficiency in Microsoft Office Suite (Word, Excel, PowerPoint) is mandatory. Candidates should be highly organised and able to work independently. Send your application to hr@marketingagency.co.uk.
-
-**C. Volunteer Coordinator - Flexible Hours**
-A non-profit organisation supporting local communities is looking for a dedicated Volunteer Coordinator. This role involves recruiting, training, and managing volunteers for various community projects. Strong interpersonal skills and a passion for community work are essential. Experience in volunteer management is desirable. This is a voluntary position, but expenses are covered. Email: volunteer@communityaid.org.
-
-**D. Graphic Designer - Freelance**
-We are a growing startup in need of a talented freelance Graphic Designer for a range of projects, including website design, branding, and marketing materials. Candidates must have a strong portfolio demonstrating creativity and proficiency in design software (e.g., Adobe Creative Suite). This is a project-based role with flexible deadlines. Submit your portfolio and rates to design@startupinnovate.net.`,
-    questions: [
-      {
-        id: "R7",
-        type: "matching-information",
-        questionText: "Which advertisement mentions:",
-        prompt:
-          "Match the statements below with the correct advertisement (A-D).",
-        items: [
-          "7. A role where previous experience is not strictly necessary.",
-          "8. A position that covers travel costs.",
-          "9. A requirement for strong computer software skills.",
-          "10. A job that involves working on weekends.",
-        ],
-        correctMapping: {
-          "7. A role where previous experience is not strictly necessary.": "A",
-          "8. A position that covers travel costs.": "C",
-          "9. A requirement for strong computer software skills.": "B",
-          "10. A job that involves working on weekends.": "A",
-        },
-      },
-      {
-        id: "R11",
-        type: "short-answer",
-        questionText: "Which advertisement is for a non-paid position?",
-        correctAnswer: "C",
-      },
-      {
-        id: "R12",
-        type: "multiple-choice",
-        questionText: "Which role requires a portfolio?",
-        options: [
-          "A. Customer Service Assistant",
-          "B. Office Administrator",
-          "C. Graphic Designer",
-        ],
-        correctAnswer: "C",
-      },
-      {
-        id: "R13",
-        type: "fill-in-the-blank",
-        questionText:
-          "The Office Administrator role is described as being in a __________ agency.",
-        correctAnswer: "marketing",
-      },
-    ],
-  },
-  {
-    id: "R_M_1_P3",
-    testId: "R_M_1",
-    title: "The History of Tea in Britain",
-    text: `Tea, a beverage now synonymous with British culture, has a fascinating history that spans centuries. Originally cultivated in China, tea made its way to Europe in the 17th century, primarily through Dutch traders. However, it was in Britain that tea truly became a national obsession.
-
-The introduction of tea to Britain is often credited to Catherine of Braganza, the Portuguese wife of King Charles II, in the 1660s. She brought her love for tea to the English court, and soon, it became fashionable among the aristocracy. Initially, tea was an expensive luxury, affordable only to the wealthy elite. Its high price was due to import duties and the long, perilous journey from Asia.
-
-By the 18th century, as import volumes increased and prices gradually fell, tea became more accessible. Coffee houses, which had been popular social hubs, began to face competition from tea gardens and tea rooms. These establishments offered a more refined and often family-friendly atmosphere. The British East India Company played a crucial role in expanding tea trade, establishing vast plantations in India to meet the burgeoning demand.
-
-The 19th century saw tea become a staple in every British household, regardless of social class. The tradition of 'afternoon tea' emerged, a light meal served in the late afternoon, which quickly became a cherished ritual. Innovations like the tea bag, though not invented in Britain, further popularised the drink by making it more convenient.
-
-Today, Britain remains one of the largest per capita consumers of tea globally. While the rituals may have evolved, the comforting presence of a 'cuppa' continues to be a central part of daily life and a symbol of British identity.`,
-    questions: [
-      {
-        id: "R14",
-        type: "matching-headings",
-        questionText: "Match the following headings to the paragraphs.",
-        prompt:
-          "Choose the correct heading for paragraphs 1-5 from the list below.",
-        items: [
-          "Paragraph 1",
-          "Paragraph 2",
-          "Paragraph 3",
-          "Paragraph 4",
-          "Paragraph 5",
-        ],
-        options: [
-          "I. Tea's Royal Introduction",
-          "II. Global Origins",
-          "III. The Rise of Public Tea Houses",
-          "IV. A Modern Staple",
-          "V. Widespread Popularity",
-          "VI. Early European Trade",
-        ],
-        correctMapping: {
-          "Paragraph 1": "II",
-          "Paragraph 2": "I",
-          "Paragraph 3": "III",
-          "Paragraph 4": "V",
-          "Paragraph 5": "IV",
-        },
-      },
-      {
-        id: "R19",
-        type: "true-false-not-given",
-        questionText: "Tea was first grown in India.",
-        statement: "Tea was first grown in India.",
-        correctAnswer: "False",
-      },
-      {
-        id: "R20",
-        type: "short-answer",
-        questionText:
-          "Who is credited with introducing tea to the English court?",
-        correctAnswer: "Catherine of Braganza",
-      },
-      {
-        id: "R21",
-        type: "fill-in-the-blank",
-        questionText:
-          "In the 17th century, tea reached Europe mainly through __________ traders.",
-        correctAnswer: "Dutch",
-      },
-      {
-        id: "R22",
-        type: "multiple-choice",
-        questionText:
-          "What was the main reason for tea's initial high price in Britain?",
-        options: [
-          "A. Limited supply from China",
-          "B. High import duties",
-          "C. Lack of demand",
-        ],
-        correctAnswer: "B",
-      },
-      {
-        id: "R23",
-        type: "sentence-completion",
-        questionText:
-          "The British East India Company helped expand tea trade by establishing plantations in __________.",
-        correctAnswer: "India",
-      },
-      {
-        id: "R24",
-        type: "true-false-not-given",
-        questionText:
-          "Afternoon tea was a tradition that existed before the 19th century.",
-        statement:
-          "Afternoon tea was a tradition that existed before the 19th century.",
-        correctAnswer: "False",
-      },
-      {
-        id: "R25",
-        type: "short-answer",
-        questionText:
-          "What innovation further popularised tea in the 19th century?",
-        correctAnswer: "tea bag",
-      },
-      {
-        id: "R26",
-        type: "fill-in-the-blank",
-        questionText:
-          "Britain remains one of the largest per capita consumers of tea __________.",
-        correctAnswer: "globally",
-      },
-    ],
-  },
-
-  // --- Reading Mock Test 2 (Academic) ---
-  {
-    id: "R_M_2_P1",
-    testId: "R_M_2",
-    title: "The Psychology of Colour in Marketing",
-    text: `A. Colour plays a significant, albeit often subconscious, role in consumer behaviour and marketing. The human brain processes colours before it processes words or shapes, making colour a powerful tool for brands to convey messages, evoke emotions, and influence purchasing decisions. Understanding the psychology of colour is therefore crucial for effective marketing strategies.
-
-B. Different colours elicit different emotional and psychological responses. For instance, red is often associated with energy, passion, and urgency, making it effective for sales and call-to-action buttons. Blue, on the other hand, conveys trust, security, and calmness, frequently used by banks and tech companies. Green is linked to nature, health, and tranquility, popular among environmental brands and those promoting well-being. Yellow signifies optimism and warmth, while purple is often associated with royalty, creativity, and luxury.
-
-C. However, the impact of colour is not universal. Cultural background, personal experiences, and even gender can influence how colours are perceived. For example, in some Asian cultures, white is associated with mourning, whereas in Western cultures, it symbolises purity. Therefore, marketers must conduct thorough research into their target audience's cultural context to avoid misinterpretations. A colour that works well in one region might have an unintended negative connotation in another.
-
-D. Beyond individual colours, combinations and contrasts also play a vital role. Complementary colours, when used together, can create a vibrant and energetic feel, while analogous colours offer a more harmonious and soothing effect. The strategic use of a brand's primary and secondary colour palettes helps in establishing brand identity and recognition. Consistency in colour usage across all marketing channels reinforces brand messaging.
-
-E. Ultimately, while colour psychology provides valuable insights, it should not be the sole determinant of a marketing campaign. It works best when integrated with other elements of design, messaging, and overall brand strategy. A holistic approach, combining aesthetic appeal with psychological understanding, is key to creating a truly impactful and memorable brand experience.`,
-    questions: [
-      {
-        id: "R27",
-        type: "matching-headings",
-        questionText: "Match the following headings to the paragraphs.",
-        prompt:
-          "Choose the correct heading for paragraphs A-E from the list below.",
-        items: [
-          "Paragraph A",
-          "Paragraph B",
-          "Paragraph C",
-          "Paragraph D",
-          "Paragraph E",
-        ],
-        options: [
-          "I. The Importance of Colour Combinations",
-          "II. Cultural Variations in Colour Perception",
-          "III. The Foundational Role of Colour",
-          "IV. Specific Emotional Associations of Colours",
-          "V. A Holistic Marketing Approach",
-          "VI. The Evolution of Colour Theory",
-        ],
-        correctMapping: {
-          "Paragraph A": "III",
-          "Paragraph B": "IV",
-          "Paragraph C": "II",
-          "Paragraph D": "I",
-          "Paragraph E": "V",
-        },
-      },
-      {
-        id: "R32",
-        type: "true-false-not-given",
-        questionText: "The human brain processes words faster than colours.",
-        statement: "The human brain processes words faster than colours.",
-        correctAnswer: "False",
-      },
-      {
-        id: "R33",
-        type: "short-answer",
-        questionText:
-          "Which colour is often associated with trust and security?",
-        correctAnswer: "blue",
-      },
-      {
-        id: "R34",
-        type: "fill-in-the-blank",
-        questionText: "Yellow signifies __________ and warmth.",
-        correctAnswer: "optimism",
-      },
-      {
-        id: "R35",
-        type: "multiple-choice",
-        questionText: "What is a factor that can influence colour perception?",
-        options: ["A. Climate", "B. Cultural background", "C. Economic status"],
-        correctAnswer: "B",
-      },
-      {
-        id: "R36",
-        type: "sentence-completion",
-        questionText:
-          "In some Asian cultures, white is associated with __________.",
-        correctAnswer: "mourning",
-      },
-      {
-        id: "R37",
-        type: "true-false-not-given",
-        questionText: "Complementary colours always create a soothing effect.",
-        statement: "Complementary colours always create a soothing effect.",
-        correctAnswer: "False",
-      },
-      {
-        id: "R38",
-        type: "short-answer",
-        questionText: "What does consistent colour usage help reinforce?",
-        correctAnswer: "brand messaging",
-      },
-      {
-        id: "R39",
-        type: "fill-in-the-blank",
-        questionText:
-          "A __________ approach is key to creating an impactful brand experience.",
-        correctAnswer: "holistic",
-      },
-    ],
-  },
-  {
-    id: "R_M_2_P2",
-    testId: "R_M_2",
-    title: "The Science of Sleep",
-    text: `A. Sleep is a fundamental human need, yet its importance is often underestimated in our fast-paced modern world. Far from being a passive state, sleep is an active process crucial for physical and mental restoration, memory consolidation, and emotional regulation. A lack of adequate sleep has profound negative impacts on health, productivity, and overall well-being.
-
-B. The sleep cycle consists of two main types: Non-Rapid Eye Movement (NREM) sleep, which has three stages, and Rapid Eye Movement (REM) sleep. NREM sleep progresses from light sleep (Stage 1) to deeper sleep (Stage 3), where brain waves slow down significantly. During deep NREM sleep, the body repairs tissues, grows, and strengthens the immune system. REM sleep, characterised by rapid eye movements and vivid dreaming, is vital for cognitive functions such as memory consolidation and emotional processing. An adult typically cycles through these stages multiple times per night.
-
-C. The body's internal clock, known as the circadian rhythm, regulates the sleep-wake cycle. This rhythm is primarily influenced by light and darkness. Exposure to natural light during the day helps to keep the circadian rhythm aligned, promoting alertness. Conversely, darkness triggers the release of melatonin, a hormone that induces sleepiness. Disruptions to this rhythm, often caused by shift work or excessive screen time before bed, can lead to sleep disorders and health problems.
-
-D. Chronic sleep deprivation can have serious long-term consequences. It is linked to an increased risk of chronic diseases such as diabetes, heart disease, and obesity. Furthermore, it impairs cognitive functions like attention, concentration, and problem-solving abilities, leading to reduced academic and professional performance. Mood disturbances, including irritability and depression, are also common side effects.
-
-E. Improving sleep hygiene is essential for addressing sleep problems. This involves establishing a regular sleep schedule, creating a comfortable sleep environment, avoiding caffeine and heavy meals before bed, and incorporating regular physical activity. While sleep aids can offer temporary relief, they do not address the underlying causes of sleep issues. Prioritising sleep as a non-negotiable component of a healthy lifestyle is crucial for optimal functioning and long-term health.`,
-    questions: [
-      {
-        id: "R40",
-        type: "multiple-choice",
-        questionText: "What is the primary function of deep NREM sleep?",
-        options: [
-          "A. Vivid dreaming",
-          "B. Memory consolidation",
-          "C. Physical restoration",
-        ],
-        correctAnswer: "C",
-      },
-      {
-        id: "R41",
-        type: "fill-in-the-blank",
-        questionText:
-          "The body's internal clock is known as the __________ rhythm.",
-        correctAnswer: "circadian",
-      },
-      {
-        id: "R42",
-        type: "true-false-not-given",
-        questionText: "Melatonin is released in response to light.",
-        statement: "Melatonin is released in response to light.",
-        correctAnswer: "False",
-      },
-      {
-        id: "R43",
-        type: "short-answer",
-        questionText:
-          "Name one cognitive function impaired by chronic sleep deprivation.",
-        correctAnswer: "attention",
-      },
-      {
-        id: "R44",
-        type: "sentence-completion",
-        questionText:
-          "Excessive screen time before bed can disrupt the __________.",
-        correctAnswer: "circadian rhythm",
-      },
-      {
-        id: "R45",
-        type: "multiple-choice",
-        questionText:
-          "Which of the following is NOT a suggestion for improving sleep hygiene?",
-        options: [
-          "A. Avoiding caffeine before bed",
-          "B. Using sleep aids regularly",
-          "C. Establishing a regular sleep schedule",
-        ],
-        correctAnswer: "B",
-      },
-    ],
-  },
-  {
-    id: "R_M_2_P3",
-    testId: "R_M_2",
-    title: "The Impact of Artificial Intelligence on Society",
-    text: `A. Artificial Intelligence (AI) is rapidly transforming various aspects of human society, from healthcare and education to transportation and entertainment. Defined as the simulation of human intelligence processes by machines, especially computer systems, AI encompasses machine learning, deep learning, natural language processing, and computer vision. Its potential to revolutionise industries and improve quality of life is immense, but it also presents significant challenges and ethical considerations.
-
-B. In healthcare, AI is being used to analyse vast amounts of patient data, assisting in early disease detection, personalised treatment plans, and drug discovery. AI-powered diagnostic tools can identify patterns in medical images with greater accuracy than human eyes, leading to faster and more precise diagnoses. This has the potential to save countless lives and reduce healthcare costs.
-
-C. The education sector is also experiencing AI's influence. AI-driven platforms can offer personalised learning experiences, adapting to individual student paces and styles. Intelligent tutoring systems provide instant feedback and identify areas where students need extra support. This promises to make education more accessible and effective, though concerns about data privacy and the role of human teachers persist.
-
-D. However, the rise of AI is not without its drawbacks. A major concern is job displacement, as AI and automation take over tasks traditionally performed by humans, particularly in manufacturing, customer service, and data entry. This necessitates a focus on reskilling and upskilling the workforce to adapt to new roles that require human creativity, critical thinking, and emotional intelligence.
-
-E. Ethical considerations are paramount in the development and deployment of AI. Issues such as algorithmic bias, privacy violations, and accountability for AI decisions require careful attention. For example, if an AI system used in hiring or lending exhibits bias based on race or gender, it could perpetuate societal inequalities. Establishing robust regulatory frameworks and ethical guidelines is crucial to ensure AI serves humanity responsibly and equitably.
-
-F. Looking ahead, the trajectory of AI development suggests a future where AI becomes even more integrated into daily life. While the benefits are clear, navigating the complexities of job market changes, ethical dilemmas, and the need for continuous adaptation will be crucial. Public discourse, collaboration between policymakers, technologists, and ethicists, and a commitment to human-centric AI design will determine whether AI truly becomes a force for universal good.`,
-    questions: [
-      {
-        id: "R46",
-        type: "matching-headings",
-        questionText: "Match the following headings to the paragraphs.",
-        prompt:
-          "Choose the correct heading for paragraphs A-F from the list below.",
-        items: [
-          "Paragraph A",
-          "Paragraph B",
-          "Paragraph C",
-          "Paragraph D",
-          "Paragraph E",
-          "Paragraph F",
-        ],
-        options: [
-          "I. AI's Role in Medical Advancements",
-          "II. The Future Outlook and Challenges",
-          "III. Defining Artificial Intelligence",
-          "IV. AI in Educational Settings",
-          "V. The Problem of Job Losses",
-          "VI. Addressing Moral Questions",
-          "VII. AI and Environmental Protection",
-        ],
-        correctMapping: {
-          "Paragraph A": "III",
-          "Paragraph B": "I",
-          "Paragraph C": "IV",
-          "Paragraph D": "V",
-          "Paragraph E": "VI",
-          "Paragraph F": "II",
-        },
-      },
-      {
-        id: "R52",
-        type: "multiple-choice-multi",
-        questionText: "Which TWO areas are mentioned as components of AI?",
-        options: [
-          "A. Robotics",
-          "B. Natural language processing",
-          "C. Quantum computing",
-          "D. Deep learning",
-          "E. Biotechnology",
-        ],
-        correctAnswer: ["B", "D"],
-      },
-      {
-        id: "R54",
-        type: "true-false-not-given",
-        questionText:
-          "AI diagnostic tools are always more accurate than human doctors.",
-        statement:
-          "AI diagnostic tools are always more accurate than human doctors.",
-        correctAnswer: "Not Given",
-      },
-      {
-        id: "R55",
-        type: "short-answer",
-        questionText:
-          "What is a main concern regarding AI's impact on employment?",
-        correctAnswer: "job displacement",
-      },
-      {
-        id: "R56",
-        type: "fill-in-the-blank",
-        questionText:
-          "AI-driven platforms can offer __________ learning experiences.",
-        correctAnswer: "personalised",
-      },
-      {
-        id: "R57",
-        type: "sentence-completion",
-        questionText: "One ethical concern with AI is __________ bias.",
-        correctAnswer: "algorithmic",
-      },
-      {
-        id: "R58",
-        type: "multiple-choice",
-        questionText:
-          "What is crucial for ensuring AI serves humanity responsibly?",
-        options: [
-          "A. Rapid technological advancement",
-          "B. Establishing regulatory frameworks",
-          "C. Limiting AI research",
-        ],
-        correctAnswer: "B",
-      },
-      {
-        id: "R59",
-        type: "short-answer",
-        questionText:
-          "Name one quality humans will need for new roles created by AI.",
-        correctAnswer: "creativity",
-      },
-      {
-        id: "R60",
-        type: "fill-in-the-blank",
-        questionText:
-          "Public discourse and collaboration are needed to ensure AI becomes a force for __________ good.",
-        correctAnswer: "universal",
-      },
-    ],
-  },
-];
-
-// --- 4. Writing Tasks ---
-/**
- * Defines the prompts for IELTS Writing Task 1 and Task 2.
- * @type {Object}
- */
-export const writingTasks = {
-  task1: {
-    prompt: `The chart below shows the percentage of the population aged 65 and over in three countries between 1940 and 2040.
-Summarise the information by selecting and reporting the main features, and make comparisons where relevant.
-Write at least 150 words.`,
-    wordCountMin: 150,
-    imageUrl:
-      "https://placehold.co/600x350/ADD8E6/000000?text=IELTS+Task+1+Graph+Example%0APopulation+Aged+65+and+Over",
-  },
-  task2: {
-    prompt: `Some people believe that the best way to improve public health is by increasing the number of sports facilities. Others, however, believe that this is not enough and that other measures are required.
-Discuss both these views and give your own opinion.
-Write at least 250 words.`,
-    wordCountMin: 250,
-  },
+export const MockTestIcons = {
+  // Icons for mock test specific UI elements
+  Clock: '<i class="ph-bold ph-clock text-red-500"></i>',
+  Flag: '<i class="ph-bold ph-flag text-white"></i>',
+  Trophy: '<i class="ph-bold ph-trophy text-yellow-300"></i>',
+  ChartBar: '<i class="ph-bold ph-chart-bar text-blue-600"></i>',
+  ThumbsUp: '<i class="ph-bold ph-thumbs-up text-green-600"></i>',
+  Warning: '<i class="ph-bold ph-warning-circle text-red-600"></i>',
+  Badge: '<i class="ph-bold ph-medal text-yellow-600"></i>',
+  Review: '<i class="ph-bold ph-chat-circle-text text-gray-600"></i>',
+  Leaderboard: '<i class="ph-bold ph-list-numbers text-gray-600"></i>',
+  QuestionMark: '<i class="ph-bold ph-question text-gray-600"></i>',
+  Home: '<i class="ph-bold ph-house text-white"></i>',
+  ChevronLeft: '<i class="ph-bold ph-caret-left text-gray-800"></i>',
+  ChevronRight: '<i class="ph-bold ph-caret-right text-white"></i>',
+  SignIn: '<i class="ph-bold ph-sign-in text-white"></i>',
+  CheckCircle: '<i class="fa-solid fa-circle-check text-green-500"></i>',
+  XCircle: '<i class="fa-solid fa-circle-xmark text-red-500"></i>',
+  InfoCircle: '<i class="fa-solid fa-circle-info text-blue-500"></i>',
+  // Badges specific to mock tests
+  BadgeStar: '<i class="ph-bold ph-star text-yellow-500"></i>',
+  BadgeCheck: '<i class="ph-bold ph-seal-check text-green-500"></i>',
+  BadgeFast: '<i class="ph-bold ph-lightning text-orange-500"></i>',
+  BadgeTrophy: '<i class="ph-bold ph-trophy text-amber-500"></i>',
 };
 
-// --- 5. Speaking Questions ---
-/**
- * Defines the questions for each part of the IELTS Speaking test.
- * Part 1: General questions.
- * Part 2: Cue card with preparation and talk time.
- * Part 3: Discussion questions related to Part 2.
- * @type {Object}
- */
-export const speakingQuestions = {
-  1: [
-    "Let's talk about your hometown. Where are you from?",
-    "What do you like most about your hometown?",
-    "Is there anything you would like to change about your hometown?",
-    "Do you think you will continue to live in your hometown in the future?",
-    "Let's move on to the topic of hobbies. What are your main hobbies?",
-    "How often do you engage in these hobbies?",
-    "Did you have any hobbies when you were a child?",
-    "Do you think it's important for people to have hobbies?",
-  ],
-  2: [
-    {
-      cueCard: `Describe a time you helped someone.
-You should say:
-- who the person was
-- what the situation was
-- how you helped them
-and explain how you felt after helping this person.`,
-      prepTime: 60, // seconds
-      talkTime: 120, // seconds (1-2 minutes)
-    },
-  ],
-  3: [
-    "Let's discuss helping others in general. Why do you think people help others?",
-    "Do you think people nowadays are less willing to help others than in the past?",
-    "What are some ways schools can encourage students to help their community?",
-    "Do you think governments should provide more support for volunteers?",
-    "What kind of help do people usually need in modern society?",
-    "How does technology influence the way people help each other?",
-  ],
-};
-
-// --- 6. Utility Functions ---
-
-/**
- * Formats a time in seconds into MM:SS format.
- * @param {number} seconds - The total number of seconds.
- * @returns {string} Formatted time string (e.g., "05:30").
- */
 export function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  const pad = (num) => num.toString().padStart(2, "0");
-  return `${pad(minutes)}:${pad(remainingSeconds)}`;
+  return `${minutes
+    .toString()
+    .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
 
-/**
- * Calculates the word count of a given text string.
- * @param {string} text - The input text.
- * @returns {number} The number of words.
- */
 export function calculateWordCount(text) {
   if (!text) return 0;
-  const words = text.trim().split(/\s+/);
+  const words = text.split(/\s+/).filter((word) => word.length > 0);
   return words.length;
 }
 
-// --- 7. Common Styles ---
-/**
- * Common CSS styles to be injected into the HTML.
- * This helps maintain consistent styling across different modules.
- * @type {string}
- */
-export const commonStyles = `
-/* Inter Font - Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+export const MOCK_TEST_LEVEL_UP_THRESHOLDS = [
+  0, // Level 1: 0 points (starting level)
+  200, // Level 2: 200 total points
+  500, // Level 3: 500 total points
+  1000, // Level 4: 1000 total points
+  1800, // Level 5: 1800 total points
+  2800, // Level 6: 2800 total points
+  4000, // Level 7: 4000 total points
+  5500, // Level 8: 5500 total points
+  7500, // Level 9: 7500 total points
+  10000, // Level 10: 10000 total points (Master)
+];
 
-body {
-    font-family: 'Inter', sans-serif;
-}
-
-/* Basic Tailwind-like reset for consistency */
-*, ::before, ::after {
-  box-sizing: border-box;
-  border-width: 0;
-  border-style: solid;
-  border-color: #e5e7eb; /* gray-200 */
-}
-::before, ::after {
-  --tw-content: '';
-}
-html {
-  line-height: 1.5;
-  -webkit-text-size-adjust: 100%;
-  -moz-tab-size: 4;
-  tab-size: 4;
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-feature-settings: normal;
-  font-variation-settings: normal;
-  -webkit-tap-highlight-color: transparent;
-}
-body {
-  margin: 0;
-  line-height: inherit;
-}
-hr {
-  height: 0;
-  color: inherit;
-  border-top-width: 1px;
-}
-abbr:where([title]) {
-  text-decoration: underline dotted;
-}
-h1, h2, h3, h4, h5, h6 {
-  font-size: inherit;
-  font-weight: inherit;
-}
-a {
-  color: inherit;
-  text-decoration: inherit;
-}
-b, strong {
-  font-weight: bolder;
-}
-code, kbd, samp, pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 1em;
-}
-small {
-  font-size: 80%;
-}
-sub, sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-}
-sub {
-  bottom: -0.25em;
-}
-sup {
-  top: -0.5em;
-}
-table {
-  text-indent: 0;
-  border-color: inherit;
-  border-collapse: collapse;
-}
-button, input, optgroup, select, textarea {
-  font-family: inherit;
-  font-size: 100%;
-  font-weight: inherit;
-  line-height: inherit;
-  color: inherit;
-  margin: 0;
-  padding: 0;
-}
-button, select {
-  text-transform: none;
-}
-button, [type='button'], [type='reset'], [type='submit'] {
-  -webkit-appearance: button;
-  background-color: transparent;
-  background-image: none;
-}
-:-moz-focusring {
-  outline: auto;
-}
-:-moz-ui-invalid {
-  box-shadow: none;
-}
-progress {
-  vertical-align: baseline;
-}
-::-webkit-inner-spin-button, ::-webkit-outer-spin-button {
-  height: auto;
-}
-[type='search'] {
-  -webkit-appearance: textfield;
-  outline-offset: -2px;
-}
-::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-::-webkit-file-upload-button {
-  -webkit-appearance: button;
-  font: inherit;
-}
-summary {
-  display: list-item;
-}
-blockquote, dl, dd, h1, h2, h3, h4, h5, h6, hr, figure, p, pre {
-  margin: 0;
-}
-fieldset {
-  margin: 0;
-  padding: 0;
-}
-legend {
-  padding: 0;
-}
-ol, ul, menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-textarea {
-  resize: vertical;
-}
-input::placeholder, textarea::placeholder {
-  opacity: 1;
-  color: #9ca3af; /* gray-400 */
-}
-button, [role="button"] {
-  cursor: pointer;
-}
-:disabled {
-  cursor: default;
-}
-img, svg, video, canvas, audio, iframe, embed, object {
-  display: block;
-  vertical-align: middle;
-}
-img, video {
-  max-width: 100%;
-  height: auto;
-}
-[hidden] {
-  display: none;
-}
-
-/* Custom toast styles */
-#toast-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.toast {
-    background-color: #333;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    opacity: 0;
-    transform: translateY(-20px);
-    animation: slideIn 0.3s forwards, fadeOut 0.5s 2.5s forwards;
-}
-.toast.success {
-    background-color: #4CAF50; /* Green */
-}
-.toast.error {
-    background-color: #F44336; /* Red */
-}
-.toast.info {
-    background-color: #2196F3; /* Blue */
-}
-
-@keyframes slideIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-}
-`;
-
-// --- 8. SVG Icons ---
-/**
- * Collection of SVG icons for consistent UI elements.
- * Using Lucide React for inspiration, but providing raw SVG for HTML.
- * @type {Object<string, string>}
- */
-export const Icons = {
-  Dashboard: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>`,
-  Forum: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>`,
-  SignIn: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-in"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>`,
-  SignOut: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="17 16 22 12 17 8"/><line x1="22" y1="12" x2="10" y2="12"/></svg>`,
-  ChevronLeft: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>`,
-  Headphones: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headphones"><path d="M18 18H6a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V7"/><path d="M3 9v2a6 6 0 0 0 6 6h2"/><path d="M21 9v2a6 6 0 0 1-6 6h-2"/><path d="M12 3v14"/></svg>`,
-  Mic: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mic"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>`,
-  FileText: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>`,
-  Activity: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
-  Lightbulb: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lightbulb"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 6c0 1.8.7 3.3 1.5 4.5 1 .8 1.5 2 1.5 3.5"/><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 18v4"/></svg>`,
+export const MOCK_TEST_BADGES = {
+  first_mock_test: {
+    name: "First Mock Test",
+    description: "Completed your first full mock test!",
+    icon: MockTestIcons.BadgeStar,
+  },
+  listening_ace: {
+    name: "Listening Ace",
+    description: "Achieved a perfect score in a Listening mock test!",
+    icon: MockTestIcons.BadgeCheck,
+  },
+  reading_pro: {
+    name: "Reading Pro",
+    description: "Achieved a perfect score in a Reading mock test!",
+    icon: MockTestIcons.BadgeCheck,
+  },
+  speed_demon: {
+    name: "Speed Demon (Mock)",
+    description:
+      "Completed a mock test significantly faster than the duration!",
+    icon: MockTestIcons.BadgeFast,
+  },
+  // Add more mock test specific badges here
 };

@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CashShilpo Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        /* Subtle gradient background for the body */
+        background: linear-gradient(to bottom right, #f3f4f6, #e5e7eb);
+      }
+      /* Custom scrollbar for better aesthetics */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #a0aec0; /* A softer gray */
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #718096; /* Darker on hover */
+      }
+      .gradient-blue {
+        background: linear-gradient(to right, #4f46e5, #6366f1);
+      }
+      .gradient-light-blue {
+        background: linear-gradient(to right, #bfdbfe, #eff6ff);
+      }
+      /* Refined card gradient for a softer top edge */
+      .card-gradient-top {
+        background: linear-gradient(
+          to bottom,
+          rgba(239, 246, 255, 0.5),
+          #ffffff
+        );
+      }
+      .fab-menu {
+        transform: scale(0);
+        transform-origin: bottom right;
+        transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bounce effect */
+      }
+      .fab-menu.active {
+        transform: scale(1);
+      }
+      /* Custom styles for Chart.js tooltips */
+      .chartjs-tooltip {
+        background: rgba(30, 41, 59, 0.9) !important; /* Darker background */
+        border-radius: 8px !important;
+        padding: 10px 15px !important;
+        font-family: "Inter", sans-serif !important;
+        font-size: 14px !important;
+        color: #fff !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+      }
+      .chartjs-tooltip-header {
+        padding-bottom: 5px !important;
+        margin-bottom: 5px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+      }
+      .chartjs-tooltip-body {
+        padding-top: 5px !important;
+      }
+      /* Hide sections by default */
+      .content-section {
+        display: none;
+      }
+      .content-section.active {
+        display: block;
+      }
+
+      /* POS specific styles */
+      .product-card {
+        transition: all 0.2s ease-in-out;
+        border: 1px solid transparent; /* Default transparent border */
+      }
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        border-color: #6366f1; /* Blue border on hover */
+      }
+      .product-card.selected {
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+      }
+      .quantity-btn {
+        @apply bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-md w-8 h-8 flex items-center justify-center transition-colors duration-200;
+      }
+      .payment-option-btn {
+        @apply flex-1 py-3 rounded-lg text-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200;
+      }
+    </style>
+  </head>
+  <body class="flex min-h-screen">
+    <!-- Left Sidebar -->
+    <aside
+      class="w-64 bg-white shadow-md p-4 flex flex-col rounded-r-2xl h-screen fixed md:fixed z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out"
+      id="sidebar"
+    >
+      <div class="flex items-center mb-8 px-2">
+        <img
+          src="https://placehold.co/40x40/4F46E5/ffffff?text=CS"
+          alt="CashShilpo Logo"
+          class="rounded-full mr-3 shadow-sm"
+        />
+        <h1 class="text-xl font-extrabold text-gray-800">CashShilpo</h1>
+      </div>
+      <nav class="flex-1 space-y-2">
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-white gradient-blue shadow-md transition-all duration-200 hover:scale-105"
+          data-section="dashboard"
+        >
+          <i class="fas fa-tachometer-alt mr-3"></i>
+          <span class="font-medium">Dashboard</span>
+        </a>
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 hover:scale-105 transform origin-left"
+          data-section="pos"
+        >
+          <i class="fas fa-cash-register mr-3"></i>
+          <span>POS</span>
+        </a>
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 hover:scale-105 transform origin-left"
+          data-section="invoices"
+        >
+          <i class="fas fa-file-invoice-dollar mr-3"></i>
+          <span>Invoices</span>
+        </a>
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 hover:scale-105 transform origin-left"
+          data-section="inventory"
+        >
+          <i class="fas fa-boxes mr-3"></i>
+          <span>Inventory</span>
+        </a>
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 hover:scale-105 transform origin-left"
+          data-section="customers"
+        >
+          <i class="fas fa-users mr-3"></i>
+          <span>Customers</span>
+        </a>
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 hover:scale-105 transform origin-left"
+          data-section="vendors"
+        >
+          <i class="fas fa-handshake mr-3"></i>
+          <span>Vendors</span>
+        </a>
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 hover:scale-105 transform origin-left"
+          data-section="purchase"
+        >
+          <i class="fas fa-shopping-bag mr-3"></i>
+          <span>Purchase</span>
+        </a>
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 hover:scale-105 transform origin-left"
+          data-section="employees"
+        >
+          <i class="fas fa-user-tie mr-3"></i>
+          <span>Employees</span>
+        </a>
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 hover:scale-105 transform origin-left"
+          data-section="subscriptions"
+        >
+          <i class="fas fa-receipt mr-3"></i>
+          <span>Subscriptions</span>
+        </a>
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 hover:scale-105 transform origin-left"
+          data-section="reports"
+        >
+          <i class="fas fa-chart-line mr-3"></i>
+          <span>Reports</span>
+        </a>
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 hover:scale-105 transform origin-left"
+          data-section="accounting"
+        >
+          <i class="fas fa-calculator mr-3"></i>
+          <span>Accounting</span>
+        </a>
+        <a
+          href="#"
+          class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 hover:scale-105 transform origin-left"
+          data-section="settings"
+        >
+          <i class="fas fa-cog mr-3"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div
+      class="flex-1 flex flex-col md:ml-64 transition-all duration-300 ease-in-out"
+    >
+      <!-- Top Navigation Bar -->
+      <header
+        class="bg-white shadow-sm p-4 flex items-center justify-between sticky top-0 z-40 rounded-b-2xl"
+      >
+        <button
+          id="menu-toggle"
+          class="md:hidden text-gray-600 focus:outline-none mr-4"
+        >
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        <div class="relative flex-1 max-w-md mx-4">
+          <input
+            type="text"
+            placeholder="Search anything..."
+            class="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+          />
+          <i
+            class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          ></i>
+        </div>
+        <div class="flex items-center space-x-4 ml-auto">
+          <button
+            id="notification-bell"
+            class="relative text-gray-600 hover:text-blue-600 focus:outline-none transition-colors duration-200"
+          >
+            <i class="fas fa-bell text-xl"></i>
+            <span
+              class="absolute -top-1 -right-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full animate-bounce"
+              >3</span
+            >
+          </button>
+          <div class="relative group">
+            <button
+              class="text-gray-600 hover:text-blue-600 focus:outline-none flex items-center transition-colors duration-200"
+            >
+              <i class="fas fa-globe text-xl mr-2"></i>
+              <span class="hidden sm:inline font-medium">EN</span>
+            </button>
+            <!-- Language Dropdown -->
+            <div
+              class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-in-out transform scale-95 group-hover:scale-100"
+            >
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150"
+                >English</a
+              >
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150"
+                >Español</a
+              >
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150"
+                >Français</a
+              >
+            </div>
+          </div>
+          <div class="flex items-center space-x-2 cursor-pointer">
+            <img
+              src="https://placehold.co/36x36/6366F1/ffffff?text=JD"
+              alt="User Avatar"
+              class="rounded-full border-2 border-blue-400 shadow-sm"
+            />
+            <span class="font-medium text-gray-700 hidden sm:inline"
+              >John Doe</span
+            >
+          </div>
+        </div>
+      </header>
+
+      <!-- Dynamic Content Container -->
+      <div
+        id="main-content-container"
+        class="py-6 px-6 md:px-6 overflow-y-auto flex-1"
+      >
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="content-section active">
+          <!-- KPI Cards Section -->
+          <section
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8"
+          >
+            <!-- Total Sales Card -->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between card-gradient-top transition-transform duration-200 hover:scale-[1.02]"
+            >
+              <h3 class="text-sm font-medium text-gray-500 mb-2">
+                Total Sales
+              </h3>
+              <p class="text-3xl font-extrabold text-gray-800">$125,450</p>
+              <div
+                class="flex items-center text-green-500 text-sm mt-2 font-semibold"
+              >
+                <i class="fas fa-arrow-up mr-1"></i>
+                <span>+12.5% this month</span>
+              </div>
+            </div>
+            <!-- Outstanding Invoices Card -->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between card-gradient-top transition-transform duration-200 hover:scale-[1.02]"
+            >
+              <h3 class="text-sm font-medium text-gray-500 mb-2">
+                Outstanding Invoices
+              </h3>
+              <p class="text-3xl font-extrabold text-gray-800">$18,200</p>
+              <div
+                class="flex items-center text-orange-500 text-sm mt-2 font-semibold"
+              >
+                <i class="fas fa-exclamation-triangle mr-1"></i>
+                <span>5 overdue</span>
+              </div>
+            </div>
+            <!-- Stock Alerts Card -->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between card-gradient-top transition-transform duration-200 hover:scale-[1.02]"
+            >
+              <h3 class="text-sm font-medium text-gray-500 mb-2">
+                Stock Alerts
+              </h3>
+              <p class="text-3xl font-extrabold text-red-600">15</p>
+              <div
+                class="flex items-center text-red-500 text-sm mt-2 font-semibold"
+              >
+                <i class="fas fa-box-open mr-1"></i>
+                <span>Low stock items</span>
+              </div>
+            </div>
+            <!-- Monthly Profit Card -->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between card-gradient-top transition-transform duration-200 hover:scale-[1.02]"
+            >
+              <h3 class="text-sm font-medium text-gray-500 mb-2">
+                Monthly Profit
+              </h3>
+              <p class="text-3xl font-extrabold text-gray-800">$25,890</p>
+              <div
+                class="flex items-center text-green-500 text-sm mt-2 font-semibold"
+              >
+                <i class="fas fa-arrow-up mr-1"></i>
+                <span>+8.2% from last month</span>
+              </div>
+            </div>
+            <!-- Today’s POS Sales Card -->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between card-gradient-top transition-transform duration-200 hover:scale-[1.02]"
+            >
+              <h3 class="text-sm font-medium text-gray-500 mb-2">
+                Today’s POS Sales
+              </h3>
+              <p class="text-3xl font-extrabold text-gray-800">$1,560</p>
+              <div
+                class="flex items-center text-gray-500 text-sm mt-2 font-semibold"
+              >
+                <i class="fas fa-clock mr-1"></i>
+                <span>Real-time data</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Graphical Widgets Section -->
+          <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Sales Bar Chart -->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-lg h-96 flex flex-col transition-transform duration-200 hover:scale-[1.01]"
+            >
+              <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                Sales Performance (Last 7 Days)
+              </h3>
+              <div class="flex-1 relative">
+                <canvas id="salesChart"></canvas>
+              </div>
+            </div>
+            <!-- Inventory Pie Chart -->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-lg h-96 flex flex-col transition-transform duration-200 hover:scale-[1.01]"
+            >
+              <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                Inventory Distribution by Category
+              </h3>
+              <div class="flex-1 relative">
+                <canvas id="inventoryChart"></canvas>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tables & Activity Feed Section -->
+          <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Recent Invoices Table -->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-lg overflow-x-auto transition-transform duration-200 hover:scale-[1.01]"
+            >
+              <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                Recent Invoices
+              </h3>
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-tl-lg"
+                    >
+                      Invoice ID
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                      Customer
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                      Date
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                      Amount
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-tr-lg"
+                    >
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-100">
+                  <tr class="hover:bg-blue-50 transition-colors duration-150">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      INV-001
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      Alice Smith
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-20
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      $500.00
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                        >Paid</span
+                      >
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-blue-50 transition-colors duration-150">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      INV-002
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      Bob Johnson
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-19
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      $750.50
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                        >Pending</span
+                      >
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-blue-50 transition-colors duration-150">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      INV-003
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      Charlie Brown
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-18
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      $320.00
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                        >Overdue</span
+                      >
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-blue-50 transition-colors duration-150">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      INV-004
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      Diana Prince
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-17
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      $1200.00
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                        >Paid</span
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- POS Activity Feed -->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-lg transition-transform duration-200 hover:scale-[1.01]"
+            >
+              <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                POS Activity Feed
+              </h3>
+              <div class="space-y-4 max-h-80 overflow-y-auto">
+                <div
+                  class="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+                >
+                  <i
+                    class="fas fa-shopping-cart text-blue-500 text-lg mr-3"
+                  ></i>
+                  <div>
+                    <p class="text-gray-800 font-medium">
+                      Sale: <span class="font-bold">$45.00</span> (Product A, B)
+                    </p>
+                    <p class="text-gray-500 text-xs">10:30 AM - Register 1</p>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+                >
+                  <i
+                    class="fas fa-shopping-cart text-blue-500 text-lg mr-3"
+                  ></i>
+                  <div>
+                    <p class="text-gray-800 font-medium">
+                      Sale: <span class="font-bold">$120.00</span> (Product C,
+                      D, E)
+                    </p>
+                    <p class="text-gray-500 text-xs">10:15 AM - Register 2</p>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+                >
+                  <i class="fas fa-undo-alt text-red-500 text-lg mr-3"></i>
+                  <div>
+                    <p class="text-gray-800 font-medium">
+                      Return: <span class="font-bold">$15.00</span> (Product F)
+                    </p>
+                    <p class="text-gray-500 text-xs">09:50 AM - Register 1</p>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+                >
+                  <i
+                    class="fas fa-shopping-cart text-blue-500 text-lg mr-3"
+                  ></i>
+                  <div>
+                    <p class="text-gray-800 font-medium">
+                      Sale: <span class="font-bold">$80.00</span> (Product G)
+                    </p>
+                    <p class="text-gray-500 text-xs">09:30 AM - Register 3</p>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+                >
+                  <i
+                    class="fas fa-shopping-cart text-blue-500 text-lg mr-3"
+                  ></i>
+                  <div>
+                    <p class="text-gray-800 font-medium">
+                      Sale: <span class="font-bold">$25.00</span> (Product H)
+                    </p>
+                    <p class="text-gray-500 text-xs">09:00 AM - Register 1</p>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+                >
+                  <i
+                    class="fas fa-shopping-cart text-blue-500 text-lg mr-3"
+                  ></i>
+                  <div>
+                    <p class="text-gray-800 font-medium">
+                      Sale: <span class="font-bold">$60.00</span> (Product I, J)
+                    </p>
+                    <p class="text-gray-500 text-xs">08:45 AM - Register 2</p>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+                >
+                  <i
+                    class="fas fa-shopping-cart text-blue-500 text-lg mr-3"
+                  ></i>
+                  <div>
+                    <p class="text-gray-800 font-medium">
+                      Sale: <span class="font-bold">$95.00</span> (Product K)
+                    </p>
+                    <p class="text-gray-500 text-xs">08:15 AM - Register 1</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- POS Section -->
+        <div id="pos" class="content-section">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Point of Sale</h2>
+          <div
+            class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-180px)]"
+          >
+            <!-- Adjusted height for better fit -->
+            <!-- Product List & Search -->
+            <div
+              class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg flex flex-col"
+            >
+              <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                <div class="relative flex-1">
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    class="w-full pl-10 pr-4 py-3 rounded-full bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-200 text-lg"
+                  />
+                  <i
+                    class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"
+                  ></i>
+                </div>
+                <div class="flex space-x-2 overflow-x-auto pb-2">
+                  <button
+                    class="px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-medium shadow-md hover:bg-blue-700 transition-colors duration-200 flex-shrink-0"
+                  >
+                    All
+                  </button>
+                  <button
+                    class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors duration-200 flex-shrink-0"
+                  >
+                    Electronics
+                  </button>
+                  <button
+                    class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors duration-200 flex-shrink-0"
+                  >
+                    Apparel
+                  </button>
+                  <button
+                    class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors duration-200 flex-shrink-0"
+                  >
+                    Home Goods
+                  </button>
+                  <button
+                    class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors duration-200 flex-shrink-0"
+                  >
+                    Books
+                  </button>
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto flex-1 pr-2"
+              >
+                <!-- Product Card 1 -->
+                <div
+                  class="bg-gray-50 p-4 rounded-xl shadow-sm product-card cursor-pointer flex flex-col items-center text-center"
+                >
+                  <img
+                    src="https://placehold.co/80x80/E0F2FE/4F46E5?text=M"
+                    alt="Wireless Mouse"
+                    class="rounded-lg mb-3"
+                  />
+                  <h4 class="font-semibold text-gray-800 text-base">
+                    Wireless Mouse
+                  </h4>
+                  <p class="text-blue-600 font-bold text-lg mt-1">$29.99</p>
+                  <button
+                    class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 text-sm font-medium add-to-cart-btn"
+                    data-product-id="P1"
+                    data-product-name="Wireless Mouse"
+                    data-product-price="29.99"
+                    data-product-image="https://placehold.co/40x40/E0F2FE/4F46E5?text=M"
+                  >
+                    Add
+                  </button>
+                </div>
+                <!-- Product Card 2 -->
+                <div
+                  class="bg-gray-50 p-4 rounded-xl shadow-sm product-card cursor-pointer flex flex-col items-center text-center"
+                >
+                  <img
+                    src="https://placehold.co/80x80/FEE2E2/EF4444?text=K"
+                    alt="Mechanical Keyboard"
+                    class="rounded-lg mb-3"
+                  />
+                  <h4 class="font-semibold text-gray-800 text-base">
+                    Mechanical Keyboard
+                  </h4>
+                  <p class="text-blue-600 font-bold text-lg mt-1">$79.99</p>
+                  <button
+                    class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 text-sm font-medium add-to-cart-btn"
+                    data-product-id="P2"
+                    data-product-name="Mechanical Keyboard"
+                    data-product-price="79.99"
+                    data-product-image="https://placehold.co/40x40/FEE2E2/EF4444?text=K"
+                  >
+                    Add
+                  </button>
+                </div>
+                <!-- Product Card 3 -->
+                <div
+                  class="bg-gray-50 p-4 rounded-xl shadow-sm product-card cursor-pointer flex flex-col items-center text-center"
+                >
+                  <img
+                    src="https://placehold.co/80x80/D1FAE5/10B981?text=H"
+                    alt="USB-C Hub"
+                    class="rounded-lg mb-3"
+                  />
+                  <h4 class="font-semibold text-gray-800 text-base">
+                    USB-C Hub
+                  </h4>
+                  <p class="text-blue-600 font-bold text-lg mt-1">$45.00</p>
+                  <button
+                    class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 text-sm font-medium add-to-cart-btn"
+                    data-product-id="P3"
+                    data-product-name="USB-C Hub"
+                    data-product-price="45.00"
+                    data-product-image="https://placehold.co/40x40/D1FAE5/10B981?text=H"
+                  >
+                    Add
+                  </button>
+                </div>
+                <!-- Product Card 4 -->
+                <div
+                  class="bg-gray-50 p-4 rounded-xl shadow-sm product-card cursor-pointer flex flex-col items-center text-center"
+                >
+                  <img
+                    src="https://placehold.co/80x80/FFFBEB/F59E0B?text=SSD"
+                    alt="External SSD 1TB"
+                    class="rounded-lg mb-3"
+                  />
+                  <h4 class="font-semibold text-gray-800 text-base">
+                    External SSD 1TB
+                  </h4>
+                  <p class="text-blue-600 font-bold text-lg mt-1">$120.00</p>
+                  <button
+                    class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 text-sm font-medium add-to-cart-btn"
+                    data-product-id="P4"
+                    data-product-name="External SSD 1TB"
+                    data-product-price="120.00"
+                    data-product-image="https://placehold.co/40x40/FFFBEB/F59E0B?text=SSD"
+                  >
+                    Add
+                  </button>
+                </div>
+                <!-- Product Card 5 -->
+                <div
+                  class="bg-gray-50 p-4 rounded-xl shadow-sm product-card cursor-pointer flex flex-col items-center text-center"
+                >
+                  <img
+                    src="https://placehold.co/80x80/E0F2FE/4F46E5?text=HS"
+                    alt="Gaming Headset"
+                    class="rounded-lg mb-3"
+                  />
+                  <h4 class="font-semibold text-gray-800 text-base">
+                    Gaming Headset
+                  </h4>
+                  <p class="text-blue-600 font-bold text-lg mt-1">$65.00</p>
+                  <button
+                    class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 text-sm font-medium add-to-cart-btn"
+                    data-product-id="P5"
+                    data-product-name="Gaming Headset"
+                    data-product-price="65.00"
+                    data-product-image="https://placehold.co/40x40/E0F2FE/4F46E5?text=HS"
+                  >
+                    Add
+                  </button>
+                </div>
+                <!-- Product Card 6 -->
+                <div
+                  class="bg-gray-50 p-4 rounded-xl shadow-sm product-card cursor-pointer flex flex-col items-center text-center"
+                >
+                  <img
+                    src="https://placehold.co/80x80/FEE2E2/EF4444?text=WC"
+                    alt="Webcam 1080p"
+                    class="rounded-lg mb-3"
+                  />
+                  <h4 class="font-semibold text-gray-800 text-base">
+                    Webcam 1080p
+                  </h4>
+                  <p class="text-blue-600 font-bold text-lg mt-1">$35.00</p>
+                  <button
+                    class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 text-sm font-medium add-to-cart-btn"
+                    data-product-id="P6"
+                    data-product-name="Webcam 1080p"
+                    data-product-price="35.00"
+                    data-product-image="https://placehold.co/40x40/FEE2E2/EF4444?text=WC"
+                  >
+                    Add
+                  </button>
+                </div>
+                <!-- Product Card 7 -->
+                <div
+                  class="bg-gray-50 p-4 rounded-xl shadow-sm product-card cursor-pointer flex flex-col items-center text-center"
+                >
+                  <img
+                    src="https://placehold.co/80x80/D1FAE5/10B981?text=SW"
+                    alt="Smartwatch"
+                    class="rounded-lg mb-3"
+                  />
+                  <h4 class="font-semibold text-gray-800 text-base">
+                    Smartwatch
+                  </h4>
+                  <p class="text-blue-600 font-bold text-lg mt-1">$199.99</p>
+                  <button
+                    class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 text-sm font-medium add-to-cart-btn"
+                    data-product-id="P7"
+                    data-product-name="Smartwatch"
+                    data-product-price="199.99"
+                    data-product-image="https://placehold.co/40x40/D1FAE5/10B981?text=SW"
+                  >
+                    Add
+                  </button>
+                </div>
+                <!-- Product Card 8 -->
+                <div
+                  class="bg-gray-50 p-4 rounded-xl shadow-sm product-card cursor-pointer flex flex-col items-center text-center"
+                >
+                  <img
+                    src="https://placehold.co/80x80/FFFBEB/F59E0B?text=PC"
+                    alt="Portable Charger"
+                    class="rounded-lg mb-3"
+                  />
+                  <h4 class="font-semibold text-gray-800 text-base">
+                    Portable Charger
+                  </h4>
+                  <p class="text-blue-600 font-bold text-lg mt-1">$25.00</p>
+                  <button
+                    class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 text-sm font-medium add-to-cart-btn"
+                    data-product-id="P8"
+                    data-product-name="Portable Charger"
+                    data-product-price="25.00"
+                    data-product-image="https://placehold.co/40x40/FFFBEB/F59E0B?text=PC"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cart & Payment Summary -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col">
+              <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                Shopping Cart
+              </h3>
+              <div class="mb-4">
+                <label
+                  for="customer-select"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                  >Customer:</label
+                >
+                <select
+                  id="customer-select"
+                  class="w-full p-3 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                >
+                  <option value="">Walk-in Customer</option>
+                  <option value="alice">Alice Smith</option>
+                  <option value="bob">Bob Johnson</option>
+                  <option value="new">Add New Customer...</option>
+                </select>
+              </div>
+
+              <div
+                id="cart-items-container"
+                class="flex-1 overflow-y-auto pr-2 mb-4 space-y-3"
+              >
+                <!-- Cart items will be dynamically added here -->
+                <div
+                  class="flex items-center justify-between py-2 border-b border-gray-100 cart-item"
+                  data-product-id="P1"
+                  data-price="29.99"
+                >
+                  <div class="flex items-center flex-1">
+                    <img
+                      src="https://placehold.co/40x40/E0F2FE/4F46E5?text=M"
+                      alt="Wireless Mouse"
+                      class="rounded-md mr-3"
+                    />
+                    <div>
+                      <p class="font-medium text-gray-800">Wireless Mouse</p>
+                      <p class="text-sm text-gray-500">$29.99</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center">
+                    <button class="quantity-btn decrease-qty">-</button>
+                    <span
+                      class="font-medium text-gray-800 mx-2 w-8 text-center quantity"
+                      >1</span
+                    >
+                    <button class="quantity-btn increase-qty">+</button>
+                    <span
+                      class="font-bold text-gray-800 ml-4 w-20 text-right item-total"
+                      >$29.99</span
+                    >
+                    <button
+                      class="text-red-500 hover:text-red-700 ml-3 remove-item"
+                    >
+                      <i class="fas fa-times-circle"></i>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center justify-between py-2 border-b border-gray-100 cart-item"
+                  data-product-id="P2"
+                  data-price="79.99"
+                >
+                  <div class="flex items-center flex-1">
+                    <img
+                      src="https://placehold.co/40x40/FEE2E2/EF4444?text=K"
+                      alt="Mechanical Keyboard"
+                      class="rounded-md mr-3"
+                    />
+                    <div>
+                      <p class="font-medium text-gray-800">
+                        Mechanical Keyboard
+                      </p>
+                      <p class="text-sm text-gray-500">$79.99</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center">
+                    <button class="quantity-btn decrease-qty">-</button>
+                    <span
+                      class="font-medium text-gray-800 mx-2 w-8 text-center quantity"
+                      >1</span
+                    >
+                    <button class="quantity-btn increase-qty">+</button>
+                    <span
+                      class="font-bold text-gray-800 ml-4 w-20 text-right item-total"
+                      >$79.99</span
+                    >
+                    <button
+                      class="text-red-500 hover:text-red-700 ml-3 remove-item"
+                    >
+                      <i class="fas fa-times-circle"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-auto pt-4 border-t border-gray-200">
+                <div class="flex justify-between text-gray-700 mb-2">
+                  <span>Subtotal:</span>
+                  <span id="subtotal">$0.00</span>
+                </div>
+                <div class="flex justify-between text-gray-700 mb-2">
+                  <span>Discount:</span>
+                  <span id="discount">$0.00</span>
+                </div>
+                <div class="flex justify-between text-gray-700 mb-2">
+                  <span>Tax (5%):</span>
+                  <span id="tax">$0.00</span>
+                </div>
+                <div
+                  class="flex justify-between text-xl font-bold text-gray-900 mb-6"
+                >
+                  <span>Total:</span>
+                  <span id="total">$0.00</span>
+                </div>
+
+                <div class="mb-4">
+                  <label
+                    for="payment-method"
+                    class="block text-sm font-medium text-gray-700 mb-2"
+                    >Payment Method:</label
+                  >
+                  <div class="flex space-x-2">
+                    <button class="payment-option-btn bg-green-500 text-white">
+                      Cash
+                    </button>
+                    <button class="payment-option-btn bg-purple-500 text-white">
+                      Card
+                    </button>
+                    <button
+                      class="payment-option-btn bg-yellow-500 text-gray-800"
+                    >
+                      Mobile Pay
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  class="w-full gradient-blue text-white py-3 rounded-lg text-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                >
+                  Process Payment
+                </button>
+                <div class="flex space-x-3 mt-3">
+                  <button
+                    class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg text-lg font-semibold shadow-md hover:bg-gray-300 transition-all duration-200"
+                  >
+                    Hold Sale
+                  </button>
+                  <button
+                    id="clear-cart-btn"
+                    class="flex-1 bg-red-500 text-white py-3 rounded-lg text-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                  >
+                    Clear Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Invoices Section -->
+        <div id="invoices" class="content-section">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Invoices</h2>
+          <div class="bg-white p-6 rounded-2xl shadow-lg">
+            <div
+              class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0"
+            >
+              <div class="relative w-full md:w-1/3">
+                <input
+                  type="text"
+                  placeholder="Search invoices..."
+                  class="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                />
+                <i
+                  class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                ></i>
+              </div>
+              <div class="flex space-x-3">
+                <button
+                  class="bg-green-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-600 transition-colors duration-200 flex items-center"
+                >
+                  <i class="fas fa-plus mr-2"></i> New Invoice
+                </button>
+                <button
+                  class="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg shadow-md hover:bg-gray-300 transition-colors duration-200 flex items-center"
+                >
+                  <i class="fas fa-file-export mr-2"></i> Export
+                </button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-gray-100">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-tl-lg"
+                    >
+                      Invoice ID
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                      Customer
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                      Issue Date
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                      Due Date
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                      Amount
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                      Status
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider rounded-tr-lg"
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-100">
+                  <tr class="hover:bg-blue-50 transition-colors duration-150">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      INV-001
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      Alice Smith
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-20
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-08-20
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      $500.00
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                        >Paid</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button class="text-blue-600 hover:text-blue-900 mr-2">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button
+                        class="text-indigo-600 hover:text-indigo-900 mr-2"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="text-red-600 hover:text-red-900">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-blue-50 transition-colors duration-150">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      INV-002
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      Bob Johnson
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-19
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-08-19
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      $750.50
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                        >Pending</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button class="text-blue-600 hover:text-blue-900 mr-2">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button
+                        class="text-indigo-600 hover:text-indigo-900 mr-2"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="text-red-600 hover:text-red-900">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-blue-50 transition-colors duration-150">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      INV-003
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      Charlie Brown
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-18
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-25
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      $320.00
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                        >Overdue</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button class="text-blue-600 hover:text-blue-900 mr-2">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button
+                        class="text-indigo-600 hover:text-indigo-900 mr-2"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="text-red-600 hover:text-red-900">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-blue-50 transition-colors duration-150">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      INV-004
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      Diana Prince
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-17
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-08-17
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                        >Paid</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button class="text-blue-600 hover:text-blue-900 mr-2">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button
+                        class="text-indigo-600 hover:text-indigo-900 mr-2"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="text-red-600 hover:text-red-900">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-blue-50 transition-colors duration-150">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      INV-005
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      Eve Adams
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-16
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-08-16
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      $900.00
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                        >Pending</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button class="text-blue-600 hover:text-blue-900 mr-2">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button
+                        class="text-indigo-600 hover:text-indigo-900 mr-2"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="text-red-600 hover:text-red-900">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-blue-50 transition-colors duration-150">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      INV-006
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      Frank Green
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-15
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      2023-07-22
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                    >
+                      $250.00
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                        >Overdue</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button class="text-blue-600 hover:text-blue-900 mr-2">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button
+                        class="text-indigo-600 hover:text-indigo-900 mr-2"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="text-red-600 hover:text-red-900">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="flex justify-between items-center mt-6">
+              <button
+                class="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg shadow-sm hover:bg-gray-300 transition-colors duration-200"
+              >
+                Previous
+              </button>
+              <span class="text-sm text-gray-600">Page 1 of 5</span>
+              <button
+                class="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg shadow-sm hover:bg-gray-300 transition-colors duration-200"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inventory Section (Placeholder) -->
+        <div id="inventory" class="content-section">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">
+            Inventory Management
+          </h2>
+          <div
+            class="bg-white p-6 rounded-2xl shadow-lg h-96 flex items-center justify-center"
+          >
+            <p class="text-gray-500 text-lg">
+              Inventory content will go here. Stay tuned!
+            </p>
+          </div>
+        </div>
+
+        <!-- Customers Section (Placeholder) -->
+        <div id="customers" class="content-section">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">
+            Customer Management
+          </h2>
+          <div
+            class="bg-white p-6 rounded-2xl shadow-lg h-96 flex items-center justify-center"
+          >
+            <p class="text-gray-500 text-lg">
+              Customer content will go here. Stay tuned!
+            </p>
+          </div>
+        </div>
+
+        <!-- Vendors Section (Placeholder) -->
+        <div id="vendors" class="content-section">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">
+            Vendor Management
+          </h2>
+          <div
+            class="bg-white p-6 rounded-2xl shadow-lg h-96 flex items-center justify-center"
+          >
+            <p class="text-gray-500 text-lg">
+              Vendor content will go here. Stay tuned!
+            </p>
+          </div>
+        </div>
+
+        <!-- Purchase Section (Placeholder) -->
+        <div id="purchase" class="content-section">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Purchase Orders</h2>
+          <div
+            class="bg-white p-6 rounded-2xl shadow-lg h-96 flex items-center justify-center"
+          >
+            <p class="text-gray-500 text-lg">
+              Purchase content will go here. Stay tuned!
+            </p>
+          </div>
+        </div>
+
+        <!-- Employees Section (Placeholder) -->
+        <div id="employees" class="content-section">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">
+            Employee Management
+          </h2>
+          <div
+            class="bg-white p-6 rounded-2xl shadow-lg h-96 flex items-center justify-center"
+          >
+            <p class="text-gray-500 text-lg">
+              Employee content will go here. Stay tuned!
+            </p>
+          </div>
+        </div>
+
+        <!-- Subscriptions Section (Placeholder) -->
+        <div id="subscriptions" class="content-section">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Subscriptions</h2>
+          <div
+            class="bg-white p-6 rounded-2xl shadow-lg h-96 flex items-center justify-center"
+          >
+            <p class="text-gray-500 text-lg">
+              Subscription content will go here. Stay tuned!
+            </p>
+          </div>
+        </div>
+
+        <!-- Reports Section (Placeholder) -->
+        <div id="reports" class="content-section">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">
+            Reports & Analytics
+          </h2>
+          <div
+            class="bg-white p-6 rounded-2xl shadow-lg h-96 flex items-center justify-center"
+          >
+            <p class="text-gray-500 text-lg">
+              Reports content will go here. Stay tuned!
+            </p>
+          </div>
+        </div>
+
+        <!-- Accounting Section (Placeholder) -->
+        <div id="accounting" class="content-section">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Accounting</h2>
+          <div
+            class="bg-white p-6 rounded-2xl shadow-lg h-96 flex items-center justify-center"
+          >
+            <p class="text-gray-500 text-lg">
+              Accounting content will go here. Stay tuned!
+            </p>
+          </div>
+        </div>
+
+        <!-- Settings Section (Placeholder) -->
+        <div id="settings" class="content-section">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Settings</h2>
+          <div
+            class="bg-white p-6 rounded-2xl shadow-lg h-96 flex items-center justify-center"
+          >
+            <p class="text-gray-500 text-lg">
+              Settings content will go here. Stay tuned!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar/Popup Panel -->
+    <div
+      id="right-sidebar"
+      class="fixed top-0 right-0 h-full w-80 bg-white shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out p-6 z-50 rounded-l-2xl"
+    >
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold text-gray-800">Activity</h2>
+        <button
+          id="close-right-sidebar"
+          class="text-gray-500 hover:text-gray-700 focus:outline-none"
+        >
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-md font-semibold text-gray-700 mb-3">
+          Recent Notifications
+        </h3>
+        <div class="space-y-3">
+          <div
+            class="flex items-start p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+          >
+            <i class="fas fa-info-circle text-blue-500 mt-1 mr-3"></i>
+            <div>
+              <p class="text-sm text-gray-800">
+                New customer "Jane Doe" added.
+              </p>
+              <p class="text-xs text-gray-500">5 mins ago</p>
+            </div>
+          </div>
+          <div
+            class="flex items-start p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+          >
+            <i
+              class="fas fa-exclamation-triangle text-orange-500 mt-1 mr-3"
+            ></i>
+            <div>
+              <p class="text-sm text-gray-800">Invoice INV-003 is overdue.</p>
+              <p class="text-xs text-gray-500">1 hour ago</p>
+            </div>
+          </div>
+          <div
+            class="flex items-start p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+          >
+            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+            <div>
+              <p class="text-sm text-gray-800">
+                Report "Monthly Sales" generated.
+              </p>
+              <p class="text-xs text-gray-500">Yesterday</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-md font-semibold text-gray-700 mb-3">Upcoming Tasks</h3>
+        <div class="space-y-3">
+          <div
+            class="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+          >
+            <input
+              type="checkbox"
+              class="form-checkbox text-blue-600 rounded mr-3 h-4 w-4"
+            />
+            <label class="text-sm text-gray-800 cursor-pointer"
+              >Follow up with Client X</label
+            >
+          </div>
+          <div
+            class="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+          >
+            <input
+              type="checkbox"
+              class="form-checkbox text-blue-600 rounded mr-3 h-4 w-4"
+            />
+            <label class="text-sm text-gray-800 cursor-pointer"
+              >Process weekly payroll</label
+            >
+          </div>
+          <div
+            class="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+          >
+            <input
+              type="checkbox"
+              class="form-checkbox text-blue-600 rounded mr-3 h-4 w-4"
+            />
+            <label class="text-sm text-gray-800 cursor-pointer"
+              >Order new office supplies</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-md font-semibold text-gray-700 mb-3">Messages</h3>
+        <div class="space-y-3">
+          <div
+            class="flex items-start p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+          >
+            <img
+              src="https://placehold.co/24x24/E0F2FE/4F46E5?text=AB"
+              alt="User Avatar"
+              class="rounded-full mr-3 shadow-sm"
+            />
+            <div>
+              <p class="text-sm font-medium text-gray-800">Alice B.</p>
+              <p class="text-sm text-gray-600">
+                "Can you review the Q3 budget?"
+              </p>
+              <p class="text-xs text-gray-500">2 hours ago</p>
+            </div>
+          </div>
+          <div
+            class="flex items-start p-2 rounded-lg hover:bg-gray-50 transition-colors duration-150"
+          >
+            <img
+              src="https://placehold.co/24x24/FEE2E2/EF4444?text=CD"
+              alt="User Avatar"
+              class="rounded-full mr-3 shadow-sm"
+            />
+            <div>
+              <p class="text-sm font-medium text-gray-800">Chris D.</p>
+              <p class="text-sm text-gray-600">
+                "Inventory update is complete."
+              </p>
+              <p class="text-xs text-gray-500">4 hours ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Action Button (FAB) -->
+    <div class="fixed bottom-6 right-6 z-50">
+      <div
+        id="fab-menu"
+        class="absolute bottom-16 right-0 mb-2 w-48 bg-white rounded-lg shadow-lg py-2 fab-menu"
+      >
+        <a
+          href="#"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center transition-colors duration-150"
+        >
+          <i class="fas fa-file-invoice-dollar mr-2 text-blue-500"></i> New
+          Invoice
+        </a>
+        <a
+          href="#"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+        >
+          <i class="fas fa-cash-register mr-2 text-green-500"></i> Add Sale
+        </a>
+        <a
+          href="#"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+        >
+          <i class="fas fa-user-plus mr-2 text-purple-500"></i> Add Customer
+        </a>
+      </div>
+      <button
+        id="fab-button"
+        class="w-16 h-16 rounded-full gradient-blue text-white shadow-xl flex items-center justify-center text-3xl focus:outline-none hover:scale-110 transition-transform duration-200 ease-out"
+      >
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
+
+    <script>
+      // Global Chart.js defaults for a cleaner look
+      Chart.defaults.font.family = "Inter";
+      Chart.defaults.font.size = 12;
+      Chart.defaults.color = "#6B7280"; /* Tailwind gray-500 */
+      Chart.defaults.borderColor =
+        "rgba(0,0,0,0.05)"; /* Very light grid lines */
+
+      // Chart.js for Sales Bar Chart
+      const salesCtx = document.getElementById("salesChart").getContext("2d");
+      const salesChart = new Chart(salesCtx, {
+        type: "bar",
+        data: {
+          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          datasets: [
+            {
+              label: "Sales ($)",
+              data: [1200, 1900, 1500, 2200, 1800, 2500, 2000],
+              backgroundColor:
+                "rgba(79, 70, 229, 0.9)" /* Brighter blue with more opacity */,
+              borderColor: "rgba(79, 70, 229, 1)",
+              borderWidth: 1,
+              borderRadius: 8 /* Rounded bars */,
+              hoverBackgroundColor:
+                "rgba(99, 102, 241, 1)" /* Lighter blue on hover */,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              enabled: true,
+              mode: "index",
+              intersect: false,
+              position: "nearest",
+              callbacks: {
+                title: function (context) {
+                  return context[0].label;
+                },
+                label: function (context) {
+                  return "Sales: $" + context.parsed.y.toLocaleString();
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false,
+              },
+              ticks: {
+                color: "#4B5563" /* Tailwind gray-700 */,
+              },
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: "rgba(0, 0, 0, 0.05)" /* Lighter grid lines */,
+              },
+              ticks: {
+                callback: function (value) {
+                  return "$" + value.toLocaleString();
+                },
+                color: "#4B5563" /* Tailwind gray-700 */,
+              },
+            },
+          },
+          animation: {
+            duration: 1000 /* Slower animation */,
+            easing: "easeOutQuart",
+          },
+        },
+      });
+
+      // Chart.js for Inventory Pie Chart
+      const inventoryCtx = document
+        .getElementById("inventoryChart")
+        .getContext("2d");
+      const inventoryChart = new Chart(inventoryCtx, {
+        type: "doughnut",
+        data: {
+          labels: [
+            "Electronics",
+            "Apparel",
+            "Home Goods",
+            "Food & Beverage",
+            "Books",
+          ],
+          datasets: [
+            {
+              data: [300, 200, 150, 100, 50],
+              backgroundColor: [
+                "#4F46E5" /* blue-600 */,
+                "#6366F1" /* indigo-500 */,
+                "#818CF8" /* indigo-400 */,
+                "#A5B4FC" /* indigo-300 */,
+                "#C7D2FE" /* indigo-200 */,
+              ],
+              borderColor: "#FFFFFF" /* White border between segments */,
+              borderWidth: 2,
+              hoverOffset: 8 /* Increased hover offset */,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "right",
+              labels: {
+                boxWidth: 16 /* Slightly larger color boxes */,
+                padding: 20,
+                font: {
+                  size: 13,
+                  weight: "500",
+                },
+                color: "#4B5563" /* Tailwind gray-700 */,
+              },
+            },
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                label: function (context) {
+                  let label = context.label || "";
+                  if (label) {
+                    label += ": ";
+                  }
+                  if (context.parsed !== null) {
+                    label += context.parsed;
+                  }
+                  return label;
+                },
+              },
+            },
+          },
+          cutout: "70%" /* Thicker doughnut */,
+          animation: {
+            animateRotate: true,
+            animateScale: true,
+            duration: 1000,
+            easing: "easeOutQuart",
+          },
+        },
+      });
+
+      // Sidebar Toggle for Mobile
+      const menuToggle = document.getElementById("menu-toggle");
+      const sidebar = document.getElementById("sidebar");
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("-translate-x-full");
+      });
+
+      // Close sidebar when clicking outside on mobile
+      document.addEventListener("click", (event) => {
+        if (
+          !sidebar.contains(event.target) &&
+          !menuToggle.contains(event.target) &&
+          window.innerWidth < 768
+        ) {
+          sidebar.classList.add("-translate-x-full");
+        }
+      });
+
+      // Right Sidebar Toggle
+      const notificationBell = document.getElementById("notification-bell");
+      const rightSidebar = document.getElementById("right-sidebar");
+      const closeRightSidebar = document.getElementById("close-right-sidebar");
+
+      notificationBell.addEventListener("click", (event) => {
+        event.stopPropagation(); // Prevent immediate closing if clicking bell when sidebar is open
+        rightSidebar.classList.toggle("translate-x-full");
+      });
+
+      closeRightSidebar.addEventListener("click", () => {
+        rightSidebar.classList.add("translate-x-full");
+      });
+
+      // Close right sidebar when clicking outside
+      document.addEventListener("click", (event) => {
+        if (
+          !rightSidebar.contains(event.target) &&
+          !notificationBell.contains(event.target)
+        ) {
+          rightSidebar.classList.add("translate-x-full");
+        }
+      });
+
+      // FAB Menu Toggle
+      const fabButton = document.getElementById("fab-button");
+      const fabMenu = document.getElementById("fab-menu");
+
+      fabButton.addEventListener("click", (event) => {
+        event.stopPropagation(); // Prevent click from bubbling to document and closing immediately
+        fabMenu.classList.toggle("active");
+      });
+
+      // Close FAB menu when clicking outside
+      document.addEventListener("click", (event) => {
+        if (
+          !fabMenu.contains(event.target) &&
+          !fabButton.contains(event.target)
+        ) {
+          fabMenu.classList.remove("active");
+        }
+      });
+
+      // Dynamic Content Loading for Sidebar Links
+      const sidebarLinks = document.querySelectorAll(".sidebar-link");
+      const contentSections = document.querySelectorAll(".content-section");
+
+      sidebarLinks.forEach((link) => {
+        link.addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent default link behavior
+
+          // Remove active state from all links
+          sidebarLinks.forEach((item) => {
+            item.classList.remove("gradient-blue", "text-white", "shadow-md");
+            item.classList.add(
+              "text-gray-600",
+              "hover:bg-blue-50",
+              "hover:text-blue-700"
+            );
+          });
+
+          // Add active state to clicked link
+          this.classList.add("gradient-blue", "text-white", "shadow-md");
+          this.classList.remove(
+            "text-gray-600",
+            "hover:bg-blue-50",
+            "hover:text-blue-700"
+          );
+
+          // Hide all content sections
+          contentSections.forEach((section) => {
+            section.classList.remove("active");
+          });
+
+          // Show the target section
+          const targetSectionId = this.dataset.section;
+          const targetSection = document.getElementById(targetSectionId);
+          if (targetSection) {
+            targetSection.classList.add("active");
+          }
+
+          // Close mobile sidebar after selection
+          if (window.innerWidth < 768) {
+            sidebar.classList.add("-translate-x-full");
+          }
+        });
+      });
+
+      // POS Specific Logic (Cart Management)
+      const cartItems = [];
+      const cartItemsContainer = document.getElementById(
+        "cart-items-container"
+      );
+      const subtotalSpan = document.getElementById("subtotal");
+      const discountSpan = document.getElementById("discount");
+      const taxSpan = document.getElementById("tax");
+      const totalSpan = document.getElementById("total");
+      const clearCartBtn = document.getElementById("clear-cart-btn");
+
+      function updateCartTotals() {
+        let currentSubtotal = 0;
+        cartItems.forEach((item) => {
+          currentSubtotal += item.price * item.quantity;
+        });
+
+        // For simplicity, no actual discount logic, just a placeholder
+        const currentDiscount = 0;
+        const taxRate = 0.05; // 5% tax
+        const currentTax = currentSubtotal * taxRate;
+        const currentTotal = currentSubtotal - currentDiscount + currentTax;
+
+        subtotalSpan.textContent = `$${currentSubtotal.toFixed(2)}`;
+        discountSpan.textContent = `$${currentDiscount.toFixed(2)}`;
+        taxSpan.textContent = `$${currentTax.toFixed(2)}`;
+        totalSpan.textContent = `$${currentTotal.toFixed(2)}`;
+      }
+
+      function renderCart() {
+        cartItemsContainer.innerHTML = ""; // Clear existing items
+        if (cartItems.length === 0) {
+          cartItemsContainer.innerHTML =
+            '<p class="text-center text-gray-500 py-8">Your cart is empty. Add some products!</p>';
+        }
+
+        cartItems.forEach((item) => {
+          const cartItemDiv = document.createElement("div");
+          cartItemDiv.classList.add(
+            "flex",
+            "items-center",
+            "justify-between",
+            "py-2",
+            "border-b",
+            "border-gray-100",
+            "cart-item"
+          );
+          cartItemDiv.dataset.productId = item.id;
+          cartItemDiv.dataset.price = item.price;
+
+          cartItemDiv.innerHTML = `
+                    <div class="flex items-center flex-1">
+                        <img src="${item.image}" alt="${
+            item.name
+          }" class="rounded-md mr-3 w-10 h-10 object-cover">
+                        <div>
+                            <p class="font-medium text-gray-800">${
+                              item.name
+                            }</p>
+                            <p class="text-sm text-gray-500">$${item.price.toFixed(
+                              2
+                            )}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <button class="quantity-btn decrease-qty">-</button>
+                        <span class="font-medium text-gray-800 mx-2 w-8 text-center quantity">${
+                          item.quantity
+                        }</span>
+                        <button class="quantity-btn increase-qty">+</button>
+                        <span class="font-bold text-gray-800 ml-4 w-20 text-right item-total">$${(
+                          item.price * item.quantity
+                        ).toFixed(2)}</span>
+                        <button class="text-red-500 hover:text-red-700 ml-3 remove-item"><i class="fas fa-times-circle"></i></button>
+                    </div>
+                `;
+          cartItemsContainer.appendChild(cartItemDiv);
+        });
+        updateCartTotals();
+      }
+
+      // Add to Cart functionality
+      document.querySelectorAll(".add-to-cart-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+          const productId = this.dataset.productId;
+          const productName = this.dataset.productName;
+          const productPrice = parseFloat(this.dataset.productPrice);
+          const productImage = this.dataset.productImage;
+
+          const existingItem = cartItems.find((item) => item.id === productId);
+
+          if (existingItem) {
+            existingItem.quantity++;
+          } else {
+            cartItems.push({
+              id: productId,
+              name: productName,
+              price: productPrice,
+              image: productImage,
+              quantity: 1,
+            });
+          }
+          renderCart();
+        });
+      });
+
+      // Quantity and Remove functionality for cart items (event delegation)
+      cartItemsContainer.addEventListener("click", function (event) {
+        const target = event.target;
+        const cartItemDiv = target.closest(".cart-item");
+        if (!cartItemDiv) return;
+
+        const productId = cartItemDiv.dataset.productId;
+        const itemIndex = cartItems.findIndex((item) => item.id === productId);
+
+        if (itemIndex > -1) {
+          if (target.classList.contains("increase-qty")) {
+            cartItems[itemIndex].quantity++;
+          } else if (target.classList.contains("decrease-qty")) {
+            if (cartItems[itemIndex].quantity > 1) {
+              cartItems[itemIndex].quantity--;
+            }
+          } else if (
+            target.classList.contains("remove-item") ||
+            target.closest(".remove-item")
+          ) {
+            cartItems.splice(itemIndex, 1); // Remove item from array
+          }
+          renderCart();
+        }
+      });
+
+      // Clear Cart button
+      clearCartBtn.addEventListener("click", () => {
+        cartItems.length = 0; // Clear the array
+        renderCart();
+      });
+
+      // Initial render of the cart (to show existing items if any, or empty message)
+      renderCart();
+    </script>
+  </body>
+</html>
