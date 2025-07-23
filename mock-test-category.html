@@ -546,6 +546,49 @@
                                 `
                                 : "";
 
+                              // Corrected logic to count questions, handling table_fill_in_the_blank
+                              const totalQuestions = test.sections.reduce(
+                                (totalAcc, sec) => {
+                                  return (
+                                    totalAcc +
+                                    sec.questionGroups.reduce(
+                                      (groupAcc, group) => {
+                                        if (group.questions) {
+                                          return (
+                                            groupAcc +
+                                            group.questions.reduce(
+                                              (qAcc, question) => {
+                                                if (
+                                                  question.type ===
+                                                    "table_fill_in_the_blank" &&
+                                                  question.correctAnswer
+                                                ) {
+                                                  // Count individual answers for table fill-in-the-blank
+                                                  return (
+                                                    qAcc +
+                                                    Object.keys(
+                                                      question.correctAnswer
+                                                    ).length
+                                                  );
+                                                } else {
+                                                  // For other types, count as 1 question
+                                                  return qAcc + 1;
+                                                }
+                                              },
+                                              0
+                                            )
+                                          );
+                                        } else {
+                                          return groupAcc;
+                                        }
+                                      },
+                                      0
+                                    )
+                                  );
+                                },
+                                0
+                              );
+
                               return `
                                 <a href="${
                                   isLocked
@@ -580,11 +623,7 @@
                                             </span>
                                             <span class="flex items-center gap-1">
                                                 ${QuestionMarkIconSVG}
-                                                ${test.sections.reduce(
-                                                  (acc, sec) =>
-                                                    acc + sec.questions.length,
-                                                  0
-                                                )} Qs
+                                                ${totalQuestions} Qs
                                             </span>
                                         </div>
                                     </div>

@@ -25,17 +25,18 @@
       href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
     />
     <style id="mock-test-styles">
-      /* General body styles - Enhanced gradient for a premium feel */
+      /* Distinct styles for the Mock Test system */
       body {
         font-family: "Inter", sans-serif;
-        /* Adjusted radial gradient for a softer, more professional look */
-        background: radial-gradient(at top left, #eef5fc, #ffffff, #eef5fc);
-        color: #1a202c; /* Darker text for better contrast */
+        background: linear-gradient(
+          135deg,
+          #f0f4f8 0%,
+          #d9e2ec 100%
+        ); /* A subtle, professional blue-gray gradient */
+        color: #2d3748; /* Darker text for readability */
         min-height: 100vh;
         display: flex;
         flex-direction: column;
-        overflow-x: hidden; /* Prevent horizontal scroll */
-        padding: 0; /* Ensure no default body padding on mobile */
       }
 
       .font-anton {
@@ -45,928 +46,472 @@
         font-family: "Inter", sans-serif;
       }
 
-      /* Header styles - More prominent and sleek */
-      .site-header {
+      /* Specific styles for the mock test page layout */
+      .mock-test-layout {
+        display: grid;
+        grid-template-columns: 1fr; /* Default to single column */
+        gap: 1.5rem;
+        padding: 1rem; /* Reduced padding for mobile */
+      }
+
+      @media (min-width: 768px) {
+        /* md breakpoint */
+        .mock-test-layout {
+          padding: 1.5rem; /* Medium padding for tablet */
+        }
+      }
+
+      @media (min-width: 1024px) {
+        /* lg breakpoint */
+        .mock-test-layout {
+          grid-template-columns: 3fr 1fr; /* Two columns on large screens */
+          padding: 2rem; /* Larger padding for desktop */
+        }
+      }
+
+      .main-test-content {
         background-color: #ffffff;
-        border-bottom: 1px solid #e0e0e0;
-        /* Reduced shadow */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
-        padding: 0.5rem 0.5rem; /* Further reduced padding for very small screens */
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        padding: 1.5rem; /* Reduced padding for mobile */
+        overflow-y: auto; /* Enable scrolling for test content */
       }
 
-      @media (min-width: 640px) {
-        .site-header {
-          padding: 1rem 2rem; /* Original padding for larger screens */
-          /* Reduced shadow */
-          box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+      @media (min-width: 768px) {
+        .main-test-content {
+          padding: 2rem; /* Standard padding for tablet and desktop */
         }
       }
 
-      .site-header .nav-link {
-        font-weight: 600; /* Slightly bolder */
-        color: #4a5568; /* Darker gray for links */
-        transition: all 0.2s ease-in-out;
-      }
-
-      .site-header .nav-link:hover {
-        color: #0056b3; /* Richer blue on hover */
-        transform: translateY(-2px) scale(1.02); /* More pronounced hover */
-      }
-
-      .user-id-display {
-        background-color: rgba(255, 255, 255, 0.8);
-        border: 1px solid #cbd5e0;
-        color: #2d3748;
-        /* Removed shadow */
-        box-shadow: none;
-        backdrop-filter: blur(2px); /* Slightly less blur */
-        padding: 0.25rem 0.5rem; /* Adjusted padding */
-        border-radius: 9999px;
-        font-size: 0.7rem; /* Adjusted font size */
-        font-weight: 500;
-      }
-
-      .points-display {
-        /* Refined green gradient for a more sophisticated look */
-        background: linear-gradient(90deg, #28a745, #218838);
+      .sidebar {
+        background-color: #2d3748; /* Dark blue background for sidebar */
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        padding: 1.5rem; /* Standard padding */
         color: white;
-        padding: 0.2rem 0.6rem; /* Adjusted padding */
-        border-radius: 9999px;
-        font-weight: bold;
-        font-size: 0.7rem; /* Adjusted font size */
-        /* Removed shadow */
-        box-shadow: none;
-        display: flex;
-        align-items: center;
-        gap: 0.2rem; /* Adjusted gap */
-        transition: all 0.2s ease-in-out;
-      }
-
-      @media (min-width: 640px) {
-        .user-id-display {
-          padding: 0.5rem 1rem;
-          font-size: 0.9rem;
-        }
-        .points-display {
-          padding: 0.4rem 1rem;
-          font-size: 0.9rem;
-          gap: 0.6rem;
-          /* Reduced shadow */
-          box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
-        }
-      }
-
-      .points-display:hover {
-        transform: translateY(-2px) scale(1.02);
-        /* Reduced shadow */
-        box-shadow: 0 3px 6px rgba(16, 185, 129, 0.3);
-      }
-
-      /* Main test container layout */
-      .test-layout {
         display: flex;
         flex-direction: column;
-        min-height: calc(
-          100vh - 64px
-        ); /* Adjusted for new header height (approx) */
-        padding: 0.25rem; /* Further reduced padding for mobile */
-        gap: 0.25rem; /* Further reduced gap for mobile */
+        gap: 1.5rem;
       }
 
-      @media (min-width: 1024px) {
-        .test-layout {
-          flex-direction: row;
-          padding: 1.5rem; /* Original padding around the main layout */
-          gap: 1.5rem; /* Original space between sidebar and content */
-          min-height: calc(100vh - 88px); /* Adjusted for new header height */
-        }
+      .question-palette-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 0.5rem;
       }
 
-      /* Sidebar styles - Clean and structured */
-      .test-sidebar {
-        background-color: #ffffff;
-        /* Reduced border-radius */
+      .question-palette-btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border-radius: 0.5rem;
-        /* Reduced shadow */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
-        padding: 0.75rem; /* Further reduced padding for mobile */
-        flex-shrink: 0;
-        width: 100%;
-        max-height: none;
-        overflow-y: visible;
-        margin-bottom: 0.4rem; /* Reduced margin */
+        font-weight: 600;
+        transition: all 0.2s ease-in-out;
       }
 
-      @media (min-width: 1024px) {
-        .test-sidebar {
-          width: 320px; /* Wider sidebar */
-          min-height: calc(100vh - 120px);
-          position: sticky;
-          top: 100px;
-          margin-bottom: 0;
-          padding: 2rem; /* Original padding for desktop */
-          /* Reduced shadow */
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-          /* Reduced border-radius */
-          border-radius: 1rem;
-        }
-      }
-
-      .test-sidebar h2 {
-        color: #1a202c;
-        margin-bottom: 0.6rem; /* Reduced margin */
-        font-size: 1.4rem; /* Adjusted for mobile */
-      }
-
-      @media (min-width: 640px) {
-        .test-sidebar h2 {
-          font-size: 2.25rem;
-          margin-bottom: 1.5rem;
-        }
-      }
-
-      /* Timer */
-      .timer-display-container {
-        /* Refined blue gradient for a deeper, richer feel */
-        background: linear-gradient(45deg, #007bff, #0056b3);
+      .question-palette-btn.answered {
+        background-color: #22c55e; /* Green for answered */
         color: white;
-        padding: 0.5rem 0.7rem; /* Reduced padding for mobile */
-        /* Reduced border-radius */
-        border-radius: 0.5rem;
-        /* Reduced shadow */
-        box-shadow: 0 1px 4px rgba(59, 130, 246, 0.15);
-        margin-bottom: 0.7rem; /* Reduced margin */
-        font-family: "Anton", sans-serif;
-        font-size: 1.2rem; /* Adjusted for mobile */
+      }
+
+      .question-palette-btn.unanswered {
+        background-color: #4a5568; /* Darker gray for unanswered */
+        color: white;
+      }
+
+      .question-palette-btn.current {
+        background-color: #3b82f6; /* Blue for current question */
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        border: 2px solid #bfdbfe; /* Light blue border */
+      }
+
+      /* Audio Player Wrapper (for fixed position) */
+      .audio-player-wrapper {
+        position: sticky;
+        top: 64px; /* Height of the header (py-4 * 2 + some default height) */
+        width: 100%;
+        background-color: #f0f4f8; /* Match body background or slightly different */
+        padding: 0.75rem 1rem; /* Padding around the audio player */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 900; /* Below header, above main content */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .audio-player-container {
+        background-color: #e2e8f0; /* Light gray background */
+        border-radius: 1rem;
+        padding: 0.5rem 1rem; /* Adjusted padding */
         display: flex;
         align-items: center;
-        justify-content: space-between;
-      }
-
-      @media (min-width: 640px) {
-        .timer-display-container {
-          padding: 1rem 1.5rem;
-          font-size: 1.875rem;
-          margin-bottom: 1.5rem;
-          /* Reduced shadow */
-          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-          /* Reduced border-radius */
-          border-radius: 0.75rem;
-        }
-      }
-
-      .timer-display-container span {
-        font-weight: 700;
-      }
-
-      /* Audio player styles - More integrated */
-      .audio-player-container {
-        background-color: #f7fafc;
-        /* Reduced border-radius */
-        border-radius: 0.5rem;
-        padding: 0.5rem; /* Reduced padding for mobile */
-        /* Removed shadow */
-        box-shadow: none;
-        margin-bottom: 0.7rem; /* Reduced margin */
-        border: 1px solid #e2e8f0;
-      }
-
-      @media (min-width: 640px) {
-        .audio-player-container {
-          padding: 1rem;
-          margin-bottom: 1.5rem;
-          /* Reduced border-radius */
-          border-radius: 0.75rem;
-          /* Removed shadow */
-          box-shadow: none;
-        }
+        justify-content: center;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 900px; /* Example max-width for audio player */
       }
 
       .audio-player-container audio {
         width: 100%;
-        outline: none;
-        /* Custom styling for native audio controls (limited browser support) */
-        /* For full custom styling, you would hide default controls and build your own with JS */
-        background-color: #f0f4f8; /* Lighter background for the control bar */
-        border-radius: 0.5rem;
-        /* Removed shadow */
-        box-shadow: none;
-        padding: 0.5rem; /* Add some padding around the controls */
-      }
-
-      /* Attempt to style specific parts (limited browser support) */
-      .audio-player-container audio::-webkit-media-controls-panel {
-        background-color: #f0f4f8; /* Background of the control panel */
         border-radius: 0.5rem;
       }
 
-      .audio-player-container audio::-webkit-media-controls-play-button {
-        color: #2563eb; /* Blue play button */
-      }
-
-      .audio-player-container
-        audio::-webkit-media-controls-current-time-display,
-      .audio-player-container
-        audio::-webkit-media-controls-time-remaining-display {
-        color: #4a5568; /* Darker time text */
-      }
-
-      .audio-player-container audio::-webkit-media-controls-timeline {
-        background-color: #e2e8f0; /* Progress bar background */
-        border-radius: 5px;
-      }
-
-      .audio-player-container audio::-webkit-media-controls-volume-slider {
-        background-color: #e2e8f0; /* Volume slider background */
-        border-radius: 5px;
-      }
-
-      /* Section Navigation - Modern buttons */
-      .section-navigation button {
-        background-color: #edf2f7;
-        color: #4a5568;
-        padding: 0.4rem 0.6rem; /* Further reduced padding for mobile */
-        /* Reduced border-radius */
-        border-radius: 0.4rem;
-        font-weight: 600;
-        transition: all 0.2s ease-in-out;
-        /* Removed shadow */
-        box-shadow: none;
-        font-size: 0.8rem; /* Adjusted font size */
-      }
-
-      @media (min-width: 640px) {
-        .section-navigation button {
-          padding: 0.8rem 1.2rem;
-          font-size: 1rem;
-          /* Reduced border-radius */
-          border-radius: 0.6rem;
-          /* Removed shadow */
-          box-shadow: none;
-        }
-      }
-
-      .section-navigation button.bg-blue-600 {
-        /* Refined blue gradient for active state */
-        background: linear-gradient(90deg, #007bff, #0056b3);
-        /* Reduced shadow */
-        box-shadow: 0 1px 3px rgba(37, 99, 235, 0.15);
-      }
-
-      .section-navigation button.bg-blue-600:hover {
-        background: linear-gradient(90deg, #0056b3, #004085);
-        transform: translateY(-2px);
-        /* Reduced shadow */
-        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
-      }
-
-      /* Action Buttons - Bold and inviting */
-      .action-buttons {
-        display: flex;
+      /* Mobile Question Palette Wrapper (fixed at bottom) */
+      .mobile-question-palette-wrapper {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #2d3748; /* Dark background like sidebar */
+        color: white;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+        z-index: 950; /* Above main content, below header */
+        display: none; /* Hidden by default */
         flex-direction: column;
-        gap: 0.8rem; /* Increased gap for mobile */
-        margin-top: 1.5rem; /* Added margin to separate from content */
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        overflow: hidden; /* For rounded corners and content hiding */
       }
 
-      @media (min-width: 640px) {
-        .action-buttons {
-          gap: 1.5rem; /* Increased gap for desktop */
-          margin-top: 3rem; /* Increased margin for desktop */
+      #mobile-palette-content {
+        max-height: 0; /* Initially collapsed */
+        opacity: 0;
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        overflow-y: hidden; /* Hide scrollbar when collapsed */
+      }
+
+      .mobile-question-palette-wrapper.expanded #mobile-palette-content {
+        max-height: 50vh; /* Max height when expanded, adjust as needed */
+        opacity: 1;
+        overflow-y: auto; /* Allow scrolling if content exceeds max-height */
+      }
+
+      .question-palette-grid-mobile {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 0.5rem;
+        padding: 0 1rem 1rem 1rem; /* Padding inside the mobile palette */
+      }
+
+      /* Media queries for responsive display */
+      @media (max-width: 1023px) {
+        /* For screens smaller than lg (desktop) */
+        .mobile-question-palette-wrapper {
+          display: flex; /* Show on mobile/tablet */
         }
-      }
-
-      .action-buttons button {
-        padding: 0.5rem 0.8rem; /* Further reduced padding for mobile */
-        border-radius: 9999px;
-        font-size: 0.85rem; /* Adjusted for mobile */
-        font-weight: 700;
-        transition: all 0.2s ease-in-out;
-        /* Reduced shadow */
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-      }
-
-      @media (min-width: 640px) {
-        .action-buttons button {
-          padding: 1rem 1.5rem;
-          font-size: 1.125rem;
-          /* Reduced shadow */
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        .sidebar {
+          display: none; /* Hide desktop sidebar on mobile/tablet */
         }
-      }
-
-      #submit-test-btn-desktop,
-      #submit-test-btn-mobile {
-        /* Refined green gradient */
-        background: linear-gradient(90deg, #28a745, #218838);
-      }
-      #submit-test-btn-desktop:hover,
-      #submit-test-btn-mobile:hover {
-        background: linear-gradient(90deg, #218838, #1e7e34);
-        transform: translateY(-2px) scale(1.01);
-        /* Reduced shadow */
-        box-shadow: 0 3px 8px rgba(16, 185, 129, 0.3);
-      }
-
-      #exit-test-btn-desktop,
-      #exit-test-btn-mobile {
-        /* Refined gray gradient */
-        background: linear-gradient(90deg, #e2e8f0, #cbd5e0);
-        color: #2d3748;
-      }
-      #exit-test-btn-desktop:hover,
-      #exit-test-btn-mobile:hover {
-        background: linear-gradient(90deg, #cbd5e0, #a0aec0);
-        transform: translateY(-2px) scale(1.01);
-        /* Reduced shadow */
-        box-shadow: 0 3px 8px rgba(160, 174, 192, 0.3);
-      }
-
-      /* Main content area - Clean and spacious */
-      .test-content-area {
-        flex-grow: 1;
-        padding: 0.3rem; /* Further reduced padding for mobile */
-        background-color: #ffffff;
-        /* Reduced border-radius */
-        border-radius: 0.5rem;
-        /* Reduced shadow */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        margin: 0;
+        /* Adjust body padding to account for the fixed mobile palette header */
+        body {
+          padding-bottom: 64px; /* Approximate height of the mobile palette header */
+        }
+        .mock-test-layout {
+          padding-bottom: 2rem; /* Ensure content above mobile palette */
+        }
+        /* Adjust top for audio player on smaller screens if header height changes */
+        .audio-player-wrapper {
+          top: 56px; /* Adjust if header is smaller on mobile */
+        }
       }
 
       @media (min-width: 1024px) {
-        .test-content-area {
-          padding: 2.5rem;
-          /* Reduced border-radius */
-          border-radius: 1rem;
-          /* Reduced shadow */
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        /* For large screens (desktop) */
+        .mobile-question-palette-wrapper {
+          display: none; /* Hide mobile palette on desktop */
+        }
+        .sidebar {
+          display: flex; /* Show desktop sidebar */
+        }
+        body {
+          padding-bottom: 0; /* No extra padding needed on desktop */
         }
       }
 
-      .test-content-area h1 {
-        font-size: 1.6rem; /* Adjusted for mobile */
-        line-height: 1.2;
-        margin-bottom: 0.4rem; /* Reduced margin */
-        color: #0d1a26; /* Darker, more professional heading color */
-        font-weight: 800; /* Made bolder */
+      .question-section {
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px dashed #e2e8f0;
       }
 
-      @media (min-width: 640px) {
-        .test-content-area h1 {
-          font-size: 3.5rem;
-          margin-bottom: 1rem;
-        }
+      .question-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
       }
 
-      .test-content-area p.text-lg {
-        color: #4a5568;
-        font-size: 0.8rem; /* Adjusted for mobile */
-        line-height: 1.5; /* Slightly increased line-height for better readability */
-      }
-
-      @media (min-width: 640px) {
-        .test-content-area p.text-lg {
-          font-size: 1.125rem;
-        }
-      }
-
-      /* Section Header */
-      .section-header {
-        margin-bottom: 0.6rem; /* Reduced margin for mobile */
-        padding-bottom: 0.2rem; /* Reduced padding for mobile */
-        border-bottom: 1px solid #e2e8f0; /* Lighter border */
-      }
-
-      @media (min-width: 640px) {
-        .section-header {
-          margin-bottom: 1.5rem;
-          padding-bottom: 0.75rem;
-          border-bottom: 2px solid #e2e8f0; /* Stronger border for desktop */
-        }
-      }
-
-      .section-header h2 {
-        font-size: 1.3rem; /* Adjusted for mobile */
-        color: #25384d; /* Darker color for section headings */
-        margin-bottom: 0.15rem; /* Reduced margin */
-        font-weight: 700; /* Made bolder */
-      }
-
-      @media (min-width: 640px) {
-        .section-header h2 {
-          font-size: 2.5rem;
-          margin-bottom: 0.5rem;
-        }
-      }
-
-      .section-header p.text-xl {
-        font-size: 0.8rem; /* Adjusted for mobile */
-        color: #5a6a7c; /* Slightly darker gray for better contrast */
-      }
-
-      @media (min-width: 640px) {
-        .section-header p.text-xl {
-          font-size: 1.25rem;
-        }
-      }
-
-      /* Context block - Visually distinct */
-      .context-block {
-        /* Refined background for a softer, slightly distinct look */
-        background-color: #f8faff;
-        border: 1px solid #dbeafe;
-        padding: 0rem;
-        border-radius: 0.6rem;
-        /* Removed shadow */
-        box-shadow: none;
-        margin-bottom: 0.8rem; /* Reduced margin for mobile */
-        line-height: 1.4; /* Slightly reduced line-height */
-        color: #2d3748;
-        overflow-x: auto;
-      }
-
-      @media (min-width: 640px) {
-        .context-block {
-          padding: 0rem;
-          margin-bottom: 2rem;
-          /* Reduced border-radius */
-          border-radius: 1rem;
-          /* Reduced shadow */
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-      }
-
-      .context-block h3 {
-        font-size: 1.1rem; /* Adjusted for mobile */
-        font-weight: 700;
-        margin-bottom: 0.5rem; /* Reduced margin */
-        color: #2d3748;
-      }
-
-      @media (min-width: 640px) {
-        .context-block h3 {
-          font-size: 1.75rem;
-          margin-bottom: 1.5rem;
-        }
-      }
-
-      .context-block p.font-semibold {
-        font-size: 0.8rem; /* Adjusted for mobile */
-        color: #2563eb;
-        margin-bottom: 0.3rem; /* Reduced margin */
-      }
-
-      @media (min-width: 640px) {
-        .context-block p.font-semibold {
-          font-size: 1.125rem;
-          margin-bottom: 1rem;
-        }
-      }
-
-      .context-block ul {
-        list-style: none;
-        padding-left: 0;
-      }
-
-      .context-block li {
-        display: flex;
-        align-items: center;
-        margin-bottom: 0.3rem; /* Reduced margin */
-        line-height: 1.7; /* Adjusted line-height */
-      }
-
-      .context-block li span.mr-2 {
-        flex-shrink: 0;
-        margin-top: 0.1rem; /* Align icon better */
-      }
-
-      /* Question specific styles - Card-like appearance */
-      .question-block {
-        background-color: #ffffff;
-        border: 1px solid #e2e8f0;
-        /* Reduced border-radius */
+      .question-group-instructions {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background-color: #f0f4f8; /* Light background for instructions */
+        border-left: 4px solid #60a5fa; /* A slightly lighter blue border */
         border-radius: 0.5rem;
-        padding: 0.6rem; /* Further reduced padding for mobile */
-        margin-bottom: 0.7rem; /* Reduced margin for mobile */
-        /* Removed shadow */
-        box-shadow: none;
-      }
-
-      @media (min-width: 640px) {
-        .question-block {
-          padding: 2rem;
-          margin-bottom: 1.5rem;
-          /* Reduced border-radius */
-          border-radius: 0.75rem;
-          /* Reduced shadow */
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-        }
-      }
-
-      .question-number {
-        font-size: 0.85rem; /* Adjusted for mobile */
-        font-weight: 800;
-        color: #2563eb;
-        margin-right: 0.3rem; /* Reduced margin for mobile */
-      }
-
-      @media (min-width: 640px) {
-        .question-number {
-          font-size: 1.5rem;
-          margin-right: 1rem;
-        }
-      }
-
-      .question-text {
-        font-size: 0.95rem; /* Increased font size for mobile */
-        line-height: 1.5; /* Increased line-height for readability */
-        color: #333333;
-      }
-
-      @media (min-width: 640px) {
-        .question-text {
-          font-size: 1.15rem;
-        }
-      }
-
-      /* Inline input fields - Sleek and integrated */
-      .note-completion-inline-input {
-        display: inline-block;
-        width: 100px; /* Increased width for better touch target */
-        max-width: 120px; /* Increased max-width */
-        padding: 0.5rem 0.8rem; /* Increased padding for better touch target */
-        border: 1px solid #a0aec0;
-        /* Reduced border-radius */
-        border-radius: 0.3rem;
-        font-size: 1rem; /* Increased font size for readability */
-        color: #2d3748;
-        background-color: #ffffff;
-        transition: all 0.2s ease-in-out;
-        /* Reduced shadow */
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-        vertical-align: middle;
-      }
-
-      @media (min-width: 640px) {
-        .note-completion-inline-input {
-          max-width: 210px;
-          padding: 0.6rem 0.8rem;
-          font-size: 1.05rem;
-          /* Reduced border-radius */
-          border-radius: 0.4rem;
-          /* Reduced shadow */
-          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
-        }
-      }
-
-      .note-completion-inline-input:focus {
-        outline: none;
-        border-color: #4299e1;
-        /* Reduced shadow */
-        box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2),
-          inset 0 1px 2px rgba(0, 0, 0, 0.04);
-      }
-
-      /* Standard note completion input (if still used) */
-      .note-completion-input {
-        border: 1px solid #cbd5e0;
-        /* Reduced border-radius */
-        border-radius: 0.5rem;
-        padding: 0.8rem 1rem; /* Increased padding */
-        font-size: 1.1rem; /* Increased font size */
-        width: 100%;
-        max-width: 350px; /* Increased max-width */
-        transition: border-color 0.2s, box-shadow 0.2s;
-        background-color: #fefefe;
-        /* Reduced shadow */
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-      }
-
-      .note-completion-input:focus {
-        outline: none;
-        border-color: #2563eb;
-        /* Reduced shadow */
-        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2),
-          inset 0 1px 2px rgba(0, 0, 0, 0.04);
-      }
-
-      /* Multiple Choice Options - Interactive and clear */
-      .multiple-choice-option {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 0.5rem; /* Increased spacing for mobile */
-        cursor: pointer;
-        padding: 0.6rem; /* Increased padding for mobile */
-        /* Reduced border-radius */
-        border-radius: 0.4rem;
-        transition: background-color 0.2s, box-shadow 0.2s;
-        background-color: #f0f4f8;
-        border: 1px solid #cbd5e0;
-        /* Removed shadow */
-        box-shadow: none;
-      }
-
-      @media (min-width: 640px) {
-        .multiple-choice-option {
-          margin-bottom: 1rem;
-          padding: 1.2rem;
-          /* Reduced border-radius */
-          border-radius: 0.6rem;
-          /* Removed shadow */
-          box-shadow: none;
-        }
-      }
-
-      .multiple-choice-option:hover {
-        background-color: #e2e8f0;
-        /* Reduced shadow */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      }
-
-      .multiple-choice-option input[type="radio"],
-      .multiple-choice-option input[type="checkbox"] {
-        margin-top: 0.2rem; /* Adjusted margin */
-        margin-right: 0.6rem; /* Adjusted space for mobile */
-        flex-shrink: 0;
-        transform: scale(1.1); /* Slightly larger radio/checkbox for mobile */
-        accent-color: #2563eb;
-      }
-
-      @media (min-width: 640px) {
-        .multiple-choice-option input[type="radio"],
-        .multiple-choice-option input[type="checkbox"] {
-          margin-right: 1rem;
-          transform: scale(1.3);
-        }
-      }
-
-      .multiple-choice-option span {
-        font-weight: 500;
-        color: #333333;
-        font-size: 1rem; /* Increased font size for readability */
-      }
-
-      @media (min-width: 640px) {
-        .multiple-choice-option span {
-          font-size: 1.1rem;
-        }
-      }
-
-      /* Matching Items - Structured and clean */
-      .matching-item {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        margin-bottom: 0.7rem; /* Increased spacing for mobile */
-        background-color: #f9fafb;
-        padding: 0.6rem; /* Increased padding for mobile */
-        /* Reduced border-radius */
-        border-radius: 0.4rem;
-        border: 1px solid #e5e7eb;
-        /* Removed shadow */
-        box-shadow: none;
-      }
-
-      @media (min-width: 640px) {
-        .matching-item {
-          flex-direction: row;
-          align-items: center;
-          margin-bottom: 1.2rem;
-          padding: 1rem 1.5rem;
-          /* Reduced border-radius */
-          border-radius: 0.6rem;
-          /* Removed shadow */
-          box-shadow: none;
-        }
-      }
-
-      .matching-item span {
-        flex-shrink: 0;
-        margin-right: 0;
-        margin-bottom: 0.2rem; /* Adjusted vertical spacing on mobile */
-        font-weight: 600;
-        color: #333;
-        font-size: 1rem; /* Increased font size for readability */
-      }
-
-      @media (min-width: 640px) {
-        .matching-item span {
-          margin-right: 1.5rem;
-          margin-bottom: 0;
-          font-size: 1.05rem;
-        }
-      }
-
-      .matching-item select {
-        flex-grow: 1;
-        border: 1px solid #cbd5e0;
-        /* Reduced border-radius */
-        border-radius: 0.3rem;
-        padding: 0.5rem 0.8rem; /* Increased padding */
-        font-size: 1rem; /* Increased font size */
-        background-color: white;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%234A5568' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 0.7rem center; /* Adjusted position */
-        background-size: 0.8em; /* Adjusted size */
-        width: 100%;
-      }
-
-      @media (min-width: 640px) {
-        .matching-item select {
-          width: auto;
-          max-width: none;
-          padding: 0.6rem 1rem;
-          font-size: 1rem;
-          /* Reduced border-radius */
-          border-radius: 0.4rem;
-          background-position: right 0.75rem center;
-          background-size: 0.8em;
-        }
-      }
-
-      .matching-item select:focus {
-        outline: none;
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); /* Enhanced focus shadow */
-      }
-
-      /* Navigation buttons - Modern and inviting */
-      .nav-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 1rem; /* Increased margin */
-        gap: 0.6rem; /* Increased gap */
-      }
-
-      @media (min-width: 640px) {
-        .nav-buttons {
-          margin-top: 3rem;
-          gap: 1rem;
-        }
-      }
-
-      .nav-buttons button {
-        padding: 0.6rem 1rem; /* Increased padding */
-        border-radius: 9999px;
-        font-weight: 600;
-        font-size: 0.9rem; /* Increased font size */
-        transition: all 0.2s ease-in-out;
-        /* Reduced shadow */
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       }
 
-      @media (min-width: 640px) {
-        .nav-buttons button {
-          padding: 0.9rem 1.8rem;
-          font-size: 1.05rem;
-          /* Reduced shadow */
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-        }
+      .question-group-instructions p {
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
       }
 
-      #prev-section-btn {
-        background-color: #e2e8f0;
+      .question-group-instructions p:last-child {
+        margin-bottom: 0;
+      }
+
+      .question-item {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background-color: #f8fafc;
+        border-left: 4px solid #3b82f6;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      .question-item label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
         color: #2d3748;
       }
-      #prev-section-btn:hover:not(:disabled) {
-        background-color: #cbd5e0;
-        transform: translateY(-2px);
-        /* Reduced shadow */
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+      .question-item .inline-question-text {
+        display: inline; /* Make the text inline */
+        font-size: 1.125rem; /* text-lg */
+        font-weight: 600; /* font-semibold */
+        color: #2d3748;
       }
 
-      #next-section-btn {
-        /* Refined blue gradient */
-        background: linear-gradient(90deg, #007bff, #0056b3);
-        color: white;
-      }
-      #next-section-btn:hover:not(:disabled) {
-        background: linear-gradient(90deg, #0056b3, #004085);
-        transform: translateY(-2px);
-        /* Reduced shadow */
-        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
-      }
-
-      .nav-buttons button:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        box-shadow: none;
+      .question-item .inline-input {
+        display: inline-block; /* Make the input inline-block */
+        width: 120px; /* Adjust width as needed */
+        padding: 0.3rem 0.6rem;
+        margin: 0 0.5rem; /* Add some horizontal margin */
+        border: 1px solid #cbd5e0;
+        border-radius: 0.375rem; /* rounded-md */
+        font-size: 1rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        vertical-align: middle; /* Align with text */
       }
 
-      /* Modal styles - Elegant and centered */
+      .question-item .inline-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+
+      /* New style for inputs on a new line */
+      .question-item .block-input {
+        display: block;
+        width: calc(100% - 1rem); /* Full width minus padding */
+        margin: 0.5rem 0.5rem 0 0.5rem; /* Top margin to separate from number/text */
+        padding: 0.5rem 1rem; /* Larger padding for block input */
+        border: 1px solid #cbd5e0;
+        border-radius: 0.375rem;
+        font-size: 1rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .question-item .block-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+
+      /* Table specific styles */
+      .table-responsive-wrapper {
+        overflow-x: auto; /* Enable horizontal scrolling for table on small screens */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+      }
+
+      .question-item .table-input {
+        width: 100%; /* Make input fill the table cell */
+        padding: 0.3rem 0.6rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 0.375rem;
+        font-size: 1rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .question-item .table-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+
+      .question-item table {
+        width: 100%;
+        min-width: 600px; /* Ensure table has a minimum width to trigger scroll if needed */
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+
+      .question-item th,
+      .question-item td {
+        border: 1px solid #e2e8f0; /* Light border for table cells */
+        padding: 0.75rem;
+        text-align: left;
+      }
+
+      .question-item th {
+        background-color: #f0f4f8; /* Light background for table headers */
+        font-weight: 600;
+        color: #2d3748;
+      }
+
+      .question-item input[type="radio"] {
+        margin-right: 0.75rem;
+        transform: scale(1.2);
+      }
+
+      .question-item .radio-option {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        transition: background-color 0.2s ease;
+      }
+
+      .question-item .radio-option:hover {
+        background-color: #eff6ff; /* Light blue on hover */
+      }
+
+      .question-item .radio-option input[type="radio"]:checked + span {
+        font-weight: 600;
+        color: #3b82f6;
+      }
+
+      .map-image-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 1.5rem auto;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .map-image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .user-id-display {
+        background-color: rgba(255, 255, 255, 0.7);
+        border: 1px solid #d1d5db;
+        color: #4b5563;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        backdrop-filter: blur(3px);
+      }
+
+      /* Modal Styles */
       .modal-overlay {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        /* Reduced opacity */
-        background-color: rgba(0, 0, 0, 0.4);
+        background-color: rgba(0, 0, 0, 0.6);
         display: flex;
         justify-content: center;
         align-items: center;
         z-index: 1000;
-        animation: fadeIn 0.3s ease-out;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .modal-overlay.visible {
+        opacity: 1;
+        visibility: visible;
       }
 
       .modal-content {
-        background-color: white;
-        padding: 1rem; /* Increased padding for mobile */
-        /* Reduced border-radius */
-        border-radius: 0.75rem;
-        /* Reduced shadow */
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-        max-width: 300px; /* Increased max-width for mobile */
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        max-width: 500px;
         width: 90%;
         text-align: center;
-        animation: fadeInUp 0.3s ease-out;
+        transform: translateY(-20px);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
       }
 
-      @media (min-width: 640px) {
-        .modal-content {
-          padding: 2.5rem;
-          max-width: 550px;
-          /* Reduced border-radius */
-          border-radius: 1rem;
-          /* Reduced shadow */
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
+      .modal-overlay.visible .modal-content {
+        transform: translateY(0);
+        opacity: 1;
       }
 
-      .modal-content h3 {
-        font-size: 1.4rem; /* Increased for mobile */
-        font-weight: 800;
-        margin-bottom: 0.4rem; /* Adjusted for mobile */
-        color: #1a202c;
+      .modal-header {
+        font-size: 1.75rem; /* text-2xl */
+        font-weight: 700; /* font-bold */
+        color: #2d3748;
+        margin-bottom: 1rem;
       }
 
-      @media (min-width: 640px) {
-        .modal-content h3 {
-          font-size: 2.5rem;
-          margin-bottom: 1rem;
-        }
-      }
-
-      .modal-content p {
-        font-size: 0.9rem; /* Increased for mobile */
+      .modal-body {
+        font-size: 1rem; /* text-base */
         color: #4a5568;
-        margin-bottom: 0.8rem; /* Adjusted for mobile */
-        line-height: 1.4;
+        margin-bottom: 1.5rem;
       }
 
-      @media (min-width: 640px) {
-        .modal-content p {
-          font-size: 1.15rem;
-          margin-bottom: 2rem;
-        }
+      .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
       }
 
-      .modal-content button {
-        padding: 0.5rem 1rem; /* Increased for mobile */
-        border-radius: 9999px;
+      .modal-button {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
         font-weight: 600;
-        font-size: 0.85rem; /* Increased for mobile */
-        transition: all 0.2s ease-in-out;
-        /* Reduced shadow */
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: background-color 0.2s ease, transform 0.1s ease;
       }
 
-      @media (min-width: 640px) {
-        .modal-content button {
-          padding: 0.8rem 1.6rem;
-          font-size: 1rem;
-          /* Reduced shadow */
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-        }
-      }
-
-      #modal-confirm-btn {
-        /* Refined blue gradient */
-        background: linear-gradient(90deg, #007bff, #0056b3);
+      .modal-button.primary {
+        background-color: #3b82f6; /* blue-500 */
         color: white;
       }
-      #modal-confirm-btn:hover {
-        background: linear-gradient(90deg, #0056b3, #004085);
-        transform: translateY(-2px);
-        /* Reduced shadow */
-        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+
+      .modal-button.primary:hover {
+        background-color: #2563eb; /* blue-600 */
+        transform: translateY(-1px);
       }
 
-      #modal-cancel-btn {
-        background-color: #e2e8f0;
-        color: #2d3748;
-      }
-      #modal-cancel-btn:hover {
-        background-color: #cbd5e0;
-        transform: translateY(-2px);
-        /* Reduced shadow */
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      .modal-button.secondary {
+        background-color: #e2e8f0; /* gray-200 */
+        color: #4a5568;
       }
 
-      /* Animations */
+      .modal-button.secondary:hover {
+        background-color: #cbd5e0; /* gray-300 */
+        transform: translateY(-1px);
+      }
+      #app-header {
+        background-color: #ffffff; /* White background for header */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Styles for results page elements (copied from mock-test-results.html) */
+      .results-card {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f8faff 100%
+        ); /* Subtle gradient for cards */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* More rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        transition: all 0.3s ease-in-out;
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -987,247 +532,145 @@
         }
       }
 
-      /* Specific styles for the content within context blocks */
-      .context-block .note-completion-inline-input {
-        width: 160px; /* Increased width */
-        max-width: 160px; /* Increased max-width */
-        padding: 0.5rem 0.8rem; /* Increased padding */
-        border: 1px solid #a0aec0;
-        /* Reduced border-radius */
-        border-radius: 0.3rem;
-        background-color: #ffffff;
-        /* Reduced shadow */
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-        font-size: 1rem; /* Increased font size */
-        color: #2d3748;
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
       }
 
-      @media (min-width: 640px) {
-        .context-block .note-completion-inline-input {
-          max-width: 210px;
-          padding: 0.6rem 0.8rem;
-          font-size: 1.05rem;
-          /* Reduced border-radius */
-          border-radius: 0.4rem;
-          /* Reduced shadow */
-          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
-        }
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
       }
 
-      .context-block .note-completion-inline-input:focus {
-        border-color: #4299e1;
-        /* Reduced shadow */
-        box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2),
-          inset 0 1px 2px rgba(0, 0, 0, 0.04);
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
       }
 
-      .context-block .multiple-choice-option {
-        background-color: #f0f4f8;
-        border: 1px solid #cbd5e0;
-        padding: 0.6rem; /* Increased padding */
-        margin-bottom: 0.5rem; /* Increased margin */
-        /* Reduced border-radius */
-        border-radius: 0.4rem;
-        /* Removed shadow */
-        box-shadow: none;
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
       }
 
-      @media (min-width: 640px) {
-        .context-block .multiple-choice-option {
-          padding: 1.2rem;
-          margin-bottom: 1rem;
-          /* Reduced border-radius */
-          border-radius: 0.75rem;
-          /* Removed shadow */
-          box-shadow: none;
-        }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
       }
 
-      .context-block .multiple-choice-option:hover {
-        background-color: #e2e8f0;
-        /* Reduced shadow */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #555;
       }
 
-      .context-block .multiple-choice-option input[type="radio"],
-      .context-block .multiple-choice-option input[type="checkbox"] {
-        transform: scale(1.1); /* Slightly larger radio/checkbox */
-        margin-top: 0.2rem;
-        margin-right: 0.6rem;
+      .feedback-section .correct-answer {
+        color: #16a34a; /* green-600 */
+        font-weight: bold;
       }
 
-      @media (min-width: 640px) {
-        .context-block .multiple-choice-option input[type="radio"],
-        .context-block .multiple-choice-option input[type="checkbox"] {
-          transform: scale(1.3);
-        }
+      .feedback-section .incorrect-answer {
+        color: #dc2626; /* red-600 */
+        font-weight: bold;
       }
 
-      .context-block .multiple-choice-option span {
-        font-size: 1rem; /* Increased font size */
-        font-weight: 600;
-        color: #2d3748;
+      .feedback-section .explanation {
+        background-color: #f0f9ff; /* blue-50 */
+        border-left: 4px solid #3b82f6; /* blue-500 */
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+        font-style: italic;
+        color: #475569; /* slate-600 */
       }
 
-      @media (min-width: 640px) {
-        .context-block .multiple-choice-option span {
-          font-size: 1.1rem;
-        }
+      .leaderboard-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
       }
 
-      /* Table styling for Part 3 of Listening Test 5 */
-      .context-block table {
+      .leaderboard-table {
+        min-width: 600px;
         width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        /* Reduced border-radius */
-        border-radius: 0.6rem;
-        overflow: hidden;
-        /* Reduced shadow */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        margin-top: 0.8rem; /* Increased margin */
+        border-collapse: collapse;
       }
 
-      @media (min-width: 640px) {
-        .context-block table {
-          margin-top: 1.5rem;
-          /* Reduced border-radius */
-          border-radius: 0.75rem;
-          /* Reduced shadow */
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-        }
-      }
-
-      .context-block th,
-      .context-block td {
-        padding: 0.5rem 0.7rem; /* Increased padding */
-        border-bottom: 1px solid #e2e8f0;
+      .leaderboard-table th,
+      .leaderboard-table td {
+        padding: 1rem 1.5rem;
         text-align: left;
-        font-size: 0.9rem; /* Increased font size */
+        border-bottom: 1px solid #e2e8f0;
       }
 
-      @media (min-width: 640px) {
-        .context-block th,
-        .context-block td {
-          padding: 1.2rem 1.5rem;
-          font-size: 1.05rem;
-        }
-      }
-
-      .context-block th {
-        background-color: #edf2f7;
+      .leaderboard-table th {
+        background-color: #f8fafc;
         font-weight: 700;
-        color: #4a5568;
+        color: #475569;
         text-transform: uppercase;
+        font-size: 0.8rem;
         letter-spacing: 0.05em;
       }
 
-      .context-block tr:last-child td {
+      .leaderboard-table tbody tr:last-child td {
         border-bottom: none;
       }
 
-      .context-block tr:nth-child(even) {
-        background-color: #f7fafc;
+      .leaderboard-table tbody tr:hover {
+        background-color: #f0f9ff;
       }
 
-      .context-block tr:hover {
+      .leaderboard-table tbody tr.current-user-row {
         background-color: #e0f2fe;
+        font-weight: 600;
+        color: #1e40af;
       }
 
-      .context-block table .note-completion-inline-input {
-        width: 100%;
-        box-sizing: border-box;
+      .leaderboard-table tbody tr.current-user-row:hover {
+        background-color: #bfdbfe;
       }
 
-      /* NEW CSS for Container Diagram in Context Block */
-      .size-container-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.8rem; /* Increased gap */
-      }
-
-      @media (min-width: 640px) {
-        .size-container-section {
-          flex-direction: row;
-          justify-content: center;
-          align-items: flex-start;
-          gap: 2rem;
-        }
-      }
-
-      .container-diagram {
-        width: 70vw; /* Increased width */
-        height: 60vw; /* Increased height */
-        background-color: #e2e8f0;
-        border: 1px solid #a0aec0; /* Lighter border */
-        /* Reduced border-radius */
-        border-radius: 0.4rem;
-        display: flex;
+      .rank-badge {
+        display: inline-flex;
         align-items: center;
         justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
         font-weight: bold;
-        color: #4a5568;
-        /* Reduced shadow */
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-        flex-shrink: 0;
-        font-size: 0.85rem; /* Increased font size */
+        font-size: 0.875rem;
+        color: white;
+        margin-right: 0.5rem;
       }
 
-      @media (min-width: 640px) {
-        .container-diagram {
-          width: 30vw;
-          height: 25vw;
-          border: 2px solid #a0aec0;
-          /* Reduced border-radius */
-          border-radius: 0.6rem;
-          /* Reduced shadow */
-          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
-          font-size: 1rem;
-        }
+      .rank-1 {
+        background: linear-gradient(
+          45deg,
+          #ffbf00,
+          #f7dc6f
+        ); /* Gold gradient */
+        box-shadow: 0 2px 6px rgba(255, 191, 0, 0.4);
       }
-
-      .size-details {
-        display: flex;
-        flex-direction: column;
-        gap: 0.6rem; /* Increased gap */
-        width: 100%;
+      .rank-2 {
+        background: linear-gradient(
+          45deg,
+          #a7a7ad,
+          #d4d4d8
+        ); /* Silver gradient */
+        box-shadow: 0 2px 6px rgba(167, 167, 173, 0.4);
       }
-
-      @media (min-width: 640px) {
-        .size-details {
-          width: auto;
-        }
+      .rank-3 {
+        background: linear-gradient(
+          45deg,
+          #cd7f32,
+          #e6a25b
+        ); /* Bronze gradient */
+        box-shadow: 0 2px 6px rgba(205, 127, 50, 0.4);
       }
-
-      .size-details .flex {
-        align-items: center;
-      }
-
-      .size-details label {
-        flex-shrink: 0;
-        width: 50px; /* Increased width */
-        text-align: right;
-        font-weight: 500;
-        color: #2d3748;
-        font-size: 0.8rem; /* Increased font size */
-      }
-
-      @media (min-width: 640px) {
-        .size-details label {
-          width: 60px;
-          font-size: 1rem;
-        }
-      }
-
-      .size-details .note-completion-inline-input {
-        flex-grow: 1;
-        max-width: none;
+      .rank-common {
+        background-color: #94a3b8; /* Slate 400 */
+        box-shadow: 0 2px 4px rgba(148, 163, 184, 0.4);
       }
     </style>
   </head>
   <body class="py-0 px-0">
-    <!-- Header / Navigation Bar -->
+    <!-- Header / Navigation Bar (Can be shared with quiz system) -->
     <header
       id="app-header"
       class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
@@ -1267,109 +710,56 @@
       </div>
     </header>
 
-    <div id="app" class="flex-grow flex flex-col lg:flex-row">
-      <!-- Loading Spinner -->
-      <div
-        id="loading-spinner"
-        class="flex justify-center items-center h-full w-full absolute inset-0 bg-gray-100 bg-opacity-75 z-50"
-      >
+    <!-- Audio Player (fixed/sticky at top) -->
+    <div id="fixed-audio-player-wrapper" class="audio-player-wrapper">
+      <div class="audio-player-container">
+        <audio id="test-audio-player" controls preload="auto" class="w-full">
+          <source src="" type="audio/mpeg" />
+          <!-- Audio URL will be set by JS -->
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </div>
+
+    <!-- Removed container mx-auto from #app to allow mock-test-layout to control full width and padding -->
+    <div id="app" class="flex-grow">
+      <!-- Application content will be rendered here by JavaScript -->
+      <div class="flex justify-center items-center h-full">
         <div
           class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"
         ></div>
       </div>
+    </div>
 
-      <!-- Test Layout -->
-      <div id="test-layout" class="test-layout w-full hidden">
-        <!-- Sidebar for Navigation and Timer -->
-        <aside class="test-sidebar lg:w-1/4 xl:w-1/5">
-          <h2 class="text-2xl font-anton text-gray-800 mb-6">Test Controls</h2>
-
-          <!-- Timer -->
-          <div class="timer-display-container">
-            <span class="font-semibold text-lg flex items-center gap-2">
-              <i class="ph-bold ph-clock text-blue-200"></i> Time Left:
-            </span>
-            <span id="timer-display" class="font-anton text-3xl text-white"
-              >00:00</span
-            >
-          </div>
-
-          <!-- Audio Player (for Listening tests) -->
-          <div id="audio-player-section" class="mb-6 hidden">
-            <h3 class="font-semibold text-lg mb-3 text-gray-700">Audio</h3>
-            <div class="audio-player-container">
-              <audio id="test-audio-player" controls class="w-full">
-                Your browser does not support the audio element.
-              </audio>
-            </div>
-          </div>
-
-          <!-- Section Navigation -->
-          <h3 class="font-semibold text-lg mb-3 text-gray-700">Sections</h3>
-          <nav
-            id="section-navigation"
-            class="space-y-2 mb-6 section-navigation"
-          >
-            <!-- Section buttons will be rendered here -->
-          </nav>
-
-          <!-- Action Buttons (Desktop Only) -->
-          <div class="flex-col gap-4 mt-8 action-buttons hidden lg:flex">
-            <button id="submit-test-btn-desktop" class="w-full text-white">
-              Submit Test
-            </button>
-            <button id="exit-test-btn-desktop" class="w-full">
-              Exit Test
-            </button>
-          </div>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="test-content-area flex-grow">
-          <h1
-            id="test-title"
-            class="font-anton text-4xl sm:text-5xl text-gray-800 mb-4 leading-tight"
-          >
-            <!-- Test Title -->
-          </h1>
-          <p
-            id="test-description"
-            class="text-lg text-gray-600 mb-8 font-inter"
-          >
-            <!-- Test Description -->
-          </p>
-
-          <!-- Current Section Content -->
-          <div id="current-section-content">
-            <!-- Section title, instructions, questions will be rendered here -->
-          </div>
-
-          <!-- Navigation Buttons for Sections -->
-          <div class="nav-buttons">
-            <button
-              id="prev-section-btn"
-              class="px-6 py-3 bg-gray-200 text-gray-800 rounded-full font-semibold hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <i class="ph-bold ph-caret-left mr-2"></i> Previous Section
-            </button>
-            <button
-              id="next-section-btn"
-              class="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Next Section <i class="ph-bold ph-caret-right ml-2"></i>
-            </button>
-          </div>
-
-          <!-- Action Buttons (Mobile Only) -->
-          <div class="flex flex-col gap-4 mt-8 action-buttons lg:hidden">
-            <button id="submit-test-btn-mobile" class="w-full text-white">
-              Submit Test
-            </button>
-            <button id="exit-test-btn-mobile" class="w-full">
-              Exit Test
-            </button>
-          </div>
-        </main>
+    <!-- Mobile Fixed Question Palette (fixed at bottom) -->
+    <div
+      id="mobile-question-palette-wrapper"
+      class="mobile-question-palette-wrapper"
+    >
+      <div
+        id="mobile-palette-header"
+        class="flex justify-between items-center px-4 py-3 bg-gray-800 text-white rounded-t-lg shadow-lg cursor-pointer"
+      >
+        <div class="flex items-center gap-2 text-xl font-bold">
+          <i class="fas fa-th-large"></i>
+          <span>Question Palette</span>
+        </div>
+        <div class="flex items-center gap-2 text-xl font-bold">
+          <i class="fas fa-clock"></i>
+          <span id="timer-display-mobile">00:00</span>
+          <i
+            id="palette-toggle-icon"
+            class="ph ph-caret-down text-2xl ml-2"
+          ></i>
+          <!-- Toggle icon -->
+        </div>
+      </div>
+      <div id="mobile-palette-content">
+        <!-- This will be toggled -->
+        <div
+          class="question-palette-grid-mobile"
+          id="question-palette-mobile"
+        ></div>
       </div>
     </div>
 
@@ -1377,7 +767,13 @@
     <div id="toast-container" class="fixed bottom-4 right-4 z-[100]"></div>
 
     <!-- Modal Container -->
-    <div id="modal-container"></div>
+    <div id="modal-container" class="modal-overlay">
+      <div class="modal-content">
+        <h3 id="modal-title" class="modal-header"></h3>
+        <p id="modal-message" class="modal-body"></p>
+        <div id="modal-buttons" class="modal-buttons"></div>
+      </div>
+    </div>
 
     <script type="module">
       // Import authentication functions and state from the central auth.js file
@@ -1387,7 +783,6 @@
         showToast,
         Icons,
         signOutUser,
-        // Removed showModal and hideModal imports as they are now handled locally
       } from "./auth.js"; // Adjust path as necessary
 
       // Import mock test data
@@ -1405,82 +800,109 @@
         getDoc,
         setDoc,
         updateDoc,
+        collection,
+        addDoc,
+        serverTimestamp,
+        query,
+        where,
+        getDocs,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-      // Firebase instances
+      // Firebase instances (will be populated by auth.js)
       let db;
       let auth;
 
-      // Current test data
+      // Current module and test IDs from URL
+      let currentModuleId = null;
+      let currentTestId = null;
       let currentTest = null;
-      let currentModule = null;
-      let currentSectionIndex = 0;
-      let timerInterval;
-      let timeLeft = 0; // In seconds
+      let totalQuestions = 0; // This will now represent total answerable slots
 
-      // Store user answers
-      let userAnswers = {}; // { questionId: answer, ... } for note completion/MCQ, { qId: { itemNum: ans }, ... } for matching
-
-      // User game stats (will be fetched from Firestore)
-      let userGameStats = {
-        totalPoints: 0,
-        level: 1,
-        completedTests: [], // Array of test IDs
+      // Test state encapsulated in an object
+      let testState = {
+        userAnswers: {}, // { questionId: userAnswer } (e.g., "mcq1", "q26")
+        timerInterval: null,
+        timeLeft: 0, // In seconds
+        currentQuestionIndex: 0, // 0-based index for the questionPaletteItems array
+        testCompleted: false, // New state to control view
+        userResultDoc: null, // Stores the fetched user result for display
+        leaderboard: [], // Stores leaderboard data
+        userRank: null, // User's rank on the leaderboard
+        isLoadingResults: false, // For loading state of results section
       };
 
-      /**
-       * Fetches user's game stats from Firestore.
-       * @param {string} userId - The ID of the current user.
-       */
-      async function fetchUserGameStats(userId) {
-        if (!db || !userId) return;
-        const appId =
-          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
-        const userStatsDocRef = doc(
-          db,
-          `artifacts/${appId}/users/${userId}/gameStats/summary`
-        );
+      // New: Array to map palette numbers to question IDs and their HTML element IDs
+      let questionPaletteItems = []; // Stores { paletteNumber: N, questionId: "qX" or "mcqY", htmlElementId: "question-Z" }
 
-        try {
-          const docSnap = await getDoc(userStatsDocRef);
-          if (docSnap.exists()) {
-            userGameStats = { ...userGameStats, ...docSnap.data() };
-            console.log("Fetched user game stats:", userGameStats);
-          } else {
-            console.log(
-              "No game stats found for user, initializing defaults in Firestore."
-            );
-            await setDoc(userStatsDocRef, userGameStats);
-          }
-        } catch (error) {
-          console.error("Error fetching user game stats:", error);
-          showToast("Failed to load your game progress.", "error");
+      /**
+       * Displays a custom modal.
+       * @param {string} title - The title of the modal.
+       * @param {string} message - The message content of the modal.
+       * @param {boolean} showConfirmButton - Whether to show a confirm button.
+       * @param {function} onConfirm - Callback function for confirm button.
+       * @param {function} onCancel - Callback function for cancel button.
+       */
+      function showModal(
+        title,
+        message,
+        showConfirmButton,
+        onConfirm,
+        onCancel
+      ) {
+        const modalOverlay = document.getElementById("modal-container");
+        const modalTitle = document.getElementById("modal-title");
+        const modalMessage = document.getElementById("modal-message");
+        const modalButtons = document.getElementById("modal-buttons");
+
+        if (!modalOverlay || !modalTitle || !modalMessage || !modalButtons) {
+          console.error("Modal elements not found.");
+          return;
         }
+
+        modalTitle.innerHTML = title;
+        modalMessage.innerHTML = message;
+        modalButtons.innerHTML = ""; // Clear existing buttons
+
+        if (showConfirmButton) {
+          const confirmButton = document.createElement("button");
+          confirmButton.textContent = "Confirm";
+          confirmButton.classList.add("modal-button", "primary");
+          confirmButton.addEventListener("click", () => {
+            hideModal();
+            if (onConfirm) onConfirm();
+          });
+          modalButtons.appendChild(confirmButton);
+
+          const cancelButton = document.createElement("button");
+          cancelButton.textContent = "Cancel";
+          cancelButton.classList.add("modal-button", "secondary");
+          cancelButton.addEventListener("click", () => {
+            hideModal();
+            if (onCancel) onCancel();
+          });
+          modalButtons.appendChild(cancelButton);
+        } else {
+          // For informational modals, just show an OK button or no buttons
+          const okButton = document.createElement("button");
+          okButton.textContent = "OK";
+          okButton.classList.add("modal-button", "primary");
+          okButton.addEventListener("click", () => {
+            hideModal();
+            if (onConfirm) onConfirm(); // Use onConfirm as a general callback for OK
+          });
+          modalButtons.appendChild(okButton);
+        }
+
+        modalOverlay.classList.add("visible");
       }
 
       /**
-       * Updates user's game stats in Firestore.
-       * @param {string} userId - The ID of the current user.
-       * @param {object} updates - Object containing fields to update.
+       * Hides the custom modal.
        */
-      async function updateUserGameStats(userId, updates) {
-        if (!db || !userId) return;
-        const appId =
-          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
-        const userStatsDocRef = doc(
-          db,
-          `artifacts/${appId}/users/${userId}/gameStats/summary`
-        );
-
-        try {
-          await updateDoc(userStatsDocRef, updates);
-          userGameStats = { ...userGameStats, ...updates }; // Update local state
-          console.log("User game stats updated:", userGameStats);
-          // Re-render auth UI to reflect new points/level
-          updateAuthUI(auth.currentUser);
-        } catch (error) {
-          console.error("Error updating user game stats:", error);
-          showToast("Failed to save your game progress.", "error");
+      function hideModal() {
+        const modalOverlay = document.getElementById("modal-container");
+        if (modalOverlay) {
+          modalOverlay.classList.remove("visible");
         }
       }
 
@@ -1494,27 +916,9 @@
         );
         if (authButtonsContainer) {
           if (user) {
-            // Fetch game stats if user is logged in and db is available
-            if (db && user.uid) {
-              await fetchUserGameStats(user.uid); // Await this to ensure userGameStats is updated
-            }
-
-            // User is signed in: Show profile dropdown and game stats
+            // User is signed in: Show profile dropdown
             authButtonsContainer.innerHTML = `
                         <div class="flex items-center gap-4">
-                            <div class="points-display">
-                                ${
-                                  MockTestIcons.Trophy ||
-                                  '<i class="fas fa-trophy"></i>'
-                                }
-                                <span class="text-sm font-semibold">${
-                                  userGameStats.totalPoints
-                                } Pts</span>
-                                <span class="text-xs text-green-200">|</span>
-                                <span class="text-sm font-semibold">Lvl ${
-                                  userGameStats.level
-                                }</span>
-                            </div>
                             <div class="relative">
                                 <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-700 transition-colors">
                                     ${(
@@ -1530,9 +934,6 @@
                                       authAppState.userProfile?.name ||
                                       user.email ||
                                       user.uid.substring(0, 8)
-                                    }</div>
-                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-200">Level: ${
-                                      userGameStats.level
                                     }</div>
                                     <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
                                         ${Icons.Dashboard.replace(
@@ -1593,708 +994,1276 @@
       }
 
       /**
-       * Renders a note completion question.
-       * @param {object} question - The question object.
-       * @returns {string} HTML string for the question.
+       * Calculates the IELTS band score based on the number of correct answers.
+       * This is a simplified mapping and may not perfectly reflect official IELTS scoring.
+       * @param {number} correctAnswersCount - The number of correct answers.
+       * @param {number} totalQuestions - The total number of answerable questions/slots.
+       * @returns {number|string} The calculated band score (e.g., 7.5) or "N/A" if totalQuestions is 0.
        */
-      function renderNoteCompletion(question) {
-        const inputId = `answer-${question.id}`;
-        const existingAnswer = userAnswers[question.id] || "";
-        return `
-                <div class="flex items-baseline mb-3">
-                    <span class="question-number">${
-                      question.questionNumber
-                    }.</span>
-                    <p class="question-text flex-grow">
-                        ${question.text.replace(
-                          /_{3,}/g,
-                          `<input type="text" id="${inputId}" name="${question.id}" value="${existingAnswer}"
-                                   class="note-completion-input inline-block mx-2 p-1 border-b-2 border-gray-300 focus:border-blue-500 focus:outline-none"
-                                   onchange="handleAnswerChange(event, '${question.id}', 'note_completion')" />`
-                        )}
-                    </p>
-                </div>
-            `;
+      function calculateIELTSBandScore(correctAnswersCount, totalQuestions) {
+        if (totalQuestions === 0) return "N/A";
+
+        // This mapping is a simplified approximation for a 40-question test.
+        // If your mock tests have a different number of total questions,
+        // you might need to scale correctAnswersCount to a 40-question equivalent
+        // or adjust the thresholds based on percentage.
+        // For simplicity, let's assume this mapping is for a scaled score or direct 40-question count.
+        // For varying totalQuestions, a percentage-based approach is more robust.
+        const percentage = (correctAnswersCount / totalQuestions) * 100;
+
+        if (percentage >= 90) return 9.0; // 36-40 correct (out of 40)
+        if (percentage >= 85) return 8.5; // 34-35 correct
+        if (percentage >= 80) return 8.0; // 32-33 correct
+        if (percentage >= 75) return 7.5; // 30-31 correct
+        if (percentage >= 70) return 7.0; // 28-29 correct
+        if (percentage >= 65) return 6.5; // 26-27 correct
+        if (percentage >= 60) return 6.0; // 24-25 correct
+        if (percentage >= 55) return 5.5; // 22-23 correct
+        if (percentage >= 50) return 5.0; // 20-21 correct
+        if (percentage >= 45) return 4.5; // 18-19 correct
+        if (percentage >= 40) return 4.0; // 16-17 correct
+        if (percentage >= 35) return 3.5; // 14-15 correct
+        if (percentage >= 30) return 3.0; // 12-13 correct
+        if (percentage >= 25) return 2.5; // 10-11 correct
+        if (percentage >= 20) return 2.0; // 8-9 correct
+        if (percentage >= 15) return 1.5; // 6-7 correct
+        if (percentage >= 10) return 1.0; // 4-5 correct
+        return 0; // Less than 10% or 4 correct
       }
 
       /**
-       * Renders a single choice multiple choice question.
-       * @param {object} question - The question object.
-       * @returns {string} HTML string for the question.
+       * Handles user answer input.
+       * @param {string} questionId - The ID of the question (e.g., "mcq1", "q26").
+       * @param {string} answer - The user's answer.
        */
-      function renderMultipleChoiceSingle(question) {
-        const inputId = `answer-${question.id}`; // Ensure unique ID for the input group
-        const existingAnswer = userAnswers[question.id] || "";
-        return `
-                <div class="mb-4">
-                    <div class="flex items-baseline mb-3">
-                        <span class="question-number">${
-                          question.questionNumber
-                        }.</span>
-                        <p class="question-text flex-grow">${question.text}</p>
-                    </div>
-                    <div class="ml-8">
-                        ${question.options
-                          .map(
-                            (option) => `
-                            <label class="multiple-choice-option">
-                                <input type="radio" name="${
-                                  question.id
-                                }" value="${option.key}"
-                                       ${
-                                         existingAnswer === option.key
-                                           ? "checked"
-                                           : ""
-                                       }
-                                       onchange="handleAnswerChange(event, '${
-                                         question.id
-                                       }', 'multiple_choice_single')"
-                                       class="form-radio h-5 w-5 text-blue-600" />
-                                <span class="ml-2">${option.key}. ${
-                              option.text
-                            }</span>
-                            </label>
-                        `
-                          )
-                          .join("")}
-                    </div>
-                </div>
-            `;
+      function handleAnswerInput(questionId, answer) {
+        testState.userAnswers[questionId] = answer.trim();
+        updateQuestionPalette();
       }
 
       /**
-       * Renders a multiple choice question with multiple correct answers.
-       * @param {object} question - The question object.
-       * @returns {string} HTML string for the question.
+       * Updates the question palette to reflect answered/unanswered questions.
        */
-      function renderMultipleChoiceMultiple(question) {
-        const inputId = `answer-${question.id}`; // Ensure unique ID for the input group
-        const existingAnswers = userAnswers[question.id] || [];
-        return `
-                <div class="mb-4">
-                    <div class="flex items-baseline mb-3">
-                        <span class="question-number">${
-                          question.questionNumbers
-                        }.</span>
-                        <p class="question-text flex-grow">${question.text}</p>
-                    </div>
-                    <div class="ml-8">
-                        ${question.options
-                          .map(
-                            (option) => `
-                            <label class="multiple-choice-option">
-                                <input type="checkbox" name="${
-                                  question.id
-                                }" value="${option.key}"
-                                       ${
-                                         existingAnswers.includes(option.key)
-                                           ? "checked"
-                                           : ""
-                                       }
-                                       onchange="handleAnswerChange(event, '${
-                                         question.id
-                                       }', 'multiple_choice_multiple')"
-                                       class="form-checkbox h-5 w-5 text-blue-600 rounded" />
-                                <span class="ml-2">${option.key}. ${
-                              option.text
-                            }</span>
-                            </label>
-                        `
-                          )
-                          .join("")}
-                    </div>
-                </div>
-            `;
-      }
-
-      /**
-       * Renders a matching information question.
-       * @param {object} question - The question object.
-       * @returns {string} HTML string for the question.
-       */
-      function renderMatchingInformation(question) {
-        return `
-                <div class="mb-4">
-                    <h3 class="font-semibold text-lg mb-3 text-gray-800">${
-                      question.instructions
-                    }</h3>
-                    <div class="ml-8 mb-4">
-                        <p class="font-medium text-gray-700 mb-2">Options:</p>
-                        <ul class="list-disc list-inside ml-4 mb-4">
-                            ${question.options
-                              .map(
-                                (option) =>
-                                  `<li><strong>${option.key}</strong> ${option.text}</li>`
-                              )
-                              .join("")}
-                        </ul>
-                    </div>
-                    <div class="space-y-3">
-                        ${question.itemsToMatch
-                          .map((item) => {
-                            const inputId = `match-${question.id}-${item.number}`;
-                            const existingAnswer =
-                              userAnswers[question.id]?.[item.number] || "";
-                            return `
-                                <div class="matching-item">
-                                    <span class="w-12 flex-shrink-0">${
-                                      item.number
-                                    }.</span>
-                                    <span class="flex-grow">${item.text}</span>
-                                    <select id="${inputId}" name="${
-                              question.id
-                            }-${item.number}"
-                                            onchange="handleAnswerChange(event, '${
-                                              question.id
-                                            }', 'matching_information', ${
-                              item.number
-                            })"
-                                            class="w-32">
-                                        <option value="">Select...</option>
-                                        ${question.options
-                                          .map(
-                                            (opt) => `
-                                            <option value="${opt.key}" ${
-                                              existingAnswer === opt.key
-                                                ? "selected"
-                                                : ""
-                                            }>${opt.key}</option>
-                                        `
-                                          )
-                                          .join("")}
-                                    </select>
-                                </div>
-                            `;
-                          })
-                          .join("")}
-                    </div>
-                </div>
-            `;
-      }
-
-      // Global handler for answer changes
-      window.handleAnswerChange = (
-        event,
-        questionId,
-        type,
-        itemNumber = null
-      ) => {
-        if (type === "note_completion") {
-          userAnswers[questionId] = event.target.value;
-        } else if (type === "multiple_choice_single") {
-          userAnswers[questionId] = event.target.value;
-        } else if (type === "multiple_choice_multiple") {
-          if (!userAnswers[questionId]) {
-            userAnswers[questionId] = [];
-          }
-          if (event.target.checked) {
-            if (!userAnswers[questionId].includes(event.target.value)) {
-              userAnswers[questionId].push(event.target.value);
+      function updateQuestionPalette() {
+        questionPaletteItems.forEach((item) => {
+          // Update desktop palette
+          const desktopButton = document.querySelector(
+            `#question-palette-desktop .question-palette-btn[data-palette-number="${item.paletteNumber}"]`
+          );
+          if (desktopButton) {
+            const userAnswer = testState.userAnswers[item.questionId];
+            if (userAnswer && userAnswer !== "") {
+              desktopButton.classList.remove("unanswered");
+              desktopButton.classList.add("answered");
+            } else {
+              desktopButton.classList.remove("answered");
+              desktopButton.classList.add("unanswered");
             }
-          } else {
-            userAnswers[questionId] = userAnswers[questionId].filter(
-              (ans) => ans !== event.target.value
-            );
           }
-        } else if (type === "matching_information") {
-          if (!userAnswers[questionId]) {
-            userAnswers[questionId] = {};
+
+          // Update mobile palette
+          const mobileButton = document.querySelector(
+            `#question-palette-mobile .question-palette-btn[data-palette-number="${item.paletteNumber}"]`
+          );
+          if (mobileButton) {
+            const userAnswer = testState.userAnswers[item.questionId];
+            if (userAnswer && userAnswer !== "") {
+              mobileButton.classList.remove("unanswered");
+              mobileButton.classList.add("answered");
+            } else {
+              mobileButton.classList.remove("answered");
+              mobileButton.classList.add("unanswered");
+            }
           }
-          userAnswers[questionId][itemNumber] = event.target.value;
-        }
-        // console.log("User Answers:", userAnswers); // For debugging
-      };
+        });
+        highlightCurrentQuestionInPalette();
+      }
 
       /**
-       * Renders the current section of the test.
+       * Highlights the current question in the palette.
        */
-      function renderCurrentSection() {
-        if (!currentTest || !currentTest.sections) return;
+      function highlightCurrentQuestionInPalette() {
+        const desktopPaletteButtons = document.querySelectorAll(
+          "#question-palette-desktop .question-palette-btn"
+        );
+        desktopPaletteButtons.forEach((button) => {
+          button.classList.remove("current");
+        });
 
-        const section = currentTest.sections[currentSectionIndex];
-        const contentDiv = document.getElementById("current-section-content");
-        if (!contentDiv || !section) {
-          contentDiv.innerHTML = `<p class="text-center text-red-500">Error: Section not found.</p>`;
-          return;
-        }
+        const mobilePaletteButtons = document.querySelectorAll(
+          "#question-palette-mobile .question-palette-btn"
+        );
+        mobilePaletteButtons.forEach((button) => {
+          button.classList.remove("current");
+        });
 
-        let sectionHtml = `
-                <div class="section-header mb-6 pb-4 border-b border-gray-200">
-                    <h2 class="font-anton text-3xl text-gray-700 mb-2">${
-                      section.title
-                    }</h2>
-                    <p class="text-xl font-semibold text-gray-700 mb-2">${
-                      section.instructions
-                    }</p>
-                    ${
-                      section.subInstructions
-                        ? `<p class="text-md text-gray-500">${section.subInstructions}</p>`
-                        : ""
-                    }
-                </div>
-            `;
-
-        // Always render the main passage/context first if it exists
-        if (section.context) {
-          sectionHtml += `<div class="context-block">${section.context}</div>`;
-        }
-
-        // Filter questions that should be rendered separately (not embedded in context HTML)
-        const questionsToRenderSeparately = section.questions
-          .filter((q) => {
-            // Define conditions for questions that ARE embedded in context HTML
-            const isEmbedded =
-              (currentTest.id === "listening-test-5" &&
-                ((section.id === "part1" &&
-                  (q.id === "q1" ||
-                    q.id === "q2" ||
-                    q.id === "q3" ||
-                    q.id === "q4" ||
-                    q.id === "q5" ||
-                    q.id === "q6" ||
-                    q.id === "q7" ||
-                    q.id === "q8")) || // Q1-8 are embedded in context for LT5-P1
-                (section.id === "part2" &&
-                  (q.id === "q11" ||
-                    q.id === "q12" ||
-                    q.id === "q13" ||
-                    q.id === "q14" ||
-                    q.id === "q15")) || // Q11-15 are embedded in context for LT5-P2
-                section.id === "part3" || // All of Part 3 is embedded in table
-                  (section.id === "part4" &&
-                    (q.id === "q36" ||
-                      q.id === "q37" ||
-                      q.id === "q38" ||
-                      q.id === "q39" ||
-                      q.id === "q40")))) || // Q36-40 are embedded in context for LT5-P4
-              (currentTest.id === "listening-test-4" &&
-                (section.id === "part1" || // All of Part 1 is embedded
-                  section.id === "part4")) || // All of Part 4 is embedded
-              (currentTest.id === "reading-test-1" &&
-                ((section.id === "part1" &&
-                  (q.id === "q7" ||
-                    q.id === "q8" ||
-                    q.id === "q9" ||
-                    q.id === "q10" ||
-                    q.id === "q11" ||
-                    q.id === "q12" ||
-                    q.id === "q13")) || // Q7-13 are embedded in context for RT1-P1
-                (section.id === "part2" &&
-                  (q.id === "q14" ||
-                    q.id === "q15" ||
-                    q.id === "q16" ||
-                    q.id === "q17" ||
-                    q.id === "q18" ||
-                    q.id === "q19")) || // Q14-19 are embedded in context for RT1-P2
-                  (section.id === "part3" &&
-                    (q.id === "q33" ||
-                      q.id === "q34" ||
-                      q.id === "q35" ||
-                      q.id === "q36" ||
-                      q.id === "q37")))); // Q33-37 are embedded in context for RT1-P3
-
-            return !isEmbedded; // Return true if NOT embedded (meaning it should be rendered separately)
-          })
-          .sort((a, b) => {
-            // Sort questions to be rendered separately by questionNumber
-            const numA = Array.isArray(a.questionNumbers)
-              ? Math.min(...a.questionNumbers)
-              : a.questionNumber;
-            const numB = Array.isArray(b.questionNumbers)
-              ? Math.min(...b.questionNumbers)
-              : b.questionNumber;
-            return numA - numB;
-          });
-
-        if (questionsToRenderSeparately.length > 0) {
-          sectionHtml += `<div class="questions-container space-y-6">`;
-          questionsToRenderSeparately.forEach((question) => {
-            sectionHtml += `<div class="question-block">`;
-            switch (question.type) {
-              case "note_completion":
-                sectionHtml += renderNoteCompletion(question);
-                break;
-              case "multiple_choice_single":
-                sectionHtml += renderMultipleChoiceSingle(question);
-                break;
-              case "multiple_choice_multiple":
-                sectionHtml += renderMultipleChoiceMultiple(question);
-                break;
-              case "matching_information":
-                sectionHtml += renderMatchingInformation(question);
-                break;
-              default:
-                sectionHtml += `<p class="text-red-500">Unsupported question type: ${question.type}</p>`;
-            }
-            sectionHtml += `</div>`; // Close question-block
-          });
-          sectionHtml += `</div>`; // Close questions-container
-        }
-
-        contentDiv.innerHTML = sectionHtml;
-        updateSectionNavigation();
-        updateNavigationButtons();
-
-        // After rendering, populate the embedded inputs with existing answers for sections that use them
-        // This block should run regardless of whether questionsToRenderSeparately was true,
-        // as it specifically targets inputs within the `context` HTML.
-        if (section.context) {
-          section.questions.forEach((question) => {
-            // This is the same logic as `isEmbedded` above, but used for populating inputs
-            const isQuestionEmbedded =
-              (currentTest.id === "listening-test-5" &&
-                ((section.id === "part1" &&
-                  (question.id === "q1" ||
-                    question.id === "q2" ||
-                    question.id === "q3" ||
-                    question.id === "q4" ||
-                    question.id === "q5" ||
-                    question.id === "q6" ||
-                    question.id === "q7" ||
-                    question.id === "q8")) ||
-                  (section.id === "part2" &&
-                    (question.id === "q11" ||
-                      question.id === "q12" ||
-                      question.id === "q13" ||
-                      question.id === "q14" ||
-                      question.id === "q15")) ||
-                  section.id === "part3" ||
-                  (section.id === "part4" &&
-                    (question.id === "q36" ||
-                      question.id === "q37" ||
-                      question.id === "q38" ||
-                      question.id === "q39" ||
-                      question.id === "q40")))) ||
-              (currentTest.id === "listening-test-4" &&
-                (section.id === "part1" || section.id === "part4")) ||
-              (currentTest.id === "reading-test-1" &&
-                ((section.id === "part1" &&
-                  (question.id === "q7" ||
-                    question.id === "q8" ||
-                    question.id === "q9" ||
-                    question.id === "q10" ||
-                    question.id === "q11" ||
-                    question.id === "q12" ||
-                    question.id === "q13")) ||
-                  (section.id === "part2" &&
-                    (question.id === "q14" ||
-                      question.id === "q15" ||
-                      question.id === "q16" ||
-                      question.id === "q17" ||
-                      question.id === "q18" ||
-                      question.id === "q19")) ||
-                  (section.id === "part3" &&
-                    (question.id === "q33" ||
-                      question.id === "q34" ||
-                      question.id === "q35" ||
-                      question.id === "q36" ||
-                      question.id === "q37"))));
-
-            if (isQuestionEmbedded) {
-              // For note_completion, directly populate the input
-              if (question.type === "note_completion") {
-                const inputElement = document.getElementById(
-                  `answer-${question.id}`
-                );
-                if (inputElement) {
-                  inputElement.value = userAnswers[question.id] || "";
-                }
-              }
-              // For multiple_choice_single/multiple within context, handle radio/checkboxes
-              else if (
-                question.type === "multiple_choice_single" ||
-                question.type === "multiple_choice_multiple"
-              ) {
-                const inputs = document.querySelectorAll(
-                  `input[name="${question.id}"]`
-                );
-                inputs.forEach((input) => {
-                  if (question.type === "multiple_choice_single") {
-                    input.checked = userAnswers[question.id] === input.value;
-                  } else if (question.type === "multiple_choice_multiple") {
-                    input.checked = (userAnswers[question.id] || []).includes(
-                      input.value
-                    );
-                  }
-                });
-              }
-              // For matching_information within context (if any, though typically rendered separately)
-              else if (
-                question.type === "matching_information" &&
-                question.itemsToMatch
-              ) {
-                question.itemsToMatch.forEach((item) => {
-                  const selectElement = document.getElementById(
-                    `match-${question.id}-${item.number}`
-                  );
-                  if (selectElement) {
-                    selectElement.value =
-                      userAnswers[question.id]?.[item.number] || "";
-                  }
-                });
-              }
-            }
-          });
+        if (questionPaletteItems.length > 0) {
+          const currentPaletteNumber = testState.currentQuestionIndex + 1;
+          const currentDesktopQBtn = document.querySelector(
+            `#question-palette-desktop .question-palette-btn[data-palette-number="${currentPaletteNumber}"]`
+          );
+          if (currentDesktopQBtn) {
+            currentDesktopQBtn.classList.add("current");
+          }
+          const currentMobileQBtn = document.querySelector(
+            `#question-palette-mobile .question-palette-btn[data-palette-number="${currentPaletteNumber}"]`
+          );
+          if (currentMobileQBtn) {
+            currentMobileQBtn.classList.add("current");
+          }
         }
       }
 
       /**
-       * Updates the state of the Previous/Next section buttons.
+       * Scrolls to a specific question based on its palette number.
+       * @param {number} paletteNumber - The 1-based number of the question in the palette.
        */
-      function updateNavigationButtons() {
-        const prevBtn = document.getElementById("prev-section-btn");
-        const nextBtn = document.getElementById("next-section-btn");
-
-        prevBtn.disabled = currentSectionIndex === 0;
-        nextBtn.disabled =
-          currentSectionIndex === currentTest.sections.length - 1;
-      }
-
-      /**
-       * Handles navigation to the next section.
-       */
-      function goToNextSection() {
-        if (currentSectionIndex < currentTest.sections.length - 1) {
-          currentSectionIndex++;
-          renderCurrentSection();
+      function scrollToQuestion(paletteNumber) {
+        const item = questionPaletteItems.find(
+          (i) => i.paletteNumber === paletteNumber
+        );
+        if (item) {
+          const questionElement = document.getElementById(item.htmlElementId);
+          if (questionElement) {
+            questionElement.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            testState.currentQuestionIndex = paletteNumber - 1; // Update current index (0-based)
+            highlightCurrentQuestionInPalette();
+          }
         }
-      }
-
-      /**
-       * Handles navigation to the previous section.
-       */
-      function goToPreviousSection() {
-        if (currentSectionIndex > 0) {
-          currentSectionIndex--;
-          renderCurrentSection();
-        }
-      }
-
-      /**
-       * Handles direct navigation to a specific section.
-       * @param {number} index - The index of the section to navigate to.
-       */
-      function goToSection(index) {
-        if (index >= 0 && index < currentTest.sections.length) {
-          currentSectionIndex = index;
-          renderCurrentSection();
-        }
-      }
-
-      /**
-       * Renders the section navigation in the sidebar.
-       */
-      function updateSectionNavigation() {
-        const navContainer = document.getElementById("section-navigation");
-        if (!navContainer || !currentTest || !currentTest.sections) return;
-
-        navContainer.innerHTML = currentTest.sections
-          .map(
-            (section, index) => `
-                <button
-                    class="w-full text-left p-3 rounded-lg transition-colors duration-200
-                    ${
-                      index === currentSectionIndex
-                        ? "bg-blue-600 text-white shadow-md"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }"
-                    onclick="goToSection(${index})"
-                >
-                    ${section.title}
-                </button>
-            `
-          )
-          .join("");
       }
 
       /**
        * Starts the test timer.
        */
       function startTimer() {
-        const timerDisplay = document.getElementById("timer-display");
-        if (!timerDisplay) return;
+        if (testState.timerInterval) clearInterval(testState.timerInterval); // Clear any existing timer
 
-        clearInterval(timerInterval); // Clear any existing timer
+        const desktopTimerDisplay = document.getElementById(
+          "timer-display-desktop"
+        );
+        const mobileTimerDisplay = document.getElementById(
+          "timer-display-mobile"
+        );
 
-        timerInterval = setInterval(() => {
-          timeLeft--;
-          if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            timeLeft = 0;
-            timerDisplay.textContent = formatTime(timeLeft);
-            showToast("Time's up! The test has ended.", "info");
-            handleSubmitTest(); // Automatically submit when time runs out
+        testState.timerInterval = setInterval(() => {
+          testState.timeLeft--;
+          if (testState.timeLeft >= 0) {
+            const formattedTime = formatTime(testState.timeLeft);
+            if (desktopTimerDisplay)
+              desktopTimerDisplay.textContent = formattedTime;
+            if (mobileTimerDisplay)
+              mobileTimerDisplay.textContent = formattedTime;
           } else {
-            timerDisplay.textContent = formatTime(timeLeft);
+            clearInterval(testState.timerInterval);
+            if (desktopTimerDisplay) desktopTimerDisplay.textContent = "00:00";
+            if (mobileTimerDisplay) mobileTimerDisplay.textContent = "00:00";
+            showToast("Time's up! Your test has been submitted.", "info");
+            handleSubmitTest(); // Automatically submit when time runs out
           }
         }, 1000);
       }
 
       /**
-       * Stops the test timer.
+       * Saves the mock test result to Firestore.
+       * @param {number} correctAnswers - Number of correct answers.
+       * @param {number} totalQuestions - Total number of questions/answerable slots.
+       * @param {number|string} bandScore - Calculated IELTS band score.
+       * @param {number} timeTakenSeconds - Time taken in seconds.
        */
-      function stopTimer() {
-        clearInterval(timerInterval);
-      }
-
-      /**
-       * Hides the modal by removing it from the DOM.
-       */
-      function hideCurrentModal() {
-        const modalOverlay = document.querySelector(".modal-overlay");
-        if (modalOverlay) {
-          modalOverlay.remove();
-        }
-      }
-
-      /**
-       * Displays a generic modal with customizable content and actions.
-       * @param {object} options - Configuration for the modal.
-       * @param {string} options.title - The title of the modal.
-       * @param {string} options.message - The main message content.
-       * @param {string} [options.confirmText='OK'] - Text for the confirm button.
-       * @param {string} [options.cancelText='Cancel'] - Text for the cancel button.
-       * @param {function} [options.onConfirm=() => {}] - Callback function when confirm is clicked.
-       * @param {function} [options.onCancel=() => {}] - Callback function when cancel is clicked or modal is closed.
-       */
-      function showModal({
-        title,
-        message,
-        confirmText = "OK",
-        cancelText = "Cancel",
-        onConfirm = () => {},
-        onCancel = () => {},
-      }) {
-        hideCurrentModal(); // Ensure only one modal is active at a time
-
-        const modalContainer = document.getElementById("modal-container");
-        if (!modalContainer) {
-          console.error("Modal container not found!");
+      async function saveMockTestResultToFirestore(
+        correctAnswers,
+        totalQuestions,
+        bandScore,
+        timeTakenSeconds
+      ) {
+        if (!db || !authAppState.userId) {
+          showToast(
+            "Not logged in. Mock test results will not be saved.",
+            "warning"
+          );
           return;
         }
 
-        const modalOverlay = document.createElement("div");
-        modalOverlay.className = "modal-overlay";
-        modalOverlay.innerHTML = `
-                <div class="modal-content">
-                    <h3 class="text-2xl font-bold mb-4 text-gray-800">${title}</h3>
-                    <p class="text-gray-700 mb-6">${message}</p>
-                    <div class="flex justify-center gap-4">
-                        <button id="modal-cancel-btn" class="px-6 py-2 bg-gray-300 text-gray-800 rounded-full font-semibold hover:bg-gray-400 transition-colors">
-                            ${cancelText}
-                        </button>
-                        <button id="modal-confirm-btn" class="px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors">
-                            ${confirmText}
-                        </button>
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userId = authAppState.userId;
+        const userEmail = authAppState.user?.email || "Anonymous";
+        const userName =
+          authAppState.userProfile?.name || userEmail.split("@")[0];
+
+        const resultData = {
+          userId: userId,
+          userName: userName,
+          userEmail: userEmail,
+          moduleId: currentModuleId,
+          testId: currentTestId,
+          testTitle: currentTest.title,
+          correctAnswers: correctAnswers,
+          totalQuestions: totalQuestions,
+          bandScore: bandScore,
+          timeTakenSeconds: timeTakenSeconds,
+          timestamp: serverTimestamp(),
+          userAnswers: testState.userAnswers, // Save user answers for potential future review
+        };
+
+        try {
+          // Save to private user results collection
+          const privateDocRef = await addDoc(
+            collection(
+              db,
+              `artifacts/${appId}/users/${userId}/mockTestResults`
+            ),
+            resultData
+          );
+          console.log("Mock test result saved to private collection.");
+          testState.userResultDoc = { id: privateDocRef.id, ...resultData }; // Store the saved document
+
+          // Save to public global results collection for leaderboard
+          await addDoc(
+            collection(
+              db,
+              `artifacts/${appId}/public/data/mockTestGlobalResults`
+            ),
+            resultData
+          );
+          console.log("Mock test result saved to public collection.");
+          showToast("Mock test results saved successfully!", "success");
+        } catch (error) {
+          console.error("Error saving mock test result:", error);
+          showToast("Failed to save mock test results.", "error");
+        }
+      }
+
+      /**
+       * Fetches the user's specific mock test result from Firestore.
+       * @param {string} userId - The ID of the current user.
+       * @param {string} testId - The ID of the test.
+       * @returns {Promise<object|null>} The result document data or null if not found.
+       */
+      async function fetchUserMockTestResult(userId, testId) {
+        if (!db || !userId || !testId) return null;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const resultsRef = collection(
+          db,
+          `artifacts/${appId}/users/${userId}/mockTestResults`
+        );
+        const q = query(
+          resultsRef,
+          where("testId", "==", testId),
+          where("userId", "==", userId)
+        );
+
+        try {
+          const querySnapshot = await getDocs(q);
+          if (!querySnapshot.empty) {
+            let latestResult = null;
+            let latestTimestamp = 0;
+            querySnapshot.forEach((docSnap) => {
+              const data = docSnap.data();
+              const timestamp = data.timestamp ? data.timestamp.toMillis() : 0;
+              if (timestamp > latestTimestamp) {
+                latestTimestamp = timestamp;
+                latestResult = { id: docSnap.id, ...data };
+              }
+            });
+            return latestResult;
+          }
+          return null;
+        } catch (error) {
+          console.error("Error fetching user mock test result:", error);
+          showToast("Failed to load your test results.", "error");
+          return null;
+        }
+      }
+
+      /**
+       * Fetches and updates the leaderboard for the current mock test.
+       */
+      async function fetchLeaderboard() {
+        if (!db || !currentTestId) return; // Use currentTestId from global scope
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const leaderboardRef = collection(
+          db,
+          `artifacts/${appId}/public/data/mockTestGlobalResults`
+        );
+        const q = query(leaderboardRef, where("testId", "==", currentTestId));
+
+        try {
+          const querySnapshot = await getDocs(q);
+          let rawResults = [];
+          querySnapshot.forEach((doc) => {
+            rawResults.push(doc.data());
+          });
+
+          // Deduplicate results by userId, keeping the best score (highest band, then lowest time)
+          const bestResultsMap = new Map(); // Map<userId, bestResult>
+          rawResults.forEach((result) => {
+            const currentBand = parseFloat(result.bandScore) || 0;
+            const existingBest = bestResultsMap.get(result.userId);
+            const existingBand = existingBest
+              ? parseFloat(existingBest.bandScore) || 0
+              : -1;
+
+            if (
+              !existingBest ||
+              currentBand > existingBand ||
+              (currentBand === existingBand &&
+                result.timeTakenSeconds < (existingBest.timeTakenSeconds || 0))
+            ) {
+              bestResultsMap.set(result.userId, result);
+            }
+          });
+
+          let leaderboard = Array.from(bestResultsMap.values());
+
+          // Sort in memory: highest band score first, then lowest time taken
+          leaderboard.sort((a, b) => {
+            const aBand = parseFloat(a.bandScore) || 0;
+            const bBand = parseFloat(b.bandScore) || 0;
+            const aTime = parseFloat(a.timeTakenSeconds) || 0;
+            const bTime = parseFloat(b.timeTakenSeconds) || 0;
+
+            if (bBand !== aBand) {
+              return bBand - aBand; // Higher band score first
+            }
+            return aTime - bTime; // Lower time taken first
+          });
+
+          testState.leaderboard = leaderboard.slice(0, 10); // Get top 10
+
+          // Find user's rank
+          if (authAppState.userId) {
+            const userEntry = leaderboard.find(
+              (entry) => entry.userId === authAppState.userId
+            );
+            if (userEntry) {
+              testState.userRank = leaderboard.indexOf(userEntry) + 1;
+            } else {
+              testState.userRank = null; // User not on leaderboard
+            }
+          } else {
+            testState.userRank = null;
+          }
+
+          console.log("Leaderboard fetched:", testState.leaderboard);
+        } catch (error) {
+          console.error("Error fetching leaderboard:", error);
+          showToast("Failed to load leaderboard.", "error");
+        }
+      }
+
+      /**
+       * Calculates the score and updates user stats.
+       */
+      async function handleSubmitTest() {
+        clearInterval(testState.timerInterval); // Stop the timer
+
+        // Show a loading modal
+        showModal("Submitting Test", "Calculating your score...", false);
+
+        let correctAnswersCount = 0;
+
+        currentTest.sections.forEach((section) => {
+          section.questionGroups.forEach((qGroup) => {
+            qGroup.questions.forEach((question) => {
+              if (question.type === "mcq") {
+                const userAnswer = testState.userAnswers[question.id];
+                const correctAnswer = question.correctAnswer;
+                if (userAnswer === correctAnswer) {
+                  correctAnswersCount++;
+                }
+              } else if (
+                question.type === "fill_in_the_blank" ||
+                question.type === "map_labeling"
+              ) {
+                const userAnswer = testState.userAnswers[question.id];
+                const correctAnswer = question.correctAnswer;
+                // Case-insensitive and trim whitespace comparison
+                if (
+                  userAnswer &&
+                  correctAnswer &&
+                  userAnswer.toLowerCase() === correctAnswer.toLowerCase()
+                ) {
+                  correctAnswersCount++;
+                }
+              } else if (question.type === "table_fill_in_the_blank") {
+                // For table questions, iterate through sub-questions defined in correctAnswer object
+                for (const subQuestionId in question.correctAnswer) {
+                  const userAnswer = testState.userAnswers[subQuestionId];
+                  const correctAnswer = question.correctAnswer[subQuestionId];
+                  if (
+                    userAnswer &&
+                    correctAnswer &&
+                    userAnswer.toLowerCase() === correctAnswer.toLowerCase()
+                  ) {
+                    correctAnswersCount++;
+                  }
+                }
+              }
+            });
+          });
+        });
+
+        const bandScore = calculateIELTSBandScore(
+          correctAnswersCount,
+          totalQuestions
+        );
+        const timeTakenSeconds = currentTest.duration * 60 - testState.timeLeft;
+
+        // Save result to Firestore and update testState.userResultDoc
+        await saveMockTestResultToFirestore(
+          correctAnswersCount,
+          totalQuestions,
+          bandScore,
+          timeTakenSeconds
+        );
+
+        // Fetch leaderboard after saving the user's result
+        await fetchLeaderboard();
+
+        // Update test state to show results
+        testState.testCompleted = true;
+        testState.isLoadingResults = false; // Ensure loading is off
+
+        hideModal(); // Hide the submission modal
+        renderApp(); // Re-render the app to show results
+      }
+
+      /**
+       * Renders the mock test feedback section.
+       * This function is now part of mock-test.html
+       * @param {HTMLElement} parentDiv - The div to render the feedback into.
+       */
+      function renderMockTestFeedbackSection(parentDiv) {
+        if (!currentTest || !testState.userResultDoc) {
+          parentDiv.innerHTML =
+            "<p class='text-center text-red-500'>No results data available. Please complete a mock test first.</p>";
+          return;
+        }
+
+        const {
+          testTitle,
+          correctAnswers,
+          totalQuestions,
+          bandScore,
+          timeTakenSeconds,
+          userAnswers,
+        } = testState.userResultDoc;
+
+        const percentage =
+          totalQuestions > 0
+            ? ((correctAnswers / totalQuestions) * 100).toFixed(2)
+            : 0;
+        const formattedTimeTaken = formatTime(timeTakenSeconds);
+
+        // Determine strengths and areas for improvement (simplified logic)
+        const strengths = [];
+        const areasForImprovement = [];
+        if (bandScore >= 7.0) strengths.push("Excellent overall performance!");
+        if (correctAnswers / totalQuestions > 0.7)
+          strengths.push("Strong grasp of concepts.");
+        if (correctAnswers / totalQuestions < 0.6)
+          areasForImprovement.push("Review core concepts for improvement.");
+        if (timeTakenSeconds > currentTest.duration * 60 * 0.8)
+          areasForImprovement.push("Work on time management to finish faster.");
+
+        parentDiv.innerHTML = `
+                <div class="max-w-4xl mx-auto results-card p-6 sm:p-8 rounded-2xl shadow-xl animate-fade-in-up">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-center text-blue-700 mb-6">
+                        Mock Test Results: ${testTitle}
+                    </h2>
+
+                    <!-- Overall Performance Summary -->
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg mb-8 shadow-md">
+                        <h3 class="text-xl sm:text-2xl font-bold text-blue-800 mb-3 flex items-center gap-2">
+                            ${MockTestIcons.ChartBar.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="w-6 h-6 text-blue-600"'
+                            )} Overall Performance
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
+                            <p><strong>Correct Answers:</strong> ${correctAnswers} / ${totalQuestions}</p>
+                            <p><strong>Percentage:</strong> ${percentage}%</p>
+                            <p><strong>IELTS Band Score:</strong> <span class="font-bold text-green-600 text-2xl">${bandScore}</span></p>
+                            <p><strong>Time Taken:</strong> ${formattedTimeTaken}</p>
+                        </div>
+                    </div>
+
+                    <!-- Strengths and Areas for Improvement -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-green-800 mb-3 flex items-center gap-2">
+                                ${MockTestIcons.ThumbsUp.replace(
+                                  /width="24" height="24"/g,
+                                  'width="24" height="24" class="w-6 h-6 text-green-600"'
+                                )} Strengths
+                            </h3>
+                            <ul class="list-disc pl-5 text-gray-700">
+                                ${
+                                  strengths.length > 0
+                                    ? strengths
+                                        .map((s) => `<li>${s}</li>`)
+                                        .join("")
+                                    : "<li>No specific strengths identified for this test.</li>"
+                                }
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-red-800 mb-3 flex items-center gap-2">
+                                ${MockTestIcons.Warning.replace(
+                                  /width="24" height="24"/g,
+                                  'width="24" height="24" class="w-6 h-6 text-red-600"'
+                                )} Areas for Improvement
+                            </h3>
+                            <ul class="list-disc pl-5 text-gray-700">
+                                ${
+                                  areasForImprovement.length > 0
+                                    ? areasForImprovement
+                                        .map((a) => `<li>${a}</li>`)
+                                        .join("")
+                                    : "<li>Keep up the great work!</li>"
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Question-by-Question Review -->
+                    <div class="mb-8">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            ${MockTestIcons.Review.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="w-6 h-6 text-gray-600"'
+                            )} Question Review
+                        </h3>
+                        <div class="space-y-6 custom-scrollbar max-h-96 overflow-y-auto pr-2">
+                            ${currentTest.sections
+                              .map((section) =>
+                                section.questionGroups
+                                  .map((qGroup) =>
+                                    qGroup.questions
+                                      .map((question) => {
+                                        let userAnswerDisplay = "N/A";
+                                        let correctAnswerDisplay = "N/A";
+                                        let isCorrect = false;
+
+                                        // Determine user's answer and correct answer for display
+                                        if (question.type === "mcq") {
+                                          userAnswerDisplay =
+                                            userAnswers[question.id] ||
+                                            "Unattempted";
+                                          correctAnswerDisplay =
+                                            question.correctAnswer;
+                                          isCorrect =
+                                            userAnswerDisplay ===
+                                            correctAnswerDisplay;
+                                        } else if (
+                                          question.type ===
+                                            "fill_in_the_blank" ||
+                                          question.type === "map_labeling"
+                                        ) {
+                                          userAnswerDisplay =
+                                            userAnswers[question.id] ||
+                                            "Unattempted";
+                                          correctAnswerDisplay =
+                                            question.correctAnswer;
+                                          isCorrect =
+                                            userAnswerDisplay.toLowerCase() ===
+                                            correctAnswerDisplay.toLowerCase();
+                                        } else if (
+                                          question.type ===
+                                          "table_fill_in_the_blank"
+                                        ) {
+                                          // For table questions, display each sub-question
+                                          return Object.keys(
+                                            question.correctAnswer
+                                          )
+                                            .map((subQuestionId) => {
+                                              const subUserAnswer =
+                                                userAnswers[subQuestionId] ||
+                                                "Unattempted";
+                                              const subCorrectAnswer =
+                                                question.correctAnswer[
+                                                  subQuestionId
+                                                ];
+                                              const subIsCorrect =
+                                                subUserAnswer.toLowerCase() ===
+                                                subCorrectAnswer.toLowerCase();
+
+                                              return `
+                                                <div class="p-4 rounded-lg shadow-sm border ${
+                                                  subIsCorrect
+                                                    ? "border-green-300 bg-green-50"
+                                                    : "border-red-300 bg-red-50"
+                                                }">
+                                                    <p class="font-semibold text-gray-900 mb-2">
+                                                        Question ${subQuestionId.replace(
+                                                          "q",
+                                                          ""
+                                                        )}: (Table Question)
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Your Answer: <span class="${
+                                                          subIsCorrect
+                                                            ? "correct-answer"
+                                                            : "incorrect-answer"
+                                                        }">${subUserAnswer}</span>
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Correct Answer: <span class="correct-answer">${subCorrectAnswer}</span>
+                                                    </p>
+                                                    ${
+                                                      question.explanation
+                                                        ? `<div class="explanation">
+                                                            <strong>Explanation:</strong> ${question.explanation}
+                                                        </div>`
+                                                        : ""
+                                                    }
+                                                </div>
+                                            `;
+                                            })
+                                            .join("");
+                                        }
+
+                                        // Render for non-table questions
+                                        return `
+                                        <div class="p-4 rounded-lg shadow-sm border ${
+                                          isCorrect
+                                            ? "border-green-300 bg-green-50"
+                                            : "border-red-300 bg-red-50"
+                                        }">
+                                            <p class="font-semibold text-gray-900 mb-2">
+                                                Question ${
+                                                  question.questionNumber
+                                                }: ${question.text}
+                                            </p>
+                                            <p class="text-sm text-gray-700">
+                                                Your Answer: <span class="${
+                                                  isCorrect
+                                                    ? "correct-answer"
+                                                    : "incorrect-answer"
+                                                }">${userAnswerDisplay}</span>
+                                            </p>
+                                            <p class="text-sm text-gray-700">
+                                                Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
+                                            </p>
+                                            ${
+                                              question.explanation
+                                                ? `<div class="explanation">
+                                                    <strong>Explanation:</strong> ${question.explanation}
+                                                </div>`
+                                                : ""
+                                            }
+                                        </div>
+                                    `;
+                                      })
+                                      .join("")
+                                  )
+                                  .join("")
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+
+                    <!-- Leaderboard Section -->
+                    <div class="mb-8">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            ${MockTestIcons.Leaderboard.replace(
+                              /width="24" height="24"/g,
+                              'width="24" height="24" class="w-6 h-6 text-gray-600"'
+                            )} Leaderboard for This Test
+                        </h3>
+                        <div class="leaderboard-table-container">
+                            <table class="leaderboard-table">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Player</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Band Score</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    ${
+                                      testState.leaderboard.length > 0
+                                        ? testState.leaderboard
+                                            .map(
+                                              (entry, index) => `
+                                            <tr class="${
+                                              authAppState.userId &&
+                                              entry.userId ===
+                                                authAppState.userId
+                                                ? "current-user-row"
+                                                : ""
+                                            }">
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                    ${
+                                                      index === 0
+                                                        ? `<span class="rank-badge rank-1">${
+                                                            index + 1
+                                                          }</span>`
+                                                        : index === 1
+                                                        ? `<span class="rank-badge rank-2">${
+                                                            index + 1
+                                                          }</span>`
+                                                        : index === 2
+                                                        ? `<span class="rank-badge rank-3">${
+                                                            index + 1
+                                                          }</span>`
+                                                        : `<span class="rank-badge rank-common">${
+                                                            index + 1
+                                                          }</span>` // Applied common badge for ranks 4+
+                                                    }
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${
+                                                  entry.userName ||
+                                                  entry.userEmail.split("@")[0]
+                                                }</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${
+                                                  entry.bandScore
+                                                }</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatTime(
+                                                  entry.timeTakenSeconds
+                                                )}</td>
+                                            </tr>
+                                        `
+                                            )
+                                            .join("")
+                                        : `<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">No results yet. Be the first!</td></tr>`
+                                    }
+                                    ${
+                                      testState.userRank &&
+                                      testState.userRank > 10 &&
+                                      authAppState.userId
+                                        ? `
+                                        <tr>
+                                            <td colspan="4" class="px-6 py-4 text-center text-gray-600 italic">... Your Rank: ${testState.userRank} ...</td>
+                                        </tr>
+                                        `
+                                        : ""
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center mt-8 gap-3 flex-wrap">
+                        <a href="mock-test-home.html" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
+                        <i class="fas fa-home w-5 h-5"></i> Back to Mock Tests
+                        </a>
+                         <a href="daily-leaderboard.html" class="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
+                         <i class="fas fa-list-ol w-5 h-5"></i> Daily Leaderboard
+                         </a>
                     </div>
                 </div>
             `;
-
-        modalContainer.appendChild(modalOverlay);
-
-        document.getElementById("modal-confirm-btn").onclick = () => {
-          onConfirm();
-          hideCurrentModal();
-        };
-
-        document.getElementById("modal-cancel-btn").onclick = () => {
-          onCancel();
-          hideCurrentModal();
-        };
-
-        // Close modal if clicking outside content
-        modalOverlay.addEventListener("click", (event) => {
-          if (event.target === modalOverlay) {
-            onCancel(); // Treat clicking outside as a cancel
-            hideCurrentModal();
-          }
-        });
       }
 
       /**
-       * Displays a confirmation modal before submitting the test.
+       * Renders the main application content for the mock test page.
        */
-      function confirmSubmitTest() {
-        showModal({
-          title: "Confirm Submission",
-          message: "Are you sure you want to submit the test?",
-          confirmText: "Submit",
-          cancelText: "Cancel",
-          onConfirm: handleSubmitTest,
-        });
-      }
+      async function renderApp() {
+        const appDiv = document.getElementById("app");
+        if (!appDiv) return;
 
-      /**
-       * Handles test submission.
-       * For now, it just logs answers and shows a success message.
-       * Future: Send answers to backend, calculate score, update user stats.
-       */
-      async function handleSubmitTest() {
-        stopTimer();
-        hideCurrentModal(); // Use the local hide function
-
-        // Placeholder for scoring logic
-        console.log("Test Submitted!");
-        console.log("User Answers:", userAnswers);
-        console.log("Time Left:", formatTime(timeLeft));
-
-        // Example: Award points for completing the test (dummy logic)
-        if (authAppState.userId) {
-          const pointsAwarded = 100; // Example points
-          const newTotalPoints = userGameStats.totalPoints + pointsAwarded;
-          const newLevel = userGameStats.level; // Logic to calculate new level based on thresholds would go here
-          const updatedCompletedTests = [
-            ...userGameStats.completedTests,
-            currentTest.id,
-          ];
-
-          await updateUserGameStats(authAppState.userId, {
-            totalPoints: newTotalPoints,
-            level: newLevel, // Update if level changes
-            completedTests: updatedCompletedTests,
-          });
-          showToast(
-            `Test submitted! You earned ${pointsAwarded} points.`,
-            "success"
-          );
+        if (testState.isLoadingResults) {
+          appDiv.innerHTML = `
+            <div class="flex justify-center items-center h-full min-h-[50vh]">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+                <p class="ml-4 text-lg text-gray-600">Loading results...</p>
+            </div>
+          `;
+        } else if (testState.testCompleted) {
+          renderMockTestFeedbackSection(appDiv);
+          // Hide audio player and mobile palette header when results are shown
+          document.getElementById("fixed-audio-player-wrapper").style.display =
+            "none";
+          document.getElementById(
+            "mobile-question-palette-wrapper"
+          ).style.display = "none";
         } else {
-          showToast(
-            "Test submitted! Sign in to save your progress.",
-            "success"
-          );
+          // Render the test questions
+          document.getElementById("fixed-audio-player-wrapper").style.display =
+            "flex"; // Show audio player
+          // Removed the line that forces mobile palette to display, letting CSS handle it
+          // document.getElementById("mobile-question-palette-wrapper").style.display = 'flex'; // REMOVED THIS LINE
+
+          appDiv.innerHTML = `
+                <div class="mock-test-layout min-h-[calc(100vh-100px)]">
+                    <!-- Main Test Content Area -->
+                    <div class="main-test-content">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-3xl font-anton text-gray-800">${
+                              currentTest.title
+                            }</h2>
+                            <!-- Audio player moved outside this div -->
+                        </div>
+
+                        <!-- User ID Display (if logged in) -->
+                        ${
+                          authAppState.isAuthReady && authAppState.userId
+                            ? `
+                        <p class="mb-6 text-sm sm:text-lg font-mono user-id-display inline-block px-3 py-1 sm:px-4 sm:py-2 rounded-xl animate-fade-in">
+                            User ID: <span class="font-semibold text-gray-800">${authAppState.userId}</span>
+                        </p>
+                        `
+                            : ""
+                        }
+
+                        <!-- Test Sections and Questions -->
+                        <div id="test-questions-container">
+                            ${currentTest.sections
+                              .map(
+                                (section) => `
+                                <div class="question-section" id="section-${
+                                  section.id
+                                }">
+                                    <h3 class="text-2xl font-bold text-gray-700 mb-3 font-anton">${
+                                      section.title
+                                    }</h3>
+                                    ${
+                                      section.image
+                                        ? `<div class="map-image-container">
+                                                <img src="${section.image}" alt="Test Section Image" class="rounded-lg">
+                                           </div>`
+                                        : ""
+                                    }
+                                    <div class="questions-list">
+                                        ${section.questionGroups // Iterate over questionGroups
+                                          .map(
+                                            (qGroup) => `
+                                            ${
+                                              qGroup.instructions
+                                                ? `<div class="question-group-instructions mb-6 text-gray-600 font-inter">${qGroup.instructions}</div>`
+                                                : ""
+                                            }
+                                            ${qGroup.questions // Iterate over questions within the group
+                                              .map((question) => {
+                                                let questionHtml = "";
+                                                if (question.type === "mcq") {
+                                                  questionHtml = `
+                                                        <div class="question-item" id="question-${
+                                                          question.questionNumber
+                                                        }">
+                                                            <p class="text-lg font-semibold mb-2">${
+                                                              question.questionNumber
+                                                            }. ${
+                                                    question.text
+                                                  }</p>
+                                                            ${question.options
+                                                              .map(
+                                                                (
+                                                                  option,
+                                                                  index
+                                                                ) => `
+                                                                <label class="radio-option">
+                                                                    <input type="radio" name="q-${
+                                                                      question.id
+                                                                    }" value="${option}"
+                                                                           onchange="handleAnswerInput('${
+                                                                             question.id
+                                                                           }', this.value)"
+                                                                           ${
+                                                                             testState
+                                                                               .userAnswers[
+                                                                               question
+                                                                                 .id
+                                                                             ] ===
+                                                                             option
+                                                                               ? "checked"
+                                                                               : ""
+                                                                           }>
+                                                                    <span class="ml-2 text-gray-700">${option}</span>
+                                                                </label>
+                                                            `
+                                                              )
+                                                              .join("")}
+                                                        </div>
+                                                    `;
+                                                } else if (
+                                                  question.type ===
+                                                    "fill_in_the_blank" ||
+                                                  question.type ===
+                                                    "map_labeling"
+                                                ) {
+                                                  const inputClass =
+                                                    question.inputPlacement ===
+                                                    "newline"
+                                                      ? "block-input"
+                                                      : "inline-input";
+                                                  const inputField = `<input type="text" id="q-${
+                                                    question.id
+                                                  }" placeholder="Answer"
+                                                                   oninput="handleAnswerInput('${
+                                                                     question.id
+                                                                   }', this.value)"
+                                                                   value="${
+                                                                     testState
+                                                                       .userAnswers[
+                                                                       question
+                                                                         .id
+                                                                     ] || ""
+                                                                   }" class="${inputClass}">`;
+
+                                                  let questionTextContent = "";
+                                                  let inputElementHtml = "";
+
+                                                  if (
+                                                    question.inputPlacement ===
+                                                    "newline"
+                                                  ) {
+                                                    // For questions like 4, 5, 6, 7 where input is on a new line
+                                                    // The descriptive text is now handled by questionGroup.instructions
+                                                    questionTextContent = "";
+                                                    inputElementHtml = inputField; // The input field itself is block
+                                                  } else {
+                                                    // Default inline behavior
+                                                    questionTextContent = question.text.includes(
+                                                      "[GAP]"
+                                                    )
+                                                      ? question.text.replace(
+                                                          /\[GAP\]/g,
+                                                          inputField
+                                                        )
+                                                      : `${question.text} ${inputField}`;
+                                                    inputElementHtml = ""; // Input is part of questionTextContent
+                                                  }
+
+                                                  questionHtml = `
+                                                    <div class="question-item" id="question-${question.questionNumber}">
+                                                        <p class="inline-question-text">
+                                                            <span class="font-semibold text-lg text-gray-800">${question.questionNumber}.</span>
+                                                            ${questionTextContent}
+                                                        </p>
+                                                        ${inputElementHtml}
+                                                    </div>
+                                                  `;
+                                                } else if (
+                                                  question.type ===
+                                                  "table_fill_in_the_blank"
+                                                ) {
+                                                  // Render a table for this question type
+                                                  questionHtml = `
+                                                    <div class="question-item" id="question-${
+                                                      question.questionNumber
+                                                    }">
+                                                        <div class="table-responsive-wrapper">
+                                                            <table class="w-full text-left border-collapse mt-4">
+                                                                <thead>
+                                                                    ${
+                                                                      question
+                                                                        .tableData[0]
+                                                                        ? `<tr>${question.tableData[0]
+                                                                            .map(
+                                                                              (
+                                                                                header
+                                                                              ) =>
+                                                                                `<th class="py-2 px-4 border border-gray-300 bg-gray-100">${header}</th>`
+                                                                            )
+                                                                            .join(
+                                                                              ""
+                                                                            )}</tr>`
+                                                                        : ""
+                                                                    }
+                                                                </thead>
+                                                                <tbody>
+                                                                    ${question.tableData
+                                                                      .slice(1)
+                                                                      .map(
+                                                                        (
+                                                                          row
+                                                                        ) => `
+                                                                        <tr>
+                                                                            ${row
+                                                                              .map(
+                                                                                (
+                                                                                  cellContent
+                                                                                ) => {
+                                                                                  const inputPattern = /(\d+)\.\s*\[INPUT\]/;
+                                                                                  let displayContent = cellContent;
+                                                                                  let inputId =
+                                                                                    "";
+                                                                                  const match = cellContent.match(
+                                                                                    inputPattern
+                                                                                  );
+
+                                                                                  if (
+                                                                                    match
+                                                                                  ) {
+                                                                                    const qNum =
+                                                                                      match[1];
+                                                                                    inputId = `q${qNum}`; // This is the ID used in userAnswers
+                                                                                    const inputFieldHtml = `<input type="text" id="${inputId}" placeholder="Answer"
+                                                                                                           oninput="handleAnswerInput('${inputId}', this.value)"
+                                                                                                           value="${
+                                                                                                             testState
+                                                                                                               .userAnswers[
+                                                                                                               inputId
+                                                                                                             ] ||
+                                                                                                             ""
+                                                                                                           }"
+                                                                                                           class="table-input">`;
+                                                                                    displayContent = cellContent.replace(
+                                                                                      /\[INPUT\]/,
+                                                                                      inputFieldHtml
+                                                                                    );
+                                                                                  }
+                                                                                  return `
+                                                                                    <td class="py-2 px-4 border border-gray-300">
+                                                                                        ${displayContent}
+                                                                                    </td>
+                                                                                `;
+                                                                                }
+                                                                              )
+                                                                              .join(
+                                                                                ""
+                                                                              )}
+                                                                        </tr>
+                                                                    `
+                                                                      )
+                                                                      .join("")}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                  `;
+                                                }
+                                                return questionHtml;
+                                              })
+                                              .join("")}
+                                        `
+                                          )
+                                          .join("")}
+                                    </div>
+                                </div>
+                            `
+                              )
+                              .join("")}
+                        </div>
+
+                        <div class="flex justify-end mt-8">
+                            <button id="submit-test-btn" class="px-8 py-3 bg-blue-600 text-white rounded-full font-semibold text-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg transform active:scale-95">
+                                Submit Test
+                                <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar: Question Palette & Timer (for desktop/tablet) -->
+                    <div class="sidebar hidden lg:flex">
+                        <div class="text-center mb-4">
+                            <h3 class="text-2xl font-anton text-white mb-2">Question Palette</h3>
+                            <div class="flex items-center justify-center gap-2 text-xl font-bold text-white">
+                                <i class="fas fa-clock"></i>
+                                <span id="timer-display-desktop">${formatTime(
+                                  testState.timeLeft
+                                )}</span>
+                            </div>
+                        </div>
+
+                        <div class="question-palette-grid" id="question-palette-desktop">
+                            <!-- Question buttons will be injected here -->
+                        </div>
+
+                        <div class="flex flex-col gap-3 mt-6">
+                            <div class="flex items-center gap-2">
+                                <span class="question-palette-btn answered w-6 h-6 rounded-full text-xs"></span>
+                                <span class="text-sm">Answered</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="question-palette-btn unanswered w-6 h-6 rounded-full text-xs"></span>
+                                <span class="text-sm">Unanswered</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="question-palette-btn current w-6 h-6 rounded-full text-xs"></span>
+                                <span class="text-sm">Current</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between mt-auto pt-6 border-t border-gray-700">
+                            <button id="prev-question-btn-desktop" class="px-5 py-2 bg-gray-600 text-white rounded-full font-semibold hover:bg-gray-700 transition-colors duration-200 transform active:scale-95 flex items-center gap-2">
+                                ${MockTestIcons.ChevronLeft} Prev
+                            </button>
+                            <button id="next-question-btn-desktop" class="px-5 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors duration-200 transform active:scale-95 flex items-center gap-2">
+                                Next ${MockTestIcons.ChevronRight}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
-        // Redirect or show results page
-        setTimeout(() => {
-          window.location.href = `mock-test-results.html?testId=${currentTest.id}`; // Example redirect
-        }, 2000);
+        // Attach event listeners for question inputs only if test is not completed
+        if (!testState.testCompleted) {
+          const testQuestionsContainer = document.getElementById(
+            "test-questions-container"
+          );
+          if (testQuestionsContainer) {
+            testQuestionsContainer.addEventListener("input", (event) => {
+              // For text inputs (fill-in-the-blank, map labeling, table inputs)
+              if (
+                event.target.tagName === "INPUT" &&
+                event.target.type === "text" &&
+                event.target.id.startsWith("q")
+              ) {
+                const questionId = event.target.id;
+                handleAnswerInput(questionId, event.target.value);
+              }
+            });
+            testQuestionsContainer.addEventListener("change", (event) => {
+              // For radio buttons (MCQ)
+              if (
+                event.target.tagName === "INPUT" &&
+                event.target.type === "radio" &&
+                event.target.name.startsWith("q-")
+              ) {
+                const questionId = event.target.name.substring(2); // Remove "q-" prefix
+                handleAnswerInput(questionId, event.target.value);
+              }
+            });
+          }
+
+          // Populate question palette (both desktop and mobile)
+          const questionPaletteDesktop = document.getElementById(
+            "question-palette-desktop"
+          );
+          const questionPaletteMobile = document.getElementById(
+            "question-palette-mobile"
+          );
+
+          const paletteHtml = questionPaletteItems
+            .map((item) => {
+              return `<button class="question-palette-btn unanswered" data-palette-number="${item.paletteNumber}">${item.paletteNumber}</button>`;
+            })
+            .join("");
+
+          if (questionPaletteDesktop) {
+            questionPaletteDesktop.innerHTML = paletteHtml;
+            questionPaletteDesktop.addEventListener("click", (event) => {
+              if (event.target.classList.contains("question-palette-btn")) {
+                const paletteNum = parseInt(event.target.dataset.paletteNumber);
+                scrollToQuestion(paletteNum);
+              }
+            });
+          }
+          if (questionPaletteMobile) {
+            questionPaletteMobile.innerHTML = paletteHtml;
+            questionPaletteMobile.addEventListener("click", (event) => {
+              if (event.target.classList.contains("question-palette-btn")) {
+                const paletteNum = parseInt(event.target.dataset.paletteNumber);
+                scrollToQuestion(paletteNum);
+                // Collapse the palette after clicking a question on mobile
+                const mobilePaletteWrapper = document.getElementById(
+                  "mobile-question-palette-wrapper"
+                );
+                const mobilePaletteContent = document.getElementById(
+                  "mobile-palette-content"
+                );
+                const paletteToggleIcon = document.getElementById(
+                  "palette-toggle-icon"
+                );
+
+                if (mobilePaletteWrapper.classList.contains("expanded")) {
+                  mobilePaletteWrapper.classList.remove("expanded");
+                  paletteToggleIcon.classList.remove("ph-caret-up");
+                  paletteToggleIcon.classList.add("ph-caret-down");
+                }
+              }
+            });
+          }
+
+          // Navigation buttons
+          const prevBtnDesktop = document.getElementById(
+            "prev-question-btn-desktop"
+          );
+          const nextBtnDesktop = document.getElementById(
+            "next-question-btn-desktop"
+          );
+          const submitBtn = document.getElementById("submit-test-btn");
+
+          if (prevBtnDesktop) {
+            prevBtnDesktop.addEventListener("click", () => {
+              if (testState.currentQuestionIndex > 0) {
+                scrollToQuestion(testState.currentQuestionIndex); // Scroll to previous question (current index is 0-based, paletteNumber is 1-based)
+              }
+            });
+          }
+          if (nextBtnDesktop) {
+            nextBtnDesktop.addEventListener("click", () => {
+              if (testState.currentQuestionIndex < totalQuestions - 1) {
+                scrollToQuestion(testState.currentQuestionIndex + 2); // Scroll to next question
+              }
+            });
+          }
+          if (submitBtn) {
+            submitBtn.addEventListener("click", () => {
+              const unansweredCount = questionPaletteItems.filter(
+                (item) => !testState.userAnswers[item.questionId]
+              ).length;
+
+              showModal(
+                "Confirm Submission",
+                `Are you sure you want to submit the test? You have ${unansweredCount} unanswered questions.`,
+                true,
+                () => handleSubmitTest(), // On confirm
+                () => hideModal() // On cancel
+              );
+            });
+          }
+
+          // Mobile palette dropdown logic
+          const mobilePaletteHeader = document.getElementById(
+            "mobile-palette-header"
+          );
+          const mobilePaletteContent = document.getElementById(
+            "mobile-palette-content"
+          );
+          const mobilePaletteWrapper = document.getElementById(
+            "mobile-question-palette-wrapper"
+          );
+          const paletteToggleIcon = document.getElementById(
+            "palette-toggle-icon"
+          );
+
+          if (
+            mobilePaletteHeader &&
+            mobilePaletteContent &&
+            paletteToggleIcon &&
+            mobilePaletteWrapper
+          ) {
+            mobilePaletteHeader.addEventListener("click", () => {
+              const isExpanded = mobilePaletteWrapper.classList.toggle(
+                "expanded"
+              ); // Corrected: toggle on wrapper
+              if (isExpanded) {
+                paletteToggleIcon.classList.remove("ph-caret-down");
+                paletteToggleIcon.classList.add("ph-caret-up");
+              } else {
+                paletteToggleIcon.classList.remove("ph-caret-up");
+                paletteToggleIcon.classList.add("ph-caret-down");
+              }
+            });
+          }
+
+          // Start the timer and update palette initially
+          startTimer();
+          updateQuestionPalette();
+          // Scroll to the first question initially
+          if (totalQuestions > 0) {
+            scrollToQuestion(1);
+          }
+        }
       }
 
-      /**
-       * Displays a confirmation modal before exiting the test.
-       */
-      function confirmExitTest() {
-        showModal({
-          title: "Exit Test",
-          message:
-            "Are you sure you want to exit? Your progress will not be saved.",
-          confirmText: "Exit",
-          cancelText: "Stay",
-          onConfirm: () => {
-            stopTimer();
-            hideCurrentModal(); // Use the local hide function
-            window.location.href = "mock-test-home.html"; // Redirect to home
-          },
-        });
-      }
+      // Expose functions to global scope for oninput/onchange attributes
+      window.handleAnswerInput = handleAnswerInput;
 
       // Initialization Logic
       window.onload = async function () {
-        const loadingSpinner = document.getElementById("loading-spinner");
-        const testLayout = document.getElementById("test-layout");
-        loadingSpinner.classList.remove("hidden");
-        testLayout.classList.add("hidden");
-
         // Initialize Firebase Auth and listen for state changes
         initFirebaseAuth(updateAuthUI)
           .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
@@ -2305,113 +2274,117 @@
               auth,
             });
 
-            // Fetch user game stats after Firebase is initialized and user is authenticated
-            auth.onAuthStateChanged(async (user) => {
-              if (user) {
-                await fetchUserGameStats(user.uid);
-              }
+            // Parse URL parameters for initial load (e.g., if user refreshes results page)
+            const urlParams = new URLSearchParams(window.location.search);
+            currentModuleId = urlParams.get("module");
+            currentTestId = urlParams.get("test");
 
-              // Parse URL parameters
-              const urlParams = new URLSearchParams(window.location.search);
-              const testId = urlParams.get("test");
-              const moduleId = urlParams.get("module");
-
-              if (!testId || !moduleId) {
-                document.getElementById("app").innerHTML = `
-                                <div class="text-center text-red-500 text-xl mt-12 w-full">
-                                    Error: Test ID or Module ID not specified in the URL.
-                                    <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
-                                </div>
-                            `;
-                loadingSpinner.classList.add("hidden");
-                return;
-              }
-
-              currentTest = allMockTests.find((test) => test.id === testId);
-              currentModule = MockTestModules.find(
-                (mod) => mod.id === moduleId
+            if (currentModuleId && currentTestId) {
+              currentTest = allMockTests.find(
+                (test) =>
+                  test.moduleId === currentModuleId && test.id === currentTestId
               );
 
-              if (!currentTest || !currentModule) {
-                document.getElementById("app").innerHTML = `
-                                <div class="text-center text-red-500 text-xl mt-12 w-full">
-                                    Error: Mock test or module not found.
-                                    <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
-                                </div>
-                            `;
-                loadingSpinner.classList.add("hidden");
-                return;
-              }
+              if (currentTest) {
+                const scoreParam = urlParams.get("score");
+                const totalParam = urlParams.get("total");
+                const bandParam = urlParams.get("band");
+                const timeParam = urlParams.get("time");
 
-              // Initialize userAnswers object based on the test structure
-              currentTest.sections.forEach((section) => {
-                section.questions.forEach((question) => {
-                  if (question.type === "multiple_choice_multiple") {
-                    userAnswers[question.id] = []; // Initialize as empty array for multiple selections
-                  } else if (question.type === "matching_information") {
-                    userAnswers[question.id] = {}; // Initialize as empty object for matching pairs
-                  } else {
-                    userAnswers[question.id] = ""; // Initialize as empty string for single answers
+                if (
+                  scoreParam !== null &&
+                  totalParam !== null &&
+                  bandParam !== null &&
+                  timeParam !== null
+                ) {
+                  // This means we are loading a completed test's results directly
+                  testState.testCompleted = true;
+                  testState.isLoadingResults = true; // Set loading state for results
+                  // Fetch the actual user result document to get userAnswers
+                  auth.onAuthStateChanged(async (user) => {
+                    if (authAppState.userId) {
+                      testState.userResultDoc = await fetchUserMockTestResult(
+                        authAppState.userId,
+                        currentTestId
+                      );
+                    } else {
+                      console.warn(
+                        "User not authenticated, cannot fetch specific user result for display."
+                      );
+                      testState.userResultDoc = {
+                        testTitle: currentTest.title,
+                        correctAnswers: parseInt(scoreParam),
+                        totalQuestions: parseInt(totalParam),
+                        bandScore: parseFloat(bandParam),
+                        timeTakenSeconds: parseInt(timeParam),
+                        userAnswers: {}, // Fallback empty answers
+                      };
+                    }
+                    await fetchLeaderboard();
+                    testState.isLoadingResults = false;
+                    renderApp(); // Render results UI
+                  });
+                } else {
+                  // Not a completed test, initialize for a new test
+                  testState.testCompleted = false;
+                  // Initialize questionPaletteItems and userAnswers based on the test structure
+                  questionPaletteItems = [];
+                  testState.userAnswers = {};
+                  let currentPaletteNumber = 1;
+
+                  currentTest.sections.forEach((section) => {
+                    section.questionGroups.forEach((qGroup) => {
+                      qGroup.questions.forEach((question) => {
+                        if (question.type === "table_fill_in_the_blank") {
+                          for (const subQuestionId in question.correctAnswer) {
+                            testState.userAnswers[subQuestionId] = "";
+                            questionPaletteItems.push({
+                              paletteNumber: currentPaletteNumber,
+                              questionId: subQuestionId,
+                              htmlElementId: `question-${question.questionNumber}`,
+                            });
+                            currentPaletteNumber++;
+                          }
+                        } else {
+                          testState.userAnswers[question.id] = "";
+                          questionPaletteItems.push({
+                            paletteNumber: currentPaletteNumber,
+                            questionId: question.id,
+                            htmlElementId: `question-${question.questionNumber}`,
+                          });
+                          currentPaletteNumber++;
+                        }
+                      });
+                    });
+                  });
+                  totalQuestions = questionPaletteItems.length;
+                  testState.timeLeft = currentTest.duration * 60;
+                  const audioPlayer = document.getElementById(
+                    "test-audio-player"
+                  );
+                  if (audioPlayer) {
+                    audioPlayer.src = currentTest.audioUrl;
                   }
-                });
-              });
-
-              // Set up test details
-              document.getElementById("test-title").textContent =
-                currentTest.title;
-              document.getElementById("test-description").textContent =
-                currentTest.description;
-
-              // Set up audio player if it's a listening test
-              const audioPlayerSection = document.getElementById(
-                "audio-player-section"
-              );
-              const testAudioPlayer = document.getElementById(
-                "test-audio-player"
-              );
-              if (currentModule.id === "listening" && currentTest.audioUrl) {
-                testAudioPlayer.src = currentTest.audioUrl;
-                audioPlayerSection.classList.remove("hidden");
+                  renderApp(); // Render test UI
+                }
               } else {
-                audioPlayerSection.classList.add("hidden");
+                // Test not found
+                appDiv.innerHTML = `
+                        <div class="text-center text-red-500 text-xl mt-12">
+                            Error: Mock test not found.
+                            <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
+                        </div>
+                    `;
               }
-
-              // Set initial time and start timer
-              timeLeft = currentTest.duration * 60; // Convert minutes to seconds
-              document.getElementById("timer-display").textContent = formatTime(
-                timeLeft
-              );
-              startTimer();
-
-              // Render the first section
-              renderCurrentSection();
-
-              // Add event listeners for navigation
-              document
-                .getElementById("prev-section-btn")
-                .addEventListener("click", goToPreviousSection);
-              document
-                .getElementById("next-section-btn")
-                .addEventListener("click", goToNextSection);
-
-              // Attach listeners to both desktop and mobile submit/exit buttons
-              document
-                .getElementById("submit-test-btn-desktop")
-                .addEventListener("click", confirmSubmitTest);
-              document
-                .getElementById("exit-test-btn-desktop")
-                .addEventListener("click", confirmExitTest);
-
-              document
-                .getElementById("submit-test-btn-mobile")
-                .addEventListener("click", confirmSubmitTest);
-              document
-                .getElementById("exit-test-btn-mobile")
-                .addEventListener("click", confirmExitTest);
-
-              loadingSpinner.classList.add("hidden");
-              testLayout.classList.remove("hidden");
-            });
+            } else {
+              // No module or test specified, redirect to home or show error
+              appDiv.innerHTML = `
+                    <div class="text-center text-red-500 text-xl mt-12">
+                        Error: No module or test specified in the URL.
+                        <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
+                    </div>
+                `;
+            }
           })
           .catch((error) => {
             console.error(
@@ -2422,13 +2395,9 @@
               "Failed to initialize Firebase. Some features may not work.",
               "error"
             );
-            loadingSpinner.classList.add("hidden");
-            document.getElementById("app").innerHTML = `
-                        <div class="text-center text-red-500 text-xl mt-12 w-full">
-                            Failed to load the test due to an initialization error.
-                            <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
-                        </div>
-                    `;
+            // Even if Firebase fails, try to render the app, but features might be limited
+            testState.isLoadingResults = false; // Ensure loading is off
+            renderApp();
           });
       };
     </script>
