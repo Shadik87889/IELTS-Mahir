@@ -529,24 +529,24 @@
                               const isLocked = false; // Placeholder for future logic
                               const lockOverlay = isLocked
                                 ? `
-                                    <div class="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center rounded-3xl z-40 p-4">
-                                        <div class="relative mb-4">
-                                            <i class="fas fa-lock text-6xl text-yellow-400 drop-shadow-lg animate-pulse-slow"></i>
+                                        <div class="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center rounded-3xl z-40 p-4">
+                                            <div class="relative mb-4">
+                                                <i class="fas fa-lock text-6xl text-yellow-400 drop-shadow-lg animate-pulse-slow"></i>
+                                            </div>
+                                            <span class="text-white text-3xl font-extrabold text-shadow-lg mb-2 font-anton">
+                                                Test Locked!
+                                            </span>
+                                            <span class="text-blue-200 text-xl font-semibold text-shadow-md font-inter">
+                                                Unlock at Level X
+                                            </span>
+                                            <p class="text-gray-300 text-sm mt-2 text-center max-w-xs font-inter">
+                                                Complete more mock tests to gain points and level up!
+                                            </p>
                                         </div>
-                                        <span class="text-white text-3xl font-extrabold text-shadow-lg mb-2 font-anton">
-                                            Test Locked!
-                                        </span>
-                                        <<span class="text-blue-200 text-xl font-semibold text-shadow-md font-inter">
-                                            Unlock at Level X
-                                        </span>
-                                        <p class="text-gray-300 text-sm mt-2 text-center max-w-xs font-inter">
-                                            Complete more mock tests to gain points and level up!
-                                        </p>
-                                    </div>
-                                `
+                                    `
                                 : "";
 
-                              // Corrected logic to count questions, handling table_fill_in_the_blank
+                              // Corrected logic to count questions, handling table_fill_in_the_blank and multiple_choice_multiple_answers
                               const totalQuestions = test.sections.reduce(
                                 (totalAcc, sec) => {
                                   return (
@@ -570,8 +570,19 @@
                                                       question.correctAnswer
                                                     ).length
                                                   );
+                                                } else if (
+                                                  group.type ===
+                                                    "multiple_choice_multiple_answers" &&
+                                                  question.correctAnswer
+                                                ) {
+                                                  // For MCAA, count the number of correct options
+                                                  return (
+                                                    qAcc +
+                                                    question.correctAnswer
+                                                      .length
+                                                  );
                                                 } else {
-                                                  // For other types, count as 1 question
+                                                  // For all other types, count as 1 question
                                                   return qAcc + 1;
                                                 }
                                               },

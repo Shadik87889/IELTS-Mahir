@@ -28,9 +28,9 @@
       /* Base styles for the entire application */
       body {
         font-family: "Inter", sans-serif;
-        /* A very subtle, almost flat background, slightly warmer */
-        background-color: #f8f9fa; /* Light gray-blue for a fresh feel */
-        color: #212529; /* Darker text for better contrast */
+        /* A very subtle, almost flat background */
+        background-color: #f2f2f7; /* iOS light background color */
+        color: #334155; /* Slate 700 for main text */
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -130,8 +130,8 @@
 
       /* Styling for the sidebar (for Listening Tests) */
       .sidebar {
-        background-color: #2c3e50; /* Darker, richer blue-gray */
-        border: 1px solid #34495e; /* Slightly darker border */
+        background-color: #1e293b;
+        border: 1px solid #1a202c;
         padding: 1.5rem;
         color: white;
         display: none;
@@ -178,22 +178,22 @@
       }
 
       .question-palette-btn.answered {
-        background-color: #28a745; /* Bootstrap Green, slightly richer */
+        background-color: #34c759; /* Apple Green */
         color: white;
         /* Removed shadow */
       }
 
       .question-palette-btn.unanswered {
-        background-color: #6c757d; /* Bootstrap Gray, more neutral */
+        background-color: #636366; /* Apple Gray */
         color: white;
         /* Removed shadow */
       }
 
       .question-palette-btn.current {
-        background-color: #007bff; /* Bootstrap Blue, vibrant */
+        background-color: #007aff; /* Apple Blue */
         transform: scale(1.05); /* Slightly larger */
         /* Removed shadow */
-        border: 1px solid #007bff; /* Blue border */
+        border: 1px solid #007aff; /* Blue border */
       }
 
       .question-palette-btn:hover:not(.current) {
@@ -206,10 +206,10 @@
         position: sticky;
         top: 64px; /* Adjust based on header height */
         width: 100%;
-        background-color: #f0f2f5; /* Slightly darker background than body */
+        background-color: #f9f9f9; /* Lighter background */
         padding: 0.75rem 1rem;
         /* Removed shadow, using a subtle border */
-        border-bottom: 1px solid #d1d8e0; /* Softer border */
+        border-bottom: 1px solid #e0e0e0;
         z-index: 900; /* Below header, above main content */
         display: none; /* Hidden by default, shown by JS for listening */
         justify-content: center;
@@ -259,10 +259,10 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background-color: #2c3e50; /* Darker, richer blue-gray */
+        background-color: #1e293b; /* Dark background like sidebar */
         color: white;
         /* Removed shadow */
-        border-top: 1px solid #34495e; /* Darker border */
+        border-top: 1px solid #1a202c; /* Darker border */
         z-index: 950; /* Above main content, below header */
         display: none; /* Hidden by default, shown by media query for listening on mobile */
         flex-direction: column;
@@ -341,13 +341,13 @@
       .question-group-instructions {
         margin-bottom: 2.5rem; /* More space below */
         padding: 1.75rem; /* Increased padding */
-        background-color: #e6f7ff; /* Lighter, softer blue */
-        border-left: 8px solid #1890ff; /* Brighter blue */
+        background-color: #e5f1ff; /* Light blue, flat */
+        border-left: 8px solid #007aff; /* Apple Blue */
         border-radius: 1.25rem; /* More rounded corners */
         /* Removed shadow */
         font-size: 1.15rem; /* Slightly larger text */
         line-height: 1.7;
-        color: #262626; /* Darker text for contrast */
+        color: #1a202c; /* Darker text for contrast */
         position: relative;
         overflow: hidden;
         transition: all 0.3s ease-in-out;
@@ -361,7 +361,7 @@
         top: 0.75rem;
         right: 1.25rem;
         font-size: 2.5rem; /* Larger icon */
-        color: rgba(24, 144, 255, 0.1); /* Very faded blue */
+        color: rgba(0, 122, 255, 0.1); /* Very faded blue */
         z-index: 0;
       }
 
@@ -381,30 +381,30 @@
         margin-bottom: 2rem; /* More space between questions */
         padding: 1.5rem; /* Increased padding */
         background-color: #ffffff; /* Pure white background */
-        border-left: 6px solid #1890ff; /* Brighter blue */
+        border-left: 6px solid #007aff; /* Apple Blue */
         border-radius: 0.75rem; /* Nicely rounded */
         /* Removed shadow */
-        border: 1px solid #d9d9d9; /* Softer border */
+        border: 1px solid #e0e0e0; /* Subtle border */
         transition: all 0.2s ease-in-out;
       }
 
       .question-item:hover {
         /* Subtle hover effect, no shadow */
-        background-color: #f5f5f5; /* Very light gray on hover */
+        background-color: #f9f9f9;
       }
 
       .question-item label {
         display: block;
         margin-bottom: 0.6rem;
         font-weight: 600; /* Bolder label */
-        color: #262626; /* Dark text */
+        color: #1a202c; /* Dark text */
       }
 
       .question-item .inline-question-text {
         display: inline;
         font-size: 1.125rem; /* text-lg */
         font-weight: 600; /* font-semibold */
-        color: #434343; /* Darker slate */
+        color: #334155; /* Slate 700 */
       }
 
       .question-item .inline-input,
@@ -413,7 +413,7 @@
         width: 170px; /* Default width */
         padding: 0.4rem 0.8rem; /* More padding */
         margin: 0 0.6rem; /* More horizontal margin */
-        border: 1px solid #bfbfbf; /* Softer border */
+        border: 1px solid #d1d1d6; /* iOS-like border */
         border-radius: 0.5rem; /* More rounded */
         font-size: 1.05rem; /* Slightly larger font */
         transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -433,8 +433,8 @@
       .question-item .inline-input:focus,
       .question-item .inline-select:focus {
         outline: none;
-        border-color: #1890ff; /* Brighter blue on focus */
-        box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.25); /* Subtle focus ring */
+        border-color: #007aff; /* Apple Blue on focus */
+        box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25); /* Subtle focus ring */
       }
 
       /* New style for inputs on a new line */
@@ -443,7 +443,7 @@
         width: calc(100% - 1.5rem); /* Full width minus padding */
         margin: 0.75rem 0.75rem 0 0.75rem; /* Increased margins */
         padding: 0.6rem 1.2rem; /* Larger padding */
-        border: 1px solid #bfbfbf;
+        border: 1px solid #d1d1d6;
         border-radius: 0.5rem;
         font-size: 1.05rem;
         transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -451,8 +451,8 @@
 
       .question-item .block-input:focus {
         outline: none;
-        border-color: #1890ff;
-        box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.25);
+        border-color: #007aff;
+        box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25);
       }
 
       /* Table specific styles */
@@ -467,7 +467,7 @@
       .question-item .table-input {
         width: 100%;
         padding: 0.4rem 0.8rem;
-        border: 1px solid #bfbfbf;
+        border: 1px solid #d1d1d6;
         border-radius: 0.375rem;
         font-size: 1rem;
         transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -475,8 +475,8 @@
 
       .question-item .table-input:focus {
         outline: none;
-        border-color: #1890ff;
-        box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.2);
+        border-color: #007aff;
+        box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
       }
 
       .question-item table {
@@ -492,13 +492,13 @@
         border: 1px solid #e0e0e0; /* Light border for table cells */
         padding: 1rem; /* More padding in cells */
         text-align: left;
-        color: #434343; /* Darker slate */
+        color: #334155; /* Slate 700 */
       }
 
       .question-item th {
-        background-color: #f0f2f5; /* Light gray background for headers */
+        background-color: #f9f9f9; /* Light gray background for headers */
         font-weight: 700;
-        color: #262626; /* Darker text */
+        color: #1e293b; /* Darker text */
         text-transform: uppercase;
         font-size: 0.9rem;
       }
@@ -508,7 +508,7 @@
       .question-item input[type="checkbox"] {
         margin-right: 0.8rem; /* More space */
         transform: scale(1.3); /* Larger size */
-        accent-color: #1890ff; /* Brighter blue accent color */
+        accent-color: #007aff; /* Apple Blue accent color */
       }
 
       .question-item .radio-option,
@@ -525,14 +525,14 @@
 
       .question-item .radio-option:hover,
       .question-item .checkbox-option:hover {
-        background-color: #e6f7ff; /* Very light blue on hover */
+        background-color: #f0f8ff; /* Very light blue on hover */
         /* Removed shadow */
       }
 
       .question-item .radio-option input[type="radio"]:checked + span,
       .question-item .checkbox-option input[type="checkbox"]:checked + span {
         font-weight: 700; /* Bolder when checked */
-        color: #1890ff; /* Brighter blue when checked */
+        color: #007aff; /* Apple Blue when checked */
       }
 
       /* Map image container */
@@ -555,8 +555,8 @@
       /* User ID display (if present) */
       .user-id-display {
         background-color: rgba(255, 255, 255, 0.9); /* Slightly more opaque */
-        border: 1px solid #d9d9d9; /* Softer border */
-        color: #595959; /* Darker gray */
+        border: 1px solid #d1d1d6; /* iOS-like border */
+        color: #475569; /* Slate 600 */
         /* Removed shadow */
         backdrop-filter: blur(8px); /* Stronger blur */
       }
@@ -568,7 +568,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+        background-color: rgba(0, 0, 0, 0.5); /* Lighter overlay */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -605,13 +605,13 @@
       .modal-header {
         font-size: 2rem; /* Larger title */
         font-weight: 800; /* Extra bold */
-        color: #1f2937; /* Darker slate */
+        color: #1e293b; /* Dark slate */
         margin-bottom: 1.25rem;
       }
 
       .modal-body {
         font-size: 1.1rem; /* Slightly larger body text */
-        color: #4b5563; /* Medium slate */
+        color: #475569; /* Slate 600 */
         margin-bottom: 2rem;
       }
 
@@ -630,33 +630,22 @@
       }
 
       .modal-button.primary {
-        background-color: #1890ff; /* Brighter blue */
+        background-color: #007aff; /* Apple Blue */
         color: white;
-        background-image: linear-gradient(
-          to bottom right,
-          #1890ff,
-          #096dd9
-        ); /* Subtle gradient */
       }
 
       .modal-button.primary:hover {
-        background-color: #096dd9; /* Darker blue */
-        background-image: linear-gradient(
-          to bottom right,
-          #096dd9,
-          #0050b3
-        ); /* Darker gradient */
+        background-color: #006ee6; /* Darker Apple Blue */
         transform: translateY(-1px); /* Subtle lift effect */
       }
 
       .modal-button.secondary {
-        background-color: #f0f2f5; /* Light gray */
-        color: #4b5563; /* Medium slate */
-        border: 1px solid #d9d9d9;
+        background-color: #e5e5ea; /* iOS light gray */
+        color: #475569; /* Slate 600 */
       }
 
       .modal-button.secondary:hover {
-        background-color: #e6e8eb; /* Darker light gray */
+        background-color: #d1d1d6; /* Darker iOS light gray */
         transform: translateY(-1px);
       }
 
@@ -746,34 +735,34 @@
       }
 
       .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #a6a6a6; /* Softer gray */
+        background: #c7c7cc; /* iOS gray */
         border-radius: 8px;
         border: 2px solid #f9f9f9; /* Border to make thumb thinner */
       }
 
       .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #8c8c8c; /* Darker gray on hover */
+        background: #a7a7ab; /* Darker iOS gray on hover */
       }
 
       /* Feedback section specific styles */
       .feedback-section .correct-answer {
-        color: #28a745; /* Bootstrap Green */
+        color: #34c759; /* Apple Green */
         font-weight: bold;
       }
 
       .feedback-section .incorrect-answer {
-        color: #dc3545; /* Bootstrap Red */
+        color: #ff3b30; /* Apple Red */
         font-weight: bold;
       }
 
       .feedback-section .explanation {
-        background-color: #e6f7ff; /* Light blue, flat */
-        border-left: 5px solid #1890ff; /* Brighter blue */
+        background-color: #e5f1ff; /* Light blue, flat */
+        border-left: 5px solid #007aff; /* Apple Blue */
         padding: 1rem 1.25rem; /* More padding */
         border-radius: 0.75rem; /* More rounded */
         margin-top: 0.75rem;
         font-style: italic;
-        color: #434343; /* darker slate */
+        color: #475569; /* slate-600 */
         /* Removed shadow */
       }
 
@@ -800,9 +789,9 @@
       }
 
       .leaderboard-table th {
-        background-color: #f0f2f5; /* Very light gray */
+        background-color: #f9f9f9; /* Very light gray */
         font-weight: 700;
-        color: #434343;
+        color: #475569;
         text-transform: uppercase;
         font-size: 0.85rem;
         letter-spacing: 0.08em; /* More letter spacing */
@@ -813,18 +802,18 @@
       }
 
       .leaderboard-table tbody tr:hover {
-        background-color: #e6f7ff; /* Light blue on hover */
+        background-color: #f0f8ff; /* Light blue on hover */
       }
 
       .leaderboard-table tbody tr.current-user-row {
-        background-color: #d6e4ff; /* Lighter, more vibrant blue */
+        background-color: #e5f1ff; /* Light Apple Blue */
         font-weight: 600;
-        color: #1890ff; /* Brighter blue */
+        color: #007aff; /* Apple Blue */
         position: relative;
       }
 
       .leaderboard-table tbody tr.current-user-row:hover {
-        background-color: #bae7ff; /* Slightly darker vibrant blue on hover */
+        background-color: #d1eaff; /* Slightly darker Apple Blue on hover */
       }
 
       /* Adjust leaderboard table cell padding for mobile */
@@ -861,28 +850,16 @@
       }
 
       .rank-1 {
-        background: linear-gradient(
-          to bottom right,
-          #ffd700,
-          #e6b800
-        ); /* Gold gradient */
+        background: #ffcc00; /* Apple Yellow */
       }
       .rank-2 {
-        background: linear-gradient(
-          to bottom right,
-          #c0c0c0,
-          #a8a8a8
-        ); /* Silver gradient */
+        background: #a7a7ad; /* Apple Silver */
       }
       .rank-3 {
-        background: linear-gradient(
-          to bottom right,
-          #cd7f32,
-          #b86b29
-        ); /* Bronze gradient */
+        background: #a2845e; /* Apple Bronze */
       }
       .rank-common {
-        background-color: #9e9e9e; /* Medium gray */
+        background-color: #c7c7cc; /* iOS Gray */
       }
 
       /* Specific heights for different layouts and screen sizes */
@@ -937,15 +914,15 @@
           padding: 0.75rem 0;
           font-size: 1.1rem;
           font-weight: 600;
-          color: #8c8c8c; /* Softer gray */
+          color: #636366; /* Apple Gray */
           border-bottom: 3px solid transparent;
           transition: all 0.2s ease-in-out;
           cursor: pointer;
         }
 
         .reading-tab-button.active {
-          color: #1890ff; /* Brighter blue */
-          border-color: #1890ff;
+          color: #007aff; /* Apple Blue */
+          border-color: #007aff;
         }
 
         .reading-tab-content {
@@ -3843,6 +3820,709 @@
             // Even if Firebase fails, try to render the app, but features might be limited
             testState.isLoadingResults = false; // Ensure loading is off
             renderApp();
+          });
+      };
+    </script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mahir - Mock Test Category</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+    <style id="mock-test-category-styles">
+      /* Distinct styles for the Mock Test system */
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #f0f4f8 0%,
+          #d9e2ec 100%
+        ); /* A subtle, professional blue-gray gradient */
+        color: #2d3748; /* Darker text for readability */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .font-anton {
+        font-family: "Anton", sans-serif;
+      }
+      .font-inter {
+        font-family: "Inter", sans-serif;
+      }
+
+      .test-card {
+        background: #ffffff; /* Clean white background */
+        border: 1px solid #e2e8f0; /* Light border */
+        border-radius: 1.5rem; /* Rounded corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
+        transition: all 0.3s ease-in-out;
+      }
+
+      .test-card:hover {
+        transform: translateY(-8px); /* More pronounced lift on hover */
+        box-shadow: 0 16px 35px rgba(0, 0, 0, 0.15),
+          0 8px 18px rgba(0, 0, 0, 0.1); /* Deeper shadow on hover */
+        border-color: #90cdf4; /* Subtle blue border on hover */
+      }
+
+      .test-card-thumbnail-area {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 160px;
+        border-top-left-radius: 1.5rem;
+        border-top-right-radius: 1.5rem;
+        font-size: 4rem;
+        color: white;
+        box-shadow: inset 0 -8px 15px rgba(0, 0, 0, 0.25);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .test-card-thumbnail-area::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.15) 0%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+        z-index: 1;
+      }
+
+      .test-card-thumbnail-area i {
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse-slow {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 0.8;
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+
+      .animate-pulse-slow {
+        animation: pulse-slow 3s infinite ease-in-out;
+      }
+
+      /* Styles for the header section (can be shared or distinct) */
+      .site-header {
+        background-color: #ffffff;
+        border-bottom: 1px solid #e0e0e0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .site-header .nav-link {
+        font-weight: 500;
+        color: #555555;
+      }
+
+      .site-header .nav-link:hover {
+        color: #1d4ed8;
+        transform: translateY(-1px);
+      }
+
+      .user-id-display {
+        background-color: rgba(255, 255, 255, 0.7);
+        border: 1px solid #d1d5db;
+        color: #4b5563;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        backdrop-filter: blur(3px);
+      }
+
+      /* Hero section styles */
+      .hero-section-mock-category {
+        min-height: 300px; /* Slightly smaller than home hero */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: left;
+        background-image: url("https://images.pexels.com/photos/5428830/pexels-photo-5428830.jpeg"); /* Reusing existing image for now */
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        overflow: hidden;
+        border-radius: 1.5rem;
+      }
+
+      .hero-section-mock-category::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to right,
+          rgba(66, 153, 225, 0.8) 0%,
+          rgba(56, 178, 172, 0.6) 100%
+        ); /* A distinct blue-green gradient */
+        z-index: 0;
+      }
+
+      .hero-section-mock-category .content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        color: white;
+      }
+
+      .text-shadow-lg-custom {
+        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
+      }
+
+      .points-display {
+        background: linear-gradient(
+          45deg,
+          #84cc16,
+          #22c55e
+        ); /* Lime to green gradient */
+        color: white;
+        padding: 0.35rem 0.9rem;
+        border-radius: 9999px;
+        font-weight: bold;
+        font-size: 0.875rem; /* text-sm */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    </style>
+  </head>
+  <body class="py-0 px-0">
+    <!-- Header / Navigation Bar (Can be shared with quiz system) -->
+    <header
+      id="app-header"
+      class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
+    >
+      <div class="flex items-center gap-2 sm:gap-4">
+        <img
+          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+          alt="IELTS Mahir Logo"
+          class="h-8 md:h-10 w-auto"
+          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+        />
+        <nav class="hidden md:flex gap-6 ml-8 font-inter">
+          <a href="quiz-home.html" class="nav-link transition-all"
+            >Quiz System</a
+          >
+          <a href="mock-test-home.html" class="nav-link transition-all"
+            >Mock Tests</a
+          >
+          <a href="#" class="nav-link transition-all">Resources</a>
+        </nav>
+      </div>
+      <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
+        <!-- Authentication status will be handled by auth.js -->
+        <div class="animate-pulse flex space-x-4">
+          <div class="rounded-full bg-gray-300 h-8 w-8 sm:h-10 sm:w-10"></div>
+          <div class="flex-1 space-y-4 py-1 hidden sm:block">
+            <div class="h-2 bg-gray-300 rounded"></div>
+            <div class="space-y-2">
+              <div class="grid grid-cols-3 gap-2">
+                <div class="h-2 bg-gray-300 rounded col-span-2"></div>
+                <div class="h-2 bg-gray-300 rounded col-span-1"></div>
+              </div>
+              <div class="h-2 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="app" class="container mx-auto px-4 sm:px-6 lg:px-8 flex-grow">
+      <!-- Application content will be rendered here by JavaScript -->
+      <div class="flex justify-center items-center h-full">
+        <div
+          class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-[100]"></div>
+
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
+
+    <script type="module">
+      // Import authentication functions and state from the central auth.js file
+      import {
+        initFirebaseAuth,
+        authAppState,
+        showToast,
+        Icons,
+        signOutUser,
+      } from "./auth.js"; // Adjust path as necessary
+
+      // Import mock test data
+      import {
+        MockTestModules,
+        allMockTests,
+        MockTestIcons,
+        formatTime,
+      } from "./mock-test-data.js";
+
+      // Firebase imports for Firestore
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        setDoc, // Added setDoc for initializing userGameStats if not exists
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      // Firebase instances (will be populated by auth.js)
+      let db;
+      let auth;
+
+      // Current module ID from URL
+      let currentModuleId = null;
+
+      // User game stats (will be fetched from Firestore)
+      let userGameStats = {
+        totalPoints: 0,
+        level: 1,
+        completedTests: [], // Array of test IDs
+      };
+
+      // Inline SVG icons for Clock and Question Mark
+      const ClockIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+      const QuestionMarkIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>`;
+
+      /**
+       * Fetches user's game stats from Firestore.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchUserGameStats(userId) {
+        if (!db || !userId) return;
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const userStatsDocRef = doc(
+          db,
+          `artifacts/${appId}/users/${userId}/gameStats/summary`
+        );
+
+        try {
+          const docSnap = await getDoc(userStatsDocRef);
+          if (docSnap.exists()) {
+            userGameStats = { ...userGameStats, ...docSnap.data() };
+            console.log("Fetched user game stats:", userGameStats);
+          } else {
+            console.log(
+              "No game stats found for user, initializing defaults in Firestore."
+            );
+            // Initialize game stats in Firestore if they don't exist
+            await setDoc(userStatsDocRef, userGameStats);
+          }
+        } catch (error) {
+          console.error("Error fetching user game stats:", error);
+          showToast("Failed to load your game progress.", "error");
+        }
+      }
+
+      /**
+       * Updates the navigation bar and user ID display based on authentication status.
+       * @param {object|null} user - The Firebase User object or null if signed out.
+       */
+      async function updateAuthUI(user) {
+        const authButtonsContainer = document.getElementById(
+          "auth-buttons-container"
+        );
+        if (authButtonsContainer) {
+          if (user) {
+            // Fetch game stats if user is logged in and db is available
+            if (db && user.uid) {
+              await fetchUserGameStats(user.uid); // Await this to ensure userGameStats is updated
+            }
+
+            // User is signed in: Show profile dropdown and game stats
+            authButtonsContainer.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="points-display">
+                                ${
+                                  MockTestIcons.Trophy ||
+                                  '<i class="fas fa-trophy"></i>'
+                                }
+                                <span class="text-sm font-semibold">${
+                                  userGameStats.totalPoints
+                                } Pts</span>
+                                <span class="text-xs text-green-200">|</span>
+                                <span class="text-sm font-semibold">Lvl ${
+                                  userGameStats.level
+                                }</span>
+                            </div>
+                            <div class="relative">
+                                <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-700 transition-colors">
+                                    ${(
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid
+                                    )
+                                      .charAt(0)
+                                      .toUpperCase()}
+                                </button>
+                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden text-gray-800">
+                                    <div class="px-4 py-2 text-sm border-b border-gray-200">Hello, ${
+                                      authAppState.userProfile?.name ||
+                                      user.email ||
+                                      user.uid.substring(0, 8)
+                                    }</div>
+                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-200">Level: ${
+                                      userGameStats.level
+                                    }</div>
+                                    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                        ${Icons.Dashboard.replace(
+                                          /stroke="currentColor"/g,
+                                          'stroke="gray"'
+                                        )} Dashboard
+                                    </a>
+                                    <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                        ${Icons.Forum.replace(
+                                          /stroke="currentColor"/g,
+                                          'stroke="gray"'
+                                        )} Forum
+                                    </a>
+                                    <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-b-lg">
+                                        ${Icons.SignOut.replace(
+                                          /stroke="currentColor"/g,
+                                          'stroke="red"'
+                                        )} Sign Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            const profileIconBtn = document.getElementById("profile-icon-btn");
+            const profileDropdown = document.getElementById("profile-dropdown");
+            const signOutDropdownBtn = document.getElementById(
+              "sign-out-dropdown-btn"
+            );
+
+            profileIconBtn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              profileDropdown.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", (event) => {
+              if (
+                !profileDropdown.contains(event.target) &&
+                !profileIconBtn.contains(event.target)
+              ) {
+                profileDropdown.classList.add("hidden");
+              }
+            });
+
+            signOutDropdownBtn.addEventListener("click", async () => {
+              await signOutUser();
+              // Redirect will happen via onAuthStateChanged in auth.js
+            });
+          } else {
+            // User is signed out: Show sign-in button
+            authButtonsContainer.innerHTML = `
+                        <a href="auth.html" id="sign-in-nav-btn" class="px-4 py-2 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                            Join beta user
+                        </a>
+                    `;
+          }
+        }
+      }
+
+      /**
+       * Renders the main application content for the mock test category page.
+       */
+      function renderApp() {
+        const appDiv = document.getElementById("app");
+        if (!appDiv) return;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        currentModuleId = urlParams.get("module");
+
+        if (!currentModuleId) {
+          appDiv.innerHTML = `
+                        <div class="text-center text-red-500 text-xl mt-12">
+                            Error: No module specified in the URL.
+                            <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to modules</a>
+                        </div>
+                    `;
+          return;
+        }
+
+        const module = MockTestModules.find(
+          (mod) => mod.id === currentModuleId
+        );
+        if (!module) {
+          appDiv.innerHTML = `
+                        <div class="text-center text-red-500 text-xl mt-12">
+                            Error: Module not found.
+                            <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to modules</a>
+                        </div>
+                    `;
+          return;
+        }
+
+        const testsInThisModule = allMockTests.filter(
+          (test) => test.moduleId === currentModuleId
+        );
+
+        appDiv.innerHTML = `
+                <!-- Hero Section for Mock Test Category -->
+                <section class="hero-section-mock-category max-w-6xl mx-auto my-8 relative overflow-hidden">
+                    <div class="content p-8 md:p-12 lg:p-16">
+                        <p class="font-inter text-xl sm:text-2xl font-medium mb-2 text-shadow-lg-custom">Mock Tests</p>
+                        <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg-custom">
+                            ${module.name} Module
+                        </h1>
+                        <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg-custom">
+                            ${module.description}
+                        </p>
+                        ${
+                          authAppState.isAuthReady && authAppState.userId
+                            ? `
+                        <p class="mt-8 text-sm sm:text-lg font-mono user-id-display inline-block px-3 py-1 sm:px-4 sm:py-2 rounded-xl animate-fade-in">
+                            User ID: <span class="font-semibold text-gray-800">${authAppState.userId}</span>
+                        </p>
+                        `
+                            : ""
+                        }
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-6xl mx-auto py-8">
+                    ${
+                      testsInThisModule.length > 0
+                        ? testsInThisModule
+                            .map((test) => {
+                              // For now, no locking mechanism based on level for mock tests,
+                              // but can be added later if gamification extends to mock tests.
+                              const isLocked = false; // Placeholder for future logic
+                              const lockOverlay = isLocked
+                                ? `
+                                        <div class="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center rounded-3xl z-40 p-4">
+                                            <div class="relative mb-4">
+                                                <i class="fas fa-lock text-6xl text-yellow-400 drop-shadow-lg animate-pulse-slow"></i>
+                                            </div>
+                                            <span class="text-white text-3xl font-extrabold text-shadow-lg mb-2 font-anton">
+                                                Test Locked!
+                                            </span>
+                                            <span class="text-blue-200 text-xl font-semibold text-shadow-md font-inter">
+                                                Unlock at Level X
+                                            </span>
+                                            <p class="text-gray-300 text-sm mt-2 text-center max-w-xs font-inter">
+                                                Complete more mock tests to gain points and level up!
+                                            </p>
+                                        </div>
+                                    `
+                                : "";
+
+                              // Corrected logic to count questions, handling writing_task and other types
+                              const totalQuestions = test.sections.reduce(
+                                (totalAcc, sec) => {
+                                  // If it's a writing task, it doesn't have questionGroups
+                                  if (sec.type === "writing_task") {
+                                    // You can decide how to count writing tasks.
+                                    // For now, let's not count them as "questions" in the same way.
+                                    // If you want to count each writing task as 1, change 0 to 1.
+                                    return totalAcc;
+                                  }
+
+                                  // For other types, proceed with counting questions within questionGroups
+                                  if (sec.questionGroups) {
+                                    return (
+                                      totalAcc +
+                                      sec.questionGroups.reduce(
+                                        (groupAcc, group) => {
+                                          if (group.questions) {
+                                            return (
+                                              groupAcc +
+                                              group.questions.reduce(
+                                                (qAcc, question) => {
+                                                  if (
+                                                    question.type ===
+                                                      "table_fill_in_the_blank" &&
+                                                    question.correctAnswer
+                                                  ) {
+                                                    // Count individual answers for table fill-in-the-blank
+                                                    return (
+                                                      qAcc +
+                                                      Object.keys(
+                                                        question.correctAnswer
+                                                      ).length
+                                                    );
+                                                  } else if (
+                                                    group.type ===
+                                                      "multiple_choice_multiple_answers" &&
+                                                    question.correctAnswer
+                                                  ) {
+                                                    // For MCAA, count the number of correct options
+                                                    return (
+                                                      qAcc +
+                                                      question.correctAnswer
+                                                        .length
+                                                    );
+                                                  } else {
+                                                    // For all other types, count as 1 question
+                                                    return qAcc + 1;
+                                                  }
+                                                },
+                                                0
+                                              )
+                                            );
+                                          } else {
+                                            return groupAcc;
+                                          }
+                                        },
+                                        0
+                                      )
+                                    );
+                                  } else {
+                                    return totalAcc; // No questionGroups, add 0
+                                  }
+                                },
+                                0
+                              );
+
+                              return `
+                                <a href="${
+                                  isLocked
+                                    ? "#"
+                                    : `mock-test.html?module=${currentModuleId}&test=${test.id}`
+                                }"
+                                   class="test-card relative block overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in p-0 flex flex-col items-center text-center ${
+                                     isLocked
+                                       ? "cursor-not-allowed opacity-70"
+                                       : ""
+                                   }">
+                                    ${lockOverlay}
+                                    <div class="test-card-thumbnail-area ${
+                                      module.color || "bg-gray-600"
+                                    }">
+                                        ${
+                                          module.icon ||
+                                          '<i class="fas fa-question-circle"></i>'
+                                        }
+                                    </div>
+                                    <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between w-full">
+                                        <h2 class="text-2xl sm:text-3xl font-bold lg:font-extrabold mb-2 leading-tight text-gray-800 font-anton">${
+                                          test.title
+                                        }</h2>
+                                        <p class="text-sm sm:text-base text-gray-600 mb-4 flex-grow font-inter">${
+                                          test.description
+                                        }</p>
+                                        <div class="flex justify-between items-center text-gray-600 text-sm font-inter">
+                                            <span class="flex items-center gap-1">
+                                                ${ClockIconSVG}
+                                                ${test.duration} mins
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                ${QuestionMarkIconSVG}
+                                                ${totalQuestions} Qs
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            `;
+                            })
+                            .join("")
+                        : `
+                        <div class="md:col-span-3 text-center text-gray-600 py-8 font-inter">
+                            <p class="text-lg sm:text-xl">No mock tests available for this module yet.</p>
+                        </div>
+                    `
+                    }
+                </div>
+            `;
+      }
+
+      // Initialization Logic
+      window.onload = async function () {
+        // Initialize Firebase Auth and listen for state changes
+        initFirebaseAuth(updateAuthUI)
+          .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
+            db = firestoreDb;
+            auth = firebaseAuth;
+            console.log("Firebase initialized in mock-test-category.html:", {
+              db,
+              auth,
+            });
+
+            // Fetch user game stats after Firebase is initialized and user is authenticated
+            auth.onAuthStateChanged(async (user) => {
+              if (user) {
+                // Ensure userGameStats is fetched/initialized before rendering the main app content
+                await fetchUserGameStats(user.uid);
+              }
+              renderApp(); // Render the app after auth state and game stats are known
+            });
+          })
+          .catch((error) => {
+            console.error(
+              "Failed to initialize Firebase in mock-test-category.html:",
+              error
+            );
+            showToast(
+              "Failed to initialize Firebase. Some features may not work.",
+              "error"
+            );
+            renderApp(); // Still render app even if Firebase fails, but features might be limited
           });
       };
     </script>
