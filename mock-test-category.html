@@ -171,7 +171,7 @@
         align-items: center;
         justify-content: center;
         text-align: left;
-        background-image: url("https://images.pexels.com/photos/5428830/pexels-photo-5428830.jpeg"); /* Reusing existing image for now */
+        /* Background image will be set dynamically by JavaScript */
         background-size: cover;
         background-position: center;
         position: relative;
@@ -185,8 +185,8 @@
         inset: 0;
         background: linear-gradient(
           to right,
-          rgba(66, 153, 225, 0.8) 0%,
-          rgba(56, 178, 172, 0.6) 100%
+          rgba(225, 66, 212, 0.616) 0%,
+          rgba(154, 178, 56, 0.361) 100%
         ); /* A distinct blue-green gradient */
         z-index: 0;
       }
@@ -316,6 +316,17 @@
         completedTests: [], // Array of test IDs
       };
 
+      // Mapping of module IDs to their respective background images
+      const moduleBackgroundImages = {
+        listening:
+          "https://images.pexels.com/photos/5269760/pexels-photo-5269760.jpeg",
+        speaking:
+          "https://images.pexels.com/photos/2235/music-sound-communication-audio.jpg",
+        reading: "https://images.pexels.com/photos/21120/pexels-photo.jpg",
+        writing:
+          "https://images.pexels.com/photos/753695/pexels-photo-753695.jpeg",
+      };
+
       // Inline SVG icons for Clock and Question Mark
       const ClockIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
       const QuestionMarkIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>`;
@@ -383,7 +394,7 @@
                                 }</span>
                             </div>
                             <div class="relative">
-                                <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-700 transition-colors">
+                                <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 h-10 rounded-full bg-blue-600 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-700 transition-colors">
                                     ${(
                                       authAppState.userProfile?.name ||
                                       user.email ||
@@ -471,11 +482,11 @@
 
         if (!currentModuleId) {
           appDiv.innerHTML = `
-                    <div class="text-center text-red-500 text-xl mt-12">
-                        Error: No module specified in the URL.
-                        <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to modules</a>
-                    </div>
-                `;
+                        <div class="text-center text-red-500 text-xl mt-12">
+                            Error: No module specified in the URL.
+                            <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to modules</a>
+                        </div>
+                    `;
           return;
         }
 
@@ -484,11 +495,11 @@
         );
         if (!module) {
           appDiv.innerHTML = `
-                    <div class="text-center text-red-500 text-xl mt-12">
-                        Error: Module not found.
-                        <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to modules</a>
-                    </div>
-                `;
+                        <div class="text-center text-red-500 text-xl mt-12">
+                            Error: Module not found.
+                            <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to modules</a>
+                        </div>
+                    `;
           return;
         }
 
@@ -498,7 +509,7 @@
 
         appDiv.innerHTML = `
                 <!-- Hero Section for Mock Test Category -->
-                <section class="hero-section-mock-category max-w-6xl mx-auto my-8 relative overflow-hidden">
+                <section id="hero-section" class="hero-section-mock-category max-w-6xl mx-auto my-8 relative overflow-hidden">
                     <div class="content p-8 md:p-12 lg:p-16">
                         <p class="font-inter text-xl sm:text-2xl font-medium mb-2 text-shadow-lg-custom">Mock Tests</p>
                         <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg-custom">
@@ -543,62 +554,63 @@
                                                 Complete more mock tests to gain points and level up!
                                             </p>
                                         </div>
-                                    `
+                                        `
                                 : "";
 
                               // Corrected logic to count questions, handling table_fill_in_the_blank and multiple_choice_multiple_answers
-                              const totalQuestions = test.sections.reduce(
-                                (totalAcc, sec) => {
-                                  return (
-                                    totalAcc +
-                                    sec.questionGroups.reduce(
-                                      (groupAcc, group) => {
-                                        if (group.questions) {
-                                          return (
-                                            groupAcc +
-                                            group.questions.reduce(
-                                              (qAcc, question) => {
-                                                if (
-                                                  question.type ===
-                                                    "table_fill_in_the_blank" &&
-                                                  question.correctAnswer
-                                                ) {
-                                                  // Count individual answers for table fill-in-the-blank
-                                                  return (
-                                                    qAcc +
-                                                    Object.keys(
+                              const totalQuestions =
+                                test.moduleId === "writing"
+                                  ? 2 // Hardcode 2 questions for writing module
+                                  : test.sections.reduce((totalAcc, sec) => {
+                                      // Safely access questionGroups, defaulting to an empty array if undefined
+                                      return (
+                                        totalAcc +
+                                        (sec.questionGroups || []).reduce(
+                                          (groupAcc, group) => {
+                                            if (group.questions) {
+                                              return (
+                                                groupAcc +
+                                                group.questions.reduce(
+                                                  (qAcc, question) => {
+                                                    if (
+                                                      question.type ===
+                                                        "table_fill_in_the_blank" &&
                                                       question.correctAnswer
-                                                    ).length
-                                                  );
-                                                } else if (
-                                                  group.type ===
-                                                    "multiple_choice_multiple_answers" &&
-                                                  question.correctAnswer
-                                                ) {
-                                                  // For MCAA, count the number of correct options
-                                                  return (
-                                                    qAcc +
-                                                    question.correctAnswer
-                                                      .length
-                                                  );
-                                                } else {
-                                                  // For all other types, count as 1 question
-                                                  return qAcc + 1;
-                                                }
-                                              },
-                                              0
-                                            )
-                                          );
-                                        } else {
-                                          return groupAcc;
-                                        }
-                                      },
-                                      0
-                                    )
-                                  );
-                                },
-                                0
-                              );
+                                                    ) {
+                                                      // Count individual answers for table fill-in-the-blank
+                                                      return (
+                                                        qAcc +
+                                                        Object.keys(
+                                                          question.correctAnswer
+                                                        ).length
+                                                      );
+                                                    } else if (
+                                                      group.type ===
+                                                        "multiple_choice_multiple_answers" &&
+                                                      question.correctAnswer
+                                                    ) {
+                                                      // For MCAA, count the number of correct options
+                                                      return (
+                                                        qAcc +
+                                                        question.correctAnswer
+                                                          .length
+                                                      );
+                                                    } else {
+                                                      // For all other types, count as 1 question
+                                                      return qAcc + 1;
+                                                    }
+                                                  },
+                                                  0
+                                                )
+                                              );
+                                            } else {
+                                              return groupAcc;
+                                            }
+                                          },
+                                          0
+                                        )
+                                      );
+                                    }, 0);
 
                               return `
                                 <a href="${
@@ -606,38 +618,38 @@
                                     ? "#"
                                     : `mock-test.html?module=${currentModuleId}&test=${test.id}`
                                 }"
-                                   class="test-card relative block overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in p-0 flex flex-col items-center text-center ${
-                                     isLocked
-                                       ? "cursor-not-allowed opacity-70"
-                                       : ""
-                                   }">
-                                    ${lockOverlay}
-                                    <div class="test-card-thumbnail-area ${
-                                      module.color || "bg-gray-600"
-                                    }">
-                                        ${
-                                          module.icon ||
-                                          '<i class="fas fa-question-circle"></i>'
-                                        }
-                                    </div>
-                                    <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between w-full">
-                                        <h2 class="text-2xl sm:text-3xl font-bold lg:font-extrabold mb-2 leading-tight text-gray-800 font-anton">${
-                                          test.title
-                                        }</h2>
-                                        <p class="text-sm sm:text-base text-gray-600 mb-4 flex-grow font-inter">${
-                                          test.description
-                                        }</p>
-                                        <div class="flex justify-between items-center text-gray-600 text-sm font-inter">
-                                            <span class="flex items-center gap-1">
-                                                ${ClockIconSVG}
-                                                ${test.duration} mins
-                                            </span>
-                                            <span class="flex items-center gap-1">
-                                                ${QuestionMarkIconSVG}
-                                                ${totalQuestions} Qs
-                                            </span>
+                                       class="test-card relative block overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in p-0 flex flex-col items-center text-center ${
+                                         isLocked
+                                           ? "cursor-not-allowed opacity-70"
+                                           : ""
+                                       }">
+                                        ${lockOverlay}
+                                        <div class="test-card-thumbnail-area ${
+                                          module.color || "bg-gray-600"
+                                        }">
+                                            ${
+                                              module.icon ||
+                                              '<i class="fas fa-question-circle"></i>'
+                                            }
                                         </div>
-                                    </div>
+                                        <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between w-full">
+                                            <h2 class="text-2xl sm:text-3xl font-bold lg:font-extrabold mb-2 leading-tight text-gray-800 font-anton">${
+                                              test.title
+                                            }</h2>
+                                            <p class="text-sm sm:text-base text-gray-600 mb-4 flex-grow font-inter">${
+                                              test.description
+                                            }</p>
+                                            <div class="flex justify-between items-center text-gray-600 text-sm font-inter">
+                                                <span class="flex items-center gap-1">
+                                                    ${ClockIconSVG}
+                                                    ${test.duration} mins
+                                                </span>
+                                                <span class="flex items-center gap-1">
+                                                    ${QuestionMarkIconSVG}
+                                                    ${totalQuestions} Qs
+                                                </span>
+                                            </div>
+                                        </div>
                                 </a>
                             `;
                             })
@@ -650,6 +662,18 @@
                     }
                 </div>
             `;
+
+        // After rendering, get the hero section and apply the background image dynamically
+        const heroSection = document.getElementById("hero-section");
+        if (heroSection && currentModuleId) {
+          const imageUrl = moduleBackgroundImages[currentModuleId];
+          if (imageUrl) {
+            heroSection.style.backgroundImage = `url("${imageUrl}")`;
+          } else {
+            // Fallback image if module ID doesn't have a specific image
+            heroSection.style.backgroundImage = `url("https://images.pexels.com/photos/753695/pexels-photo-753695.jpeg")`;
+          }
+        }
       }
 
       // Initialization Logic

@@ -88,6 +88,20 @@
         }
       }
 
+      /* Specific layout for Writing Test on larger screens */
+      @media (min-width: 1024px) {
+        /* lg breakpoint */
+        .mock-test-layout.writing-layout {
+          grid-template-columns: 1fr; /* Single column for writing */
+          padding: 0rem; /* Larger padding for desktop */
+        }
+        .mock-test-layout.writing-layout .main-test-content {
+          height: calc(
+            100vh - 124px
+          ); /* Header (64px) + Info Bar (60px) = 124px */
+        }
+      }
+
       /* Styling for the main test content area (questions) */
       .main-test-content {
         background-color: #ffffff; /* Pure white background */
@@ -914,6 +928,18 @@
           resize: none; /* Disable resizing on mobile */
           /* Height of the sticky bar */
         }
+        /* Mobile Writing Layout */
+        .mock-test-layout.writing-layout {
+          display: flex;
+          flex-direction: column;
+          padding: 0;
+          gap: 1.5px;
+        }
+        .mock-test-layout.writing-layout .main-test-content {
+          height: calc(100vh - 124px); /* Header (64px) + Info Bar (60px) */
+          border-radius: 0;
+          border-top: none;
+        }
 
         /* Mobile Reading Tabs */
         .reading-tabs-container {
@@ -1140,6 +1166,7 @@
         allMockTests,
         MockTestIcons,
         formatTime,
+        calculateWordCount, // Import the new utility function
       } from "./mock-test-data.js";
 
       // Firebase imports for Firestore
@@ -1172,8 +1199,8 @@
         userAnswers: {}, // { questionId: userAnswer } (e.g., "mcq1", "q26")
         timerInterval: null,
         timeLeft: 0, // In seconds
-        currentQuestionIndex: 0, // 0-based index for the questionPaletteItems array
-        currentSectionIndex: 0, // 0-based index for current test section (used for reading)
+        currentQuestionIndex: 0, // 0-based index for the questionPaletteItems array (not used for writing)
+        currentSectionIndex: 0, // 0-based index for current test section (used for reading/writing)
         testCompleted: false, // New state to control view
         userResultDoc: null, // Stores the fetched user result for display
         leaderboard: [], // Stores leaderboard data
@@ -1391,6 +1418,25 @@
         testState.userAnswers[questionId] = answer.trim();
         if (currentModuleId === "listening") {
           updateQuestionPalette(); // Only update palette for listening
+        } else if (currentModuleId === "writing") {
+          // Update word count for writing tasks
+          const task = currentTest.sections.find((s) => s.id === questionId);
+          if (task) {
+            const wordCount = calculateWordCount(answer);
+            const wordCountSpan = document.getElementById(
+              `word-count-${questionId}`
+            );
+            if (wordCountSpan) {
+              wordCountSpan.textContent = wordCount;
+              if (wordCount < task.wordCountMin) {
+                wordCountSpan.classList.remove("text-green-600");
+                wordCountSpan.classList.add("text-red-600");
+              } else {
+                wordCountSpan.classList.remove("text-red-600");
+                wordCountSpan.classList.add("text-green-600");
+              }
+            }
+          }
         }
       }
 
@@ -1756,80 +1802,65 @@
         // Show a loading modal
         showModal("Submitting Test", "Calculating your score...", false);
 
-        let correctAnswersCount = 0;
+        let correctAnswersCount = 0; // For writing, this will be tasks meeting word count
 
-        currentTest.sections.forEach((section) => {
-          section.questionGroups.forEach((qGroup) => {
-            // Check qGroup.type first for types where 'type' is on the group
-            if (
-              qGroup.type === "matching_headings" ||
-              qGroup.type === "matching_items" ||
-              qGroup.type === "true_false_not_given" ||
-              qGroup.type === "multiple_choice_multiple_answers" ||
-              qGroup.type === "which_paragraph_contains" ||
-              qGroup.type === "matching_sentence_endings"
-            ) {
-              if (qGroup.questions && qGroup.questions.length > 0) {
-                qGroup.questions.forEach((question) => {
-                  let userAnswer;
-                  let correctAnswer;
-                  let isCorrect = false;
-
-                  if (qGroup.type === "multiple_choice_multiple_answers") {
-                    userAnswer = testState.userAnswers[question.id] || [];
-                    correctAnswer = question.correctAnswer || [];
-                    isCorrect =
-                      userAnswer.length === correctAnswer.length &&
-                      userAnswer.every((ans) => correctAnswer.includes(ans));
-                  } else {
-                    userAnswer = testState.userAnswers[question.id];
-                    correctAnswer = question.correctAnswer;
-                    isCorrect = userAnswer === correctAnswer;
-                  }
-
-                  if (isCorrect) {
-                    correctAnswersCount++;
-                  }
-                });
-              }
-            } else if (qGroup.type === "table_fill_in_the_blank") {
-              // Special handling for table questions (already correct)
+        if (currentModuleId === "writing") {
+          totalQuestions = currentTest.sections.length; // Number of writing tasks (e.g., 2)
+          currentTest.sections.forEach((task) => {
+            const userAnswerText = testState.userAnswers[task.id] || "";
+            const wordCount = calculateWordCount(userAnswerText);
+            if (wordCount >= task.wordCountMin) {
+              correctAnswersCount++;
+            }
+          });
+        } else {
+          // Existing scoring logic for Listening and Reading
+          currentTest.sections.forEach((section) => {
+            section.questionGroups.forEach((qGroup) => {
+              // Check qGroup.type first for types where 'type' is on the group
               if (
-                qGroup.questions &&
-                qGroup.questions.length > 0 &&
-                qGroup.questions[0].correctAnswer
+                qGroup.type === "matching_headings" ||
+                qGroup.type === "matching_items" ||
+                qGroup.type === "true_false_not_given" ||
+                qGroup.type === "multiple_choice_multiple_answers" ||
+                qGroup.type === "which_paragraph_contains" ||
+                qGroup.type === "matching_sentence_endings"
               ) {
-                for (const subQuestionId in qGroup.questions[0].correctAnswer) {
-                  const userAnswer = testState.userAnswers[subQuestionId];
-                  const correctAnswer =
-                    qGroup.questions[0].correctAnswer[subQuestionId];
-                  if (
-                    userAnswer &&
-                    correctAnswer &&
-                    userAnswer.toLowerCase() === correctAnswer.toLowerCase()
-                  ) {
-                    correctAnswersCount++;
-                  }
-                }
-              }
-            } else {
-              // Default handling for types where 'type' is on the individual question (e.g., fill_in_the_blank, mcq)
-              if (qGroup.questions && qGroup.questions.length > 0) {
-                qGroup.questions.forEach((question) => {
-                  if (question.type === "mcq") {
-                    const userAnswer = testState.userAnswers[question.id];
-                    const correctAnswer = question.correctAnswer;
-                    if (userAnswer === correctAnswer) {
+                if (qGroup.questions && qGroup.questions.length > 0) {
+                  qGroup.questions.forEach((question) => {
+                    let userAnswer;
+                    let correctAnswer;
+                    let isCorrect = false;
+
+                    if (qGroup.type === "multiple_choice_multiple_answers") {
+                      userAnswer = testState.userAnswers[question.id] || [];
+                      correctAnswer = question.correctAnswer || [];
+                      isCorrect =
+                        userAnswer.length === correctAnswer.length &&
+                        userAnswer.every((ans) => correctAnswer.includes(ans));
+                    } else {
+                      userAnswer = testState.userAnswers[question.id];
+                      correctAnswer = question.correctAnswer;
+                      isCorrect = userAnswer === correctAnswer;
+                    }
+
+                    if (isCorrect) {
                       correctAnswersCount++;
                     }
-                  } else if (
-                    question.type === "fill_in_the_blank" ||
-                    question.type === "map_labeling" ||
-                    question.type === "fill_in_the_blank_passage" ||
-                    question.type === "summary_completion"
-                  ) {
-                    const userAnswer = testState.userAnswers[question.id];
-                    const correctAnswer = question.correctAnswer;
+                  });
+                }
+              } else if (qGroup.type === "table_fill_in_the_blank") {
+                // Special handling for table questions (already correct)
+                if (
+                  qGroup.questions &&
+                  qGroup.questions.length > 0 &&
+                  qGroup.questions[0].correctAnswer
+                ) {
+                  for (const subQuestionId in qGroup.questions[0]
+                    .correctAnswer) {
+                    const userAnswer = testState.userAnswers[subQuestionId];
+                    const correctAnswer =
+                      qGroup.questions[0].correctAnswer[subQuestionId];
                     if (
                       userAnswer &&
                       correctAnswer &&
@@ -1837,29 +1868,58 @@
                     ) {
                       correctAnswersCount++;
                     }
-                  } else if (question.type === "table_fill_in_the_blank") {
-                    // Handle table questions that might be in a generic qGroup
-                    if (question.correctAnswer) {
-                      for (const subQuestionId in question.correctAnswer) {
-                        const userAnswer = testState.userAnswers[subQuestionId];
-                        const correctAnswer =
-                          question.correctAnswer[subQuestionId];
-                        if (
-                          userAnswer &&
-                          correctAnswer &&
-                          userAnswer.toLowerCase() ===
-                            correctAnswer.toLowerCase()
-                        ) {
-                          correctAnswersCount++;
+                  }
+                }
+              } else {
+                // Default handling for types where 'type' is on the individual question (e.g., fill_in_the_blank, mcq)
+                if (qGroup.questions && qGroup.questions.length > 0) {
+                  qGroup.questions.forEach((question) => {
+                    if (question.type === "mcq") {
+                      const userAnswer = testState.userAnswers[question.id];
+                      const correctAnswer = question.correctAnswer;
+                      if (userAnswer === correctAnswer) {
+                        correctAnswersCount++;
+                      }
+                    } else if (
+                      question.type === "fill_in_the_blank" ||
+                      question.type === "map_labeling" ||
+                      question.type === "fill_in_the_blank_passage" ||
+                      question.type === "summary_completion"
+                    ) {
+                      const userAnswer = testState.userAnswers[question.id];
+                      const correctAnswer = question.correctAnswer;
+                      if (
+                        userAnswer &&
+                        correctAnswer &&
+                        userAnswer.toLowerCase() === correctAnswer.toLowerCase()
+                      ) {
+                        correctAnswersCount++;
+                      }
+                    } else if (question.type === "table_fill_in_the_blank") {
+                      // Handle table questions that might be in a generic qGroup
+                      if (question.correctAnswer) {
+                        for (const subQuestionId in question.correctAnswer) {
+                          const userAnswer =
+                            testState.userAnswers[subQuestionId];
+                          const correctAnswer =
+                            question.correctAnswer[subQuestionId];
+                          if (
+                            userAnswer &&
+                            correctAnswer &&
+                            userAnswer.toLowerCase() ===
+                              correctAnswer.toLowerCase()
+                          ) {
+                            correctAnswersCount++;
+                          }
                         }
                       }
                     }
-                  }
-                });
+                  });
+                }
               }
-            }
+            });
           });
-        });
+        }
 
         const bandScore = calculateIELTSBandScore(
           correctAnswersCount,
@@ -1998,373 +2058,412 @@
                         </h3>
                         <div class="space-y-6 custom-scrollbar max-h-96 overflow-y-auto pr-2">
                             ${currentTest.sections
-                              .map((section) =>
-                                section.questionGroups
-                                  .map((qGroup) => {
-                                    let groupReviewHtml = "";
-                                    if (
-                                      qGroup.type === "matching_headings" ||
-                                      qGroup.type ===
-                                        "which_paragraph_contains" ||
-                                      qGroup.type ===
-                                        "matching_sentence_endings"
-                                    ) {
+                              .map((section) => {
+                                // For writing, we review tasks
+                                if (section.type === "writing_task") {
+                                  const userAnswerText =
+                                    userAnswers[section.id] || "";
+                                  const wordCount = calculateWordCount(
+                                    userAnswerText
+                                  );
+                                  const meetsWordCount =
+                                    wordCount >= section.wordCountMin;
+                                  return `
+                                    <div class="p-4 rounded-lg border ${
+                                      meetsWordCount
+                                        ? "border-green-300 bg-green-50"
+                                        : "border-red-300 bg-red-50"
+                                    }">
+                                        <p class="font-semibold text-gray-900 mb-2">
+                                            ${section.title}
+                                        </p>
+                                        <p class="text-sm text-gray-700 mb-1">
+                                            Your Word Count: <span class="${
+                                              meetsWordCount
+                                                ? "correct-answer"
+                                                : "incorrect-answer"
+                                            }">${wordCount} words</span>
+                                            (Min: ${section.wordCountMin} words)
+                                        </p>
+                                        <p class="text-sm text-gray-700">
+                                            Your Response:
+                                            <div class="bg-white p-3 rounded-md border border-gray-200 mt-2 whitespace-pre-wrap text-sm max-h-40 overflow-y-auto">
+                                                ${
+                                                  userAnswerText ||
+                                                  "<em>No response provided.</em>"
+                                                }
+                                            </div>
+                                        </p>
+                                    </div>
+                                `;
+                                } else {
+                                  // Existing logic for other question types
+                                  return section.questionGroups
+                                    .map((qGroup) => {
+                                      let groupReviewHtml = "";
                                       if (
-                                        qGroup.questions &&
-                                        qGroup.questions.length > 0
+                                        qGroup.type === "matching_headings" ||
+                                        qGroup.type ===
+                                          "which_paragraph_contains" ||
+                                        qGroup.type ===
+                                          "matching_sentence_endings"
                                       ) {
-                                        groupReviewHtml = qGroup.questions
-                                          .map((question) => {
-                                            const userAnswerDisplay =
-                                              userAnswers[question.id] ||
-                                              "Unattempted";
-                                            const correctAnswerDisplay =
-                                              question.correctAnswer;
-                                            const isCorrect =
-                                              userAnswerDisplay ===
-                                              correctAnswerDisplay;
-                                            return `
-                                              <div class="p-4 rounded-lg border ${
-                                                isCorrect
-                                                  ? "border-green-300 bg-green-50"
-                                                  : "border-red-300 bg-red-50"
-                                              }">
-                                                  <p class="font-semibold text-gray-900 mb-2">
-                                                      Question ${
-                                                        question.questionNumber
-                                                      }: ${
-                                              question.text ||
-                                              question.statement ||
-                                              `Paragraph ${question.paragraphId}`
-                                            }
-                                                  </p>
-                                                  <p class="text-sm text-gray-700">
-                                                      Your Answer: <span class="${
-                                                        isCorrect
-                                                          ? "correct-answer"
-                                                          : "incorrect-answer"
-                                                      }">${userAnswerDisplay}</span>
-                                                  </p>
-                                                  <p class="text-sm text-gray-700">
-                                                      Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
-                                                  </p>
-                                              </div>
-                                          `;
-                                          })
-                                          .join("");
-                                      }
-                                    } else if (
-                                      qGroup.type === "true_false_not_given"
-                                    ) {
-                                      if (
-                                        qGroup.questions &&
-                                        qGroup.questions.length > 0
-                                      ) {
-                                        groupReviewHtml = qGroup.questions
-                                          .map(
-                                            (question) => `
-                                              <div class="p-4 rounded-lg border ${
-                                                userAnswers[question.id] ===
-                                                question.correctAnswer
-                                                  ? "border-green-300 bg-green-50"
-                                                  : "border-red-300 bg-red-50"
-                                              }">
-                                                  <p class="font-semibold text-gray-900 mb-2">
-                                                      Question ${
-                                                        question.questionNumber
-                                                      }: ${question.text}
-                                                  </p>
-                                                  <p class="text-sm text-gray-700">
-                                                      Your Answer: <span class="${
-                                                        userAnswers[
-                                                          question.id
-                                                        ] ===
-                                                        question.correctAnswer
-                                                          ? "correct-answer"
-                                                          : "incorrect-answer"
-                                                      }">${
-                                              userAnswers[question.id] ||
-                                              "Unattempted"
-                                            }</span>
-                                                  </p>
-                                                  <p class="text-sm text-gray-700">
-                                                      Correct Answer: <span class="correct-answer">${
-                                                        question.correctAnswer
-                                                      }</span>
-                                                  </p>
-                                              </div>
-                                          `
-                                          )
-                                          .join("");
-                                      }
-                                    } else if (
-                                      qGroup.type ===
-                                      "multiple_choice_multiple_answers"
-                                    ) {
-                                      if (
-                                        qGroup.questions &&
-                                        qGroup.questions.length > 0
-                                      ) {
-                                        const question = qGroup.questions[0]; // Assuming one question object for this type
-                                        const userAnsArr =
-                                          userAnswers[question.id] || [];
-                                        const correctAnsArr =
-                                          question.correctAnswer || [];
-                                        const userAnswerDisplay =
-                                          userAnsArr.length > 0
-                                            ? userAnsArr.join(", ")
-                                            : "Unattempted";
-                                        const correctAnswerDisplay = correctAnsArr.join(
-                                          ", "
-                                        );
-                                        const isCorrect =
-                                          userAnsArr.length ===
-                                            correctAnsArr.length &&
-                                          userAnsArr.every((ans) =>
-                                            correctAnsArr.includes(ans)
-                                          );
-                                        groupReviewHtml = `
-                                              <div class="p-4 rounded-lg border ${
-                                                isCorrect
-                                                  ? "border-green-300 bg-green-50"
-                                                  : "border-red-300 bg-red-50"
-                                              }">
-                                                  <p class="font-semibold text-gray-900 mb-2">
-                                                      Question ${
-                                                        question.questionNumber
-                                                      }: ${question.text}
-                                                  </p>
-                                                  <p class="text-sm text-gray-700">
-                                                      Your Answer: <span class="${
-                                                        isCorrect
-                                                          ? "correct-answer"
-                                                          : "incorrect-answer"
-                                                      }">${userAnswerDisplay}</span>
-                                                  </p>
-                                                  <p class="text-sm text-gray-700">
-                                                      Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
-                                                  </p>
-                                              </div>
-                                          `;
-                                      }
-                                    } else if (
-                                      qGroup.type === "matching_items"
-                                    ) {
-                                      if (
-                                        qGroup.questions &&
-                                        qGroup.questions.length > 0
-                                      ) {
-                                        groupReviewHtml = qGroup.questions
-                                          .map((question) => {
-                                            const userAnswerDisplay =
-                                              userAnswers[question.id] ||
-                                              "Unattempted";
-                                            const correctAnswerDisplay =
-                                              question.correctAnswer;
-                                            const isCorrect =
-                                              userAnswerDisplay ===
-                                              correctAnswerDisplay;
-                                            return `
-                                              <div class="p-4 rounded-lg border ${
-                                                isCorrect
-                                                  ? "border-green-300 bg-green-50"
-                                                  : "border-red-300 bg-red-50"
-                                              }">
-                                                  <p class="font-semibold text-gray-900 mb-2">
-                                                      Question ${
-                                                        question.questionNumber
-                                                      }: ${question.statement}
-                                                  </p>
-                                                  <p class="text-sm text-gray-700">
-                                                      Your Answer: <span class="${
-                                                        isCorrect
-                                                          ? "correct-answer"
-                                                          : "incorrect-answer"
-                                                      }">${userAnswerDisplay}</span>
-                                                  </p>
-                                                  <p class="text-sm text-gray-700">
-                                                      Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
-                                                  </p>
-                                              </div>
-                                          `;
-                                          })
-                                          .join("");
-                                      }
-                                    } else if (
-                                      qGroup.type === "table_fill_in_the_blank"
-                                    ) {
-                                      // Special handling for table questions to iterate sub-questions
-                                      if (
-                                        qGroup.questions &&
-                                        qGroup.questions.length > 0 &&
-                                        qGroup.questions[0].correctAnswer
-                                      ) {
-                                        groupReviewHtml = Object.keys(
-                                          qGroup.questions[0].correctAnswer
-                                        )
-                                          .map((subQuestionId) => {
-                                            const subUserAnswer =
-                                              userAnswers[subQuestionId] ||
-                                              "Unattempted";
-                                            const subCorrectAnswer =
-                                              qGroup.questions[0].correctAnswer[
-                                                subQuestionId
-                                              ];
-                                            const subIsCorrect =
-                                              subUserAnswer.toLowerCase() ===
-                                              subCorrectAnswer.toLowerCase();
-
-                                            const displayQuestionNumber = subQuestionId.replace(
-                                              "q",
-                                              ""
-                                            );
-                                            let originalCellContent = "";
-                                            qGroup.questions[0].tableData.forEach(
-                                              (row) => {
-                                                row.forEach((cell) => {
-                                                  if (
-                                                    cell.includes(
-                                                      `${displayQuestionNumber}. [INPUT]`
-                                                    )
-                                                  ) {
-                                                    originalCellContent = cell.replace(
-                                                      /\[INPUT\]/,
-                                                      "..."
-                                                    );
-                                                  }
-                                                });
-                                              }
-                                            );
-
-                                            return `
-                                                  <div class="p-4 rounded-lg border ${
-                                                    subIsCorrect
-                                                      ? "border-green-300 bg-green-50"
-                                                      : "border-red-300 bg-red-50"
-                                                  }">
-                                                      <p class="font-semibold text-gray-900 mb-2">
-                                                          Question ${displayQuestionNumber}: ${originalCellContent}
-                                                      </p>
-                                                      <p class="text-sm text-gray-700">
-                                                          Your Answer: <span class="${
-                                                            subIsCorrect
-                                                              ? "correct-answer"
-                                                              : "incorrect-answer"
-                                                          }">${subUserAnswer}</span>
-                                                      </p>
-                                                      <p class="text-sm text-gray-700">
-                                                          Correct Answer: <span class="correct-answer">${subCorrectAnswer}</span>
-                                                      </p>
-                                                      ${
-                                                        qGroup.questions[0]
-                                                          .explanation
-                                                          ? `<div class="explanation">
-                                                              <strong>Explanation:</strong> ${qGroup.questions[0].explanation}
-                                                          </div>`
-                                                          : ""
-                                                      }
-                                                  </div>
-                                              `;
-                                          })
-                                          .join("");
-                                      }
-                                    } else {
-                                      // Default handling for types where 'type' is on the individual question (e.g., fill_in_the_blank, mcq)
-                                      if (
-                                        qGroup.questions &&
-                                        qGroup.questions.length > 0
-                                      ) {
-                                        groupReviewHtml = qGroup.questions
-                                          .map((question) => {
-                                            let questionTextForDisplay = "";
-                                            let userAnswerDisplay = "N/A";
-                                            let correctAnswerDisplay = "N/A";
-                                            let isCorrect = false;
-
-                                            if (question.type === "mcq") {
-                                              questionTextForDisplay =
-                                                question.text;
-                                              userAnswerDisplay =
+                                        if (
+                                          qGroup.questions &&
+                                          qGroup.questions.length > 0
+                                        ) {
+                                          groupReviewHtml = qGroup.questions
+                                            .map((question) => {
+                                              const userAnswerDisplay =
                                                 userAnswers[question.id] ||
                                                 "Unattempted";
-                                              correctAnswerDisplay =
+                                              const correctAnswerDisplay =
                                                 question.correctAnswer;
-                                              isCorrect =
+                                              const isCorrect =
                                                 userAnswerDisplay ===
                                                 correctAnswerDisplay;
-                                            } else if (
-                                              question.type ===
-                                                "fill_in_the_blank" ||
-                                              question.type ===
-                                                "map_labeling" ||
-                                              question.type ===
-                                                "fill_in_the_blank_passage" ||
-                                              question.type ===
-                                                "summary_completion"
-                                            ) {
-                                              questionTextForDisplay = question.text.replace(
-                                                /\[GAP\]/g,
-                                                "________"
-                                              );
-                                              userAnswerDisplay =
+                                              return `
+                                                <div class="p-4 rounded-lg border ${
+                                                  isCorrect
+                                                    ? "border-green-300 bg-green-50"
+                                                    : "border-red-300 bg-red-50"
+                                                }">
+                                                    <p class="font-semibold text-gray-900 mb-2">
+                                                        Question ${
+                                                          question.questionNumber
+                                                        }: ${
+                                                question.text ||
+                                                question.statement ||
+                                                `Paragraph ${question.paragraphId}`
+                                              }
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Your Answer: <span class="${
+                                                          isCorrect
+                                                            ? "correct-answer"
+                                                            : "incorrect-answer"
+                                                        }">${userAnswerDisplay}</span>
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
+                                                    </p>
+                                                </div>
+                                            `;
+                                            })
+                                            .join("");
+                                        }
+                                      } else if (
+                                        qGroup.type === "true_false_not_given"
+                                      ) {
+                                        if (
+                                          qGroup.questions &&
+                                          qGroup.questions.length > 0
+                                        ) {
+                                          groupReviewHtml = qGroup.questions
+                                            .map(
+                                              (question) => `
+                                                <div class="p-4 rounded-lg border ${
+                                                  userAnswers[question.id] ===
+                                                  question.correctAnswer
+                                                    ? "border-green-300 bg-green-50"
+                                                    : "border-red-300 bg-red-50"
+                                                }">
+                                                    <p class="font-semibold text-gray-900 mb-2">
+                                                        Question ${
+                                                          question.questionNumber
+                                                        }: ${question.text}
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Your Answer: <span class="${
+                                                          userAnswers[
+                                                            question.id
+                                                          ] ===
+                                                          question.correctAnswer
+                                                            ? "correct-answer"
+                                                            : "incorrect-answer"
+                                                        }">${
+                                                userAnswers[question.id] ||
+                                                "Unattempted"
+                                              }</span>
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Correct Answer: <span class="correct-answer">${
+                                                          question.correctAnswer
+                                                        }</span>
+                                                    </p>
+                                                </div>
+                                            `
+                                            )
+                                            .join("");
+                                        }
+                                      } else if (
+                                        qGroup.type ===
+                                        "multiple_choice_multiple_answers"
+                                      ) {
+                                        if (
+                                          qGroup.questions &&
+                                          qGroup.questions.length > 0
+                                        ) {
+                                          const question = qGroup.questions[0]; // Assuming one question object for this type
+                                          const userAnsArr =
+                                            userAnswers[question.id] || [];
+                                          const correctAnsArr =
+                                            question.correctAnswer || [];
+                                          const userAnswerDisplay =
+                                            userAnsArr.length > 0
+                                              ? userAnsArr.join(", ")
+                                              : "Unattempted";
+                                          const correctAnswerDisplay = correctAnsArr.join(
+                                            ", "
+                                          );
+                                          const isCorrect =
+                                            userAnsArr.length ===
+                                              correctAnsArr.length &&
+                                            userAnsArr.every((ans) =>
+                                              correctAnsArr.includes(ans)
+                                            );
+                                          groupReviewHtml = `
+                                                <div class="p-4 rounded-lg border ${
+                                                  isCorrect
+                                                    ? "border-green-300 bg-green-50"
+                                                    : "border-red-300 bg-red-50"
+                                                }">
+                                                    <p class="font-semibold text-gray-900 mb-2">
+                                                        Question ${
+                                                          question.questionNumber
+                                                        }: ${question.text}
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Your Answer: <span class="${
+                                                          isCorrect
+                                                            ? "correct-answer"
+                                                            : "incorrect-answer"
+                                                        }">${userAnswerDisplay}</span>
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
+                                                    </p>
+                                                </div>
+                                            `;
+                                        }
+                                      } else if (
+                                        qGroup.type === "matching_items"
+                                      ) {
+                                        if (
+                                          qGroup.questions &&
+                                          qGroup.questions.length > 0
+                                        ) {
+                                          groupReviewHtml = qGroup.questions
+                                            .map((question) => {
+                                              const userAnswerDisplay =
                                                 userAnswers[question.id] ||
                                                 "Unattempted";
-                                              correctAnswerDisplay =
+                                              const correctAnswerDisplay =
                                                 question.correctAnswer;
-                                              isCorrect =
-                                                userAnswerDisplay.toLowerCase() ===
-                                                correctAnswerDisplay.toLowerCase();
-                                            } else if (
-                                              question.type ===
-                                              "table_fill_in_the_blank"
-                                            ) {
-                                              // Handle table questions that might be in a generic qGroup for feedback display
-                                              if (question.correctAnswer) {
-                                                return Object.keys(
-                                                  question.correctAnswer
-                                                )
-                                                  .map((subQuestionId) => {
-                                                    const subUserAnswer =
-                                                      userAnswers[
-                                                        subQuestionId
-                                                      ] || "Unattempted";
-                                                    const subCorrectAnswer =
-                                                      question.correctAnswer[
-                                                        subQuestionId
-                                                      ];
-                                                    const subIsCorrect =
-                                                      subUserAnswer.toLowerCase() ===
-                                                      subCorrectAnswer.toLowerCase();
+                                              const isCorrect =
+                                                userAnswerDisplay ===
+                                                correctAnswerDisplay;
+                                              return `
+                                                <div class="p-4 rounded-lg border ${
+                                                  isCorrect
+                                                    ? "border-green-300 bg-green-50"
+                                                    : "border-red-300 bg-red-50"
+                                                }">
+                                                    <p class="font-semibold text-gray-900 mb-2">
+                                                        Question ${
+                                                          question.questionNumber
+                                                        }: ${question.statement}
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Your Answer: <span class="${
+                                                          isCorrect
+                                                            ? "correct-answer"
+                                                            : "incorrect-answer"
+                                                        }">${userAnswerDisplay}</span>
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
+                                                    </p>
+                                                </div>
+                                            `;
+                                            })
+                                            .join("");
+                                        }
+                                      } else if (
+                                        qGroup.type ===
+                                        "table_fill_in_the_blank"
+                                      ) {
+                                        // Special handling for table questions to iterate sub-questions
+                                        if (
+                                          qGroup.questions &&
+                                          qGroup.questions.length > 0 &&
+                                          qGroup.questions[0].correctAnswer
+                                        ) {
+                                          groupReviewHtml = Object.keys(
+                                            qGroup.questions[0].correctAnswer
+                                          )
+                                            .map((subQuestionId) => {
+                                              const subUserAnswer =
+                                                userAnswers[subQuestionId] ||
+                                                "Unattempted";
+                                              const subCorrectAnswer =
+                                                qGroup.questions[0]
+                                                  .correctAnswer[subQuestionId];
+                                              const subIsCorrect =
+                                                subUserAnswer.toLowerCase() ===
+                                                subCorrectAnswer.toLowerCase();
 
-                                                    const displayQuestionNumber = subQuestionId.replace(
-                                                      "q",
-                                                      ""
-                                                    );
-                                                    let originalCellContent =
-                                                      "";
-                                                    // Attempt to reconstruct original cell content for display
-                                                    if (question.tableData) {
-                                                      question.tableData.forEach(
-                                                        (row) => {
-                                                          row.forEach(
-                                                            (cell) => {
-                                                              if (
-                                                                cell.includes(
-                                                                  `${displayQuestionNumber}. [INPUT]`
-                                                                )
-                                                              ) {
-                                                                originalCellContent = cell.replace(
-                                                                  /\[INPUT\]/,
-                                                                  "..."
-                                                                );
-                                                              }
-                                                            }
-                                                          );
-                                                        }
+                                              const displayQuestionNumber = subQuestionId.replace(
+                                                "q",
+                                                ""
+                                              );
+                                              let originalCellContent = "";
+                                              qGroup.questions[0].tableData.forEach(
+                                                (row) => {
+                                                  row.forEach((cell) => {
+                                                    if (
+                                                      cell.includes(
+                                                        `${displayQuestionNumber}. [INPUT]`
+                                                      )
+                                                    ) {
+                                                      originalCellContent = cell.replace(
+                                                        /\[INPUT\]/,
+                                                        "..."
                                                       );
                                                     }
+                                                  });
+                                                }
+                                              );
 
-                                                    return `
+                                              return `
+                                                    <div class="p-4 rounded-lg border ${
+                                                      subIsCorrect
+                                                        ? "border-green-300 bg-green-50"
+                                                        : "border-red-300 bg-red-50"
+                                                    }">
+                                                        <p class="font-semibold text-gray-900 mb-2">
+                                                            Question ${displayQuestionNumber}: ${originalCellContent}
+                                                        </p>
+                                                        <p class="text-sm text-gray-700">
+                                                            Your Answer: <span class="${
+                                                              subIsCorrect
+                                                                ? "correct-answer"
+                                                                : "incorrect-answer"
+                                                            }">${subUserAnswer}</span>
+                                                        </p>
+                                                        <p class="text-sm text-gray-700">
+                                                            Correct Answer: <span class="correct-answer">${subCorrectAnswer}</span>
+                                                        </p>
+                                                        ${
+                                                          qGroup.questions[0]
+                                                            .explanation
+                                                            ? `<div class="explanation">
+                                                                <strong>Explanation:</strong> ${qGroup.questions[0].explanation}
+                                                            </div>`
+                                                            : ""
+                                                        }
+                                                    </div>
+                                                `;
+                                            })
+                                            .join("");
+                                        }
+                                      } else {
+                                        // Default handling for types where 'type' is on the individual question (e.g., fill_in_the_blank, mcq)
+                                        if (
+                                          qGroup.questions &&
+                                          qGroup.questions.length > 0
+                                        ) {
+                                          groupReviewHtml = qGroup.questions
+                                            .map((question) => {
+                                              let questionTextForDisplay = "";
+                                              let userAnswerDisplay = "N/A";
+                                              let correctAnswerDisplay = "N/A";
+                                              let isCorrect = false;
+
+                                              if (question.type === "mcq") {
+                                                questionTextForDisplay =
+                                                  question.text;
+                                                userAnswerDisplay =
+                                                  userAnswers[question.id] ||
+                                                  "Unattempted";
+                                                correctAnswerDisplay =
+                                                  question.correctAnswer;
+                                                isCorrect =
+                                                  userAnswerDisplay ===
+                                                  correctAnswerDisplay;
+                                              } else if (
+                                                question.type ===
+                                                  "fill_in_the_blank" ||
+                                                question.type ===
+                                                  "map_labeling" ||
+                                                question.type ===
+                                                  "fill_in_the_blank_passage" ||
+                                                question.type ===
+                                                  "summary_completion"
+                                              ) {
+                                                questionTextForDisplay = question.text.replace(
+                                                  /\[GAP\]/g,
+                                                  "________"
+                                                );
+                                                userAnswerDisplay =
+                                                  userAnswers[question.id] ||
+                                                  "Unattempted";
+                                                correctAnswerDisplay =
+                                                  question.correctAnswer;
+                                                isCorrect =
+                                                  userAnswerDisplay.toLowerCase() ===
+                                                  correctAnswerDisplay.toLowerCase();
+                                              } else if (
+                                                question.type ===
+                                                "table_fill_in_the_blank"
+                                              ) {
+                                                // Handle table questions that might be in a generic qGroup for feedback display
+                                                if (question.correctAnswer) {
+                                                  return Object.keys(
+                                                    question.correctAnswer
+                                                  )
+                                                    .map((subQuestionId) => {
+                                                      const subUserAnswer =
+                                                        userAnswers[
+                                                          subQuestionId
+                                                        ] || "Unattempted";
+                                                      const subCorrectAnswer =
+                                                        question.correctAnswer[
+                                                          subQuestionId
+                                                        ];
+                                                      const subIsCorrect =
+                                                        subUserAnswer.toLowerCase() ===
+                                                        subCorrectAnswer.toLowerCase();
+
+                                                      const displayQuestionNumber = subQuestionId.replace(
+                                                        "q",
+                                                        ""
+                                                      );
+                                                      let originalCellContent =
+                                                        "";
+                                                      // Attempt to reconstruct original cell content for display
+                                                      if (question.tableData) {
+                                                        question.tableData.forEach(
+                                                          (row) => {
+                                                            row.forEach(
+                                                              (cell) => {
+                                                                if (
+                                                                  cell.includes(
+                                                                    `${displayQuestionNumber}. [INPUT]`
+                                                                  )
+                                                                ) {
+                                                                  originalCellContent = cell.replace(
+                                                                    /\[INPUT\]/,
+                                                                    "..."
+                                                                  );
+                                                                }
+                                                              }
+                                                            );
+                                                          }
+                                                        );
+                                                      }
+
+                                                      return `
                                                             <div class="p-4 rounded-lg border ${
                                                               subIsCorrect
                                                                 ? "border-green-300 bg-green-50"
@@ -2372,9 +2471,9 @@
                                                             }">
                                                                 <p class="font-semibold text-gray-900 mb-2">
                                                                     Question ${displayQuestionNumber}: ${
-                                                      originalCellContent ||
-                                                      `Table Question ${displayQuestionNumber}`
-                                                    }
+                                                        originalCellContent ||
+                                                        `Table Question ${displayQuestionNumber}`
+                                                      }
                                                                 </p>
                                                                 <p class="text-sm text-gray-700">
                                                                     Your Answer: <span class="${
@@ -2393,61 +2492,63 @@
                                                                 }
                                                             </div>
                                                         `;
-                                                  })
-                                                  .join("");
+                                                    })
+                                                    .join("");
+                                                }
+                                              } else {
+                                                // Fallback for any truly unhandled question types
+                                                console.warn(
+                                                  "Unhandled question type in feedback rendering:",
+                                                  question.type,
+                                                  question
+                                                );
+                                                questionTextForDisplay = `Question ${
+                                                  question.questionNumber ||
+                                                  "N/A"
+                                                }: (Type: ${
+                                                  question.type || "unknown"
+                                                })`;
                                               }
-                                            } else {
-                                              // Fallback for any truly unhandled question types
-                                              console.warn(
-                                                "Unhandled question type in feedback rendering:",
-                                                question.type,
-                                                question
-                                              );
-                                              questionTextForDisplay = `Question ${
-                                                question.questionNumber || "N/A"
-                                              }: (Type: ${
-                                                question.type || "unknown"
-                                              })`;
-                                            }
 
-                                            return `
-                                              <div class="p-4 rounded-lg border ${
-                                                isCorrect
-                                                  ? "border-green-300 bg-green-50"
-                                                  : "border-red-300 bg-red-50"
-                                              }">
-                                                  <p class="font-semibold text-gray-900 mb-2">
-                                                      Question ${
-                                                        question.questionNumber
-                                                      }: ${questionTextForDisplay}
-                                                  </p>
-                                                  <p class="text-sm text-gray-700">
-                                                      Your Answer: <span class="${
-                                                        isCorrect
-                                                          ? "correct-answer"
-                                                          : "incorrect-answer"
-                                                      }">${userAnswerDisplay}</span>
-                                                  </p>
-                                                  <p class="text-sm text-gray-700">
-                                                      Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
-                                                  </p>
-                                                  ${
-                                                    question.explanation
-                                                      ? `<div class="explanation">
-                                                          <strong>Explanation:</strong> ${question.explanation}
-                                                      </div>`
-                                                      : ""
-                                                  }
-                                              </div>
-                                          `;
-                                          })
-                                          .join("");
+                                              return `
+                                                <div class="p-4 rounded-lg border ${
+                                                  isCorrect
+                                                    ? "border-green-300 bg-green-50"
+                                                    : "border-red-300 bg-red-50"
+                                                }">
+                                                    <p class="font-semibold text-gray-900 mb-2">
+                                                        Question ${
+                                                          question.questionNumber
+                                                        }: ${questionTextForDisplay}
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Your Answer: <span class="${
+                                                          isCorrect
+                                                            ? "correct-answer"
+                                                            : "incorrect-answer"
+                                                        }">${userAnswerDisplay}</span>
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
+                                                    </p>
+                                                    ${
+                                                      question.explanation
+                                                        ? `<div class="explanation">
+                                                            <strong>Explanation:</strong> ${question.explanation}
+                                                        </div>`
+                                                        : ""
+                                                    }
+                                                </div>
+                                            `;
+                                            })
+                                            .join("");
+                                        }
                                       }
-                                    }
-                                    return groupReviewHtml;
-                                  })
-                                  .join("")
-                              )
+                                      return groupReviewHtml;
+                                    })
+                                    .join("");
+                                }
+                              })
                               .join("")}
                         </div>
                     </div>
@@ -2547,7 +2648,7 @@
       }
 
       /**
-       * Navigates to the next section of the test (for Reading).
+       * Navigates to the next section of the test (for Reading/Writing).
        */
       function goToNextSection() {
         if (testState.currentSectionIndex < currentTest.sections.length - 1) {
@@ -2555,12 +2656,14 @@
           renderApp();
           // Scroll to the top of the main content area for the new section
           document.querySelector(".main-test-content").scrollTop = 0;
-          document.querySelector(".passage-content-area").scrollTop = 0;
+          if (currentModuleId === "reading") {
+            document.querySelector(".passage-content-area").scrollTop = 0;
+          }
         }
       }
 
       /**
-       * Navigates to the previous section of the test (for Reading).
+       * Navigates to the previous section of the test (for Reading/Writing).
        */
       function goToPreviousSection() {
         if (testState.currentSectionIndex > 0) {
@@ -2568,7 +2671,9 @@
           renderApp();
           // Scroll to the top of the main content area for the new section
           document.querySelector(".main-test-content").scrollTop = 0;
-          document.querySelector(".passage-content-area").scrollTop = 0;
+          if (currentModuleId === "reading") {
+            document.querySelector(".passage-content-area").scrollTop = 0;
+          }
         }
       }
 
@@ -2625,11 +2730,11 @@
         } else {
           // Define navigationButtonsHtml based on the module and section
           let navigationButtonsHtml = "";
-          if (currentModuleId === "reading") {
-            const isFirstSection = testState.currentSectionIndex === 0;
-            const isLastSection =
-              testState.currentSectionIndex === currentTest.sections.length - 1;
+          const isLastSection =
+            testState.currentSectionIndex === currentTest.sections.length - 1;
+          const isFirstSection = testState.currentSectionIndex === 0;
 
+          if (currentModuleId === "reading" || currentModuleId === "writing") {
             navigationButtonsHtml = `
                 <button id="prev-section-btn"
                         class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-gray-300 transition-colors duration-200 font-semibold text-base transform active:scale-95 ${
@@ -2651,7 +2756,7 @@
                 }
             `;
           } else {
-            // For Listening and other modules, just a submit button
+            // For Listening, just a submit button
             navigationButtonsHtml = `
                 <button id="submit-test-btn"
                         class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95 mx-auto">
@@ -2679,11 +2784,17 @@
             testInfoBarDisplay = "none"; // Hide info bar for listening (sidebar handles timer)
             if (mobilePaletteWrapper)
               mobilePaletteWrapper.style.display = "flex"; // Show mobile palette for listening
+          } else if (currentModuleId === "writing") {
+            mockTestLayoutClass = "writing-layout";
+            audioPlayerDisplay = "none"; // Hide audio for writing
+            body.classList.remove("listening-body-padding"); // Ensure no extra padding
+            testInfoBarDisplay = "flex"; // Show info bar for writing
+            if (mobilePaletteWrapper)
+              mobilePaletteWrapper.style.display = "none"; // Hide mobile palette for writing
           }
 
           audioPlayerWrapper.style.display = audioPlayerDisplay;
           if (testInfoBar) testInfoBar.style.display = testInfoBarDisplay; // Apply display style
-          // mobilePaletteWrapper.classList.toggle("listening-mobile", currentModuleId === "listening"); // This is now handled by direct display style above
 
           const currentSection =
             currentTest.sections[testState.currentSectionIndex];
@@ -2699,7 +2810,10 @@
           if (topBarTestTitle) {
             topBarTestTitle.textContent = currentTest.title;
           }
-          if (topBarSectionInfo && currentModuleId === "reading") {
+          if (
+            topBarSectionInfo &&
+            (currentModuleId === "reading" || currentModuleId === "writing")
+          ) {
             topBarSectionInfo.textContent = `- Section ${
               testState.currentSectionIndex + 1
             } of ${currentTest.sections.length}`;
@@ -2748,13 +2862,13 @@
                         </div>
                     </div>
 
-                    <!-- Main Test Content Area (Questions) -->
+                    <!-- Main Test Content Area (Questions/Writing Tasks) -->
                     <div class="main-test-content custom-scrollbar ${
                       currentModuleId === "reading" ? "" : ""
                     }" style="${
             currentModuleId === "reading" && isQuestionsActive
               ? "display: block;"
-              : currentModuleId === "listening"
+              : currentModuleId === "listening" || currentModuleId === "writing"
               ? "display: block;"
               : "display: none;"
           }">
@@ -2762,9 +2876,7 @@
                             <h2 class="text-3xl font-anton text-gray-800">${
                               currentTest.title
                             } - Section ${
-            currentModuleId === "reading"
-              ? testState.currentSectionIndex + 1
-              : ""
+            testState.currentSectionIndex + 1
           }</h2>
                             <!-- Timer moved to sticky top bar for Reading/Writing -->
                         </div>
@@ -2773,7 +2885,10 @@
                         <!-- Test Sections and Questions -->
                         <div id="test-questions-container">
                             ${
-                              currentModuleId === "reading"
+                              currentModuleId === "writing"
+                                ? // For Writing, render only the current section (task)
+                                  renderWritingTask(currentSection)
+                                : currentModuleId === "reading"
                                 ? // For Reading, render only the current section
                                   `<div class="question-section" id="section-${
                                     currentSection.id
@@ -2859,7 +2974,46 @@
             `;
         }
 
-        // Helper function to render question groups
+        // Helper function to render writing tasks
+        function renderWritingTask(task) {
+          const userAnswerText = testState.userAnswers[task.id] || "";
+          const currentWordCount = calculateWordCount(userAnswerText);
+          const meetsMinWordCount = currentWordCount >= task.wordCountMin;
+
+          return `
+                <div class="question-section" id="task-${task.id}">
+                    <h3 class="text-2xl font-bold text-gray-700 mb-3 font-anton">${
+                      task.title
+                    }</h3>
+                    <div class="question-group-instructions mb-6 text-gray-600 font-inter">
+                        ${task.instructions}
+                    </div>
+                    <div class="question-item">
+                        <label for="writing-response-${
+                          task.id
+                        }" class="block text-lg font-semibold text-gray-800 mb-2">Your Response:</label>
+                        <textarea id="writing-response-${task.id}"
+                                  class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-gray-700 resize-y custom-scrollbar"
+                                  rows="15"
+                                  placeholder="Start writing your answer here..."
+                                  oninput="handleAnswerInput('${
+                                    task.id
+                                  }', this.value)">${userAnswerText}</textarea>
+                        <div class="text-right text-sm mt-2">
+                            Word Count: <span id="word-count-${
+                              task.id
+                            }" class="${
+            meetsMinWordCount ? "text-green-600" : "text-red-600"
+          } font-bold">${currentWordCount}</span> / Min: ${
+            task.wordCountMin
+          } words
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper function to render question groups (existing for Listening/Reading)
         function qGroupRenderer(section) {
           return section.questionGroups
             .map((qGroup) => {
@@ -3414,13 +3568,18 @@
           );
           if (testQuestionsContainer) {
             testQuestionsContainer.addEventListener("input", (event) => {
-              // For text inputs (fill-in-the-blank, map labeling, table inputs)
+              // For text inputs (fill-in-the-blank, map labeling, table inputs, writing textareas)
               if (
-                event.target.tagName === "INPUT" &&
-                event.target.type === "text" &&
-                event.target.id.startsWith("q")
+                (event.target.tagName === "INPUT" &&
+                  event.target.type === "text" &&
+                  event.target.id.startsWith("q")) ||
+                (event.target.tagName === "TEXTAREA" &&
+                  event.target.id.startsWith("writing-response-"))
               ) {
-                const questionId = event.target.id;
+                const questionId = event.target.id.replace(
+                  "writing-response-",
+                  ""
+                ); // For writing tasks, ID is task.id
                 handleAnswerInput(questionId, event.target.value);
               }
             });
@@ -3554,8 +3713,11 @@
             if (totalQuestions > 0) {
               scrollToQuestion(testState.currentQuestionIndex + 1); // Scroll to current question
             }
-          } else if (currentModuleId === "reading") {
-            // Navigation buttons for reading
+          } else if (
+            currentModuleId === "reading" ||
+            currentModuleId === "writing"
+          ) {
+            // Navigation buttons for reading/writing
             const prevSectionBtn = document.getElementById("prev-section-btn");
             const nextSectionBtn = document.getElementById("next-section-btn");
 
@@ -3566,17 +3728,20 @@
               nextSectionBtn.onclick = goToNextSection;
             }
 
-            // Mobile reading tabs event listeners
-            const passageTabBtn = document.getElementById("passage-tab-btn");
-            const questionsTabBtn = document.getElementById(
-              "questions-tab-btn"
-            );
+            // Mobile reading tabs event listeners (only for reading)
+            if (currentModuleId === "reading") {
+              const passageTabBtn = document.getElementById("passage-tab-btn");
+              const questionsTabBtn = document.getElementById(
+                "questions-tab-btn"
+              );
 
-            if (passageTabBtn) {
-              passageTabBtn.onclick = () => setActiveReadingTab("passage");
-            }
-            if (questionsTabBtn) {
-              questionsTabBtn.onclick = () => setActiveReadingTab("questions");
+              if (passageTabBtn) {
+                passageTabBtn.onclick = () => setActiveReadingTab("passage");
+              }
+              if (questionsTabBtn) {
+                questionsTabBtn.onclick = () =>
+                  setActiveReadingTab("questions");
+              }
             }
           }
 
@@ -3585,28 +3750,53 @@
           if (submitBtn) {
             submitBtn.addEventListener("click", () => {
               let unansweredCount = 0;
-              // Iterate through questionPaletteItems to accurately count unanswered questions
-              questionPaletteItems.forEach((item) => {
-                const userAnswer = testState.userAnswers[item.questionId];
-                if (
-                  userAnswer === undefined ||
-                  userAnswer === null ||
-                  userAnswer === "" ||
-                  (Array.isArray(userAnswer) && userAnswer.length === 0)
-                ) {
-                  unansweredCount++;
-                }
-              });
+              if (currentModuleId === "writing") {
+                currentTest.sections.forEach((task) => {
+                  const userAnswerText = testState.userAnswers[task.id] || "";
+                  const wordCount = calculateWordCount(userAnswerText);
+                  if (wordCount < task.wordCountMin) {
+                    unansweredCount++;
+                  }
+                });
+                showModal(
+                  "Confirm Submission",
+                  `Are you sure you want to submit the test? ${
+                    unansweredCount > 0
+                      ? `You have ${unansweredCount} writing tasks below the minimum word count.`
+                      : "All writing tasks meet the minimum word count."
+                  }`,
+                  true,
+                  () => handleSubmitTest(), // On confirm
+                  () => hideModal() // On cancel
+                );
+              } else {
+                // Existing logic for Listening/Reading
+                // Iterate through questionPaletteItems to accurately count unanswered questions
+                questionPaletteItems.forEach((item) => {
+                  const userAnswer = testState.userAnswers[item.questionId];
+                  if (
+                    userAnswer === undefined ||
+                    userAnswer === null ||
+                    userAnswer === "" ||
+                    (Array.isArray(userAnswer) && userAnswer.length === 0)
+                  ) {
+                    unansweredCount++;
+                  }
+                });
 
-              console.log("Calculated unanswered questions:", unansweredCount); // Debugging line
+                console.log(
+                  "Calculated unanswered questions:",
+                  unansweredCount
+                ); // Debugging line
 
-              showModal(
-                "Confirm Submission",
-                `Are you sure you want to submit the test? You have ${unansweredCount} unanswered questions.`,
-                true,
-                () => handleSubmitTest(), // On confirm
-                () => hideModal() // On cancel
-              );
+                showModal(
+                  "Confirm Submission",
+                  `Are you sure you want to submit the test? You have ${unansweredCount} unanswered questions.`,
+                  true,
+                  () => handleSubmitTest(), // On confirm
+                  () => hideModal() // On cancel
+                );
+              }
             });
           }
 
@@ -3687,59 +3877,30 @@
                   testState.userAnswers = {}; // Reset user answers
                   questionPaletteItems = []; // Reset palette items
                   testState.currentQuestionIndex = 0; // Reset for listening
-                  testState.currentSectionIndex = 0; // Reset for reading
+                  testState.currentSectionIndex = 0; // Reset for reading/writing
                   testState.activeReadingTab = "questions"; // Default to questions tab for reading
 
-                  let currentPaletteNumber = 1;
+                  if (currentModuleId === "writing") {
+                    currentTest.sections.forEach((task) => {
+                      testState.userAnswers[task.id] = ""; // Initialize writing task answers
+                    });
+                    totalQuestions = currentTest.sections.length; // Total tasks for writing
+                  } else {
+                    let currentPaletteNumber = 1;
 
-                  currentTest.sections.forEach((section) => {
-                    section.questionGroups.forEach((qGroup) => {
-                      if (qGroup.questions && qGroup.questions.length > 0) {
-                        if (
-                          qGroup.type === "matching_headings" ||
-                          qGroup.type === "true_false_not_given" ||
-                          qGroup.type === "matching_items" ||
-                          qGroup.type === "which_paragraph_contains" ||
-                          qGroup.type === "multiple_choice_multiple_answers" ||
-                          qGroup.type === "matching_sentence_endings"
-                        ) {
-                          qGroup.questions.forEach((question) => {
-                            testState.userAnswers[question.id] = "";
-                            questionPaletteItems.push({
-                              paletteNumber: currentPaletteNumber,
-                              questionId: question.id,
-                              htmlElementId: `question-${question.questionNumber}`,
-                            });
-                            currentPaletteNumber++;
-                          });
-                        } else if (qGroup.type === "table_fill_in_the_blank") {
-                          if (qGroup.questions[0].correctAnswer) {
-                            for (const subQuestionId in qGroup.questions[0]
-                              .correctAnswer) {
-                              testState.userAnswers[subQuestionId] = "";
-                              questionPaletteItems.push({
-                                paletteNumber: currentPaletteNumber,
-                                questionId: subQuestionId,
-                                htmlElementId: `question-${qGroup.questions[0].questionNumber}`,
-                              });
-                              currentPaletteNumber++;
-                            }
-                          }
-                        } else {
-                          qGroup.questions.forEach((question) => {
-                            if (question.type === "table_fill_in_the_blank") {
-                              if (question.correctAnswer) {
-                                for (const subQuestionId in question.correctAnswer) {
-                                  testState.userAnswers[subQuestionId] = "";
-                                  questionPaletteItems.push({
-                                    paletteNumber: currentPaletteNumber,
-                                    questionId: subQuestionId,
-                                    htmlElementId: `question-${question.questionNumber}`,
-                                  });
-                                  currentPaletteNumber++;
-                                }
-                              }
-                            } else {
+                    currentTest.sections.forEach((section) => {
+                      section.questionGroups.forEach((qGroup) => {
+                        if (qGroup.questions && qGroup.questions.length > 0) {
+                          if (
+                            qGroup.type === "matching_headings" ||
+                            qGroup.type === "true_false_not_given" ||
+                            qGroup.type === "matching_items" ||
+                            qGroup.type === "which_paragraph_contains" ||
+                            qGroup.type ===
+                              "multiple_choice_multiple_answers" ||
+                            qGroup.type === "matching_sentence_endings"
+                          ) {
+                            qGroup.questions.forEach((question) => {
                               testState.userAnswers[question.id] = "";
                               questionPaletteItems.push({
                                 paletteNumber: currentPaletteNumber,
@@ -3747,51 +3908,92 @@
                                 htmlElementId: `question-${question.questionNumber}`,
                               });
                               currentPaletteNumber++;
+                            });
+                          } else if (
+                            qGroup.type === "table_fill_in_the_blank"
+                          ) {
+                            if (qGroup.questions[0].correctAnswer) {
+                              for (const subQuestionId in qGroup.questions[0]
+                                .correctAnswer) {
+                                testState.userAnswers[subQuestionId] = "";
+                                questionPaletteItems.push({
+                                  paletteNumber: currentPaletteNumber,
+                                  questionId: subQuestionId,
+                                  htmlElementId: `question-${qGroup.questions[0].questionNumber}`,
+                                });
+                                currentPaletteNumber++;
+                              }
                             }
+                          } else {
+                            qGroup.questions.forEach((question) => {
+                              if (question.type === "table_fill_in_the_blank") {
+                                if (question.correctAnswer) {
+                                  for (const subQuestionId in question.correctAnswer) {
+                                    testState.userAnswers[subQuestionId] = "";
+                                    questionPaletteItems.push({
+                                      paletteNumber: currentPaletteNumber,
+                                      questionId: subQuestionId,
+                                      htmlElementId: `question-${question.questionNumber}`,
+                                    });
+                                    currentPaletteNumber++;
+                                  }
+                                }
+                              } else {
+                                testState.userAnswers[question.id] = "";
+                                questionPaletteItems.push({
+                                  paletteNumber: currentPaletteNumber,
+                                  questionId: question.id,
+                                  htmlElementId: `question-${question.questionNumber}`,
+                                });
+                                currentPaletteNumber++;
+                              }
+                            });
+                          }
+                        }
+                      });
+                    });
+
+                    // After populating questionPaletteItems from the test data:
+                    // Ensure totalQuestions is always 40 for Listening and Reading,
+                    // and pad questionPaletteItems if necessary.
+                    if (
+                      currentModuleId === "listening" ||
+                      currentModuleId === "reading"
+                    ) {
+                      const expectedTotalQuestions = 40;
+                      const actualParsedQuestions = questionPaletteItems.length;
+
+                      if (actualParsedQuestions < expectedTotalQuestions) {
+                        console.warn(
+                          `Warning: ${currentModuleId} test '${currentTestId}' has ${actualParsedQuestions} answerable questions in data. Padding to ${expectedTotalQuestions} for IELTS standard.`
+                        );
+                        for (
+                          let i = actualParsedQuestions;
+                          i < expectedTotalQuestions;
+                          i++
+                        ) {
+                          const dummyQuestionId = `dummy_q_${i + 1}`;
+                          testState.userAnswers[dummyQuestionId] = ""; // Initialize dummy answer as unanswered
+                          questionPaletteItems.push({
+                            paletteNumber: i + 1,
+                            questionId: dummyQuestionId,
+                            htmlElementId: `dummy-question-${i + 1}`, // Dummy ID, won't be scrolled to
                           });
                         }
-                      }
-                    });
-                  });
-
-                  // After populating questionPaletteItems from the test data:
-                  // Ensure totalQuestions is always 40 for Listening and Reading,
-                  // and pad questionPaletteItems if necessary.
-                  if (
-                    currentModuleId === "listening" ||
-                    currentModuleId === "reading"
-                  ) {
-                    const expectedTotalQuestions = 40;
-                    const actualParsedQuestions = questionPaletteItems.length;
-
-                    if (actualParsedQuestions < expectedTotalQuestions) {
-                      console.warn(
-                        `Warning: ${currentModuleId} test '${currentTestId}' has ${actualParsedQuestions} answerable questions in data. Padding to ${expectedTotalQuestions} for IELTS standard.`
-                      );
-                      for (
-                        let i = actualParsedQuestions;
-                        i < expectedTotalQuestions;
-                        i++
+                      } else if (
+                        actualParsedQuestions > expectedTotalQuestions
                       ) {
-                        const dummyQuestionId = `dummy_q_${i + 1}`;
-                        testState.userAnswers[dummyQuestionId] = ""; // Initialize dummy answer as unanswered
-                        questionPaletteItems.push({
-                          paletteNumber: i + 1,
-                          questionId: dummyQuestionId,
-                          htmlElementId: `dummy-question-${i + 1}`, // Dummy ID, won't be scrolled to
-                        });
+                        console.warn(
+                          `Warning: ${currentModuleId} test '${currentTestId}' has ${actualParsedQuestions} answerable questions in data, which is more than the standard 40. This might affect scoring accuracy.`
+                        );
+                        // If there are more than 40 actual questions, we'll still score out of 40,
+                        // but the unanswered count will reflect the actual number of input fields.
                       }
-                    } else if (actualParsedQuestions > expectedTotalQuestions) {
-                      console.warn(
-                        `Warning: ${currentModuleId} test '${currentTestId}' has ${actualParsedQuestions} answerable questions in data, which is more than the standard 40. This might affect scoring accuracy.`
-                      );
-                      // If there are more than 40 actual questions, we'll still score out of 40,
-                      // but the unanswered count will reflect the actual number of input fields.
+                      totalQuestions = expectedTotalQuestions; // Force totalQuestions to 40 for scoring
+                    } else {
+                      // For other modules, totalQuestions is just the count of parsed questions
+                      totalQuestions = questionPaletteItems.length;
                     }
-                    totalQuestions = expectedTotalQuestions; // Force totalQuestions to 40 for scoring
-                  } else {
-                    // For other modules, totalQuestions is just the count of parsed questions
-                    totalQuestions = questionPaletteItems.length;
                   }
 
                   console.log(
