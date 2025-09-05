@@ -47,8 +47,13 @@ nav {
   gap: 64px;
   padding: 0 40px;
   flex-wrap: wrap;
+  margin-top: 2vw;
 }
-
+@media (max-width: 768px) {
+  .contact-hero-content {
+    margin-top: 0.2vw;
+  }
+}
 .contact-hero-text {
   flex: 1.2;
   min-width: 320px;

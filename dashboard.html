@@ -6,6 +6,7 @@
     <title>IELTS Mahir - Ultimate Dashboard</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="test-left-header.css" />
     <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -261,8 +262,6 @@
       }
 
       .stat-card .icon-wrapper {
-        background-color: #e0f2fe; /* blue-100 */
-        color: #3b82f6; /* blue-600 */
         border-radius: 50%;
         padding: 0.75rem;
         margin-bottom: 1rem;
@@ -556,14 +555,18 @@
       @media (min-width: 1024px) {
         /* lg breakpoint and up (desktop) */
         #left-sidebar {
-          position: fixed; /* Changed from sticky to fixed */
-          top: 64px; /* Adjust to be below the header (header height is ~64px) */
-          left: 0; /* Fixed to the left */
-          height: calc(100vh - 64px); /* Full height minus header */
-          transform: translateX(0); /* Always visible */
-          box-shadow: none; /* No shadow on desktop */
-          border-radius: 0 1.5rem 1.5rem 0; /* Rounded right corners */
-          flex-shrink: 0; /* Prevent it from shrinking */
+        position: fixed;
+        top: 66px;
+        left: 0;
+        height: calc(100vh - 64px);
+        transform: translateX(0);
+        box-shadow: none;
+        border-radius: 0;
+        flex-shrink: 0;
+        z-index: 1;
+        }
+        nav a:hover{
+          color: #acafb8;
         }
       }
 
@@ -798,44 +801,29 @@
           <i class="fas fa-bars"></i>
         </button>
         <!-- Replaced text with image logo -->
-        <img
-          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
-          alt="IELTS Mahir Logo"
-          class="h-8 md:h-10 w-auto"
-          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
-        />
+        <div class="ai-logo-parent">
+          <a href="home.html">
+            <img
+              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+              alt="IELTS Mahir Logo"
+              class="h-8 md:h-10 w-auto"
+              onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+            />
+          </a>
+          <a href="ai-feature.html" class="ai-button" aria-label="AI Tools">
+            <i class="fas fa-robot" aria-hidden="true"></i>
+            <span>AI</span>
+          </a>
+        </div>
         <!-- Top navigation links (hidden on desktop, now handled by left sidebar) -->
         <nav class="hidden md:flex gap-6 ml-8 font-inter">
-          <a href="#" id="nav-dashboard-top" class="nav-link transition-all"
-            >Dashboard</a
-          >
-          <a
-            href="#"
-            id="nav-quiz-categories-top"
-            class="nav-link transition-all"
-            >Quiz Categories</a
-          >
-          <a href="#" id="nav-quiz-history-top" class="nav-link transition-all"
-            >Quiz History</a
-          >
-          <a
-            href="#"
-            id="nav-progress-tracking-top"
-            class="nav-link transition-all"
-            >Progress</a
-          >
-          <a href="#" id="nav-leaderboard-top" class="nav-link transition-all"
-            >Leaderboard</a
-          >
-          <a
-            href="#"
-            id="nav-daily-leaderboard-top"
-            class="nav-link transition-all"
-            >Daily Leaderboard</a
-          >
-          <a href="#" id="nav-profile-top" class="nav-link transition-all"
-            >Profile</a
-          >
+          <a href="home.html">Home</a>
+          <a href="mock-test-home.html">Mock Test</a>
+          <a href="quiz-home.html">Quizzes</a>
+          <a href="ielts-tips-and-tricks.html">IELTS Tips and Tricks</a>
+          <a href="ielts-mahir-community-forum.html">Community Forum</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
         </nav>
       </div>
       <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
@@ -913,7 +901,10 @@
         LEVEL_UP_THRESHOLDS, // Import level thresholds
       } from "./quiz-test-data.js";
 
-      // Firebase imports for Firestore
+      // Import mock test data for functions
+      import { MockTestModules, allMockTests } from "./mock-test-data.js";
+
+      // Firebase imports for Firestore and Auth
       import {
         collection,
         query,
@@ -926,6 +917,7 @@
         serverTimestamp,
         onSnapshot,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+      import { updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
       // Dashboard state management
       const dashboardState = {
@@ -933,6 +925,7 @@
         userId: null,
         userProfile: null, // User profile from Firestore
         quizResults: [],
+        mockTestResults: [],
         userGameStats: {
           totalPoints: 0,
           level: 1,
@@ -946,6 +939,11 @@
           averageAccuracy: 0,
           categoryPerformance: [],
           scoreTrend: [],
+        },
+        mockTestPerformanceMetrics: {
+          totalMockTestsCompleted: 0,
+          averageBandScore: 0,
+          totalTimeSpentOnMocks: 0,
         },
         dailyLeaderboardData: [], // New: for full daily leaderboard data
         dailyLeaderboardRank: null,
@@ -1169,11 +1167,18 @@
           const newName = nameInput.value.trim();
           const newBandGoal = bandGoalInput.value;
 
-          if (!dashboardState.userId || !authAppState.db) {
+          // Get the current user from the auth state
+          const user = authAppState.auth?.currentUser;
+
+          if (!user || !authAppState.db) {
             showToast("User not authenticated.", "error");
             hideMessageModal();
             return;
           }
+
+          // Show a loading indicator on the save button
+          saveButton.disabled = true;
+          saveButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
 
           const appId =
             typeof __app_id !== "undefined" ? __app_id : "default-app-id";
@@ -1183,21 +1188,34 @@
           );
 
           try {
+            // Step 1: Update the Firebase Auth user profile's displayName
+            // This is the key change to make the name update across all pages
+            await updateProfile(user, {
+              displayName: newName,
+            });
+
+            // Step 2: Update the user's profile document in Firestore
             await updateDoc(userProfileRef, {
               name: newName,
               bandGoal: newBandGoal,
             });
+
+            // Step 3: Update local state
             dashboardState.userProfile = {
               ...dashboardState.userProfile,
               name: newName,
               bandGoal: newBandGoal,
             };
+
             showToast("Profile updated successfully!", "success");
             hideMessageModal();
-            renderApp(); // Re-render to reflect changes
+            renderApp(); // Re-render the dashboard to show the new name immediately
           } catch (error) {
             console.error("Error updating profile:", error);
-            showToast("Failed to update profile.", "error");
+            showToast("Failed to update profile. Please try again.", "error");
+            // Restore button state on error
+            saveButton.disabled = false;
+            saveButton.innerHTML = "Save";
           }
         };
 
@@ -1288,6 +1306,77 @@
             "error"
           );
         }
+      }
+
+      /**
+       * Fetches mock test results for the current user from Firestore.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchMockTestResults(userId) {
+        if (!authAppState.db || !userId) {
+          dashboardState.mockTestResults = [];
+          return;
+        }
+
+        const appId =
+          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        const mockTestResultsRef = collection(
+          authAppState.db,
+          `artifacts/${appId}/users/${userId}/mockTestResults`
+        );
+
+        try {
+          const q = query(mockTestResultsRef);
+          const querySnapshot = await getDocs(q);
+          let results = [];
+          querySnapshot.forEach((doc) => {
+            results.push({ id: doc.id, ...doc.data() });
+          });
+          // Sort by timestamp descending (most recent first)
+          results.sort(
+            (a, b) =>
+              (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0)
+          );
+          dashboardState.mockTestResults = results;
+          console.log(
+            "Mock test results fetched:",
+            dashboardState.mockTestResults
+          );
+        } catch (error) {
+          console.error("Error fetching mock test results:", error);
+          showToast("Failed to load your mock test history.", "error");
+        }
+      }
+
+      /**
+       * Processes fetched mock test data to calculate performance metrics.
+       */
+      function processMockTestData() {
+        const results = dashboardState.mockTestResults;
+        const metrics = dashboardState.mockTestPerformanceMetrics;
+
+        metrics.totalMockTestsCompleted = results.length;
+
+        if (results.length === 0) {
+          metrics.averageBandScore = 0;
+          metrics.totalTimeSpentOnMocks = 0;
+          return;
+        }
+
+        let totalBandScoreSum = 0;
+        let totalTimeSeconds = 0;
+
+        results.forEach((result) => {
+          totalBandScoreSum += parseFloat(result.bandScore) || 0;
+          totalTimeSeconds += parseFloat(result.timeTakenSeconds) || 0;
+        });
+
+        metrics.averageBandScore = (totalBandScoreSum / results.length).toFixed(
+          1
+        );
+        metrics.totalTimeSpentOnMocks = totalTimeSeconds;
+
+        console.log("Mock Test Performance Metrics:", metrics);
       }
 
       /**
@@ -1942,16 +2031,6 @@
 
             authButtonsContainer.innerHTML = `
                         <div class="flex items-center gap-4">
-                            <div class="points-display flex items-center gap-2 px-3 py-1.5 rounded-full shadow-md text-white bg-gradient-to-br from-green-500 to-lime-600">
-                                ${Icons.Trophy}
-                                <span class="text-sm font-semibold">${
-                                  dashboardState.userGameStats.totalPoints || 0
-                                } Pts</span>
-                                <span class="text-xs text-green-200">|</span>
-                                <span class="text-sm font-semibold">Lvl ${
-                                  dashboardState.userGameStats.level || 1
-                                }</span>
-                            </div>
                             <div class="relative">
                                 <button id="profile-icon-btn" class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-600 transition-colors duration-200 ease-in-out transform active:scale-95">
                                     ${(
@@ -2140,10 +2219,10 @@
             view: "quizCategories",
           },
           {
-            id: "nav-leaderboard-mobile",
+            id: "nav-daily-leaderboard-mobile",
             icon: Icons.Leaderboard,
-            text: "Rank",
-            view: "globalLeaderboard", // Changed to internal view
+            text: "Daily Rank",
+            view: "dailyLeaderboard", // Changed to internal view
           },
           {
             id: "nav-profile-mobile",
@@ -2220,38 +2299,44 @@
                     </div>
                 </section>
 
-                <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+                <section class="mt-12 mb-8 max-w-6xl mx-auto px-1 w-full">
                     <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Your Performance Overview</h2>
 
                     <!-- Overall Statistics Cards -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                         <div class="stat-card animate-fade-in-up" style="animation-delay: 0.1s;">
-                            <div class="icon-wrapper">
-                                ${Icons.Home}
+                            <div class="icon-wrapper bg-blue-100 text-blue-600">
+                                <i class="fas fa-question-circle"></i>
                             </div>
                             <h3>Quizzes Completed</h3>
                             <p>${totalQuizzesCompleted}</p>
                         </div>
                         <div class="stat-card animate-fade-in-up" style="animation-delay: 0.2s;">
-                            <div class="icon-wrapper">
-                                ${Icons.Score}
+                            <div class="icon-wrapper bg-green-100 text-green-600">
+                                <i class="fas fa-star"></i>
                             </div>
                             <h3>Total Points</h3>
                             <p>${totalPoints}</p>
                         </div>
                         <div class="stat-card animate-fade-in-up" style="animation-delay: 0.3s;">
-                            <div class="icon-wrapper">
-                                ${Icons.Accuracy}
+                            <div class="icon-wrapper bg-red-100 text-red-600">
+                               <i class="fas fa-file-alt"></i>
                             </div>
-                            <h3>Average Accuracy</h3>
-                            <p>${averageAccuracy}%</p>
+                            <h3>Mock Tests Taken</h3>
+                            <p>${
+                              dashboardState.mockTestPerformanceMetrics
+                                .totalMockTestsCompleted
+                            }</p>
                         </div>
                         <div class="stat-card animate-fade-in-up" style="animation-delay: 0.4s;">
-                            <div class="icon-wrapper">
-                                ${Icons.Time}
+                            <div class="icon-wrapper bg-purple-100 text-purple-600">
+                                <i class="fas fa-graduation-cap"></i>
                             </div>
-                            <h3>Time Spent</h3>
-                            <p>${formatTime(totalTimeSpent)}</p>
+                            <h3>Average Band</h3>
+                            <p>${
+                              dashboardState.mockTestPerformanceMetrics
+                                .averageBandScore
+                            }</p>
                         </div>
                     </div>
 
@@ -2535,6 +2620,73 @@
                         : ""
                     }
                 </div>
+                
+                <!-- Recent Mock Test Activity Section -->
+                <div class="mt-12 mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Recent Mock Test Activity</h2>
+                    <div class="recent-activity-table-container dashboard-card">
+                        <table class="recent-activity-table">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Test Title</th>
+                                    <th scope="col">Band Score</th>
+                                    <th scope="col">Time Taken</th>
+                                    <th scope="col"></th> <!-- For View Details button -->
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${
+                                  dashboardState.mockTestResults.length > 0
+                                    ? dashboardState.mockTestResults
+                                        .slice(0, 5) // Show only the 5 most recent
+                                        .map((result) => {
+                                          const date = result.timestamp
+                                            ? new Date(
+                                                result.timestamp.toDate()
+                                              ).toLocaleDateString()
+                                            : "N/A";
+                                          return `
+                                                <tr>
+                                                    <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
+                                                    <td class="whitespace-nowrap text-sm text-gray-900">${
+                                                      result.testTitle || "N/A"
+                                                    }</td>
+                                                    <td class="whitespace-nowrap text-sm text-gray-900 font-bold text-green-600">${
+                                                      result.bandScore
+                                                    }</td>
+                                                    <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
+                                                      result.timeTakenSeconds
+                                                    )}</td>
+                                                    <td class="whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="mock-test.html?module=${
+                                                          result.moduleId
+                                                        }&test=${
+                                            result.testId
+                                          }&score=${
+                                            result.correctAnswers
+                                          }&total=${
+                                            result.totalQuestions
+                                          }&band=${result.bandScore}&time=${
+                                            result.timeTakenSeconds
+                                          }" class="text-blue-600 hover:text-blue-900">View Results</a>
+                                                    </td>
+                                                </tr>
+                                            `;
+                                        })
+                                        .join("")
+                                    : `
+                                        <tr class="no-data-row">
+                                            <td colspan="5" class="py-12 text-lg text-gray-500">
+                                                No recent mock test activity. Take a test to see your results here!
+                                            </td>
+                                        </tr>
+                                        `
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <div class="flex justify-center mt-12">
                     <button id="start-new-quiz-btn" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95" data-view="quizCategories">
@@ -2574,14 +2726,14 @@
                 </div>
             </section>
 
-            <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+            <section class="mt-12 mb-8 max-w-6xl mx-auto px-1 w-full">
                 <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Available Quizzes</h2>
                 <div id="quiz-categories-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     ${quizCategories
                       .map(
                         (category) => `
                         <div class="dashboard-card p-6 flex flex-col items-center text-center animate-fade-in-up">
-                            <div class="icon-wrapper bg-gradient-to-br from-blue-500 to-purple-600 text-white text-4xl mb-4">
+                            <div class="icon-wrapper text-white text-4xl mb-4">
                                 ${category.icon}
                             </div>
                             <h3 class="text-xl font-semibold text-gray-800 mb-2">${category.name}</h3>
@@ -2622,7 +2774,7 @@
                 </div>
             </section>
 
-            <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+            <section class="mt-12 mb-8 max-w-6xl mx-auto px-1 w-full">
                 <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">All Quiz Results</h2>
                 <div class="recent-activity-table-container dashboard-card">
                     <table class="recent-activity-table">
@@ -2746,7 +2898,7 @@
                 </div>
             </section>
 
-            <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+            <section class="mt-12 mb-8 max-w-6xl mx-auto px-1 w-full">
                 <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Your Progress Summary</h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
@@ -3002,7 +3154,7 @@
                 </div>
             </section>
 
-            <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+            <section class="mt-12 mb-8 max-w-6xl mx-auto px-1 w-full">
                 <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Top Players</h2>
 
                 <!-- Current User Rank Card -->
@@ -3065,7 +3217,7 @@
                 </div>
             </section>
 
-            <section class="mt-12 mb-8 max-w-6xl mx-auto px-4 w-full">
+            <section class="mt-12 mb-8 max-w-6xl mx-auto px-1 w-full">
                 <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Today's Top Players</h2>
 
                 <!-- Daily Reset Timer -->
@@ -3149,7 +3301,7 @@
                 </div>
             </section>
 
-            <section class="mt-12 mb-8 max-w-4xl mx-auto px-4 w-full">
+            <section class="mt-12 mb-8 max-w-4xl mx-auto px-1 w-full">
                 <div class="dashboard-card p-6 sm:p-8 flex flex-col items-center text-center animate-fade-in-up">
                     <div class="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-6 flex items-center justify-center rounded-full bg-blue-500 text-white text-5xl sm:text-6xl font-bold shadow-lg">
                         ${userName.charAt(0).toUpperCase()}
@@ -3263,16 +3415,11 @@
             button.addEventListener("click", (event) => {
               event.preventDefault(); // Prevent default anchor behavior
               const view = event.currentTarget.dataset.view;
-              dashboardState.currentView = view;
-              renderApp();
+              if (dashboardState.currentView !== view) {
+                dashboardState.currentView = view;
+                renderApp();
+              }
               closeMobileSidebar(); // Close sidebar after navigation
-              // Update active state
-              document
-                .querySelectorAll("#left-sidebar .nav-item")
-                .forEach((btn) => {
-                  btn.classList.remove("active");
-                });
-              event.currentTarget.classList.add("active");
             });
           });
 
@@ -3283,15 +3430,10 @@
             button.addEventListener("click", (event) => {
               event.preventDefault(); // Prevent default anchor behavior
               const view = event.currentTarget.dataset.view;
-              dashboardState.currentView = view;
-              renderApp();
-              // Update active state
-              document
-                .querySelectorAll("#mobile-bottom-nav button")
-                .forEach((btn) => {
-                  btn.classList.remove("active");
-                });
-              event.currentTarget.classList.add("active");
+              if (dashboardState.currentView !== view) {
+                dashboardState.currentView = view;
+                renderApp();
+              }
             });
           });
 
@@ -3335,7 +3477,8 @@
           button.addEventListener("click", (event) => {
             const categoryId = event.target.dataset.categoryId;
             if (categoryId) {
-              window.location.href = `quiz-test.html?categoryId=${categoryId}`;
+              window.location.href = `quiz-category.html?category=${categoryId}`;
+              console.log(categoryId);
             }
           });
         });
@@ -3679,6 +3822,7 @@
             if (dashboardState.userId) {
               await fetchUserGameStats(dashboardState.userId);
               await fetchQuizResults(dashboardState.userId);
+              await fetchMockTestResults(dashboardState.userId);
               await fetchDailyLeaderboardData(dashboardState.userId); // Fetch full daily leaderboard data
               await fetchGlobalLeaderboard(); // Fetch global leaderboard on load
             } else {
@@ -3690,12 +3834,14 @@
                 badges: [],
               };
               dashboardState.quizResults = [];
+              dashboardState.mockTestResults = [];
               dashboardState.dailyLeaderboardData = []; // Clear daily leaderboard data
               dashboardState.dailyLeaderboardRank = null;
               dashboardState.globalLeaderboard = [];
             }
 
             processDashboardData(); // Process data (will be empty if no user)
+            processMockTestData();
             setupFirestoreListeners(); // Setup listeners (will be no-op if no userId)
 
             dashboardState.isLoading = false;

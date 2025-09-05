@@ -24,245 +24,277 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <link rel="stylesheet" href="admin-panel-extra.css" />
   </head>
-  <body>
-    <div id="sidebar-overlay" class="lg:hidden hidden overlay"></div>
-    <aside
-      id="sidebar"
-      class="w-64 bg-white shadow-lg p-6 flex flex-col rounded-r-lg max-h-screen overflow-y-auto sidebar-menu fixed lg:static inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out"
+  <body class="flex h-full">
+    <!-- Login Section -->
+    <div
+      id="login-section"
+      class="min-h-screen flex items-center justify-center w-full bg-gray-100"
     >
-      <div class="flex items-center justify-center mb-10 mt-2">
-        <img
-          src="https://placehold.co/40x40/ED3A52/white?text=A"
-          alt="Admin Logo"
-          class="w-10 h-10 rounded-full mr-3 shadow-md"
-        />
-        <span class="text-xl font-bold text-gray-800">Admin Panel</span>
-      </div>
-      <div class="relative mb-6 lg:hidden">
-        <input
-          type="text"
-          id="sidebar-search"
-          placeholder="Search..."
-          class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-full"
-        />
-        <i
-          class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-        ></i>
-      </div>
-      <nav class="flex-grow">
-        <ul class="space-y-2">
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200 active-link"
-              data-page="dashboard"
-            >
-              <i class="fas fa-chart-line text-lg mr-4"></i>
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="registration"
-            >
-              <i class="fas fa-user-plus text-lg mr-4"></i>
-              Registration
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="messages"
-            >
-              <i class="fas fa-envelope text-lg mr-4"></i>
-              Messages
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="our-teacher"
-            >
-              <i class="fas fa-chalkboard-teacher text-lg mr-4"></i>
-              Our Teacher
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="student-history"
-            >
-              <i class="fas fa-history text-lg mr-4"></i>
-              Student History
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="courses"
-            >
-              <i class="fas fa-book-open text-lg mr-4"></i>
-              Courses
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="community-forum"
-            >
-              <i class="fas fa-users text-lg mr-4"></i>
-              Community Forum
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="blog"
-            >
-              <i class="fas fa-blog text-lg mr-4"></i>
-              Blog
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="free-resources"
-            >
-              <i class="fas fa-file-alt text-lg mr-4"></i>
-              Free Resources
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="mock-test"
-            >
-              <i class="fas fa-clipboard-list text-lg mr-4"></i>
-              Mock Test
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="quizzes"
-            >
-              <i class="fas fa-question-circle text-lg mr-4"></i>
-              Quizzes
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="testimonial"
-            >
-              <i class="fas fa-star text-lg mr-4"></i>
-              Testimonial
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="block-list"
-            >
-              <i class="fas fa-ban text-lg mr-4"></i>
-              Block List
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
-              data-page="homepage"
-            >
-              <i class="fas fa-home text-lg mr-4"></i>
-              Home Page
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </aside>
-    <div class="flex-1 flex flex-col bg-gray-50 h-full w-[100%]">
-      <header
-        class="bg-white shadow-sm py-4 px-6 flex items-center justify-between flex-nowrap rounded-bl-lg"
+      <div
+        class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md border border-gray-200"
       >
-        <div class="flex items-center space-x-4 flex-shrink-0">
-          <button
-            id="hamburger-menu"
-            class="lg:hidden text-gray-600 hover:text-red-600 text-2xl"
-          >
-            <i class="fas fa-bars"></i>
-          </button>
-          <div class="relative">
-            <input
-              type="date"
-              id="date-picker"
-              class="p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-32 sm:w-auto"
-            />
-          </div>
-          <button
-            id="export-pdf-btn"
-            class="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-md transition-colors duration-200 text-sm hidden md:flex"
-          >
-            <i class="fas fa-file-export mr-2"></i>
-            Export PDF
-          </button>
+        <div class="flex flex-col items-center mb-6">
+          <img
+            src="https://placehold.co/60x60/ED3A52/white?text=A"
+            alt="Admin Logo"
+            class="w-16 h-16 rounded-full mb-4 shadow-md"
+          />
+          <h2 class="text-3xl font-extrabold text-gray-900">Admin Login</h2>
+          <p class="mt-2 text-center text-sm text-gray-600">
+            Sign in to manage your dashboard
+          </p>
         </div>
-        <div
-          class="flex items-center space-x-4 sm:space-x-6 flex-shrink-0 ml-auto"
-        >
-          <div class="relative hidden md:block flex-grow-0">
-            <input
-              type="text"
-              placeholder="Search..."
-              class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-40 lg:w-64"
-            />
-            <i
-              class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            ></i>
-          </div>
-          <button
-            id="notifications-btn"
-            class="relative text-gray-600 hover:text-red-600 transition-colors duration-200"
-          >
-            <i class="fas fa-bell text-xl"></i>
-            <span
-              class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2"
-              >3</span
+        <form id="login-form" class="space-y-6">
+          <div>
+            <label
+              for="login-email"
+              class="block text-sm font-medium text-gray-700"
+              >Email address</label
             >
-          </button>
-          <button
-            id="settings-btn"
-            class="text-gray-600 hover:text-red-600 transition-colors duration-200"
-          >
-            <i class="fas fa-cog text-xl"></i>
-          </button>
-          <div class="relative group flex-shrink-0">
-            <img
-              src="https://placehold.co/40x40/9CA3AF/white?text=U"
-              alt="User Avatar"
-              class="w-10 h-10 rounded-full border-2 border-gray-300 transition-all duration-200"
-              title="Admin User"
+            <input
+              id="login-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm"
+              value="admin@example.com"
             />
           </div>
+          <div>
+            <label
+              for="login-password"
+              class="block text-sm font-medium text-gray-700"
+              >Password</label
+            >
+            <input
+              id="login-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm"
+              value="password123"
+            />
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+              />
+              <label for="remember-me" class="ml-2 block text-sm text-gray-900"
+                >Remember me</label
+              >
+            </div>
+            <div class="text-sm">
+              <!-- <a href="#" class="font-medium text-red-600 hover:text-red-500"
+                >Forgot your password?</a
+              > -->
+            </div>
+          </div>
+          <div>
+            <button
+              type="submit"
+              class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+        <p class="mt-6 text-center text-sm text-gray-600">
+          Not an admin? Access to this panel is restricted.
+        </p>
+      </div>
+    </div>
+
+    <!-- Admin Panel Section -->
+    <div id="admin-panel" class="flex flex-1 hidden">
+      <div id="sidebar-overlay" class="lg:hidden hidden overlay"></div>
+      <aside
+        id="sidebar"
+        class="w-64 bg-white shadow-lg p-6 flex flex-col rounded-r-lg max-h-screen overflow-y-auto sidebar-menu fixed lg:static inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out"
+      >
+        <div class="flex items-center justify-center mb-10 mt-2">
+          <img
+            src="https://placehold.co/40x40/ED3A52/white?text=A"
+            alt="Admin Logo"
+            class="w-10 h-10 rounded-full mr-3 shadow-md"
+          />
+          <span class="text-xl font-bold text-gray-800">Admin Panel</span>
         </div>
-      </header>
-      <main
-        id="content-area"
-        class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto custom-scrollbar"
-      ></main>
+        <div class="relative mb-6 lg:hidden">
+          <input
+            type="text"
+            id="sidebar-search"
+            placeholder="Search..."
+            class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-full"
+          />
+          <i
+            class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+          ></i>
+        </div>
+        <nav class="flex-grow">
+          <ul class="space-y-2">
+            <li>
+              <a
+                href="#"
+                class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200 active-link"
+                data-page="dashboard"
+              >
+                <i class="fas fa-chart-line text-lg mr-4"></i>
+                Dashboard
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#"
+                class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+                data-page="messages"
+              >
+                <i class="fas fa-envelope text-lg mr-4"></i>
+                Messages
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+                data-page="our-teacher"
+              >
+                <i class="fas fa-chalkboard-teacher text-lg mr-4"></i>
+                Our Teacher
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#"
+                class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+                data-page="community-forum"
+              >
+                <i class="fas fa-users text-lg mr-4"></i>
+                Community Forum
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+                data-page="blog"
+              >
+                <i class="fas fa-blog text-lg mr-4"></i>
+                Blog
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+                data-page="free-resources"
+              >
+                <i class="fas fa-file-alt text-lg mr-4"></i>
+                Free Resources
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+                data-page="testimonial"
+              >
+                <i class="fas fa-star text-lg mr-4"></i>
+                Testimonial
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+                data-page="user-management"
+              >
+                <i class="fas fa-user-shield text-lg mr-4"></i>
+                User Management
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="mt-auto pt-6">
+          <button
+            onclick="handleLogout()"
+            class="flex items-center w-full p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+          >
+            <i class="fas fa-sign-out-alt text-lg mr-4"></i>
+            Logout
+          </button>
+        </div>
+      </aside>
+      <div class="flex-1 flex flex-col bg-gray-50 h-full w-[100%]">
+        <header
+          class="bg-white shadow-sm py-4 px-6 flex items-center justify-between flex-nowrap rounded-bl-lg"
+        >
+          <div class="flex items-center space-x-4 flex-shrink-0">
+            <button
+              id="hamburger-menu"
+              class="lg:hidden text-gray-600 hover:text-red-600 text-2xl"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="relative">
+              <input
+                type="date"
+                id="date-picker"
+                class="p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-32 sm:w-auto"
+              />
+            </div>
+          </div>
+          <div
+            class="flex items-center space-x-4 sm:space-x-6 flex-shrink-0 ml-auto"
+          >
+            <div class="relative hidden md:block flex-grow-0">
+              <!-- <input
+                type="text"
+                placeholder="Search..."
+                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-700 text-sm w-40 lg:w-64"
+              />
+              <i
+                class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              ></i>
+            </div>
+            <button
+              id="notifications-btn"
+              class="relative text-gray-600 hover:text-red-600 transition-colors duration-200"
+            >
+              <i class="fas fa-bell text-xl"></i>
+              <span
+                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2"
+                >3</span
+              >
+            </button>
+            <button
+              id="settings-btn"
+              class="text-gray-600 hover:text-red-600 transition-colors duration-200"
+            >
+              <i class="fas fa-cog text-xl"></i>
+            </button> -->
+            <div class="relative group flex-shrink-0">
+              <img
+                src="https://placehold.co/40x40/9CA3AF/white?text=U"
+                alt="User Avatar"
+                class="w-10 h-10 rounded-full border-2 border-gray-300 transition-all duration-200"
+                title="Admin User"
+              />
+            </div>
+          </div>
+        </header>
+        <main
+          id="content-area"
+          class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto custom-scrollbar"
+        ></main>
+      </div>
     </div>
     <div
       id="message-box"
@@ -298,13 +330,15 @@
         where,
         getDocs,
         writeBatch,
+        setDoc, // Added setDoc here
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
       import {
         getAuth,
         signInWithEmailAndPassword, // Added for email/password login
         signOut, // Added for logout functionality
         onAuthStateChanged, // Added for real-time auth state management
-        signInWithCustomToken,
+        createUserWithEmailAndPassword, // Added for creating new users
+        updatePassword, // Added for updating user password
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
       const defaultAppId = "ielts-mahir-community-forum";
@@ -322,14 +356,21 @@
         typeof __firebase_config !== "undefined"
           ? JSON.parse(__firebase_config)
           : defaultFirebaseConfig;
-      const app = initializeApp(firebaseConfig);
+
+      // Initialize a named Firebase app instance for the admin panel
+      const ADMIN_APP_NAME = "adminPanelApp";
+      const app = initializeApp(firebaseConfig, ADMIN_APP_NAME);
+
+      // Get Firestore and Auth instances from the named app
       const db = getFirestore(app);
       const auth = getAuth(app);
+
       const appId = typeof __app_id !== "undefined" ? __app_id : defaultAppId;
 
       let userId = null;
       let isAuthReady = false; // This will now be managed by onAuthStateChanged
       let summernoteEditorInstance = null;
+      let currentUserRole = null; // To store the role of the currently logged-in user
 
       let blogCurrentPage = 1;
       const blogItemsPerPage = 6;
@@ -362,7 +403,7 @@
       let forumPostsCurrentPage = 1;
       const forumPostsItemsPerPage = 5;
       let forumPostsCurrentFilters = {
-        status: "all",
+        status: "all", // New filter for post status (pending, approved, rejected)
         category: "all categories",
         searchTerm: "",
       };
@@ -394,9 +435,6 @@
         { name: "Motivation & Support" },
       ];
 
-      // Removed the previous authenticateFirebase function.
-      // Authentication will now be handled by onAuthStateChanged and explicit login.
-
       const showMessage = (message) => {
         const messageBox = document.getElementById("message-box");
         const messageContent = document.getElementById("message-content");
@@ -424,8 +462,9 @@
             password
           );
           console.log("User logged in:", userCredential.user.uid);
-          showMessage("Login successful!", "success");
-          // The onAuthStateChanged listener will handle showing the admin panel
+          // The onAuthStateChanged listener will now handle showing the admin panel
+          // based on whether the logged-in user is the admin.
+          showMessage("Attempting login...", "info"); // Provide immediate feedback
         } catch (error) {
           console.error("Login failed:", error);
           showMessage(
@@ -601,52 +640,6 @@
               <p class="text-gray-600">This is the content for the <strong>${title}</strong> page.</p>
           </div>
           `;
-
-      const mockRegistrations = [
-        { name: "John Doe", date: "2024-01-15" },
-        { name: "Jane Smith", date: "2024-01-10" },
-      ];
-
-      const mockCourses = [
-        {
-          name: "Advanced Math",
-          description:
-            "Comprehensive course covering advanced mathematical concepts.",
-          enrolled: 150,
-          rating: 4.8,
-        },
-        {
-          name: "Basic English",
-          description: "Essential English grammar and communication skills.",
-          enrolled: 200,
-          rating: 4.5,
-        },
-      ];
-
-      const renderRegistrations = () => {
-        const registrationList = document.getElementById("registration-list");
-        if (!registrationList) return;
-        registrationList.innerHTML = "";
-        mockRegistrations.forEach((reg) => {
-          const listItem = document.createElement("li");
-          listItem.className =
-            "flex justify-between items-center p-3 bg-gray-50 rounded-lg";
-          listItem.innerHTML = `<span>${reg.name} - <span class="text-gray-600">Registered on ${reg.date}</span></span><button class="text-blue-500 hover:text-blue-700" onclick="showMessage('Editing ${reg.name}\'s registration.')"><i class="fas fa-edit"></i></button>`;
-          registrationList.appendChild(listItem);
-        });
-      };
-
-      const renderCourses = () => {
-        const coursesGrid = document.getElementById("courses-grid");
-        if (!coursesGrid) return;
-        coursesGrid.innerHTML = "";
-        mockCourses.forEach((course) => {
-          const courseCard = document.createElement("div");
-          courseCard.className = "bg-gray-50 p-4 rounded-lg shadow-sm";
-          courseCard.innerHTML = `<h3 class="font-bold text-gray-800 text-lg mb-2">${course.name}</h3><p class="text-gray-600 text-sm">${course.description}</p><div class="flex justify-between items-center mt-3 text-sm"><span class="text-gray-500"><i class="fas fa-users mr-1"></i> ${course.enrolled} Enrolled</span><span class="text-gray-500"><i class="fas fa-star mr-1"></i> ${course.rating} Rating</span></div><button class="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded-lg" onclick="showMessage('Editing ${course.name} course.')">Edit Course</button>`;
-          coursesGrid.appendChild(courseCard);
-        });
-      };
 
       const closeAllKebabDropdowns = () => {
         document
@@ -902,6 +895,61 @@
               }
             });
 
+            document
+              .querySelectorAll(".testimonial-card-admin .play-button")
+              .forEach((button) => {
+                button.addEventListener("click", (e) => {
+                  const video = e.currentTarget
+                    .closest(".testimonial-card-admin")
+                    .querySelector(".tes-video");
+                  if (video) {
+                    video.play();
+                    e.currentTarget.style.display = "none";
+                    video.nextElementSibling.style.display = "flex";
+                  }
+                });
+              });
+            document
+              .querySelectorAll(".testimonial-card-admin .pause-button")
+              .forEach((button) => {
+                button.addEventListener("click", (e) => {
+                  const video = e.currentTarget
+                    .closest(".testimonial-card-admin")
+                    .querySelector(".tes-video");
+                  if (video) {
+                    video.pause();
+                    e.currentTarget.style.display = "none";
+                    video.previousElementSibling.style.display = "flex";
+                  }
+                });
+              });
+            document
+              .querySelectorAll(".testimonial-card-admin .tes-video")
+              .forEach((video) => {
+                video.addEventListener("ended", (e) => {
+                  const card = e.target.closest(".testimonial-card-admin");
+                  card.querySelector(".play-button").style.display = "flex";
+                  card.querySelector(".pause-button").style.display = "none";
+                });
+                video.addEventListener("play", (e) => {
+                  const card = e.target.closest(".testimonial-card-admin");
+                  card.querySelector(".play-button").style.display = "none";
+                  card.querySelector(".pause-button").style.display = "flex";
+                });
+                video.addEventListener("pause", (e) => {
+                  const card = e.target.closest(".testimonial-card-admin");
+                  card.querySelector(".play-button").style.display = "flex";
+                  card.querySelector(".pause-button").style.display = "none";
+                });
+              });
+            document.querySelectorAll(".kebab-button").forEach((button) => {
+              button.addEventListener("click", (event) => {
+                event.stopPropagation();
+                closeAllKebabDropdowns();
+                button.nextElementSibling.classList.toggle("active");
+              });
+            });
+
             paginationContainer.innerHTML = "";
             if (totalPages > 1) {
               const paginationNav = document.createElement("nav");
@@ -965,201 +1013,9 @@
               );
               paginationContainer.appendChild(paginationNav);
             }
-
-            document
-              .querySelectorAll(".testimonial-card-admin .play-button")
-              .forEach((button) => {
-                button.addEventListener("click", (e) => {
-                  const video = e.currentTarget
-                    .closest(".testimonial-card-admin")
-                    .querySelector(".tes-video");
-                  if (video) {
-                    video.play();
-                    e.currentTarget.style.display = "none";
-                    video.nextElementSibling.style.display = "flex";
-                  }
-                });
-              });
-            document
-              .querySelectorAll(".testimonial-card-admin .pause-button")
-              .forEach((button) => {
-                button.addEventListener("click", (e) => {
-                  const video = e.currentTarget
-                    .closest(".testimonial-card-admin")
-                    .querySelector(".tes-video");
-                  if (video) {
-                    video.pause();
-                    e.currentTarget.style.display = "none";
-                    video.previousElementSibling.style.display = "flex";
-                  }
-                });
-              });
-            document
-              .querySelectorAll(".testimonial-card-admin .tes-video")
-              .forEach((video) => {
-                video.addEventListener("ended", (e) => {
-                  const card = e.target.closest(".testimonial-card-admin");
-                  card.querySelector(".play-button").style.display = "flex";
-                  card.querySelector(".pause-button").style.display = "none";
-                });
-                video.addEventListener("play", (e) => {
-                  const card = e.target.closest(".testimonial-card-admin");
-                  card.querySelector(".play-button").style.display = "none";
-                  card.querySelector(".pause-button").style.display = "flex";
-                });
-                video.addEventListener("pause", (e) => {
-                  const card = e.target.closest(".testimonial-card-admin");
-                  card.querySelector(".play-button").style.display = "flex";
-                  card.querySelector(".pause-button").style.display = "none";
-                });
-              });
-            document.querySelectorAll(".kebab-button").forEach((button) => {
-              button.addEventListener("click", (event) => {
-                event.stopPropagation();
-                closeAllKebabDropdowns();
-                button.nextElementSibling.classList.toggle("active");
-              });
-            });
           },
           (error) =>
             showMessage(`Error loading testimonials: ${error.message}.`)
-        );
-      };
-
-      window.updateQuizStatus = async (id, newStatus) => {
-        if (!isAuthReady)
-          return showMessage("Firebase not ready. Please try again.");
-        try {
-          await updateDoc(
-            doc(db, "artifacts", appId, "public", "data", "quizzes", id),
-            { status: newStatus }
-          );
-          showMessage(`Quiz status updated to '${newStatus}'.`);
-        } catch (error) {
-          console.error("Error updating quiz status:", error);
-          showMessage(`Failed to update quiz status: ${error.message}.`);
-        }
-      };
-
-      window.editQuiz = async (id) => {
-        if (!isAuthReady)
-          return showMessage("Firebase not ready. Please try again.");
-        try {
-          const docSnap = await getDoc(
-            doc(db, "artifacts", appId, "public", "data", "quizzes", id)
-          );
-          if (!docSnap.exists()) return showMessage("Quiz not found.");
-          const quiz = docSnap.data();
-          document.getElementById("quiz-id").value = id;
-          document.getElementById("quiz-title").value = quiz.title;
-          document.getElementById("quiz-description").value = quiz.description;
-          document.getElementById("quiz-questions-count").value =
-            quiz.questionsCount;
-          document.getElementById("add-quiz-btn").textContent = "Update Quiz";
-          showMessage(
-            "Form populated for editing. Update and submit to save changes."
-          );
-        } catch (error) {
-          console.error("Error fetching quiz for edit:", error);
-          showMessage(`Failed to load quiz for editing: ${error.message}.`);
-        }
-      };
-
-      window.deleteQuiz = async (id) => {
-        if (!isAuthReady)
-          return showMessage("Firebase not ready. Please try again.");
-        const messageBox = document.getElementById("message-box");
-        const messageContent = document.getElementById("message-content");
-        const closeMessageBoxBtn = document.getElementById("close-message-box");
-        messageContent.textContent =
-          "Are you sure you want to delete this quiz? This action cannot be undone.";
-        messageBox.classList.remove("hidden");
-
-        const confirmDeleteBtn = document.createElement("button");
-        confirmDeleteBtn.textContent = "Confirm Delete";
-        confirmDeleteBtn.className =
-          "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
-        confirmDeleteBtn.id = "confirm-delete-btn";
-        messageBox.querySelector(".text-center").appendChild(confirmDeleteBtn);
-
-        confirmDeleteBtn.addEventListener("click", async () => {
-          try {
-            await deleteDoc(
-              doc(db, "artifacts", appId, "public", "data", "quizzes", id)
-            );
-            showMessage("Quiz deleted successfully.");
-          } catch (error) {
-            console.error("Error deleting quiz:", error);
-            showMessage(`Failed to delete quiz: ${error.message}.`);
-          } finally {
-            confirmDeleteBtn.remove();
-            messageBox.classList.add("hidden");
-          }
-        });
-
-        const originalCloseHandler = closeMessageBoxBtn.onclick;
-        closeMessageBoxBtn.onclick = () => {
-          confirmDeleteBtn.remove();
-          messageBox.classList.add("hidden");
-          if (originalCloseHandler) originalCloseHandler();
-          closeMessageBoxBtn.onclick = originalCloseHandler;
-        };
-      };
-
-      const renderQuizzes = () => {
-        if (!isAuthReady)
-          return showMessage(
-            "Quizzes cannot be loaded or managed because Firebase authentication is not ready. Please try refreshing the page."
-          );
-        const [publishedList, draftList] = [
-          document.getElementById("published-quizzes-list"),
-          document.getElementById("draft-quizzes-list"),
-        ];
-        if (!publishedList || !draftList)
-          return console.error("Quiz lists not found in DOM. Cannot render.");
-
-        onSnapshot(
-          collection(db, "artifacts", appId, "public", "data", "quizzes"),
-          (snapshot) => {
-            [publishedList, draftList].forEach((el) => (el.innerHTML = ""));
-            if (snapshot.empty) {
-              publishedList.innerHTML =
-                '<p class="text-gray-500 text-center col-span-full">No published quizzes.</p>';
-              draftList.innerHTML =
-                '<p class="text-gray-500 text-center col-span-full">No draft quizzes.</p>';
-            }
-            snapshot.forEach((doc) => {
-              const quiz = { id: doc.id, ...doc.data() };
-              const card = document.createElement("div");
-              card.classList.add(
-                "bg-white",
-                "p-4",
-                "rounded-lg",
-                "shadow-sm",
-                "flex",
-                "flex-col"
-              );
-              card.innerHTML = `<h3 class="font-bold text-gray-800 text-lg mb-2">${
-                quiz.title
-              }</h3><p class="text-gray-600 text-sm flex-grow mb-2">${
-                quiz.description
-              }</p><p class="text-gray-500 text-xs mb-4">Questions: ${
-                quiz.questionsCount
-              }</p><div class="flex flex-wrap gap-2 mt-auto">${
-                quiz.status === "draft"
-                  ? `<button class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateQuizStatus('${quiz.id}', 'published')">Publish</button>`
-                  : `<button class="bg-orange-600 hover:bg-orange-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateQuizStatus('${quiz.id}', 'draft')">Unpublish</button>`
-              }<button class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="editQuiz('${
-                quiz.id
-              }')">Edit</button><button class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="deleteQuiz('${
-                quiz.id
-              }')">Delete</button></div>`;
-              quiz.status === "published"
-                ? publishedList.appendChild(card)
-                : draftList.appendChild(card);
-            });
-          },
-          (error) => showMessage(`Error loading quizzes: ${error.message}.`)
         );
       };
 
@@ -1415,13 +1271,10 @@
         );
       };
 
-      window.sendContactReply = async (messageId) => {
+      // --- NEW: Functions to manage contact message status ---
+      window.markMessageAsReplied = async (messageId) => {
         if (!isAuthReady)
           return showMessage("Firebase not ready. Please try again.");
-        const replyInput = document.getElementById(`reply-input-${messageId}`);
-        const replyText = replyInput ? replyInput.value.trim() : "";
-        if (replyText === "")
-          return showMessage("Reply message cannot be empty.");
         try {
           await updateDoc(
             doc(
@@ -1434,27 +1287,45 @@
               messageId
             ),
             {
-              adminReply: replyText,
-              adminReplyTimestamp: serverTimestamp(),
               status: "replied",
+              adminReplyTimestamp: serverTimestamp(), // Keep track of when it was marked
             }
           );
-          showMessage("Reply sent successfully and message marked as replied!");
-          if (replyInput) replyInput.value = "";
-          document
-            .getElementById(`reply-form-${messageId}`)
-            ?.classList.add("hidden");
+          showMessage("Message marked as replied!");
         } catch (error) {
-          console.error("Error sending reply:", error);
-          showMessage(`Failed to send reply: ${error.message}.`);
+          console.error("Error marking message as replied:", error);
+          showMessage(`Failed to update message status: ${error.message}.`);
         }
       };
 
-      window.toggleReplyForm = (messageId) =>
-        document
-          .getElementById(`reply-form-${messageId}`)
-          ?.classList.toggle("hidden");
+      window.unmarkMessage = async (messageId) => {
+        if (!isAuthReady)
+          return showMessage("Firebase not ready. Please try again.");
+        try {
+          await updateDoc(
+            doc(
+              db,
+              "artifacts",
+              appId,
+              "public",
+              "data",
+              "contactMessages",
+              messageId
+            ),
+            {
+              status: "pending",
+              // Note: adminReplyTimestamp is not removed to preserve history
+            }
+          );
+          showMessage("Message status reverted to pending.");
+        } catch (error) {
+          console.error("Error reverting message status:", error);
+          showMessage(`Failed to update message status: ${error.message}.`);
+        }
+      };
+      // --- END NEW Functions ---
 
+      // --- UPDATED: renderContactMessages function ---
       const renderContactMessages = (filters, currentPage, itemsPerPage) => {
         if (!isAuthReady)
           return showMessage(
@@ -1497,11 +1368,7 @@
                     .includes(filters.searchTerm.toLowerCase()) ||
                   m.message
                     .toLowerCase()
-                    .includes(filters.searchTerm.toLowerCase()) ||
-                  (m.adminReply &&
-                    m.adminReply
-                      .toLowerCase()
-                      .includes(filters.searchTerm.toLowerCase())))
+                    .includes(filters.searchTerm.toLowerCase()))
             );
             filteredMessages.sort(
               (a, b) =>
@@ -1525,19 +1392,44 @@
               const formattedDate = (
                 message.timestamp?.toDate() || new Date()
               ).toLocaleString();
-              let replySection = "";
+              let actionsSection = "";
               let statusBadge = "";
+              const subject = encodeURIComponent(`Re: ${message.subject}`);
+              const body = encodeURIComponent(
+                `Hi ${
+                  message.name
+                },\n\n\n\n---\nOriginal Message:\n> ${message.message.replace(
+                  /\n/g,
+                  "\n> "
+                )}`
+              );
+              const mailtoLink = `mailto:${message.email}?subject=${subject}&body=${body}`;
+
               if (message.status === "pending") {
                 statusBadge =
                   '<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold">Pending</span>';
-                replySection = `<button onclick="toggleReplyForm('${message.id}')" class="mt-4 bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200"><i class="fas fa-reply mr-2"></i> Reply</button><div id="reply-form-${message.id}" class="hidden mt-4 p-3 bg-gray-100 rounded-lg"><label for="reply-input-${message.id}" class="block text-gray-700 text-sm font-semibold mb-2">Your Reply:</label><textarea id="reply-input-${message.id}" class="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" rows="3" placeholder="Type your reply here..."></textarea><button onclick="sendContactReply('${message.id}')" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200">Send Reply</button><button onclick="toggleReplyForm('${message.id}')" class="mt-2 ml-2 bg-gray-300 hover:bg-gray-400 text-gray-800 text-sm py-2 px-3 rounded-lg transition-colors duration-200">Cancel</button></div>`;
+                actionsSection = `
+                <div class="flex flex-wrap gap-2 mt-4">
+                    <a href="${mailtoLink}" target="_blank" class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200 inline-flex items-center">
+                        <i class="fas fa-reply mr-2"></i> Reply via Email
+                    </a>
+                    <button onclick="markMessageAsReplied('${message.id}')" class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200 inline-flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i> Mark as Replied
+                    </button>
+                </div>`;
               } else if (message.status === "replied") {
                 statusBadge =
                   '<span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">Replied</span>';
                 const replyDate = (
                   message.adminReplyTimestamp?.toDate() || "N/A"
                 ).toLocaleString();
-                replySection = `<div class="mt-4 p-3 bg-green-50 rounded-lg border border-green-200"><p class="text-gray-700 text-sm font-semibold">Admin Reply:</p><p class="text-gray-600 text-sm mt-1">${message.adminReply}</p><p class="text-gray-500 text-xs mt-2">Replied on: ${replyDate}</p></div>`;
+                actionsSection = `
+                <div class="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
+                    <p class="text-gray-500 text-xs">Marked as replied on: ${replyDate}</p>
+                    <button onclick="unmarkMessage('${message.id}')" class="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm py-1 px-2 rounded-lg transition-colors duration-200">
+                        Mark as Pending
+                    </button>
+                </div>`;
               }
               const card = document.createElement("div");
               card.classList.add(
@@ -1548,7 +1440,18 @@
                 "border",
                 "border-gray-300"
               );
-              card.innerHTML = `<div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-gray-800 text-lg">${message.subject}</h3><p class="text-gray-700 text-sm">From: ${message.name} &lt;<a href="mailto:${message.email}" class="text-blue-600 hover:underline">${message.email}</a>&gt;</p><p class="text-gray-700 text-sm">Phone: <a href="tel:${message.phone}" class="text-blue-600 hover:underline">${message.phone}</a></p><p class="text-gray-500 text-xs mt-1">Received: ${formattedDate}</p></div>${statusBadge}</div><p class="text-gray-600 text-base mb-4 border-t pt-3 mt-3">${message.message}</p>${replySection}`;
+              card.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-lg">${message.subject}</h3>
+                        <p class="text-gray-700 text-sm">From: ${message.name} &lt;<a href="mailto:${message.email}" class="text-blue-600 hover:underline">${message.email}</a>&gt;</p>
+                        <p class="text-gray-700 text-sm">Phone: <a href="tel:${message.phone}" class="text-blue-600 hover:underline">${message.phone}</a></p>
+                        <p class="text-gray-500 text-xs mt-1">Received: ${formattedDate}</p>
+                    </div>
+                    ${statusBadge}
+                </div>
+                <p class="text-gray-600 text-base mb-4 border-t pt-3 mt-3">${message.message}</p>
+                ${actionsSection}`;
               container.appendChild(card);
             });
 
@@ -1620,6 +1523,7 @@
             showMessage(`Error loading contact messages: ${error.message}.`)
         );
       };
+      // --- END UPDATED function ---
 
       window.updateTeacherStatus = async (id, newStatus) => {
         if (!isAuthReady)
@@ -2121,7 +2025,7 @@
           data: {
             labels: [
               "Dec 1",
-              "Dec 2",
+              "Dec 3",
               "Dec 3",
               "Dec 4",
               "Dec 5",
@@ -2222,54 +2126,7 @@
       }
 
       // Admin functions for Forum Posts
-      window.addForumPost = async () => {
-        if (!isAuthReady) {
-          showMessage("Firebase not ready. Please try again.");
-          return;
-        }
-        const title = document.getElementById("forum-post-title").value.trim();
-        const content = document
-          .getElementById("forum-post-content")
-          .value.trim();
-        const category = document.getElementById("forum-post-category").value;
-        const subCategory =
-          document.getElementById("forum-post-sub-category").value || null;
-
-        if (!title || !content || !category) {
-          showMessage(
-            "Please fill in all required fields (Title, Content, Category).",
-            "error"
-          );
-          return;
-        }
-
-        try {
-          // Assuming admin posts are always by the current authenticated user
-          await addDoc(collection(db, `artifacts/${appId}/public/data/posts`), {
-            title,
-            content,
-            category,
-            subCategory,
-            authorId: userId, // Admin's user ID
-            authorName: "Admin User", // Or fetch admin's name from their profile if available
-            createdAt: serverTimestamp(),
-            upvotes: 0,
-            downvotes: 0,
-            upvotedBy: [],
-            downvotedBy: [],
-            isResolved: false,
-            tags: [], // Admins can add tags later if a tag input is added
-          });
-          showMessage("Forum post added successfully!", "success");
-          document.getElementById("add-forum-post-form").reset();
-          document
-            .getElementById("forum-post-subcategory-container")
-            .classList.add("hidden"); // Hide subcategory after reset
-        } catch (error) {
-          console.error("Error adding forum post:", error);
-          showMessage(`Failed to add forum post: ${error.message}.`);
-        }
-      };
+      // Removed addForumPost as per user request
 
       window.updateForumPost = async (postId, updatedData) => {
         if (!isAuthReady) {
@@ -2347,22 +2204,20 @@
         };
       };
 
-      window.toggleForumPostResolved = async (postId, isResolved) => {
+      window.updateForumPostStatus = async (postId, newStatus) => {
         if (!isAuthReady) {
           showMessage("Firebase not ready. Please try again.");
           return;
         }
+        closeAllKebabDropdowns(); // Close any open kebab menus
         try {
           await updateDoc(
             doc(db, `artifacts/${appId}/public/data/posts`, postId),
-            { isResolved: !isResolved }
+            { status: newStatus }
           );
-          showMessage(
-            `Forum post marked as ${!isResolved ? "resolved" : "unresolved"}!`,
-            "info"
-          );
+          showMessage(`Forum post status updated to '${newStatus}'!`, "info");
         } catch (error) {
-          console.error("Error updating post resolved status:", error);
+          console.error("Error updating post status:", error);
           showMessage(`Failed to update post status: ${error.message}.`);
         }
       };
@@ -2473,9 +2328,7 @@
 
             let filteredPosts = allPosts.filter((post) => {
               const matchesStatus =
-                filters.status === "all" ||
-                (filters.status === "resolved" && post.isResolved) ||
-                (filters.status === "unresolved" && !post.isResolved);
+                filters.status === "all" || post.status === filters.status;
               const matchesCategory =
                 filters.category === "all categories" ||
                 post.category === filters.category;
@@ -2511,9 +2364,29 @@
             } else {
               paginatedPosts.forEach((post) => {
                 const formattedTime = formatRelativeTime(post.createdAt);
+                let statusBadgeClass = "";
+                let statusText = "";
+                switch (post.status) {
+                  case "pending":
+                    statusBadgeClass = "bg-yellow-100 text-yellow-800";
+                    statusText = "Pending";
+                    break;
+                  case "approved":
+                    statusBadgeClass = "bg-green-100 text-green-800";
+                    statusText = "Approved";
+                    break;
+                  case "rejected":
+                    statusBadgeClass = "bg-red-100 text-red-800";
+                    statusText = "Rejected";
+                    break;
+                  default:
+                    statusBadgeClass = "bg-gray-100 text-gray-800";
+                    statusText = "Unknown";
+                }
+
                 const postCard = document.createElement("div");
                 postCard.className =
-                  "bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200";
+                  "bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200 relative"; // Added relative for kebab menu
                 postCard.innerHTML = `
                 <h4 class="font-bold text-gray-800 text-lg mb-2">${
                   post.title
@@ -2530,27 +2403,47 @@
                         : ""
                     }
                     <span>${formattedTime}</span>
-                    ${
-                      post.isResolved
-                        ? '<span class="ml-auto px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">Resolved</span>'
-                        : '<span class="ml-auto px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">Unresolved</span>'
-                    }
+                    <span class="ml-auto px-2 py-1 rounded-full text-xs font-semibold ${statusBadgeClass}">${statusText}</span>
                 </div>
-                <div class="flex flex-wrap gap-2 mt-3">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="editForumPost('${
+                <div class="kebab-menu-container absolute top-4 right-4">
+                    <button class="kebab-button text-gray-500 hover:text-gray-700" aria-label="Post actions" data-post-id="${
                       post.id
-                    }')">Edit</button>
-                    <button class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="deleteForumPost('${
-                      post.id
-                    }')">Delete</button>
-                    <button class="bg-orange-600 hover:bg-orange-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="toggleForumPostResolved('${
-                      post.id
-                    }', ${post.isResolved})">${
-                  post.isResolved ? "Mark as Unresolved" : "Mark as Resolved"
-                }</button>
+                    }"><i class="fas fa-ellipsis-v"></i></button>
+                    <div class="kebab-dropdown">
+                        <button onclick="editForumPost('${
+                          post.id
+                        }')"><i class="fas fa-edit"></i> Edit</button>
+                        <button onclick="deleteForumPost('${
+                          post.id
+                        }')"><i class="fas fa-trash-alt"></i> Delete</button>
+                        ${
+                          post.status !== "approved"
+                            ? `<button onclick="updateForumPostStatus('${post.id}', 'approved')"><i class="fas fa-check-circle"></i> Approve</button>`
+                            : ""
+                        }
+                        ${
+                          post.status !== "pending"
+                            ? `<button onclick="updateForumPostStatus('${post.id}', 'pending')"><i class="fas fa-hourglass-half"></i> Mark Pending</button>`
+                            : ""
+                        }
+                        ${
+                          post.status !== "rejected"
+                            ? `<button onclick="updateForumPostStatus('${post.id}', 'rejected')"><i class="fas fa-times-circle"></i> Reject</button>`
+                            : ""
+                        }
+                    </div>
                 </div>
               `;
                 container.appendChild(postCard);
+              });
+
+              // Attach event listeners for kebab menus after they are rendered
+              document.querySelectorAll(".kebab-button").forEach((button) => {
+                button.addEventListener("click", (event) => {
+                  event.stopPropagation();
+                  closeAllKebabDropdowns(); // Close other dropdowns
+                  button.nextElementSibling.classList.toggle("active");
+                });
               });
             }
 
@@ -2626,6 +2519,7 @@
           showMessage("Firebase not ready. Please try again.");
           return;
         }
+        closeAllKebabDropdowns(); // Close any open kebab menus
         try {
           const docSnap = await getDoc(
             doc(db, `artifacts/${appId}/public/data/posts`, postId)
@@ -2687,7 +2581,7 @@
                     </div>
                     <div class="flex justify-end gap-3">
                         <button id="cancel-edit-post-modal" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition-colors duration-200">Cancel</button>
-                        <button id="save-edit-post-modal" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Save Changes</button>
+                        <button id="save-edit-post-changes" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Save Changes</button>
                     </div>
                 </div>
             </div>
@@ -2736,7 +2630,7 @@
           document.getElementById("cancel-edit-post-modal").onclick = () =>
             editPostModal.remove();
           document.getElementById(
-            "save-edit-post-modal"
+            "save-edit-post-changes"
           ).onclick = async () => {
             const newTitle = editPostTitleInput.value.trim();
             const newContent = editPostContentInput.value.trim();
@@ -2964,7 +2858,7 @@
                     </div>
                     <div class="flex justify-end gap-3">
                         <button id="cancel-edit-comment-modal" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition-colors duration-200">Cancel</button>
-                        <button id="save-edit-comment-modal" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Save Changes</button>
+                        <button id="save-edit-comment-changes" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Save Changes</button>
                     </div>
                 </div>
             </div>
@@ -2981,7 +2875,7 @@
           document.getElementById("cancel-edit-comment-modal").onclick = () =>
             editCommentModal.remove();
           document.getElementById(
-            "save-edit-comment-modal"
+            "save-edit-comment-changes"
           ).onclick = async () => {
             const newContent = editCommentContentInput.value.trim();
             if (!newContent) {
@@ -2998,6 +2892,283 @@
           );
         }
       };
+
+      // --- User Management Functions ---
+
+      // Function to create a new admin/moderator user
+      window.createAdminUser = async (email, password, role) => {
+        if (!isAuthReady || currentUserRole !== "admin") {
+          showMessage("You must be logged in as an admin to create new users.");
+          return;
+        }
+        try {
+          // Create user in Firebase Authentication
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          const newUserId = userCredential.user.uid;
+
+          // Store user role in Firestore
+          await setDoc(
+            doc(
+              db,
+              "artifacts",
+              appId,
+              "public",
+              "data",
+              "adminUsers",
+              newUserId
+            ),
+            {
+              email: email,
+              role: role,
+              createdAt: serverTimestamp(),
+              createdBy: auth.currentUser.email || "Unknown Admin",
+            }
+          );
+          showMessage(`New ${role} user (${email}) created successfully!`);
+          // Clear the form
+          document.getElementById("new-user-email").value = "";
+          document.getElementById("new-user-password").value = "";
+        } catch (error) {
+          console.error("Error creating user:", error);
+          let errorMessage = `Failed to create user: ${error.message}.`;
+          if (error.code === "auth/email-already-in-use") {
+            errorMessage =
+              "The email address is already in use by another account.";
+          } else if (error.code === "auth/weak-password") {
+            errorMessage =
+              "The password is too weak. Please use a stronger password (at least 6 characters).";
+          } else if (error.code === "auth/invalid-email") {
+            errorMessage = "The email address is not valid.";
+          } else if (error.code === "auth/operation-not-allowed") {
+            errorMessage =
+              "Email/Password sign-in is not enabled for this project. Please enable it in Firebase Console -> Authentication -> Sign-in method.";
+          }
+          showMessage(errorMessage);
+        }
+      };
+
+      // Function for current admin to change their own password
+      window.changeCurrentUserPassword = async (
+        currentPassword,
+        newPassword,
+        confirmNewPassword
+      ) => {
+        if (!isAuthReady) {
+          showMessage("You must be logged in to change your password.");
+          return;
+        }
+        if (newPassword !== confirmNewPassword) {
+          showMessage("New password and confirm password do not match.");
+          return;
+        }
+        if (newPassword.length < 6) {
+          showMessage("Password should be at least 6 characters.");
+          return;
+        }
+
+        const user = auth.currentUser;
+        if (!user) {
+          showMessage("No user is currently logged in.");
+          return;
+        }
+
+        try {
+          // Firebase requires re-authentication for sensitive operations like password change
+          // This is a simplified approach; a full implementation might involve prompting for current password
+          // and reauthenticating the user. For this demo, we'll try to update directly.
+          await updatePassword(user, newPassword);
+          showMessage("Your password has been changed successfully!");
+          // Clear the form
+          document.getElementById("current-password").value = "";
+          document.getElementById("new-password").value = "";
+          document.getElementById("confirm-new-password").value = "";
+        } catch (error) {
+          console.error("Error changing password:", error);
+          if (error.code === "auth/requires-recent-login") {
+            showMessage(
+              "Please re-login recently to change your password. For security reasons, this operation requires recent authentication."
+            );
+          } else {
+            showMessage(`Failed to change password: ${error.message}.`);
+          }
+        }
+      };
+
+      // Function to update another admin/moderator's role
+      window.updateAdminUserRole = async (targetUserId, newRole) => {
+        if (!isAuthReady || currentUserRole !== "admin") {
+          showMessage(
+            "You must be logged in as an admin to change user roles."
+          );
+          return;
+        }
+        if (targetUserId === auth.currentUser.uid && newRole !== "admin") {
+          showMessage("You cannot demote your own admin role.");
+          return;
+        }
+        try {
+          await updateDoc(
+            doc(
+              db,
+              "artifacts",
+              appId,
+              "public",
+              "data",
+              "adminUsers",
+              targetUserId
+            ),
+            {
+              role: newRole,
+              updatedAt: serverTimestamp(),
+              updatedBy: auth.currentUser.email || "Unknown Admin",
+            }
+          );
+          showMessage(
+            `User role updated to '${newRole}' for user ID: ${targetUserId}.`
+          );
+        } catch (error) {
+          console.error("Error updating user role:", error);
+          showMessage(`Failed to update user role: ${error.message}.`);
+        }
+      };
+
+      // Function to delete an admin/moderator user (Firestore record only for simplicity)
+      window.deleteAdminUser = async (targetUserId) => {
+        if (!isAuthReady || currentUserRole !== "admin") {
+          showMessage("You must be logged in as an admin to delete users.");
+          return;
+        }
+        if (targetUserId === auth.currentUser.uid) {
+          showMessage(
+            "You cannot delete your own account from here. Please log out first if you wish to delete your account via Firebase Console."
+          );
+          return;
+        }
+
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        const closeMessageBoxBtn = document.getElementById("close-message-box");
+        messageContent.textContent =
+          "Are you sure you want to delete this admin/moderator account? This will remove their access from the panel (Firestore record). To fully delete the Firebase Authentication user, server-side admin privileges are required.";
+        messageBox.classList.remove("hidden");
+
+        const confirmDeleteBtn = document.createElement("button");
+        confirmDeleteBtn.textContent = "Confirm Delete";
+        confirmDeleteBtn.className =
+          "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
+        confirmDeleteBtn.id = "confirm-delete-btn";
+        messageBox.querySelector(".text-center").appendChild(confirmDeleteBtn);
+
+        confirmDeleteBtn.addEventListener("click", async () => {
+          try {
+            // Delete the role document from Firestore
+            await deleteDoc(
+              doc(
+                db,
+                "artifacts",
+                appId,
+                "public",
+                "data",
+                "adminUsers",
+                targetUserId
+              )
+            );
+            showMessage(
+              "Admin/Moderator account (Firestore record) deleted successfully."
+            );
+            // Note: Deleting the actual Firebase Auth user requires Firebase Admin SDK on a server.
+            // For a client-side only app, this is a limitation.
+          } catch (error) {
+            console.error("Error deleting user:", error);
+            showMessage(`Failed to delete user: ${error.message}.`);
+          } finally {
+            confirmDeleteBtn.remove();
+            messageBox.classList.add("hidden");
+          }
+        });
+
+        const originalCloseHandler = closeMessageBoxBtn.onclick;
+        closeMessageBoxBtn.onclick = () => {
+          confirmDeleteBtn.remove();
+          messageBox.classList.add("hidden");
+          if (originalCloseHandler) originalCloseHandler();
+          closeMessageBoxBtn.onclick = originalCloseHandler;
+        };
+      };
+
+      // Function to render the list of admin/moderator users
+      const renderAdminUsers = () => {
+        if (!isAuthReady || currentUserRole !== "admin") {
+          document.getElementById("admin-users-list").innerHTML =
+            '<p class="text-gray-500 text-center">Only admins can view and manage user accounts.</p>';
+          return;
+        }
+        const container = document.getElementById("admin-users-list");
+        if (!container)
+          return console.error("Admin users list container not found.");
+
+        onSnapshot(
+          collection(db, "artifacts", appId, "public", "data", "adminUsers"),
+          (snapshot) => {
+            container.innerHTML = "";
+            if (snapshot.empty) {
+              container.innerHTML =
+                '<p class="text-gray-500 text-center">No admin or moderator accounts found.</p>';
+              return;
+            }
+
+            snapshot.docs.forEach((docSnap) => {
+              const user = { id: docSnap.id, ...docSnap.data() };
+              const userCard = document.createElement("div");
+              userCard.className =
+                "bg-gray-100 p-4 rounded-lg shadow-sm mb-3 flex items-center justify-between";
+              userCard.innerHTML = `
+                <div>
+                  <p class="font-semibold text-gray-800">${user.email}</p>
+                  <p class="text-sm text-gray-600">Role: <span class="capitalize">${
+                    user.role
+                  }</span></p>
+                  <p class="text-xs text-gray-500">User ID: ${user.id.substring(
+                    0,
+                    8
+                  )}...</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <select onchange="updateAdminUserRole('${
+                    user.id
+                  }', this.value)" class="p-2 border border-gray-300 rounded-md text-sm">
+                    <option value="moderator" ${
+                      user.role === "moderator" ? "selected" : ""
+                    }>Moderator</option>
+                    <option value="admin" ${
+                      user.role === "admin" ? "selected" : ""
+                    } ${
+                user.id === auth.currentUser.uid ? "disabled" : ""
+              }>Admin</option>
+                  </select>
+                  <button onclick="deleteAdminUser('${
+                    user.id
+                  }')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm transition-colors duration-200 ${
+                user.id === auth.currentUser.uid
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }" ${
+                user.id === auth.currentUser.uid ? "disabled" : ""
+              }>Delete</button>
+                </div>
+              `;
+              container.appendChild(userCard);
+            });
+          },
+          (error) => showMessage(`Error loading admin users: ${error.message}.`)
+        );
+      };
+
+      // --- End User Management Functions ---
 
       const DASHBOARD_HTML = `
         ${generatePageHeader("Dashboard")}
@@ -3028,17 +3199,6 @@
         <div class="bg-white p-6 rounded-xl shadow-md">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Course Analytics</h2>
             <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course Name</th><th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purchases</th><th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Views</th><th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Completion Rate</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Math</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">100</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5000</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">85%</td></tr><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Science</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">120</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">6000</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">90%</td></tr><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">History</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">80</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3000</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">75%</td></tr><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">English</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">150</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">7500</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">92%</td></tr></tbody></table></div>
-        </div>`;
-
-      const REGISTRATION_HTML = `
-        ${generatePageHeader("Registration")}
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <p class="text-gray-700">Manage user registrations here. Add new users, edit profiles, or view registration logs.</p>
-            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add New User</h3>
-                <form id="add-user-form"><div class="mb-4"><label for="new-username" class="block text-gray-700 text-sm font-semibold mb-2">Username</label><input type="text" id="new-username" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Enter new username" required></div><div class="mb-4"><label for="new-useremail" class="block text-gray-700 text-sm font-semibold mb-2">Email</label><input type="email" id="new-useremail" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Enter new user's email" required></div><button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add New User</button></form>
-            </div>
-            <div class="mt-6"><h3 class="text-lg font-semibold text-gray-800 mb-3">Recent Registrations</h3><ul id="registration-list" class="space-y-2"></ul></div>
         </div>`;
 
       const MESSAGES_HTML = `
@@ -3075,63 +3235,10 @@
             <div id="teacher-pagination" class="mt-8 flex justify-center"></div>
         </div>`;
 
-      const STUDENT_HISTORY_HTML = `
-        ${generatePageHeader("Student History")}
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <p class="text-gray-700">Track student progress, course completions, and activity logs. Search for specific student records.</p>
-            <div class="mt-6 overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enrolled Courses</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Activity</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Alice Johnson</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Math, English</td><td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span></td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today</td><td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"><button class="text-blue-600 hover:text-blue-900 mr-2" onclick="showMessage('Viewing Alice Johnson\'s history.')">View</button><button class="text-red-600 hover:text-red-900" onclick="showMessage('Deleting Alice Johnson\'s record.')">Delete</button></td></tr><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Bob Williams</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Science</td><td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">In Progress</span></td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today</td><td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"><button class="text-blue-600 hover:text-blue-900 mr-2" onclick="showMessage('Viewing Bob Williams\'s history.')">View</button><button class="text-red-600 hover:text-red-900" onclick="showMessage('Deleting Bob Williams\'s record.')">Delete</button></td></tr></tbody></table></div>
-        </div>`;
-
-      const COURSES_HTML = `
-        ${generatePageHeader("Courses")}
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <p class="text-gray-700">Manage all available courses. Add new courses, edit details, and track enrollment.</p>
-            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add New Course</h3>
-                <form id="add-course-form"><div class="mb-4"><label for="new-course-name" class="block text-gray-700 text-sm font-semibold mb-2">Course Name</label><input type="text" id="new-course-name" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., Advanced Algebra" required></div><div class="mb-4"><label for="new-course-description" class="block text-gray-700 text-sm font-semibold mb-2">Description</label><textarea id="new-course-description" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-24" placeholder="Brief description of the course"></textarea></div><button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add New Course</button></form>
-            </div>
-            <div class="mt-6"><h3 class="text-lg font-semibold text-gray-800 mb-3">Current Courses</h3><div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div></div>
-        </div>`;
-
       const COMMUNITY_FORUM_HTML = `
         ${generatePageHeader("Community Forum Management")}
         <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-            <p class="text-gray-700">Oversee discussions, moderate content, and manage users in the community forum. You can add, edit, and delete posts and comments directly from here.</p>
-        </div>
-
-        <!-- Add New Post Section -->
-        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Add New Forum Post</h3>
-            <form id="add-forum-post-form" class="space-y-4">
-                <div>
-                    <label for="forum-post-title" class="block text-gray-700 text-sm font-semibold mb-2">Post Title</label>
-                    <input type="text" id="forum-post-title" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Enter post title" required>
-                </div>
-                <div>
-                    <label for="forum-post-content" class="block text-gray-700 text-sm font-semibold mb-2">Content</label>
-                    <textarea id="forum-post-content" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-32" placeholder="Write the post content here..." required></textarea>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="forum-post-category" class="block text-gray-700 text-sm font-semibold mb-2">Category</label>
-                        <select id="forum-post-category" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" required>
-                            <option value="">Select a Category</option>
-                            <option value="IELTS Speaking">IELTS Speaking</option>
-                            <option value="IELTS Writing">IELTS Writing</option>
-                            <option value="IELTS Listening">IELTS Listening</option>
-                            <option value="IELTS Reading">IELTS Reading</option>
-                            <option value="Tips & Strategies">Tips & Strategies</option>
-                            <option value="Band 9 Answers">Band 9 Answers</option>
-                            <option value="Motivation & Support">Motivation & Support</option>
-                        </select>
-                    </div>
-                    <div id="forum-post-subcategory-container" class="hidden">
-                        <label for="forum-post-sub-category" class="block text-gray-700 text-sm font-semibold mb-2">Subcategory (Optional)</label>
-                        <select id="forum-post-sub-category" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500"></select>
-                    </div>
-                </div>
-                <button type="submit" id="add-forum-post-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Post</button>
-            </form>
+            <p class="text-gray-700">Oversee discussions, moderate content, and manage users in the community forum. You can approve, reject, or mark posts as pending, and edit/delete posts and comments directly from here.</p>
         </div>
 
         <!-- Filter Posts Section -->
@@ -3142,8 +3249,9 @@
                     <label for="forum-post-filter-status" class="block text-gray-700 text-sm font-semibold mb-2">Status</label>
                     <select id="forum-post-filter-status" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500">
                         <option value="all">All Statuses</option>
-                        <option value="resolved">Resolved</option>
-                        <option value="unresolved">Unresolved</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
                     </select>
                 </div>
                 <div>
@@ -3229,29 +3337,6 @@
             <div id="free-resource-pagination" class="mt-8 flex justify-center"></div>
         </div>`;
 
-      const MOCK_TEST_HTML = `
-        ${generatePageHeader("Mock Test Management")}
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <p class="text-gray-700">Create, configure, and administer mock tests. Review results and provide feedback.</p>
-            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add New Mock Test</h3>
-                <form id="add-mock-test-form"><div class="mb-4"><label for="mock-test-title" class="block text-gray-700 text-sm font-semibold mb-2">Test Title</label><input type="text" id="mock-test-title" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., IELTS Full Mock Test 1" required></div><div class="mb-4"><label for="mock-test-duration" class="block text-gray-700 text-sm font-semibold mb-2">Duration (minutes)</label><input type="number" id="mock-test-duration" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" min="1" required></div><button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Mock Test</button></form>
-            </div>
-            <div class="mt-6"><h3 class="text-lg font-semibold text-gray-800 mb-3">Upcoming Mock Tests</h3><ul class="space-y-2"><li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg"><span>IELTS Speaking Practice - <span class="text-gray-600">Date: 2024-07-01</span></span><button class="text-blue-500 hover:text-blue-700" onclick="showMessage('Editing IELTS Speaking Practice.')"><i class="fas fa-edit"></i></button></li><li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg"><span>General English Writing - <span class="text-gray-600">Date: 2024-07-05</span></span><button class="text-blue-500 hover:text-blue-700" onclick="showMessage('Editing General English Writing.')"><i class="fas fa-edit"></i></button></li></ul></div>
-        </div>`;
-
-      const QUIZZES_HTML = `
-        ${generatePageHeader("Quizzes Management")}
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <p class="text-gray-700">Design and manage interactive quizzes. Track student performance and review answers.</p>
-            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add/Edit Quiz</h3>
-                <form id="quiz-form"><input type="hidden" id="quiz-id"><div class="mb-4"><label for="quiz-title" class="block text-gray-700 text-sm font-semibold mb-2">Quiz Title</label><input type="text" id="quiz-title" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., Verb Tenses Quiz" required></div><div class="mb-4"><label for="quiz-description" class="block text-gray-700 text-sm font-semibold mb-2">Description</label><textarea id="quiz-description" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-24" placeholder="Brief description of the quiz"></textarea></div><div class="mb-6"><label for="quiz-questions-count" class="block text-gray-700 text-sm font-semibold mb-2">Number of Questions</label><input type="number" id="quiz-questions-count" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" min="1" required></div><button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Quiz</button></form>
-            </div>
-            <div class="mt-8"><h3 class="text-xl font-semibold text-gray-800 mb-4">Published Quizzes</h3><div id="published-quizzes-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
-            <div class="mt-8"><h3 class="text-xl font-semibold text-gray-800 mb-4">Draft Quizzes</h3><div id="draft-quizzes-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
-        </div>`;
-
       const TESTIMONIAL_HTML = `
         ${generatePageHeader("Testimonial Management")}
         <div class="testimonials-section-admin bg-white p-6 rounded-xl shadow-md">
@@ -3273,12 +3358,33 @@
             <div id="testimonial-pagination" class="mt-8 flex justify-center"></div>
         </div>`;
 
-      const BLOCK_LIST_HTML = `
-        ${generatePageHeader("Block List")}
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <p class="text-gray-700">Manage blocked users and content. Add or remove entries from the block list to maintain a safe environment.</p>
-            <div class="mt-6 overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Blocked Item</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Blocked Date</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Spam User 123</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">User</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Repeated spamming</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-06-15</td><td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"><button class="text-green-600 hover:text-green-900" onclick="showMessage('Unblocking Spam User 123.')">Unblock</button></td></tr><tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Harmful Link Post</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Content</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Malware link</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-06-10</td><td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"><button class="text-green-600 hover:text-green-900" onclick="showMessage('Unblocking Harmful Link Post.')">Unblock</button></td></tr></tbody></table></div>
-        </div>`;
+      const USER_MANAGEMENT_HTML = `
+        ${generatePageHeader("User Management")}
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <p class="text-gray-700">Manage admin and moderator accounts for this panel. You can create new users, change your own password, and manage existing user roles.</p>
+        </div>
+
+        <!-- Section for Current Admin to Change Password -->
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Change Your Password</h3>
+            <form id="change-password-form" class="space-y-4">
+                <div>
+                    <label for="current-password" class="block text-sm font-medium text-gray-700">Current Password</label>
+                    <input type="password" id="current-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" required>
+                </div>
+                <div>
+                    <label for="new-password" class="block text-sm font-medium text-gray-700">New Password</label>
+                    <input type="password" id="new-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" required>
+                </div>
+                <div>
+                    <label for="confirm-new-password" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+                    <input type="password" id="confirm-new-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" required>
+                </div>
+                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">Change Password</button>
+            </form>
+        </div>
+
+      `;
 
       const loadPageContent = (pageName) => {
         const contentArea = document.getElementById("content-area");
@@ -3305,20 +3411,11 @@
           case "dashboard":
             contentHtml = DASHBOARD_HTML;
             break;
-          case "registration":
-            contentHtml = REGISTRATION_HTML;
-            break;
           case "messages":
             contentHtml = MESSAGES_HTML;
             break;
           case "our-teacher":
             contentHtml = OUR_TEACHER_HTML;
-            break;
-          case "student-history":
-            contentHtml = STUDENT_HISTORY_HTML;
-            break;
-          case "courses":
-            contentHtml = COURSES_HTML;
             break;
           case "community-forum":
             contentHtml = COMMUNITY_FORUM_HTML;
@@ -3329,17 +3426,11 @@
           case "free-resources":
             contentHtml = FREE_RESOURCES_HTML;
             break;
-          case "mock-test":
-            contentHtml = MOCK_TEST_HTML;
-            break;
-          case "quizzes":
-            contentHtml = QUIZZES_HTML;
-            break;
           case "testimonial":
             contentHtml = TESTIMONIAL_HTML;
             break;
-          case "block-list":
-            contentHtml = BLOCK_LIST_HTML;
+          case "user-management": // New case for user management
+            contentHtml = USER_MANAGEMENT_HTML;
             break;
         }
         contentArea.innerHTML = contentHtml;
@@ -3442,8 +3533,6 @@
             }
           }
           if (pageName === "dashboard") renderCharts();
-          if (pageName === "registration") renderRegistrations();
-          if (pageName === "courses") renderCourses();
           if (pageName === "testimonial") {
             renderTestimonials(
               testimonialCurrentFilters,
@@ -3650,53 +3739,6 @@
             );
           }
           if (pageName === "community-forum") {
-            // Setup for Add New Post form
-            const forumPostCategorySelect = document.getElementById(
-              "forum-post-category"
-            );
-            const forumPostSubCategorySelect = document.getElementById(
-              "forum-post-sub-category"
-            );
-            const forumPostSubCategoryContainer = document.getElementById(
-              "forum-post-subcategory-container"
-            );
-
-            // Clear existing options before populating to prevent duplicates on re-render
-            forumPostCategorySelect.innerHTML =
-              '<option value="">Select a Category</option>';
-            FORUM_CATEGORIES_DATA.forEach((cat) => {
-              const option = document.createElement("option");
-              option.value = cat.name;
-              option.textContent = cat.name;
-              forumPostCategorySelect.appendChild(option);
-            });
-
-            forumPostCategorySelect.onchange = () => {
-              const selectedCategory = FORUM_CATEGORIES_DATA.find(
-                (cat) => cat.name === forumPostCategorySelect.value
-              );
-              forumPostSubCategorySelect.innerHTML =
-                '<option value="">Select a Subcategory</option>';
-              if (selectedCategory?.subcategories?.length) {
-                forumPostSubCategoryContainer.classList.remove("hidden");
-                selectedCategory.subcategories.forEach((sub) => {
-                  const option = document.createElement("option");
-                  option.value = sub;
-                  option.textContent = sub;
-                  forumPostSubCategorySelect.appendChild(option);
-                });
-              } else {
-                forumPostSubCategoryContainer.classList.add("hidden");
-              }
-            };
-            // Trigger change event to populate subcategories if a category is pre-selected (e.g., on edit)
-            forumPostCategorySelect.dispatchEvent(new Event("change"));
-
-            document.getElementById("add-forum-post-form").onsubmit = (e) => {
-              e.preventDefault();
-              window.addForumPost();
-            };
-
             // Setup for Filter Posts
             const forumPostFilterStatus = document.getElementById(
               "forum-post-filter-status"
@@ -3778,6 +3820,45 @@
               forumCommentsItemsPerPage
             );
           }
+          if (pageName === "user-management") {
+            renderAdminUsers(); // Load the list of admin/moderator users
+
+            // Event listener for creating a new user
+            const createUserForm = document.getElementById("create-user-form");
+            if (createUserForm) {
+              createUserForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const email = document.getElementById("new-user-email").value;
+                const password = document.getElementById("new-user-password")
+                  .value;
+                const role = document.getElementById("new-user-role").value;
+                await createAdminUser(email, password, role);
+              };
+            }
+
+            // Event listener for changing current user's password
+            const changePasswordForm = document.getElementById(
+              "change-password-form"
+            );
+            if (changePasswordForm) {
+              changePasswordForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const currentPassword = document.getElementById(
+                  "current-password"
+                ).value;
+                const newPassword = document.getElementById("new-password")
+                  .value;
+                const confirmNewPassword = document.getElementById(
+                  "confirm-new-password"
+                ).value;
+                await changeCurrentUserPassword(
+                  currentPassword,
+                  newPassword,
+                  confirmNewPassword
+                );
+              };
+            }
+          }
         }, 0);
       };
 
@@ -3787,13 +3868,57 @@
           if (user) {
             // User is signed in.
             userId = user.uid;
-            isAuthReady = true;
-            console.log("Firebase authenticated. User ID:", userId);
-            showAdminPanel();
+            // Fetch user's role from Firestore
+            const userRoleDoc = await getDoc(
+              doc(
+                db,
+                "artifacts",
+                appId,
+                "public",
+                "data",
+                "adminUsers",
+                userId
+              )
+            );
+            if (userRoleDoc.exists()) {
+              currentUserRole = userRoleDoc.data().role;
+              if (
+                currentUserRole === "admin" ||
+                currentUserRole === "moderator"
+              ) {
+                isAuthReady = true;
+                console.log(
+                  "Firebase authenticated. User ID:",
+                  userId,
+                  "Role:",
+                  currentUserRole
+                );
+                showAdminPanel();
+              } else {
+                // User has a role but not admin/moderator, log them out
+                console.log(
+                  "User is logged in but not an authorized admin/moderator. Logging out."
+                );
+                await signOut(auth);
+                isAuthReady = false;
+                showLoginForm();
+              }
+            } else {
+              // User is authenticated in Firebase Auth but has no role document.
+              // This could mean they are a regular user or a new admin not yet assigned a role.
+              // For this panel, we assume only users with roles in 'adminUsers' collection can access.
+              console.log(
+                "User is authenticated but no role found in Firestore. Logging out."
+              );
+              await signOut(auth);
+              isAuthReady = false;
+              showLoginForm();
+            }
           } else {
             // User is signed out.
             userId = null;
             isAuthReady = false;
+            currentUserRole = null;
             console.log("User is logged out or not authenticated.");
             showLoginForm();
           }
@@ -3892,23 +4017,6 @@
                   ).value;
                 successMessage = "Testimonial";
                 break;
-              case "quiz-form":
-                collectionName = "quizzes";
-                idField = "quiz-id";
-                addBtnId = "add-quiz-btn";
-                data = {
-                  title: document.getElementById("quiz-title").value,
-                  description: document.getElementById("quiz-description")
-                    .value,
-                  questionsCount: parseInt(
-                    document.getElementById("quiz-questions-count").value,
-                    10
-                  ),
-                  timestamp: serverTimestamp(),
-                  status: "draft",
-                };
-                successMessage = "Quiz";
-                break;
               case "blog-post-form":
                 collectionName = "blogPosts";
                 idField = "blog-id";
@@ -3973,8 +4081,8 @@
                     document.getElementById("free-resource-image").value ||
                     "https://placehold.co/400x200/cccccc/white?text=Resource+Image",
                   timestamp: serverTimestamp(),
-                  status: "active",
                   views: "0 views",
+                  status: "active",
                 };
                 successMessage = "Free resource";
                 break;

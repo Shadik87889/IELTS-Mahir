@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Padding Teacher</title>
+    <!-- Use Tailwind CSS for stylish and responsive design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+      /* Custom styles for the slider tracks and thumbs */
+      input[type="range"]::-webkit-slider-runnable-track {
+        background: #4a5568;
+        border-radius: 9999px;
+        height: 8px;
+      }
+
+      input[type="range"]::-moz-range-track {
+        background: #4a5568;
+        border-radius: 9999px;
+        height: 8px;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        border: 2px solid #fff;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: #3b82f6;
+        cursor: pointer;
+        margin-top: -6px;
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        border: 2px solid #fff;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: #3bf648;
+        cursor: pointer;
+      }
+      img {
+        margin-top: -10vw;
+        margin-bottom: 4vw;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-900 text-gray-100 flex items-center justify-center min-h-screen p-4 font-sans"
+  >
+    <div
+      class="bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-6xl w-full flex flex-col lg:flex-row gap-8"
+    >
+      <!-- Main content area -->
+      <div
+        class="flex-1 flex flex-col items-center justify-center p-6 bg-gray-700 rounded-xl shadow-inner"
+      >
+        <img src="padding-temp/Screenshot 2025-08-11 175321.png" alt="" />
+        <h1 class="text-2xl font-bold mb-6 text-center text-blue-400">
+          CSS Padding Teacher
+        </h1>
+        <!-- The box where padding is applied -->
+        <div
+          id="padding-box"
+          class="bg-green-600 border-4 border-dashed border-blue-400 p-8 rounded-lg shadow-xl transition-all duration-100 ease-in-out"
+        >
+          <div class="text-gray-900 rounded-md text-center font-bold text-lg">
+            Research Basic English Grammar
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls and code display area -->
+      <div class="flex-1 flex flex-col gap-6">
+        <!-- Padding controls -->
+        <div
+          class="bg-gray-700 p-6 rounded-xl shadow-inner flex flex-col gap-4"
+        >
+          <h2 class="text-xl font-semibold mb-2">Adjust Padding (in px)</h2>
+
+          <!-- Top Padding -->
+          <div>
+            <label
+              for="top-padding"
+              class="flex justify-between items-center mb-1"
+            >
+              <span>Padding Top:</span>
+              <span id="top-value" class="font-mono text-sm text-blue-300"
+                >0</span
+              >
+            </label>
+            <input
+              type="range"
+              id="top-padding"
+              min="0"
+              max="100"
+              value="0"
+              class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-600"
+            />
+          </div>
+
+          <!-- Right Padding -->
+          <div>
+            <label
+              for="right-padding"
+              class="flex justify-between items-center mb-1"
+            >
+              <span>Padding Right:</span>
+              <span id="right-value" class="font-mono text-sm text-blue-300"
+                >0</span
+              >
+            </label>
+            <input
+              type="range"
+              id="right-padding"
+              min="0"
+              max="100"
+              value="0"
+              class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-600"
+            />
+          </div>
+
+          <!-- Bottom Padding -->
+          <div>
+            <label
+              for="bottom-padding"
+              class="flex justify-between items-center mb-1"
+            >
+              <span>Padding Bottom:</span>
+              <span id="bottom-value" class="font-mono text-sm text-blue-300"
+                >0</span
+              >
+            </label>
+            <input
+              type="range"
+              id="bottom-padding"
+              min="0"
+              max="100"
+              value="0"
+              class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-600"
+            />
+          </div>
+
+          <!-- Left Padding -->
+          <div>
+            <label
+              for="left-padding"
+              class="flex justify-between items-center mb-1"
+            >
+              <span>Padding Left:</span>
+              <span id="left-value" class="font-mono text-sm text-blue-300"
+                >0</span
+              >
+            </label>
+            <input
+              type="range"
+              id="left-padding"
+              min="0"
+              max="100"
+              value="0"
+              class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-600"
+            />
+          </div>
+
+          <!-- Reset button -->
+          <button
+            id="reset-btn"
+            class="mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl shadow-md transition-colors duration-200"
+          >
+            Reset
+          </button>
+        </div>
+
+        <!-- CSS code display -->
+        <div class="bg-gray-700 p-6 rounded-xl shadow-inner">
+          <h2 class="text-xl font-semibold mb-2">Live CSS Code</h2>
+          <pre
+            class="bg-gray-900 p-4 rounded-lg overflow-x-auto text-blue-300 font-mono text-sm"
+          ><code id="css-code">
+.padding-box {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+}
+                    </code>
+                </pre>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Get DOM elements
+        const paddingBox = document.getElementById("padding-box");
+        const topSlider = document.getElementById("top-padding");
+        const rightSlider = document.getElementById("right-padding");
+        const bottomSlider = document.getElementById("bottom-padding");
+        const leftSlider = document.getElementById("left-padding");
+        const topValue = document.getElementById("top-value");
+        const rightValue = document.getElementById("right-value");
+        const bottomValue = document.getElementById("bottom-value");
+        const leftValue = document.getElementById("left-value");
+        const cssCode = document.getElementById("css-code");
+        const resetButton = document.getElementById("reset-btn");
+
+        /**
+         * Updates the padding on the box and the live CSS code.
+         */
+        function updatePadding() {
+          const top = topSlider.value;
+          const right = rightSlider.value;
+          const bottom = bottomSlider.value;
+          const left = leftSlider.value;
+
+          // Apply padding to the box's style
+          paddingBox.style.paddingTop = `${top}px`;
+          paddingBox.style.paddingRight = `${right}px`;
+          paddingBox.style.paddingBottom = `${bottom}px`;
+          paddingBox.style.paddingLeft = `${left}px`;
+
+          // Update the display values
+          topValue.textContent = top;
+          rightValue.textContent = right;
+          bottomValue.textContent = bottom;
+          leftValue.textContent = left;
+
+          // Generate and update the live CSS code
+          cssCode.textContent = `
+.padding-box {
+    padding-top: ${top}px;
+    padding-right: ${right}px;
+    padding-bottom: ${bottom}px;
+    padding-left: ${left}px;
+}
+                `.trim();
+        }
+
+        /**
+         * Resets all sliders and padding to 0.
+         */
+        function resetPadding() {
+          topSlider.value = 0;
+          rightSlider.value = 0;
+          bottomSlider.value = 0;
+          leftSlider.value = 0;
+          updatePadding();
+        }
+
+        // Add event listeners to all sliders
+        topSlider.addEventListener("input", updatePadding);
+        rightSlider.addEventListener("input", updatePadding);
+        bottomSlider.addEventListener("input", updatePadding);
+        leftSlider.addEventListener("input", updatePadding);
+
+        // Add a click event listener for the reset button
+        resetButton.addEventListener("click", resetPadding);
+
+        // Initial call to set everything up
+        updatePadding();
+      });
+    </script>
+  </body>
+</html>

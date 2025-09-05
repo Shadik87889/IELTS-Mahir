@@ -3,49 +3,86 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IELTS Mahir - Advanced AI Assistant</title>
+    <title>IELTS Mahir - Advanced AI Assistant (Dark)</title>
     <!-- Inter Font - For a professional look -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="navigation-dark.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <!-- Tailwind CSS Script - Always include this for Tailwind to work -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* Custom styles for the scrollbar, if desired, to maintain consistency */
+      /* Custom styles for the scrollbar, to maintain consistency in dark theme */
       ::-webkit-scrollbar {
         width: 8px;
         height: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: #1f2937; /* A dark gray background for the scrollbar track */
         border-radius: 10px;
       }
       ::-webkit-scrollbar-thumb {
-        background: #888;
+        background: #4b5563; /* A medium gray for the scrollbar thumb */
         border-radius: 10px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #555;
+        background: #6b7280; /* Lighter gray on hover */
       }
-      /* Ensure font-inter applies globally as intended */
       body {
-        /* font-family: "Montserrat", sans-serif; */
-        background-attachment: fixed; /* Keep background fixed for smooth feel */
+        font-family: "Inter", sans-serif;
+        background-color: #0c0d12; /* A slightly darker, richer background */
+        color: #e2e8f0;
+        position: relative;
+        overflow-x: hidden;
       }
 
-      /* Specific styles for grammar highlighting */
+      /* Animated grid overlay for a high-tech feel */
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(
+            rgba(141, 148, 163, 0.05) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(141, 148, 163, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: -1;
+        opacity: 0.8;
+        animation: move-grid 20s linear infinite;
+      }
+
+      @keyframes move-grid {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: 50px 50px;
+        }
+      }
+
+      /* Specific styles for grammar highlighting on a dark background */
       .grammar-diff del {
-        background-color: #fecaca; /* red-200 */
-        color: #b91c1c; /* red-800 */
+        background-color: #450a0a; /* A dark red */
+        color: #fca5a5; /* A light red */
         text-decoration: line-through;
         border-radius: 0.125rem; /* rounded-sm */
         padding: 0 0.125rem; /* px-0.5 */
       }
       .grammar-diff ins {
-        background-color: #dcfce7; /* green-200 */
-        color: #166534; /* green-800 */
+        background-color: #064e3b; /* A dark green */
+        color: #a7f3d0; /* A light green */
         text-decoration: none; /* remove default underline */
         font-weight: 600; /* semi-bold to stand out */
         border-radius: 0.125rem; /* rounded-sm */
@@ -55,294 +92,56 @@
         /* For unchanged text, ensure it doesn't get weird styling */
         color: inherit;
       }
-      nav {
-        position: absolute;
+      /* When mobile menu is active, prevent body scroll */
+      body.menu-open {
+        overflow: hidden;
       }
-      .flex-1{
-        /* font-family: "Montserrat"; */
+      body.menu-open .moving-products-text {
+        display: none; /* Hide the element when the menu is open */
       }
-     @media (max-width: 768px), (max-width: 1024px) {
-  /* Navigation adjustments for mobile */
-  nav {
-    padding: 5vw 6vw; /* More generous padding for touch */
-    min-height: 12vw; /* Ensure nav has a minimum height */
-    
-  }
-
-  /* Logo size for mobile */
-  nav .logo img {
-    height: 13vw !important; /* Larger logo for prominent branding */
-  }
-
-  /* Hamburger Menu Styling */
-  .hamburger-menu {
-    display: flex; /* Show hamburger menu on mobile */
-    width: 35px; /* Slightly larger hamburger for easier tapping */
-    height: 30px;
-    justify-content: space-around;
-    flex-direction: column;
-    cursor: pointer;
-    z-index: 1000; /* Ensure it's on top of everything */
-  }
-
-  .hamburger-menu .bar {
-    width: 100%;
-    height: 3px;
-    background-color: white; /* White bars for contrast */
-    border-radius: 2px; /* Slightly rounded corners for bars */
-    transition: all 0.3s ease-in-out; /* Smooth transition for icon animation */
-  }
-
-  /* Hamburger menu animation */
-  .hamburger-menu.open .bar:nth-child(1) {
-    transform: translateY(13px) rotate(45deg); /* Adjust transform for better X shape */
-  }
-  .hamburger-menu.open .bar:nth-child(2) {
-    opacity: 0; /* Fade out middle bar */
-  }
-  .hamburger-menu.open .bar:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg); /* Adjust transform for better X shape */
-  }
-
-  /* Mobile Menu Container */
-  nav .menu-item {
-    display: flex; /* Always flex on mobile, controlled by 'active' class */
-    flex-direction: column;
-    position: fixed; /* Use fixed to cover the entire viewport for the menu */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgb(0, 0, 0);
-    padding-top: 15vw;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    align-items: center;
-    justify-content: flex-start;
-    transform: translateX(-100%);
-    transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* When mobile menu is active */
-  nav .menu-item.active {
-    transform: translateX(0); /* Slide into view */
-  }
-
-  /* Individual Menu Links on Mobile */
-  nav .menu-item a {
-    width: 100%; /* Make links nearly full width */
-    padding: 18px 0; /* Generous vertical padding for touch */
-    font-size: 5.5vw; /* Prominent font size */
-    text-align: center; /* Center text */
-    color: #ffffff; /* Crisp white text */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
-    margin-bottom: 0; /* Remove default margins if any */
-    font-weight: 500; /* Slightly bolder for impact */
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  nav .menu-item a:last-child {
-    border-bottom: none; /* No border for the last item */
-  }
-
-  nav .menu-item a:hover,
-  nav .menu-item a:focus {
-    background-color: rgba(255, 255, 255, 0.1); /* Gentle hover/focus state */
-    color: #fff;
-  }
-
-  nav .menu-item a::after {
-    display: none; /* Ensure underline is off for mobile */
-  }
-  /* Mobile Dropdown Styling */
-  .dropdown {
-    width: 90%;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    /* Crucial: Ensure flex behavior for consistent centering of arrow */
-    display: flex;
-    flex-direction: column; /* Stack children vertically */
-    align-items: center; /* Center children */
-  }
-
-  .dropdown .down-arrow {
-    width: 100%;
-    padding: 18px 0;
-    font-size: 5.5vw;
-    text-align: center;
-    color: #ffffff;
-    display: flex;
-    justify-content: center; /* Center text */
-    align-items: center;
-    transition: background-color 0.3s ease;
-    position: relative; /* For positioning the arrow relative to this element */
-  }
-
-  .dropdown .down-arrow:hover,
-  .dropdown .down-arrow:focus {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .dropdown .arrow {
-    position: absolute; /* Position arrow independently */
-    right: 5vw; /* Offset from right edge */
-    font-size: 4vw;
-    transform: rotate(0deg);
-    transition: transform 0.3s ease;
-  }
-
-  .dropdown .arrow.rotate {
-    transform: rotate(90deg);
-  }
-
-  /* Submenu on Mobile (Accordion Style) */
-  .submenu {
-    position: static !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateY(0) !important;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    backdrop-filter: none;
-    background-color: rgba(255, 255, 255, 0.05);
-    width: 100%;
-    min-width: unset;
-    padding: 0;
-    pointer-events: auto !important;
-    max-height: 0; /* Collapsed by default */
-    overflow: hidden; /* Hides content when collapsed */
-    transition: max-height 0.4s ease-in-out; /* Smooth accordion transition */
-  }
-
-  .submenu.show {
-    /* INCREASE THIS VALUE */
-    max-height: 800px; /* Increased from 500px to accommodate more items */
-    /* You could even try 1000px or higher to be super safe */
-    padding: 10px 0; /* Add padding when expanded */
-  }
-
-  .submenu a {
-    font-size: 4vw !important;
-    padding: 12px 0;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.8);
-    transition: background 0.2s ease, color 0.2s ease;
-  }
-
-  .submenu a:hover,
-  .submenu a:focus {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-  }
-
-  /* When mobile menu is active, prevent body scroll */
-  body.menu-open {
-    overflow: hidden;
-  }
-  body.menu-open .moving-products-text {
-    display: none; /* Hide the element when the menu is open */
-  }
-  .hamburger-menu {
-    margin-right: 5vw !important;
-  }
-}
-
-
-.hamburger-menu .bar {
-  background-color: #000;
-}
-nav .menu-item a {
-  color: #000;
-}
-.submenu {
-  background-color: rgba(255, 255, 255, 0.7);
-}
-.submenu a:hover {
-  color: #827b7b;
-  background-color: #e9e3e36b;
-}
-nav .menu-item {
-  background-color: #fff;
-}
-nav .menu-item a:hover {
-  color: #000;
-}
-.down-arrow {
-  color: #000 !important;
-}
-
-</style>
+      .hamburger-menu {
+        margin-right: 5vw !important;
+      }
+    </style>
   </head>
   <body class="font-inter">
-    <div
-      id="main-container" class="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 flex flex-col items-center p-4 py-6 lg:py-4 "
-    >
-      <nav>
-        <div class="logo">
+    <nav>
+      <div class="logo-ai-parent">
+        <a href="home.html" class="logo">
           <img
             src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
             alt="Ielts mahir logo"
           />
-        </div>
-        <div class="hamburger-menu">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
-        <div class="menu-item">
-          <a href="home.html">Home</a>
-
-          <div class="dropdown">
-            <a class="down-arrow" href="javascript:void(0)">
-              Free Resources <span class="arrow">&gt;</span>
-            </a>
-            <div class="submenu">
-              <a href="ielts-all.html" class="category-link">All</a>
-              <a href="ielts-speaking.html" class="category-link">Speaking</a>
-              <a href="ielts-writing.html" class="category-link">Writing</a>
-              <a href="ielts-reading.html" class="category-link">Reading</a>
-              <a href="ielts-listening.html" class="category-link">Listening</a>
-
-              <a href="ielts-grammar.html" class="category-link">Grammar</a>
-              <a href="ielts-study-plan.html" class="category-link"
-                >Study Plan</a
-              >
-              <a href="higher-study.html" class="category-link">higher Study</a>
-              <a href="live-classes.html" class="category-link">Live Classes</a>
-              <a href="ielts-motivation.html" class="category-link"
-                >IELTS Motivation</a
-              >
+        </a>
+      </div>
+      <div id="auth-buttons-container" class="auth-container">
+        <div class="auth-loading-pulse">
+          <div class="auth-loading-circle"></div>
+          <div class="auth-loading-content">
+            <div class="auth-loading-bar"></div>
+            <div class="auth-loading-grid">
+              <div class="auth-loading-bar auth-loading-col-2"></div>
+              <div class="auth-loading-bar auth-loading-col-1"></div>
             </div>
+            <div class="auth-loading-bar"></div>
           </div>
-
-          <a href="quizzes.html">Quizzes</a>
-
-          <div class="dropdown">
-            <a class="down-arrow" href="javascript:void(0)">
-              Services <span class="arrow">&gt;</span>
-            </a>
-            <div class="submenu">
-              <a href="#">1:1 Coaching</a>
-              <a href="#">Essay Checking</a>
-              <a href="#">Speaking Practice</a>
-            </div>
-          </div>
-
-          <a href="tips-tricks.html">IELTS Tips and Tricks</a>
-          <a href="contact.html">Contact</a>
         </div>
-      </nav>
+      </div>
+    </nav>
+    <div
+      id="main-container"
+      class="min-h-screen mt-[-1.5vw] text-gray-200 flex flex-col items-center mt-[22vw] md:mt-[16vw] lg:mt-20 p-4 py-6 lg:py-4"
+    >
       <!-- Main Content Area: Sidebar and Editor/Results -->
       <div
-        class="flex flex-col lg:flex-row flex-grow w-full gap-6 md:gap-8 bg-white rounded-3xl overflow-hidden lg:py-[5vw] py-[15vw]"
+        class="flex flex-col lg:flex-row flex-grow w-full gap-6 md:gap-8 bg-gray-800 rounded-3xl overflow-hidden lg:py-[0] py-[0]"
       >
         <!-- Left Section: Sidebar for Feature Cards -->
         <aside
-          class="w-full lg:w-[20vw] flex-shrink-0 bg-white rounded-tl-3xl rounded-bl-3xl p-6 md:p-8 lg:mt-3"
+          class="w-full lg:w-[20vw] flex-shrink-0 bg-gray-800 rounded-tl-3xl rounded-bl-3xl p-6 md:p-8 lg:mt-3"
         >
           <h2
-            class="text-2xl md:text-3xl font-bold text-gray-800 mb-5 text-center lg:text-left"
+            class="text-2xl md:text-3xl font-bold text-gray-100 mb-5 text-center lg:text-left"
           >
             Features
           </h2>
@@ -354,7 +153,7 @@ nav .menu-item a:hover {
             <!-- Grammar Card -->
             <button
               id="checkGrammarButton"
-              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:bg-indigo-50 hover:border-indigo-400 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-900 text-gray-200 rounded-xl border border-gray-700 shadow-sm hover:bg-gray-700 hover:border-gray-600 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
               data-feature="grammar"
               aria-live="polite"
             >
@@ -369,7 +168,7 @@ nav .menu-item a:hover {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="text-purple-600 mb-2"
+                class="text-purple-400 mb-2"
               >
                 <path
                   d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
@@ -380,7 +179,7 @@ nav .menu-item a:hover {
                 <line x1="10" y1="9" x2="8" y2="9"></line>
               </svg>
               <span
-                class="text-sm sm:text-base font-semibold text-gray-700 text-center"
+                class="text-sm sm:text-base font-semibold text-gray-200 text-center"
                 >Grammar & Spell</span
               >
             </button>
@@ -388,7 +187,7 @@ nav .menu-item a:hover {
             <!-- Summarize Card -->
             <button
               id="summarizeButton"
-              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:bg-indigo-50 hover:border-indigo-400 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-900 text-gray-200 rounded-xl border border-gray-700 shadow-sm hover:bg-gray-700 hover:border-gray-600 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
               data-feature="summarize"
               aria-live="polite"
             >
@@ -403,7 +202,7 @@ nav .menu-item a:hover {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="text-indigo-600 mb-2"
+                class="text-indigo-400 mb-2"
               >
                 <path d="M8 3H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4"></path>
                 <path d="M16 21h4a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-4"></path>
@@ -411,7 +210,7 @@ nav .menu-item a:hover {
                 <line x1="6" y1="6" x2="12" y2="12"></line>
               </svg>
               <span
-                class="text-sm sm:text-base font-semibold text-gray-700 text-center"
+                class="text-sm sm:text-base font-semibold text-gray-200 text-center"
                 >Summarize Text</span
               >
             </button>
@@ -419,7 +218,7 @@ nav .menu-item a:hover {
             <!-- Tone Analysis Card -->
             <button
               id="analyzeToneButton"
-              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:bg-indigo-50 hover:border-indigo-400 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-900 text-gray-200 rounded-xl border border-gray-700 shadow-sm hover:bg-gray-700 hover:border-gray-600 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
               data-feature="tone"
               aria-live="polite"
             >
@@ -434,14 +233,14 @@ nav .menu-item a:hover {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="text-green-600 mb-2"
+                class="text-green-400 mb-2"
               >
                 <path
                   d="M12 21.35l-1.45-1.32C5.4 14.07 2 10.15 2 7.5A4.5 4.5 0 0 1 6.5 3a4.5 4.5 0 0 1 4.5 4.5c0 .32-.03.62-.09.91L12 9.07l.09-.91c-.06-.29-.09-.59-.09-.91A4.5 4.5 0 0 1 17.5 3a4.5 4.5 0 0 1 4.5 4.5c0 2.65-3.4 6.57-8.55 11.53L12 21.35z"
                 ></path>
               </svg>
               <span
-                class="text-sm sm:text-base font-semibold text-gray-700 text-center"
+                class="text-sm sm:text-base font-semibold text-gray-200 text-center"
                 >Analyze Tone</span
               >
             </button>
@@ -449,7 +248,7 @@ nav .menu-item a:hover {
             <!-- Paraphrase Card -->
             <button
               id="paraphraseButton"
-              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:bg-indigo-50 hover:border-indigo-400 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-900 text-gray-200 rounded-xl border border-gray-700 shadow-sm hover:bg-gray-700 hover:border-gray-600 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
               data-feature="paraphrase"
               aria-live="polite"
             >
@@ -464,7 +263,7 @@ nav .menu-item a:hover {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="text-purple-600 mb-2"
+                class="text-purple-400 mb-2"
               >
                 <polyline points="17 1 21 5 17 9"></polyline>
                 <path d="M21 5H3a2 2 0 0 0-2 2v2"></path>
@@ -472,7 +271,7 @@ nav .menu-item a:hover {
                 <path d="M3 19h18a2 2 0 0 0 2-2v-2"></path>
               </svg>
               <span
-                class="text-sm sm:text-base font-semibold text-gray-700 text-center"
+                class="text-sm sm:text-base font-semibold text-gray-200 text-center"
                 >Paraphrase</span
               >
             </button>
@@ -480,7 +279,7 @@ nav .menu-item a:hover {
             <!-- Keywords Card -->
             <button
               id="keywordsButton"
-              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:bg-indigo-50 hover:border-indigo-400 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-900 text-gray-200 rounded-xl border border-gray-700 shadow-sm hover:bg-gray-700 hover:border-gray-600 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
               data-feature="keywords"
               aria-live="polite"
             >
@@ -495,7 +294,7 @@ nav .menu-item a:hover {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="text-blue-600 mb-2"
+                class="text-blue-400 mb-2"
               >
                 <path
                   d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
@@ -503,7 +302,7 @@ nav .menu-item a:hover {
                 <line x1="7" y1="7" x2="7.01" y2="7"></line>
               </svg>
               <span
-                class="text-sm sm:text-base font-semibold text-gray-700 text-center"
+                class="text-sm sm:text-base font-semibold text-gray-200 text-center"
                 >Extract Keywords</span
               >
             </button>
@@ -511,7 +310,7 @@ nav .menu-item a:hover {
             <!-- Readability Card -->
             <button
               id="readabilityButton"
-              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:bg-indigo-50 hover:border-indigo-400 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-900 text-gray-200 rounded-xl border border-gray-700 shadow-sm hover:bg-gray-700 hover:border-gray-600 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
               data-feature="readability"
               aria-live="polite"
             >
@@ -526,13 +325,13 @@ nav .menu-item a:hover {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="text-orange-600 mb-2"
+                class="text-orange-400 mb-2"
               >
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
               </svg>
               <span
-                class="text-sm sm:text-base font-semibold text-gray-700 text-center"
+                class="text-sm sm:text-base font-semibold text-gray-200 text-center"
                 >Readability</span
               >
             </button>
@@ -541,7 +340,7 @@ nav .menu-item a:hover {
             <button
               style="display: ;"
               id="concisenessButton"
-              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-50 rounded-xl border border-gray-200 shadow-sm hover:bg-indigo-50 hover:border-indigo-400 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-900 text-gray-200 rounded-xl border border-gray-700 shadow-sm hover:bg-gray-700 hover:border-gray-600 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
               data-feature="conciseness"
               aria-live="polite"
             >
@@ -556,7 +355,7 @@ nav .menu-item a:hover {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="text-red-600 mb-2"
+                class="text-red-400 mb-2"
               >
                 <circle cx="6" cy="7" r="3"></circle>
                 <circle cx="6" cy="17" r="3"></circle>
@@ -565,7 +364,7 @@ nav .menu-item a:hover {
                 <line x1="21" y1="17" x2="18" y2="14"></line>
               </svg>
               <span
-                class="text-sm sm:text-base font-semibold text-gray-700 text-center"
+                class="text-sm sm:text-base font-semibold text-gray-200 text-center"
                 >Conciseness</span
               >
             </button>
@@ -573,7 +372,7 @@ nav .menu-item a:hover {
             <!-- Clear All Button (as a distinct card) -->
             <button
               id="clearAllButton"
-              class="col-span-full feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-100 rounded-xl border border-gray-300 shadow-sm hover:bg-gray-200 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              class="col-span-full feature-card flex flex-col items-center justify-center p-3 sm:p-4 bg-gray-700 text-gray-200 rounded-xl border border-gray-600 shadow-sm hover:bg-gray-600 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               <!-- Feather icon: Trash Can -->
               <svg
@@ -586,7 +385,7 @@ nav .menu-item a:hover {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="text-gray-600 mb-2"
+                class="text-gray-400 mb-2"
               >
                 <path d="M3 6h18"></path>
                 <path
@@ -596,7 +395,7 @@ nav .menu-item a:hover {
                 <line x1="14" y1="11" x2="14" y2="17"></line>
               </svg>
               <span
-                class="text-sm sm:text-base font-semibold text-gray-700 text-center"
+                class="text-sm sm:text-base font-semibold text-gray-200 text-center"
                 >Clear All</span
               >
             </button>
@@ -605,12 +404,12 @@ nav .menu-item a:hover {
 
         <!-- Right Section: Input & Output Areas -->
         <main
-          class="flex-1 flex flex-col lg:flex-row gap-6 md:gap-8 bg-white p-6 md:p-10"
+          class="flex-1 flex flex-col lg:flex-row gap-6 md:gap-8 bg-gray-800 p-6 md:p-10"
         >
           <!-- Left Sub-Section: Input Area -->
           <div class="flex-1 flex flex-col">
             <h2
-              class="text-2xl md:text-3xl font-bold text-gray-800 mb-5 text-center lg:text-left"
+              class="text-2xl md:text-3xl font-bold text-gray-100 mb-5 text-center lg:text-left"
             >
               Input Your Text
             </h2>
@@ -618,14 +417,14 @@ nav .menu-item a:hover {
             <div class="mb-4 flex-grow">
               <textarea
                 id="inputText"
-                class="w-full h-[28rem] md:h-[36rem] p-4 border border-gray-300 rounded-xl focus:ring-4 focus:ring-indigo-300 focus:border-indigo-600 transition-all duration-200 resize-none text-base md:text-lg text-gray-800 shadow-sm placeholder-gray-400"
+                class="w-full h-[28rem] md:h-[36rem] p-4 border border-gray-700 bg-gray-900 rounded-xl focus:ring-4 focus:ring-indigo-600 focus:border-indigo-600 transition-all duration-200 resize-none text-base md:text-lg text-gray-200 shadow-sm placeholder-gray-500"
                 placeholder="Paste your text here to get started..."
                 aria-label="Text input for writing assistant features"
               ></textarea>
             </div>
 
             <!-- Text Statistics -->
-            <div class="flex justify-between text-sm text-gray-500 mb-6 px-1">
+            <div class="flex justify-between text-sm text-gray-400 mb-6 px-1">
               <span id="wordCount">Words: 0</span>
               <span id="charCount">Characters: 0</span>
             </div>
@@ -634,24 +433,24 @@ nav .menu-item a:hover {
           <!-- Right Sub-Section: Output Area -->
           <div class="flex-1 mt-8 lg:mt-0 flex flex-col">
             <h2
-              class="text-2xl md:text-3xl font-bold text-gray-800 mb-5 text-center lg:text-left"
+              class="text-2xl md:text-3xl font-bold text-gray-100 mb-5 text-center lg:text-left"
             >
               Results
             </h2>
 
             <p
               id="errorMessage"
-              class="mb-4 text-red-600 text-center lg:text-left font-medium hidden px-1"
+              class="mb-4 text-red-400 text-center lg:text-left font-medium hidden px-1"
               role="alert"
             ></p>
 
             <!-- Loading Spinner Container (centralized) -->
             <div
               id="loadingContainer"
-              class="flex-grow flex flex-col items-center justify-center bg-gray-50 rounded-xl border border-gray-200 shadow-inner hidden"
+              class="flex-grow flex flex-col items-center justify-center bg-gray-900 rounded-xl border border-gray-700 shadow-inner hidden"
             >
               <svg
-                class="animate-spin h-14 w-14 text-indigo-500 mb-4"
+                class="animate-spin h-14 w-14 text-indigo-400 mb-4"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -670,7 +469,7 @@ nav .menu-item a:hover {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              <span class="text-xl text-gray-600 font-semibold" id="loadingText"
+              <span class="text-xl text-gray-400 font-semibold" id="loadingText"
                 >Processing...</span
               >
             </div>
@@ -678,18 +477,18 @@ nav .menu-item a:hover {
             <!-- Output Sections (initially all hidden except default placeholder) -->
             <div
               id="outputContainer"
-              class="flex-grow relative bg-gray-50 p-5 h-[340px] md:min-h-[320px] lg:min-h-[400px] border border-gray-200 rounded-xl text-base md:text-lg text-gray-800 shadow-inner overflow-auto"
+              class="flex-grow relative bg-gray-900 p-5 h-[340px] md:min-h-[320px] lg:min-h-[400px] border border-gray-700 rounded-xl text-base md:text-lg text-gray-200 shadow-inner overflow-auto"
             >
               <p
                 id="generalPlaceholderText"
-                class="text-gray-400 italic text-center py-5"
+                class="text-gray-500 italic text-center py-5"
               >
                 Select a feature to see the results here.
               </p>
 
               <!-- Grammar Correction Output -->
               <div id="grammarOutput" class="output-section hidden">
-                <h3 class="text-xl font-bold text-gray-700 mb-3">
+                <h3 class="text-xl font-bold text-gray-100 mb-3">
                   Refined Text
                 </h3>
                 <!-- Corrected text will be inserted here with highlighting -->
@@ -698,25 +497,25 @@ nav .menu-item a:hover {
                   class="whitespace-pre-wrap grammar-diff leading-relaxed"
                 ></div>
                 <p
-                  class="feature-error-message mt-2 text-red-600 font-medium hidden"
+                  class="feature-error-message mt-2 text-red-400 font-medium hidden"
                 ></p>
               </div>
 
               <!-- Summarizer Output -->
               <div id="summarizerOutput" class="output-section hidden">
-                <h3 class="text-xl font-bold text-gray-700 mb-3">Summary</h3>
+                <h3 class="text-xl font-bold text-gray-100 mb-3">Summary</h3>
                 <p
                   id="summarizedText"
                   class="whitespace-pre-wrap leading-relaxed"
                 ></p>
                 <p
-                  class="feature-error-message mt-2 text-red-600 font-medium hidden"
+                  class="feature-error-message mt-2 text-red-400 font-medium hidden"
                 ></p>
               </div>
 
               <!-- Tone Analysis Output -->
               <div id="toneOutput" class="output-section hidden">
-                <h3 class="text-xl font-bold text-gray-700 mb-3">
+                <h3 class="text-xl font-bold text-gray-100 mb-3">
                   Tone Analysis
                 </h3>
                 <p
@@ -724,13 +523,13 @@ nav .menu-item a:hover {
                   class="whitespace-pre-wrap leading-relaxed"
                 ></p>
                 <p
-                  class="feature-error-message mt-2 text-red-600 font-medium hidden"
+                  class="feature-error-message mt-2 text-red-400 font-medium hidden"
                 ></p>
               </div>
 
               <!-- Paraphrase Output -->
               <div id="paraphraseOutput" class="output-section hidden">
-                <h3 class="text-xl font-bold text-gray-700 mb-3">
+                <h3 class="text-xl font-bold text-gray-100 mb-3">
                   Paraphrased Text
                 </h3>
                 <p
@@ -738,25 +537,25 @@ nav .menu-item a:hover {
                   class="whitespace-pre-wrap leading-relaxed"
                 ></p>
                 <p
-                  class="feature-error-message mt-2 text-red-600 font-medium hidden"
+                  class="feature-error-message mt-2 text-red-400 font-medium hidden"
                 ></p>
               </div>
 
               <!-- Keywords Output -->
               <div id="keywordsOutput" class="output-section hidden">
-                <h3 class="text-xl font-bold text-gray-700 mb-3">Keywords</h3>
+                <h3 class="text-xl font-bold text-gray-100 mb-3">Keywords</h3>
                 <p
                   id="extractedKeywords"
                   class="whitespace-pre-wrap leading-relaxed"
                 ></p>
                 <p
-                  class="feature-error-message mt-2 text-red-600 font-medium hidden"
+                  class="feature-error-message mt-2 text-red-400 font-medium hidden"
                 ></p>
               </div>
 
               <!-- Readability Output -->
               <div id="readabilityOutput" class="output-section hidden">
-                <h3 class="text-xl font-bold text-gray-700 mb-3">
+                <h3 class="text-xl font-bold text-gray-100 mb-3">
                   Readability Assessment
                 </h3>
                 <p
@@ -764,13 +563,13 @@ nav .menu-item a:hover {
                   class="whitespace-pre-wrap leading-relaxed"
                 ></p>
                 <p
-                  class="feature-error-message mt-2 text-red-600 font-medium hidden"
+                  class="feature-error-message mt-2 text-red-400 font-medium hidden"
                 ></p>
               </div>
 
               <!-- Conciseness Output -->
               <div id="concisenessOutput" class="output-section hidden">
-                <h3 class="text-xl font-bold text-gray-700 mb-3">
+                <h3 class="text-xl font-bold text-gray-100 mb-3">
                   Conciseness Suggestions
                 </h3>
                 <p
@@ -778,7 +577,7 @@ nav .menu-item a:hover {
                   class="whitespace-pre-wrap leading-relaxed"
                 ></p>
                 <p
-                  class="feature-error-message mt-2 text-red-600 font-medium hidden"
+                  class="feature-error-message mt-2 text-red-400 font-medium hidden"
                 ></p>
               </div>
             </div>
@@ -790,7 +589,7 @@ nav .menu-item a:hover {
             >
               <button
                 id="copyToClipboardButton"
-                class="px-6 py-3 bg-white text-indigo-600 font-semibold rounded-xl border border-indigo-600 shadow-sm hover:bg-indigo-50 hover:border-indigo-700 transition-colors duration-200 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-indigo-300 transform hover:scale-[1.02] active:scale-[0.98]"
+                class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl border border-indigo-600 shadow-sm hover:bg-indigo-700 hover:border-indigo-700 transition-colors duration-200 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transform hover:scale-[1.02] active:scale-[0.98]"
                 aria-label="Copy result to clipboard"
               >
                 <svg
@@ -977,7 +776,13 @@ nav .menu-item a:hover {
             "border-indigo-500",
             "bg-indigo-50"
           );
-          card.classList.add("bg-gray-50", "border-gray-200"); // Revert to default inactive style
+          // Dark theme specific classes
+          card.classList.add("bg-gray-900", "border-gray-700");
+          // Revert to default inactive style
+          if (card.id === "clearAllButton") {
+            card.classList.add("bg-gray-700", "border-gray-600");
+            card.classList.remove("bg-gray-900", "border-gray-700");
+          }
         });
 
         // Hide all output sections and their error messages
@@ -999,10 +804,10 @@ nav .menu-item a:hover {
             selectedButton.classList.add(
               "ring-2",
               "ring-indigo-500",
-              "border-indigo-500",
-              "bg-indigo-50"
+              "border-indigo-500"
             );
-            selectedButton.classList.remove("bg-gray-50", "border-gray-200"); // Remove default inactive style
+            selectedButton.classList.remove("bg-gray-900", "border-gray-700"); // Remove default inactive style
+            selectedButton.classList.add("bg-gray-700", "border-gray-600"); // Use a slightly lighter dark color for active state
           }
         } else {
           generalPlaceholderText.classList.remove("hidden"); // Fallback to general placeholder
@@ -1079,7 +884,7 @@ nav .menu-item a:hover {
       const callGeminiAPI = async (prompt) => {
         const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
         const payload = { contents: chatHistory };
-        const apiKey = "AIzaSyCsdeFOJrU43BZmnRP5WD1pm80fZH1cxN4"; // User provided API key
+        const apiKey = "AIzaSyCsdeFOJrU43BZmnRP5WD1pm80fZH1cxN4";
 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
@@ -1220,28 +1025,28 @@ nav .menu-item a:hover {
 
             if (foundMatchInCorrected && !foundMatchInOriginal) {
               // Original word is coming up in corrected, so current corrected is an addition
-              html += `<ins class="bg-green-200 text-green-800 px-0.5 rounded">${correctedWord}</ins>`;
+              html += `<ins class="bg-green-900/50 text-green-400 px-0.5 rounded">${correctedWord}</ins>`;
               corrIdx++;
             } else if (foundMatchInOriginal && !foundMatchInCorrected) {
               // Corrected word is coming up in original, so current original is a deletion
-              html += `<del class="bg-red-200 text-red-800 line-through px-0.5 rounded">${originalWord}</del>`;
+              html += `<del class="bg-red-900/50 text-red-400 line-through px-0.5 rounded">${originalWord}</del>`;
               origIdx++;
             } else if (
               originalWord !== undefined &&
               correctedWord !== undefined
             ) {
               // Both are different, consider it a change (deletion + addition)
-              html += `<del class="bg-red-200 text-red-800 line-through px-0.5 rounded">${originalWord}</del>`;
-              html += `<ins class="bg-green-200 text-green-800 px-0.5 rounded">${correctedWord}</ins>`;
+              html += `<del class="bg-red-900/50 text-red-400 line-through px-0.5 rounded">${originalWord}</del>`;
+              html += `<ins class="bg-green-900/50 text-green-400 px-0.5 rounded">${correctedWord}</ins>`;
               origIdx++;
               corrIdx++;
             } else if (originalWord !== undefined) {
               // Remaining original words are deletions
-              html += `<del class="bg-red-200 text-red-800 line-through px-0.5 rounded">${originalWord}</del>`;
+              html += `<del class="bg-red-900/50 text-red-400 line-through px-0.5 rounded">${originalWord}</del>`;
               origIdx++;
             } else if (correctedWord !== undefined) {
               // Remaining corrected words are additions
-              html += `<ins class="bg-green-200 text-green-800 px-0.5 rounded">${correctedWord}</ins>`;
+              html += `<ins class="bg-green-900/50 text-green-400 px-0.5 rounded">${correctedWord}</ins>`;
               corrIdx++;
             }
           }
@@ -1442,6 +1247,8 @@ nav .menu-item a:hover {
     <script src="dropdown-settings.js"></script>
     <script src="app.js"></script>
     <script src="gsap.js"></script>
-  </body>
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="auth-page-loading.js"></script>
+    <script src="navigation.js"></script>
   </body>
 </html>

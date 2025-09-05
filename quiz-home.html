@@ -6,6 +6,7 @@
     <title>IELTS Mahir - Quiz Categories</title>
     <!-- Tailwind CSS CDN -->
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="test-left-header.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -242,17 +243,20 @@
     >
       <div class="flex items-center gap-2 sm:gap-4">
         <!-- Replaced text with image logo -->
-        <img
-          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
-          alt="IELTS Mahir Logo"
-          class="h-8 md:h-10 w-auto"
-          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
-        />
-        <nav class="hidden md:flex gap-6 ml-8 font-inter">
-          <a href="#" class="nav-link transition-all">Inspiration</a>
-          <a href="#" class="nav-link transition-all">Quiz Categories</a>
-          <a href="#" class="nav-link transition-all">Resources</a>
-        </nav>
+        <div class="ai-logo-parent">
+          <a href="home.html">
+            <img
+              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+              alt="IELTS Mahir Logo"
+              class="h-8 md:h-10 w-auto"
+              onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+            />
+          </a>
+          <a href="ai-feature.html" class="ai-button" aria-label="AI Tools">
+            <i class="fas fa-robot" aria-hidden="true"></i>
+            <span>AI</span>
+          </a>
+        </div>
       </div>
       <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
         <!-- Authentication status will be handled by auth.js -->
@@ -281,111 +285,7 @@
 
     <!-- Modal Container -->
     <div id="modal-container"></div>
-    <!-- IELTS Speaking Test Simulator END -->
-    <footer class="footer">
-      <div class="footer-top">
-        <div class="contact-banner">
-          <div class="contact-content">
-            <h2 class="anton">Achieve Your Desired IELTS Band</h2>
-            <p class="montserrat">
-              Certified mentors guiding you every step of the way
-            </p>
-            <div class="contact-buttons">
-              <button class="btn primary montserrat">
-                Explore IELTS Modules
-              </button>
-              <a href="#" class="btn link montserrat"
-                >Latest Success Stories →</a
-              >
-            </div>
-          </div>
-          <div class="contact-image">
-            <div class="bg-letter">
-              <span class="im-i">I</span>
-              <span class="im-m">M</span>
-            </div>
-            <img src="assets/LELTS-Mahir.png" alt="IELTS Student Image" />
-          </div>
-        </div>
-      </div>
 
-      <div class="footer-links">
-        <div class="footer-column">
-          <h4 class="anton">Quick Access</h4>
-          <ul class="montserrat">
-            <li><a href="#">About IELTS Mahir</a></li>
-            <li><a href="#">Contact Support</a></li>
-            <li><a href="#">IELTS FAQs</a></li>
-            <li><a href="#">Terms & Conditions</a></li>
-            <li><a href="#">Privacy Guidelines</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column">
-          <h4 class="anton">Learning Hub</h4>
-          <ul class="montserrat">
-            <li><a href="#">IELTS Blog</a></li>
-            <li><a href="#">Student Reviews</a></li>
-            <li><a href="#">Success Partners</a></li>
-            <li><a href="#">Live Support</a></li>
-            <li><a href="#">Help & Guidance</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column subscribe">
-          <h4 class="anton">Get Weekly IELTS Tips</h4>
-          <p class="montserrat">
-            Subscribe and stay ahead with expert strategies
-          </p>
-          <div class="subscribe-form">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              class="montserrat"
-            />
-            <button class="montserrat">Subscribe</button>
-          </div>
-          <small class="montserrat"
-            >By subscribing, you agree to our
-            <a href="#">Privacy Policy</a></small
-          >
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <div class="branding anton">IELTS MAHIR.</div>
-        <div class="footer-policy-links montserrat">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Cookies Notice</a>
-        </div>
-        <div class="footer-socials">
-          <a href="#"
-            ><img
-              src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png"
-              alt="Facebook"
-          /></a>
-          <a href="#"
-            ><img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png"
-              alt="Instagram"
-          /></a>
-          <a href="#"
-            ><img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png"
-              alt="LinkedIn"
-          /></a>
-          <a href="#"
-            ><img
-              src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png"
-              alt="YouTube"
-          /></a>
-        </div>
-        <p class="montserrat copyright">
-          © 2024 IELTS Mahir. All rights reserved.
-        </p>
-      </div>
-    </footer>
     <script type="module">
       // Import authentication functions and state from the central auth.js file
       import {
@@ -776,9 +676,13 @@
             // Ensure renderApp is called after auth state is known and game stats are fetched
             // This line was moved inside the .then() block
             auth.onAuthStateChanged(async (user) => {
-              if (user) {
-                await fetchUserGameStats(user.uid);
+              // Redirect to auth page if user is not signed in
+              if (!user) {
+                window.location.href = "auth.html";
+                return; // Stop execution to prevent rendering the page
               }
+
+              await fetchUserGameStats(user.uid);
               renderApp();
             });
           })

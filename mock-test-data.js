@@ -511,24 +511,115 @@ export const allMockTests = [
       {
         id: "reading-section-1",
         title: "Section 1",
-        passageContent: `
-         <h2>Save the Turtles</h2>
+        passageContent: ` <h1 class="text-center text-3xl md:text-4xl font-extrabold text-green-700 mb-6">
+            Save the Turtles
+        </h1>
 
-<p><strong>A.</strong> Leatherback turtles follow the general sea turtle body plan of having a large, flattened, round body with two pairs of very large flippers and a short tail. Like other sea turtles, the leatherback's flattened forelimbs are adapted for swimming in the open ocean. Claws are absent from both pairs of flippers. The Leatherback's flippers are the largest in proportion to its body among extant sea turtles. Leatherback's front flippers can grow up to 2.7 meters (9 ft.) in large specimens, the largest flippers (even in comparison to its body) of any sea turtle. As the last surviving member of its family, the leatherback turtle has several distinguishing characteristics that differentiate it from other sea turtles. Its most notable feature is that it lacks the bony carapace of the other extant sea turtles.</p>
+        <!-- Section A -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">A.</span>
+            Leatherback turtles follow the general sea turtle body plan of having a large,
+            flattened, round body with two pairs of very large flippers and a short tail.
+            Like other sea turtles, the leatherback's flattened forelimbs are adapted for
+            swimming in the open ocean. Claws are absent from both pairs of flippers. The
+            Leatherback's flippers are the largest in proportion to its body among extant
+            sea turtles. Leatherback's front flippers can grow up to 2.7 meters (9 ft.) in
+            large specimens, the largest flippers (even in comparison to its body) of any
+            sea turtle. As the last surviving member of its family, the leatherback turtle
+            has several distinguishing characteristics that differentiate it from other sea
+            turtles. Its most notable feature is that it lacks the bony carapace of the
+            other extant sea turtles.
+        </p>
 
-<p><strong>B.</strong> During the past month, four turtles have washed up along Irish coasts from Wexford to Kerry. These turtles are more typical of warmer waters and only occur in Irish waters when they stray off course. It is likely that they may have originated from Florida, America. Two specimens have been taken to Coastal and Marine Resources Centre (stored at the National Maritime College), University College Cork, where a necropsy (post mortem for animals) will be conducted to establish their age, sex and their exact origin. During this same period, two leatherback turtles were found in Scotland, and a rare Kemp's Ridley turtle was found in Wales, thus making it an exceptional month for stranded turtles in Ireland and the UK.</p>
+        <!-- Section B -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">B.</span>
+            During the past month, four turtles have washed up along Irish coasts from
+            Wexford to Kerry. These turtles are more typical of warmer waters and only
+            occur in Irish waters when they stray off course. It is likely that they may
+            have originated from Florida, America. Two specimens have been taken to Coastal
+            and Marine Resources Centre (stored at the National Maritime College),
+            University College Cork, where a necropsy (post mortem for animals) will be
+            conducted to establish their age, sex and their exact origin. During this same
+            period, two leatherback turtles were found in Scotland, and a rare Kemp's
+            Ridley turtle was found in Wales, thus making it an exceptional month for
+            stranded turtles in Ireland and the UK.
+        </p>
 
-<p><strong>C.</strong> Actually, there has been extensive research conducted regarding the sea turtles’ abilities to return to their nesting regions and sometimes exact locations from hundreds of miles away. In the water, their path is greatly affected by powerful currents. Despite their limited vision, and lack of landmarks in the open water, turtles are able to retrace their migratory paths. Some explanations of this phenomenon have found that sea turtles can detect the angle and intensity of the earth’s magnetic fields.</p>
+        <!-- Section C -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">C.</span>
+            Actually, there has been extensive research conducted regarding the sea
+            turtles’ abilities to return to their nesting regions and sometimes exact
+            locations from hundreds of miles away. In the water, their path is greatly
+            affected by powerful currents. Despite their limited vision, and lack of
+            landmarks in the open water, turtles are able to retrace their migratory paths.
+            Some explanations of this phenomenon have found that sea turtles can detect the
+            angle and intensity of the earth’s magnetic fields.
+        </p>
 
-<p><strong>D.</strong> However, Loggerhead turtles are not normally found in Irish waters, because water temperatures here are far too cold for their survival. Instead, adult loggerheads prefer the warmer waters of the Mediterranean, the Caribbean and North America's east coast. The four turtles that were found have probably originated from the North American population of loggerheads. However, it will require genetic analysis to confirm this assumption. It is thought that after leaving their nesting beach as hatchlings (when they measure 4.5 cm in length), these tiny turtles enter the North Atlantic Gyre (a giant circular ocean current) that takes them from America, across to Europe (Azores area), down towards North Africa, before being transported back again to America via a different current. This remarkable round trip may take many years during which these tiny turtles grow by several centimeters a year. Loggerheads may circulate around the North Atlantic several times before they settle in the coastal waters of Florida or the Caribbean.</p>
+        <!-- Section D -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">D.</span>
+            However, Loggerhead turtles are not normally found in Irish waters, because
+            water temperatures here are far too cold for their survival. Instead, adult
+            loggerheads prefer the warmer waters of the Mediterranean, the Caribbean and
+            North America's east coast. The four turtles that were found have probably
+            originated from the North American population of loggerheads. However it will
+            require genetic analysis to confirm this assumption. It is thought that after
+            leaving their nesting beach as hatchlings (when they measure 4.5 cm in length),
+            these tiny turtles enter the North Atlantic Gyre (a giant circular ocean
+            current) that takes them from America, across to Europe (Azores area), down
+            towards North Africa, before being transported back again to America via a
+            different current. This remarkable round trip may take many years during which
+            these tiny turtles grow by several centimeters a year. Loggerheads may
+            circulate around the North Atlantic several times before they settle in the
+            coastal waters of Florida or the Caribbean.
+        </p>
 
-<p><strong>E.</strong> These four turtles were probably on their way around the Atlantic when they strayed a bit too far north from the Gulf Stream. Once they did, their fate was sealed, as the cooler waters of the North East Atlantic are too cold for loggerheads (unlike leatherback turtles which have many anatomical and physiological adaptations to enable them to swim in our seas). Once in cool waters, the body of a loggerhead begins to shut down as they get 'cold stunned', then get hypothermia and die.</p>
+        <!-- Section E -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">E.</span>
+            These four turtles were probably on their way around the Atlantic when they
+            strayed a bit too far north from the Gulf Stream. Once they did, their fate was
+            sealed, as the cooler waters of the North East Atlantic are too cold for
+            loggerheads (unlike leatherback turtles which have many anatomical and
+            physiological adaptations to enable them to swim in our seas). Once in cool
+            waters, the body of a loggerhead begins to shut down as they get 'cold
+            stunned', then get hypothermia and die.
+        </p>
 
-<p><strong>F.</strong> Leatherbacks are in (among others) imminent danger of extinction. A critical factor is the harvesting of eggs from nests. Valued as a food delicacy, Leatherback eggs are falsely touted to have aphrodisiacal properties in some cultures. The leatherback, unlike the Green Sea turtle, is not often killed for its meat; however, the increase in human populations coupled with the growing black market trade has escalated their egg depletion. Other critical factors causing the leatherbacks’ decline are pollution such as plastics (leatherbacks eat this debris thinking it is jellyfish), fishing practices such as long line fishing and gill nets, and development on habitat areas. Scientists have estimated that there are only about 35,000 Leatherback turtles in the world.</p>
+        <!-- Section F -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">F.</span>
+            Leatherbacks are in (among others) is the imminent danger of extinction. A
+            critical factor harvesting of eggs from nests. Valued as a food delicacy,
+            Leatherback eggs are falsely touted to have aphrodisiacal properties in some
+            cultures. The leatherback, unlike the Green Sea turtle, is not often killed for
+            its meat; however, the increase in human populations coupled with the growing
+            black market trade has escalated their egg depletion. Other critical factors
+            causing the leatherbacks’ decline are pollution such as plastics (leatherbacks
+            eat this debris thinking it is jellyfish; fishing practices such as long line
+            fishing and gill nets, and development on habitat areas. Scientists have
+            estimated that there are only about 35,000 Leatherback turtles in the world.
+        </p>
 
-<p><strong>G.</strong> We are often unable to understand the critical impact a species has on the environment—that is, until that species becomes extinct. Even if we do not know the role a creature plays in the health of the environment, past lessons have taught us enough to know that every animal and plant is one important link in the integral chain of nature. Some scientists now speculate that the Leatherback may play an important role in the recovery of diminishing fish populations. Since the Leatherback consumes its weight in jellyfish per day, it helps to keep jellyfish populations in check. Jellyfish consume large quantities of fish larvae. The rapid decline in Leatherback populations over the last 50 years has been accompanied by a significant increase in jellyfish and a marked decrease in fish in our oceans. Saving sea turtles is an international endeavor.</p>
-
-        `,
+        <!-- Section G -->
+        <p>
+            <span class="font-bold text-green-800">G.</span>
+            We are often unable to understand the critical impact a species has on the
+            environment—that is, until that species becomes extinct. Even if we do not know
+            the role a creature plays in the health of the environment, past lessons have
+            taught US enough to know that every animal and plant is one important link in
+            the integral chain of nature. Some scientists now speculate that the
+            Leatherback may play an important role in the recovery of diminishing fish
+            populations. Since the Leatherback consumes its weight in jellyfish per day, it
+            helps to keep Jellyfish populations in check. Jellyfish consume large
+            quantities of fish larvae. The rapid decline in Leatherback populations over
+            the last 50 years has been accompanied by a significant increase in jellyfish
+            and a marked decrease in fish in our oceans. Saving sea turtles is an
+            International endeavor.
+        </p>`,
         questionGroups: [
           {
             instructions: `
@@ -556,7 +647,7 @@ export const allMockTests = [
                 id: "q1",
                 questionNumber: 1,
                 paragraphId: "B",
-                correctAnswer: "ii",
+                correctAnswer: "i",
               },
               {
                 id: "q2",
@@ -568,13 +659,13 @@ export const allMockTests = [
                 id: "q3",
                 questionNumber: 3,
                 paragraphId: "D",
-                correctAnswer: "i",
+                correctAnswer: "ix",
               },
               {
                 id: "q4",
                 questionNumber: 4,
                 paragraphId: "E",
-                correctAnswer: "v",
+                correctAnswer: "viii",
               },
               {
                 id: "q5",
@@ -601,7 +692,7 @@ export const allMockTests = [
                 questionNumber: 7,
                 type: "fill_in_the_blank_passage",
                 text: "How many Leatherback turtles are there in the world?",
-                correctAnswer: "70,000 to 90,000",
+                correctAnswer: "35",
               },
               {
                 id: "q8",
@@ -609,21 +700,21 @@ export const allMockTests = [
                 type: "fill_in_the_blank_passage",
                 text:
                   "What is the most noticeable difference between other sea turtles and leatherbacks?",
-                correctAnswer: "shell",
+                correctAnswer: "The bony carapace",
               },
               {
                 id: "q9",
                 questionNumber: 9,
                 type: "fill_in_the_blank_passage",
                 text: "What can leatherback turtles to die in Irish waters?",
-                correctAnswer: "fishing nets",
+                correctAnswer: ["Cold water", "temperature"],
               },
               {
                 id: "q10",
                 questionNumber: 10,
                 type: "fill_in_the_blank_passage",
                 text: "Where did the four turtles probably come from?",
-                correctAnswer: "Caribbean",
+                correctAnswer: ["Florida, America", "The north American"],
               },
               {
                 id: "q11",
@@ -631,7 +722,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank_passage",
                 text:
                   "By which means can sea turtles retrace their migratory paths?",
-                correctAnswer: "magnetic field",
+                correctAnswer: "(detecting) magnetic fields",
               },
               {
                 id: "q12",
@@ -639,7 +730,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank_passage",
                 text:
                   "For what purpose are Green Sea turtles killed by people?",
-                correctAnswer: "food",
+                correctAnswer: "Its meat",
               },
               {
                 id: "q13",
@@ -647,7 +738,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank_passage",
                 text:
                   "What kind of species will benefits from a decline in Leatherback populations?",
-                correctAnswer: "jellyfish",
+                correctAnswer: "Jellyfish",
               },
             ],
           },
@@ -657,7 +748,168 @@ export const allMockTests = [
         id: "reading-section-2",
         title: "Section 2",
         passageContent: `
-          passage-2 will be added later manually.
+          <!-- Main title for the document -->
+        <h1 class="text-center text-3xl md:text-4xl font-extrabold text-indigo-800 mb-6">
+            Corporate Social Responsibility
+        </h1>
+
+        <!-- Introduction -->
+        <p class="mb-4">
+            Broadly speaking, proponents of CSR have used four arguments to make their case: moral
+            obligation, sustainability, license to operate, and reputation. The moral
+            appeal—arguing that companies have a duty to be good citizens and to do the right thing—is prominent in the goal of Business for Social Responsibility,
+            the leading nonprofit CSR business association in the United States. It asks
+            that its members “achieve commercial success in ways that honor ethical values
+            and respect people, communities, and the natural environment.” Sustainability
+            emphasizes environmental and community stewardship.
+        </p>
+
+        <!-- Section A -->
+        <p class="mb-4">
+            <span class="font-bold text-indigo-700">A.</span>
+            An excellent definition was developed in the 1980s by Norwegian Prime Minister
+            Gro Harlem Brundtland and used by the World Business Council for Sustainable
+            Development "Meeting the needs of the present without compromising the
+            ability of future generations to meet their own needs.” The notion of license
+            to operate derives from the fact that every company needs tacit or explicit
+            permission from governments, communities, and numerous other stakeholders to do
+            business. Finally, reputation is used by many companies to justify CSR
+            initiatives on the grounds that they will improve a company's image, strengthen
+            its brand, enliven morale, and even raise the value of its stock.
+        </p>
+
+        <!-- Section B -->
+        <p class="mb-4">
+            <span class="font-bold text-indigo-700">B.</span>
+            To advance CSR, we must root it in a broad understanding of the
+            interrelationship between a corporation and society while at the same time
+            anchoring it in the strategies and activities of specific companies. To say
+            broadly that business and society need each other might seem like a cliché, but
+            it is also the basic truth that will pull companies out of the muddle that
+            their current corporate-responsibility thinking has created Successful
+            corporations need a healthy society. Education, health care, and equal
+            opportunity are essential to a productive workforce. Safe products and working
+            conditions not only attract customers but lower the internal costs of
+            accidents. Efficient utilization of land, water, energy, and other natural
+            resources makes business more productive. Good government, the rule of law, and
+            property rights are essential for efficiency and innovation. Strong regulatory
+            standards protect both consumers and competitive companies from exploitation.
+            Ultimately, a healthy society creates expanding demand for business, as more
+            human needs are met and aspirations grow. Any business that pursues its ends at
+            the expense of the society in which it operates will find its success to be
+            illusory and ultimately temporary. At the same time, a healthy society needs
+            successful companies. No social program can rival the business sector when it
+            comes to creating the jobs, wealth, and innovation that improve standards of
+            living and social conditions over time.
+        </p>
+
+        <!-- Section C -->
+        <p class="mb-4">
+            <span class="font-bold text-indigo-700">C.</span>
+            A company’s impact on society also changes over time, as social standards
+            evolve and science progresses. Asbestos, now understood as a serious health
+            risk, was thought to be safe in the early 1900s, given the scientific knowledge
+            then available. Evidence of its risks gradually mounted for more than 50 years
+            before any company was held liable for the harms it can cause. Many firms that
+            failed to anticipate the consequences of this evolving body of research have
+            been bankrupted by the results. No longer can companies be content to monitor
+            only the obvious social impacts of today. Without a careful process for
+            identifying evolving social effects of tomorrow, firms may risk their very
+            survival.
+        </p>
+
+        <!-- Section D -->
+        <p class="mb-4">
+            <span class="font-bold text-indigo-700">D.</span>
+            No business can solve all of society’s problems or bear the cost of doing so.
+            Instead, each company must select issues that intersect with its particular
+            business. Other social agendas are best left to those companies in other
+            industries, NGOs, or government institutions that are better positioned to
+            address them. The essential test that should guide CSR is not whether a cause
+            is worthy but whether it presents an opportunity to create shared value— that
+            is, a meaningful benefit for society that is also valuable to the business.
+            However, Corporations are not responsible for all the world’s problems, nor do
+            they have the resources to solve them all Each company can identify the
+            particular set of societal problems that it is best equipped to help resolve
+            and from which it can gain the greatest competitive benefit. Addressing social
+            issues by creating shared value will lead to self-sustaining solutions that do
+            not depend on private or government subsidies. When a well-run business applies
+            its vast resources, expertise, and management talent to problems that it
+            understands and in which it has a stake, it can have a greater impact on social
+            good than any other institution or philanthropic organization.
+        </p>
+
+        <!-- Section E -->
+        <p class="mb-4">
+            <span class="font-bold text-indigo-700">E.</span>
+            The best corporate citizenship initiatives involve far more than writing a
+            check: They specify clear, measurable goals and track results over time. A good
+            example is GE’s program to adopt underperforming public high schools near
+            several of its major U.S. facilities. The company contributes between $250,000
+            and $1 million over a five-year period to each school and makes in-kind
+            donations as well GE managers and employees take an active role by working with
+            school administrators to assess needs and mentor or tutor students. In an
+            independent study of ten schools in the program between 1989 and 1999, nearly
+            all showed significant improvement, while the graduation rate in four of the
+            five worst performing schools doubled from an average of 30% to 60%. Effective
+            corporate citizenship initiatives such as this one create goodwill and improve
+            relations with local governments and other important constituencies. What's
+            more, GE’s employees feel great pride in their participation. Their effect is
+            inherently limited, however. No matter how beneficial the program is, it
+            remains incidental to the company’s business, and the direct effect on GE's
+            recruiting and retention is modest.
+        </p>
+        
+        <!-- Section F -->
+        <p class="mb-4">
+            <span class="font-bold text-indigo-700">F.</span>
+            Microsoft's Working Connections partnership with the American Association of
+            Community Colleges (AACC) is a good example of a shared-value opportunity
+            arising from investments in context. The shortage of information technology
+            workers is a significant constraint on Microsoft’s growth; currently, there are
+            more than 450,000 unfilled IT positions in the United States alone. Community
+            colleges, with an enrollment of 11.6 million students, representing 45% of all
+            U.S. undergraduates, could be a major solution. Microsoft recognizes, however,
+            that community colleges face special challenges: IT curricula are not
+            standardized, technology used in classrooms is often outdated, and there are no
+            systematic professional development programs to keep faculty up to date.
+            Microsoft's $50 million five-year initiative was aimed at all three problems.
+            In addition to contributing money and products, Microsoft sent employee
+            volunteers to colleges to assess needs, contribute to curriculum development,
+            and create faculty development institutes. Note that in this case, volunteers
+            and assigned staff were able to use their core professional skills to address a
+            social need, a far cry from typical volunteer programs. Microsoft has achieved
+            results that have benefited many communities while having a direct—and
+            potentially significant—impact on the company.
+        </p>
+        
+        <!-- Section G -->
+        <p>
+            <span class="font-bold text-indigo-700">G.</span>
+            At the heart of any strategy is a unique value proposition: a set of needs a
+            company can meet for its chosen customers that others cannot. The most
+            strategic CSR occurs when a company adds a social dimension to its value
+            proposition, making social impact integral to the overall strategy. Consider
+            Whole Foods Market, whose value proposition is to sell organic, natural and
+            healthy food products to customers who are passionate about food and the
+            environment. The company's sourcing emphasizes purchases from local farmers
+            through each store's procurement process. Buyers screen out foods containing
+            any of nearly 100 common ingredients that the company considers unhealthy or
+            environmentally damaging. The same standards apply to products made internally.
+            Whole Foods’ commitment to natural and environmentally friendly operating
+            practices extends well beyond sourcing. Stores are constructed using a minimum
+            of virgin raw materials. Recently, the company purchased renewable wind energy
+            credits equal to 100% of its electricity use in all of its stores and facilities,
+            the only Fortune 500 Company to offset its electricity consumption entirely.
+            Spoiled produce and biodegradable waste are trucked to regional centers for
+            composting. Whole Foods' vehicles are being converted to run on biofuels. Even
+            the cleaning products used in its stores are environmentally friendly. And
+            through its philanthropy, the company has created the Animal Compassion
+            Foundation to develop more natural and humane ways of raising farm animals. In
+            short, nearly every aspect of the company’s value chain reinforces the social
+            dimensions of its value proposition, distinguishing Whole Foods from its
+            competitors. From Harvard business review 2007.
+        </p>
         `,
         questionGroups: [
           {
@@ -767,7 +1019,6 @@ export const allMockTests = [
             instructions: `
               <p>Questions 23-26</p>
               <p>Use the information in the passage to match the companies (listed A-C) with opinions or deeds below. Write the appropriate letters A, B or C in boxes 23 26 on your answer sheet.</p>
-              <p>List of companies</p>
             `,
             type: "matching_items",
             listItems: [
@@ -808,7 +1059,153 @@ export const allMockTests = [
         id: "reading-section-3",
         title: "Section 3",
         passageContent: `
-          passage-3 will be added later manually.
+          <!-- Main title for the document -->
+        <h1 class="text-center text-3xl md:text-4xl font-extrabold text-slate-800 mb-6">
+            TV Addiction 2
+        </h1>
+
+        <!-- Section A -->
+        <p class="mb-4">
+            <span class="font-bold text-slate-700">A.</span>
+            Excessive cravings do not necessarily involve physical substances. Gambling can
+            become compulsive; sex can become obsessive. One activity, however, stands out
+            for its prominence and ubiquity—the world’s most popular pastime, television.
+            Most people admit to having a love-hate relationship with it. They complain
+            about the “boob tube” and “couch potatoes,” then they settle into their sofas
+            and grab the remote control. Parents commonly fret about their children’s
+            viewing (if not their own). Even researchers who study TV for a living marvel
+            at the medium’s hold on them personally. Percy Tannenbaum of the University of
+            California at Berkeley has written: “Among life’s more embarrassing moments
+            have been countless occasions when I am engaged in conversation in a room while
+            a TV set is on, and I cannot for the life of me stop from periodically glancing
+            over to the screen. This occurs not only during dull conversations but during
+            reasonably interesting ones just as well.”
+        </p>
+
+        <!-- Section B -->
+        <p class="mb-4">
+            <span class="font-bold text-slate-700">B.</span>
+            Scientists have been studying the effects of television for decades, generally
+            focusing on whether watching violence on TV correlates with being violent in
+            real life. Less attention has been paid to the basic allure of the small
+            screen—the medium, as opposed to the message.
+        </p>
+
+        <!-- Section C -->
+        <p class="mb-4">
+            <span class="font-bold text-slate-700">C.</span>
+            The term “TV addiction” is imprecise and laden with value judgments, but it
+            captures the essence of a very real phenomenon. Psychologists and psychiatrists
+            formally define substance dependence as a disorder characterized by criteria
+            that include spending a great deal of time using the substance; using it more
+            often than one intends; thinking about reducing use or making repeated
+            unsuccessful efforts to reduce use; giving up important social, family or
+            occupational activities to use it; and reporting withdrawal symptoms when one
+            stops using it.
+        </p>
+
+        <!-- Section D -->
+        <p class="mb-4">
+            <span class="font-bold text-slate-700">D.</span>
+            All these criteria can apply to people who watch a lot of television. That does
+            not mean that watching television, in itself, is problematic. Television can
+            teach and amuse; it can reach aesthetic heights; it can provide much needed
+            distraction and escape. The difficulty arises when people strongly sense that
+            they ought not to watch as much as they do and yet find themselves strangely
+            unable to reduce their viewing. Some knowledge of how the medium exerts its
+            pull may help heavy viewers gain better control over their lives.
+        </p>
+
+        <!-- Section E -->
+        <p class="mb-4">
+            <span class="font-bold text-slate-700">E.</span>
+            The amount of time people spend watching television is astonishing. On average,
+            individuals in the industrialized world devote three hours a day to the
+            pursuit—fully half of their leisure time, and more than on any single activity
+            save work and sleep. At this rate, someone who lives to 75 would spend nine
+            years in front of the tube. To some commentators, this devotion means simply
+            that people enjoy TV and make a conscious decision to watch it. But if that is
+            the whole story, why do so many people experience misgivings about how much
+            they view? In Gallup polls in 1992 and 1999, two out of five adult respondents
+            and seven out of 10 teenagers said they spent too much time watching TV. Other
+            surveys have consistently shown that roughly 10 percent of adults call
+            themselves TV addicts.
+        </p>
+
+        <!-- Section F -->
+        <p class="mb-4">
+            <span class="font-bold text-slate-700">F.</span>
+            What is it about TV that has such a hold on US? In part, the attraction seems
+            to spring from our biological ‘orienting response.’ First described by Ivan
+            Pavlov in 1927, the orienting response is our instinctive visual or auditory
+            reaction to any sudden or novel stimulus. It is part of our evolutionary
+            heritage, a built in sensitivity to movement and potential predatory threats.
+        </p>
+
+        <!-- Section G -->
+        <p class="mb-4">
+            <span class="font-bold text-slate-700">G.</span>
+            In 1986 Byron Reeves of Stanford University, Esther Thorson of the University
+            of Missouri and their colleagues began to study whether the simple formal
+            features of television-cuts, edits, zooms, pans, sudden noises—activate the
+            orienting response, thereby keeping attention on the screen. By watching how
+            brain waves were affected by formal features, the researchers concluded that
+            these stylistic tricks can indeed trigger involuntary responses and ‘derive
+            their attention-al value through the evolutionary significance of detecting
+            movement.... It is the form, not the content, of television that is unique.’
+        </p>
+
+        <!-- Section H -->
+        <p class="mb-4">
+            <span class="font-bold text-slate-700">H.</span>
+            The orienting response may partly explain common viewer remarks such as: “If a
+            television is on, I just can’t keep my eyes off it,” “I don’t want to watch as
+            much as I do, but I can’t help it,” and “I feel hypnotized when I watch
+            television.” In the years since Reeves and Thorson published then pioneering
+            work, researchers have delved deeper. Annie Lang’s research team at Indiana
+            University has shown that heart rate decreases for four to six seconds after an
+            orienting stimulus. In ads, action sequences and music videos, formal features
+            frequently come at a rate of one per second, thus activating the orienting
+            response continuously.
+        </p>
+        
+        <!-- Section I -->
+        <p class="mb-4">
+            <span class="font-bold text-slate-700">I.</span>
+            Lang and her colleagues have also investigated whether formal features affect
+            people’s memory of what they have seen. In one of their studies, participants
+            watched a program and then filled out a score sheet. Increasing the frequency
+            of edits (defined here as a change from one camera angle to another in the same
+            visual scene) improved memory recognition, presumably because it focused
+            attention on the screen. Increasing the frequency of cuts—changes to a new
+            visual scene-had a similar effect but only up to a point. If the number of cuts
+            exceeded 10 in two minutes, recognition dropped off sharply.
+        </p>
+
+        <!-- Section J -->
+        <p class="mb-4">
+            <span class="font-bold text-slate-700">J.</span>
+            Producers of educational television for children have found that formal
+            features can help learning. But increasing the rate of cuts and edits
+            eventually overloads the brain. Music videos and commercials that use rapid
+            intercutting of unrelated scenes are designed to hold attention more than they
+            are to convey information. People may remember the name of the product or band,
+            but the details of the ad itself float in one ear and out the other. The
+            orienting response is overworked. Viewers still attend to the screen, but they
+            feel tired and worn out, with little compensating psychological reward. Our ESM
+            findings show much the same thing.
+        </p>
+
+        <!-- Section K -->
+        <p>
+            <span class="font-bold text-slate-700">K.</span>
+            Sometimes the memory of the product is very subtle. Many ads today are
+            deliberately oblique: they have an engaging story line, but it is hard to tell
+            what they are trying to sell. Afterward you may not remember the product
+            consciously. Yet advertisers believe that if they have gotten your attention,
+            when you later go to the store you will feel better or more comfortable with a
+            given product because you have a vague recollection of having heard of it.
+        </p>
         `,
         questionGroups: [
           {
@@ -857,7 +1254,6 @@ export const allMockTests = [
               <p>Write the correct letters in boxes 31-33 on your answer sheet.</p>
               <p>Which THREE of the following are benefits of watching TV?</p>
             `,
-            type: "multiple_choice_multiple_answers",
             options: [
               { id: "A", text: "artistic inspiration" },
               { id: "B", text: "family reunion" },
@@ -866,14 +1262,17 @@ export const allMockTests = [
               { id: "E", text: "work efficiency" },
               { id: "F", text: "ease communicative conflict" },
             ],
+            type: "multiple_choice_multiple_answers",
+
             questions: [
               {
                 id: "q31-33",
+
                 questionNumber: "31-33",
                 text:
-                  "Which THREE of the following are benefits of watching TV?", // Added text property
+                  "Which THREE of the following are benefits of watching TV?",
                 correctAnswer: ["A", "C", "D"],
-              }, // Combined for multiple answers
+              },
             ],
           },
           {
@@ -882,7 +1281,7 @@ export const allMockTests = [
               <p>Look at the following researchers (Questions 34-37) and the list of statements below. Match each researcher with the correct statements.</p>
               <p>Write the correct letter A-G in boxes 34-37 on your answer sheets.</p>
             `,
-            type: "matching_items", // Reusing matching_items for researchers
+            type: "matching_items",
             listItems: [
               {
                 id: "A",
@@ -1001,7 +1400,7 @@ export const allMockTests = [
                 id: "q1-p1",
                 questionNumber: 1,
                 text: "Introduction of a millman under awards",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "F", // Placeholder
               },
               {
                 id: "q2-p1",
@@ -1013,20 +1412,20 @@ export const allMockTests = [
                 id: "q3-p1",
                 questionNumber: 3,
                 text: "A rival against Harrison’s invention emerged",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "H", // Placeholder
               },
               {
                 id: "q4-p1",
                 questionNumber: 4,
                 text:
                   "Problems of sailor encountered in identifying the position on the sea",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "C", // Placeholder
               },
               {
                 id: "q5-p1",
                 questionNumber: 5,
                 text: "Economic assist from another counterpart",
-                correctAnswer: "E", // Placeholder
+                correctAnswer: "F", // Placeholder
               },
             ],
           },
@@ -1046,21 +1445,21 @@ export const allMockTests = [
                 questionNumber: 6,
                 text:
                   "It is with no great effort by sailors to calculate the position when in the center of the ocean theoretically.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "TRUE", // Placeholder
               },
               {
                 id: "q7-p1",
                 questionNumber: 7,
                 text:
                   "To determine the longitude, a measurement of distance from moon to a given star is a must.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "FALSE", // Placeholder
               },
               {
                 id: "q8-p1",
                 questionNumber: 8,
                 text:
                   "In theory, by calculating the longitude degrees covered by a sail journey, the distance between the start and the end points can be obtained.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "NOT GIVEN", // Placeholder
               },
             ],
           },
@@ -1080,7 +1479,7 @@ export const allMockTests = [
                 questionNumber: 9,
                 type: "summary_completion",
                 text: "time of [GAP]",
-                correctAnswer: "Greenwich", // Placeholder
+                correctAnswer: "Home", // Placeholder
               },
               {
                 id: "q10-p1",
@@ -1088,28 +1487,28 @@ export const allMockTests = [
                 type: "summary_completion",
                 text: "confined to [GAP]",
 
-                correctAnswer: "sea travel", // Placeholder
+                correctAnswer: "2.8s", // Placeholder
               },
               {
                 id: "q11-p1",
                 questionNumber: 11,
                 type: "summary_completion",
                 text: "did not rely on [GAP] to work properly.",
-                correctAnswer: "pendulum", // Placeholder
+                correctAnswer: ["Oil", "Lubrication"], // Placeholder
               },
               {
                 id: "q12-p1",
                 questionNumber: 12,
                 type: "summary_completion",
                 text: "competitive mode of [GAP]",
-                correctAnswer: "sextant", // Placeholder
+                correctAnswer: "Sextant", // Placeholder
               },
               {
                 id: "q13-p1",
                 questionNumber: 13,
                 type: "summary_completion",
                 text: "key components for [GAP]",
-                correctAnswer: "chronometers", // Placeholder
+                correctAnswer: "Marine chronometer", // Placeholder
               },
             ],
           },
@@ -1163,7 +1562,7 @@ export const allMockTests = [
                 id: "q15-p2",
                 questionNumber: 15,
                 paragraphId: "B",
-                correctAnswer: "i", // Placeholder
+                correctAnswer: "iii", // Placeholder
               },
               {
                 id: "q16-p2",
@@ -1181,13 +1580,13 @@ export const allMockTests = [
                 id: "q18-p2",
                 questionNumber: 18,
                 paragraphId: "E",
-                correctAnswer: "ii", // Placeholder
+                correctAnswer: "viii", // Placeholder
               },
               {
                 id: "q19-p2",
                 questionNumber: 19,
                 paragraphId: "F",
-                correctAnswer: "vi", // Placeholder
+                correctAnswer: "ii", // Placeholder
               },
             ],
           },
@@ -1207,14 +1606,14 @@ export const allMockTests = [
                 questionNumber: 20,
                 text:
                   "Drucker believed the employees should enjoy the same status as the employers in a company",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "NOT GIVEN", // Placeholder
               },
               {
                 id: "q21-p2",
                 questionNumber: 21,
                 text:
                   "Middle management tasks will change since companies become more complicated and run business globally",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "TRUE", // Placeholder
               },
               {
                 id: "q22-p2",
@@ -1271,7 +1670,7 @@ export const allMockTests = [
                 id: "q24-25-p2",
                 questionNumber: "24-25",
                 text: "Which TWO of the following are true of Drucker’s views?",
-                correctAnswer: ["A", "D"], // Placeholder
+                correctAnswer: ["A", "E"], // Placeholder
               },
             ],
           },
@@ -1342,35 +1741,35 @@ export const allMockTests = [
                 questionNumber: 28,
                 type: "summary_completion",
                 text: "initially found approximately [GAP]",
-                correctAnswer: "1800", // Placeholder
+                correctAnswer: ["400000 years ago", "400,000 years ago"], // Placeholder
               },
               {
                 id: "q29-p3",
                 questionNumber: 29,
                 type: "summary_completion",
                 text: "Around [GAP], they were driven to live in the plain",
-                correctAnswer: "10,000 years ago", // Placeholder
+                correctAnswer: "8000 years ago", // Placeholder
               },
               {
                 id: "q30-p3",
                 questionNumber: 30,
                 type: "summary_completion",
                 text: "people have not started hunting until [GAP]",
-                correctAnswer: "ice age", // Placeholder
+                correctAnswer: "7000 years ago", // Placeholder
               },
               {
                 id: "q31-p3",
                 questionNumber: 31,
                 type: "summary_completion",
                 text: "over the span of [GAP]",
-                correctAnswer: "2 million years", // Placeholder
+                correctAnswer: "Wooded interglacials", // Placeholder
               },
               {
                 id: "q32-p3",
                 questionNumber: 32,
                 type: "summary_completion",
                 text: "mammals become extinct about [GAP]",
-                correctAnswer: "10,000 years ago", // Placeholder
+                correctAnswer: "10500 years ago", // Placeholder
               },
             ],
           },
@@ -1387,7 +1786,7 @@ export const allMockTests = [
                 questionNumber: 33,
                 text:
                   "What kind of physical characteristics eventually contributed to the extinction of Irish elk?",
-                correctAnswer: "huge antlers", // Placeholder
+                correctAnswer: "Male's huge antlers", // Placeholder
               },
               {
                 id: "q34-p3",
@@ -1395,7 +1794,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank_passage",
                 text:
                   "What kind of nutrient substance needed in maintaining the huge size of Irish elk?",
-                correctAnswer: "calcium", // Placeholder
+                correctAnswer: "Minerals", // Placeholder
               },
               {
                 id: "q35-p3",
@@ -1403,7 +1802,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank_passage",
                 text:
                   "What geographical evidence suggested the advent of human resulted in the extinction of Irish elk?",
-                correctAnswer: "fossil records", // Placeholder
+                correctAnswer: "Habitat destruction", // Placeholder
               },
             ],
           },
@@ -1425,21 +1824,21 @@ export const allMockTests = [
                 questionNumber: 36,
                 statement:
                   "the continents where humans imposed little impact on large mammals extinction",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "B", // Placeholder
               },
               {
                 id: "q37-p3",
                 questionNumber: 37,
                 statement:
                   "the continents where the climatic change was mild and fauna remains",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "D", // Placeholder
               },
               {
                 id: "q38-p3",
                 questionNumber: 38,
                 statement:
                   "the continents where both humans and climatic change are the causes",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "A", // Placeholder
               },
               {
                 id: "q39-p3",
@@ -1464,8 +1863,7 @@ export const allMockTests = [
                   "C. climatic change was not solely responsible for the mega fauna extinction in Europe",
                   "D. moderate and staggered extinction was mainly the result of fundamental climatic change",
                 ],
-                correctAnswer:
-                  "C. climatic change was not solely responsible for the mega fauna extinction in Europe", // Placeholder
+                correctAnswer: "C", // Placeholder
               },
             ],
           },
@@ -1508,41 +1906,41 @@ export const allMockTests = [
                 questionNumber: 1,
                 statement:
                   "Large animals are in a disadvantageous position when disasters happen.",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q2-p3s1",
                 questionNumber: 2,
                 statement:
                   "Radical changes in carbon types are related to massive extinction of vegetation.",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q3-p3s1",
                 questionNumber: 3,
                 statement:
                   "The changes in earth's animal species become easier to identify by adding footprint investigation.",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q4-p3s1",
                 questionNumber: 4,
                 statement:
                   "Geochemical evidence suggests an asteroid impact before dinosaurs appeared.",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q5-p3s1",
                 questionNumber: 5,
                 statement: "Footprint study is a way of research.",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q6-p3s1",
                 questionNumber: 6,
                 statement:
                   "Persuasive clues of an iridium spike were discovered for the first time.",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "B",
               },
             ],
           },
@@ -1562,49 +1960,49 @@ export const allMockTests = [
                 questionNumber: 7,
                 text:
                   "The rare element, iridium, was presented both on earth and in meteorites.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q8-p3s1",
                 questionNumber: 8,
                 text:
                   "The meteor impact theory had been suspected before the discovery of the impact site and other supporting evidence.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q9-p3s1",
                 questionNumber: 9,
                 text:
                   "Footprints are of little value in providing information, in comparison to fossil bones, because individual species cannot be identified with footprints.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q10-p3s1",
                 questionNumber: 10,
                 text:
                   "According to scientists, the transition to a dinosaur-dominated era took place very quickly by geological time scales.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q11-p3s1",
                 questionNumber: 11,
                 text:
                   "The creatures that disappeared in the extinction were the dominantly the 15 foot-long rauisuchians and large crocodiles.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q12-p3s1",
                 questionNumber: 12,
                 text:
                   "Tyrannosaurus rex was larger in body size than other carnivorous dinosaurs.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q13-p3s1",
                 questionNumber: 13,
                 text:
                   "Large dinosaurs died out but small ones evolved and competed with birds and mammals.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
             ],
           },
@@ -1633,35 +2031,35 @@ export const allMockTests = [
                 questionNumber: 14,
                 text:
                   "With the investigation of the lake, scientist may predict the climate changes in the future.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q15-p3s2",
                 questionNumber: 15,
                 text:
                   "The crater resulted from a meteorite impact is the largest and most preserved one in the world.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q16-p3s2",
                 questionNumber: 16,
                 text:
                   "The water stored in Lake Bosumtwi was gone only by seeping through the lake sediments.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q17-p3s2",
                 questionNumber: 17,
                 text:
                   "Historical climate changes can be detected by the analysis of the sediment in the lake.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q18-p3s2",
                 questionNumber: 18,
                 text:
                   "The greatest obstacle to research of scientists had been the interference by the locals due to the indigenous believes.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
             ],
           },
@@ -1680,7 +2078,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Step 1: [GAP]",
-                correctAnswer: "Dismantle and store boat", // Placeholder
+                correctAnswer: "(high-pressure) air microphones",
               },
               {
                 id: "q20-p3s2",
@@ -1688,7 +2086,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Step 2: [GAP]",
-                correctAnswer: "Use seismic reflection technology", // Placeholder
+                correctAnswer: ["sound energy", "sound wave"],
               },
               {
                 id: "q21-p3s2",
@@ -1696,7 +2094,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Step 3: [GAP]",
-                correctAnswer: "Collect returned waves", // Placeholder
+                correctAnswer: "cable",
               },
               {
                 id: "q22-p3s2",
@@ -1704,7 +2102,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Step 4: [GAP]",
-                correctAnswer: "Analyze and process data", // Placeholder
+                correctAnswer: ["hydrophones", "underwater microphones"],
               },
             ],
           },
@@ -1721,35 +2119,35 @@ export const allMockTests = [
                 questionNumber: 23,
                 type: "summary_completion",
                 text: "dismantled and stored in a [GAP]",
-                correctAnswer: "storage facility", // Placeholder
+                correctAnswer: "shipping container",
               },
               {
                 id: "q24-p3s2",
                 questionNumber: 24,
                 type: "summary_completion",
                 text: "technology they used called [GAP]",
-                correctAnswer: "seismic reflection", // Placeholder
+                correctAnswer: "seismic reflection profiling",
               },
               {
                 id: "q25-p3s2",
                 questionNumber: 25,
                 type: "summary_completion",
                 text: "processed in the [GAP]",
-                correctAnswer: "lab", // Placeholder
+                correctAnswer: "laboratory",
               },
               {
                 id: "q26-p3s2",
                 questionNumber: 26,
                 type: "summary_completion",
                 text: "building [GAP] view",
-                correctAnswer: "3D", // Placeholder
+                correctAnswer: "three-dimensional",
               },
               {
                 id: "q27-p3s2",
                 questionNumber: 27,
                 type: "summary_completion",
                 text: "tree stumps or [GAP] floating",
-                correctAnswer: "fishing nets", // Placeholder
+                correctAnswer: "fishing nets",
               },
             ],
           },
@@ -1801,49 +2199,49 @@ export const allMockTests = [
                 questionNumber: 28,
                 statement:
                   "Company X (Placeholder for a company from the passage)",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q29-p3s3",
                 questionNumber: 29,
                 statement:
                   "Company Y (Placeholder for a company from the passage)",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q30-p3s3",
                 questionNumber: 30,
                 statement:
                   "Company Z (Placeholder for a company from the passage)",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q31-p3s3",
                 questionNumber: 31,
                 statement:
                   "Company A (Placeholder for a company from the passage)",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "F",
               },
               {
                 id: "q32-p3s3",
                 questionNumber: 32,
                 statement:
                   "Company B (Placeholder for a company from the passage)",
-                correctAnswer: "E", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q33-p3s3",
                 questionNumber: 33,
                 statement:
                   "Company C (Placeholder for a company from the passage)",
-                correctAnswer: "F", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q34-p3s3",
                 questionNumber: 34,
                 statement:
                   "Company D (Placeholder for a company from the passage)",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "E",
               },
             ],
           },
@@ -1862,28 +2260,28 @@ export const allMockTests = [
                 questionNumber: 35,
                 text:
                   "Employers in almost all companies successfully make their employees fully understand the outside campaign.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q36-p3s3",
                 questionNumber: 36,
                 text:
                   "Currently IBM is more prominent in the area of E-business",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q37-p3s3",
                 questionNumber: 37,
                 text:
                   "United Airline finally gave up an ads slogan due to a survey in 1996.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q38-p3s3",
                 questionNumber: 38,
                 text:
                   "Nike had improved company performance through telling employees legendary corporation stories.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
             ],
           },
@@ -1915,7 +2313,7 @@ export const allMockTests = [
                 questionNumber: "39-40",
                 text:
                   "Please choose TWO approaches in the passage mentioned that were employed as company strategy:",
-                correctAnswer: ["B", "D"], // Placeholder
+                correctAnswer: ["B", "E"],
               },
             ],
           },
@@ -1949,38 +2347,38 @@ export const allMockTests = [
                 id: "q1-p4s1",
                 questionNumber: 1,
                 text: "A new approach carried out in the UK",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q2-p4s1",
                 questionNumber: 2,
                 text: "Reasons why twisty path and dykes failed",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q3-p4s1",
                 questionNumber: 3,
                 text:
                   "Illustration of an alternative Plan in LA which seems much unrealistic",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "G",
               },
               {
                 id: "q4-p4s1",
                 questionNumber: 4,
                 text: "Traditional way of tackling flood",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q5-p4s1",
                 questionNumber: 5,
                 text: "Effort made in Netherlands and Germany",
-                correctAnswer: "E", // Placeholder
+                correctAnswer: "F",
               },
               {
                 id: "q6-p4s1",
                 questionNumber: 6,
                 text: "One project on a river benefits three nations",
-                correctAnswer: "F", // Placeholder
+                correctAnswer: "E",
               },
             ],
           },
@@ -1997,7 +2395,7 @@ export const allMockTests = [
                 questionNumber: 7,
                 type: "summary_completion",
                 text: "powerful [GAP] in the US.",
-                correctAnswer: "Mississippi", // Placeholder
+                correctAnswer: "Mississippi",
               },
               {
                 id: "q8-p4s1",
@@ -2005,21 +2403,21 @@ export const allMockTests = [
                 type: "summary_completion",
                 text:
                   "not far from the city of [GAP] to protect it from flooding.",
-                correctAnswer: "Oxford", // Placeholder
+                correctAnswer: "London",
               },
               {
                 id: "q9-p4s1",
                 questionNumber: 9,
                 type: "summary_completion",
                 text: "thousands of people left the country of [GAP].",
-                correctAnswer: "Netherlands", // Placeholder
+                correctAnswer: ["Netherlands", "The Netherlands"],
               },
               {
                 id: "q10-p4s1",
                 questionNumber: 10,
                 type: "summary_completion",
                 text: "porous, [GAP] set a good example for others.",
-                correctAnswer: "Hamburg", // Placeholder
+                correctAnswer: "Berlin",
               },
               {
                 id: "q11-p4s1",
@@ -2027,7 +2425,7 @@ export const allMockTests = [
                 type: "summary_completion",
                 text:
                   "casually is [GAP], though its government pours billions of dollars each year in order to solve the problem.",
-                correctAnswer: "Los Angeles", // Placeholder
+                correctAnswer: ["Los Angeles", "LA"],
               },
             ],
           },
@@ -2058,7 +2456,7 @@ export const allMockTests = [
                 questionNumber: "12-13",
                 text:
                   "What TWO benefits will the new approach in the UK and Austria bring to US according to this passage?",
-                correctAnswer: ["A", "D"], // Placeholder
+                correctAnswer: ["B", "D"],
               },
             ],
           },
@@ -2083,32 +2481,32 @@ export const allMockTests = [
                 questionNumber: 14,
                 text:
                   "Difference between bubble burst impacts by tulip and by high-tech shares",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "I",
               },
               {
                 id: "q15-p4s2",
                 questionNumber: 15,
                 text: "Spread of tulip before 17th century",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q16-p4s2",
                 questionNumber: 16,
                 text:
                   "Indication of money offered for rare bulb in 17th century",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q17-p4s2",
                 questionNumber: 17,
                 text: "Tulip was treated as money in Holland",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "G",
               },
               {
                 id: "q18-p4s2",
                 questionNumber: 18,
                 text: "Comparison made between tulip and other plants",
-                correctAnswer: "E", // Placeholder
+                correctAnswer: "F",
               },
             ],
           },
@@ -2128,35 +2526,35 @@ export const allMockTests = [
                 questionNumber: 19,
                 text:
                   "In 1624, all the tulip collection belonged to a man in Amsterdam.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q20-p4s2",
                 questionNumber: 20,
                 text:
                   "Tulip was first planted in Holland according to this passage.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q21-p4s2",
                 questionNumber: 21,
                 text:
                   "Popularity of Tulip in Holland was much higher than any other countries in 17th century.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q22-p4s2",
                 questionNumber: 22,
                 text:
                   "Holland was the wealthiest country in the world in 17th century.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q23-p4s2",
                 questionNumber: 23,
                 text:
                   "From 1630, Amsterdam Stock Exchange started to regulate Tulips exchange market.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
             ],
           },
@@ -2173,28 +2571,28 @@ export const allMockTests = [
                 questionNumber: 24,
                 type: "summary_completion",
                 text: "gaining independence by [GAP] against Spain",
-                correctAnswer: "fighting", // Placeholder
+                correctAnswer: "Fighting",
               },
               {
                 id: "q25-p4s2",
                 questionNumber: 25,
                 type: "summary_completion",
                 text: "entered the area of [GAP].",
-                correctAnswer: "commerce", // Placeholder
+                correctAnswer: "commerce",
               },
               {
                 id: "q26-p4s2",
                 questionNumber: 26,
                 type: "summary_completion",
                 text: "building great [GAP] and with gardens in surroundings.",
-                correctAnswer: "houses", // Placeholder
+                correctAnswer: "estates",
               },
               {
                 id: "q27-p4s2",
                 questionNumber: 27,
                 type: "summary_completion",
                 text: "looking for [GAP] and speculator for sale.",
-                correctAnswer: "bulbs", // Placeholder
+                correctAnswer: "flower lovers",
               },
             ],
           },
@@ -2224,8 +2622,7 @@ export const allMockTests = [
                   "C. help people to sale products",
                   "D. prove maybe there is a science in the psychology of persuasion",
                 ],
-                correctAnswer:
-                  "D. prove maybe there is a science in the psychology of persuasion", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q29-p4s3",
@@ -2239,8 +2636,7 @@ export const allMockTests = [
                   "C. he interviewed and contact with many sales people",
                   "D. he made lot phone calls collecting what he wants to know",
                 ],
-                correctAnswer:
-                  "C. he interviewed and contact with many sales people", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q30-p4s3",
@@ -2254,8 +2650,7 @@ export const allMockTests = [
                   "C. more customers tend to cooperate as the message requires than simply act environmentally",
                   "D. people tend to follow the hotel’s original message more",
                 ],
-                correctAnswer:
-                  "C. more customers tend to cooperate as the message requires than simply act environmentally", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q31-p4s3",
@@ -2269,7 +2664,7 @@ export const allMockTests = [
                   "C. People give tips only when offered chocolate",
                   "D. Chocolate with bill got higher tips",
                 ],
-                correctAnswer: "D. Chocolate with bill got higher tips", // Placeholder
+                correctAnswer: "A",
               },
             ],
           },
@@ -2277,39 +2672,39 @@ export const allMockTests = [
             instructions: `
               <p>Questions 32-35</p>
               <p>Do the following statements agree with the information given in Reading Passage 3? In boxes 32-35 on your answer sheet, write</p>
-              <p><strong>TRUE</strong> if the statement agrees with the information</p>
-              <p><strong>FALSE</strong> if the statement contradicts the information</p>
+              <p><strong>YES</strong> if the statement agrees with the information</p>
+              <p><strong>NO</strong> if the statement contradicts the information</p>
               <p><strong>NOT GIVEN</strong> if there is no information on this</p>
             `,
-            type: "true_false_not_given",
+            type: "yes_no_not_given",
             questions: [
               {
                 id: "q32-p4s3",
                 questionNumber: 32,
                 text:
                   "Robert Cialdini experienced 'principles of influence' himself in realistic life.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "YES",
               },
               {
                 id: "q33-p4s3",
                 questionNumber: 33,
                 text:
                   "Principle of persuasion has different types in different countries.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q34-p4s3",
                 questionNumber: 34,
                 text:
                   "In New Zealand, people tend to give tips to attendants after being served a chocolate.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NO",
               },
               {
                 id: "q35-p4s3",
                 questionNumber: 35,
                 text:
                   "Elder generation of New Zealand is easily attracted by extra service of restaurants by principle of reciprocity.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
             ],
           },
@@ -2336,33 +2731,33 @@ export const allMockTests = [
                 questionNumber: 36,
                 statement:
                   "Some expert may reveal qualification in front of clients.",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q37-p4s3",
                 questionNumber: 37,
                 statement:
                   "Parents tend to say something that other kids are doing the same.",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "E",
               },
               {
                 id: "q38-p4s3",
                 questionNumber: 38,
                 statement:
                   "Advertisers ruthlessly exploit the limitation of chances",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q39-p4s3",
                 questionNumber: 39,
                 statement: "Use a familiar name in a survey.",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q40-p4s3",
                 questionNumber: 40,
                 statement: "Ask colleagues to offer a helping hand",
-                correctAnswer: "A", // Placeholder - Assuming this relates to reciprocity, but needs context from passage.
+                correctAnswer: "C",
               },
             ],
           },
@@ -2390,45 +2785,45 @@ export const allMockTests = [
               <p>Questions 1-5</p>
               <p>Do the following statements agree with the information given in Reading Passage 1</p>
               <p>In boxes 1-5 on your answer sheet, write</p>
-              <p><strong>TRUE</strong> if the statement agrees with the information</p>
-              <p><strong>FALSE</strong> if the statement contradicts the information</p>
+              <p><strong>YES</strong> if the statement agrees with the information</p>
+              <p><strong>NO</strong> if the statement contradicts the information</p>
               <p><strong>NOT GIVEN</strong> if there is no information on this</p>
             `,
-            type: "true_false_not_given",
+            type: "yes_no_not_given",
             questions: [
               {
                 id: "q1-p5s1",
                 questionNumber: 1,
                 text:
                   "Mind Gym coach instructed employees to imagine that they are the building.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "NO",
               },
               {
                 id: "q2-p5s1",
                 questionNumber: 2,
                 text:
                   "Mind Gym uses the similar marketing theory that is used all round",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "YES",
               },
               {
                 id: "q3-p5s1",
                 questionNumber: 3,
                 text: "Susan Greenfield is the founder of Mind Gym.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "NO",
               },
               {
                 id: "q4-p5s1",
                 questionNumber: 4,
                 text:
                   "All business and industries are using Mind Gym's session globally.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NO",
               },
               {
                 id: "q5-p5s1",
                 questionNumber: 5,
                 text:
                   "According to Mind Gym, extensive scientific background supports their mental training sessions.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
             ],
           },
@@ -2455,56 +2850,56 @@ export const allMockTests = [
                 questionNumber: 6,
                 statement:
                   "We do not have enough inspiration to keep our brain fit.",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q7-p5s1",
                 questionNumber: 7,
                 statement:
                   "The more you exercise your brain like exercise in the gym, the more brain will grow.",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q8-p5s1",
                 questionNumber: 8,
                 statement:
                   "Exercise can keep your brain health instead of improving someone's IQ.",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q9-p5s1",
                 questionNumber: 9,
                 statement:
                   "It is valuable for schools to teach students about creative skills besides basic known knowledge.",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q10-p5s1",
                 questionNumber: 10,
                 statement:
                   "We can develop new neuron connections when we lose old connections via certain treatment.",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q11-p5s1",
                 questionNumber: 11,
                 statement:
                   "People usually mark themselves as not creative before figuring out there are approaches for each person.",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q12-p5s1",
                 questionNumber: 12,
                 statement:
                   "An instructor in Mind Gym who guided the employees to exercise.",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q13-p5s1",
                 questionNumber: 13,
                 statement:
                   "Majority of people don't have appropriate skills-training for brain.",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "A",
               },
             ],
           },
@@ -2538,35 +2933,35 @@ export const allMockTests = [
                 questionNumber: 14,
                 statement:
                   "Using basic direction from starting point and light intensity to move on.",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q15-p5s2",
                 questionNumber: 15,
                 statement:
                   "Using combination of place and direction heading for destination.",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q16-p5s2",
                 questionNumber: 16,
                 statement:
                   "Using an iconic building near your destination as orientation.",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q17-p5s2",
                 questionNumber: 17,
                 statement:
                   "Using a retrace method from a known place if a mistake happens.",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q18-p5s2",
                 questionNumber: 18,
                 statement:
                   "Using a passed spot as reference for a new integration.",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "B",
               },
             ],
           },
@@ -2588,8 +2983,7 @@ export const allMockTests = [
                   "C. Continues to move by the original orientation",
                   "D. Totally gets lost once disturbed",
                 ],
-                correctAnswer:
-                  "C. Continues to move by the original orientation", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q20-p5s2",
@@ -2603,7 +2997,7 @@ export const allMockTests = [
                   "C. It only exists under some cultures",
                   "D. It was managed by brain memory",
                 ],
-                correctAnswer: "D. It was managed by brain memory", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q21-p5s2",
@@ -2617,8 +3011,7 @@ export const allMockTests = [
                   "C. Observation plays a more important role",
                   "D. Store or supermarket is a must in file map",
                 ],
-                correctAnswer:
-                  "A. It visualises a virtual route in a large scope", // Placeholder
+                correctAnswer: "A",
               },
             ],
           },
@@ -2637,35 +3030,35 @@ export const allMockTests = [
                 id: "q22-p5s2",
                 questionNumber: 22,
                 text: "Biological navigation has a state of flexibility.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q23-p5s2",
                 questionNumber: 23,
                 text:
                   "You will always receive good reaction when you ask direction.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q24-p5s2",
                 questionNumber: 24,
                 text:
                   "When someone follows a route, he or she collects comprehensive perceptional information in mind on the way.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q25-p5s2",
                 questionNumber: 25,
                 text:
                   "Path integration requires more thought from brain compared with route following.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q26-p5s2",
                 questionNumber: 26,
                 text:
                   "In a familiar surroundings, an exact map of where you are will automatically emerge in your head.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
             ],
           },
@@ -2725,26 +3118,26 @@ export const allMockTests = [
               {
                 id: "q27-p5s3",
                 questionNumber: 27,
-                paragraphId: "B", // Assuming Paragraph B for this placeholder
-                correctAnswer: "v", // Placeholder
+                paragraphId: "B",
+                correctAnswer: "v",
               },
               {
                 id: "q28-p5s3",
                 questionNumber: 28,
-                paragraphId: "D", // Assuming Paragraph D for this placeholder
-                correctAnswer: "ix", // Placeholder
+                paragraphId: "D",
+                correctAnswer: "ii",
               },
               {
                 id: "q29-p5s3",
                 questionNumber: 29,
-                paragraphId: "E", // Assuming Paragraph E for this placeholder
-                correctAnswer: "i", // Placeholder
+                paragraphId: "E",
+                correctAnswer: "iii",
               },
               {
                 id: "q30-p5s3",
                 questionNumber: 30,
-                paragraphId: "G", // Assuming Paragraph G for this placeholder
-                correctAnswer: "viii", // Placeholder
+                paragraphId: "G",
+                correctAnswer: "viii",
               },
             ],
           },
@@ -2760,46 +3153,46 @@ export const allMockTests = [
             type: "true_false_not_given",
             questions: [
               {
-                id: "q31-p5s3-tfng", // Note: Changed ID to avoid conflict with matching headings q31
+                id: "q31-p5s3-tfng",
                 questionNumber: 31,
                 text:
                   "The first inhabitants of Easter Island are Polynesian, from the Marquesas or Society islands.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q32-p5s3",
                 questionNumber: 32,
                 text:
                   "Construction of some moai statues on the island was not finished.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q33-p5s3",
                 questionNumber: 33,
                 text:
                   "The Moai can be found not only on Easter Island but also elsewhere in Polynesia.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q34-p5s3",
                 questionNumber: 34,
                 text:
                   "Most archeologists recognized the religious and astronomical functions for an ancient society",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q35-p5s3",
                 questionNumber: 35,
                 text:
                   "The structures on Easter Island work as an astronomical outpost for extraterrestrial visitors.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q36-p5s3",
                 questionNumber: 36,
                 text:
                   "the theory that depleted natural resources leading to the fail of Easter Island actual has a distorted perspective",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
             ],
           },
@@ -2816,28 +3209,28 @@ export const allMockTests = [
                 questionNumber: 37,
                 type: "summary_completion",
                 text: "depleted by a [GAP]",
-                correctAnswer: "resource collapse", // Placeholder
+                correctAnswer: "growing racist population",
               },
               {
                 id: "q38-p5s3",
                 questionNumber: 38,
                 type: "summary_completion",
                 text: "root of the [GAP] advanced by some scholars.",
-                correctAnswer: "misconceptions", // Placeholder
+                correctAnswer: "inhuman assumption",
               },
               {
                 id: "q39-p5s3",
                 questionNumber: 39,
                 type: "summary_completion",
                 text: "did not have adequate [GAP] understandings",
-                correctAnswer: "scientific", // Placeholder
+                correctAnswer: "archeological and historical",
               },
               {
                 id: "q40-p5s3",
                 questionNumber: 40,
                 type: "summary_completion",
                 text: "true result of [GAP] nature of events on the island.",
-                correctAnswer: "complex", // Placeholder
+                correctAnswer: "inhuman behavior",
               },
             ],
           },
@@ -2871,32 +3264,32 @@ export const allMockTests = [
                 id: "q1-p6s1",
                 questionNumber: 1,
                 text: "Music influences brain development of baby.",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q2-p6s1",
                 questionNumber: 2,
                 text:
                   "Popularity of public to the introduction of Mozart Effect",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "G",
               },
               {
                 id: "q3-p6s1",
                 questionNumber: 3,
                 text: "Description of the pioneer experiment of a person",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q4-p6s1",
                 questionNumber: 4,
                 text: "Music is helpful as a healing method in some places",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q5-p6s1",
                 questionNumber: 5,
                 text: "Learning needs other qualities though",
-                correctAnswer: "E", // Placeholder
+                correctAnswer: "F",
               },
             ],
           },
@@ -2913,21 +3306,21 @@ export const allMockTests = [
                 questionNumber: 6,
                 type: "summary_completion",
                 text: "immersed in the music for a [GAP] period of time",
-                correctAnswer: "short", // Placeholder
+                correctAnswer: "short",
               },
               {
                 id: "q7-p6s1",
                 questionNumber: 7,
                 type: "summary_completion",
                 text: "related to the [GAP] nature of Mozart's music.",
-                correctAnswer: "complex", // Placeholder
+                correctAnswer: ["complex", "non-repetitive"],
               },
               {
                 id: "q8-p6s1",
                 questionNumber: 8,
                 type: "summary_completion",
                 text: "conducted on [GAP]",
-                correctAnswer: "children", // Placeholder
+                correctAnswer: "rats",
               },
             ],
           },
@@ -2947,34 +3340,34 @@ export const allMockTests = [
                 questionNumber: 9,
                 text:
                   "Music has the power to improve people's brain performance according to the passage.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q10-p6s1",
                 questionNumber: 10,
                 text:
                   "All neural connections are built up after a baby's born instead of the time he or she had born.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q11-p6s1",
                 questionNumber: 11,
                 text: "There is no one who questions Mozart Effect so far.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q12-p6s1",
                 questionNumber: 12,
                 text:
                   "Michael Linton carried out further experiment on Mozart's life to support his viewpoint",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q13-p6s1",
                 questionNumber: 13,
                 text:
                   "Not sufficient evidence supports Mozart Effect from the very first experiment till now.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
             ],
           },
@@ -3041,7 +3434,7 @@ export const allMockTests = [
                 questionNumber: "14-17",
                 text:
                   "Which FOUR of the following situation were witnessed on the opening ceremony of the bridge?",
-                correctAnswer: ["A", "D", "E", "G"], // Placeholder
+                correctAnswer: ["A", "D", "E", "G"],
               },
             ],
           },
@@ -3058,7 +3451,7 @@ export const allMockTests = [
                 type: "summary_completion",
                 text:
                   "they thought that [GAP] and [GAP] might create excessive force on the bridge.",
-                correctAnswer: "footfall and synchronized walking", // Placeholder
+                correctAnswer: "winds",
               },
               {
                 id: "q19-p6s2",
@@ -3066,7 +3459,7 @@ export const allMockTests = [
                 type: "summary_completion",
                 text:
                   "they thought that [GAP] and [GAP] might create excessive force on the bridge.",
-                correctAnswer: "synchronized walking", // Placeholder (part of previous)
+                correctAnswer: "(the) pedestrians",
               },
               {
                 id: "q20-p6s2",
@@ -3074,21 +3467,21 @@ export const allMockTests = [
                 type: "summary_completion",
                 text:
                   "The distribution of [GAP] resulted from human activities",
-                correctAnswer: "lateral forces", // Placeholder
+                correctAnswer: "horizontal forces",
               },
               {
                 id: "q21-p6s2",
                 questionNumber: 21,
                 type: "summary_completion",
                 text: "could cause [GAP] throughout the structure.",
-                correctAnswer: "resonant vibration", // Placeholder
+                correctAnswer: "(excessive dynamic) vibration",
               },
               {
                 id: "q22-p6s2",
                 questionNumber: 22,
                 type: "summary_completion",
                 text: "which in turn reinforced the [GAP]",
-                correctAnswer: "swaying", // Placeholder
+                correctAnswer: "motion",
               },
             ],
           },
@@ -3108,7 +3501,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Test at [GAP]",
-                correctAnswer: "Dismantle and store boat", // Placeholder
+                correctAnswer: "Imperial College",
               },
               {
                 id: "q24-p6s2",
@@ -3116,7 +3509,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Not enough data on [GAP]",
-                correctAnswer: "Use seismic reflection technology", // Placeholder
+                correctAnswer: "normal forward walking",
               },
               {
                 id: "q25-p6s2",
@@ -3124,7 +3517,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Crowd test conducted by [GAP]",
-                correctAnswer: "Collect returned waves", // Placeholder
+                correctAnswer: "(the) Arup engineers",
               },
               {
                 id: "q26-p6s2",
@@ -3132,7 +3525,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Aim to verify",
-                correctAnswer: "Analyze and process data", // Placeholder
+                correctAnswer: "(the) design assumptions",
               },
             ],
           },
@@ -3163,8 +3556,7 @@ export const allMockTests = [
                   "C Sacks failed to include his personal stories in the book.",
                   "D This is the only book written by Sacks.",
                 ],
-                correctAnswer:
-                  "B The writer expected it to be better than it was.", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q28-p6s3",
@@ -3177,7 +3569,7 @@ export const allMockTests = [
                   "C the autobiographical description in the book",
                   "D the description of Sacks’s wealth",
                 ],
-                correctAnswer: "C the autobiographical description in the book", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q29-p6s3",
@@ -3190,8 +3582,7 @@ export const allMockTests = [
                   "C explain how people understand music",
                   "D explain why he needs to do away with simple observation",
                 ],
-                correctAnswer:
-                  "A make a herald introduction of the research work and technique applied", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q30-p6s3",
@@ -3204,8 +3595,7 @@ export const allMockTests = [
                   "C He nearly died because of the lightening.",
                   "D His brain waves were too normal to show anything.",
                 ],
-                correctAnswer:
-                  "B He can’t determine the cause of his sudden musicality.", // Placeholder
+                correctAnswer: "A",
               },
             ],
           },
@@ -3213,53 +3603,53 @@ export const allMockTests = [
             instructions: `
               <p>Questions 31-36</p>
               <p>Do the following statements agree with the views of the writer in Reading Passage 3? In boxes 31-36 on your answer sheet write</p>
-              <p><strong>TRUE</strong> if the statement agrees with the information</p>
-              <p><strong>FALSE</strong> if the statement contradicts the information</p>
+              <p><strong>YES</strong> if the statement agrees with the information</p>
+              <p><strong>NO</strong> if the statement contradicts the information</p>
               <p><strong>NOT GIVEN</strong> if there is no information on this</p>
             `,
-            type: "true_false_not_given",
+            type: "yes_no_not_given",
             questions: [
               {
                 id: "q31-p6s3",
                 questionNumber: 31,
                 text:
                   "It is difficult to give a well-reputable writer a less than totally favorable review.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "YES",
               },
               {
                 id: "q32-p6s3",
                 questionNumber: 32,
                 text:
                   "Beethoven's Pathetique Sonata is a good treatment for musical disorders.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q33-p6s3",
                 questionNumber: 33,
                 text:
                   "Sacks believes technological methods is of little importance compared with traditional observation when studying his patients.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "NO",
               },
               {
                 id: "q34-p6s3",
                 questionNumber: 34,
                 text:
                   "It is difficult to understand why music therapy is undervalued",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q35-p6s3",
                 questionNumber: 35,
                 text:
                   "Sacks held little skepticism when borrowing other theories and findings in describing reasons and notion for phenomena he depicts in the book.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "YES",
               },
               {
                 id: "q36-p6s3",
                 questionNumber: 36,
                 text:
                   "Sacks is in a rush to use new testing methods to do treatment for patients.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "NO",
               },
             ],
           },
@@ -3303,25 +3693,25 @@ export const allMockTests = [
                 questionNumber: 37,
                 statement:
                   "The content covered dissociations in understanding between harmony and melody",
-                correctAnswer: "F", // Placeholder
+                correctAnswer: "F",
               },
               {
                 id: "q38-p6s3",
                 questionNumber: 38,
                 statement: "The study of treating musical disorders",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q39-p6s3",
                 questionNumber: 39,
                 statement: "The EEG scans of Sacks’s patients",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q40-p6s3",
                 questionNumber: 40,
                 statement: "Sacks believes testing based on new technologies",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "D",
               },
             ],
           },
@@ -3357,48 +3747,48 @@ export const allMockTests = [
                 questionNumber: 1,
                 text:
                   "The name for interrupted brome is very special as its head shaped like a sharp eye",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q2-r7s1",
                 questionNumber: 2,
                 text:
                   "Interrupted brome thought to become extinct because there were no live seed even in a labs condition.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q3-r7s1",
                 questionNumber: 3,
                 text: "Philip Smith comes from University of Cambridge.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q4-r7s1",
                 questionNumber: 4,
                 text:
                   "Reborn of the interrupted brome is attributed more to scientific meaning than seemingly aesthetic or commercial ones",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q5-r7s1",
                 questionNumber: 5,
                 text:
                   "English nature will operate to recover interrupted brome on the success of survival in Kew.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q6-r7s1",
                 questionNumber: 6,
                 text:
                   "Interrupted Brome grow poorly in some competing modern agricultural environment with other plants",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q7-r7s1",
                 questionNumber: 7,
                 text:
                   "Media publicity plays a significant role to make interrupted brome continue to exist.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
             ],
           },
@@ -3422,42 +3812,42 @@ export const allMockTests = [
                 id: "q8-r7s1",
                 questionNumber: 8,
                 statement: "reestablished the British unique plants",
-                correctAnswer: "E", // Placeholder
+                correctAnswer: "E",
               },
               {
                 id: "q9-r7s1",
                 questionNumber: 9,
                 statement:
                   "identified the interrupted brome as just to its parent brome",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q10-r7s1",
                 questionNumber: 10,
                 statement:
                   "gave an independent taxonomy place to interrupted brome",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q11-r7s1",
                 questionNumber: 11,
                 statement:
                   "discovered and picked the first sample of interrupted brome",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q12-r7s1",
                 questionNumber: 12,
                 statement:
                   "recorded the first 'show up' of sainfoin plants in Britain",
-                correctAnswer: "F", // Placeholder
+                correctAnswer: "F",
               },
               {
                 id: "q13-r7s1",
                 questionNumber: 13,
                 statement:
                   "collected the last seeds just before its extinction",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "A",
               },
             ],
           },
@@ -3486,7 +3876,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Collection of rhymes [GAP] and games",
-                correctAnswer: "Dismantle and store boat", // Placeholder
+                correctAnswer: "stories",
               },
               {
                 id: "q15-p6s2",
@@ -3494,7 +3884,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "A Little Pretty Pocket Book (exported to [GAP])",
-                correctAnswer: "Use seismic reflection technology", // Placeholder
+                correctAnswer: "America",
               },
               {
                 id: "q16-p6s2",
@@ -3502,7 +3892,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Growing interet in [GAP]",
-                correctAnswer: "Collect returned waves", // Placeholder
+                correctAnswer: "folklore",
               },
               {
                 id: "q17-p6s2",
@@ -3510,7 +3900,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Nursery rhymes and [GAP]",
-                correctAnswer: "Analyze and process data", // Placeholder
+                correctAnswer: "fairy-stories",
               },
               {
                 id: "q18-p6s2",
@@ -3518,7 +3908,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Stories of harm-free [GAP]",
-                correctAnswer: "Analyze and process data", // Placeholder
+                correctAnswer: "adventure",
               },
             ],
           },
@@ -3528,7 +3918,7 @@ export const allMockTests = [
               <p>Look at the following people and the list of statements below. Match each person with the correct statement. Write the correct letter A-E in boxes 19-21 on your answer sheet.</p>
             `,
             image:
-              "https://placehold.co/600x400/cccccc/000000?text=Map+Image+for+Q19-21", // Placeholder for map image
+              "https://placehold.co/600x400/cccccc/000000?text=Map+Image+for+Q19-21",
             type: "matching_items",
             listItems: [
               { id: "A", text: "Wrote criticisms of children’s literature" },
@@ -3546,19 +3936,19 @@ export const allMockTests = [
                 id: "q19-r7s2",
                 questionNumber: 19,
                 statement: "Thomas Boreham",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q20-r7s2",
                 questionNumber: 20,
                 statement: "Mrs. Sarah Trimmer",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q21-r7s2",
                 questionNumber: 21,
                 statement: "Grimm Brother",
-                correctAnswer: "E", // Placeholder
+                correctAnswer: "E",
               },
             ],
           },
@@ -3573,35 +3963,35 @@ export const allMockTests = [
                 id: "q22-r7s2",
                 questionNumber: 22,
                 text: "Children didn’t start to read books until 1700.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q23-r7s2",
                 questionNumber: 23,
                 text:
                   "Sarah Trimmer believed that children’s books should set good examples.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q24-r7s2",
                 questionNumber: 24,
                 text:
                   "Parents were concerned about the violence in children’s books.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q25-r7s2",
                 questionNumber: 25,
                 text:
                   "An interest in the folklore changed the direction of the development of children’s books.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q26-r7s2",
                 questionNumber: 26,
                 text:
                   "Today children’s book writers believe their works should appeal to both children and adults.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
             ],
           },
@@ -3635,42 +4025,42 @@ export const allMockTests = [
               { id: "J", text: "J" },
               { id: "K", text: "K" },
               { id: "L", text: "L" },
-            ], // Placeholder for actual words A-L
+            ],
             questions: [
               {
                 id: "q27-r7s3",
                 type: "summary_completion",
                 questionNumber: 27,
                 text: "about the [GAP]",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q28-r7s3",
                 questionNumber: 28,
                 type: "summary_completion",
                 text: "a [GAP] containing",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "L",
               },
               {
                 id: "q29-r7s3",
                 questionNumber: 29,
                 type: "summary_completion",
                 text: "[GAP] of Lapita was uncovered",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q30-r7s3",
                 questionNumber: 30,
                 type: "summary_completion",
                 text: "Lapita and their [GAP]",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q31-r7s3",
                 questionNumber: 31,
                 type: "summary_completion",
                 text: "But there is no [GAP] of it.",
-                correctAnswer: "E", // Placeholder
+                correctAnswer: "F",
               },
             ],
           },
@@ -3692,7 +4082,7 @@ export const allMockTests = [
                   "C. the result of the study is not fascinating.",
                   "D. these chemicals can’t conceal one’s origin.",
                 ],
-                correctAnswer: "D. these chemicals can’t conceal one’s origin.", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q33-r7s3",
@@ -3705,8 +4095,7 @@ export const allMockTests = [
                   "C. helps researchers to find out answers about the islanders.",
                   "D. leaves more new questions for anthropologists to answer.",
                 ],
-                correctAnswer:
-                  "C. helps researchers to find out answers about the islanders.", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q34-r7s3",
@@ -3719,8 +4108,7 @@ export const allMockTests = [
                   "C. worked their way through the archipelagoes of the western Pacific.",
                   "D. fully explored the horizons.",
                 ],
-                correctAnswer:
-                  "A. were capable of voyages to land that is not accessible to view.", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q35-r7s3",
@@ -3733,7 +4121,7 @@ export const allMockTests = [
                   "C. sometimes would overshoot their home port and sail off into eternity.",
                   "D. would sail in one direction.",
                 ],
-                correctAnswer: "B. could return home with various clues.", // Placeholder
+                correctAnswer: "B",
               },
             ],
           },
@@ -3748,34 +4136,34 @@ export const allMockTests = [
                 id: "q36-r7s3",
                 questionNumber: 36,
                 text: "The Lapita could canoe in the prevailing wind.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q37-r7s3",
                 questionNumber: 37,
                 text:
                   "It was difficult for the sailors to find ways back, once they were out.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q38-r7s3",
                 questionNumber: 38,
                 text:
                   "The reason why the Lapita stopped canoeing farther is still unknown.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q39-r7s3",
                 questionNumber: 39,
                 text: "The majority of the Lapita dwelled on Fiji.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q40-r7s3",
                 questionNumber: 40,
                 text:
                   "The navigators could take advantage of El Nino during their forth voyages.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
             ],
           },
@@ -3817,7 +4205,7 @@ export const allMockTests = [
                   "C. several examples of translation's meaning",
                   "D. different meaning in various profession",
                 ],
-                correctAnswer: "D. different meaning in various profession", // Placeholder
+                correctAnswer: "vi",
               },
               {
                 id: "q2-r8s1",
@@ -3831,7 +4219,7 @@ export const allMockTests = [
                   "C. Two sides are debating",
                   "D. language practice is in the process",
                 ],
-                correctAnswer: "C. Two sides are debating", // Placeholder
+                correctAnswer: "v",
               },
               {
                 id: "q3-r8s1",
@@ -3845,7 +4233,7 @@ export const allMockTests = [
                   "C. consecutive interpreting has a long history",
                   "D. consecutive interpreting should be abandoned",
                 ],
-                correctAnswer: "C. consecutive interpreting has a long history", // Placeholder
+                correctAnswer: "ix",
               },
               {
                 id: "q4-r8s1",
@@ -3859,11 +4247,10 @@ export const allMockTests = [
                   "C. it relies on professional equipment",
                   "D. it takes less than two seconds ear-voice span",
                 ],
-                correctAnswer: "C. it relies on professional equipment", // Placeholder
+                correctAnswer: "iv",
               },
               {
                 id: "q5-r8s1",
-                questionNumber: 5,
                 text:
                   "In consecutive translation, if the section is longer than expected, what would an interpreter most probably do?",
                 options: [
@@ -3872,7 +4259,7 @@ export const allMockTests = [
                   "C. he or she has to respond as quickly as possible",
                   "D. he or she has to remember all parts ahead",
                 ],
-                correctAnswer: "B. he or she has to break them down first", // Placeholder
+                correctAnswer: "viii",
               },
             ],
           },
@@ -3890,7 +4277,7 @@ export const allMockTests = [
                 type: "summary_completion",
 
                 text: "normally lasts about[GAP]",
-                correctAnswer: "2-3 seconds", // Placeholder
+                correctAnswer: "iii",
               },
               {
                 id: "q7-r8s1",
@@ -3898,7 +4285,7 @@ export const allMockTests = [
                 type: "summary_completion",
 
                 text: "up to[GAP] sometimes.",
-                correctAnswer: "10 seconds", // Placeholder
+                correctAnswer: "vii",
               },
               {
                 id: "q8-r8s1",
@@ -3906,7 +4293,7 @@ export const allMockTests = [
                 type: "summary_completion",
 
                 text: "among[GAP] w.p.m.",
-                correctAnswer: "100-120", // Placeholder
+                correctAnswer: "Not Given",
               },
               {
                 id: "q9-r8s1",
@@ -3914,7 +4301,7 @@ export const allMockTests = [
                 type: "summary_completion",
 
                 text: "about[GAP] w.p.m.",
-                correctAnswer: "200", // Placeholder
+                correctAnswer: "TRUE",
               },
             ],
           },
@@ -3948,7 +4335,7 @@ export const allMockTests = [
                 questionNumber: "10-13",
                 text:
                   "Which FOUR of the followings are the factors that affect interpreting?",
-                correctAnswer: ["B", "C", "D", "G"], // Placeholder
+                correctAnswer: ["FALSE", "FALSE", "Not Given", "TRUE"],
               },
             ],
           },
@@ -3975,7 +4362,7 @@ export const allMockTests = [
                 questionNumber: 14,
                 type: "fill_in_the_blank",
                 text: "Combination of [GAP] and organic material, with",
-                correctAnswer: "clay", // Placeholder
+                correctAnswer: "clay",
               },
               {
                 id: "q15-r8s2",
@@ -3983,35 +4370,35 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "sufficient [GAP] to create a thick mixture sun dried Step two:",
-                correctAnswer: "water", // Placeholder
+                correctAnswer: "water",
               },
               {
                 id: "q16-r8s2",
                 questionNumber: 16,
                 type: "fill_in_the_blank",
                 text: "pack [GAP] around the cylinders",
-                correctAnswer: "manure", // Placeholder
+                correctAnswer: "straw",
               },
               {
                 id: "q17-r8s2",
                 questionNumber: 17,
                 type: "fill_in_the_blank",
                 text: "place them in [GAP] which is as burning fuel for firing",
-                correctAnswer: "kiln", // Placeholder
+                correctAnswer: "cow manure",
               },
               {
                 id: "q18-r8s2",
                 questionNumber: 18,
                 type: "fill_in_the_blank",
                 text: "(maximum temperature: [GAP])",
-                correctAnswer: "950 degrees", // Placeholder
+                correctAnswer: "950 degrees",
               },
               {
                 id: "q19-r8s2",
                 questionNumber: 19,
                 type: "fill_in_the_blank",
                 text: "filter being baked in under [GAP]",
-                correctAnswer: "half an hour", // Placeholder
+                correctAnswer: "60 minutes",
               },
             ],
           },
@@ -4027,27 +4414,27 @@ export const allMockTests = [
                 questionNumber: 20,
                 text:
                   "It takes half an hour for the manure to reach 950 degrees.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q21-r8s2",
                 questionNumber: 21,
                 text:
                   "Clay was initially found to be unsuitable for pot making.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q22-r8s2",
                 questionNumber: 22,
                 text:
                   "Coffee grounds are twice as effective as other materials.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q23-r8s2",
                 questionNumber: 23,
                 text: "E-coli is the most difficult bacteria to combat.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "Not Given",
               },
             ],
           },
@@ -4069,8 +4456,7 @@ export const allMockTests = [
                   "C. should be the same as an adult’s forefinger.",
                   "D. is not mentioned by Mr. Flynn.",
                 ],
-                correctAnswer:
-                  "C. should be the same as an adult’s forefinger.", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q25-r8s2",
@@ -4083,8 +4469,7 @@ export const allMockTests = [
                   "C. found that the local clay are good enough.",
                   "D. intended to help build a local filter production factory.",
                 ],
-                correctAnswer:
-                  "D. intended to help build a local filter production factory.", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q26-r8s2",
@@ -4097,8 +4482,7 @@ export const allMockTests = [
                   "C. because there are some legal obstacles.",
                   "D. because the design has already been applied thoroughly.",
                 ],
-                correctAnswer:
-                  "A. because he hopes it can be freely used around the world.", // Placeholder
+                correctAnswer: "A",
               },
             ],
           },
@@ -4144,31 +4528,31 @@ export const allMockTests = [
                 id: "q27-r8s3",
                 questionNumber: 27,
                 paragraphId: "A",
-                correctAnswer: "vi", // Placeholder
+                correctAnswer: "vi",
               },
               {
                 id: "q28-r8s3",
                 questionNumber: 28,
                 paragraphId: "B",
-                correctAnswer: "iv", // Placeholder
+                correctAnswer: "iv",
               },
               {
                 id: "q29-r8s3",
                 questionNumber: 29,
                 paragraphId: "C",
-                correctAnswer: "vii", // Placeholder
+                correctAnswer: "ii",
               },
               {
                 id: "q30-r8s3",
                 questionNumber: 30,
                 paragraphId: "D",
-                correctAnswer: "ii", // Placeholder
+                correctAnswer: "vi",
               },
               {
                 id: "q31-r8s3",
                 questionNumber: 31,
                 paragraphId: "E",
-                correctAnswer: "i", // Placeholder
+                correctAnswer: "vii",
               },
             ],
           },
@@ -4222,43 +4606,43 @@ export const allMockTests = [
                 id: "q32-r8s3",
                 questionNumber: 32,
                 statement: "Steven Pinker",
-                correctAnswer: "F", // Placeholder
+                correctAnswer: "F",
               },
               {
                 id: "q33-r8s3",
                 questionNumber: 33,
                 statement: "Musicologists",
-                correctAnswer: "B", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q34-r8s3",
                 questionNumber: 34,
                 statement: "Greek philosopher Pythagoras",
-                correctAnswer: "E", // Placeholder
+                correctAnswer: "E",
               },
               {
                 id: "q35-r8s3",
                 questionNumber: 35,
                 statement: "Schwartz, Howe, and Purves",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q36-r8s3",
                 questionNumber: 36,
                 statement: "Marc Hauser and Josh McDermott",
-                correctAnswer: "G", // Placeholder
+                correctAnswer: "G",
               },
               {
                 id: "q37-r8s3",
                 questionNumber: 37,
                 statement: "Charles Rosen",
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q38-r8s3",
                 questionNumber: 38,
                 statement: "Sandra Trehub",
-                correctAnswer: "C", // Placeholder
+                correctAnswer: "C",
               },
             ],
           },
@@ -4280,7 +4664,7 @@ export const allMockTests = [
                   "C tunes are impossible for animal to make up.",
                   "D Animals don't have spontaneous ability for the tests.",
                 ],
-                correctAnswer: "B Experiments on animal's music are limited,", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q40-r8s3",
@@ -4293,7 +4677,7 @@ export const allMockTests = [
                   "C Role of music in human society.",
                   "D Music experiments for animals.",
                 ],
-                correctAnswer: "C Role of music in human society.", // Placeholder
+                correctAnswer: "C",
               },
             ],
           },
@@ -4325,56 +4709,56 @@ export const allMockTests = [
               <p><strong>NO</strong> if the statement is false</p>
               <p><strong>NOT GIVEN</strong> if the information is not given in the passage</p>
             `,
-            type: "true_false_not_given",
+            type: "yes_no_not_given",
             questions: [
               {
                 id: "q1-r9s1",
                 questionNumber: 1,
                 text:
                   "Captain cook once expected the Hawaii might speak another language of people from other pacific islands.",
-                correctAnswer: "YES", // Placeholder
+                correctAnswer: "YES",
               },
               {
                 id: "q2-r9s1",
                 questionNumber: 2,
                 text:
                   "Captain cook depicted number of cultural aspects of Polynesians in his journal.",
-                correctAnswer: "YES", // Placeholder
+                correctAnswer: "NO",
               },
               {
                 id: "q3-r9s1",
                 questionNumber: 3,
                 text:
                   "Professor Spriggs and his research team went to the Efate to try to find the site of ancient cemetery.",
-                correctAnswer: "YES", // Placeholder
+                correctAnswer: "NO",
               },
               {
                 id: "q4-r9s1",
                 questionNumber: 4,
                 text:
                   "The Lapita completed a journey of around 2,000 miles in a period less than a centenary.",
-                correctAnswer: "NO", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q5-r9s1",
                 questionNumber: 5,
                 text:
                   "The Lapita were the first inhabitants in many pacific islands.",
-                correctAnswer: "YES", // Placeholder
+                correctAnswer: "YES",
               },
               {
                 id: "q6-r9s1",
                 questionNumber: 6,
                 text:
                   "The unknown pots discovered in Efate had once been used for cooking.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q7-r9s1",
                 questionNumber: 7,
                 text:
                   "The um buried in Efate site was plain as it was without any decoration.",
-                correctAnswer: "NO", // Placeholder
+                correctAnswer: "NO",
               },
             ],
           },
@@ -4394,7 +4778,7 @@ export const allMockTests = [
                 type: "summary_completion",
                 text:
                   "The [GAP] covering many of the Efate site did not come from that area.",
-                correctAnswer: "pottery", // Placeholder
+                correctAnswer: "rock",
               },
               {
                 id: "q9-r9s1",
@@ -4402,7 +4786,7 @@ export const allMockTests = [
                 type: "summary_completion",
                 text:
                   "examinations carried out on the [GAP] discovered at Efate site",
-                correctAnswer: "skeletons", // Placeholder
+                correctAnswer: "teeth",
               },
               {
                 id: "q10-r9s1",
@@ -4410,7 +4794,7 @@ export const allMockTests = [
                 type: "summary_completion",
                 text:
                   "DNA could identify the Lapita's nearest [GAP] present-days.",
-                correctAnswer: "relatives", // Placeholder
+                correctAnswer: "descendants",
               },
             ],
           },
@@ -4428,7 +4812,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "What did the Lapita travel in when they crossed the oceans?",
-                correctAnswer: "double-hulled canoes", // Placeholder
+                correctAnswer: "canoes",
               },
               {
                 id: "q12-r9s1",
@@ -4436,7 +4820,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "In Irwins’s view, what would the Latipa have relied on to bring them fast back to the base?",
-                correctAnswer: "prevailing winds", // Placeholder
+                correctAnswer: "trade winds",
               },
               {
                 id: "q13-r9s1",
@@ -4444,7 +4828,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Which sea creatures would have been an indication to the Lapita of where to find land?",
-                correctAnswer: "seabirds", // Placeholder
+                correctAnswer: ["seabirds and turtles"],
               },
             ],
           },
@@ -4473,42 +4857,42 @@ export const allMockTests = [
                 questionNumber: 14,
                 text:
                   "The average summer temperature in 2003 is approximately four degrees higher than that of the past.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q15-r9s2",
                 questionNumber: 15,
                 text:
                   "Jones believes the temperature statistic is within the normal range.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q16-r9s2",
                 questionNumber: 16,
                 text:
                   "Human factor is one of the reasons that caused hot summer.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q17-r9s2",
                 questionNumber: 17,
                 text:
                   "In large city, people usually measure temperature twice a day.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q18-r9s2",
                 questionNumber: 18,
                 text:
                   "Global warming has obvious effect of warmer winter instead of hotter summer before 2003.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q19-r9s2",
                 questionNumber: 19,
                 text:
                   "New ski resorts are to be built on a high-altitude spot.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
             ],
           },
@@ -4523,7 +4907,7 @@ export const allMockTests = [
                 questionNumber: 20,
                 type: "fill_in_the_blank",
                 text: "What are the two hottest years in Britain besides 2003?",
-                correctAnswer: "1976 and 1995", // Placeholder
+                correctAnswer: "1976 and 1995",
               },
               {
                 id: "q21-r9s2",
@@ -4531,7 +4915,7 @@ export const allMockTests = [
                 questionNumber: 21,
                 text:
                   "What will affect UK government policies besides climate change according to Hulme ?",
-                correctAnswer: "public opinion", // Placeholder
+                correctAnswer: "2000 floods",
               },
             ],
           },
@@ -4548,28 +4932,28 @@ export const allMockTests = [
                 questionNumber: 22,
                 text:
                   "thousands of extra death occurred in the country of [GAP].",
-                correctAnswer: "France", // Placeholder
+                correctAnswer: "France",
               },
               {
                 id: "q23-r9s2",
                 type: "summary_completion",
                 questionNumber: 23,
                 text: "the third record of hottest summer date from [GAP].",
-                correctAnswer: "1850", // Placeholder
+                correctAnswer: "1856",
               },
               {
                 id: "q24-r9s2",
                 type: "summary_completion",
                 questionNumber: 24,
                 text: "after the year of [GAP].",
-                correctAnswer: "1998", // Placeholder
+                correctAnswer: ["1988 and 2002"],
               },
               {
                 id: "q25-r9s2",
                 type: "summary_completion",
                 questionNumber: 25,
                 text: "all the 10 hottest years happened from [GAP].",
-                correctAnswer: "1990", // Placeholder
+                correctAnswer: "1990",
               },
               {
                 id: "q26-r9s2",
@@ -4577,7 +4961,7 @@ export const allMockTests = [
                 questionNumber: 26,
                 text:
                   "summer of 2003 was at the peak of previous [GAP] years, perhaps even more.",
-                correctAnswer: "20", // Placeholder
+                correctAnswer: "500",
               },
             ],
           },
@@ -4599,7 +4983,7 @@ export const allMockTests = [
                   "C The Effects of hot temperature",
                   "D Hottest summer in Europe",
                 ],
-                correctAnswer: "D Hottest summer in Europe", // Placeholder
+                correctAnswer: "D",
               },
             ],
           },
@@ -4628,49 +5012,49 @@ export const allMockTests = [
                 questionNumber: 28,
                 text:
                   "Aries pointed out that children did different types of work as adults during the Middle Age.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q29-r9s3",
                 questionNumber: 29,
                 text:
                   "During the Middle Age, going to work necessarily means children were unloved indicated by Aries.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q30-r9s3",
                 questionNumber: 30,
                 text:
                   "Scientists think that overworked labour damages the health of young children",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "TRUE",
               },
               {
                 id: "q31-r9s3",
                 questionNumber: 31,
                 text:
                   "the rise of trade union majorly contributed to the protection children from exploitation in 19th century",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q32-r9s3",
                 questionNumber: 32,
                 text:
                   "By the aid of half-time schools, most children went to school in the mid of 19 century.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q33-r9s3",
                 questionNumber: 33,
                 text:
                   "In 20 century almost all children need to go to school in full time schedule.",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q34-r9s3",
                 questionNumber: 34,
                 text:
                   "Nowadays, children’s needs were much differentiated and categorised based on how old they are",
-                correctAnswer: "TRUE", // Placeholder
+                correctAnswer: "TRUE",
               },
             ],
           },
@@ -4687,7 +5071,7 @@ export const allMockTests = [
                 questionNumber: 35,
                 text:
                   "what is the controversial topic arises with the French historian Philippe Ariès's concept",
-                correctAnswer: "childhood", // Placeholder
+                correctAnswer: "history of childhood",
               },
               {
                 id: "q36-r9s3",
@@ -4695,7 +5079,7 @@ export const allMockTests = [
                 questionNumber: 36,
                 text:
                   "what image for children did Aries believed to be like in Western Europe during the Middle Ages",
-                correctAnswer: "miniature adults", // Placeholder
+                correctAnswer: "(as) miniature adults",
               },
               {
                 id: "q37-r9s3",
@@ -4703,7 +5087,7 @@ export const allMockTests = [
                 questionNumber: 37,
                 text:
                   "what historical event generated the need for great amount child labour to work long time in 18 and 19 century",
-                correctAnswer: "Industrial Revolution", // Placeholder
+                correctAnswer: "(with the) industrialization",
               },
               {
                 id: "q38-r9s3",
@@ -4711,7 +5095,7 @@ export const allMockTests = [
                 questionNumber: 38,
                 text:
                   "what legal format initiated the protection of children from exploitation in 19th centenary",
-                correctAnswer: "Factory Acts", // Placeholder
+                correctAnswer: "The factory Act",
               },
               {
                 id: "q39-r9s3",
@@ -4719,7 +5103,7 @@ export const allMockTests = [
                 questionNumber: 39,
                 text:
                   "what the activities were more and more regarded as being preferable for almost all children time in 19th centenary",
-                correctAnswer: "education and play", // Placeholder
+                correctAnswer: "play and education",
               },
               {
                 id: "q40-r9s3",
@@ -4727,7 +5111,7 @@ export const allMockTests = [
                 questionNumber: 40,
                 text:
                   "where has been the central area for children to spend largily of their day as people's expectation in modern society",
-                correctAnswer: "school", // Placeholder
+                correctAnswer: "classroom",
               },
             ],
           },

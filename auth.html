@@ -73,7 +73,13 @@
         class="py-3 px-4 md:py-4 md:px-8 flex items-center justify-between bg-white border-b border-gray-100 rounded-b-xl transition-colors duration-300 sticky top-0 z-50"
       >
         <div class="flex items-center gap-4">
-          <h1 class="font-anton text-2xl md:text-3xl text-blue-600">Mahir</h1>
+          <a href="home.html" class="logo">
+            <img
+              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+              alt="Ielts mahir logo"
+              width="60"
+            />
+          </a>
           <nav class="hidden md:flex gap-4">
             <!-- Navigation links, if any, can be added here -->
           </nav>
@@ -106,7 +112,7 @@
         class="flex-1 flex items-center justify-center min-h-screen -mt-16"
       >
         <div
-          class="p-8 md:p-10 rounded-2xl border border-gray-200 bg-white w-full max-w-md"
+          class="p-8 mt-[6vw] md:p-10 rounded-2xl border border-gray-200 bg-white w-full max-w-md"
         >
           <h2
             id="auth-title"
@@ -261,7 +267,7 @@
       function toggleAuthModeUI(mode) {
         currentAuthMode = mode;
         if (mode === "login") {
-          elements.authTitle.textContent = "Sign In to Mahir";
+          elements.authTitle.textContent = "Sign In to IELTS Mahir";
           elements.authSubmitBtn.textContent = "Sign In";
           elements.nameField.classList.add("hidden"); // Hide name field for login
           elements.nameInput.removeAttribute("required");
@@ -269,7 +275,7 @@
           elements.confirmPasswordInput.removeAttribute("required");
           elements.toggleAuthModeBtn.textContent = "Sign Up";
         } else {
-          elements.authTitle.textContent = "Sign Up for Mahir";
+          elements.authTitle.textContent = "Sign Up for IELTS Mahir";
           elements.authSubmitBtn.textContent = "Sign Up";
           elements.nameField.classList.remove("hidden"); // Show name field for signup
           elements.nameInput.setAttribute("required", "true");

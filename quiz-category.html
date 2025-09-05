@@ -6,6 +6,7 @@
     <title>IELTS Mahir - Quiz Category</title>
     <!-- Tailwind CSS CDN -->
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="test-left-header.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -224,17 +225,20 @@
     >
       <div class="flex items-center gap-2 sm:gap-4">
         <!-- Replaced text with image logo -->
-        <img
-          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
-          alt="IELTS Mahir Logo"
-          class="h-8 md:h-10 w-auto"
-          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
-        />
-        <nav class="hidden md:flex gap-6 ml-8 font-inter">
-          <a href="#" class="nav-link transition-all">Inspiration</a>
-          <a href="#" class="nav-link transition-all">Quiz Categories</a>
-          <a href="#" class="nav-link transition-all">Resources</a>
-        </nav>
+        <div class="ai-logo-parent">
+          <a href="home.html">
+            <img
+              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+              alt="IELTS Mahir Logo"
+              class="h-8 md:h-10 w-auto"
+              onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+            />
+          </a>
+          <a href="ai-feature.html" class="ai-button" aria-label="AI Tools">
+            <i class="fas fa-robot" aria-hidden="true"></i>
+            <span>AI</span>
+          </a>
+        </div>
       </div>
       <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
         <!-- Authentication status will be handled by auth.js -->

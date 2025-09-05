@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IELTS Mahir - Home</title>
-
+    <title>IELTS Mahir - IELTS Study Plan</title>
+    <link rel="stylesheet" href="navigation-dark.css" />
     <link rel="stylesheet" href="free-resourses-details.css" />
 
     <link
@@ -20,17 +20,36 @@
       href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap"
       rel="stylesheet"
     />
+    <!-- Font Awesome 6.7.2 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
     <main id="main">
       <div id="page1">
         <nav>
-          <div class="logo">
-            <img
-              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
-              alt="Ielts mahir logo"
-            />
+          <div class="logo-ai-parent">
+            <div class="hamburger-menu">
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+            </div>
+            <a href="home.html" class="logo">
+              <img
+                src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+                alt="Ielts mahir logo"
+              />
+            </a>
+            <a href="ai-feature.html" class="ai-button" aria-label="AI Tools">
+              <i class="fas fa-robot" aria-hidden="true"></i>
+              <span>AI</span>
+            </a>
           </div>
+
           <div class="menu-item">
             <a href="home.html">Home</a>
 
@@ -46,7 +65,6 @@
                 <a href="ielts-listening.html" class="category-link"
                   >Listening</a
                 >
-
                 <a href="ielts-grammar.html" class="category-link">Grammar</a>
                 <a href="ielts-study-plan.html" class="category-link"
                   >Study Plan</a
@@ -62,22 +80,25 @@
                 >
               </div>
             </div>
-
-            <a href="quizzes.html">Quizzes</a>
-
-            <div class="dropdown">
-              <a class="down-arrow" href="javascript:void(0)">
-                Services <span class="arrow">&gt;</span>
-              </a>
-              <div class="submenu">
-                <a href="#">1:1 Coaching</a>
-                <a href="#">Essay Checking</a>
-                <a href="#">Speaking Practice</a>
+            <a href="mock-test-home.html">Mock Test</a>
+            <a href="quiz-home.html">Quizzes</a>
+            <a href="ielts-tips-and-tricks.html">IELTS Tips and Tricks</a>
+            <a href="ielts-mahir-community-forum.html">Community Forum</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+          </div>
+          <div id="auth-buttons-container" class="auth-container">
+            <div class="auth-loading-pulse">
+              <div class="auth-loading-circle"></div>
+              <div class="auth-loading-content">
+                <div class="auth-loading-bar"></div>
+                <div class="auth-loading-grid">
+                  <div class="auth-loading-bar auth-loading-col-2"></div>
+                  <div class="auth-loading-bar auth-loading-col-1"></div>
+                </div>
+                <div class="auth-loading-bar"></div>
               </div>
             </div>
-
-            <a href="tips-tricks.html">IELTS Tips and Tricks</a>
-            <a href="contact.html">Contact</a>
           </div>
         </nav>
 
@@ -89,7 +110,7 @@
               lessons, practice materials, and strategies tailored to your
               success.
             </p>
-            <div class="play-btn">▶</div>
+
             <img
               class="corner-one"
               src="assets/Header-Corner-1@3x-BIHIy4ju.png"
@@ -254,5 +275,8 @@
     <script src="dropdown-settings.js"></script>
     <script src="app.js"></script>
     <script src="gsap.js"></script>
+    <script src="navigation.js"></script>
+    <script type="module" src="./auth.js"></script>
+    <script type="module" src="auth-page-loading.js"></script>
   </body>
 </html>

@@ -4,13 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IELTS Mahir - Home</title>
-    
-
+    <link rel="stylesheet" href="navigation-light.css" />
     <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css"
-    />
     <!-- Font Awesome 6.7.2 -->
     <link
       rel="stylesheet"
@@ -26,7 +21,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
     <!-- Added new font for loading text -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <!-- Anton font link for styling -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     
+    <!-- New inline CSS for the Speaking Test Simulator and the new Success Journey section -->
+    <style>
+      /* ≥ 1440 px: large laptop / desktop */
+@media (min-width: 1440px) {
+  nav .menu-item {
+    left: 12.2vw;
+  }
+}
+
+/* 1024 – 1439 px: 13–15″ laptops */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  nav .menu-item {
+    left: 8vw;
+  }
+}
+    </style>
   </head>
   <body>
     <!-- Professional Loading Overlay -->
@@ -42,74 +55,68 @@
       <div id="page1" class="homepage1">
         <!-- Added flex classes to nav for proper alignment -->
         <nav>
-          <!-- Hamburger menu first for mobile order -->
-          <div class="hamburger-menu">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-          </div>
-          <div class="logo">
-            <img
-              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
-              alt="Ielts mahir logo"
-            />
-          </div>
-          <div class="menu-item">
-            <a href="home.html">Home</a>
 
-            <div class="dropdown">
-              <a class="down-arrow" href="javascript:void(0)">
-                Free Resources <span class="arrow">&gt;</span>
-              </a>
-              <div class="submenu">
-                <a href="ielts-all.html" class="category-link">All</a>
-                <a href="ielts-speaking.html" class="category-link">Speaking</a>
-                <a href="ielts-writing.html" class="category-link">Writing</a>
-                <a href="ielts-reading.html" class="category-link">Reading</a>
-                <a href="ielts-listening.html" class="category-link">Listening</a>
+  <div class="logo-ai-parent">
+      <div class="hamburger-menu">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+  <a href="home.html" class="logo">
+    <img src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png" alt="Ielts mahir logo" />
+  </a>
+  <a href="ai-feature.html" class="ai-button" aria-label="AI Tools">
+    <i class="fas fa-robot" aria-hidden="true"></i>
+    <span>AI</span>
+  </a>
+  </div>
 
-                <a href="ielts-grammar.html" class="category-link">Grammar</a>
-                <a href="ielts-study-plan.html" class="category-link">Study Plan</a>
-                <a href="higher-study.html" class="category-link">higher Study</a>
-                <a href="live-classes.html" class="category-link">Live Classes</a>
-                <a href="ielts-motivation.html" class="category-link"
-                  >IELTS Motivation</a
-                >
-              </div>
-            </div>
+ 
 
-            <a href="quizzes.html">Quizzes</a>
+  <div class="menu-item">
+    <a href="home.html">Home</a>
 
-            <div class="dropdown">
-              <a class="down-arrow" href="javascript:void(0)">
-                Services <span class="arrow">&gt;</span>
-              </a>
-              <div class="submenu">
-                <a href="#">1:1 Coaching</a>
-                <a href="#">Essay Checking</a>
-                <a href="#">Speaking Practice</a>
-              </div>
-            </div>
-
-            <a href="tips-tricks.html">IELTS Tips and Tricks</a>
-            <a href="contact.html">Contact</a>
-          </div>
-          <!-- Authentication buttons container - now a direct child of nav -->
-          <div id="auth-buttons-container" class="auth-container">
-            <!-- Initial loading state, will be populated by JavaScript -->
-            <div class="auth-loading-pulse">
-              <div class="auth-loading-circle"></div>
-              <div class="auth-loading-content">
-                <div class="auth-loading-bar"></div>
-                <div class="auth-loading-grid">
-                  <div class="auth-loading-bar auth-loading-col-2"></div>
-                  <div class="auth-loading-bar auth-loading-col-1"></div>
-                </div>
-                <div class="auth-loading-bar"></div>
-              </div>
-            </div>
-          </div>
-        </nav>
+    <div class="dropdown">
+      <a class="down-arrow" href="javascript:void(0)">
+        Free Resources <span class="arrow">&gt;</span>
+      </a>
+      <div class="submenu">
+        <a href="ielts-all.html" class="category-link">All</a>
+        <a href="ielts-speaking.html" class="category-link">Speaking</a>
+        <a href="ielts-writing.html" class="category-link">Writing</a>
+        <a href="ielts-reading.html" class="category-link">Reading</a>
+        <a href="ielts-listening.html" class="category-link">Listening</a>
+        <a href="ielts-grammar.html" class="category-link">Grammar</a>
+        <a href="ielts-study-plan.html" class="category-link">Study Plan</a>
+        <a href="higher-study.html" class="category-link">higher Study</a>
+        <a href="live-classes.html" class="category-link">Live Classes</a>
+        <a href="ielts-motivation.html" class="category-link"
+          >IELTS Motivation</a
+        >
+      </div>
+    </div>
+    <a href="mock-test-home.html">Mock Test</a>
+    <a href="quiz-home.html">Quizzes</a>
+    <a href="#ielts-programs-section" class="program-menu-btn">Programs</a>
+    <a href="ielts-tips-and-tricks.html">IELTS Tips and Tricks</a>
+    <a href="ielts-mahir-community-forum.html">Community Forum</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div id="auth-buttons-container" class="auth-container">
+    <div class="auth-loading-pulse">
+      <div class="auth-loading-circle"></div>
+      <div class="auth-loading-content">
+        <div class="auth-loading-bar"></div>
+        <div class="auth-loading-grid">
+          <div class="auth-loading-bar auth-loading-col-2"></div>
+          <div class="auth-loading-bar auth-loading-col-1"></div>
+        </div>
+        <div class="auth-loading-bar"></div>
+      </div>
+    </div>
+  </div>
+  </nav>
         <div class="hero-video-el">
           <video
             loop
@@ -126,8 +133,8 @@
             </h1>
 
             <div class="ctas">
-              <a class="free-class-btn" href="ielts-all.html">Join Free Class &#8594</a>
-              <a class="mock-test-btn" href="take-mock-test">Take a MOCK test &#8594</a>
+              <a class="free-class-btn" href="ielts-all.html">Enjoy Free Class <i style="margin-left: 1vw;" class="fa-solid fa-arrow-right"></i></a>
+              <a class="mock-test-btn" href="mock-test-home.html">Take a MOCK test <i style="margin-left: 1vw;" class="fa-solid fa-arrow-right"></i></a>
             </div>
             <div class="study-abroad-png">
               <img src="assets/left-box-catchy-icon.png" alt="" />
@@ -155,11 +162,11 @@
           </div>
         </div>
         <div class="all-featured-cards">
-          <div class="featured-card-wrapper one">
+          <div class="featured-card-wrapper one" data-url="http://127.0.0.1:5500/ielts-tips-and-tricks.html">
             <div class="featured-card one">
-              <a href="#" class="card-arrow">
+              <div href="#" class="card-arrow">
                 <i class="fa-solid fa-arrow-right"></i>
-              </a>
+              </div>
               
               <div class="card-type">
                 <h1>Band 9 <br> study plans</h1>
@@ -169,39 +176,39 @@
               <img src="student-card/student-image-four.png" alt="">
             </div>
           </div>
-          <div class="featured-card-wrapper two">
+          <div class="featured-card-wrapper two" data-url="http://127.0.0.1:5500/grammar-checker.html">
             <div class="featured-card two">
-              <a href="#" class="card-arrow two">
+              <div href="#" class="card-arrow two">
                 <i class="fa-solid fa-arrow-right"></i>
-              </a>
+              </div>
               
               <div class="card-type two">
-                <h1>Writing <br> Checker</h1>
+                <h1>Grammar <br> Checker</h1>
               </div>
             </div>
             <div class="card-img two">
               <img src="student-card/student-image-five.png" alt="">
             </div>
           </div>
-          <div class="featured-card-wrapper three">
+          <div class="featured-card-wrapper three" data-url="http://127.0.0.1:5500/quiz-home.html">
             <div class="featured-card three">
-              <a href="#" class="card-arrow two">
+              <div href="#" class="card-arrow two">
                 <i class="fa-solid fa-arrow-right"></i>
-              </a>
+              </div>
               
               <div class="card-type two">
-                <h1>spelling<br>checker</h1>
+                <h1>Take<br>a Quiz</h1>
               </div>
             </div>
             <div class="card-img three">
               <img src="student-card/student-image-three.png" alt="">
             </div>
           </div>
-          <div class="featured-card-wrapper four">
+          <div class="featured-card-wrapper four" data-url="http://127.0.0.1:5500/mock-test-home.html">
             <div class="featured-card four">
-              <a href="#" class="card-arrow two">
+              <div href="#" class="card-arrow two">
                 <i class="fa-solid fa-arrow-right"></i>
-              </a>
+              </div>
               
               <div class="card-type two">
                 <h1>Take a <br>Mock Test</h1>
@@ -213,9 +220,9 @@
           </div>
           <div class="featured-card-wrapper five">
             <div class="featured-card five">
-              <a href="#" class="card-arrow two">
+              <div href="#" class="card-arrow two">
                 <i class="fa-solid fa-arrow-right"></i>
-              </a>
+              </div>
               
               <div class="card-type two">
                 <h1>Success <br>stories</h1>
@@ -251,7 +258,6 @@
           </div>
         </div>
       </div>
-
 
 
 
@@ -367,59 +373,239 @@
         </div>
         <div class="lower-background"></div>
       </div>
-      <div id="page7" class="why-choose-us-section">
-        <img class="page2-grapic-el page7-grapic-el" src="assets/Header-Corner-2@3x-BraQ-fkp.png" alt="graphic element">
-        <div class="why-choose-us-header">
-          <h2 class="section-title">Why Choose IELTS Mahir?</h2>
-          <p class="section-subtitle">Unlock your full potential with our tailored approach and expert guidance.</p>
+      <!-- ===== NEW AND IMPROVED "OUR SUCCESS JOURNEY" SECTION ===== -->
+      <div id="success-journey-section" class="success-journey">
+        <div class="success-journey-header">
+          <h2 class="section-title">Your Path to a Band 9</h2>
+          <p class="section-subtitle">We don't just teach, we guide. Follow our proven process to achieve your dream score and unlock new opportunities.</p>
         </div>
-        <div class="benefits-grid">
-          <div class="benefit-card">
-            <div class="icon-wrapper">
-              <i class="fas fa-chalkboard-teacher"></i>
+        
+        <div class="timeline-container">
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-graduation-cap"></i>
             </div>
-            <h3>Experienced Instructors</h3>
-            <p>Learn from certified IELTS experts with years of experience helping students achieve their target bands.</p>
-          </div>
-          <div class="benefit-card">
-            <div the="icon-wrapper">
-              <i class="fas fa-user-graduate"></i>
+            <div class="timeline-item-content">
+              <h3>Expert-Led Instruction</h3>
+              <p>Learn from certified IELTS examiners and seasoned instructors who provide proven strategies and in-depth knowledge for every section of the exam.</p>
             </div>
-            <h3>Personalized Learning</h3>
-            <p>Receive customized study plans and one-on-one feedback to address your specific strengths and weaknesses.</p>
           </div>
-          <div class="benefit-card">
-            <div the="icon-wrapper">
+          
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <div class="timeline-item-content">
+              <h3>Personalized Study Plans</h3>
+              <p>Based on your diagnostic test, we create a bespoke study plan that targets your specific weaknesses and optimizes your learning path for maximum efficiency.</p>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-icon">
               <i class="fas fa-chart-line"></i>
             </div>
-            <h3>Proven Track Record</h3>
-            <p>Join thousands of successful students who have achieved their desired IELTS scores with our effective methods.</p>
-          </div>
-          <div class="benefit-card">
-            <div class="icon-wrapper">
-              <i class="fas fa-book-open"></i>
+            <div class="timeline-item-content">
+              <h3>Progress Tracking & Feedback</h3>
+              <p>Our platform tracks your progress on every task. Get detailed, actionable feedback on your speaking and writing from our AI and expert mentors to improve quickly.</p>
             </div>
-            <h3>Comprehensive Resources</h3>
-            <p>Access a wealth of practice materials, mock tests, and exclusive study guides to master every section.</p>
           </div>
-          <div class="benefit-card">
-            <div class="icon-wrapper">
-              <i class="fas fa-comments"></i>
+          
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-star"></i>
             </div>
-            <h3>Supportive Community</h3>
-            <p>Engage with a vibrant community of learners and instructors for constant motivation and collaborative learning.</p>
-          </div>
-          <div class="benefit-card">
-            <div class="icon-wrapper">
-              <i class="fas fa-medal"></i>
+            <div class="timeline-item-content">
+              <h3>Guaranteed Success</h3>
+              <p>Join thousands of successful students who have achieved their target bands. Our structured approach is designed to ensure noticeable, measurable improvement.</p>
             </div>
-            <h3>Guaranteed Improvement</h3>
-            <p>Our structured approach and dedicated support are designed to ensure noticeable progress in your IELTS journey.</p>
           </div>
         </div>
+        
         <a href="about-us.html" class="learn-more-btn">Learn More About Us &#8594;</a>
       </div>
+      <!-- End NEW AND IMPROVED "OUR SUCCESS JOURNEY" SECTION -->
+      
+      <!-- ===== NEW SECTION: IELTS PROGRAMS SECTION (REWORKED) ===== -->
+      <div id="ielts-programs-section">
+          <div class="programs-header">
+              <h2 class="section-title">Our Premium Offline Programs</h2>
+              <p class="section-subtitle">Experience world-class, in-person training with our expert mentors. Each program is designed to provide you with the personal guidance and resources you need to succeed.</p>
+          </div>
+          
+          <div class="program-card-grid">
+              
+              <!-- Program Card 1: Mastermind IELTS Program -->
+              <div class="program-card">
+                  <div class="program-icon-new">
+                      <i class="fas fa-chalkboard-teacher fa-2x"></i>
+                  </div>
+                  <h3>Mastermind IELTS Program</h3>
+                  <p>Our most comprehensive offline course. Enjoy small-group classes, personalized attention, and a full suite of materials for an immersive learning journey.</p>
+                  <ul class="program-card-features">
+                      <li><i class="fas fa-check-circle"></i> In-person, expert-led classroom sessions</li>
+                      <li><i class="fas fa-check-circle"></i> Exclusive physical study materials</li>
+                      <li><i class="fas fa-check-circle"></i> Weekly one-on-one sessions with a mentor</li>
+                  </ul>
+                   <a href="contact.html" class="enroll-btn-new">Contact for Enrollment</a>
+              </div>
+              
+              <!-- Program Card 2: Speaking & Writing Immersion -->
+              <div class="program-card">
+                  <div class="program-icon-new">
+                      <i class="fas fa-comments fa-2x"></i>
+                  </div>
+                  <h3>Speaking & Writing Immersion</h3>
+                  <p>An intensive, hands-on program focused on the productive skills. Get direct feedback and practice in a real-time classroom environment.</p>
+                  <ul class="program-card-features">
+                      <li><i class="fas fa-check-circle"></i> Daily speaking practice with live feedback</li>
+                      <li><i class="fas fa-check-circle"></i> Detailed, handwritten corrections on your essays</li>
+                      <li><i class="fas fa-check-circle"></i> Mock interviews in a simulated exam setting</li>
+                  </ul>
+                  <a href="contact.html" class="enroll-btn-new">Contact for Enrollment</a>
+              </div>
+              
+              <!-- Program Card 3: Weekend Intensive Prep -->
+              <div class="program-card">
+                  <div class="program-icon-new">
+                      <i class="fas fa-calendar-alt fa-2x"></i>
+                  </div>
+                  <h3>Weekend Intensive Prep</h3>
+                  <p>Designed for busy students and professionals. Maximize your score with focused, weekend-only classes covering key strategies and exam techniques.</p>
+                  <ul class="program-card-features">
+                      <li><i class="fas fa-check-circle"></i>Highly concentrated weekend sessions</li>
+                      <li><i class="fas fa-check-circle"></i> Strategic tips and tricks for quick improvement</li>
+                      <li><i class="fas fa-check-circle"></i> In-person practice with peer groups</li>
+                  </ul>
+                  <a href="contact.html" class="enroll-btn-new">Contact for Enrollment</a>
+              </div>
+              
+          </div>
+      </div>
+      <!-- END IELTS PROGRAMS SECTION -->
+
+      <!-- ===== New Feature: AI Speaking Test Simulator ===== -->
+      <div id="speaking-simulator" class="speaking-simulator">
+        <img class="page2-grapic-el page5-grapic-el cal-grapic-el" src="assets/Homepage-2@3x-BCRznU7a.png" alt="">
+        <div class="simulator-header">
+          
+          <h2>IELTS Speaking Test Simulator</h2>
+          <p>Practice your speaking with an AI interviewer and get instant feedback.</p>
+        </div>
+        <div class="simulator-card">
+          <div class="prompt-box" id="prompt-box">
+            <p>Click "Get a Question" to begin your speaking practice.</p>
+            <div class="listening-indicator" id="listening-indicator">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+          </div>
+          
+          <div id="status-message" class="status-message"></div>
+
+          <div class="control-panel">
+            <button id="start-btn" class="control-btn"><i class="fas fa-microphone"></i> Get a Question</button>
+            <button id="stop-btn" class="control-btn" disabled><i class="fas fa-stop"></i> Stop</button>
+            <button id="next-btn" class="control-btn" disabled>Next Question &nbsp;&rarr;</button>
+          </div>
+          
+          <div class="loader" id="loader">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+          </div>
+
+          <div class="transcript-box">
+            <h4>Your Transcript:</h4>
+            <p id="transcript-output">...</p>
+          </div>
+
+          <div class="feedback-box">
+            <h4>AI Feedback:</h4>
+            <div id="feedback-output">...</div>
+          </div>
+        </div>
+      </div>
       <!-- IELTS Speaking Test Simulator END -->
+      
+      <!-- ===== NEW SECTION: AI-Powered Global Study Hub CTA (REWORKED) ===== -->
+      <div class="study-hub-cta">
+        <div class="study-hub-cta-content">
+          <div class="study-hub-icon">
+            <svg class="globe" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          </div>
+          <div class="study-hub-cta-header">
+            <h2>AI-Powered Global Study Hub</h2>
+            <p>Discover universities, fees, visas, and more for any country. Your seamless journey to higher education starts here.</p>
+          </div>
+          <a href="global-study-hub.html" class="cta-btn">
+            <span>Go to Study Hub</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      <!-- END NEW SECTION -->
+
+
+      
+      <!-- ===== New Section: FAQs ===== -->
+      <div id="faq-section" class="faq-section">
+        <img class="page2-grapic-el page5-grapic-el cal-grapic-el" src="assets/Header-Corner-2@3x-BraQ-fkp.png" alt="">
+        <img class="page2-grapic-el page5-grapic-el cal-grapic-el faq" src="assets/Header-Corner-1@3x-BIHIy4ju.png" alt="">
+
+          <div class="faq-header">
+              <h2>Frequently Asked Questions</h2>
+              <p>Find quick answers to the most common questions about our platform and services.</p>
+          </div>
+          <div class="faq-container">
+              <div class="faq-item">
+                  <details>
+                      <summary>What makes IELTS Mahir different?</summary>
+                      <div class="faq-answer">
+                          <p>We stand out through our combination of expert-led instruction, personalized study plans, and advanced AI-powered tools like our Speaking Test Simulator. We focus on a holistic approach to help you achieve your best possible score.</p>
+                      </div>
+                  </details>
+              </div>
+              <div class="faq-item">
+                  <details>
+                      <summary>Are the mock tests free?</summary>
+                      <div class="faq-answer">
+                          <p>We offer a free diagnostic test to help you understand your current level. Our comprehensive, full-length mock tests with detailed feedback are part of our premium packages to ensure you are fully prepared for the real exam.</p>
+                      </div>
+                  </details>
+              </div>
+              <div class="faq-item">
+                  <details>
+                      <summary>Who are the instructors?</summary>
+                      <div class="faq-answer">
+                          <p>Our team consists of certified IELTS professionals with years of teaching experience. They have a proven track record of helping students achieve high band scores and are committed to your success.</p>
+                      </div>
+                  </details>
+              </div>
+              <div class="faq-item">
+                  <details>
+                      <summary>How can I get a personalized study plan?</summary>
+                      <div class="faq-answer">
+                          <p>After taking our initial diagnostic test, our system and instructors will analyze your results to create a custom study plan tailored to your specific needs, focusing on the areas where you need the most improvement.</p>
+                      </div>
+                  </details>
+              </div>
+              <div class="faq-item">
+                  <details>
+                      <summary>Is there a community forum?</summary>
+                      <div class="faq-answer">
+                          <p>Yes! We have a vibrant community forum where you can connect with other students, share tips, and get support from our mentors. It's a great place to stay motivated and engaged throughout your IELTS journey.</p>
+                      </div>
+                  </details>
+              </div>
+          </div>
+      </div>
+      
       <footer class="footer">
         <div class="footer-top">
           <div class="contact-banner">
@@ -427,9 +613,10 @@
               <h2 class="anton">Achieve Your Desired IELTS Band</h2>
               <p class="montserrat">Certified mentors guiding you every step of the way</p>
               <div class="contact-buttons">
-                <button class="btn primary montserrat">Explore IELTS Modules</button>
-                <a href="#" class="btn link montserrat">Latest Success Stories →</a>
+               <a href="mock-test-home.html" class="btn primary montserrat">Explore IELTS Modules</a>
+               <a href="dashboard.html" class="btn link montserrat">Your Dashboard <i class="fa-solid fa-arrow-right"></i></a></a>
               </div>
+
             </div>
             <div class="contact-image">
               <div class="bg-letter">
@@ -446,51 +633,48 @@
           <div class="footer-column">
             <h4 class="anton">Quick Access</h4>
             <ul class="montserrat">
-              <li><a href="#">About IELTS Mahir</a></li>
-              <li><a href="#">Contact Support</a></li>
-              <li><a href="#">IELTS FAQs</a></li>
-              <li><a href="#">Terms & Conditions</a></li>
-              <li><a href="#">Privacy Guidelines</a></li>
+              <li><a href="#success-journey-section">Why Choose Us</a></li>
+              <li><a href="contact.html">Contact Support</a></li>
+              <li><a href="#faq-section">IELTS FAQs</a></li>
+              <li>
+                <a href="terms-and-conditions.html">Terms & Conditions</a>
+              </li>
+              <li><a href="privacy-guidelines.html">Privacy Guidelines</a></li>
             </ul>
           </div>
 
           <div class="footer-column">
             <h4 class="anton">Learning Hub</h4>
             <ul class="montserrat">
-              <li><a href="#">IELTS Blog</a></li>
-              <li><a href="#">Student Reviews</a></li>
-              <li><a href="#">Success Partners</a></li>
-              <li><a href="#">Live Support</a></li>
-              <li><a href="#">Help & Guidance</a></li>
+              <li><a href="#page5">IELTS Blog</a></li>
+              <li><a href="#page3">Student Reviews</a></li>
+              <li><a href="#success-journey-section">Band 9 Roadmap</a></li>
+              <li><a href="mock-test-home.html">Mock Test</a></li>
+              <li><a href="#faq-section">Help & Guidance</a></li>
             </ul>
           </div>
-
           <div class="footer-column subscribe">
-            <h4 class="anton">Get Weekly IELTS Tips</h4>
-            <p class="montserrat">Subscribe and stay ahead with expert strategies</p>
-            <div class="subscribe-form">
-              <input type="email" placeholder="Enter your email" class="montserrat" />
-              <button class="montserrat">Subscribe</button>
-            </div>
-            <small class="montserrat">By subscribing, you agree to our <a href="#">Privacy Policy</a></small>
+            <h4 class="anton">Connect with a Mentor</h4>
+            <p class="montserrat">Get personalized guidance and expert support for your IELTS preparation.</p>
+            <button href="contact.html" class="anton connect-btn" data-url="http://127.0.0.1:5500/our-teacher.html">Contact a Mentor <i class="fa-solid fa-arrow-right"></i></button>
           </div>
         </div>
 
         <div class="footer-bottom">
           <div class="branding anton">IELTS MAHIR.</div>
-          <div class="footer-policy-links montserrat">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Use</a>
-            <a href="#">Cookies Notice</a>
-          </div>
+          
           <div class="footer-socials">
-            <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png" alt="Facebook" /></a>
+            <a href="https://www.facebook.com/IELTSMahir1"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png" alt="Facebook" /></a>
             <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png" alt="Instagram" /></a>
             <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png" alt="LinkedIn" /></a>
-            <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" alt="YouTube" /></a>
+            <a href="https://www.youtube.com/c/ieltsmahir/about"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" alt="YouTube" /></a>
           </div>
           <p class="montserrat copyright">© 2024 IELTS Mahir. All rights reserved.</p>
+          
         </div>
+        <a href="http://www.ruralpeace.org/portfolio" class="footer-creator-img" target="_blank" aria-label="Creator's Profile">
+            <img src="assets/my-pic.jpg" alt="Creator Profile Image" />
+          </a>
       </footer>
     </main>
 
@@ -498,18 +682,21 @@
     <div id="toast-container"></div>
 
     <!-- GSAP Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
     <script type="module" src="homeBlog.js"></script>
     <script type="module" src="homeTestimonials.js"></script>
     <!-- <script src="free-resourses-details.js"></script>-->
     <script src="dropdown-settings.js"></script>
+    <script src="navigation.js"></script>
     <script src="app.js"></script>
     <script src="gsap.js"></script>
     <!-- Import the authentication functions from auth.js -->
     <script type="module" src="./auth.js"></script>
     <script type="module" src="./auth-page-loading.js"></script>
-    
+    <script src="footer.js"></script>
+    <script src="speaking-simulator.js"></script>
   </body>
 </html>

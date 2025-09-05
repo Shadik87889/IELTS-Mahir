@@ -9,80 +9,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <style>
-          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background-color: #f8f9fa; }
-          .font-anton { font-family: "Anton", sans-serif; }
-
-          /* Custom scrollbar styles (visible scrollbar) */
-          ::-webkit-scrollbar { width: 8px; height: 8px; }
-          ::-webkit-scrollbar-track { background: var(--bg-scroll-track, #f1f1f1); border-radius: 10px; }
-          ::-webkit-scrollbar-thumb { background: var(--bg-scroll-thumb, #888); border-radius: 10px; }
-          ::-webkit-scrollbar-thumb:hover { background: var(--bg-scroll-thumb-hover, #555); }
-          .dark { --bg-scroll-track: #374151; --bg-scroll-thumb: #6b7280; --bg-scroll-thumb-hover: #4b5563; }
-          .light { --bg-scroll-track: #f3f4f6; --bg-scroll-thumb: #a0aec0; --bg-scroll-thumb-hover: #718096; }
-
-          /* Hide scrollbars for specific elements on desktop */
-          @media (min-width: 768px) {
-            #app-sidebar, #main-content, #right-sidebar-desktop {
-              -ms-overflow-style: none;  /* IE and Edge */
-              scrollbar-width: none;     /* Firefox */
-            }
-            #app-sidebar::-webkit-scrollbar,
-            #main-content::-webkit-scrollbar,
-            #right-sidebar-desktop::-webkit-scrollbar {
-              display: none; /* Chrome, Safari, Opera */
-            }
-          }
-
-          #toast-container { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
-          .toast { padding: 12px 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); color: white; opacity: 0; transform: translateY(-20px); transition: opacity 0.3s ease-out, transform 0.3s ease-out; min-width: 250px; display: flex; align-items: center; gap: 10px; }
-          .toast.show { opacity: 1; transform: translateY(0); }
-          .toast.success { background-color: #28a745; }
-          .toast.error { background-color: #dc3545; }
-          .toast.info { background-color: #007bff; }
-          #right-sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 45; opacity: 0; transition: opacity 0.3s ease-in-out; pointer-events: none; }
-          #right-sidebar-overlay.show { opacity: 1; pointer-events: auto; }
-          #right-sidebar-mobile-drawer { position: fixed; top: 0; right: 0; width: 80%; max-width: 320px; height: 100%; background-color: #ffffff; transform: translateX(100%); transition: transform 0.3s ease-in-out; z-index: 50; padding: 1.5rem; overflow-y: auto; box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1); }
-          #right-sidebar-mobile-drawer.show { transform: translateX(0); }
-          /* Mobile bottom navigation */
-          #mobile-bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: white;
-            border-top: 1px solid #e2e8f0;
-            z-index: 50;
-            display: flex; /* Default for mobile */
-            justify-content: space-around;
-            padding: 0.5rem 0;
-            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
-          }
-      #main-content{
-                 padding-bottom: 5rem;
-               }
-               #right-sidebar-mobile-drawer{
-                 padding-bottom: 5rem;
-               }
-
-          @media (min-width: 768px) { /* md breakpoint and up */
-            #mobile-bottom-nav {
-              display: none !important; /* Force hide on desktop */
-            }
-          }
-
-          #mobile-bottom-nav button { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.5rem; color: #64748b; transition: color 0.2s; position: relative; /* Added for badge positioning */ }
-          #mobile-bottom-nav button.active { color: #2563eb; }
-          #mobile-bottom-nav button:hover { color: #2563eb; }
-          #mobile-bottom-nav button i { font-size: 1.25rem; margin-bottom: 0.25rem; }
-          #mobile-bottom-nav button span { font-size: 0.75rem; font-weight: 600; }
-          .notification-badge {
-            position: absolute;
-            top: 0px; /* Adjusted */
-            right: 8px; /* Adjusted */
-            inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full;
-          }
-    </style>
+    <link rel="stylesheet" href="forum-style.css" />
   </head>
   <body class="light">
     <div
@@ -186,6 +113,7 @@
         browserLocalPersistence,
         setPersistence,
         signInWithCustomToken,
+        updateProfile,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
       import {
         getFirestore,
@@ -219,6 +147,7 @@
         selectedPost: null,
         posts: [],
         comments: {},
+        users: {},
         notifications: [],
         unreadNotificationCount: 0,
         showSidebar: false,
@@ -418,6 +347,7 @@
         "Sao Tome and Principe",
         "Saudi Arabia",
         "Senegal",
+        "Serbia",
         "Serbia",
         "Seychelles",
         "Sierra Leone",
@@ -751,35 +681,13 @@
               tags: [],
               imageUrl: null,
               videoUrl: null,
+              status: "pending", // New posts are pending by default
             }
           );
-          showToast("Post created successfully!", "success");
+          showToast("Post submitted for review!", "success"); // Changed message
+          navigateTo("home"); // Navigate back to home after submission
 
-          const {
-            userId: postAuthorId,
-            name: postAuthorName,
-          } = appState.userProfile;
-          const postId = newPostRef.id;
-          const postTitle = newPostData.title;
-
-          const followers = appState.allUsersProfiles.filter((profile) =>
-            (profile.following || []).includes(postAuthorId)
-          );
-          for (const follower of followers) {
-            if (follower.userId !== postAuthorId) {
-              await createNotification(
-                follower.userId,
-                `${postAuthorName} has posted a new discussion: "${postTitle.substring(
-                  0,
-                  50
-                )}..."`,
-                "new_post",
-                postId,
-                postAuthorId
-              );
-            }
-          }
-          navigateTo("home");
+          // No notifications for followers yet, as the post is pending
         } catch (e) {
           showToast("Error creating post. Check console.", "error");
         }
@@ -811,7 +719,7 @@
         }
         showConfirmationModal(
           "Delete Post",
-          "Are you sure you want to delete this post and all its comments?",
+          "Are you sure you want to delete this post and all its comments? This action cannot be undone.",
           async () => {
             try {
               const appId =
@@ -881,6 +789,11 @@
             }
           );
           showToast("Comment added successfully!", "success");
+
+          // Explicitly call renderComments to force a re-render
+          // This will ensure the UI updates even before the Firestore snapshot listener fires.
+          // The snapshot listener will then re-render again, which is fine.
+          renderComments(postId);
 
           const post = appState.posts.find((p) => p.id === postId);
           if (post && post.authorId !== appState.userId) {
@@ -1246,38 +1159,57 @@
         };
       }
 
+      // --- Start of code to add/replace ---
+
       async function updateUserProfile(updatedData) {
-        if (!appState.db || !appState.userId) {
+        // Ensure auth and the current user object are available
+        if (!appState.auth?.currentUser || !appState.db) {
           showToast("Error: User not authenticated.", "error");
           return;
         }
+
+        const currentUser = appState.auth.currentUser;
+        const newProfileName = updatedData.name;
+
         try {
-          const appId =
-            typeof __app_id !== "undefined"
-              ? __app_id
-              : "ielts-mahir-community-forum";
-          const userRef = doc(
+          // --- Step 1: Update Firebase Auth Profile ---
+          // This updates the core user record, which is good practice.
+          if (newProfileName && newProfileName !== currentUser.displayName) {
+            await updateProfile(currentUser, {
+              displayName: newProfileName,
+            });
+          }
+
+          // --- Step 2: Define references for BOTH profile documents ---
+          const communityAppId = "ielts-mahir-community-forum";
+          const dashboardAppId = "default-app-id"; // The ID for your main dashboard
+          const userId = appState.userId;
+
+          const communityProfileRef = doc(
             appState.db,
-            `artifacts/${appId}/users/${appState.userId}/userProfile/profile`
+            `artifacts/${communityAppId}/users/${userId}/userProfile/profile`
           );
+          const dashboardProfileRef = doc(
+            appState.db,
+            `artifacts/${dashboardAppId}/users/${userId}/userProfile/profile`
+          );
+
+          // --- Step 3: Update both Firestore documents at the same time ---
+          // Promise.all ensures both writes happen concurrently.
+          // We use setDoc with { merge: true } to avoid overwriting other fields.
+          await Promise.all([
+            setDoc(communityProfileRef, updatedData, { merge: true }),
+            setDoc(dashboardProfileRef, updatedData, { merge: true }),
+          ]);
+
+          // --- Step 4: (Good Practice) Batch update authorName in existing posts/comments ---
           const oldProfileName = appState.userProfile.name;
-          const newProfileName = updatedData.name;
-
-          await updateDoc(userRef, updatedData);
-          showToast("Profile updated successfully!", "success");
-          appState.editingProfile = false;
-
-          // Update shouldCompleteProfile flag based on the new name
-          appState.shouldCompleteProfile = (newProfileName || "").startsWith(
-            "User-"
-          );
-
-          if (
-            newProfileName &&
-            newProfileName !== oldProfileName &&
-            appState.userId
-          ) {
+          if (newProfileName && newProfileName !== oldProfileName) {
             const batch = writeBatch(appState.db);
+            const appId =
+              typeof __app_id !== "undefined"
+                ? __app_id
+                : "ielts-mahir-community-forum";
             const userPostsQuery = query(
               collection(appState.db, `artifacts/${appId}/public/data/posts`),
               where("authorId", "==", appState.userId)
@@ -1297,12 +1229,29 @@
             );
             await batch.commit();
           }
+
+          showToast("Profile updated successfully!", "success");
+          appState.editingProfile = false;
+          // Step 5: (New) Update the in-memory appState.posts
+          if (newProfileName && newProfileName !== oldProfileName) {
+            appState.posts = appState.posts.map((post) => {
+              if (post.authorId === appState.userId) {
+                return { ...post, authorName: newProfileName };
+              }
+              return post;
+            });
+          }
+
+          showToast("Profile updated successfully!", "success");
+          appState.editingProfile = false;
           renderMainContent();
         } catch (e) {
           showToast("Error updating profile. Check console.", "error");
+          console.error("Profile update error:", e);
         }
       }
 
+      // --- End of code to add/replace ---
       async function deleteAccount() {
         if (!appState.auth?.currentUser || !appState.db) {
           showToast(
@@ -1311,98 +1260,187 @@
           );
           return;
         }
-        const currentUser = appState.auth.currentUser;
-        const userIdToDelete = currentUser.uid;
-        const appId =
-          typeof __app_id !== "undefined"
-            ? __app_id
-            : "ielts-mahir-community-forum";
 
-        showConfirmationModal(
-          "Delete Account",
-          "Are you absolutely sure you want to delete your account? This action cannot be undone. All your posts, comments, and profile data will be permanently removed.",
-          async () => {
-            try {
-              const batch = writeBatch(appState.db);
-              const deleteDocRef = (path, id) =>
-                batch.delete(doc(appState.db, path, id));
+        const performFullDeletion = async () => {
+          const currentUser = appState.auth.currentUser;
+          const userIdToDelete = currentUser.uid;
+          const appId =
+            typeof __app_id !== "undefined"
+              ? __app_id
+              : "ielts-mahir-community-forum";
 
-              deleteDocRef(
-                `artifacts/${appId}/users/${userIdToDelete}/userProfile/profile`,
-                "profile"
-              );
-              const deleteCollectionDocs = async (
-                collectionPath,
-                queryField,
-                queryValue
-              ) => {
-                const q = query(
-                  collection(appState.db, collectionPath),
-                  where(queryField, "==", queryValue)
+          try {
+            // Step 1: Delete all Firestore data associated with the user.
+            const batch = writeBatch(appState.db);
+
+            // Delete user profile document
+            batch.delete(
+              doc(
+                appState.db,
+                `artifacts/${appId}/users/${userIdToDelete}/userProfile/profile`
+              )
+            );
+
+            // Helper to find and delete documents from collections
+            const deleteQueryDocs = async (q) => {
+              const snapshot = await getDocs(q);
+              snapshot.forEach((d) => batch.delete(d.ref));
+            };
+
+            // Queue deletion of user's posts, comments, and notifications
+            await deleteQueryDocs(
+              query(
+                collection(appState.db, `artifacts/${appId}/public/data/posts`),
+                where("authorId", "==", userIdToDelete)
+              )
+            );
+            await deleteQueryDocs(
+              query(
+                collection(
+                  appState.db,
+                  `artifacts/${appId}/public/data/comments`
+                ),
+                where("authorId", "==", userIdToDelete)
+              )
+            );
+            await deleteQueryDocs(
+              query(
+                collection(
+                  appState.db,
+                  `artifacts/${appId}/users/${userIdToDelete}/notifications`
+                )
+              )
+            );
+
+            await batch.commit();
+            showToast("Your forum data has been removed.", "success");
+
+            // Step 2: Delete the Firebase Authentication user.
+            await deleteUser(currentUser);
+
+            showToast(
+              "Account deleted successfully! Redirecting...",
+              "success"
+            );
+
+            // Step 3: Clean up and reload the page.
+            if (appState.unsubscribeAll) {
+              appState.unsubscribeAll.forEach((unsub) => unsub());
+              appState.unsubscribeAll = [];
+            }
+            Object.assign(appState, {
+              db: null,
+              auth: null,
+              userId: null,
+              userProfile: null,
+              isAuthReady: false,
+              posts: [],
+              comments: {},
+              notifications: [],
+              unreadNotificationCount: 0,
+              allUsersProfiles: [],
+              selectedPost: null,
+              viewedProfile: null,
+              shouldCompleteProfile: false,
+            });
+            window.location.reload();
+          } catch (error) {
+            // Step 4: Handle errors, specifically the re-authentication requirement.
+            if (error.code === "auth/requires-recent-login") {
+              const providerId = currentUser.providerData[0]?.providerId;
+
+              if (providerId === "password") {
+                // Prompt for password to re-authenticate
+                const {
+                  aiModalOverlay,
+                  aiModalTitle,
+                  aiModalBody,
+                  aiModalCloseBtn,
+                } = elements;
+                aiModalTitle.textContent = "Re-authentication Required";
+                aiModalBody.innerHTML = `
+                  <p class="mb-4 text-gray-700">For your security, please enter your password to confirm account deletion.</p>
+                  <input type="password" id="reauth-password-input" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" placeholder="Enter your password" required />
+                  <div class="flex justify-end gap-3 mt-4">
+                    <button id="reauth-cancel-btn" class="px-4 py-2 rounded-xl text-sm font-semibold bg-gray-300 text-gray-800 hover:bg-gray-400">Cancel</button>
+                    <button id="reauth-confirm-btn" class="px-4 py-2 rounded-xl text-sm font-semibold bg-red-600 text-white hover:bg-red-700">Confirm Deletion</button>
+                  </div>`;
+                aiModalOverlay.classList.remove("hidden");
+                aiModalOverlay.classList.add("opacity-100");
+
+                const closeModal = () => {
+                  aiModalOverlay.classList.add("hidden");
+                  aiModalOverlay.classList.remove("opacity-100");
+                };
+
+                document.getElementById(
+                  "reauth-confirm-btn"
+                ).onclick = async () => {
+                  const password = document.getElementById(
+                    "reauth-password-input"
+                  ).value;
+                  if (!password) {
+                    showToast("Password is required.", "error");
+                    return;
+                  }
+                  try {
+                    const credential = EmailAuthProvider.credential(
+                      currentUser.email,
+                      password
+                    );
+                    await reauthenticateWithCredential(currentUser, credential);
+                    closeModal();
+                    await performFullDeletion(); // Retry deletion after successful re-auth
+                  } catch (reauthError) {
+                    showToast(
+                      "Re-authentication failed. Incorrect password.",
+                      "error"
+                    );
+                  }
+                };
+                document.getElementById(
+                  "reauth-cancel-btn"
+                ).onclick = closeModal;
+                aiModalCloseBtn.onclick = closeModal;
+              } else if (providerId === "google.com") {
+                // Handle Google re-authentication
+                showToast(
+                  "Please re-authenticate with Google to continue.",
+                  "info"
                 );
-                (await getDocs(q)).forEach((d) => batch.delete(d.ref));
-              };
-              await deleteCollectionDocs(
-                `artifacts/${appId}/public/data/posts`,
-                "authorId",
-                userIdToDelete
-              );
-              await deleteCollectionDocs(
-                `artifacts/${appId}/public/data/comments`,
-                "authorId",
-                userIdToDelete
-              );
-              await deleteCollectionDocs(
-                `artifacts/${appId}/users/${userIdToDelete}/notifications`,
-                "sourceUserId",
-                userIdToDelete
-              );
-
-              await batch.commit();
-              showToast("Your data has been removed.", "success");
-              await deleteUser(currentUser);
-              showToast(
-                "Account deleted successfully! Redirecting...",
-                "success"
-              );
-
-              // Unsubscribe all listeners before reloading
-              if (appState.unsubscribeAll) {
-                appState.unsubscribeAll.forEach((unsub) => unsub());
-                appState.unsubscribeAll = [];
+                try {
+                  const provider = new GoogleAuthProvider();
+                  await reauthenticateWithPopup(currentUser, provider);
+                  await performFullDeletion(); // Retry deletion
+                } catch (reauthError) {
+                  showToast(
+                    "Google re-authentication failed. Please try again.",
+                    "error"
+                  );
+                }
+              } else {
+                showToast(
+                  "For your security, please sign out and sign back in to delete your account.",
+                  "info",
+                  5000
+                );
               }
-
-              Object.assign(appState, {
-                db: null,
-                auth: null,
-                userId: null,
-                userProfile: null,
-                isAuthReady: false,
-                posts: [],
-                comments: {},
-                notifications: [],
-                unreadNotificationCount: 0,
-                allUsersProfiles: [],
-                selectedPost: null,
-                viewedProfile: null,
-                shouldCompleteProfile: false,
-              });
-              window.location.reload();
-            } catch (error) {
+            } else {
               showToast(
-                `Error deleting account: ${
-                  error.code === "auth/requires-recent-login"
-                    ? "Please re-authenticate recently."
-                    : error.message
-                }`,
+                `Error during account deletion: ${error.message}`,
                 "error"
               );
               console.error("Error during account deletion:", error);
             }
           }
+        };
+
+        showConfirmationModal(
+          "Delete Account",
+          "Are you absolutely sure you want to delete your account? This action cannot be undone. All your posts, comments, and profile data will be permanently removed.",
+          performFullDeletion
         );
       }
-
       async function updateCachedUserProfiles() {
         if (!appState.db) return;
         const appId =
@@ -1444,894 +1482,6 @@
         appState.allUsersProfiles = newAllUsersProfiles.filter(Boolean);
         if (["profile", "home", "postDetail"].includes(appState.view))
           renderMainContent();
-        renderRightSidebar();
-      }
-
-      // --- Render Functions for Views ---
-      function renderRightSidebar() {
-        const desktopSidebar = document.getElementById("right-sidebar-desktop");
-        const mobileDrawerContent = document.getElementById(
-          "right-sidebar-mobile-content"
-        );
-        const contentHtml = `
-          <div class="mb-6 p-4 rounded-xl bg-gray-50 border border-gray-100"> <h3 class="text-lg font-semibold mb-3 text-gray-800"> ${
-            Icons.Search
-          } Search Forum </h3> <div class="relative"> <input type="text" id="sidebar-search-input" placeholder="Search posts and people..." class="w-full p-2.5 pl-10 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-white text-gray-900 transition-colors"> <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${
-          Icons.Search
-        }</span> </div> <div id="sidebar-search-results" class="mt-3 max-h-60 overflow-y-auto space-y-2 text-sm"></div> </div>
-          <div class="mb-6 p-4 rounded-xl bg-gray-50 border border-gray-100"> <h3 class="text-lg font-semibold mb-4 text-gray-800"> ${
-            Icons.User
-          } Your Stats </h3> ${
-          appState.userProfile
-            ? `<div class="space-y-3 text-sm"> <div class="flex items-center gap-2 text-gray-700"> ${
-                Icons.Award
-              } Reputation: <span class="font-bold">${
-                appState.userProfile.reputation || 0
-              }</span> </div> <div class="flex items-center gap-2 text-gray-700"> ${
-                Icons.Target
-              } Target Band: <span class="font-bold">${
-                appState.userProfile.bandGoal || "N/A"
-              }</span> </div> <div class="flex items-center gap-2 text-gray-700"> ${
-                Icons.Activity
-              } Status: <span class="font-bold">${
-                appState.userProfile.preparationStatus || "New Learner"
-              }</span> </div> </div>`
-            : `<p class="text-sm text-gray-600">Sign in to see your stats.</p>`
-        } </div>
-          <div class="mb-6 p-4 rounded-xl bg-gray-50 border border-gray-100"> <h3 class="text-lg font-semibold mb-4 text-gray-800"> ${
-            Icons.Award
-          } Top Users </h3> <ul class="space-y-2"> ${
-          [...appState.allUsersProfiles]
-            .sort((a, b) => (b.reputation || 0) - (a.reputation || 0))
-            .slice(0, 5)
-            .map(
-              (user) =>
-                `<li class="flex items-center gap-2 text-gray-700"> <span class="w-5 h-5 flex-shrink-0 text-yellow-500">${
-                  Icons.Award
-                }</span> <span class="flex-1 font-semibold cursor-pointer hover:underline" data-user-id="${
-                  user.userId
-                }">${
-                  user.name || `User-${user.userId.substring(0, 5)}`
-                }</span> <span class="font-bold text-blue-500">${
-                  user.reputation || 0
-                } pts</span> </li>`
-            )
-            .join("") ||
-          `<p class="text-sm text-gray-600">No top users yet.</p>`
-        } </ul> </div>
-          <div class="p-4 rounded-xl bg-gray-50 border border-gray-100"> <h3 class="text-lg font-semibold mb-4 text-gray-800"> ${
-            Icons.Link
-          } Quick Links </h3> <ul class="space-y-3 text-sm"> <li> <a href="https://www.ielts.org/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"> ${
-          Icons.Link
-        } Official IELTS Website </a> </li> <li> <a href="https://takeielts.britishcouncil.org/prepare-test/free-ielts-practice-tests" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"> ${
-          Icons.Link
-        } Free Practice Tests </a> </li> <li> <a href="https://www.youtube.com/c/E2IELTS" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"> ${
-          Icons.Link
-        } E2 IELTS YouTube </a> </li> </ul> </div>
-        `;
-        desktopSidebar.innerHTML = contentHtml;
-        mobileDrawerContent.innerHTML = contentHtml;
-        [desktopSidebar, mobileDrawerContent].forEach((container) => {
-          const searchInput = container.querySelector("#sidebar-search-input");
-          const searchResultsContainer = container.querySelector(
-            "#sidebar-search-results"
-          );
-          let searchTimeout;
-          if (searchInput) {
-            searchInput.oninput = () => {
-              clearTimeout(searchTimeout);
-              searchTimeout = setTimeout(() => {
-                const query = searchInput.value.toLowerCase().trim();
-                searchResultsContainer.innerHTML = "";
-                if (!query) return;
-                const matchingPosts = appState.posts
-                  .filter(
-                    (p) =>
-                      p.title.toLowerCase().includes(query) ||
-                      p.content.toLowerCase().includes(query)
-                  )
-                  .slice(0, 3);
-                const matchingUsers = appState.allUsersProfiles
-                  .filter(
-                    (u) =>
-                      u.name.toLowerCase().includes(query) ||
-                      (u.bio && u.bio.toLowerCase().includes(query)) ||
-                      u.userId.toLowerCase().includes(query)
-                  )
-                  .slice(0, 3);
-                if (matchingPosts.length) {
-                  searchResultsContainer.innerHTML += `<h4 class="font-semibold text-base mb-2 mt-3 text-gray-800">Posts</h4>`;
-                  matchingPosts.forEach((post) => {
-                    const item = document.createElement("div");
-                    item.className = `p-2 rounded-lg cursor-pointer hover:bg-blue-50 text-gray-700 transition-colors`;
-                    item.innerHTML = `<div class="font-medium text-blue-700 line-clamp-1">${post.title}</div> <div class="text-xs text-gray-600 line-clamp-2">${post.content}</div>`;
-                    item.onclick = (e) => {
-                      e.stopPropagation();
-                      navigateTo("postDetail", { post });
-                    };
-                    searchResultsContainer.appendChild(item);
-                  });
-                }
-                if (matchingUsers.length) {
-                  searchResultsContainer.innerHTML += `<h4 class="font-semibold text-base mb-2 mt-3 text-gray-800">People</h4>`;
-                  matchingUsers.forEach((user) => {
-                    const item = document.createElement("div");
-                    item.className = `p-2 rounded-lg cursor-pointer flex items-center gap-2 hover:bg-green-50 text-gray-700 transition-colors`;
-                    item.innerHTML = `<div class="w-8 h-8 rounded-full flex items-center justify-center bg-blue-100 text-blue-600 text-lg font-bold"> ${
-                      user.name ? user.name[0].toUpperCase() : Icons.User
-                    } </div> <div> <div class="font-medium text-green-700">${
-                      user.name || `User-${user.userId.substring(0, 5)}`
-                    }</div> <div class="text-xs text-gray-600 line-clamp-1">${
-                      user.bio || "IELTS Aspirant"
-                    } • ${user.reputation || 0} pts</div> </div>`;
-                    item.onclick = (e) => {
-                      e.stopPropagation();
-                      navigateTo("profile", { targetUserId: user.userId });
-                    };
-                    searchResultsContainer.appendChild(item);
-                  });
-                }
-                if (!matchingPosts.length && !matchingUsers.length) {
-                  searchResultsContainer.innerHTML = `<p class="p-2 text-gray-500">No results found.</p>`;
-                }
-              }, 300);
-            };
-          }
-          container.querySelectorAll(`[data-user-id]`).forEach((link) => {
-            link.onclick = (e) => {
-              e.stopPropagation();
-              navigateTo("profile", { targetUserId: link.dataset.userId });
-            };
-          });
-        });
-        const rightSidebarOverlay = document.getElementById(
-          "right-sidebar-overlay"
-        );
-        const rightSidebarDrawer = document.getElementById(
-          "right-sidebar-mobile-drawer"
-        );
-        if (appState.showRightSidebar) {
-          rightSidebarOverlay.classList.remove("hidden");
-          setTimeout(() => {
-            rightSidebarOverlay.classList.add("show");
-            rightSidebarDrawer.classList.add("show");
-          }, 10);
-        } else {
-          rightSidebarOverlay.classList.remove("show");
-          rightSidebarDrawer.classList.remove("show");
-          setTimeout(() => {
-            rightSidebarOverlay.classList.add("hidden");
-          }, 300);
-        }
-      }
-
-      function renderHeader() {
-        const header = elements.header;
-        header.innerHTML = `
-          <div class="flex items-center gap-4">
-              <button id="menu-toggle-btn" class="md:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors" aria-label="Toggle sidebar"> ${
-                Icons.Menu
-              } </button>
-              <h1 id="app-title" class="font-anton text-2xl md:text-3xl cursor-pointer text-blue-600 hover:text-blue-700 transition-colors"> Mahir </h1>
-          </div>
-          <div class="hidden sm:flex items-center gap-2 sm:gap-4">
-              ${
-                appState.userId
-                  ? `<span class="text-xs sm:text-sm font-medium hidden md:block text-gray-600">User ID: ${appState.userId.substring(
-                      0,
-                      8
-                    )}...</span>`
-                  : ""
-              }
-              <button id="create-post-btn-desktop" class="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-xs sm:text-sm font-semibold transform active:scale-95"> ${
-                Icons.Plus
-              } <span class="hidden sm:inline">Create Post</span> </button>
-              <div class="relative">
-                  <button id="notifications-btn-desktop" class="p-2 sm:p-2.5 rounded-full shadow-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors transform active:scale-95" aria-label="Notifications"> ${
-                    Icons.Bell
-                  } ${
-          appState.unreadNotificationCount > 0
-            ? `<span class="notification-badge inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">${
-                appState.unreadNotificationCount > 9
-                  ? "9+"
-                  : appState.unreadNotificationCount
-              }</span>`
-            : ""
-        } </button>
-              </div>
-              <button id="settings-btn-desktop" class="p-2 sm:p-2.5 rounded-full shadow-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors transform active:scale-95" aria-label="Settings"> ${
-                Icons.Cog
-              } </button>
-              <button id="profile-btn-desktop" class="p-2 sm:p-2.5 rounded-full shadow-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors transform active:scale-95" aria-label="User Profile"> ${
-                Icons.User
-              } </button>
-          </div>
-        `;
-
-        document.getElementById("app-title").onclick = () => navigateTo("home");
-        document.getElementById("menu-toggle-btn").onclick = () => {
-          appState.showSidebar = !appState.showSidebar;
-          renderSidebar();
-        };
-        // Only add event listeners if the user is authenticated
-        if (appState.userId) {
-          document
-            .getElementById("create-post-btn-desktop")
-            ?.addEventListener("click", () => navigateTo("createPost"));
-          document
-            .getElementById("notifications-btn-desktop")
-            ?.addEventListener("click", () => navigateTo("notifications"));
-          document
-            .getElementById("settings-btn-desktop")
-            ?.addEventListener("click", () => navigateTo("settings"));
-          document
-            .getElementById("profile-btn-desktop")
-            ?.addEventListener("click", () =>
-              navigateTo("profile", { targetUserId: appState.userId })
-            );
-        } else {
-          // If not authenticated, hide or disable buttons that require authentication
-          const createPostBtn = document.getElementById(
-            "create-post-btn-desktop"
-          );
-          const notificationsBtn = document.getElementById(
-            "notifications-btn-desktop"
-          );
-          const settingsBtn = document.getElementById("settings-btn-desktop");
-          const profileBtn = document.getElementById("profile-btn-desktop");
-
-          if (createPostBtn) createPostBtn.style.display = "none";
-          if (notificationsBtn) notificationsBtn.style.display = "none";
-          if (settingsBtn) settingsBtn.style.display = "none";
-          if (profileBtn) profileBtn.style.display = "none";
-        }
-      }
-
-      function renderSidebar() {
-        const sidebar = elements.sidebar;
-        const categoriesData = [
-          {
-            name: "IELTS Speaking",
-            subcategories: ["Cue Cards", "Fluency", "Pronunciation"],
-          },
-          {
-            name: "IELTS Writing",
-            subcategories: [
-              "Writing Task 1",
-              "Writing Task 2",
-              "Grammar Help",
-              "Vocabulary",
-            ],
-          },
-          { name: "IELTS Listening" },
-          { name: "IELTS Reading" },
-          { name: "Tips & Strategies" },
-          { name: "Band 9 Answers" },
-          { name: "Motivation & Support" },
-        ];
-
-        sidebar.classList.toggle("-translate-x-full", !appState.showSidebar);
-        sidebar.classList.toggle("translate-x-0", appState.showSidebar);
-        sidebar.innerHTML = `
-          <div class="flex justify-between items-center mb-6 md:hidden"> <h2 class="font-bold text-xl text-blue-600">Categories</h2> <button id="sidebar-close-btn" class="p-2 rounded-full hover:bg-gray-100 transition-colors"> ${Icons.X} </button> </div>
-          <nav id="sidebar-nav" class="space-y-3"></nav>
-        `;
-        document.getElementById("sidebar-close-btn").onclick = () => {
-          appState.showSidebar = false;
-          renderSidebar();
-        };
-        const sidebarNav = document.getElementById("sidebar-nav");
-        sidebarNav.innerHTML += `
-          <div class="pb-4 mb-4 border-b border-gray-200"> <h3 class="text-lg font-semibold mb-3 text-gray-800"> ${
-            Icons.Filter
-          } Filter Feed </h3> <ul class="space-y-2"> <li> <button id="feed-latest-btn" class="block w-full text-left p-2 rounded-lg font-medium ${
-          appState.homeFeedType === "latest"
-            ? "bg-blue-100 text-blue-700"
-            : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-        } transition-all"> Latest Posts </button> </li> <li> <button id="feed-for-you-btn" class="block w-full text-left p-2 rounded-lg font-medium ${
-          appState.homeFeedType === "forYou"
-            ? "bg-blue-100 text-blue-700"
-            : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-        } transition-all"> <span class="w-4 h-4 inline-block align-middle mr-1">${
-          Icons.Heart
-        }</span> For You </button> </li> <li> <button id="feed-following-btn" class="block w-full text-left p-2 rounded-lg font-medium ${
-          appState.homeFeedType === "following"
-            ? "bg-blue-100 text-blue-700"
-            : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-        } transition-all"> <span class="w-4 h-4 inline-block align-middle mr-1">${
-          Icons.Users
-        }</span> Following </button> </li> </ul> </div>
-          <div class="pb-4"> <h3 class="text-lg font-semibold mb-3 text-gray-800"> ${
-            Icons.ChevronDown
-          } Categories </h3> <nav id="categories-nav" class="space-y-3"></nav> </div>
-        `;
-        document.getElementById("feed-latest-btn").onclick = () =>
-          navigateTo("home", { homeFeedType: "latest" });
-        document.getElementById("feed-for-you-btn").onclick = () =>
-          navigateTo("home", { homeFeedType: "forYou" });
-        document.getElementById("feed-following-btn").onclick = () =>
-          navigateTo("home", { homeFeedType: "following" });
-        const categoriesNav = document.getElementById("categories-nav");
-        categoriesData.forEach((category) => {
-          const isCategoryActive = appState.activeCategory === category.name;
-          const categoryDiv = document.createElement("div");
-          categoryDiv.innerHTML = `
-            <button id="category-btn-${category.name.replace(
-              /\s/g,
-              "-"
-            )}" class="flex items-center justify-between w-full p-3 rounded-lg font-medium ${
-            isCategoryActive
-              ? "bg-blue-100 text-blue-700"
-              : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-          } transition-all">
-                <span>${category.name}</span>
-                ${
-                  category.subcategories
-                    ? `<span id="chevron-${category.name.replace(
-                        /\s/g,
-                        "-"
-                      )}" class="${
-                        appState.openCategories?.[category.name]
-                          ? "rotate-180"
-                          : ""
-                      } transition-transform duration-200">${
-                        Icons.ChevronDown
-                      }</span>`
-                    : ""
-                }
-            </button>
-            ${
-              category.subcategories
-                ? `<ul id="subcategories-list-${category.name.replace(
-                    /\s/g,
-                    "-"
-                  )}" class="ml-4 mt-2 space-y-2 ${
-                    appState.openCategories?.[category.name] ? "" : "hidden"
-                  } border-l border-gray-200 pl-4 text-gray-600"></ul>`
-                : ""
-            }
-          `;
-          categoriesNav.appendChild(categoryDiv);
-          document.getElementById(
-            `category-btn-${category.name.replace(/\s/g, "-")}`
-          ).onclick = () => {
-            if (category.subcategories) {
-              appState.openCategories = {
-                ...appState.openCategories,
-                [category.name]: !appState.openCategories?.[category.name],
-              };
-              renderSidebar();
-            }
-            navigateTo("home", { category: category.name, subCategory: null });
-          };
-          if (category.subcategories) {
-            const subcategoriesList = document.getElementById(
-              `subcategories-list-${category.name.replace(/\s/g, "-")}`
-            );
-            subcategoriesList.innerHTML = ""; // Clear previous subcategories
-            category.subcategories.forEach((sub) => {
-              const isSubCategoryActive =
-                appState.activeSubCategory === sub &&
-                appState.activeCategory === category.name;
-              const subLi = document.createElement("li");
-              subLi.innerHTML = `<button class="block w-full text-left p-2 rounded-lg font-medium text-sm ${
-                isSubCategoryActive
-                  ? "bg-blue-50 text-blue-600"
-                  : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
-              } transition-colors"> ${sub} </button>`;
-              subLi.querySelector("button").onclick = () =>
-                navigateTo("home", {
-                  category: category.name,
-                  subCategory: sub,
-                });
-              subcategoriesList.appendChild(subLi);
-            });
-          }
-        });
-      }
-
-      function renderMobileBottomNav() {
-        const bottomNav = elements.mobileBottomNav;
-        // Only show bottom nav if user is authenticated
-        if (!appState.userId) {
-          bottomNav.innerHTML = "";
-          bottomNav.style.display = "none";
-          return;
-        }
-        bottomNav.style.display = "flex"; // Ensure it's visible if authenticated
-
-        const navItems = [
-          { id: "nav-home", icon: Icons.Home, text: "Home", view: "home" },
-          {
-            id: "nav-notifications",
-            icon: Icons.Bell,
-            text: "Notifications",
-            view: "notifications",
-          },
-          {
-            id: "nav-create-post",
-            icon: Icons.Plus,
-            text: "Post",
-            view: "createPost",
-          },
-          {
-            id: "nav-settings",
-            icon: Icons.Cog,
-            text: "Settings",
-            view: "settings",
-          },
-          {
-            id: "nav-profile",
-            icon: Icons.User,
-            text: "Profile",
-            view: "profile",
-            targetUserId: appState.userId,
-          },
-        ];
-        bottomNav.innerHTML = navItems
-          .map(
-            (item) => `
-          <button id="${item.id}" class="${
-              appState.view === item.view ? "active" : ""
-            }">
-            ${item.icon}
-            <span>${item.text}</span>
-            ${
-              item.id === "nav-notifications" &&
-              appState.unreadNotificationCount > 0
-                ? `<span class="notification-badge inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">${
-                    appState.unreadNotificationCount > 9
-                      ? "9+"
-                      : appState.unreadNotificationCount
-                  }</span>`
-                : ""
-            }
-          </button>
-        `
-          )
-          .join("");
-
-        navItems.forEach((item) => {
-          const btn = document.getElementById(item.id);
-          if (btn) {
-            btn.onclick = () =>
-              navigateTo(item.view, { targetUserId: item.targetUserId });
-          }
-        });
-      }
-
-      function renderPostList() {
-        const mainContent = elements.mainContent;
-        mainContent.innerHTML = `
-          <div class="flex-1">
-              <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-900">
-                  ${
-                    appState.homeFeedType === "latest"
-                      ? "Latest Discussions"
-                      : appState.homeFeedType === "forYou"
-                      ? "For You Discussions"
-                      : appState.homeFeedType === "following"
-                      ? "Discussions from Followed Users"
-                      : "Latest Discussions"
-                  }
-                  ${
-                    appState.activeCategory
-                      ? `<span class="text-blue-600"> - ${appState.activeCategory}</span>`
-                      : ""
-                  }
-                  ${
-                    appState.activeSubCategory
-                      ? `<span class="text-indigo-600"> (${appState.activeSubCategory})</span>`
-                      : ""
-                  }
-              </h2>
-              <div id="posts-container" class="space-y-5"></div>
-          </div>
-        `;
-        let postsToDisplay = [...appState.posts].filter((post) => {
-          const matchesCategory =
-            !appState.activeCategory ||
-            post.category === appState.activeCategory;
-          const matchesSubCategory =
-            !appState.activeSubCategory ||
-            post.subCategory === appState.activeSubCategory;
-          return matchesCategory && matchesSubCategory;
-        });
-
-        if (appState.homeFeedType === "forYou") {
-          postsToDisplay.sort((a, b) => {
-            const aScore = (a.upvotes || 0) - (a.downvotes || 0);
-            const bScore = (b.upvotes || 0) - (a.downvotes || 0);
-            return bScore !== aScore
-              ? bScore - aScore
-              : (b.createdAt?.toDate() || new Date(0)) -
-                  (a.createdAt?.toDate() || new Date(0));
-          });
-        } else if (appState.homeFeedType === "following") {
-          const followedUserIds = appState.userProfile?.following || [];
-          postsToDisplay = followedUserIds.length
-            ? postsToDisplay.filter((post) =>
-                followedUserIds.includes(post.authorId)
-              )
-            : [];
-          postsToDisplay.sort(
-            (a, b) =>
-              (b.createdAt?.toDate() || new Date(0)) -
-              (a.createdAt?.toDate() || new Date(0))
-          );
-        }
-
-        const postsContainer = document.getElementById("posts-container");
-        if (!postsToDisplay.length) {
-          postsContainer.innerHTML = `<p class="text-lg text-gray-600">${
-            appState.homeFeedType === "following"
-              ? "You are not following any users, or they haven't posted yet."
-              : "No posts found for this selection."
-          } Be the first to create one!</p>`;
-        } else {
-          postsToDisplay.forEach((post) => {
-            const postDiv = document.createElement("div");
-            postDiv.className = `p-5 rounded-xl border border-gray-200 transition-all duration-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer bg-white`;
-            postDiv.addEventListener("click", (e) => {
-              if (!["BUTTON", "SPAN", "A"].includes(e.target.tagName))
-                navigateTo("postDetail", { post });
-            });
-
-            const formattedTime = formatRelativeTime(post.createdAt);
-            const commentsCount = (appState.comments[post.id] || []).length;
-            const isAuthorCurrentUsers =
-              appState.userId && post.authorId === appState.userId;
-            const isFollowingAuthor = appState.userProfile?.following?.includes(
-              post.authorId
-            );
-
-            postDiv.innerHTML = `
-              <h3 class="text-xl font-semibold mb-2 text-blue-700"> ${
-                post.title
-              } </h3>
-              <p class="text-sm text-gray-600 mb-3 line-clamp-2 whitespace-pre-wrap"> ${
-                post.content
-              } </p>
-              <div class="flex flex-wrap items-center justify-between text-xs font-medium text-gray-500 border-t pt-3 mt-4 border-gray-100">
-                  <div class="flex items-center gap-2">
-                      <span class="w-4 h-4">${Icons.User}</span>
-                      <span class="font-bold cursor-pointer hover:underline" data-user-id="${
-                        post.authorId
-                      }">${post.authorName || "Anonymous"}</span>
-                      ${
-                        !isAuthorCurrentUsers && appState.userId
-                          ? `<button class="ml-2 px-2 py-1 rounded-full text-xs font-semibold ${
-                              isFollowingAuthor
-                                ? "bg-gray-300 text-gray-800 hover:bg-gray-400"
-                                : "bg-blue-100 text-blue-700 hover:bg-blue-200"
-                            } transition-colors transform active:scale-95 follow-button hidden sm:block" data-target-user-id="${
-                              post.authorId
-                            }"> ${
-                              isFollowingAuthor
-                                ? `<i class="fas fa-check"></i> Unfollow`
-                                : `<i class="fas fa-user-plus"></i> Follow`
-                            } </button>`
-                          : ""
-                      }
-                      <span class="mx-1">•</span> <span>${formattedTime}</span>
-                  </div>
-                  <div class="flex items-center gap-3 mt-2 sm:mt-0">
-                      <span class="flex items-center gap-1 text-green-500"> <span class="w-4 h-4">${
-                        Icons.ThumbsUp
-                      }</span> ${post.upvotes || 0} </span>
-                      <span class="flex items-center gap-1 text-red-500"> <span class="w-4 h-4">${
-                        Icons.ThumbsDown
-                      }</span> ${post.downvotes || 0} </span>
-                      <span class="flex items-center gap-1 text-blue-500"> <span class="w-4 h-4">${
-                        Icons.MessageCircleMore
-                      }</span> ${commentsCount} </span>
-                      ${
-                        post.isResolved
-                          ? `<span class="flex items-center gap-1 text-green-600 font-semibold"> <span class="w-4 h-4">${Icons.CheckCircle}</span> Resolved</span>`
-                          : ""
-                      }
-                  </div>
-              </div>
-              ${
-                post.category
-                  ? `<div class="mt-3 flex flex-wrap gap-2"> <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700"> ${
-                      post.category
-                    } </span> ${
-                      post.subCategory
-                        ? `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700"> ${post.subCategory}</span>`
-                        : ""
-                    } ${
-                      post.tags?.length
-                        ? post.tags
-                            .map(
-                              (tag) =>
-                                `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">${tag}</span>`
-                            )
-                            .join("")
-                        : ""
-                    } </div>`
-                  : ""
-              }
-            `;
-            postsContainer.appendChild(postDiv);
-
-            postDiv
-              .querySelector(`span[data-user-id="${post.authorId}"]`)
-              ?.addEventListener("click", (e) => {
-                e.stopPropagation();
-                navigateTo("profile", { targetUserId: post.authorId });
-              });
-            postDiv
-              .querySelector(`.follow-button`)
-              ?.addEventListener("click", (e) => {
-                e.stopPropagation();
-                toggleFollow(post.authorId);
-              });
-          });
-        }
-        renderRightSidebar();
-      }
-
-      function renderPostDetail() {
-        const post = appState.selectedPost;
-        if (!post) {
-          navigateTo("home");
-          return;
-        }
-
-        const isAuthorCurrentUsers =
-          appState.userId && post.authorId === appState.userId;
-        const isFollowingAuthor = appState.userProfile?.following?.includes(
-          post.authorId
-        );
-        const formattedTime = formatRelativeTime(post.createdAt);
-
-        elements.mainContent.innerHTML = `
-          <div class="flex-1">
-              <button id="back-to-home-btn" class="mb-5 flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-colors"> ${
-                Icons.ArrowLeft
-              } Back to Forum </button>
-              <div class="p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
-                  ${
-                    appState.editingPostId === post.id
-                      ? `
-                      <div class="space-y-4">
-                          <div> <label for="edit-post-title" class="block text-sm font-medium mb-1 text-gray-700">Title</label> <input type="text" id="edit-post-title" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" value="${post.title}" required /> </div>
-                          <div> <label for="edit-post-content" class="block text-sm font-medium mb-1 text-gray-700">Content</label> <textarea id="edit-post-content" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="8" required>${post.content}</textarea> </div>
-                          <div class="flex gap-3">
-                              <button id="save-post-btn" class="flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-xl shadow-md hover:bg-green-700 transition-all text-sm font-semibold transform active:scale-95"> ${Icons.Save} Save </button>
-                              <button id="cancel-edit-post-btn" class="flex items-center gap-2 px-5 py-2.5 bg-gray-300 text-gray-800 rounded-xl shadow-md hover:bg-gray-400 transition-all text-sm font-semibold transform active:scale-95"> ${Icons.Cancel} Cancel </button>
-                          </div>
-                      </div>`
-                      : `
-                      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3">
-                          <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-0"> ${
-                            post.title
-                          } </h2>
-                          <div class="flex gap-2">
-                              ${
-                                isAuthorCurrentUsers
-                                  ? `
-                                  <button id="edit-post-btn" class="p-2 rounded-full hover:bg-gray-100 transition-colors" aria-label="Edit Post"> ${Icons.Edit} </button>
-                                  <button id="delete-post-btn" class="p-2 rounded-full hover:bg-red-100 text-red-600 transition-colors" aria-label="Delete Post"> ${Icons.Trash} </button>`
-                                  : ""
-                              }
-                          </div>
-                      </div>
-                      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm font-medium mb-4">
-                          <span class="flex items-center gap-1 text-gray-600"> ${
-                            Icons.User
-                          } <span class="font-bold cursor-pointer hover:underline" data-user-id="${
-                          post.authorId
-                        }">${post.authorName || "Anonymous"}</span> </span>
-                          ${
-                            !isAuthorCurrentUsers && appState.userId
-                              ? `<button id="follow-author-btn" class="px-2 py-1 rounded-full text-xs font-semibold ${
-                                  isFollowingAuthor
-                                    ? "bg-gray-300 text-gray-800 hover:bg-gray-400"
-                                    : "bg-blue-100 text-blue-700 hover:bg-blue-200"
-                                } transition-colors transform active:scale-95"> ${
-                                  isFollowingAuthor
-                                    ? `<i class="fas fa-check"></i> Unfollow`
-                                    : `<i class="fas fa-user-plus"></i> Follow`
-                                } </button>`
-                              : ""
-                          }
-                          ${
-                            post.createdAt
-                              ? `<span class="flex items-center gap-1 text-gray-600"> <span class="mx-1">•</span> ${formattedTime} </span>`
-                              : ""
-                          }
-                          ${
-                            post.isResolved
-                              ? `<span class="flex items-center gap-1 text-green-600 font-semibold px-2 py-1 bg-green-100 rounded-full"> ${Icons.CheckCircle} Resolved </span>`
-                              : ""
-                          }
-                      </div>
-                      <p class="text-base md:text-lg leading-relaxed mb-6 text-gray-800 whitespace-pre-wrap"> ${
-                        post.content
-                      } </p>`
-                  }
-
-                  <div class="flex flex-wrap gap-3 mb-6 border-t pt-4 border-gray-100">
-                      <button id="upvote-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold ${
-                        post.upvotedBy?.includes(appState.userId)
-                          ? "bg-blue-500 text-white"
-                          : "bg-blue-100 text-blue-700 hover:bg-blue-200"
-                      } transition-colors transform active:scale-95"> ${
-          post.upvotedBy?.includes(appState.userId)
-            ? Icons.ThumbsUpSolid
-            : Icons.ThumbsUp
-        } ${post.upvotes || 0} </button>
-                      <button id="downvote-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold ${
-                        post.downvotedBy?.includes(appState.userId)
-                          ? "bg-red-500 text-white"
-                          : "bg-red-100 text-red-700 hover:bg-red-200"
-                      } transition-colors transform active:scale-95"> ${
-          post.downvotedBy?.includes(appState.userId)
-            ? Icons.ThumbsDownSolid
-            : Icons.ThumbsDown
-        } ${post.downvotes || 0} </button>
-                      ${
-                        post.authorId === appState.userId
-                          ? `<button id="resolve-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold ${
-                              post.isResolved
-                                ? "bg-orange-100 text-orange-700 hover:bg-orange-200"
-                                : "bg-green-100 text-green-700 hover:bg-green-200"
-                            } transition-colors transform active:scale-95"> ${
-                              Icons.CheckCircle
-                            } ${
-                              post.isResolved ? "Unresolve" : "Mark as Resolved"
-                            } </button>`
-                          : ""
-                      }
-                      <button id="ai-summary-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors transform active:scale-95"> ${
-                        Icons.Zap
-                      } AI Summary </button>
-                      <button id="ai-suggest-answer-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors transform active:scale-95"> ${
-                        Icons.Zap
-                      } AI Suggest Answer </button>
-                      <button id="ai-grammar-check-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold bg-teal-100 text-teal-700 hover:bg-teal-200 transition-colors transform active:scale-95"> ${
-                        Icons.Zap
-                      } AI Grammar Check </button>
-                      <button id="ai-auto-tag-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors transform active:scale-95"> ${
-                        Icons.Zap
-                      } AI Auto-Tag </button>
-                  </div>
-
-                  ${
-                    post.category
-                      ? `<div class="mt-3 flex flex-wrap gap-2 mb-6"> <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700"> ${
-                          post.category
-                        } </span> ${
-                          post.subCategory
-                            ? `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700"> ${post.subCategory}</span>`
-                            : ""
-                        } ${
-                          post.tags?.length
-                            ? post.tags
-                                .map(
-                                  (tag) =>
-                                    `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">${tag}</span>`
-                                )
-                                .join("")
-                            : ""
-                        } </div>`
-                      : ""
-                  }
-              </div>
-
-              <div class="mt-8">
-                  <h3 class="text-2xl font-bold mb-4 text-gray-900">Comments (<span id="comments-count">0</span>)</h3>
-                  <div id="comments-container" class="space-y-4"></div>
-                  <div class="mt-6 p-6 rounded-2xl border border-gray-200 bg-white">
-                      <h4 class="text-xl font-bold mb-4 text-gray-900">Add a Comment</h4>
-                      <textarea id="comment-content-textarea" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="4" placeholder="Write your comment here..." required></textarea>
-                      <button id="post-comment-btn" class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-colors font-semibold transform active:scale-95" disabled> Post Comment </button>
-                  </div>
-              </div>
-          </div>
-        `;
-
-        document.getElementById("back-to-home-btn").onclick = () =>
-          navigateTo("home");
-        document.getElementById("upvote-btn").onclick = () =>
-          updatePostVotes(post.id, "up");
-        document.getElementById("downvote-btn").onclick = () =>
-          updatePostVotes(post.id, "down");
-        document
-          .querySelector(`span[data-user-id="${post.authorId}"]`)
-          ?.addEventListener("click", (e) => {
-            e.stopPropagation();
-            navigateTo("profile", { targetUserId: post.authorId });
-          });
-        document
-          .getElementById("follow-author-btn")
-          ?.addEventListener("click", (e) => {
-            e.stopPropagation();
-            toggleFollow(post.authorId);
-          });
-
-        if (isAuthorCurrentUsers) {
-          document
-            .getElementById("resolve-btn")
-            ?.addEventListener("click", () =>
-              togglePostResolved(post.id, post.isResolved)
-            );
-          document
-            .getElementById("edit-post-btn")
-            ?.addEventListener("click", () => {
-              appState.editingPostId = post.id;
-              renderPostDetail();
-            });
-          document
-            .getElementById("delete-post-btn")
-            ?.addEventListener("click", () => deletePost(post.id));
-          document
-            .getElementById("save-post-btn")
-            ?.addEventListener("click", () => {
-              const newTitle = document.getElementById("edit-post-title").value;
-              const newContent = document.getElementById("edit-post-content")
-                .value;
-              newTitle.trim() && newContent.trim()
-                ? updatePost(post.id, { title: newTitle, content: newContent })
-                : showToast("Title and content cannot be empty.", "error");
-            });
-          document
-            .getElementById("cancel-edit-post-btn")
-            ?.addEventListener("click", () => {
-              appState.editingPostId = null;
-              renderPostDetail();
-            });
-        }
-
-        document.getElementById("ai-summary-btn").onclick = () =>
-          callGeminiAI(
-            `Summarize the following IELTS forum post and its comments:\n\nPost Title: "${
-              post.title
-            }"\nPost Content: "${post.content}"\n\nComments:\n${(
-              appState.comments[post.id] || []
-            )
-              .map((c) => c.content)
-              .join("\n")}`,
-            "ai-summary-response"
-          );
-        document.getElementById("ai-suggest-answer-btn").onclick = () =>
-          callGeminiAI(
-            `Given the following IELTS forum post and comments, suggest a helpful answer or improvement:\n\nPost Title: "${
-              post.title
-            }"\nPost Content: "${post.content}"\n\nExisting Comments:\n${(
-              appState.comments[post.id] || []
-            )
-              .map((c) => c.content)
-              .join("\n")}`,
-            "ai-suggest-answer-response"
-          );
-        document.getElementById("ai-grammar-check-btn").onclick = () =>
-          callGeminiAI(
-            `Check the grammar and spelling of the following text from an IELTS forum post. Provide corrections and explanations:\n\n"${post.content}"`,
-            "ai-grammar-check-response"
-          );
-        document.getElementById("ai-auto-tag-btn").onclick = () =>
-          callGeminiAI(
-            `Given the following IELTS forum post content, suggest relevant tags (e.g., "Grammar", "Band 7+", "Cue Card", "Writing Task 2", "Speaking Practice"). Provide them as a comma-separated list:\n\n"${post.content}"`,
-            "ai-auto-tag-response"
-          );
-
-        const commentContentTextarea = document.getElementById(
-          "comment-content-textarea"
-        );
-        const postCommentBtn = document.getElementById("post-comment-btn");
-        commentContentTextarea.oninput = () => {
-          postCommentBtn.disabled = !commentContentTextarea.value.trim();
-        };
-        postCommentBtn.onclick = () => {
-          addComment(post.id, commentContentTextarea.value, null, 0);
-          commentContentTextarea.value = "";
-          postCommentBtn.disabled = true;
-        };
-
-        renderComments(post.id);
         renderRightSidebar();
       }
 
@@ -2414,58 +1564,58 @@
           const commentDiv = document.createElement("div");
           commentDiv.className = `p-4 rounded-xl border border-gray-200 mb-3 bg-white ${indentClasses}`;
           commentDiv.innerHTML = `
-            <div class="flex items-center gap-3 mb-2 text-sm">
-                <span class="w-4 h-4">${Icons.User}</span>
-                <span class="font-semibold text-gray-800 cursor-pointer hover:underline" data-user-id="${
-                  comment.authorId
-                }">${comment.authorName || "Anonymous"}</span>
-                ${
-                  !isAuthorCurrentUsers && appState.userId
-                    ? `<button class="ml-2 px-2 py-1 rounded-full text-xs font-semibold ${
-                        isFollowingAuthor
-                          ? "bg-gray-300 text-gray-800 hover:bg-gray-400"
-                          : "bg-blue-100 text-blue-700 hover:bg-blue-200"
-                      } transition-colors transform active:scale-95 follow-button-comment" data-target-user-id="${
-                        comment.authorId
-                      }"> ${
-                        isFollowingAuthor
-                          ? `<i class="fas fa-check"></i> Unfollow`
-                          : `<i class="fas fa-user-plus"></i> Follow`
-                      } </button>`
-                    : ""
-                }
-                <span class="text-gray-500"> ${formattedTime} </span>
-            </div>
-            ${
-              appState.editingCommentId === comment.id
-                ? `
-                <div class="space-y-2">
-                    <textarea id="edit-comment-content-${comment.id}" class="w-full p-2 border rounded-xl focus:ring-1 focus:ring-blue-400 border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="2" required>${comment.content}</textarea>
-                    <div class="flex gap-2">
-                        <button id="save-comment-btn-${comment.id}" class="flex items-center gap-1 px-3 py-1.5 bg-green-600 text-white rounded-lg text-xs hover:bg-green-700 transition-colors"> ${Icons.Save} Save </button>
-                        <button id="cancel-edit-comment-btn-${comment.id}" class="flex items-center gap-1 px-3 py-1.5 bg-gray-300 text-gray-800 rounded-lg text-xs hover:bg-gray-400 transition-colors"> ${Icons.Cancel} Cancel </button>
-                    </div>
-                </div>`
-                : `
-                <div class="flex items-start justify-between">
-                    <p class="font-normal text-gray-700 mb-3 flex-1 whitespace-pre-wrap">${repliedToHtml}${
-                    comment.content
-                  }</p>
+                <div class="flex items-center gap-3 mb-2 text-sm">
+                    <span class="w-4 h-4">${Icons.User}</span>
+                    <span class="font-semibold text-gray-800 cursor-pointer hover:underline" data-user-id="${
+                      comment.authorId
+                    }">${comment.authorName || "Anonymous"}</span>
                     ${
-                      comment.authorId === appState.userId
-                        ? `
-                        <div class="flex gap-2 ml-4 flex-shrink-0">
-                            <button id="edit-comment-btn-${comment.id}" class="p-1 rounded-full hover:bg-gray-100 transition-colors text-xs" aria-label="Edit Comment"> ${Icons.Edit} </button>
-                            <button id="delete-comment-btn-${comment.id}" class="p-1 rounded-full hover:bg-red-100 text-red-600 transition-colors text-xs" aria-label="Delete Comment"> ${Icons.Trash} </button>
-                        </div>`
+                      !isAuthorCurrentUsers && appState.userId
+                        ? `<button class="ml-2 px-2 py-1 rounded-full text-xs font-semibold ${
+                            isFollowingAuthor
+                              ? "bg-gray-300 text-gray-800 hover:bg-gray-400"
+                              : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                          } transition-colors transform active:scale-95 follow-button-comment" data-target-user-id="${
+                            comment.authorId
+                          }"> ${
+                            isFollowingAuthor
+                              ? `<i class="fas fa-check"></i> Unfollow`
+                              : `<i class="fas fa-user-plus"></i> Follow`
+                          } </button>`
                         : ""
                     }
-                </div>`
-            }
-            <div class="flex flex-wrap gap-2 text-sm">
-                <button id="comment-upvote-btn-${
-                  comment.id
-                }" class="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold ${
+                    <span class="text-gray-500"> ${formattedTime} </span>
+                </div>
+                ${
+                  appState.editingCommentId === comment.id
+                    ? `
+                    <div class="space-y-2">
+                        <textarea id="edit-comment-content-${comment.id}" class="w-full p-2 border rounded-xl focus:ring-1 focus:ring-blue-400 border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="2" required>${comment.content}</textarea>
+                        <div class="flex gap-2">
+                            <button id="save-comment-btn-${comment.id}" class="flex items-center gap-1 px-3 py-1.5 bg-green-600 text-white rounded-lg text-xs hover:bg-green-700 transition-colors"> ${Icons.Save} Save </button>
+                            <button id="cancel-edit-comment-btn-${comment.id}" class="flex items-center gap-1 px-3 py-1.5 bg-gray-300 text-gray-800 rounded-lg text-xs hover:bg-gray-400 transition-colors"> ${Icons.Cancel} Cancel </button>
+                        </div>
+                    </div>`
+                    : `
+                    <div class="flex items-start justify-between">
+                        <p class="font-normal text-gray-700 mb-3 flex-1 whitespace-pre-wrap">${repliedToHtml}${
+                        comment.content
+                      }</p>
+                        ${
+                          comment.authorId === appState.userId
+                            ? `
+                            <div class="flex gap-2 ml-4 flex-shrink-0">
+                                <button id="edit-comment-btn-${comment.id}" class="p-1 rounded-full hover:bg-gray-100 transition-colors text-xs" aria-label="Edit Comment"> ${Icons.Edit} </button>
+                                <button id="delete-comment-btn-${comment.id}" class="p-1 rounded-full hover:bg-red-100 text-red-600 transition-colors text-xs" aria-label="Delete Comment"> ${Icons.Trash} </button>
+                            </div>`
+                            : ""
+                        }
+                    </div>`
+                }
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <button id="comment-upvote-btn-${
+                      comment.id
+                    }" class="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold ${
             comment.upvotedBy?.includes(appState.userId)
               ? "bg-blue-500 text-white"
               : "bg-blue-50 text-blue-700 hover:bg-blue-100"
@@ -2474,9 +1624,9 @@
               ? Icons.ThumbsUpSolid
               : Icons.ThumbsUp
           } ${comment.upvotes || 0} </button>
-                <button id="comment-downvote-btn-${
-                  comment.id
-                }" class="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold ${
+                    <button id="comment-downvote-btn-${
+                      comment.id
+                    }" class="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold ${
             comment.downvotedBy?.includes(appState.userId)
               ? "bg-red-500 text-white"
               : "bg-red-50 text-red-700 hover:bg-red-100"
@@ -2485,24 +1635,26 @@
               ? Icons.ThumbsDownSolid
               : Icons.ThumbsDown
           } ${comment.downvotes || 0} </button>
-                <button id="comment-ai-summary-btn-${
-                  comment.id
-                }" class="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold bg-purple-50 text-purple-700 hover:bg-purple-100 transition-colors"> ${
+                    <button id="comment-ai-summary-btn-${
+                      comment.id
+                    }" class="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold bg-purple-50 text-purple-700 hover:bg-purple-100 transition-colors"> ${
             Icons.Zap
           } AI </button>
-                <button id="comment-reply-btn-${
+                    <button id="comment-reply-btn-${
+                      comment.id
+                    }" class="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"> Reply </button>
+                </div>
+                <div id="reply-form-container-${
                   comment.id
-                }" class="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"> Reply </button>
-            </div>
-            <div id="reply-form-container-${comment.id}" class="mt-3 hidden">
-                <textarea id="reply-textarea-${
-                  comment.id
-                }" class="w-full p-2 border rounded-xl focus:ring-1 focus:ring-blue-400 border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="2" placeholder="Write your reply..." required></textarea>
-                <button id="submit-reply-btn-${
-                  comment.id
-                }" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors" disabled>Post Reply</button>
-            </div>
-          `;
+                }" class="mt-3 hidden">
+                    <textarea id="reply-textarea-${
+                      comment.id
+                    }" class="w-full p-2 border rounded-xl focus:ring-1 focus:ring-blue-400 border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="2" placeholder="Write your reply..." required></textarea>
+                    <button id="submit-reply-btn-${
+                      comment.id
+                    }" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors" disabled>Post Reply</button>
+                </div>
+              `;
           containerElement.appendChild(commentDiv);
 
           commentDiv
@@ -2635,24 +1787,934 @@
         });
       }
 
+      // --- Render Functions for Views ---
+      function renderRightSidebar() {
+        const desktopSidebar = document.getElementById("right-sidebar-desktop");
+        const mobileDrawerContent = document.getElementById(
+          "right-sidebar-mobile-content"
+        );
+        const contentHtml = `
+              <div class="mb-6 p-4 rounded-xl bg-gray-50 border border-gray-100"> <h3 class="text-lg font-semibold mb-3 text-gray-800"> ${
+                Icons.Search
+              } Search Forum </h3> <div class="relative"> <input type="text" id="sidebar-search-input" placeholder="Search posts and people..." class="w-full p-2.5 pl-10 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-white text-gray-900 transition-colors"> <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${
+          Icons.Search
+        }</span> </div> <div id="sidebar-search-results" class="mt-3 max-h-60 overflow-y-auto space-y-2 text-sm"></div> </div>
+              <div class="mb-6 p-4 rounded-xl bg-gray-50 border border-gray-100"> <h3 class="text-lg font-semibold mb-4 text-gray-800"> ${
+                Icons.User
+              } Your Stats </h3> ${
+          appState.userProfile
+            ? `<div class="space-y-3 text-sm"> <div class="flex items-center gap-2 text-gray-700"> ${
+                Icons.Award
+              } Reputation: <span class="font-bold">${
+                appState.userProfile.reputation || 0
+              }</span> </div> <div class="flex items-center gap-2 text-gray-700"> ${
+                Icons.Target
+              } Target Band: <span class="font-bold">${
+                appState.userProfile.bandGoal || "N/A"
+              }</span> </div> <div class="flex items-center gap-2 text-gray-700"> ${
+                Icons.Activity
+              } Status: <span class="font-bold">${
+                appState.userProfile.preparationStatus || "New Learner"
+              }</span> </div> </div>`
+            : `<p class="text-sm text-gray-600">Sign in to see your stats.</p>`
+        } </div>
+              <div class="mb-6 p-4 rounded-xl bg-gray-50 border border-gray-100"> <h3 class="text-lg font-semibold mb-4 text-gray-800"> ${
+                Icons.Award
+              } Top Users </h3> <ul class="space-y-2"> ${
+          [...appState.allUsersProfiles]
+            .sort((a, b) => (b.reputation || 0) - (a.reputation || 0))
+            .slice(0, 5)
+            .map(
+              (user) =>
+                `<li class="flex items-center gap-2 text-gray-700"> <span class="w-5 h-5 flex-shrink-0 text-yellow-500">${
+                  Icons.Award
+                }</span> <span class="flex-1 font-semibold cursor-pointer hover:underline" data-user-id="${
+                  user.userId
+                }">${
+                  user.name || `User-${user.userId.substring(0, 5)}`
+                }</span> <span class="font-bold text-blue-500">${
+                  user.reputation || 0
+                } pts</span> </li>`
+            )
+            .join("") ||
+          `<p class="text-sm text-gray-600">No top users yet.</p>`
+        } </ul> </div>
+              <div class="p-4 rounded-xl bg-gray-50 border border-gray-100"> <h3 class="text-lg font-semibold mb-4 text-gray-800"> ${
+                Icons.Link
+              } Quick Links </h3> <ul class="space-y-3 text-sm"> <li> <a href="https://www.ielts.org/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"> ${
+          Icons.Link
+        } Official IELTS Website </a> </li> <li> <a href="https://takeielts.britishcouncil.org/prepare-test/free-ielts-practice-tests" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"> ${
+          Icons.Link
+        } Free Practice Tests </a> </li> <li> <a href="https://www.youtube.com/c/E2IELTS" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"> ${
+          Icons.Link
+        } E2 IELTS YouTube </a> </li> </ul> </div>
+            `;
+        desktopSidebar.innerHTML = contentHtml;
+        mobileDrawerContent.innerHTML = contentHtml;
+        [desktopSidebar, mobileDrawerContent].forEach((container) => {
+          const searchInput = container.querySelector("#sidebar-search-input");
+          const searchResultsContainer = container.querySelector(
+            "#sidebar-search-results"
+          );
+          let searchTimeout;
+          if (searchInput) {
+            searchInput.oninput = () => {
+              clearTimeout(searchTimeout);
+              searchTimeout = setTimeout(() => {
+                const query = searchInput.value.toLowerCase().trim();
+                searchResultsContainer.innerHTML = "";
+                if (!query) return;
+                const matchingPosts = appState.posts
+                  .filter(
+                    (p) =>
+                      p.status === "approved" && // Only show approved posts in search results
+                      (p.title.toLowerCase().includes(query) ||
+                        p.content.toLowerCase().includes(query))
+                  )
+                  .slice(0, 3);
+                const matchingUsers = appState.allUsersProfiles
+                  .filter(
+                    (u) =>
+                      u.name.toLowerCase().includes(query) ||
+                      (u.bio && u.bio.toLowerCase().includes(query)) ||
+                      u.userId.toLowerCase().includes(query)
+                  )
+                  .slice(0, 3);
+                if (matchingPosts.length) {
+                  searchResultsContainer.innerHTML += `<h4 class="font-semibold text-base mb-2 mt-3 text-gray-800">Posts</h4>`;
+                  matchingPosts.forEach((post) => {
+                    const item = document.createElement("div");
+                    item.className = `p-2 rounded-lg cursor-pointer hover:bg-blue-50 text-gray-700 transition-colors`;
+                    item.innerHTML = `<div class="font-medium text-blue-700 line-clamp-1">${post.title}</div> <div class="text-xs text-gray-600 line-clamp-2">${post.content}</div>`;
+                    item.onclick = (e) => {
+                      e.stopPropagation();
+                      navigateTo("postDetail", { post });
+                    };
+                    searchResultsContainer.appendChild(item);
+                  });
+                }
+                if (matchingUsers.length) {
+                  searchResultsContainer.innerHTML += `<h4 class="font-semibold text-base mb-2 mt-3 text-gray-800">People</h4>`;
+                  matchingUsers.forEach((user) => {
+                    const item = document.createElement("div");
+                    item.className = `p-2 rounded-lg cursor-pointer flex items-center gap-2 hover:bg-green-50 text-gray-700 transition-colors`;
+                    item.innerHTML = `<div class="w-8 h-8 rounded-full flex items-center justify-center bg-blue-100 text-blue-600 text-lg font-bold"> ${
+                      user.name ? user.name[0].toUpperCase() : Icons.User
+                    } </div> <div> <div class="font-medium text-green-700">${
+                      user.name || `User-${user.userId.substring(0, 5)}`
+                    }</div> <div class="text-xs text-gray-600 line-clamp-1">${
+                      user.bio || "IELTS Aspirant"
+                    } • ${user.reputation || 0} pts</div> </div>`;
+                    item.onclick = (e) => {
+                      e.stopPropagation();
+                      navigateTo("profile", { targetUserId: user.userId });
+                    };
+                    searchResultsContainer.appendChild(item);
+                  });
+                }
+                if (!matchingPosts.length && !matchingUsers.length) {
+                  searchResultsContainer.innerHTML = `<p class="p-2 text-gray-500">No results found.</p>`;
+                }
+              }, 300);
+            };
+          }
+          container.querySelectorAll(`[data-user-id]`).forEach((link) => {
+            link.onclick = (e) => {
+              e.stopPropagation();
+              navigateTo("profile", { targetUserId: link.dataset.userId });
+            };
+          });
+        });
+        const rightSidebarOverlay = document.getElementById(
+          "right-sidebar-overlay"
+        );
+        const rightSidebarDrawer = document.getElementById(
+          "right-sidebar-mobile-drawer"
+        );
+        if (appState.showRightSidebar) {
+          rightSidebarOverlay.classList.remove("hidden");
+          setTimeout(() => {
+            rightSidebarOverlay.classList.add("show");
+            rightSidebarDrawer.classList.add("show");
+          }, 10);
+        } else {
+          rightSidebarOverlay.classList.remove("show");
+          rightSidebarDrawer.classList.remove("show");
+          setTimeout(() => {
+            rightSidebarOverlay.classList.add("hidden");
+          }, 300);
+        }
+      }
+
+      function renderHeader() {
+        const header = elements.header;
+        header.innerHTML = `
+              <div class="flex items-center gap-4">
+                  <button id="menu-toggle-btn" class="md:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors" aria-label="Toggle sidebar"> ${
+                    Icons.Menu
+                  } </button>
+                  <h1 id="app-title" class="font-anton text-2xl md:text-3xl cursor-pointer text-blue-600 hover:text-blue-700 transition-colors"> <a href="home.html" class="logo">
+                   <img src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png" alt="Ielts mahir logo" style="width: 60px"/>
+                  </a> </h1>
+              </div>
+              <div class="hidden sm:flex items-center gap-2 sm:gap-4">
+                  ${
+                    appState.userId
+                      ? `<span class="text-xs sm:text-sm font-medium hidden md:block text-gray-600">User ID: ${appState.userId.substring(
+                          0,
+                          8
+                        )}...</span>`
+                      : ""
+                  }
+                  <button id="create-post-btn-desktop" class="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-xs sm:text-sm font-semibold transform active:scale-95"> ${
+                    Icons.Plus
+                  } <span class="hidden sm:inline">Create Post</span> </button>
+                  <div class="relative">
+                      <button id="notifications-btn-desktop" class="p-2 sm:p-2.5 rounded-full shadow-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors transform active:scale-95" aria-label="Notifications"> ${
+                        Icons.Bell
+                      } ${
+          appState.unreadNotificationCount > 0
+            ? `<span class="notification-badge inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">${
+                appState.unreadNotificationCount > 9
+                  ? "9+"
+                  : appState.unreadNotificationCount
+              }</span>`
+            : ""
+        } </button>
+                  </div>
+                  <button id="settings-btn-desktop" class="p-2 sm:p-2.5 rounded-full shadow-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors transform active:scale-95" aria-label="Settings"> ${
+                    Icons.Cog
+                  } </button>
+                  <button id="profile-btn-desktop" class="p-2 sm:p-2.5 rounded-full shadow-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors transform active:scale-95" aria-label="User Profile"> ${
+                    Icons.User
+                  } </button>
+              </div>
+            `;
+
+        document.getElementById("app-title").onclick = () => navigateTo("home");
+        document.getElementById("menu-toggle-btn").onclick = () => {
+          appState.showSidebar = !appState.showSidebar;
+          renderSidebar();
+        };
+        // Only add event listeners if the user is authenticated
+        if (appState.userId) {
+          document
+            .getElementById("create-post-btn-desktop")
+            ?.addEventListener("click", () => navigateTo("createPost"));
+          document
+            .getElementById("notifications-btn-desktop")
+            ?.addEventListener("click", () => navigateTo("notifications"));
+          document
+            .getElementById("settings-btn-desktop")
+            ?.addEventListener("click", () => navigateTo("settings"));
+          document
+            .getElementById("profile-btn-desktop")
+            ?.addEventListener("click", () =>
+              navigateTo("profile", { targetUserId: appState.userId })
+            );
+        } else {
+          // If not authenticated, hide or disable buttons that require authentication
+          const createPostBtn = document.getElementById(
+            "create-post-btn-desktop"
+          );
+          const notificationsBtn = document.getElementById(
+            "notifications-btn-desktop"
+          );
+          const settingsBtn = document.getElementById("settings-btn-desktop");
+          const profileBtn = document.getElementById("profile-btn-desktop");
+
+          if (createPostBtn) createPostBtn.style.display = "none";
+          if (notificationsBtn) notificationsBtn.style.display = "none";
+          if (settingsBtn) settingsBtn.style.display = "none";
+          if (profileBtn) profileBtn.style.display = "none";
+        }
+      }
+
+      function renderSidebar() {
+        const sidebar = elements.sidebar;
+        const categoriesData = [
+          {
+            name: "IELTS Speaking",
+            subcategories: ["Cue Cards", "Fluency", "Pronunciation"],
+          },
+          {
+            name: "IELTS Writing",
+            subcategories: [
+              "Writing Task 1",
+              "Writing Task 2",
+              "Grammar Help",
+              "Vocabulary",
+            ],
+          },
+          { name: "IELTS Listening" },
+          { name: "IELTS Reading" },
+          { name: "Tips & Strategies" },
+          { name: "Band 9 Answers" },
+          { name: "Motivation & Support" },
+        ];
+
+        sidebar.classList.toggle("-translate-x-full", !appState.showSidebar);
+        sidebar.classList.toggle("translate-x-0", appState.showSidebar);
+        sidebar.innerHTML = `
+              <div class="flex justify-between items-center mb-6 md:hidden"> <h2 class="font-bold text-xl text-blue-600">Categories</h2> <button id="sidebar-close-btn" class="p-2 rounded-full hover:bg-gray-100 transition-colors"> ${Icons.X} </button> </div>
+              <nav id="sidebar-nav" class="space-y-3"></nav>
+            `;
+        document.getElementById("sidebar-close-btn").onclick = () => {
+          appState.showSidebar = false;
+          renderSidebar();
+        };
+        const sidebarNav = document.getElementById("sidebar-nav");
+        sidebarNav.innerHTML += `
+              <div class="pb-4 mb-4 border-b border-gray-200"> <h3 class="text-lg font-semibold mb-3 text-gray-800"> ${
+                Icons.Filter
+              } Filter Feed </h3> <ul class="space-y-2"> <li> <button id="feed-latest-btn" class="block w-full text-left p-2 rounded-lg font-medium ${
+          appState.homeFeedType === "latest"
+            ? "bg-blue-100 text-blue-700"
+            : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+        } transition-all"> Latest Posts </button> </li> <li> <button id="feed-for-you-btn" class="block w-full text-left p-2 rounded-lg font-medium ${
+          appState.homeFeedType === "forYou"
+            ? "bg-blue-100 text-blue-700"
+            : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+        } transition-all"> For You </button> </li> <li> <button id="feed-following-btn" class="block w-full text-left p-2 rounded-lg font-medium ${
+          appState.homeFeedType === "following"
+            ? "bg-blue-100 text-blue-700"
+            : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+        } transition-all"> Following </button> </li> </ul> </div>
+              <div class="pb-4"> <h3 class="text-lg font-semibold mb-3 text-gray-800"> ${
+                Icons.ChevronDown
+              } Categories </h3> <nav id="categories-nav" class="space-y-3"></nav> </div>
+            `;
+        document.getElementById("feed-latest-btn").onclick = () =>
+          navigateTo("home", { homeFeedType: "latest" });
+        document.getElementById("feed-for-you-btn").onclick = () =>
+          navigateTo("home", { homeFeedType: "forYou" });
+        document.getElementById("feed-following-btn").onclick = () =>
+          navigateTo("home", { homeFeedType: "following" });
+        const categoriesNav = document.getElementById("categories-nav");
+        categoriesData.forEach((category) => {
+          const isCategoryActive = appState.activeCategory === category.name;
+          const categoryDiv = document.createElement("div");
+          categoryDiv.innerHTML = `
+                <button id="category-btn-${category.name.replace(
+                  /\s/g,
+                  "-"
+                )}" class="flex items-center justify-between w-full p-3 rounded-lg font-medium ${
+            isCategoryActive
+              ? "bg-blue-100 text-blue-700"
+              : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+          } transition-all">
+                    <span>${category.name}</span>
+                    ${
+                      category.subcategories
+                        ? `<span id="chevron-${category.name.replace(
+                            /\s/g,
+                            "-"
+                          )}" class="${
+                            appState.openCategories?.[category.name]
+                              ? "rotate-180"
+                              : ""
+                          } transition-transform duration-200">${
+                            Icons.ChevronDown
+                          }</span>`
+                        : ""
+                    }
+                </button>
+                ${
+                  category.subcategories
+                    ? `<ul id="subcategories-list-${category.name.replace(
+                        /\s/g,
+                        "-"
+                      )}" class="ml-4 mt-2 space-y-2 ${
+                        appState.openCategories?.[category.name] ? "" : "hidden"
+                      } border-l border-gray-200 pl-4 text-gray-600"></ul>`
+                    : ""
+                }
+              `;
+          categoriesNav.appendChild(categoryDiv);
+          document.getElementById(
+            `category-btn-${category.name.replace(/\s/g, "-")}`
+          ).onclick = () => {
+            if (category.subcategories) {
+              appState.openCategories = {
+                ...appState.openCategories,
+                [category.name]: !appState.openCategories?.[category.name],
+              };
+              renderSidebar();
+            }
+            navigateTo("home", { category: category.name, subCategory: null });
+          };
+          if (category.subcategories) {
+            const subcategoriesList = document.getElementById(
+              `subcategories-list-${category.name.replace(/\s/g, "-")}`
+            );
+            subcategoriesList.innerHTML = ""; // Clear previous subcategories
+            category.subcategories.forEach((sub) => {
+              const isSubCategoryActive =
+                appState.activeSubCategory === sub &&
+                appState.activeCategory === category.name;
+              const subLi = document.createElement("li");
+              subLi.innerHTML = `<button class="block w-full text-left p-2 rounded-lg font-medium text-sm ${
+                isSubCategoryActive
+                  ? "bg-blue-50 text-blue-600"
+                  : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+              } transition-colors"> ${sub} </button>`;
+              subLi.querySelector("button").onclick = () =>
+                navigateTo("home", {
+                  category: category.name,
+                  subCategory: sub,
+                });
+              subcategoriesList.appendChild(subLi);
+            });
+          }
+        });
+      }
+
+      function renderMobileBottomNav() {
+        const bottomNav = elements.mobileBottomNav;
+        // Only show bottom nav if user is authenticated
+        if (!appState.userId) {
+          bottomNav.innerHTML = "";
+          bottomNav.style.display = "none";
+          return;
+        }
+        bottomNav.style.display = "flex"; // Ensure it's visible if authenticated
+
+        const navItems = [
+          { id: "nav-home", icon: Icons.Home, text: "Home", view: "home" },
+          {
+            id: "nav-notifications",
+            icon: Icons.Bell,
+            text: "Notifications",
+            view: "notifications",
+          },
+          {
+            id: "nav-create-post",
+            icon: Icons.Plus,
+            text: "Post",
+            view: "createPost",
+          },
+          {
+            id: "nav-settings",
+            icon: Icons.Cog,
+            text: "Settings",
+            view: "settings",
+          },
+          {
+            id: "nav-profile",
+            icon: Icons.User,
+            text: "Profile",
+            view: "profile",
+            targetUserId: appState.userId,
+          },
+        ];
+        bottomNav.innerHTML = navItems
+          .map(
+            (item) => `
+              <button id="${item.id}" class="${
+              appState.view === item.view ? "active" : ""
+            }">
+                ${item.icon}
+                <span>${item.text}</span>
+                ${
+                  item.id === "nav-notifications" &&
+                  appState.unreadNotificationCount > 0
+                    ? `<span class="notification-badge inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">${
+                        appState.unreadNotificationCount > 9
+                          ? "9+"
+                          : appState.unreadNotificationCount
+                      }</span>`
+                    : ""
+                }
+              </button>
+            `
+          )
+          .join("");
+
+        navItems.forEach((item) => {
+          const btn = document.getElementById(item.id);
+          if (btn) {
+            btn.onclick = () =>
+              navigateTo(item.view, { targetUserId: item.targetUserId });
+          }
+        });
+      }
+      /**
+       * Retrieves the author's name from the cached user profiles.
+       * @param {string} authorId The ID of the author.
+       * @returns {string} The author's name or "Anonymous" if not found.
+       */
+      function getAuthorName(authorId) {
+        // Find the user profile in the allUsersProfiles array
+        const userProfile = appState.allUsersProfiles.find(
+          (profile) => profile.userId === authorId
+        );
+        // Return the name if found, otherwise return "Anonymous"
+        return userProfile ? userProfile.name : "Anonymous";
+      }
+      function renderPostList() {
+        const mainContent = elements.mainContent;
+        mainContent.innerHTML = `
+              <div class="flex-1">
+                  <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-900">
+                      ${
+                        appState.homeFeedType === "latest"
+                          ? "Latest Discussions"
+                          : appState.homeFeedType === "forYou"
+                          ? "For You Discussions"
+                          : appState.homeFeedType === "following"
+                          ? "Discussions from Followed Users"
+                          : "Latest Discussions"
+                      }
+                      ${
+                        appState.activeCategory
+                          ? `<span class="text-blue-600"> - ${appState.activeCategory}</span>`
+                          : ""
+                      }
+                      ${
+                        appState.activeSubCategory
+                          ? `<span class="text-indigo-600"> (${appState.activeSubCategory})</span>`
+                          : ""
+                      }
+                  </h2>
+                  <div id="posts-container" class="space-y-5"></div>
+              </div>
+            `;
+        let postsToDisplay = [...appState.posts].filter((post) => {
+          // Only display posts with status 'approved'
+          const isApproved = post.status === "approved";
+          const matchesCategory =
+            !appState.activeCategory ||
+            post.category === appState.activeCategory;
+          const matchesSubCategory =
+            !appState.activeSubCategory ||
+            post.subCategory === appState.activeSubCategory;
+          return isApproved && matchesCategory && matchesSubCategory;
+        });
+
+        if (appState.homeFeedType === "forYou") {
+          postsToDisplay.sort((a, b) => {
+            const aScore = (a.upvotes || 0) - (a.downvotes || 0);
+            const bScore = (b.upvotes || 0) - (a.downvotes || 0);
+            return bScore !== aScore
+              ? bScore - aScore
+              : (b.createdAt?.toDate() || new Date(0)) -
+                  (a.createdAt?.toDate() || new Date(0));
+          });
+        } else if (appState.homeFeedType === "following") {
+          const followedUserIds = appState.userProfile?.following || [];
+          postsToDisplay = followedUserIds.length
+            ? postsToDisplay.filter((post) =>
+                followedUserIds.includes(post.authorId)
+              )
+            : [];
+          postsToDisplay.sort(
+            (a, b) =>
+              (b.createdAt?.toDate() || new Date(0)) -
+              (a.createdAt?.toDate() || new Date(0))
+          );
+        }
+
+        const postsContainer = document.getElementById("posts-container");
+        if (!postsToDisplay.length) {
+          postsContainer.innerHTML = `<p class="text-lg text-gray-600">${
+            appState.homeFeedType === "following"
+              ? "You are not following any users, or they haven't posted yet."
+              : "No posts found for this selection."
+          } Be the first to create one!</p>`;
+        } else {
+          postsToDisplay.forEach((post) => {
+            const postDiv = document.createElement("div");
+            postDiv.className = `p-5 rounded-xl border border-gray-200 transition-all duration-200 hover:border-blue-300 hover:bg-blue-50 cursor-pointer bg-white`;
+            postDiv.addEventListener("click", (e) => {
+              if (!["BUTTON", "SPAN", "A"].includes(e.target.tagName))
+                navigateTo("postDetail", { post });
+            });
+
+            const formattedTime = formatRelativeTime(post.createdAt);
+            const commentsCount = (appState.comments[post.id] || []).length;
+            const isAuthorCurrentUsers =
+              appState.userId && post.authorId === appState.userId;
+            const isFollowingAuthor = appState.userProfile?.following?.includes(
+              post.authorId
+            );
+            // Add this line at the beginning of the forEach loop
+            const authorName = getAuthorName(post.authorId);
+
+            postDiv.innerHTML = `
+                  <h3 class="text-xl font-semibold mb-2 text-blue-700"> ${
+                    post.title
+                  } </h3>
+                  <p class="text-sm text-gray-600 mb-3 line-clamp-2 whitespace-pre-wrap"> ${
+                    post.content
+                  } </p>
+                  <div class="flex flex-wrap items-center justify-between text-xs font-medium text-gray-500 border-t pt-3 mt-4 border-gray-100">
+                      <div class="flex items-center gap-2">
+                          <span class="w-4 h-4">${Icons.User}</span>
+                          <span class="font-bold cursor-pointer hover:underline" data-user-id="${
+                            post.authorId
+                          }">
+        ${authorName}
+      </span>
+                          ${
+                            !isAuthorCurrentUsers && appState.userId
+                              ? `<button class="ml-2 px-2 py-1 rounded-full text-xs font-semibold ${
+                                  isFollowingAuthor
+                                    ? "bg-gray-300 text-gray-800 hover:bg-gray-400"
+                                    : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                                } transition-colors transform active:scale-95 follow-button hidden sm:block" data-target-user-id="${
+                                  post.authorId
+                                }"> ${
+                                  isFollowingAuthor
+                                    ? `<i class="fas fa-check"></i> Unfollow`
+                                    : `<i class="fas fa-user-plus"></i> Follow`
+                                } </button>`
+                              : ""
+                          }
+                          <span class="mx-1">•</span> <span>${formattedTime}</span>
+                      </div>
+                      <div class="flex items-center gap-3 mt-2 sm:mt-0">
+                          <span class="flex items-center gap-1 text-green-500"> <span class="w-4 h-4">${
+                            Icons.ThumbsUp
+                          }</span> ${post.upvotes || 0} </span>
+                          <span class="flex items-center gap-1 text-red-500"> <span class="w-4 h-4">${
+                            Icons.ThumbsDown
+                          }</span> ${post.downvotes || 0} </span>
+                          <span class="flex items-center gap-1 text-blue-500"> <span class="w-4 h-4">${
+                            Icons.MessageCircleMore
+                          }</span> ${commentsCount} </span>
+                          ${
+                            post.isResolved
+                              ? `<span class="flex items-center gap-1 text-green-600 font-semibold"> <span class="w-4 h-4">${Icons.CheckCircle}</span> Resolved</span>`
+                              : ""
+                          }
+                      </div>
+                  </div>
+                  ${
+                    post.category
+                      ? `<div class="mt-3 flex flex-wrap gap-2"> <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700"> ${
+                          post.category
+                        } </span> ${
+                          post.subCategory
+                            ? `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700"> ${post.subCategory}</span>`
+                            : ""
+                        } ${
+                          post.tags?.length
+                            ? post.tags
+                                .map(
+                                  (tag) =>
+                                    `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">${tag}</span>`
+                                )
+                                .join("")
+                            : ""
+                        } </div>`
+                      : ""
+                  }
+                `;
+            postsContainer.appendChild(postDiv);
+
+            postDiv
+              .querySelector(`span[data-user-id="${post.authorId}"]`)
+              ?.addEventListener("click", (e) => {
+                e.stopPropagation();
+                navigateTo("profile", { targetUserId: post.authorId });
+              });
+            postDiv
+              .querySelector(`.follow-button`)
+              ?.addEventListener("click", (e) => {
+                e.stopPropagation();
+                toggleFollow(post.authorId);
+              });
+          });
+        }
+        renderRightSidebar();
+      }
+
+      function renderPostDetail() {
+        const post = appState.selectedPost;
+        if (!post) {
+          navigateTo("home");
+          return;
+        }
+
+        const isAuthorCurrentUsers =
+          appState.userId && post.authorId === appState.userId;
+        const isFollowingAuthor = appState.userProfile?.following?.includes(
+          post.authorId
+        );
+        const formattedTime = formatRelativeTime(post.createdAt);
+        const authorName = getAuthorName(post.authorId);
+
+        elements.mainContent.innerHTML = `
+              <div class="flex-1">
+                  <button id="back-to-home-btn" class="mb-5 flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-colors"> ${
+                    Icons.ArrowLeft
+                  } Back to Forum </button>
+                  <div class="p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
+                      ${
+                        appState.editingPostId === post.id
+                          ? `
+                          <div class="space-y-4">
+                              <div> <label for="edit-post-title" class="block text-sm font-medium mb-1 text-gray-700">Title</label> <input type="text" id="edit-post-title" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" value="${post.title}" required /> </div>
+                              <div> <label for="edit-post-content" class="block text-sm font-medium mb-1 text-gray-700">Content</label> <textarea id="edit-post-content" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="8" required>${post.content}</textarea> </div>
+                              <div class="flex gap-3">
+                                  <button id="save-post-btn" class="flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-xl shadow-md hover:bg-green-700 transition-all text-sm font-semibold transform active:scale-95"> ${Icons.Save} Save </button>
+                                  <button id="cancel-edit-post-btn" class="flex items-center gap-2 px-5 py-2.5 bg-gray-300 text-gray-800 rounded-xl shadow-md hover:bg-gray-400 transition-all text-sm font-semibold transform active:scale-95"> ${Icons.Cancel} Cancel </button>
+                              </div>
+                          </div>`
+                          : `
+                          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3">
+                              <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-0"> ${
+                                post.title
+                              } </h2>
+                              <div class="flex gap-2">
+                                  ${
+                                    isAuthorCurrentUsers
+                                      ? `
+                                      <button id="edit-post-btn" class="p-2 rounded-full hover:bg-gray-100 transition-colors" aria-label="Edit Post"> ${Icons.Edit} </button>
+                                      <button id="delete-post-btn" class="p-2 rounded-full hover:bg-red-100 text-red-600 transition-colors" aria-label="Delete Post"> ${Icons.Trash} </button>`
+                                      : ""
+                                  }
+                              </div>
+                          </div>
+                          <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm font-medium mb-4">
+                              <span class="flex items-center gap-1 text-gray-600"> ${
+                                Icons.User
+                              }  <span class="font-bold cursor-pointer hover:underline" data-user-id="${
+                              post.authorId
+                            }">
+    ${authorName}
+  </span>
+                              ${
+                                !isAuthorCurrentUsers && appState.userId
+                                  ? `<button id="follow-author-btn" class="px-2 py-1 rounded-full text-xs font-semibold ${
+                                      isFollowingAuthor
+                                        ? "bg-gray-300 text-gray-800 hover:bg-gray-400"
+                                        : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                                    } transition-colors transform active:scale-95"> ${
+                                      isFollowingAuthor
+                                        ? `<i class="fas fa-check"></i> Unfollow`
+                                        : `<i class="fas fa-user-plus"></i> Follow`
+                                    } </button>`
+                                  : ""
+                              }
+                              ${
+                                post.createdAt
+                                  ? `<span class="flex items-center gap-1 text-gray-600"> <span class="mx-1">•</span> ${formattedTime} </span>`
+                                  : ""
+                              }
+                              ${
+                                post.isResolved
+                                  ? `<span class="flex items-center gap-1 text-green-600 font-semibold px-2 py-1 bg-green-100 rounded-full"> ${Icons.CheckCircle} Resolved </span>`
+                                  : ""
+                              }
+                          </div>
+                          <p class="text-base md:text-lg leading-relaxed mb-6 text-gray-800 whitespace-pre-wrap"> ${
+                            post.content
+                          } </p>`
+                      }
+
+                      <div class="flex flex-wrap gap-3 mb-6 border-t pt-4 border-gray-100">
+                          <button id="upvote-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold ${
+                            post.upvotedBy?.includes(appState.userId)
+                              ? "bg-blue-500 text-white"
+                              : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                          } transition-colors transform active:scale-95"> ${
+          post.upvotedBy?.includes(appState.userId)
+            ? Icons.ThumbsUpSolid
+            : Icons.ThumbsUp
+        } ${post.upvotes || 0} </button>
+                          <button id="downvote-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold ${
+                            post.downvotedBy?.includes(appState.userId)
+                              ? "bg-red-500 text-white"
+                              : "bg-red-100 text-red-700 hover:bg-red-200"
+                          } transition-colors transform active:scale-95"> ${
+          post.downvotedBy?.includes(appState.userId)
+            ? Icons.ThumbsDownSolid
+            : Icons.ThumbsDown
+        } ${post.downvotes || 0} </button>
+                          ${
+                            post.authorId === appState.userId
+                              ? `<button id="resolve-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold ${
+                                  post.isResolved
+                                    ? "bg-orange-100 text-orange-700 hover:bg-orange-200"
+                                    : "bg-green-100 text-green-700 hover:bg-green-200"
+                                } transition-colors transform active:scale-95"> ${
+                                  Icons.CheckCircle
+                                } ${
+                                  post.isResolved
+                                    ? "Unresolve"
+                                    : "Mark as Resolved"
+                                } </button>`
+                              : ""
+                          }
+                          <button id="ai-summary-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors transform active:scale-95"> ${
+                            Icons.Zap
+                          } AI Summary </button>
+                          <button id="ai-suggest-answer-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors transform active:scale-95"> ${
+                            Icons.Zap
+                          } AI Suggest Answer </button>
+                          <button id="ai-grammar-check-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold bg-teal-100 text-teal-700 hover:bg-teal-200 transition-colors transform active:scale-95"> ${
+                            Icons.Zap
+                          } AI Grammar Check </button>
+                          <button id="ai-auto-tag-btn" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-semibold bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors transform active:scale-95"> ${
+                            Icons.Zap
+                          } AI Auto-Tag </button>
+                      </div>
+
+                      ${
+                        post.category
+                          ? `<div class="mt-3 flex flex-wrap gap-2 mb-6"> <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700"> ${
+                              post.category
+                            } </span> ${
+                              post.subCategory
+                                ? `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700"> ${post.subCategory}</span>`
+                                : ""
+                            } ${
+                              post.tags?.length
+                                ? post.tags
+                                    .map(
+                                      (tag) =>
+                                        `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">${tag}</span>`
+                                    )
+                                    .join("")
+                                : ""
+                            } </div>`
+                          : ""
+                      }
+                  </div>
+
+                  <div class="mt-8">
+                      <h3 class="text-2xl font-bold mb-4 text-gray-900">Comments (<span id="comments-count">0</span>)</h3>
+                      <div id="comments-container" class="space-y-4"></div>
+                      <div class="mt-6 p-6 rounded-2xl border border-gray-200 bg-white">
+                          <h4 class="text-xl font-bold mb-4 text-gray-900">Add a Comment</h4>
+                          <textarea id="comment-content-textarea" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="4" placeholder="Write your comment here..." required></textarea>
+                          <button id="post-comment-btn" class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-colors font-semibold transform active:scale-95" disabled> Post Comment </button>
+                      </div>
+                  </div>
+              </div>
+            `;
+
+        document.getElementById("back-to-home-btn").onclick = () =>
+          navigateTo("home");
+        document.getElementById("upvote-btn").onclick = () =>
+          updatePostVotes(post.id, "up");
+        document.getElementById("downvote-btn").onclick = () =>
+          updatePostVotes(post.id, "down");
+        document
+          .querySelector(`span[data-user-id="${post.authorId}"]`)
+          ?.addEventListener("click", (e) => {
+            e.stopPropagation();
+            navigateTo("profile", { targetUserId: post.authorId });
+          });
+        document
+          .getElementById("follow-author-btn")
+          ?.addEventListener("click", (e) => {
+            e.stopPropagation();
+            toggleFollow(post.authorId);
+          });
+
+        if (isAuthorCurrentUsers) {
+          document
+            .getElementById("resolve-btn")
+            ?.addEventListener("click", () =>
+              togglePostResolved(post.id, post.isResolved)
+            );
+          document
+            .getElementById("edit-post-btn")
+            ?.addEventListener("click", () => {
+              appState.editingPostId = post.id;
+              renderPostDetail();
+            });
+          document
+            .getElementById("delete-post-btn")
+            ?.addEventListener("click", () => deletePost(post.id));
+          document
+            .getElementById("save-post-btn")
+            ?.addEventListener("click", () => {
+              const newTitle = document.getElementById("edit-post-title").value;
+              const newContent = document.getElementById("edit-post-content")
+                .value;
+              newTitle.trim() && newContent.trim()
+                ? updatePost(post.id, { title: newTitle, content: newContent })
+                : showToast("Title and content cannot be empty.", "error");
+            });
+          document
+            .getElementById("cancel-edit-post-btn")
+            ?.addEventListener("click", () => {
+              appState.editingPostId = null;
+              renderPostDetail();
+            });
+        }
+
+        document.getElementById("ai-summary-btn").onclick = () =>
+          callGeminiAI(
+            `Summarize the following IELTS forum post and its comments:\n\nPost Title: "${
+              post.title
+            }"\nPost Content: "${post.content}"\n\nComments:\n${(
+              appState.comments[post.id] || []
+            )
+              .map((c) => c.content)
+              .join("\n")}`,
+            "ai-summary-response"
+          );
+        document.getElementById("ai-suggest-answer-btn").onclick = () =>
+          callGeminiAI(
+            `Given the following IELTS forum post and comments, suggest a helpful answer or improvement:\n\nPost Title: "${
+              post.title
+            }"\nPost Content: "${post.content}"\n\nExisting Comments:\n${(
+              appState.comments[post.id] || []
+            )
+              .map((c) => c.content)
+              .join("\n")}`,
+            "ai-suggest-answer-response"
+          );
+        document.getElementById("ai-grammar-check-btn").onclick = () =>
+          callGeminiAI(
+            `Check the grammar and spelling of the following text from an IELTS forum post. Provide corrections and explanations:\n\n"${post.content}"`,
+            "ai-grammar-check-response"
+          );
+        document.getElementById("ai-auto-tag-btn").onclick = () =>
+          callGeminiAI(
+            `Given the following IELTS forum post content, suggest relevant tags (e.g., "Grammar", "Band 7+", "Cue Card", "Writing Task 2", "Speaking Practice"). Provide them as a comma-separated list:\n\n"${post.content}"`,
+            "ai-auto-tag-response"
+          );
+
+        const commentContentTextarea = document.getElementById(
+          "comment-content-textarea"
+        );
+        const postCommentBtn = document.getElementById("post-comment-btn");
+        commentContentTextarea.oninput = () => {
+          postCommentBtn.disabled = !commentContentTextarea.value.trim();
+        };
+        postCommentBtn.onclick = () => {
+          addComment(post.id, commentContentTextarea.value, null, 0);
+          commentContentTextarea.value = "";
+          postCommentBtn.disabled = true;
+        };
+
+        renderComments(post.id);
+        renderRightSidebar();
+      }
+
       function renderCreatePostForm() {
         elements.mainContent.innerHTML = `
-          <div class="flex-1">
-              <button id="back-to-home-btn" class="mb-5 flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-colors"> ${Icons.ArrowLeft} Back to Forum </button>
-              <div class="p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
-                  <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-900">Create New Post</h2>
-                  <form id="create-post-form" class="space-y-5">
-                      <div> <label for="post-title" class="block text-sm font-medium mb-2 text-gray-700">Title</label> <input type="text" id="post-title" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" placeholder="Enter post title" required /> </div>
-                      <div> <label for="post-content" class="block text-sm font-medium mb-2 text-gray-700">Content</label> <textarea id="post-content" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="8" placeholder="Share your thoughts, questions, or tips..." required></textarea> <p class="mt-2 text-xs text-gray-500"> Share your thoughts, questions, or tips. (A rich text editor will be added here soon for better formatting!) </p> </div>
-                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div> <label for="post-category" class="block text-sm font-medium mb-2 text-gray-700">Category</label> <select id="post-category" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" required> <option value="">Select a Category</option> </select> </div>
-                          <div id="subcategory-container" class="hidden"> <label for="post-sub-category" class="block text-sm font-medium mb-2 text-gray-700">Subcategory (Optional)</label> <select id="post-sub-category" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
-                      </div>
-                      <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-colors font-semibold transform active:scale-95"> Create Post </button>
-                  </form>
+              <div class="flex-1">
+                  <button id="back-to-home-btn" class="mb-5 flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-colors"> ${Icons.ArrowLeft} Back to Forum </button>
+                  <div class="p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
+                      <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-900">Create New Post</h2>
+                      <form id="create-post-form" class="space-y-5">
+                          <div> <label for="post-title" class="block text-sm font-medium mb-2 text-gray-700">Title</label> <input type="text" id="post-title" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" placeholder="Enter post title" required /> </div>
+                          <div> <label for="post-content" class="block text-sm font-medium mb-2 text-gray-700">Content</label> <textarea id="post-content" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="8" placeholder="Share your thoughts, questions, or tips..." required></textarea> <p class="mt-2 text-xs text-gray-500"> Share your thoughts, questions, or tips. (A rich text editor will be added here soon for better formatting!) </p> </div>
+                          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div> <label for="post-category" class="block text-sm font-medium mb-2 text-gray-700">Category</label> <select id="post-category" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" required> <option value="">Select a Category</option> </select> </div>
+                              <div id="subcategory-container" class="hidden"> <label for="post-sub-category" class="block text-sm font-medium mb-2 text-gray-700">Subcategory (Optional)</label> <select id="post-sub-category" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
+                          </div>
+                          <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-colors font-semibold transform active:scale-95"> Create Post </button>
+                      </form>
+                  </div>
               </div>
-          </div>
-        `;
+            `;
 
         document.getElementById("back-to-home-btn").onclick = () =>
           navigateTo("home");
@@ -2764,14 +2826,16 @@
         }
 
         const profile = profileData;
+        console.log(profile);
         const lastLoginDate = profile.lastLogin?.toDate();
         const lastLoginStatus = lastLoginDate
           ? Math.floor((new Date() - lastLoginDate) / (1000 * 60)) <= 15
             ? "Active Now"
             : `Last Online: ${formatRelativeTime(profile.lastLogin)}`
           : "N/A";
+        // Filter user posts to show only approved ones on the public profile
         const userPosts = appState.posts.filter(
-          (post) => post.authorId === targetUserId
+          (post) => post.authorId === targetUserId && post.status === "approved"
         );
         const isFollowing = appState.userProfile?.following?.includes(
           targetUserId
@@ -2781,139 +2845,140 @@
         ).length;
 
         elements.mainContent.innerHTML = `
-          <div class="flex-1">
-              <button id="back-to-home-btn" class="mb-5 flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-colors"> ${
-                Icons.ArrowLeft
-              } Back to Forum </button>
-              <div class="p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
-                  <div class="flex flex-col sm:flex-row items-center gap-6 mb-6 pb-6 border-b border-gray-200">
-                      <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center bg-blue-100 text-blue-600 text-5xl sm:text-6xl font-anton ring-4 ring-blue-200 flex-shrink-0"> ${
-                        profile.name
-                          ? profile.name[0].toUpperCase()
-                          : Icons.User
-                      } </div>
-                      <div class="text-center sm:text-left flex-1">
-                          <h2 class="text-2xl md:text-4xl font-bold font-anton text-gray-900">${
-                            profile.name || "Anonymous"
-                          }</h2>
-                          <p class="text-sm text-gray-600">User ID: ${targetUserId}</p>
-                          ${
-                            profile.lastLogin
-                              ? `<p class="text-xs text-gray-500">Status: ${lastLoginStatus}</p>`
-                              : ""
-                          }
-                      </div>
-                      <div class="flex-shrink-0 mt-4 sm:mt-0">
-                          ${
-                            isCurrentUserProfile && appState.userId
-                              ? appState.editingProfile
-                                ? `
-                              <button id="save-profile-btn" class="flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-xl shadow-md hover:bg-green-700 transition-all text-sm font-semibold transform active:scale-95"> ${Icons.Save} Save Changes </button>
-                              <button id="cancel-edit-profile-btn" class="flex items-center gap-2 px-5 py-2.5 bg-gray-300 text-gray-800 rounded-xl shadow-md hover:bg-gray-400 transition-all text-sm font-semibold transform active:scale-95 mt-2"> ${Icons.Cancel} Cancel </button>`
-                                : `
-                              <button id="edit-profile-btn" class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95"> ${Icons.Edit} Edit Profile </button>`
-                              : appState.userId &&
-                                targetUserId !== appState.userId
-                              ? `
-                              <button id="follow-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-xl shadow-md transition-all text-sm font-semibold transform active:scale-95 ${
-                                isFollowing
-                                  ? "bg-gray-300 text-gray-800 hover:bg-gray-400"
-                                  : "bg-blue-600 text-white hover:bg-blue-700"
-                              }">
-                                  ${
+              <div class="flex-1">
+                  <button id="back-to-home-btn" class="mb-5 flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-colors"> ${
+                    Icons.ArrowLeft
+                  } Back to Forum </button>
+                  <div class="p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
+                      <div class="flex flex-col sm:flex-row items-center gap-6 mb-6 pb-6 border-b border-gray-200">
+                          <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center bg-blue-100 text-blue-600 text-5xl sm:text-6xl font-anton ring-4 ring-blue-200 flex-shrink-0"> ${
+                            profile.name
+                              ? profile.name[0].toUpperCase()
+                              : Icons.User
+                          } </div>
+                          <div class="text-center sm:text-left flex-1">
+                              <h2 class="text-2xl md:text-4xl font-bold font-anton text-gray-900">${
+                                profile.name || "Anonymous"
+                              }</h2>
+                              <p class="text-sm text-gray-600">User ID: ${targetUserId}</p>
+                              ${
+                                profile.lastLogin
+                                  ? `<p class="text-xs text-gray-500">Status: ${lastLoginStatus}</p>`
+                                  : ""
+                              }
+                          </div>
+                          <div class="flex-shrink-0 mt-4 sm:mt-0">
+                              ${
+                                isCurrentUserProfile && appState.userId
+                                  ? appState.editingProfile
+                                    ? `
+                                  <button id="save-profile-btn" class="flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-xl shadow-md hover:bg-green-700 transition-all text-sm font-semibold transform active:scale-95"> ${Icons.Save} Save Changes </button>
+                                  <button id="cancel-edit-profile-btn" class="flex items-center gap-2 px-5 py-2.5 bg-gray-300 text-gray-800 rounded-xl shadow-md hover:bg-gray-400 transition-all text-sm font-semibold transform active:scale-95 mt-2"> ${Icons.Cancel} Cancel </button>`
+                                    : `
+                                  <button id="edit-profile-btn" class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95"> ${Icons.Edit} Edit Profile </button>`
+                                  : appState.userId &&
+                                    targetUserId !== appState.userId
+                                  ? `
+                                  <button id="follow-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-xl shadow-md transition-all text-sm font-semibold transform active:scale-95 ${
                                     isFollowing
-                                      ? `<i class="fas fa-check"></i> Unfollow`
-                                      : `<i class="fas fa-user-plus"></i> Follow`
-                                  }
-                              </button>`
-                              : ""
-                          }
+                                      ? "bg-gray-300 text-gray-800 hover:bg-gray-400"
+                                      : "bg-blue-600 text-white hover:bg-blue-700"
+                                  }">
+                                      ${
+                                        isFollowing
+                                          ? `<i class="fas fa-check"></i> Unfollow`
+                                          : `<i class="fas fa-user-plus"></i> Follow`
+                                      }
+                                  </button>`
+                                  : ""
+                              }
+                          </div>
                       </div>
+
+                      ${
+                        isCurrentUserProfile && appState.editingProfile
+                          ? `
+                          <div class="space-y-4">
+                              <div> <label for="edit-profile-name" class="block text-sm font-medium mb-1 text-gray-700">Name</label> <input type="text" id="edit-profile-name" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" value="${
+                                profile.name || ""
+                              }" required /> </div>
+                              <div> <label for="edit-profile-bio" class="block text-sm font-medium mb-1 text-gray-700">Bio (Optional)</label> <textarea id="edit-profile-bio" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="3" placeholder="Tell us about yourself...">${
+                                profile.bio || ""
+                              }</textarea> </div>
+                              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  <div> <label for="edit-profile-band-goal" class="block text-sm font-medium mb-1 text-gray-700">Target Band</label> <select id="edit-profile-band-goal" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
+                                  <div> <label for="edit-profile-prep-status" class="block text-sm font-medium mb-1 text-gray-700">Preparation Status</label> <select id="edit-profile-prep-status" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
+                                  <div> <label for="edit-profile-country" class="block text-sm font-medium mb-1 text-gray-700">Country</label> <select id="edit-profile-country" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
+                                  <div> <label for="edit-profile-ielts-experience" class="block text-sm font-medium mb-1 text-gray-700">IELTS Experience</label> <select id="edit-profile-ielts-experience" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
+                              </div>
+                              <button id="save-profile-settings-btn" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95"> Save Profile Changes </button>
+                          </div>`
+                          : `
+                          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                              <div>
+                                  <h3 class="text-xl font-semibold mb-4 text-gray-800">About Me</h3>
+                                  <div class="space-y-4">
+                                      <div class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 flex-shrink-0 text-blue-500">${
+                                        Icons.User
+                                      }</span> <p class="font-normal text-gray-700"> ${
+                              profile.bio || "No bio provided."
+                            } </p> </div>
+                                      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-yellow-500">${
+                                        Icons.Award
+                                      }</span> <span class="font-normal text-gray-700"> Reputation Points: <span class="font-bold text-lg">${
+                              profile.reputation || 0
+                            }</span> </span> </div>
+                                      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-green-500">${
+                                        Icons.Users
+                                      }</span> <span class="font-normal text-gray-700"> Followers: <span class="font-bold text-lg">${followersCount}</span> </span> </div>
+                                      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-purple-500">${
+                                        Icons.Star
+                                      }</span> <span class="font-normal text-gray-700"> Following: <span class="font-bold text-lg">${
+                              (profile.following || []).length
+                            }</span> </span> </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <h3 class="text-xl font-semibold mb-4 text-gray-800">IELTS Journey</h3>
+                                  <div class="space-y-4">
+                                      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-orange-500">${
+                                        Icons.Target
+                                      }</span> <span class="font-normal text-gray-700"> Target Band: <span class="font-bold text-lg">${
+                              profile.bandGoal || "N/A"
+                            }</span> </span> </div>
+                                      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-teal-500">${
+                                        Icons.Activity
+                                      }</span> <span class="font-normal text-gray-700"> Preparation Status: <span class="font-bold text-lg">${
+                              profile.preparationStatus || "New Learner"
+                            }</span> </span> </div>
+                                      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-indigo-500">${
+                                        Icons.Link
+                                      }</span> <span class="font-normal text-gray-700"> Country: <span class="font-bold text-lg">${
+                              profile.country || "Not specified"
+                            }</span> </span> </div>
+                                      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-blue-500">${
+                                        Icons.CheckCircle
+                                      }</span> <span class="font-normal text-gray-700"> IELTS Experience: <span class="font-bold text-lg">${
+                              profile.ieltsExperience || "Not specified"
+                            }</span> </span> </div>
+                                  </div>
+                              </div>
+                              <div class="col-span-1 md:col-span-2">
+                                  <h3 class="text-xl font-semibold mb-4 text-gray-800">Badges</h3>
+                                  <div id="badges-container" class="flex flex-wrap gap-3"></div>
+                              </div>
+                          </div>`
+                      }
                   </div>
 
-                  ${
-                    isCurrentUserProfile && appState.editingProfile
-                      ? `
-                      <div class="space-y-4">
-                          <div> <label for="edit-profile-name" class="block text-sm font-medium mb-1 text-gray-700">Name</label> <input type="text" id="edit-profile-name" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" value="${
-                            profile.name || ""
-                          }" required /> </div>
-                          <div> <label for="edit-profile-bio" class="block text-sm font-medium mb-1 text-gray-700">Bio (Optional)</label> <textarea id="edit-profile-bio" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="3" placeholder="Tell us about yourself...">${
-                            profile.bio || ""
-                          }</textarea> </div>
-                          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div> <label for="edit-profile-band-goal" class="block text-sm font-medium mb-1 text-gray-700">Target Band</label> <select id="edit-profile-band-goal" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
-                              <div> <label for="edit-profile-prep-status" class="block text-sm font-medium mb-1 text-gray-700">Preparation Status</label> <select id="edit-profile-prep-status" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
-                              <div> <label for="edit-profile-country" class="block text-sm font-medium mb-1 text-gray-700">Country</label> <select id="edit-profile-country" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
-                              <div> <label for="edit-profile-ielts-experience" class="block text-sm font-medium mb-1 text-gray-700">IELTS Experience</label> <select id="edit-profile-ielts-experience" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
-                          </div>
-                      </div>`
-                      : `
-                      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                          <div>
-                              <h3 class="text-xl font-semibold mb-4 text-gray-800">About Me</h3>
-                              <div class="space-y-4">
-                                  <div class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 flex-shrink-0 text-blue-500">${
-                                    Icons.User
-                                  }</span> <p class="font-normal text-gray-700"> ${
-                          profile.bio || "No bio provided."
-                        } </p> </div>
-                                  <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-yellow-500">${
-                                    Icons.Award
-                                  }</span> <span class="font-normal text-gray-700"> Reputation Points: <span class="font-bold text-lg">${
-                          profile.reputation || 0
-                        }</span> </span> </div>
-                                  <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-green-500">${
-                                    Icons.Users
-                                  }</span> <span class="font-normal text-gray-700"> Followers: <span class="font-bold text-lg">${followersCount}</span> </span> </div>
-                                  <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-purple-500">${
-                                    Icons.Star
-                                  }</span> <span class="font-normal text-gray-700"> Following: <span class="font-bold text-lg">${
-                          (profile.following || []).length
-                        }</span> </span> </div>
-                              </div>
-                          </div>
-                          <div>
-                              <h3 class="text-xl font-semibold mb-4 text-gray-800">IELTS Journey</h3>
-                              <div class="space-y-4">
-                                  <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-orange-500">${
-                                    Icons.Target
-                                  }</span> <span class="font-normal text-gray-700"> Target Band: <span class="font-bold text-lg">${
-                          profile.bandGoal || "N/A"
-                        }</span> </span> </div>
-                                  <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-teal-500">${
-                                    Icons.Activity
-                                  }</span> <span class="font-normal text-gray-700"> Preparation Status: <span class="font-bold text-lg">${
-                          profile.preparationStatus || "New Learner"
-                        }</span> </span> </div>
-                                  <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-indigo-500">${
-                                    Icons.Link
-                                  }</span> <span class="font-normal text-gray-700"> Country: <span class="font-bold text-lg">${
-                          profile.country || "Not specified"
-                        }</span> </span> </div>
-                                  <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"> <span class="w-5 h-5 text-blue-500">${
-                                    Icons.CheckCircle
-                                  }</span> <span class="font-normal text-gray-700"> IELTS Experience: <span class="font-bold text-lg">${
-                          profile.ieltsExperience || "Not specified"
-                        }</span> </span> </div>
-                              </div>
-                          </div>
-                          <div class="col-span-1 md:col-span-2">
-                              <h3 class="text-xl font-semibold mb-4 text-gray-800">Badges</h3>
-                              <div id="badges-container" class="flex flex-wrap gap-3"></div>
-                          </div>
-                      </div>`
-                  }
+                  <div class="mt-8 p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
+                      <h3 class="text-2xl font-bold mb-4 text-gray-900">${
+                        profile.name || "This user"
+                      }'s Posts (${userPosts.length})</h3>
+                      <div id="user-posts-container" class="space-y-5"></div>
+                  </div>
               </div>
-
-              <div class="mt-8 p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
-                  <h3 class="text-2xl font-bold mb-4 text-gray-900">${
-                    profile.name || "This user"
-                  }'s Posts (${userPosts.length})</h3>
-                  <div id="user-posts-container" class="space-y-5"></div>
-              </div>
-          </div>
-        `;
+            `;
         document.getElementById("back-to-home-btn").onclick = () =>
           navigateTo("home");
 
@@ -3015,73 +3080,73 @@
             );
 
             postDiv.innerHTML = `
-              <h3 class="text-xl font-semibold mb-2 text-blue-700"> ${
-                post.title
-              } </h3>
-              <p class="text-sm text-gray-600 mb-3 line-clamp-2 whitespace-pre-wrap"> ${
-                post.content
-              } </p>
-              <div class="flex flex-wrap items-center justify-between text-xs font-medium text-gray-500 border-t pt-3 mt-4 border-gray-100">
-                  <div class="flex items-center gap-2">
-                      <span class="w-4 h-4">${Icons.User}</span>
-                      <span class="font-bold cursor-pointer hover:underline" data-user-id="${targetUserId}">${
-              post.authorName || "Anonymous"
+                  <h3 class="text-xl font-semibold mb-2 text-blue-700"> ${
+                    post.title
+                  } </h3>
+                  <p class="text-sm text-gray-600 mb-3 line-clamp-2 whitespace-pre-wrap"> ${
+                    post.content
+                  } </p>
+                  <div class="flex flex-wrap items-center justify-between text-xs font-medium text-gray-500 border-t pt-3 mt-4 border-gray-100">
+                      <div class="flex items-center gap-2">
+                          <span class="w-4 h-4">${Icons.User}</span>
+                          <span class="font-bold cursor-pointer hover:underline" data-user-id="${targetUserId}">${
+              profile.name || "Anonymous"
             }</span>
-                      ${
-                        !isAuthorCurrentUsersPost && appState.userId
-                          ? `<button class="ml-2 px-2 py-1 rounded-full text-xs font-semibold ${
-                              isFollowingPostAuthor
-                                ? "bg-gray-300 text-gray-800 hover:bg-gray-400"
-                                : "bg-blue-100 text-blue-700 hover:bg-blue-200"
-                            } transition-colors transform active:scale-95 follow-button hidden sm:block" data-target-user-id="${
-                              post.authorId
-                            }"> ${
-                              isFollowingPostAuthor
-                                ? `<i class="fas fa-check"></i> Unfollow`
-                                : `<i class="fas fa-user-plus"></i> Follow`
-                            } </button>`
-                          : ""
-                      }
-                      <span class="mx-1">•</span> <span>${formattedTime}</span>
+                          ${
+                            !isAuthorCurrentUsersPost && appState.userId
+                              ? `<button class="ml-2 px-2 py-1 rounded-full text-xs font-semibold ${
+                                  isFollowingPostAuthor
+                                    ? "bg-gray-300 text-gray-800 hover:bg-gray-400"
+                                    : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                                } transition-colors transform active:scale-95 follow-button hidden sm:block" data-target-user-id="${
+                                  post.authorId
+                                }"> ${
+                                  isFollowingPostAuthor
+                                    ? `<i class="fas fa-check"></i> Unfollow`
+                                    : `<i class="fas fa-user-plus"></i> Follow`
+                                } </button>`
+                              : ""
+                          }
+                          <span class="mx-1">•</span> <span>${formattedTime}</span>
+                      </div>
+                      <div class="flex items-center gap-3 mt-2 sm:mt-0">
+                          <span class="flex items-center gap-1 text-green-500"> <span class="w-4 h-4">${
+                            Icons.ThumbsUp
+                          }</span> ${post.upvotes || 0} </span>
+                          <span class="flex items-center gap-1 text-red-500"> <span class="w-4 h-4">${
+                            Icons.ThumbsDown
+                          }</span> ${post.downvotes || 0} </span>
+                          <span class="flex items-center gap-1 text-blue-500"> <span class="w-4 h-4">${
+                            Icons.MessageCircleMore
+                          }</span> ${commentsCount} </span>
+                          ${
+                            post.isResolved
+                              ? `<span class="flex items-center gap-1 text-green-600 font-semibold"> <span class="w-4 h-4">${Icons.CheckCircle}</span> Resolved</span>`
+                              : ""
+                          }
+                      </div>
                   </div>
-                  <div class="flex items-center gap-3 mt-2 sm:mt-0">
-                      <span class="flex items-center gap-1 text-green-500"> <span class="w-4 h-4">${
-                        Icons.ThumbsUp
-                      }</span> ${post.upvotes || 0} </span>
-                      <span class="flex items-center gap-1 text-red-500"> <span class="w-4 h-4">${
-                        Icons.ThumbsDown
-                      }</span> ${post.downvotes || 0} </span>
-                      <span class="flex items-center gap-1 text-blue-500"> <span class="w-4 h-4">${
-                        Icons.MessageCircleMore
-                      }</span> ${commentsCount} </span>
-                      ${
-                        post.isResolved
-                          ? `<span class="flex items-center gap-1 text-green-600 font-semibold"> <span class="w-4 h-4">${Icons.CheckCircle}</span> Resolved</span>`
-                          : ""
-                      }
-                  </div>
-              </div>
-              ${
-                post.category
-                  ? `<div class="mt-3 flex flex-wrap gap-2"> <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700"> ${
-                      post.category
-                    } </span> ${
-                      post.subCategory
-                        ? `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700"> ${post.subCategory}</span>`
-                        : ""
-                    } ${
-                      post.tags?.length
-                        ? post.tags
-                            .map(
-                              (tag) =>
-                                `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">${tag}</span>`
-                            )
-                            .join("")
-                        : ""
-                    } </div>`
-                  : ""
-              }
-            `;
+                  ${
+                    post.category
+                      ? `<div class="mt-3 flex flex-wrap gap-2"> <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700"> ${
+                          post.category
+                        } </span> ${
+                          post.subCategory
+                            ? `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700"> ${post.subCategory}</span>`
+                            : ""
+                        } ${
+                          post.tags?.length
+                            ? post.tags
+                                .map(
+                                  (tag) =>
+                                    `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">${tag}</span>`
+                                )
+                                .join("")
+                            : ""
+                        } </div>`
+                      : ""
+                  }
+                `;
             userPostsContainer.appendChild(postDiv);
 
             postDiv
@@ -3108,25 +3173,25 @@
         }
 
         elements.mainContent.innerHTML = `
-          <div class="flex-1">
-              <button id="back-to-home-btn" class="mb-5 flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-colors"> ${
-                Icons.ArrowLeft
-              } Back to Forum </button>
-              <div class="p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
-                  <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-900">Your Notifications (<span id="unread-count">${
-                    appState.unreadNotificationCount
-                  }</span> Unread)</h2>
-                  <div id="notifications-list" class="space-y-4"></div>
-                  <button id="mark-all-read-btn" class="mt-6 px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95 ${
-                    appState.unreadNotificationCount === 0
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }" ${
+              <div class="flex-1">
+                  <button id="back-to-home-btn" class="mb-5 flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-colors"> ${
+                    Icons.ArrowLeft
+                  } Back to Forum </button>
+                  <div class="p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
+                      <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-900">Your Notifications (<span id="unread-count">${
+                        appState.unreadNotificationCount
+                      }</span> Unread)</h2>
+                      <div id="notifications-list" class="space-y-4"></div>
+                      <button id="mark-all-read-btn" class="mt-6 px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95 ${
+                        appState.unreadNotificationCount === 0
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }" ${
           appState.unreadNotificationCount === 0 ? "disabled" : ""
         }> Mark All As Read </button>
+                  </div>
               </div>
-          </div>
-        `;
+            `;
         document.getElementById("back-to-home-btn").onclick = () =>
           navigateTo("home");
 
@@ -3156,25 +3221,25 @@
                   new_post: Icons.Plus,
                 }[notification.type] || Icons.Bell;
               notificationItem.innerHTML = `
-              <div class="flex-shrink-0 text-blue-600 text-xl">${icon}</div>
-              <div class="flex-1"> <p class="text-sm">${
-                notification.message
-              }</p> <span class="text-xs text-gray-500">${formatRelativeTime(
+                  <div class="flex-shrink-0 text-blue-600 text-xl">${icon}</div>
+                  <div class="flex-1"> <p class="text-sm">${
+                    notification.message
+                  }</p> <span class="text-xs text-gray-500">${formatRelativeTime(
                 notification.createdAt
               )}</span> </div>
-              <div class="flex-shrink-0 flex items-center gap-2">
-                  ${
-                    !notification.read
-                      ? `<button class="mark-as-read-btn px-3 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300" data-id="${notification.id}">Mark as Read</button>`
-                      : ""
-                  }
-                  ${
-                    notification.link
-                      ? `<button class="view-notification-link px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 hover:bg-blue-200" data-id="${notification.id}" data-link="${notification.link}">View</button>`
-                      : ""
-                  }
-              </div>
-            `;
+                  <div class="flex-shrink-0 flex items-center gap-2">
+                      ${
+                        !notification.read
+                          ? `<button class="mark-as-read-btn px-3 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300" data-id="${notification.id}">Mark as Read</button>`
+                          : ""
+                      }
+                      ${
+                        notification.link
+                          ? `<button class="view-notification-link px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 hover:bg-blue-200" data-id="${notification.id}" data-link="${notification.link}">View</button>`
+                          : ""
+                      }
+                  </div>
+                `;
               notificationsList.appendChild(notificationItem);
             });
 
@@ -3281,74 +3346,76 @@
 
         const profile = appState.userProfile;
         elements.mainContent.innerHTML = `
-          <div class="flex-1">
-              <button id="back-to-home-btn" class="mb-5 flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-colors"> ${
-                Icons.ArrowLeft
-              } Back to Forum </button>
-              <div class="p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
-                  <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-900">Settings</h2>
-                  <div class="mb-8 pb-8 border-b border-gray-200">
-                      <h3 class="text-xl font-semibold mb-4 text-gray-800">Profile Settings</h3>
-                      <div class="space-y-4">
-                          <div> <label for="settings-profile-name" class="block text-sm font-medium mb-1 text-gray-700">Name</label> <input type="text" id="settings-profile-name" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" value="${
-                            profile.name || ""
-                          }" required /> </div>
-                          <div> <label for="settings-profile-bio" class="block text-sm font-medium mb-1 text-gray-700">Bio (Optional)</label> <textarea id="settings-profile-bio" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="3" placeholder="Tell us about yourself...">${
-                            profile.bio || ""
-                          }</textarea> </div>
-                          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div> <label for="settings-profile-band-goal" class="block text-sm font-medium mb-1 text-gray-700">Target Band</label> <select id="settings-profile-band-goal" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
-                              <div> <label for="settings-profile-prep-status" class="block text-sm font-medium mb-1 text-gray-700">Preparation Status</label> <select id="settings-profile-prep-status" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
-                              <div> <label for="settings-profile-country" class="block text-sm font-medium mb-1 text-gray-700">Country</label> <select id="settings-profile-country" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
-                              <div> <label for="settings-profile-ielts-experience" class="block text-sm font-medium mb-1 text-gray-700">IELTS Experience</label> <select id="settings-profile-ielts-experience" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
+              <div class="flex-1">
+                  <button id="back-to-home-btn" class="mb-5 flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-colors"> ${
+                    Icons.ArrowLeft
+                  } Back to Forum </button>
+                  <div class="p-6 md:p-8 rounded-2xl border border-gray-200 bg-white">
+                      <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-900">Settings</h2>
+                      <div class="mb-8 pb-8 border-b border-gray-200">
+                          <h3 class="text-xl font-semibold mb-4 text-gray-800">Profile Settings</h3>
+                          <div class="space-y-4">
+                              <div> <label for="settings-profile-name" class="block text-sm font-medium mb-1 text-gray-700">Name</label> <input type="text" id="settings-profile-name" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" value="${
+                                profile.name || ""
+                              }" required /> </div>
+                              <div> <label for="settings-profile-bio" class="block text-sm font-medium mb-1 text-gray-700">Bio (Optional)</label> <textarea id="settings-profile-bio" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" rows="3" placeholder="Tell us about yourself...">${
+                                profile.bio || ""
+                              }</textarea> </div>
+                              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  <div> <label for="settings-profile-band-goal" class="block text-sm font-medium mb-1 text-gray-700">Target Band</label> <select id="settings-profile-band-goal" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
+                                  <div> <label for="settings-profile-prep-status" class="block text-sm font-medium mb-1 text-gray-700">Preparation Status</label> <select id="settings-profile-prep-status" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
+                                  <div> <label for="settings-profile-country" class="block text-sm font-medium mb-1 text-gray-700">Country</label> <select id="settings-profile-country" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
+                                  <div> <label for="settings-profile-ielts-experience" class="block text-sm font-medium mb-1 text-gray-700">IELTS Experience</label> <select id="settings-profile-ielts-experience" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"></select> </div>
+                              </div>
+                              <button id="save-profile-settings-btn" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95"> Save Profile Changes </button>
                           </div>
-                          <button id="save-profile-settings-btn" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95"> Save Profile Changes </button>
                       </div>
-                  </div>
-                  <div class="mb-8 pb-8 border-b border-gray-200">
-                      <h3 class="text-xl font-semibold mb-4 text-gray-800">Notification Preferences</h3>
-                      <div class="space-y-3">
-                          <div class="flex items-center gap-3"> <input type="checkbox" id="notif-votes" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500" ${
-                            profile.notificationPreferences?.vote !== false
-                              ? "checked"
-                              : ""
-                          }> <label for="notif-votes" class="text-gray-700">Receive notifications for votes on my content</label> </div>
-                          <div class="flex items-center gap-3"> <input type="checkbox" id="notif-replies" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500" ${
-                            profile.notificationPreferences?.reply !== false
-                              ? "checked"
-                              : ""
-                          }> <label for="notif-replies" class="text-gray-700">Receive notifications for replies to my content</label> </div>
-                          <div class="flex items-center gap-3"> <input type="checkbox" id="notif-follows" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500" ${
-                            profile.notificationPreferences?.follow !== false
-                              ? "checked"
-                              : ""
-                          }> <label for="notif-follows" class="text-gray-700">Receive notifications when someone follows me</label> </div>
-                          <div class="flex items-center gap-3"> <input type="checkbox" id="notif-new-posts" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500" ${
-                            profile.notificationPreferences?.new_post !== false
-                              ? "checked"
-                              : ""
-                          }> <label for="notif-new-posts" class="text-gray-700">Receive notifications for new posts from followed users</label> </div>
-                          <button id="save-notif-settings-btn" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95"> Save Notification Settings </button>
+                      <div class="mb-8 pb-8 border-b border-gray-200">
+                          <h3 class="text-xl font-semibold mb-4 text-gray-800">Notification Preferences</h3>
+                          <div class="space-y-3">
+                              <div class="flex items-center gap-3"> <input type="checkbox" id="notif-votes" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500" ${
+                                profile.notificationPreferences?.vote !== false
+                                  ? "checked"
+                                  : ""
+                              }> <label for="notif-votes" class="text-gray-700">Receive notifications for votes on my content</label> </div>
+                              <div class="flex items-center gap-3"> <input type="checkbox" id="notif-replies" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500" ${
+                                profile.notificationPreferences?.reply !== false
+                                  ? "checked"
+                                  : ""
+                              }> <label for="notif-replies" class="text-gray-700">Receive notifications for replies to my content</label> </div>
+                              <div class="flex items-center gap-3"> <input type="checkbox" id="notif-follows" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500" ${
+                                profile.notificationPreferences?.follow !==
+                                false
+                                  ? "checked"
+                                  : ""
+                              }> <label for="notif-follows" class="text-gray-700">Receive notifications when someone follows me</label> </div>
+                              <div class="flex items-center gap-3"> <input type="checkbox" id="notif-new-posts" class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500" ${
+                                profile.notificationPreferences?.new_post !==
+                                false
+                                  ? "checked"
+                                  : ""
+                              }> <label for="notif-new-posts" class="text-gray-700">Receive notifications for new posts from followed users</label> </div>
+                              <button id="save-notif-settings-btn" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95"> Save Notification Settings </button>
+                          </div>
                       </div>
-                  </div>
-                  <div class="mb-8 pb-8 border-b border-gray-200">
-                      <h3 class="text-xl font-semibold mb-4 text-gray-800">App Preferences</h3>
-                      <div class="space-y-3">
-                          <div> <label for="default-home-feed" class="block text-sm font-medium mb-1 text-gray-700">Default Home Feed</label> <select id="default-home-feed" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"> <option value="latest">Latest Posts</option> <option value="forYou">For You (Trending)</option> <option value="following">Following (Posts from followed users)</option> </select> </div>
-                          <button id="save-app-settings-btn" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95"> Save App Preferences </button>
+                      <div class="mb-8 pb-8 border-b border-gray-200">
+                          <h3 class="text-xl font-semibold mb-4 text-gray-800">App Preferences</h3>
+                          <div class="space-y-3">
+                              <div> <label for="default-home-feed" class="block text-sm font-medium mb-1 text-gray-700">Default Home Feed</label> <select id="default-home-feed" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors"> <option value="latest">Latest Posts</option> <option value="forYou">For You (Trending)</option> <option value="following">Following (Posts from followed users)</option> </select> </div>
+                              <button id="save-app-settings-btn" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95"> Save App Preferences </button>
+                          </div>
                       </div>
-                  </div>
-                  <div>
-                      <h3 class="text-xl font-semibold mb-4 text-gray-800">Account Settings</h3>
-                      <div class="space-y-3">
-                          <p class="text-gray-700 text-sm"> You can delete your account and all associated data here. This action is irreversible. </p>
-                          <button id="delete-account-btn" class="px-5 py-2.5 bg-red-600 text-white rounded-xl shadow-md hover:bg-red-700 transition-all text-sm font-semibold transform active:scale-95"> Delete Account </button>
-                          <button id="sign-out-btn" class="px-5 py-2.5 bg-gray-500 text-white rounded-xl shadow-md hover:bg-gray-600 transition-all text-sm font-semibold transform active:scale-95"> Sign Out </button>
+                      <div>
+                          <h3 class="text-xl font-semibold mb-4 text-gray-800">Account Settings</h3>
+                          <div class="space-y-3">
+                              <p class="text-gray-700 text-sm"> You can delete your account and all associated data here. This action is irreversible. </p>
+                              <button id="delete-account-btn" class="px-5 py-2.5 bg-red-600 text-white rounded-xl shadow-md hover:bg-red-700 transition-all text-sm font-semibold transform active:scale-95"> Delete Account </button>
+                              <button id="sign-out-btn" class="px-5 py-2.5 bg-gray-500 text-white rounded-xl shadow-md hover:bg-gray-600 transition-all text-sm font-semibold transform active:scale-95"> Sign Out </button>
+                          </div>
                       </div>
                   </div>
               </div>
-          </div>
-        `;
+            `;
         document.getElementById("back-to-home-btn").onclick = () =>
           navigateTo("home");
 
@@ -3458,35 +3525,35 @@
       function renderAuthPage(mode) {
         const isLoginMode = mode === "login";
         elements.mainContent.innerHTML = `
-          <div class="flex-1 flex items-center justify-center min-h-screen -mt-16">
-              <div class="p-8 md:p-10 rounded-2xl border border-gray-200 bg-white w-full max-w-md">
-                  <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-900 text-center"> ${
-                    isLoginMode ? "Sign In" : "Sign Up"
-                  } to Mahir </h2>
-                  <form id="auth-form" class="space-y-5">
-                      <div> <label for="auth-email" class="block text-sm font-medium mb-1 text-gray-700">Email</label> <input type="email" id="auth-email" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" placeholder="your@example.com" required /> </div>
-                      <div> <label for="auth-password" class="block text-sm font-medium mb-1 text-gray-700">Password</label> <input type="password" id="auth-password" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" placeholder="Minimum 6 characters" required /> </div>
-                      ${
-                        !isLoginMode
-                          ? `<div> <label for="auth-confirm-password" class="block text-sm font-medium mb-1 text-gray-700">Confirm Password</label> <input type="password" id="auth-confirm-password" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" placeholder="Confirm your password" required /> </div>`
-                          : ""
-                      }
-                      <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-colors font-semibold transform active:scale-95"> ${
+              <div class="flex-1 flex items-center justify-center min-h-screen -mt-16">
+                  <div class="p-8 md:p-10 rounded-2xl border border-gray-200 bg-white w-full max-w-md">
+                      <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-900 text-center"> ${
                         isLoginMode ? "Sign In" : "Sign Up"
-                      } </button>
-                  </form>
-                  <div class="mt-6 text-center text-gray-600">
-                      ${
-                        isLoginMode
-                          ? `Don't have an account? <button id="toggle-auth-mode" class="text-blue-600 font-semibold hover:underline">Sign Up</button>`
-                          : `Already have an account? <button id="toggle-auth-mode" class="text-blue-600 font-semibold hover:underline">Sign In</button>`
-                      }
+                      } to Mahir </h2>
+                      <form id="auth-form" class="space-y-5">
+                          <div> <label for="auth-email" class="block text-sm font-medium mb-1 text-gray-700">Email</label> <input type="email" id="auth-email" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" placeholder="your@example.com" required /> </div>
+                          <div> <label for="auth-password" class="block text-sm font-medium mb-1 text-gray-700">Password</label> <input type="password" id="auth-password" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" placeholder="Minimum 6 characters" required /> </div>
+                          ${
+                            !isLoginMode
+                              ? `<div> <label for="auth-confirm-password" class="block text-sm font-medium mb-1 text-gray-700">Confirm Password</label> <input type="password" id="auth-confirm-password" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-200 bg-gray-50 text-gray-900 transition-colors" placeholder="Confirm your password" required /> </div>`
+                              : ""
+                          }
+                          <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-colors font-semibold transform active:scale-95"> ${
+                            isLoginMode ? "Sign In" : "Sign Up"
+                          } </button>
+                      </form>
+                      <div class="mt-6 text-center text-gray-600">
+                          ${
+                            isLoginMode
+                              ? `Don't have an account? <button id="toggle-auth-mode" class="text-blue-600 font-semibold hover:underline">Sign Up</button>`
+                              : `Already have an account? <button id="toggle-auth-mode" class="text-blue-600 font-semibold hover:underline">Sign In</button>`
+                          }
+                      </div>
+                      <div class="relative flex items-center justify-center my-6"> <div class="absolute inset-x-0 h-px bg-gray-200"></div> <span class="relative bg-white px-4 text-sm text-gray-500">OR</span> </div>
+                      <button id="google-auth-btn" class="w-full flex items-center justify-center gap-3 px-6 py-3 bg-red-500 text-white rounded-xl shadow-md hover:bg-red-600 transition-colors font-semibold transform active:scale-95"> <i class="fab fa-google text-lg"></i> Continue with Google </button>
                   </div>
-                  <div class="relative flex items-center justify-center my-6"> <div class="absolute inset-x-0 h-px bg-gray-200"></div> <span class="relative bg-white px-4 text-sm text-gray-500">OR</span> </div>
-                  <button id="google-auth-btn" class="w-full flex items-center justify-center gap-3 px-6 py-3 bg-red-500 text-white rounded-xl shadow-md hover:bg-red-600 transition-colors font-semibold transform active:scale-95"> <i class="fab fa-google text-lg"></i> Continue with Google </button>
               </div>
-          </div>
-        `;
+            `;
 
         // Query elements AFTER they are rendered into the DOM
         const authForm = document.getElementById("auth-form");

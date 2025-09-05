@@ -1,0 +1,136 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+  // Allow authenticated users to read the adminUsers collection
+    // This is crucial for the checkAdminStatus function to work.
+    match /artifacts/{appId}/public/data/adminUsers/{adminId} {
+      allow read: if request.auth != null;
+      // Allow create/update/delete only if the requesting user is an 'admin'
+      // An admin cannot delete their own record via this rule to prevent accidental lockout.
+      allow create, update: if request.auth != null && get(/databases/$(database)/documents/artifacts/$(appId)/public/data/adminUsers/$(request.auth.uid)).data.role == 'admin';
+      allow delete: if request.auth != null && request.auth.uid != adminId && get(/databases/$(database)/documents/artifacts/$(appId)/public/data/adminUsers/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Allow authenticated users to read top-level user documents for fetching all profiles
+    match /artifacts/{appId}/users/{userId} {
+      allow read: if request.auth != null;
+    }
+
+    // Public data: Posts and Comments
+    // Anyone can read. Signed-in users can create. ONLY THE AUTHOR can update or delete.
+    match /artifacts/{appId}/public/data/posts/{postId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && request.resource.data.authorId == request.auth.uid;
+    }
+    match /artifacts/{appId}/public/data/comments/{commentId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && request.resource.data.authorId == request.auth.uid;
+    }
+
+    // Admin Panel specific collections:
+    // Testimonials: Publicly readable, manageable by authenticated users.
+    match /artifacts/{appId}/public/data/testimonials/{testimonialId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    // Quizzes: Publicly readable, manageable by authenticated users.
+    match /artifacts/{appId}/public/data/quizzes/{quizId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    // Blog Posts: Publicly readable, manageable by authenticated users.
+    match /artifacts/{appId}/public/data/blogPosts/{blogPostId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    // Contact Messages: Publicly writable (unauthenticated), but only readable by authenticated users (admins).
+    // This change allows your contact form to submit data without a user signing in.
+    match /artifacts/{appId}/public/data/contactMessages/{messageId} {
+      allow read: if request.auth != null; // Only authenticated users can read
+      allow write: if true; // Anyone can write (unauthenticated writes allowed)
+    }
+    // Teachers: Publicly readable, manageable by authenticated users.
+    match /artifacts/{appId}/public/data/teachers/{teacherId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Free Resources:
+    // Publicly readable.
+    // Authenticated users can create, update, and delete.
+    // Unauthenticated users can *only* increment the 'views' field.
+    match /artifacts/{appId}/public/data/freeResources/{resourceId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null || (request.auth == null && request.resource.data.diff(resource.data).changedKeys().hasOnly(['views']));
+      allow delete: if request.auth != null;
+    }
+
+    // User Profiles:
+    // Any authenticated user can read any user's profile (for displaying author info, follower lists, etc.).
+    // A user can only write/update their own profile.
+    match /artifacts/{appId}/users/{userId}/userProfile/profile {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // NEW RULE: Allow authenticated users to read any user's gameStats/summary
+    // This is needed for the global leaderboard to fetch points and levels for all users.
+    match /artifacts/{appId}/users/{userId}/gameStats/summary {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId; // Only owner can write
+    }
+
+    // Notifications:
+    // Any authenticated user can CREATE a notification for any other user (e.g., when someone comments on their post).
+    // Only the owner (userId) can READ, UPDATE (e.g., mark as read), or DELETE their own notifications.
+    match /artifacts/{appId}/users/{userId}/notifications/{notificationId} {
+      allow create: if request.auth != null;
+      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
+    }
+    // Private Quiz Results (for personal history):
+    // Only the owner (userId) can read and write their own quiz results.
+    match /artifacts/{appId}/users/{userId}/quizResults/{quizResultId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Public Global Quiz Results (for leaderboard):
+    // Anyone can read (for the leaderboard display).
+    // Only authenticated users can create (submit their score).
+    // No one can update or delete existing global results to maintain leaderboard integrity.
+    match /artifacts/{appId}/public/data/quizGlobalResults/{globalResultId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if false; // Results are immutable once submitted to the global leaderboard
+    }
+
+    // NEW RULE: Public Global Mock Test Results (for leaderboard)
+    // Anyone can read (for the leaderboard display).
+    // Only authenticated users can create (submit their score).
+    // No one can update or delete existing global results to maintain leaderboard integrity.
+    match /artifacts/{appId}/public/data/mockTestGlobalResults/{globalResultId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if false; // Results are immutable once submitted to the global leaderboard
+    }
+
+    // General Private User Data:
+    // This rule allows authenticated users to read and write their own documents
+    // within their private space (e.g., any other sub-collections under their userId path).
+    // It prevents other users from accessing this private data.
+    match /artifacts/{appId}/users/{userId}/{documents=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Collection Group Query for 'profile' (if used):
+    // This rule is necessary if you intend to use `collectionGroup('profile')` queries
+    // to fetch all user profiles across different user paths.
+    // It allows any authenticated user to read documents that are part of a 'profile' collection.
+    match /{path=**}/profile/{profileId} {
+      allow read: if request.auth != null;
+    }
+  }
+}

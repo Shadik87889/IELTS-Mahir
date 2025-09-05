@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IELTS Mahir - Home</title>
-
+    <title>IELTS Mahir - Reading</title>
+    <link rel="stylesheet" href="navigation-dark.css" />
     <link rel="stylesheet" href="free-resourses-details.css" />
 
     <link
@@ -20,17 +20,36 @@
       href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap"
       rel="stylesheet"
     />
+    <!-- Font Awesome 6.7.2 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
     <main id="main">
       <div id="page1">
         <nav>
-          <div class="logo">
-            <img
-              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
-              alt="Ielts mahir logo"
-            />
+          <div class="logo-ai-parent">
+            <div class="hamburger-menu">
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+            </div>
+            <a href="home.html" class="logo">
+              <img
+                src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+                alt="Ielts mahir logo"
+              />
+            </a>
+            <a href="ai-feature.html" class="ai-button" aria-label="AI Tools">
+              <i class="fas fa-robot" aria-hidden="true"></i>
+              <span>AI</span>
+            </a>
           </div>
+
           <div class="menu-item">
             <a href="home.html">Home</a>
 
@@ -46,7 +65,6 @@
                 <a href="ielts-listening.html" class="category-link"
                   >Listening</a
                 >
-
                 <a href="ielts-grammar.html" class="category-link">Grammar</a>
                 <a href="ielts-study-plan.html" class="category-link"
                   >Study Plan</a
@@ -62,22 +80,25 @@
                 >
               </div>
             </div>
-
-            <a href="quizzes.html">Quizzes</a>
-
-            <div class="dropdown">
-              <a class="down-arrow" href="javascript:void(0)">
-                Services <span class="arrow">&gt;</span>
-              </a>
-              <div class="submenu">
-                <a href="#">1:1 Coaching</a>
-                <a href="#">Essay Checking</a>
-                <a href="#">Speaking Practice</a>
+            <a href="mock-test-home.html">Mock Test</a>
+            <a href="quiz-home.html">Quizzes</a>
+            <a href="ielts-tips-and-tricks.html">IELTS Tips and Tricks</a>
+            <a href="ielts-mahir-community-forum.html">Community Forum</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+          </div>
+          <div id="auth-buttons-container" class="auth-container">
+            <div class="auth-loading-pulse">
+              <div class="auth-loading-circle"></div>
+              <div class="auth-loading-content">
+                <div class="auth-loading-bar"></div>
+                <div class="auth-loading-grid">
+                  <div class="auth-loading-bar auth-loading-col-2"></div>
+                  <div class="auth-loading-bar auth-loading-col-1"></div>
+                </div>
+                <div class="auth-loading-bar"></div>
               </div>
             </div>
-
-            <a href="tips-tricks.html">IELTS Tips and Tricks</a>
-            <a href="contact.html">Contact</a>
           </div>
         </nav>
 
@@ -89,7 +110,6 @@
               lessons, practice materials, and strategies tailored to your
               success.
             </p>
-            <div class="play-btn">▶</div>
             <img
               class="corner-one"
               src="assets/Header-Corner-1@3x-BIHIy4ju.png"
@@ -134,17 +154,12 @@
           <div class="contact-banner">
             <div class="contact-content">
               <h2 class="anton">Achieve Your Desired IELTS Band</h2>
-              <p class="montserrat">
-                Certified mentors guiding you every step of the way
-              </p>
+              <p class="montserrat">Certified mentors guiding you every step of the way</p>
               <div class="contact-buttons">
-                <button class="btn primary montserrat">
-                  Explore IELTS Modules
-                </button>
-                <a href="#" class="btn link montserrat"
-                  >Latest Success Stories →</a
-                >
+               <a href="mock-test-home.html" class="btn primary montserrat">Explore IELTS Modules</a>
+               <a href="dashboard.html" class="btn link montserrat">Your Dashboard <i class="fa-solid fa-arrow-right"></i></a></a>
               </div>
+
             </div>
             <div class="contact-image">
               <div class="bg-letter">
@@ -153,6 +168,7 @@
               </div>
               <img src="assets/LELTS-Mahir.png" alt="IELTS Student Image" />
             </div>
+
           </div>
         </div>
 
@@ -160,89 +176,48 @@
           <div class="footer-column">
             <h4 class="anton">Quick Access</h4>
             <ul class="montserrat">
-              <li><a href="#">About IELTS Mahir</a></li>
-              <li><a href="#">Contact Support</a></li>
-              <li><a href="#">IELTS FAQs</a></li>
-              <li><a href="#">Terms & Conditions</a></li>
-              <li><a href="#">Privacy Guidelines</a></li>
+              <li><a href="#success-journey-section">Why Choose Us</a></li>
+              <li><a href="contact.html">Contact Support</a></li>
+              <li><a href="#faq-section">IELTS FAQs</a></li>
+              <li>
+                <a href="terms-and-conditions.html">Terms & Conditions</a>
+              </li>
+              <li><a href="privacy-guidelines.html">Privacy Guidelines</a></li>
             </ul>
           </div>
 
           <div class="footer-column">
             <h4 class="anton">Learning Hub</h4>
             <ul class="montserrat">
-              <li><a href="#">IELTS Blog</a></li>
-              <li><a href="#">Student Reviews</a></li>
-              <li><a href="#">Success Partners</a></li>
-              <li><a href="#">Live Support</a></li>
-              <li><a href="#">Help & Guidance</a></li>
+              <li><a href="#page5">IELTS Blog</a></li>
+              <li><a href="#page3">Student Reviews</a></li>
+              <li><a href="#success-journey-section">Band 9 Roadmap</a></li>
+              <li><a href="mock-test-home.html">Mock Test</a></li>
+              <li><a href="#faq-section">Help & Guidance</a></li>
             </ul>
           </div>
-
-          <div class="footer-column">
-            <h4 class="anton">Free Resources</h4>
-            <ul class="montserrat">
-              <li><a href="#">Mock Tests</a></li>
-              <li><a href="#">IELTS Community</a></li>
-              <li><a href="#">Band Descriptors</a></li>
-              <li><a href="#">Weekly Tips</a></li>
-              <li><a href="#">Download Materials</a></li>
-            </ul>
-          </div>
-
           <div class="footer-column subscribe">
-            <h4 class="anton">Get Weekly IELTS Tips</h4>
-            <p class="montserrat">
-              Subscribe and stay ahead with expert strategies
-            </p>
-            <div class="subscribe-form">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                class="montserrat"
-              />
-              <button class="montserrat">Subscribe</button>
-            </div>
-            <small class="montserrat"
-              >By subscribing, you agree to our
-              <a href="#">Privacy Policy</a></small
-            >
+            <h4 class="anton">Connect with a Mentor</h4>
+            <p class="montserrat">Get personalized guidance and expert support for your IELTS preparation.</p>
+            <button href="contact.html" class="anton connect-btn" data-url="http://127.0.0.1:5500/our-teacher.html">Contact a Mentor <i class="fa-solid fa-arrow-right"></i></button>
           </div>
         </div>
 
         <div class="footer-bottom">
           <div class="branding anton">IELTS MAHIR.</div>
-          <div class="footer-policy-links montserrat">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Use</a>
-            <a href="#">Cookies Notice</a>
-          </div>
+          
           <div class="footer-socials">
-            <a href="#"
-              ><img
-                src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png"
-                alt="Facebook"
-            /></a>
-            <a href="#"
-              ><img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png"
-                alt="Instagram"
-            /></a>
-            <a href="#"
-              ><img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png"
-                alt="LinkedIn"
-            /></a>
-            <a href="#"
-              ><img
-                src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png"
-                alt="YouTube"
-            /></a>
+            <a href="https://www.facebook.com/IELTSMahir1"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png" alt="Facebook" /></a>
+            <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png" alt="Instagram" /></a>
+            <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png" alt="LinkedIn" /></a>
+            <a href="https://www.youtube.com/c/ieltsmahir/about"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" alt="YouTube" /></a>
           </div>
-          <p class="montserrat copyright">
-            © 2024 IELTS Mahir. All rights reserved.
-          </p>
+          <p class="montserrat copyright">© 2024 IELTS Mahir. All rights reserved.</p>
+          
         </div>
+        <a href="http://www.ruralpeace.org/portfolio" class="footer-creator-img" target="_blank" aria-label="Creator's Profile">
+            <img src="assets/my-pic.jpg" alt="Creator Profile Image" />
+          </a>
       </footer>
     </main>
 
@@ -251,8 +226,12 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
     <script src="free-resourses-details.js"></script>
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="auth-page-loading.js"></script>
+    <script src="navigation.js"></script>
     <script src="dropdown-settings.js"></script>
     <script src="app.js"></script>
     <script src="gsap.js"></script>
+    <script src="footer.js"></script>
   </body>
 </html>

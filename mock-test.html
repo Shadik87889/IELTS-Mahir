@@ -92,13 +92,17 @@
       @media (min-width: 1024px) {
         /* lg breakpoint */
         .mock-test-layout.writing-layout {
-          grid-template-columns: 1fr; /* Single column for writing */
+          grid-template-columns: 1fr 1fr; /* Instructions on left, Input on right */
           padding: 0rem; /* Larger padding for desktop */
+          gap: 1.5px; /* Small gap between panels */
         }
-        .mock-test-layout.writing-layout .main-test-content {
+        .mock-test-layout.writing-layout .main-test-content,
+        .mock-test-layout.writing-layout .writing-instructions-area {
           height: calc(
             100vh - 124px
           ); /* Header (64px) + Info Bar (60px) = 124px */
+          border-radius: 0rem;
+          border-top: none;
         }
       }
 
@@ -140,6 +144,19 @@
         display: none; /* Hidden by default, shown by JS for reading */
         transition: all 0.3s ease-in-out;
         /* height will be set by media queries */
+      }
+
+      /* Styling for the writing instructions area (for Writing Tests) */
+      .writing-instructions-area {
+        background-color: #ffffff; /* Pure white background */
+        border-radius: 1.5rem;
+        border: 1px solid #e0e0e0;
+        padding: 1.5rem;
+        overflow-y: auto; /* Enable scrolling for instructions */
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        display: none; /* Hidden by default, shown by JS for writing on desktop */
+        transition: all 0.3s ease-in-out;
       }
 
       /* Styling for the sidebar (for Listening Tests) */
@@ -935,8 +952,11 @@
           padding: 0;
           gap: 1.5px;
         }
-        .mock-test-layout.writing-layout .main-test-content {
-          height: calc(100vh - 124px); /* Header (64px) + Info Bar (60px) */
+        .mock-test-layout.writing-layout .main-test-content,
+        .mock-test-layout.writing-layout .writing-instructions-area {
+          height: calc(
+            100vh - 220px
+          ); /* Header (64px) + Tab bar (56px) + Test Info Bar (60px) */
           border-radius: 0;
           border-top: none;
         }
@@ -980,11 +1000,49 @@
           padding: 0.2rem; /* Reduced padding for mobile */
         }
 
+        /* Mobile Writing Tabs */
+        .writing-tabs-container {
+          display: flex;
+          width: 100%;
+          background-color: #ffffff;
+          border-bottom: 1px solid #e0e0e0;
+          position: sticky;
+          top: 64px; /* Below header */
+          z-index: 900;
+          justify-content: space-around;
+          align-items: center;
+          height: 56px; /* Fixed height for tab bar */
+        }
+
+        .writing-tab-button {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0.75rem 0;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #8c8c8c; /* Softer gray */
+          border-bottom: 3px solid transparent;
+          transition: all 0.2s ease-in-out;
+          cursor: pointer;
+        }
+
+        .writing-tab-button.active {
+          color: #1890ff; /* Brighter blue */
+          border-color: #1890ff;
+        }
+
         /* Hide desktop layout for reading on small screens */
         .mock-test-layout.reading-layout .passage-content-area.desktop-only {
           display: none;
         }
         .mock-test-layout.reading-layout .main-test-content.desktop-only {
+          display: none;
+        }
+        /* Hide desktop instructions area on mobile */
+        .mock-test-layout.writing-layout
+          .writing-instructions-area.desktop-only {
           display: none;
         }
       }
@@ -1005,6 +1063,12 @@
           /* Height of the sticky bar */
           border-top: none; /* Remove top border as it's below sticky bar */
         }
+        .mock-test-layout.writing-layout .main-test-content,
+        .mock-test-layout.writing-layout .writing-instructions-area {
+          height: calc(100vh - 124px); /* Adjusted height */
+          border-radius: 0rem;
+          border-top: none;
+        }
 
         /* Hide mobile-specific reading tabs on desktop */
         .reading-tabs-container {
@@ -1012,6 +1076,14 @@
         }
         /* Ensure desktop content is visible */
         .mock-test-layout.reading-layout .passage-content-area {
+          display: block !important; /* Override mobile display:none */
+        }
+        /* Hide mobile-specific writing tabs on desktop */
+        .writing-tabs-container {
+          display: none !important;
+        }
+        /* Ensure desktop instructions content is visible */
+        .mock-test-layout.writing-layout .writing-instructions-area {
           display: block !important; /* Override mobile display:none */
         }
       }
@@ -1030,29 +1102,14 @@
       class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
     >
       <div class="flex items-center gap-2 sm:gap-4">
-        <img
-          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
-          alt="IELTS Mahir Logo"
-          class="h-8 md:h-10 w-auto"
-          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
-        />
-        <nav class="hidden md:flex gap-6 ml-8 font-inter">
-          <a
-            href="quiz-home.html"
-            class="nav-link text-gray-700 hover:text-blue-600 transition-all font-medium text-lg"
-            >Quiz System</a
-          >
-          <a
-            href="mock-test-home.html"
-            class="nav-link text-gray-700 hover:text-blue-600 transition-all font-medium text-lg"
-            >Mock Tests</a
-          >
-          <a
-            href="#"
-            class="nav-link text-gray-700 hover:text-blue-600 transition-all font-medium text-lg"
-            >Resources</a
-          >
-        </nav>
+        <a href="home.html">
+          <img
+            src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+            alt="IELTS Mahir Logo"
+            class="h-8 md:h-10 w-auto"
+            onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+          />
+        </a>
       </div>
       <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
         <!-- Authentication status will be handled by auth.js -->
@@ -1207,6 +1264,7 @@
         userRank: null, // User's rank on the leaderboard
         isLoadingResults: false, // For loading state of results section
         activeReadingTab: "questions", // New: 'passage' or 'questions' for mobile reading
+        activeWritingTab: "instructions", // New: 'instructions' or 'response' for mobile writing
       };
 
       // New: Array to map palette numbers to question IDs and their HTML element IDs
@@ -1283,7 +1341,112 @@
           modalOverlay.classList.remove("visible");
         }
       }
+      /**
+       * Calls the Gemini API to get feedback on a writing task.
+       * @param {string} taskInstructions - The instructions for the writing task.
+       * @param {string} userEssay - The user's written response.
+       * @returns {Promise<object|null>} A promise that resolves to the structured feedback object from Gemini, or null on error.
+       */
+      async function callGeminiApi(taskInstructions, userEssay) {
+        // NOTE: It is generally not recommended to expose API keys on the client-side in a production application.
+        // For this educational context, we are placing it here for simplicity.
+        const apiKey = "AIzaSyCsdeFOJrU43BZmnRP5WD1pm80fZH1cxN4";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
+        const prompt = `
+          You are an expert IELTS writing examiner. Analyze the following IELTS writing task response.
+          Provide a detailed evaluation based on the official IELTS writing band descriptors.
+
+          **Task Instructions:**
+          ${taskInstructions}
+
+          **User's Essay:**
+          ${userEssay}
+
+          Please provide your feedback in a JSON object format. The feedback should cover these four criteria:
+          1.  **Task Response / Task Achievement:** How well did the user address the task?
+          2.  **Coherence and Cohesion:** How logical and well-structured is the response?
+          3.  **Lexical Resource:** How effective is the vocabulary?
+          4.  **Grammatical Range and Accuracy:** How well is grammar used?
+          5.  **Overall Feedback:** A summary of the performance with suggestions for improvement.
+          6.  **Estimated Band:** An estimated band score (e.g., 6.5, 7.0, 7.5).
+        `;
+
+        const payload = {
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseMimeType: "application/json",
+            responseSchema: {
+              type: "OBJECT",
+              properties: {
+                taskResponse: {
+                  type: "STRING",
+                  description: "Feedback on task response/achievement.",
+                },
+                coherenceAndCohesion: {
+                  type: "STRING",
+                  description: "Feedback on coherence and cohesion.",
+                },
+                lexicalResource: {
+                  type: "STRING",
+                  description: "Feedback on lexical resource.",
+                },
+                grammaticalRangeAndAccuracy: {
+                  type: "STRING",
+                  description: "Feedback on grammatical range and accuracy.",
+                },
+                overallFeedback: {
+                  type: "STRING",
+                  description: "A summary of the performance and suggestions.",
+                },
+                estimatedBand: {
+                  type: "NUMBER",
+                  description: "The estimated band score as a number.",
+                },
+              },
+              required: [
+                "taskResponse",
+                "coherenceAndCohesion",
+                "lexicalResource",
+                "grammaticalRangeAndAccuracy",
+                "overallFeedback",
+                "estimatedBand",
+              ],
+            },
+          },
+        };
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            const errorBody = await response.text();
+            throw new Error(
+              `API request failed with status ${response.status}: ${errorBody}`
+            );
+          }
+
+          const result = await response.json();
+          if (
+            result.candidates &&
+            result.candidates.length > 0 &&
+            result.candidates[0].content.parts.length > 0
+          ) {
+            const jsonText = result.candidates[0].content.parts[0].text;
+            return JSON.parse(jsonText); // Return the structured JSON object
+          } else {
+            throw new Error("Invalid response structure from Gemini API.");
+          }
+        } catch (error) {
+          console.error("Error calling Gemini API:", error);
+          showToast("An error occurred while getting AI feedback.", "error");
+          return null;
+        }
+      }
       /**
        * Updates the navigation bar and user ID display based on authentication status.
        * @param {object|null} user - The Firebase User object or null if signed out.
@@ -1609,11 +1772,20 @@
        * @param {number|string} bandScore - Calculated IELTS band score.
        * @param {number} timeTakenSeconds - Time taken in seconds.
        */
+      /**
+       * Saves the mock test result to Firestore.
+       * @param {number} correctAnswers - Number of correct answers.
+       * @param {number} totalQuestions - Total number of questions/answerable slots.
+       * @param {number|string} bandScore - Calculated IELTS band score.
+       * @param {number} timeTakenSeconds - Time taken in seconds.
+       * @param {object} geminiFeedback - The AI feedback object for writing tasks.
+       */
       async function saveMockTestResultToFirestore(
         correctAnswers,
         totalQuestions,
         bandScore,
-        timeTakenSeconds
+        timeTakenSeconds,
+        geminiFeedback = {} // Add new parameter with a default value
       ) {
         if (!db || !authAppState.userId) {
           showToast(
@@ -1642,7 +1814,8 @@
           bandScore: bandScore,
           timeTakenSeconds: timeTakenSeconds,
           timestamp: serverTimestamp(),
-          userAnswers: testState.userAnswers, // Save user answers for potential future review
+          userAnswers: testState.userAnswers,
+          geminiFeedback: geminiFeedback, // Add the feedback to the data
         };
 
         try {
@@ -1666,13 +1839,11 @@
             resultData
           );
           console.log("Mock test result saved to public collection.");
-          // Removed showToast here, will be shown as modal after rendering results
         } catch (error) {
           console.error("Error saving mock test result:", error);
           showToast("Failed to save mock test results.", "error");
         }
       }
-
       /**
        * Fetches the user's specific mock test result from Firestore.
        * @param {string} userId - The ID of the current user.
@@ -1796,32 +1967,58 @@
       /**
        * Calculates the score and updates user stats.
        */
+      /**
+       * Calculates the score and updates user stats.
+       */
       async function handleSubmitTest() {
         clearInterval(testState.timerInterval); // Stop the timer
 
         // Show a loading modal
-        showModal("Submitting Test", "Calculating your score...", false);
+        showModal(
+          "Submitting Test",
+          "Calculating your score and generating AI feedback...",
+          false
+        );
 
-        let correctAnswersCount = 0; // For writing, this will be tasks meeting word count
+        let correctAnswersCount = 0;
+        let geminiFeedback = {}; // Object to store AI feedback for writing tasks
+        let totalBandScore = 0;
+        let bandScore = "N/A";
 
         if (currentModuleId === "writing") {
-          totalQuestions = currentTest.sections.length; // Number of writing tasks (e.g., 2)
-          currentTest.sections.forEach((task) => {
+          totalQuestions = currentTest.sections.length; // Number of writing tasks
+
+          for (const task of currentTest.sections) {
             const userAnswerText = testState.userAnswers[task.id] || "";
             const wordCount = calculateWordCount(userAnswerText);
             if (wordCount >= task.wordCountMin) {
               correctAnswersCount++;
             }
-          });
+            // Get AI feedback for the task
+            const feedback = await callGeminiApi(
+              task.instructions,
+              userAnswerText
+            );
+            if (feedback) {
+              geminiFeedback[task.id] = feedback;
+              totalBandScore += feedback.estimatedBand || 0;
+            }
+          }
+          // Calculate average band score for writing
+          bandScore =
+            totalQuestions > 0
+              ? (totalBandScore / totalQuestions).toFixed(1)
+              : "N/A";
         } else {
           // Existing scoring logic for Listening and Reading
           currentTest.sections.forEach((section) => {
             section.questionGroups.forEach((qGroup) => {
-              // Check qGroup.type first for types where 'type' is on the group
+              // ... (The entire existing scoring logic for Listening/Reading remains unchanged here)
               if (
                 qGroup.type === "matching_headings" ||
                 qGroup.type === "matching_items" ||
                 qGroup.type === "true_false_not_given" ||
+                qGroup.type === "yes_no_not_given" ||
                 qGroup.type === "multiple_choice_multiple_answers" ||
                 qGroup.type === "which_paragraph_contains" ||
                 qGroup.type === "matching_sentence_endings"
@@ -1850,7 +2047,6 @@
                   });
                 }
               } else if (qGroup.type === "table_fill_in_the_blank") {
-                // Special handling for table questions (already correct)
                 if (
                   qGroup.questions &&
                   qGroup.questions.length > 0 &&
@@ -1871,7 +2067,6 @@
                   }
                 }
               } else {
-                // Default handling for types where 'type' is on the individual question (e.g., fill_in_the_blank, mcq)
                 if (qGroup.questions && qGroup.questions.length > 0) {
                   qGroup.questions.forEach((question) => {
                     if (question.type === "mcq") {
@@ -1888,15 +2083,27 @@
                     ) {
                       const userAnswer = testState.userAnswers[question.id];
                       const correctAnswer = question.correctAnswer;
-                      if (
-                        userAnswer &&
-                        correctAnswer &&
-                        userAnswer.toLowerCase() === correctAnswer.toLowerCase()
-                      ) {
+                      let isCorrect = false;
+
+                      if (userAnswer && correctAnswer) {
+                        if (Array.isArray(correctAnswer)) {
+                          // If correctAnswer is an array, check if userAnswer is one of the valid answers
+                          isCorrect = correctAnswer.some(
+                            (ans) =>
+                              ans.toLowerCase() === userAnswer.toLowerCase()
+                          );
+                        } else {
+                          // Otherwise, do a direct string comparison
+                          isCorrect =
+                            userAnswer.toLowerCase() ===
+                            correctAnswer.toLowerCase();
+                        }
+                      }
+
+                      if (isCorrect) {
                         correctAnswersCount++;
                       }
                     } else if (question.type === "table_fill_in_the_blank") {
-                      // Handle table questions that might be in a generic qGroup
                       if (question.correctAnswer) {
                         for (const subQuestionId in question.correctAnswer) {
                           const userAnswer =
@@ -1919,20 +2126,21 @@
               }
             });
           });
+          bandScore = calculateIELTSBandScore(
+            correctAnswersCount,
+            totalQuestions
+          );
         }
 
-        const bandScore = calculateIELTSBandScore(
-          correctAnswersCount,
-          totalQuestions
-        );
         const timeTakenSeconds = currentTest.duration * 60 - testState.timeLeft;
 
-        // Save result to Firestore and update testState.userResultDoc
+        // Save result to Firestore, now including AI feedback
         await saveMockTestResultToFirestore(
           correctAnswersCount,
           totalQuestions,
           bandScore,
-          timeTakenSeconds
+          timeTakenSeconds,
+          geminiFeedback // Pass the new feedback object
         );
 
         // Fetch leaderboard after saving the user's result
@@ -1940,16 +2148,18 @@
 
         // Update test state to show results
         testState.testCompleted = true;
-        testState.isLoadingResults = false; // Ensure loading is off
+        testState.isLoadingResults = false;
 
         hideModal(); // Hide the submission modal
-
         renderApp(); // Re-render the app to show results
 
         // Show success modal after results are rendered
-        showModal("Success!", "Mock test results saved successfully!", false);
+        showModal(
+          "Success!",
+          "Mock test results and AI analysis are ready!",
+          false
+        );
       }
-
       /**
        * Renders the mock test feedback section.
        * This function is now part of mock-test.html
@@ -2068,34 +2278,60 @@
                                   );
                                   const meetsWordCount =
                                     wordCount >= section.wordCountMin;
+                                  const feedback = testState.userResultDoc
+                                    .geminiFeedback
+                                    ? testState.userResultDoc.geminiFeedback[
+                                        section.id
+                                      ]
+                                    : null;
+
                                   return `
-                                    <div class="p-4 rounded-lg border ${
-                                      meetsWordCount
-                                        ? "border-green-300 bg-green-50"
-                                        : "border-red-300 bg-red-50"
-                                    }">
-                                        <p class="font-semibold text-gray-900 mb-2">
+                                    <div class="p-4 rounded-lg border border-gray-300 bg-gray-50 mb-4">
+                                        <h4 class="font-bold text-lg text-gray-900 mb-3">
                                             ${section.title}
-                                        </p>
-                                        <p class="text-sm text-gray-700 mb-1">
-                                            Your Word Count: <span class="${
-                                              meetsWordCount
-                                                ? "correct-answer"
-                                                : "incorrect-answer"
-                                            }">${wordCount} words</span>
-                                            (Min: ${section.wordCountMin} words)
-                                        </p>
-                                        <p class="text-sm text-gray-700">
-                                            Your Response:
-                                            <div class="bg-white p-3 rounded-md border border-gray-200 mt-2 whitespace-pre-wrap text-sm max-h-40 overflow-y-auto">
+                                        </h4>
+                                        <div class="bg-white p-4 rounded-md border border-gray-200 mb-4">
+                                            <p class="text-sm text-gray-700 mb-2">
+                                                <strong>Your Response</strong> (Word Count: <span class="${
+                                                  meetsWordCount
+                                                    ? "text-green-600"
+                                                    : "text-red-600"
+                                                } font-semibold">${wordCount}</span> / Min: ${
+                                    section.wordCountMin
+                                  })
+                                            </p>
+                                            <div class="whitespace-pre-wrap text-sm max-h-48 overflow-y-auto custom-scrollbar p-2 border rounded-md bg-gray-50">
                                                 ${
                                                   userAnswerText ||
                                                   "<em>No response provided.</em>"
                                                 }
                                             </div>
-                                        </p>
+                                        </div>
+
+                                        ${
+                                          feedback
+                                            ? `
+                                        <div class="bg-blue-50 p-4 rounded-md border border-blue-200">
+                                            <h5 class="font-bold text-md text-blue-800 mb-3 flex items-center gap-2">
+                                                <i class="fas fa-robot text-blue-600"></i> Gemini AI Analysis (Estimated Band: <span class="text-xl">${feedback.estimatedBand}</span>)
+                                            </h5>
+                                            <div class="space-y-3 text-sm text-gray-800">
+                                                <div><strong>Task Response:</strong> ${feedback.taskResponse}</div>
+                                                <div><strong>Coherence & Cohesion:</strong> ${feedback.coherenceAndCohesion}</div>
+                                                <div><strong>Lexical Resource:</strong> ${feedback.lexicalResource}</div>
+                                                <div><strong>Grammar:</strong> ${feedback.grammaticalRangeAndAccuracy}</div>
+                                                <div class="pt-2 mt-2 border-t border-blue-200"><strong>Overall Feedback:</strong> ${feedback.overallFeedback}</div>
+                                            </div>
+                                        </div>
+                                        `
+                                            : `
+                                        <div class="bg-yellow-50 p-3 rounded-md border border-yellow-200 text-sm text-yellow-800">
+                                            AI feedback could not be generated for this task.
+                                        </div>
+                                        `
+                                        }
                                     </div>
-                                `;
+                                  `;
                                 } else {
                                   // Existing logic for other question types
                                   return section.questionGroups
@@ -2153,7 +2389,9 @@
                                             .join("");
                                         }
                                       } else if (
-                                        qGroup.type === "true_false_not_given"
+                                        qGroup.type ===
+                                          "true_false_not_given" ||
+                                        qGroup.type === "yes_no_not_given"
                                       ) {
                                         if (
                                           qGroup.questions &&
@@ -2408,11 +2646,31 @@
                                                 userAnswerDisplay =
                                                   userAnswers[question.id] ||
                                                   "Unattempted";
-                                                correctAnswerDisplay =
+                                                const correctAnswer =
                                                   question.correctAnswer;
-                                                isCorrect =
-                                                  userAnswerDisplay.toLowerCase() ===
-                                                  correctAnswerDisplay.toLowerCase();
+                                                correctAnswerDisplay = "";
+                                                isCorrect = false;
+
+                                                if (
+                                                  Array.isArray(correctAnswer)
+                                                ) {
+                                                  // If it's an array, join the answers with "or" for display
+                                                  correctAnswerDisplay = correctAnswer.join(
+                                                    " / "
+                                                  );
+                                                  // Check if the user's answer is one of the correct ones
+                                                  isCorrect = correctAnswer.some(
+                                                    (ans) =>
+                                                      ans.toLowerCase() ===
+                                                      userAnswerDisplay.toLowerCase()
+                                                  );
+                                                } else {
+                                                  // If it's a single string
+                                                  correctAnswerDisplay = correctAnswer;
+                                                  isCorrect =
+                                                    userAnswerDisplay.toLowerCase() ===
+                                                    correctAnswerDisplay.toLowerCase();
+                                                }
                                               } else if (
                                                 question.type ===
                                                 "table_fill_in_the_blank"
@@ -2658,6 +2916,8 @@
           document.querySelector(".main-test-content").scrollTop = 0;
           if (currentModuleId === "reading") {
             document.querySelector(".passage-content-area").scrollTop = 0;
+          } else if (currentModuleId === "writing") {
+            document.querySelector(".writing-instructions-area").scrollTop = 0;
           }
         }
       }
@@ -2673,6 +2933,8 @@
           document.querySelector(".main-test-content").scrollTop = 0;
           if (currentModuleId === "reading") {
             document.querySelector(".passage-content-area").scrollTop = 0;
+          } else if (currentModuleId === "writing") {
+            document.querySelector(".writing-instructions-area").scrollTop = 0;
           }
         }
       }
@@ -2683,6 +2945,15 @@
        */
       function setActiveReadingTab(tabName) {
         testState.activeReadingTab = tabName;
+        renderApp(); // Re-render to apply tab changes
+      }
+
+      /**
+       * Sets the active tab for the Writing module on mobile.
+       * @param {string} tabName - 'instructions' or 'response'.
+       */
+      function setActiveWritingTab(tabName) {
+        testState.activeWritingTab = tabName;
         renderApp(); // Re-render to apply tab changes
       }
 
@@ -2803,6 +3074,14 @@
           const isPassageActive = testState.activeReadingTab === "passage";
           const isQuestionsActive = testState.activeReadingTab === "questions";
 
+          // Determine content visibility based on activeWritingTab for mobile
+          const isInstructionsActive =
+            testState.activeWritingTab === "instructions";
+          const isResponseActive = testState.activeWritingTab === "response";
+
+          // Check if it's a desktop view (min-width: 1024px)
+          const isDesktop = window.innerWidth >= 1024;
+
           // Update timer and section info in the new top bar
           if (topBarTimerDisplay) {
             topBarTimerDisplay.textContent = formatTime(testState.timeLeft);
@@ -2843,14 +3122,33 @@
                         : ""
                     }
 
+                    <!-- Mobile Writing Tabs (visible only on mobile/tablet for writing module) -->
+                    ${
+                      currentModuleId === "writing"
+                        ? `
+                    <div id="writing-tabs" class="writing-tabs-container lg:hidden">
+                        <button id="instructions-tab-btn" class="writing-tab-button ${
+                          isInstructionsActive ? "active" : ""
+                        }">
+                            <i class="fas fa-info-circle mr-2"></i> Instructions
+                        </button>
+                        <button id="response-tab-btn" class="writing-tab-button ${
+                          isResponseActive ? "active" : ""
+                        }">
+                            <i class="fas fa-edit mr-2"></i> Your Response
+                        </button>
+                    </div>
+                    `
+                        : ""
+                    }
+
                     <!-- Passage Content Area (Only for Reading) -->
-                    <div class="passage-content-area custom-scrollbar ${
-                      currentModuleId === "reading" ? "" : "hidden"
-                    }" style="${
-            currentModuleId === "reading" && isPassageActive
-              ? "display: block;"
-              : "display: none;"
-          }">
+                    <div class="passage-content-area custom-scrollbar" style="${
+                      currentModuleId === "reading" &&
+                      (isDesktop || isPassageActive)
+                        ? "display: block;"
+                        : "display: none;"
+                    }">
                         <h2 class="text-2xl font-anton text-gray-800 mb-4">Passage</h2>
                         <div class="prose max-w-none text-gray-700 leading-relaxed">
                             ${
@@ -2862,16 +3160,31 @@
                         </div>
                     </div>
 
+                    <!-- Writing Instructions Area (Only for Writing) -->
+                    <div class="writing-instructions-area custom-scrollbar" style="${
+                      currentModuleId === "writing" &&
+                      (isDesktop || isInstructionsActive)
+                        ? "display: block;"
+                        : "display: none;"
+                    }">
+                        <h2 class="text-2xl font-anton text-gray-800 mb-4">Instructions</h2>
+                        ${
+                          currentModuleId === "writing"
+                            ? renderWritingInstructions(currentSection)
+                            : ""
+                        }
+                    </div>
+
                     <!-- Main Test Content Area (Questions/Writing Tasks) -->
-                    <div class="main-test-content custom-scrollbar ${
-                      currentModuleId === "reading" ? "" : ""
-                    }" style="${
-            currentModuleId === "reading" && isQuestionsActive
-              ? "display: block;"
-              : currentModuleId === "listening" || currentModuleId === "writing"
-              ? "display: block;"
-              : "display: none;"
-          }">
+                    <div class="main-test-content custom-scrollbar" style="${
+                      (currentModuleId === "reading" &&
+                        (isDesktop || isQuestionsActive)) ||
+                      currentModuleId === "listening" ||
+                      (currentModuleId === "writing" &&
+                        (isDesktop || isResponseActive))
+                        ? "display: block;"
+                        : "display: none;"
+                    }">
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-3xl font-anton text-gray-800">${
                               currentTest.title
@@ -2974,24 +3287,29 @@
             `;
         }
 
-        // Helper function to render writing tasks
+        // Helper function to render writing instructions
+        function renderWritingInstructions(task) {
+          return `
+                <div class="question-section" id="task-instructions-${task.id}">
+                    <h3 class="text-2xl font-bold text-gray-700 mb-3 font-anton">${task.title}</h3>
+                    <div class="question-group-instructions mb-6 text-gray-600 font-inter">
+                        ${task.instructions}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper function to render writing tasks (response input area)
         function renderWritingTask(task) {
           const userAnswerText = testState.userAnswers[task.id] || "";
           const currentWordCount = calculateWordCount(userAnswerText);
           const meetsMinWordCount = currentWordCount >= task.wordCountMin;
 
           return `
-                <div class="question-section" id="task-${task.id}">
-                    <h3 class="text-2xl font-bold text-gray-700 mb-3 font-anton">${
-                      task.title
-                    }</h3>
-                    <div class="question-group-instructions mb-6 text-gray-600 font-inter">
-                        ${task.instructions}
-                    </div>
+                <div class="question-section" id="task-response-${task.id}">
+                    <h3 class="text-2xl font-bold text-gray-700 mb-3 font-anton">Your Response</h3>
                     <div class="question-item">
-                        <label for="writing-response-${
-                          task.id
-                        }" class="block text-lg font-semibold text-gray-800 mb-2">Your Response:</label>
+                        
                         <textarea id="writing-response-${task.id}"
                                   class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-gray-700 resize-y custom-scrollbar"
                                   rows="15"
@@ -3222,46 +3540,67 @@
                     )
                     .join("");
                 }
-              } else if (qGroup.type === "multiple_choice_multiple_answers") {
-                // Assuming there's only one question object in this type of group
+              } else if (qGroup.type === "yes_no_not_given") {
                 if (qGroup.questions && qGroup.questions.length > 0) {
-                  const question = qGroup.questions[0];
-                  questionsHtml = `
-                      <div class="question-item" id="question-${
-                        question.questionNumber
-                      }">
-                          <p class="text-lg font-semibold mb-2">${
-                            question.questionNumber
-                          }. ${question.text}</p>
-                          <div class="flex flex-col gap-2">
-                              ${qGroup.options
-                                .map(
-                                  (option) => `
-                                  <label class="checkbox-option flex items-center cursor-pointer p-2 rounded-md hover:bg-blue-50">
-                                      <input type="checkbox" name="q-${
-                                        question.id
-                                      }" value="${option.id}"
-                                             onchange="handleMultipleChoiceInput('${
-                                               question.id
-                                             }', this.value, this.checked)"
-                                             ${
-                                               testState.userAnswers[
-                                                 question.id
-                                               ]?.includes(option.id)
-                                                 ? "checked"
-                                                 : ""
-                                             }
-                                             class="mr-2 transform scale-125">
-                                      <span class="text-gray-700">${
-                                        option.text
-                                      }</span>
-                                  </label>
-                              `
-                                )
-                                .join("")}
-                          </div>
-                      </div>
-                  `;
+                  questionsHtml = qGroup.questions
+                    .map(
+                      (question) => `
+                <div class="question-item" id="question-${
+                  question.questionNumber
+                }">
+                    <p class="text-lg font-semibold mb-2">${
+                      question.questionNumber
+                    }. ${question.text}</p>
+                    <div class="flex flex-wrap gap-4">
+                        <label class="radio-option">
+                            <input type="radio" name="q-${
+                              question.id
+                            }" value="YES"
+                                   onchange="handleAnswerInput('${
+                                     question.id
+                                   }', this.value)"
+                                   ${
+                                     testState.userAnswers[question.id] ===
+                                     "YES"
+                                       ? "checked"
+                                       : ""
+                                   }>
+                            <span class="ml-2 text-gray-700">YES</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="q-${
+                              question.id
+                            }" value="NO"
+                                   onchange="handleAnswerInput('${
+                                     question.id
+                                   }', this.value)"
+                                   ${
+                                     testState.userAnswers[question.id] === "NO"
+                                       ? "checked"
+                                       : ""
+                                   }>
+                            <span class="ml-2 text-gray-700">NO</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="q-${
+                              question.id
+                            }" value="NOT GIVEN"
+                                   onchange="handleAnswerInput('${
+                                     question.id
+                                   }', this.value)"
+                                   ${
+                                     testState.userAnswers[question.id] ===
+                                     "NOT GIVEN"
+                                       ? "checked"
+                                       : ""
+                                   }>
+                            <span class="ml-2 text-gray-700">NOT GIVEN</span>
+                        </label>
+                    </div>
+                </div>
+            `
+                    )
+                    .join("");
                 }
               } else if (qGroup.type === "matching_items") {
                 if (qGroup.questions && qGroup.questions.length > 0) {
@@ -3378,6 +3717,47 @@
                           `
                             )
                             .join("")}
+                      </div>
+                  `;
+                }
+              } else if (qGroup.type === "multiple_choice_multiple_answers") {
+                // Assuming there's only one question object in this type of group
+                if (qGroup.questions && qGroup.questions.length > 0) {
+                  const question = qGroup.questions[0];
+                  questionsHtml = `
+                      <div class="question-item" id="question-${
+                        question.questionNumber
+                      }">
+                          <p class="text-lg font-semibold mb-2">${
+                            question.questionNumber
+                          }. ${question.text}</p>
+                          <div class="flex flex-col gap-2">
+                              ${qGroup.options
+                                .map(
+                                  (option) => `
+                                  <label class="checkbox-option flex items-center cursor-pointer p-2 rounded-md hover:bg-blue-50">
+                                      <input type="checkbox" name="q-${
+                                        question.id
+                                      }" value="${option.id}"
+                                             onchange="handleMultipleChoiceInput('${
+                                               question.id
+                                             }', this.value, this.checked)"
+                                             ${
+                                               testState.userAnswers[
+                                                 question.id
+                                               ]?.includes(option.id)
+                                                 ? "checked"
+                                                 : ""
+                                             }
+                                             class="mr-2 transform scale-125">
+                                      <span class="text-gray-700">${
+                                        option.text
+                                      }</span>
+                                  </label>
+                              `
+                                )
+                                .join("")}
+                          </div>
                       </div>
                   `;
                 }
@@ -3743,6 +4123,23 @@
                   setActiveReadingTab("questions");
               }
             }
+            // Mobile writing tabs event listeners (only for writing)
+            if (currentModuleId === "writing") {
+              const instructionsTabBtn = document.getElementById(
+                "instructions-tab-btn"
+              );
+              const responseTabBtn = document.getElementById(
+                "response-tab-btn"
+              );
+
+              if (instructionsTabBtn) {
+                instructionsTabBtn.onclick = () =>
+                  setActiveWritingTab("instructions");
+              }
+              if (responseTabBtn) {
+                responseTabBtn.onclick = () => setActiveWritingTab("response");
+              }
+            }
           }
 
           // Submit button common logic
@@ -3808,6 +4205,7 @@
       // Expose functions to global scope for oninput/onchange attributes
       window.handleAnswerInput = handleAnswerInput;
       window.setActiveReadingTab = setActiveReadingTab; // Expose for tab buttons
+      window.setActiveWritingTab = setActiveWritingTab; // Expose for tab buttons
 
       // Initialization Logic
       window.onload = async function () {
@@ -3879,6 +4277,7 @@
                   testState.currentQuestionIndex = 0; // Reset for listening
                   testState.currentSectionIndex = 0; // Reset for reading/writing
                   testState.activeReadingTab = "questions"; // Default to questions tab for reading
+                  testState.activeWritingTab = "instructions"; // Default to instructions tab for writing
 
                   if (currentModuleId === "writing") {
                     currentTest.sections.forEach((task) => {

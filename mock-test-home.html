@@ -6,6 +6,7 @@
     <title>IELTS Mahir - Mock Tests</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="test-left-header.css" />
     <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -211,21 +212,20 @@
       class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
     >
       <div class="flex items-center gap-2 sm:gap-4">
-        <img
-          src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
-          alt="IELTS Mahir Logo"
-          class="h-8 md:h-10 w-auto"
-          onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
-        />
-        <nav class="hidden md:flex gap-6 ml-8 font-inter">
-          <a href="quiz-home.html" class="nav-link transition-all"
-            >Quiz System</a
-          >
-          <a href="mock-test-home.html" class="nav-link transition-all"
-            >Mock Tests</a
-          >
-          <a href="#" class="nav-link transition-all">Resources</a>
-        </nav>
+        <div class="ai-logo-parent">
+          <a href="home.html">
+            <img
+              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+              alt="IELTS Mahir Logo"
+              class="h-8 md:h-10 w-auto"
+              onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+            />
+          </a>
+          <a href="ai-feature.html" class="ai-button" aria-label="AI Tools">
+            <i class="fas fa-robot" aria-hidden="true"></i>
+            <span>AI</span>
+          </a>
+        </div>
       </div>
       <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
         <!-- Authentication status will be handled by auth.js -->
@@ -342,19 +342,7 @@
             // User is signed in: Show profile dropdown and game stats
             authButtonsContainer.innerHTML = `
                         <div class="flex items-center gap-4">
-                            <div class="points-display">
-                                ${
-                                  MockTestIcons.Trophy ||
-                                  '<i class="fas fa-trophy"></i>'
-                                }
-                                <span class="text-sm font-semibold">${
-                                  userGameStats.totalPoints
-                                } Pts</span>
-                                <span class="text-xs text-green-200">|</span>
-                                <span class="text-sm font-semibold">Lvl ${
-                                  userGameStats.level
-                                }</span>
-                            </div>
+                            
                             <div class="relative">
                                 <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-700 transition-colors">
                                     ${(
@@ -506,13 +494,18 @@
               auth,
             });
 
-            // Fetch user game stats after Firebase is initialized and user is authenticated
+            // Set up the onAuthStateChanged listener to handle redirects and rendering
             auth.onAuthStateChanged(async (user) => {
               if (user) {
-                // Ensure userGameStats is fetched/initialized before rendering the main app content
+                // User is signed in. Fetch game stats and render the app.
                 await fetchUserGameStats(user.uid);
+                renderApp();
+              } else {
+                // User is signed out. Redirect to the auth page if not already there.
+                if (!window.location.pathname.endsWith("/auth.html")) {
+                  window.location.href = "auth.html";
+                }
               }
-              renderApp(); // Render the app after auth state and game stats are known
             });
           })
           .catch((error) => {
@@ -524,7 +517,6 @@
               "Failed to initialize Firebase. Some features may not work.",
               "error"
             );
-            renderApp(); // Still render app even if Firebase fails, but features might be limited
           });
       };
     </script>
