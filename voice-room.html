@@ -884,9 +884,16 @@
       }
 
       function initiatePeerConnection(partnerId, roomId, isInitiator) {
-        const pc = new RTCPeerConnection({
-          iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-        });
+        // Updated ICE server configuration for better NAT traversal.
+        const iceServers = {
+          iceServers: [
+            { urls: "stun:stun.l.google.com:19302" },
+            { urls: "stun:stun1.l.google.com:19302" },
+            { urls: "stun:stun2.l.google.com:19302" },
+            { urls: "stun:stun.stunprotocol.org:3478" },
+          ],
+        };
+        const pc = new RTCPeerConnection(iceServers);
         appState.peerConnections[partnerId] = pc;
 
         // Add local stream to the peer connection
@@ -1082,7 +1089,7 @@
         const modalHTML = `
             <div id="create-room-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
                 <div class="glass-effect p-8 rounded-lg w-full max-w-md text-center relative">
-                    <button onclick="window.closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
+                    <button onclick="window.closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;s</button>
                     <h3 class="text-2xl font-orbitron mb-6">Create a New Room</h3>
                     <form id="create-room-form">
                         <input id="room-name-input" class="input-futuristic w-full mb-4" type="text" placeholder="Enter room name" required>
