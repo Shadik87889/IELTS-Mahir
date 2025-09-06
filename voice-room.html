@@ -884,16 +884,28 @@
       }
 
       function initiatePeerConnection(partnerId, roomId, isInitiator) {
-        // Updated ICE server configuration for better NAT traversal.
-        const iceServers = {
-          iceServers: [
-            { urls: "stun:stun.l.google.com:19302" },
-            { urls: "stun:stun1.l.google.com:19302" },
-            { urls: "stun:stun2.l.google.com:19302" },
-            { urls: "stun:stun.stunprotocol.org:3478" },
-          ],
-        };
-        const pc = new RTCPeerConnection(iceServers);
+        // --- NEW: Fetch TURN credentials from a service ---
+        // This is a placeholder. In a real app, you would fetch this from your backend.
+        // For now, we will use a public service for demonstration, but this is not for production.
+        // I recommend using the Twilio Network Traversal Service.
+        const iceServers = [
+          { urls: "stun:stun.l.google.com:19302" },
+          { urls: "stun:stun.services.mozilla.com" },
+          // --- YOU MUST ADD YOUR OWN TURN SERVER FOR PRODUCTION ---
+          // Example of what it would look like with a service like Twilio:
+          {
+            urls: "turn:global.turn.twilio.com:3478?transport=udp",
+            username: "ACa5d1f208edd387cc497f953229f6d024",
+            credential: "77fb39aa861feaf6f3ee933ec9b1b5c3",
+          },
+          {
+            urls: "turn:global.turn.twilio.com:3478?transport=tcp",
+            username: "ACa5d1f208edd387cc497f953229f6d024",
+            credential: "77fb39aa861feaf6f3ee933ec9b1b5c3",
+          },
+        ];
+
+        const pc = new RTCPeerConnection({ iceServers: iceServers });
         appState.peerConnections[partnerId] = pc;
 
         // Add local stream to the peer connection
@@ -1089,7 +1101,7 @@
         const modalHTML = `
             <div id="create-room-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
                 <div class="glass-effect p-8 rounded-lg w-full max-w-md text-center relative">
-                    <button onclick="window.closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;s</button>
+                    <button onclick="window.closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
                     <h3 class="text-2xl font-orbitron mb-6">Create a New Room</h3>
                     <form id="create-room-form">
                         <input id="room-name-input" class="input-futuristic w-full mb-4" type="text" placeholder="Enter room name" required>
