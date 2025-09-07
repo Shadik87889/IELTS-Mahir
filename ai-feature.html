@@ -7,7 +7,8 @@
     <!-- Tailwind CSS CDN for modern, utility-first styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="navigation-light.css" />
-    <!-- Font Awesome CDN for icons -->
+    <!-- Font Awesome is not used, using inline SVGs for better performance and customization -->
+    <!-- Font Awesome 6.7.2 -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -151,7 +152,7 @@
       </div>
     </nav>
     <div class="min-h-screen flex items-center justify-center p-4 sm:p-8">
-      <div class="text-center w-full max-w-5xl mt-[22vw] md:mt-[16vw] lg:mt-0">
+      <div class="text-center w-full max-w-7xl mt-[22vw] md:mt-[16vw] lg:mt-0">
         <!-- Header Section with a vibrant gradient and animations -->
         <header class="mb-12">
           <h1
@@ -174,7 +175,7 @@
           <!-- Card for Grammar Checker -->
           <a
             href="grammar-checker.html"
-            class="card-link block relative fade-in"
+            class="card-link block relative group fade-in"
             style="animation-delay: 0.5s;"
           >
             <div class="animated-border"></div>
@@ -235,7 +236,7 @@
           <!-- Card for Dynamic Idea/Argument Generator -->
           <a
             href="dynamic-idea-argument-generator.html"
-            class="card-link block relative fade-in"
+            class="card-link block relative group fade-in"
             style="animation-delay: 0.7s;"
           >
             <div class="animated-border"></div>
@@ -295,7 +296,7 @@
           <!-- Card for Global Study Hub -->
           <a
             href="global-study-hub.html"
-            class="card-link block relative fade-in"
+            class="card-link block relative group fade-in"
             style="animation-delay: 0.9s;"
           >
             <div class="animated-border"></div>
@@ -331,6 +332,380 @@
               </p>
               <span
                 class="mt-6 inline-flex items-center text-green-400 font-semibold transition-colors group-hover:text-green-300"
+              >
+                Launch
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </span>
+            </div>
+          </a>
+
+          <!-- Card for Writing Grader -->
+          <a
+            href="writing-grader.html"
+            class="card-link block relative group fade-in"
+            style="animation-delay: 1.1s;"
+          >
+            <div class="animated-border"></div>
+            <div
+              class="card-content p-8 bg-gray-900 border border-gray-800 rounded-2xl flex flex-col items-start h-full"
+            >
+              <div
+                class="p-4 bg-amber-600 rounded-full mb-4 card-icon transition-transform duration-300"
+              >
+                <!-- SVG Icon for Writing Grader -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="text-white"
+                >
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                  ></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <path d="m9 15 2 2 4-4"></path>
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold mb-2 text-white">Writing Grader</h2>
+              <p class="text-gray-400 text-left mb-auto">
+                Get detailed feedback and scores on your essays and reports to
+                improve your writing skills.
+              </p>
+              <span
+                class="mt-6 inline-flex items-center text-amber-400 font-semibold transition-colors group-hover:text-amber-300"
+              >
+                Launch
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </span>
+            </div>
+          </a>
+
+          <!-- Card for Dialogue Simulator -->
+          <a
+            href="dialogue-simulator.html"
+            class="card-link block relative group fade-in"
+            style="animation-delay: 1.3s;"
+          >
+            <div class="animated-border"></div>
+            <div
+              class="card-content p-8 bg-gray-900 border border-gray-800 rounded-2xl flex flex-col items-start h-full"
+            >
+              <div
+                class="p-4 bg-teal-600 rounded-full mb-4 card-icon transition-transform duration-300"
+              >
+                <!-- SVG Icon for Dialogue Simulator -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="text-white"
+                >
+                  <path
+                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                  ></path>
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold mb-2 text-white">
+                Dialogue Simulator
+              </h2>
+              <p class="text-gray-400 text-left mb-auto">
+                Practice conversations for interviews, presentations, or
+                language learning with an AI partner.
+              </p>
+              <span
+                class="mt-6 inline-flex items-center text-teal-400 font-semibold transition-colors group-hover:text-teal-300"
+              >
+                Launch
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </span>
+            </div>
+          </a>
+
+          <!-- Card for Scholarship Hub -->
+          <a
+            href="scholarship-hub.html"
+            class="card-link block relative group fade-in"
+            style="animation-delay: 1.5s;"
+          >
+            <div class="animated-border"></div>
+            <div
+              class="card-content p-8 bg-gray-900 border border-gray-800 rounded-2xl flex flex-col items-start h-full"
+            >
+              <div
+                class="p-4 bg-yellow-600 rounded-full mb-4 card-icon transition-transform duration-300"
+              >
+                <!-- SVG Icon for Scholarship Hub -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="text-white"
+                >
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                  <path d="M6 12v5c0 1.7.9 3.2 2.3 4.1"></path>
+                  <path d="M16 17.1c1.4-.9 2.3-2.4 2.3-4.1v-5"></path>
+                  <path d="M4 10v6c0 1.9.9 3.6 2.4 4.6"></path>
+                  <path d="M20 16c-1.5 1-2.4 2.7-2.4 4.6v-6"></path>
+                  <path d="M12 13.5V22"></path>
+                  <path d="M12 22l-1.5-2.5"></path>
+                  <path d="M12 22l1.5-2.5"></path>
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold mb-2 text-white">
+                Scholarship Hub
+              </h2>
+              <p class="text-gray-400 text-left mb-auto">
+                Find personalized scholarship opportunities from around the
+                world based on your profile and goals.
+              </p>
+              <span
+                class="mt-6 inline-flex items-center text-yellow-400 font-semibold transition-colors group-hover:text-yellow-300"
+              >
+                Launch
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </span>
+            </div>
+          </a>
+
+          <!-- Card for Language Immersion Hub -->
+          <a
+            href="language-immersion-hub.html"
+            class="card-link block relative group fade-in"
+            style="animation-delay: 1.7s;"
+          >
+            <div class="animated-border"></div>
+            <div
+              class="card-content p-8 bg-gray-900 border border-gray-800 rounded-2xl flex flex-col items-start h-full"
+            >
+              <div
+                class="p-4 bg-rose-600 rounded-full mb-4 card-icon transition-transform duration-300"
+              >
+                <!-- SVG Icon for Language Immersion Hub -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="text-white"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path
+                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                  ></path>
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold mb-2 text-white">
+                Language Immersion
+              </h2>
+              <p class="text-gray-400 text-left mb-auto">
+                Immerse yourself in new languages and cultures with interactive
+                lessons and real-world scenarios.
+              </p>
+              <span
+                class="mt-6 inline-flex items-center text-rose-400 font-semibold transition-colors group-hover:text-rose-300"
+              >
+                Launch
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </span>
+            </div>
+          </a>
+
+          <!-- Card for IELTS AI Listening Proctor -->
+          <a
+            href="ielts-listening-proctor.html"
+            class="card-link block relative group fade-in"
+            style="animation-delay: 1.9s;"
+          >
+            <div class="animated-border"></div>
+            <div
+              class="card-content p-8 bg-gray-900 border border-gray-800 rounded-2xl flex flex-col items-start h-full"
+            >
+              <div
+                class="p-4 bg-indigo-600 rounded-full mb-4 card-icon transition-transform duration-300"
+              >
+                <!-- SVG Icon for Listening Proctor -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="text-white"
+                >
+                  <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                  <path
+                    d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2z"
+                  ></path>
+                  <path
+                    d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"
+                  ></path>
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold mb-2 text-white">
+                IELTS Listening Proctor
+              </h2>
+              <p class="text-gray-400 text-left mb-auto">
+                Simulate the IELTS listening test with an AI proctor to practice
+                under exam conditions.
+              </p>
+              <span
+                class="mt-6 inline-flex items-center text-indigo-400 font-semibold transition-colors group-hover:text-indigo-300"
+              >
+                Launch
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </span>
+            </div>
+          </a>
+
+          <!-- Card for AI Speaking Partner -->
+          <a
+            href="ai-speaking-partner.html"
+            class="card-link block relative group fade-in"
+            style="animation-delay: 2.1s;"
+          >
+            <div class="animated-border"></div>
+            <div
+              class="card-content p-8 bg-gray-900 border border-gray-800 rounded-2xl flex flex-col items-start h-full"
+            >
+              <div
+                class="p-4 bg-pink-600 rounded-full mb-4 card-icon transition-transform duration-300"
+              >
+                <!-- SVG Icon for Speaking Partner -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="text-white"
+                >
+                  <path
+                    d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
+                  ></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="23"></line>
+                  <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold mb-2 text-white">
+                AI Speaking Partner
+              </h2>
+              <p class="text-gray-400 text-left mb-auto">
+                Improve your fluency and confidence by practicing speaking with
+                an AI conversation partner.
+              </p>
+              <span
+                class="mt-6 inline-flex items-center text-pink-400 font-semibold transition-colors group-hover:text-pink-300"
               >
                 Launch
                 <svg
