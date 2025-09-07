@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS AI Listening Proctor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-color: #0a090f;
+        --primary-glow: rgba(2, 132, 199, 0.5); /* Cyan glow */
+        --secondary-glow: rgba(59, 130, 246, 0.5);
+        --primary-accent: #0ea5e9; /* Sky blue */
+        --secondary-accent: #3b82f6;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --surface-color: #1e293b;
+        --success-color: #22c55e;
+        --error-color: #ef4444;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+      }
+
+      /* Subtle background pattern */
+      body {
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.02) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+
+      .proctor-container {
+        background-color: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1.5rem;
+        box-shadow: 0 0 50px rgba(2, 132, 199, 0.2);
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary-accent),
+          var(--secondary-accent)
+        );
+        box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+      }
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: translateY(0);
+        box-shadow: none;
+      }
+
+      .question-input {
+        background-color: rgba(30, 41, 59, 0.7);
+        border: 1px solid var(--surface-color);
+        border-radius: 0.5rem;
+        color: var(--text-primary);
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+      .question-input:focus {
+        outline: none;
+        border-color: var(--primary-accent);
+        box-shadow: 0 0 10px var(--primary-glow);
+      }
+
+      /* Custom Audio Player */
+      #audio-controls {
+        background-color: var(--surface-color);
+        border-radius: 999px;
+        padding: 0.5rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      #seek-slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        outline: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      #seek-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        background: var(--primary-accent);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .feedback-correct {
+        border-left: 4px solid var(--success-color);
+      }
+      .feedback-incorrect {
+        border-left: 4px solid var(--error-color);
+      }
+
+      .loader {
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-left-color: var(--primary-accent);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body class="p-4 md:p-8">
+    <div
+      id="proctor-container"
+      class="proctor-container max-w-4xl mx-auto p-6 md:p-8"
+    >
+      <!-- Initial State -->
+      <div id="initial-state" class="text-center">
+        <h1 class="text-4xl font-bold text-white mb-3">AI Listening Proctor</h1>
+        <p class="text-lg text-gray-300 mb-8">
+          Generate a unique IELTS listening test section with AI-powered audio
+          and get instant, detailed feedback.
+        </p>
+        <button
+          id="start-test-btn"
+          class="btn-primary text-white font-bold py-3 px-8 rounded-full text-lg"
+        >
+          Start Section 1 Practice
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state" class="hidden text-center py-16">
+        <div class="loader mx-auto mb-6"></div>
+        <h2 class="text-2xl font-semibold text-white">
+          Generating your test...
+        </h2>
+        <p class="text-gray-400">
+          The AI is creating a unique audio script and questions. This may take
+          a moment.
+        </p>
+      </div>
+
+      <!-- Test State -->
+      <div id="test-state" class="hidden">
+        <h1 class="text-3xl font-bold mb-2">IELTS Listening - Section 1</h1>
+        <p class="text-gray-400 mb-6">
+          You will hear a conversation. Listen carefully and answer questions 1
+          to 5.
+        </p>
+
+        <!-- Custom Audio Player -->
+        <div id="audio-player" class="mb-8 p-4 bg-gray-900/50 rounded-lg">
+          <audio id="audio-element" class="hidden"></audio>
+          <div class="flex items-center gap-4">
+            <button
+              id="play-pause-btn"
+              class="w-12 h-12 flex items-center justify-center rounded-full bg-sky-500 text-white focus:outline-none disabled:opacity-50"
+              disabled
+            >
+              <svg
+                id="play-icon"
+                class="w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <svg
+                id="pause-icon"
+                class="w-6 h-6 hidden"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1zm4 0a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
+            <div class="flex-grow flex items-center gap-3">
+              <span id="current-time">0:00</span>
+              <input
+                type="range"
+                id="seek-slider"
+                max="100"
+                value="0"
+                class="w-full"
+                disabled
+              />
+              <span id="duration">0:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Questions -->
+        <div id="questions-container" class="space-y-6">
+          <!-- Questions will be injected here -->
+        </div>
+
+        <div class="mt-10 text-center">
+          <button
+            id="submit-answers-btn"
+            class="btn-primary text-white font-bold py-3 px-8 rounded-full text-lg"
+            disabled
+          >
+            Submit Answers
+          </button>
+        </div>
+      </div>
+
+      <!-- Feedback State -->
+      <div id="feedback-state" class="hidden">
+        <h1 class="text-3xl font-bold mb-2">Your Results</h1>
+        <p id="score" class="text-xl text-gray-300 mb-6"></p>
+        <div id="feedback-container" class="space-y-4">
+          <!-- Feedback will be injected here -->
+        </div>
+        <div class="mt-8 text-center">
+          <button
+            onclick="location.reload()"
+            class="btn-primary text-white font-bold py-3 px-8 rounded-full text-lg"
+          >
+            Try Another Test
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // DOM Elements
+      const initialState = document.getElementById("initial-state");
+      const loadingState = document.getElementById("loading-state");
+      const testState = document.getElementById("test-state");
+      const feedbackState = document.getElementById("feedback-state");
+      const startTestBtn = document.getElementById("start-test-btn");
+      const questionsContainer = document.getElementById("questions-container");
+      const submitAnswersBtn = document.getElementById("submit-answers-btn");
+      const feedbackContainer = document.getElementById("feedback-container");
+      const scoreEl = document.getElementById("score");
+
+      // Audio Player Elements
+      const audioPlayer = document.getElementById("audio-player");
+      const audioElement = document.getElementById("audio-element");
+      const playPauseBtn = document.getElementById("play-pause-btn");
+      const playIcon = document.getElementById("play-icon");
+      const pauseIcon = document.getElementById("pause-icon");
+      const seekSlider = document.getElementById("seek-slider");
+      const currentTimeEl = document.getElementById("current-time");
+      const durationEl = document.getElementById("duration");
+
+      // Global state
+      let testData = null;
+      let audioPlayedOnce = false;
+
+      startTestBtn.addEventListener("click", generateTest);
+
+      async function generateTest() {
+        initialState.classList.add("hidden");
+        loadingState.classList.remove("hidden");
+
+        const generationPrompt = `Create a script for an IELTS Listening Section 1 audio recording and 5 related "form completion" questions. The script should be a simple transactional conversation between two speakers: Speaker 1 (the gym receptionist) and Speaker 2 (Sarah, the customer). The conversation should naturally contain the answers to the 5 questions. The answers should include names, numbers, or simple nouns. For names that might be tricky, spell them out in the conversation (e.g., "My surname is Smith, that's S-M-I-T-H."). The topic is about a customer, Sarah, calling a local gym to inquire about membership.
+
+            Provide your response as a single JSON object with two keys: "script" and "questions".
+            - "script": A string containing the full conversation, with each line prefixed by "Speaker 1: " or "Speaker 2: ".
+            - "questions": An array of 5 objects. Each object should have three keys: "id" (from 1 to 5), "question" (the text for the form, e.g., "Caller's Name:"), and "answer" (the correct answer as a string).`;
+
+        try {
+          const generatedTestData = await callGeminiAPI(generationPrompt, true);
+          testData = JSON.parse(generatedTestData);
+
+          const audioResponse = await generateAudio(testData.script);
+          setupTestUI(audioResponse);
+
+          loadingState.classList.add("hidden");
+          testState.classList.remove("hidden");
+        } catch (error) {
+          console.error("Failed to generate test:", error);
+          loadingState.innerHTML = `<p class="text-error-color">Failed to generate the test. Please try again.</p>`;
+        }
+      }
+
+      function setupTestUI(audioResponse) {
+        // Setup questions
+        questionsContainer.innerHTML = testData.questions
+          .map(
+            (q) => `
+                <div class="flex items-center gap-4">
+                    <label for="q${q.id}" class="w-1/3 text-right text-gray-300">${q.question}</label>
+                    <input type="text" id="q${q.id}" class="question-input flex-grow p-2" autocomplete="off">
+                </div>
+            `
+          )
+          .join("");
+
+        // Setup audio
+        const audioData =
+          audioResponse?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+        const mimeType =
+          audioResponse?.candidates?.[0]?.content?.parts?.[0]?.inlineData
+            ?.mimeType;
+
+        if (audioData && mimeType?.startsWith("audio/")) {
+          const sampleRate = parseInt(mimeType.match(/rate=(\d+)/)[1], 10);
+          const pcmData = base64ToArrayBuffer(audioData);
+          const pcm16 = new Int16Array(pcmData);
+          const wavBlob = pcmToWav(pcm16, 1, sampleRate);
+          const audioUrl = URL.createObjectURL(wavBlob);
+          audioElement.src = audioUrl;
+          playPauseBtn.disabled = false;
+        } else {
+          console.error("Invalid audio data received from API.");
+          loadingState.innerHTML = `<p class="text-error-color">Failed to generate audio. Please try again.</p>`;
+          loadingState.classList.remove("hidden");
+          testState.classList.add("hidden");
+        }
+      }
+
+      async function generateAudio(script) {
+        const payload = {
+          contents: [
+            { parts: [{ text: `TTS the following conversation:\n${script}` }] },
+          ],
+          generationConfig: {
+            responseModalities: ["AUDIO"],
+            speechConfig: {
+              multiSpeakerVoiceConfig: {
+                speakerVoiceConfigs: [
+                  {
+                    speaker: "Speaker 1",
+                    voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } },
+                  },
+                  {
+                    speaker: "Speaker 2",
+                    voiceConfig: { prebuiltVoiceConfig: { voiceName: "Leda" } },
+                  },
+                ],
+              },
+            },
+          },
+          model: "gemini-2.5-flash-preview-tts",
+        };
+
+        const response = await callGeminiAPI(payload, false, true); // Non-JSON, TTS call
+        return response;
+      }
+
+      submitAnswersBtn.addEventListener("click", handleSubmit);
+
+      async function handleSubmit() {
+        submitAnswersBtn.disabled = true;
+        submitAnswersBtn.textContent = "Evaluating...";
+
+        const userAnswers = testData.questions.map((q) => {
+          const input = document.getElementById(`q${q.id}`);
+          return { id: q.id, answer: input.value.trim() };
+        });
+
+        const feedbackPrompt = `You are an IELTS Listening test examiner. The user has just completed a listening test.
+            Here is the test data, including the correct answers: ${JSON.stringify(
+              testData.questions
+            )}
+            Here are the user's answers: ${JSON.stringify(userAnswers)}
+
+            Your task is to evaluate the user's answers and provide detailed feedback. Respond with a single JSON object with two keys: "score" and "feedback".
+            - "score": A string in the format "X/5".
+            - "feedback": An array of objects, one for each question. Each object must have these keys:
+                - "id": The question number.
+                - "userAnswer": The user's submitted answer.
+                - "correctAnswer": The correct answer.
+                - "isCorrect": A boolean (true or false).
+                - "explanation": A concise, one-sentence explanation for why the answer is correct or incorrect. If incorrect, mention common mistakes like spelling or mishearing a number.
+            `;
+
+        try {
+          const feedbackResult = await callGeminiAPI(feedbackPrompt, true);
+          const feedbackData = JSON.parse(feedbackResult);
+          displayFeedback(feedbackData);
+
+          testState.classList.add("hidden");
+          feedbackState.classList.remove("hidden");
+        } catch (error) {
+          console.error("Failed to get feedback:", error);
+          feedbackContainer.innerHTML = `<p class="text-error-color">Sorry, there was an error getting your feedback. Please try again.</p>`;
+        }
+      }
+
+      function displayFeedback(data) {
+        scoreEl.textContent = `Your Score: ${data.score}`;
+        feedbackContainer.innerHTML = data.feedback
+          .map(
+            (item) => `
+                <div class="p-4 rounded-lg ${
+                  item.isCorrect
+                    ? "feedback-correct bg-green-500/10"
+                    : "feedback-incorrect bg-red-500/10"
+                }">
+                    <p class="font-bold text-lg mb-2">Question ${item.id}</p>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div><span class="font-semibold text-gray-400">Your Answer:</span> <span class="${
+                          item.isCorrect ? "text-green-400" : "text-red-400"
+                        }">${item.userAnswer || "<i>No answer</i>"}</span></div>
+                        <div><span class="font-semibold text-gray-400">Correct Answer:</span> <span class="text-green-400">${
+                          item.correctAnswer
+                        }</span></div>
+                    </div>
+                    <p class="mt-3 text-gray-300"><span class="font-semibold">Feedback:</span> ${
+                      item.explanation
+                    }</p>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      async function callGeminiAPI(
+        promptOrPayload,
+        expectJson = false,
+        isTts = false
+      ) {
+        const apiKey = "AIzaSyCsdeFOJrU43BZmnRP5WD1pm80fZH1cxN4";
+        const model = isTts
+          ? "gemini-2.5-flash-preview-tts"
+          : "gemini-2.5-flash-preview-05-20";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+        const payload = isTts
+          ? promptOrPayload
+          : {
+              contents: [{ parts: [{ text: promptOrPayload }] }],
+              ...(expectJson && {
+                generationConfig: {
+                  responseMimeType: "application/json",
+                },
+              }),
+            };
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (!response.ok) throw new Error(`API Error: ${response.status}`);
+          const result = await response.json();
+
+          if (isTts) return result;
+
+          const text = result.candidates[0].content.parts[0].text;
+          return text;
+        } catch (error) {
+          console.error("Error calling Gemini API:", error);
+          throw error;
+        }
+      }
+
+      // --- Audio Player Logic ---
+      playPauseBtn.addEventListener("click", () => {
+        if (audioElement.paused) {
+          audioElement.play();
+        } else {
+          audioElement.pause();
+        }
+      });
+
+      audioElement.addEventListener("play", () => {
+        playIcon.classList.add("hidden");
+        pauseIcon.classList.remove("hidden");
+        if (!audioPlayedOnce) {
+          seekSlider.disabled = true; // Disable seeking for test integrity
+        }
+      });
+
+      audioElement.addEventListener("pause", () => {
+        playIcon.classList.remove("hidden");
+        pauseIcon.classList.add("hidden");
+      });
+
+      audioElement.addEventListener("ended", () => {
+        playIcon.classList.remove("hidden");
+        pauseIcon.classList.add("hidden");
+        submitAnswersBtn.disabled = false;
+        audioPlayedOnce = true;
+        seekSlider.value = 100;
+      });
+
+      const formatTime = (time) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+      };
+
+      audioElement.addEventListener("loadedmetadata", () => {
+        durationEl.textContent = formatTime(audioElement.duration);
+        seekSlider.max = audioElement.duration;
+      });
+
+      audioElement.addEventListener("timeupdate", () => {
+        seekSlider.value = audioElement.currentTime;
+        currentTimeEl.textContent = formatTime(audioElement.currentTime);
+      });
+
+      seekSlider.addEventListener("input", () => {
+        if (audioPlayedOnce) {
+          // Only allow seeking after first playback
+          audioElement.currentTime = seekSlider.value;
+        }
+      });
+
+      function base64ToArrayBuffer(base64) {
+        const binaryString = window.atob(base64);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes.buffer;
+      }
+
+      function pcmToWav(pcmData, numChannels, sampleRate) {
+        const buffer = new ArrayBuffer(44 + pcmData.byteLength);
+        const view = new DataView(buffer);
+
+        const writeString = (offset, string) => {
+          for (let i = 0; i < string.length; i++) {
+            view.setUint8(offset + i, string.charCodeAt(i));
+          }
+        };
+
+        // RIFF header
+        writeString(0, "RIFF");
+        view.setUint32(4, 36 + pcmData.byteLength, true);
+        writeString(8, "WAVE");
+
+        // fmt chunk
+        writeString(12, "fmt ");
+        view.setUint32(16, 16, true); // chunk size
+        view.setUint16(20, 1, true); // audio format (1 = PCM)
+        view.setUint16(22, numChannels, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * numChannels * 2, true); // byte rate
+        view.setUint16(32, numChannels * 2, true); // block align
+        view.setUint16(34, 16, true); // bits per sample
+
+        // data chunk
+        writeString(36, "data");
+        view.setUint32(40, pcmData.byteLength, true);
+
+        // Write PCM data
+        new Int16Array(buffer, 44).set(pcmData);
+
+        return new Blob([view], { type: "audio/wav" });
+      }
+    </script>
+  </body>
+</html>

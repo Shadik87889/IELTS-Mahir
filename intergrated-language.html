@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Integrated Language & Cultural Immersion Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background-color: #0c0d12;
+        --card-bg-color: #1c2129;
+        --primary-accent: #4f46e5;
+        --text-primary: #e2e8f0;
+        --text-secondary: #a0aec0;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-primary);
+        position: relative;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(
+            rgba(141, 148, 163, 0.05) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(141, 148, 163, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: -1;
+        opacity: 0.8;
+        animation: move-grid 20s linear infinite;
+      }
+      @keyframes move-grid {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: 50px 50px;
+        }
+      }
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 2rem;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+      }
+
+      .results-card {
+        background-color: var(--card-bg-color);
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #loading-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(12, 13, 18, 0.8);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+        backdrop-filter: blur(4px);
+      }
+      .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top: 4px solid #4a90e2;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* New Nav Button Styles */
+      .nav-button {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-align: center;
+        cursor: pointer;
+        background: transparent;
+        border: 2px solid transparent;
+      }
+      .nav-button:hover {
+        background-color: #2d3748;
+        color: white;
+      }
+      .nav-button.active {
+        background-color: var(--primary-accent);
+        color: white;
+        box-shadow: 0 4px 14px 0 rgb(79 70 229 / 39%);
+        border-color: #6a62da;
+      }
+      nav {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        background-color: #1a202c;
+        border-radius: 0.875rem;
+        padding: 0.5rem;
+      }
+
+      .main-view {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      .form-input,
+      .form-textarea {
+        background-color: #2d3748;
+        border: 1px solid #4a5568;
+        color: var(--text-primary);
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        width: 100%;
+        transition: all 0.2s ease-in-out;
+      }
+      .form-input:focus,
+      .form-textarea:focus {
+        outline: none;
+        border-color: var(--primary-accent);
+        box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.5);
+      }
+      .form-textarea {
+        min-height: 150px;
+        resize: vertical;
+      }
+      .primary-button {
+        background-color: var(--primary-accent);
+        color: white;
+        font-weight: bold;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease-in-out;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .primary-button:hover {
+        background-color: #4338ca;
+        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+      }
+      .primary-button:disabled {
+        background-color: #374151;
+        cursor: not-allowed;
+      }
+
+      /* Chat UI Styles */
+      #chat-container {
+        height: 60vh;
+        overflow-y: auto;
+        padding: 1rem;
+        background-color: #1a202c;
+        border-radius: 1rem;
+        border: 1px solid #2d3748;
+      }
+      .chat-message {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+        max-width: 80%;
+      }
+      .chat-message .message-bubble {
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        word-wrap: break-word;
+      }
+      .chat-message.user {
+        align-self: flex-end;
+        align-items: flex-end;
+      }
+      .chat-message.user .message-bubble {
+        background-color: var(--primary-accent);
+        color: white;
+        border-bottom-right-radius: 0.25rem;
+      }
+      .chat-message.bot {
+        align-self: flex-start;
+        align-items: flex-start;
+      }
+      .chat-message.bot .message-bubble {
+        background-color: #2d3748;
+        color: var(--text-primary);
+        border-bottom-left-radius: 0.25rem;
+      }
+
+      /* Typing Indicator Styles */
+      .typing-indicator {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0.25rem; /* A bit smaller padding for just dots */
+      }
+      .typing-indicator span {
+        height: 8px;
+        width: 8px;
+        background-color: var(--text-secondary);
+        border-radius: 50%;
+        display: inline-block;
+        margin: 0 2px;
+        animation: typing-dots 1.4s infinite ease-in-out both;
+      }
+      .typing-indicator span:nth-child(1) {
+        animation-delay: -0.32s;
+      }
+      .typing-indicator span:nth-child(2) {
+        animation-delay: -0.16s;
+      }
+      @keyframes typing-dots {
+        0%,
+        80%,
+        100% {
+          transform: scale(0);
+        }
+        40% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body class="text-gray-200">
+    <div class="container relative">
+      <div id="loading-indicator" class="flex-col items-center justify-center">
+        <div class="spinner"></div>
+        <p id="loading-text" class="mt-4 text-white">Please wait...</p>
+      </div>
+
+      <header class="mb-8 w-full z-50">
+        <h1
+          class="text-3xl md:text-4xl font-extrabold text-white leading-tight text-center mb-6"
+        >
+          Integrated Language & Cultural Hub
+        </h1>
+        <nav class="backdrop-blur-sm max-w-lg mx-auto">
+          <button id="nav-translator" class="nav-button active">
+            Translator
+          </button>
+          <button id="nav-analyzer" class="nav-button">Content Analyzer</button>
+          <button id="nav-culture" class="nav-button">Cultural Hub</button>
+        </nav>
+      </header>
+
+      <main>
+        <!-- VIEW 1: Translator -->
+        <div id="translator-view" class="main-view">
+          <div class="max-w-3xl mx-auto w-full flex flex-col h-full">
+            <div id="chat-container" class="flex flex-col space-y-4">
+              <!-- Chat messages will be appended here -->
+              <div class="chat-message bot">
+                <div class="message-bubble">
+                  Hello! I can translate between English and Bangla. How can I
+                  help you?
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 flex gap-2">
+              <input
+                type="text"
+                id="chat-input"
+                class="form-input flex-grow"
+                placeholder="Type your text here..."
+              />
+              <button id="translate-btn" class="primary-button">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M10 14l11 -11"></path>
+                  <path
+                    d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
+                  ></path>
+                </svg>
+                <span>Send</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 2: Language Content Analyzer -->
+        <div id="language-analyzer-view" class="main-view hidden">
+          <div class="text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-white">
+              AI Content Analyzer
+            </h2>
+            <p class="mt-4 text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
+              Paste a URL or text to get a summary, key vocabulary, and
+              comprehension questions.
+            </p>
+          </div>
+          <div class="mt-8 max-w-2xl mx-auto w-full space-y-6">
+            <input
+              type="url"
+              id="article-url-input"
+              placeholder="Enter article URL..."
+              class="form-input"
+            />
+            <div class="text-center text-gray-400 font-semibold">OR</div>
+            <textarea
+              id="article-text-input"
+              class="form-textarea"
+              placeholder="Paste article text here..."
+            ></textarea>
+            <div class="text-center">
+              <button id="analyze-button" class="primary-button">
+                Analyze Content
+              </button>
+            </div>
+            <div id="summary-output" class="results-card mt-8 hidden"></div>
+          </div>
+        </div>
+
+        <!-- VIEW 3: Cultural Hub -->
+        <div id="cultural-hub-view" class="main-view hidden">
+          <div class="text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-white">
+              Cultural Knowledge Hub
+            </h2>
+            <p class="mt-4 text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
+              Get deep cultural insights for any country, from etiquette to
+              local life.
+            </p>
+          </div>
+          <div class="mt-8 max-w-2xl mx-auto w-full">
+            <div
+              class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4"
+            >
+              <input
+                type="text"
+                id="culture-country-input"
+                placeholder="e.g., Australia, UK, Canada"
+                class="form-input flex-grow"
+              />
+              <button
+                id="culture-generate-button"
+                class="primary-button w-full sm:w-auto"
+              >
+                Explore Culture
+              </button>
+            </div>
+            <div id="culture-output" class="results-card mt-8 hidden"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // --- DOM ELEMENT REFERENCES ---
+      const loadingIndicator = document.getElementById("loading-indicator");
+      const loadingText = document.getElementById("loading-text");
+
+      const navLinks = {
+        translator: document.getElementById("nav-translator"),
+        analyzer: document.getElementById("nav-analyzer"),
+        culture: document.getElementById("nav-culture"),
+      };
+
+      const views = {
+        translator: document.getElementById("translator-view"),
+        analyzer: document.getElementById("language-analyzer-view"),
+        culture: document.getElementById("cultural-hub-view"),
+      };
+
+      // Translator Elements
+      const chatContainer = document.getElementById("chat-container");
+      const chatInput = document.getElementById("chat-input");
+      const translateBtn = document.getElementById("translate-btn");
+
+      // Content Analyzer Elements
+      const articleUrlInput = document.getElementById("article-url-input");
+      const articleTextInput = document.getElementById("article-text-input");
+      const analyzeButton = document.getElementById("analyze-button");
+      const summaryOutput = document.getElementById("summary-output");
+
+      // Cultural Hub Elements
+      const cultureCountryInput = document.getElementById(
+        "culture-country-input"
+      );
+      const cultureGenerateButton = document.getElementById(
+        "culture-generate-button"
+      );
+      const cultureOutput = document.getElementById("culture-output");
+
+      // --- UTILITY & NAVIGATION ---
+      function showLoading(text = "Processing...") {
+        loadingText.textContent = text;
+        loadingIndicator.style.display = "flex";
+      }
+
+      function hideLoading() {
+        loadingIndicator.style.display = "none";
+      }
+
+      function switchView(targetView) {
+        Object.values(views).forEach((view) => view.classList.add("hidden"));
+        Object.values(navLinks).forEach((link) =>
+          link.classList.remove("active")
+        );
+        if (views[targetView] && navLinks[targetView]) {
+          views[targetView].classList.remove("hidden");
+          navLinks[targetView].classList.add("active");
+        }
+      }
+
+      navLinks.translator.addEventListener("click", () =>
+        switchView("translator")
+      );
+      navLinks.analyzer.addEventListener("click", () => switchView("analyzer"));
+      navLinks.culture.addEventListener("click", () => switchView("culture"));
+
+      // --- CORE API CALL FUNCTION (GEMINI) ---
+      async function callGeminiAPI(prompt, schema = null, useSearch = false) {
+        const payload = {
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+        };
+        if (schema) {
+          payload.generationConfig = {
+            responseMimeType: "application/json",
+            responseSchema: schema,
+          };
+        }
+        if (useSearch) {
+          payload.tools = [{ google_search: {} }];
+        }
+        const apiKey = "AIzaSyCsdeFOJrU43BZmnRP5WD1pm80fZH1cxN4"; // Handled by the environment
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        for (let i = 0; i < 4; i++) {
+          try {
+            const response = await fetch(apiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+              const errorBody = await response.text();
+              console.error("API Error Response:", errorBody);
+              throw new Error(
+                `API error: ${response.status} - ${response.statusText}`
+              );
+            }
+            const result = await response.json();
+            if (!result.candidates?.[0]?.content?.parts?.[0]?.text) {
+              throw new Error("Invalid API response structure.");
+            }
+            const textResponse = result.candidates[0].content.parts[0].text;
+            return schema ? JSON.parse(textResponse) : textResponse;
+          } catch (error) {
+            console.error(`API call attempt ${i + 1} failed:`, error);
+            if (i === 3) throw error;
+            await new Promise((resolve) =>
+              setTimeout(resolve, 2 ** i * 1000 + Math.random() * 1000)
+            );
+          }
+        }
+      }
+
+      // --- FEATURE: TRANSLATOR (CHAT UI) ---
+      function addMessageToChat(message, sender) {
+        const messageWrapper = document.createElement("div");
+        messageWrapper.className = `chat-message ${sender}`;
+
+        const messageBubble = document.createElement("div");
+        messageBubble.className = "message-bubble";
+        messageBubble.textContent = message;
+
+        messageWrapper.appendChild(messageBubble);
+        chatContainer.appendChild(messageWrapper);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+
+      function showTypingIndicator() {
+        const messageWrapper = document.createElement("div");
+        messageWrapper.className = "chat-message bot";
+
+        const messageBubble = document.createElement("div");
+        messageBubble.className = "message-bubble";
+
+        const typingIndicator = document.createElement("div");
+        typingIndicator.className = "typing-indicator";
+        typingIndicator.innerHTML = `<span></span><span></span><span></span>`;
+
+        messageBubble.appendChild(typingIndicator);
+        messageWrapper.appendChild(messageBubble);
+        chatContainer.appendChild(messageWrapper);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        return messageWrapper;
+      }
+
+      async function handleTranslation() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        addMessageToChat(text, "user");
+        chatInput.value = "";
+        translateBtn.disabled = true;
+
+        const typingIndicator = showTypingIndicator();
+
+        try {
+          const prompt = `Detect the language of the following text and translate it to the other language (between English and Bangla). Provide only the translated text, no extra commentary:\n\n"${text}"`;
+          const translation = await callGeminiAPI(prompt);
+          addMessageToChat(translation, "bot");
+        } catch (error) {
+          console.error("Translation error:", error);
+          addMessageToChat(
+            "Sorry, I couldn't process that translation. Please try again.",
+            "bot"
+          );
+        } finally {
+          typingIndicator.remove();
+          translateBtn.disabled = false;
+        }
+      }
+
+      translateBtn.addEventListener("click", handleTranslation);
+      chatInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleTranslation();
+        }
+      });
+
+      // --- FEATURE: CONTENT ANALYZER ---
+      async function fetchArticleContent(url) {
+        // Using a public CORS proxy to fetch article content
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(
+          url
+        )}`;
+        const response = await fetch(proxyUrl);
+        if (!response.ok) {
+          throw new Error("Failed to fetch article content from URL.");
+        }
+        const html = await response.text();
+
+        // Simple text extraction from HTML
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        // Use a modified Readability script if the original is not available in scope
+        if (typeof readability !== "undefined" && readability.Readability) {
+          const reader = new readability.Readability(doc);
+          const article = reader.parse();
+          return article.textContent;
+        }
+        // Fallback to simpler text extraction
+        return doc.body.textContent || "";
+      }
+
+      analyzeButton.addEventListener("click", async () => {
+        const url = articleUrlInput.value.trim();
+        let text = articleTextInput.value.trim();
+
+        if (!url && !text) {
+          summaryOutput.innerHTML = `<p class="text-yellow-400">Please provide an article URL or paste some text to analyze.</p>`;
+          summaryOutput.classList.remove("hidden");
+          return;
+        }
+
+        showLoading("Analyzing content...");
+        summaryOutput.classList.add("hidden");
+        try {
+          if (url) {
+            text = await fetchArticleContent(url);
+            if (!text) {
+              throw new Error(
+                "Could not extract readable content from the URL."
+              );
+            }
+          }
+
+          const schema = {
+            type: "OBJECT",
+            properties: {
+              summary: { type: "STRING" },
+              vocabulary: {
+                type: "ARRAY",
+                items: {
+                  type: "OBJECT",
+                  properties: {
+                    word: { type: "STRING" },
+                    definition: { type: "STRING" },
+                  },
+                },
+              },
+              questions: { type: "ARRAY", items: { type: "STRING" } },
+            },
+          };
+          const prompt = `Based on the following text, please provide a concise summary, a list of 5-7 key vocabulary words with their definitions, and 3 thought-provoking comprehension questions about the text. Format the entire response as a single JSON object.:\n\n"${text}"`;
+          const data = await callGeminiAPI(prompt, schema, false);
+          renderSummary(data);
+        } catch (error) {
+          console.error("Analysis error:", error);
+          summaryOutput.innerHTML = `<p class="text-red-400">Could not process the content. If using a URL, it might be inaccessible or lack readable text. Please check the source and try again.</p>`;
+        } finally {
+          summaryOutput.classList.remove("hidden");
+          hideLoading();
+        }
+      });
+
+      function renderSummary(data) {
+        summaryOutput.innerHTML = `
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Summary</h3>
+                    <p class="text-gray-300">${data.summary}</p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Key Vocabulary</h3>
+                    <ul class="space-y-2">
+                        ${data.vocabulary
+                          .map(
+                            (item) =>
+                              `<li><strong class="text-indigo-400">${item.word}:</strong> <span class="text-gray-400">${item.definition}</span></li>`
+                          )
+                          .join("")}
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Comprehension Questions</h3>
+                    <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                        ${data.questions.map((q) => `<li>${q}</li>`).join("")}
+                    </ol>
+                </div>
+            </div>
+        `;
+      }
+
+      // --- FEATURE: CULTURAL HUB ---
+      cultureGenerateButton.addEventListener("click", async () => {
+        const country = cultureCountryInput.value.trim();
+        if (!country) {
+          cultureOutput.innerHTML = `<p class="text-yellow-400">Please enter a country name.</p>`;
+          cultureOutput.classList.remove("hidden");
+          return;
+        }
+
+        showLoading(`Generating cultural guide for ${country}...`);
+        cultureOutput.classList.add("hidden");
+        try {
+          const prompt = `Generate a comprehensive and insightful cultural guide for an international student planning to study in ${country}. Use markdown for formatting. Cover the following topics in detail:
+### Communication Style
+(Directness, non-verbal cues, politeness, tone.)
+### Social Etiquette
+(Greetings, dining, punctuality, gift-giving, public behavior.)
+### University Life
+(Classroom etiquette, professor-student relationships, study habits.)
+### Food & Dining
+(Local cuisine, meal times, tipping culture, table manners.)
+### Humor & Social Cues
+(Common types of humor, sensitive topics to avoid.)
+### Common Slang & Phrases
+(Provide 5-7 useful slang words or phrases with simple explanations and examples.)
+### Holidays & Traditions
+(Mention 2-3 major national holidays and what they entail.)`;
+          const guide = await callGeminiAPI(prompt, null, true);
+          renderCulturalGuide(guide, country);
+        } catch (error) {
+          console.error("Cultural guide error:", error);
+          cultureOutput.innerHTML = `<p class="text-red-400">Sorry, could not generate a guide for that country. Please try another.</p>`;
+        } finally {
+          cultureOutput.classList.remove("hidden");
+          hideLoading();
+        }
+      });
+
+      cultureCountryInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          cultureGenerateButton.click();
+        }
+      });
+
+      function renderCulturalGuide(guide, country) {
+        // Advanced markdown to HTML conversion
+        let html = guide
+          .replace(
+            /### (.*?)\n/g,
+            '<h4 class="text-xl font-bold text-white mt-6 mb-2">$1</h4>'
+          )
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+          .replace(/^- (.*?)\n/g, '<li class="ml-5 list-disc">$1</li>')
+          .replace(/\n/g, "<br>")
+          .replace(/<br><li/g, "<li") // Fix extra breaks before list items
+          .replace(/<\/li><br>/g, "</li>"); // Fix extra breaks after list items
+
+        cultureOutput.innerHTML = `
+            <h3 class="text-3xl font-bold text-white mb-4">An Insider's Guide to ${country}</h3>
+            <div class="text-gray-300 space-y-2">${html}</div>`;
+      }
+    </script>
+    <!-- Readability script for parsing article content -->
+    <script src="https://cdn.jsdelivr.net/npm/@mozilla/readability@0.5.0/Readability.js"></script>
+  </body>
+</html>

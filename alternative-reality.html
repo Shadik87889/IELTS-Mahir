@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alternate Reality Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background-color: #0a0a0f;
+        --card-bg-color: #1a1a23;
+        --primary-accent: #8a2be2; /* A vibrant purple */
+        --primary-accent-hover: #7b24c6;
+        --text-primary: #f0f0f5;
+        --text-secondary: #a0a0b0;
+        --border-color: #333340;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-primary);
+        position: relative;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(
+          circle at center,
+          rgba(138, 43, 226, 0.1) 0%,
+          transparent 40%
+        );
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem;
+        min-height: 100vh;
+      }
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+      }
+
+      .results-card {
+        background-color: var(--card-bg-color);
+        border-radius: 1rem;
+        padding: 2.5rem;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2),
+          0 0 80px rgba(138, 43, 226, 0.2) inset;
+        animation: fadeIn 0.7s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      #loading-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(10, 10, 15, 0.8);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+        backdrop-filter: blur(5px);
+      }
+      .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top: 4px solid var(--primary-accent);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .form-textarea {
+        background-color: var(--card-bg-color);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        border-radius: 1rem;
+        padding: 1rem 1.25rem;
+        width: 100%;
+        transition: all 0.2s ease-in-out;
+        font-size: 1.1rem;
+        resize: none;
+        min-height: 80px;
+      }
+      .form-textarea:focus {
+        outline: none;
+        border-color: var(--primary-accent);
+        box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.4);
+      }
+      .primary-button {
+        background-image: linear-gradient(
+          to right,
+          var(--primary-accent) 0%,
+          #c861e2 51%,
+          var(--primary-accent) 100%
+        );
+        background-size: 200% auto;
+        color: white;
+        font-weight: bold;
+        padding: 1rem 2rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+        transition: all 0.3s ease-in-out;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border: none;
+        cursor: pointer;
+      }
+      .primary-button:hover {
+        background-position: right center;
+        box-shadow: 0 10px 20px rgba(138, 43, 226, 0.4);
+        transform: translateY(-2px);
+      }
+      .primary-button:disabled {
+        background-image: none;
+        background-color: #374151;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+      }
+
+      .branch-button {
+        background-color: transparent;
+        border: 2px solid var(--border-color);
+        color: var(--text-secondary);
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        transition: all 0.2s ease-in-out;
+        width: 100%;
+        text-align: left;
+      }
+      .branch-button:hover {
+        background-color: var(--card-bg-color);
+        border-color: var(--primary-accent);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container relative">
+      <div id="loading-indicator" class="flex-col items-center justify-center">
+        <div class="spinner"></div>
+        <p id="loading-text" class="mt-4 text-white text-lg font-semibold">
+          Calculating Timelines...
+        </p>
+      </div>
+
+      <header class="text-center my-12">
+        <h1 class="text-4xl md:text-6xl font-black text-white leading-tight">
+          Alternate Reality Engine
+        </h1>
+        <p class="mt-4 text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
+          Pose any "what if" question and explore a detailed, AI-generated
+          alternate timeline of history, technology, or your own life.
+        </p>
+      </header>
+
+      <main>
+        <div id="input-section" class="max-w-2xl mx-auto w-full space-y-4">
+          <textarea
+            id="scenario-input"
+            class="form-textarea"
+            placeholder="What if the dinosaurs never went extinct?&#10;What if the internet was invented in the 19th century?&#10;What if I had become a professional musician?"
+          ></textarea>
+          <div class="text-center">
+            <button id="generate-button" class="primary-button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-git-branch"
+              >
+                <line x1="6" y1="3" x2="6" y2="15"></line>
+                <circle cx="18" cy="6" r="3"></circle>
+                <circle cx="6" cy="18" r="3"></circle>
+                <path d="M18 9a9 9 0 0 1-9 9"></path>
+              </svg>
+              <span>Explore Timeline</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="output-section" class="results-card mt-12 hidden"></div>
+      </main>
+    </div>
+
+    <script>
+      // --- DOM ELEMENT REFERENCES ---
+      const loadingIndicator = document.getElementById("loading-indicator");
+      const loadingText = document.getElementById("loading-text");
+      const scenarioInput = document.getElementById("scenario-input");
+      const generateButton = document.getElementById("generate-button");
+      const outputSection = document.getElementById("output-section");
+
+      let originalQuery = "";
+
+      // --- UTILITY & UI FUNCTIONS ---
+      function showLoading(text = "Calculating Timelines...") {
+        loadingText.textContent = text;
+        loadingIndicator.style.display = "flex";
+      }
+
+      function hideLoading() {
+        loadingIndicator.style.display = "none";
+      }
+
+      // --- CORE API CALL FUNCTION (GEMINI) ---
+      async function callGeminiAPI(prompt, schema) {
+        const payload = {
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseMimeType: "application/json",
+            responseSchema: schema,
+          },
+        };
+        const apiKey = ""; // Handled by the environment
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        for (let i = 0; i < 4; i++) {
+          try {
+            const response = await fetch(apiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) throw new Error(`API error: ${response.status}`);
+            const result = await response.json();
+            if (!result.candidates?.[0]?.content?.parts?.[0]?.text) {
+              throw new Error("Invalid API response structure.");
+            }
+            const textResponse = result.candidates[0].content.parts[0].text;
+            return JSON.parse(textResponse);
+          } catch (error) {
+            console.error(`API call attempt ${i + 1} failed:`, error);
+            if (i === 3) throw error;
+            await new Promise((resolve) =>
+              setTimeout(resolve, 2 ** i * 1000 + Math.random() * 1000)
+            );
+          }
+        }
+      }
+
+      // --- SCENARIO RENDERING ---
+      function renderScenario(data, isBranch = false) {
+        let contentHTML = isBranch
+          ? outputSection.innerHTML.replace(
+              /<div id="branching-points".*?<\/div>/,
+              ""
+            ) + `<hr class="my-8 border-t-2 border-dashed border-gray-700">`
+          : "";
+
+        contentHTML += `
+          <div class="space-y-8">
+            ${
+              !isBranch
+                ? `<div>
+                  <h2 class="text-sm uppercase font-bold tracking-widest text-purple-400 mb-2">Divergence Point</h2>
+                  <p class="text-gray-300 text-lg">${data.divergencePoint}</p>
+                </div>`
+                : ""
+            }
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-3">Immediate Consequences <span class="text-base font-medium text-gray-500">(~1-5 Years)</span></h3>
+              <p class="text-gray-300 leading-relaxed">${data.immediateConsequences.replace(
+                /\n/g,
+                "<br>"
+              )}</p>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-3">Mid-Term Ramifications <span class="text-base font-medium text-gray-500">(~10-50 Years)</span></h3>
+              <p class="text-gray-300 leading-relaxed">${data.midTermConsequences.replace(
+                /\n/g,
+                "<br>"
+              )}</p>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-3">Long-Term World Shift <span class="text-base font-medium text-gray-500">(~100+ Years)</span></h3>
+              <p class="text-gray-300 leading-relaxed">${data.longTermConsequences.replace(
+                /\n/g,
+                "<br>"
+              )}</p>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-3">The New Reality</h3>
+              <p class="text-gray-300 font-semibold italic bg-gray-900 p-4 rounded-lg border-l-4 border-purple-500">${data.newRealitySummary.replace(
+                /\n/g,
+                "<br>"
+              )}</p>
+            </div>
+            <div id="branching-points">
+              <h3 class="text-2xl font-bold text-white mb-4">Explore Further Timelines...</h3>
+              <div class="space-y-3">
+                ${data.branchingPoints
+                  .map(
+                    (point, index) =>
+                      `<button class="branch-button" data-branch="${encodeURIComponent(
+                        point
+                      )}">${point}</button>`
+                  )
+                  .join("")}
+              </div>
+            </div>
+          </div>`;
+        outputSection.innerHTML = contentHTML;
+        outputSection.classList.remove("hidden");
+      }
+
+      // --- EVENT HANDLERS ---
+      async function handleGeneration(query, isBranch = false) {
+        if (!query) {
+          outputSection.innerHTML = `<p class="text-yellow-400">Please provide a "what if" scenario to explore.</p>`;
+          outputSection.classList.remove("hidden");
+          return;
+        }
+
+        if (!isBranch) {
+          originalQuery = query;
+        }
+
+        showLoading(
+          isBranch ? "Exploring new branch..." : "Calculating Timelines..."
+        );
+        if (!isBranch) {
+          outputSection.classList.add("hidden");
+        }
+        generateButton.disabled = true;
+
+        try {
+          const schema = {
+            type: "OBJECT",
+            properties: {
+              divergencePoint: { type: "STRING" },
+              immediateConsequences: { type: "STRING" },
+              midTermConsequences: { type: "STRING" },
+              longTermConsequences: { type: "STRING" },
+              newRealitySummary: { type: "STRING" },
+              branchingPoints: { type: "ARRAY", items: { type: "STRING" } },
+            },
+          };
+          const prompt = `You are an expert speculative historian and futurist. Analyze the following "what if" scenario: "${query}".
+          Provide a detailed, plausible, and creative exploration of the consequences.
+          - For 'divergencePoint', describe the exact moment and nature of the change.
+          - For 'immediateConsequences', describe the short-term ripple effects (1-5 years).
+          - For 'midTermConsequences', explain how society adapts and changes (10-50 years).
+          - For 'longTermConsequences', detail the profound changes to the world (100+ years), covering society, technology, culture, and geopolitics.
+          - For 'newRealitySummary', give a concise, evocative summary of this new timeline.
+          - For 'branchingPoints', suggest 2-3 fascinating new "what if" questions that arise from within THIS alternate timeline, which could be explored next. These should be distinct and intriguing possibilities.
+          Format the response as a single JSON object.`;
+          const data = await callGeminiAPI(prompt, schema);
+          renderScenario(data, isBranch);
+        } catch (error) {
+          console.error("Scenario generation error:", error);
+          outputSection.innerHTML = `<p class="text-red-400">An error occurred while exploring the timeline. The fabric of reality may be too stable for this query. Please try another.</p>`;
+          outputSection.classList.remove("hidden");
+        } finally {
+          hideLoading();
+          generateButton.disabled = false;
+        }
+      }
+
+      generateButton.addEventListener("click", () => {
+        handleGeneration(scenarioInput.value.trim(), false);
+      });
+
+      scenarioInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          handleGeneration(scenarioInput.value.trim(), false);
+        }
+      });
+
+      outputSection.addEventListener("click", (e) => {
+        if (e.target.classList.contains("branch-button")) {
+          const branchQuery = decodeURIComponent(e.target.dataset.branch);
+          const fullQuery = `Starting from the alternate reality where "${originalQuery}", what would happen if: "${branchQuery}"`;
+          handleGeneration(fullQuery, true);
+        }
+      });
+    </script>
+  </body>
+</html>

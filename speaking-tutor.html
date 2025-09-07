@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI-Powered IELTS Speaking Tutor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #111827;
+        color: #d1d5db;
+      }
+      .main-container {
+        background: #1f2937;
+        border-radius: 1.5rem;
+        padding: 2.5rem;
+        box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+          0 8px 10px -6px rgb(0 0 0 / 0.1);
+        border: 1px solid #374151;
+      }
+      .btn-primary {
+        background-color: #4f46e5;
+        transition: background-color 0.3s ease;
+      }
+      .btn-primary:hover:not(:disabled) {
+        background-color: #4338ca;
+      }
+      .btn-primary:disabled {
+        background-color: #374151;
+        cursor: not-allowed;
+      }
+      .part-button {
+        border: 2px solid #4b5563;
+        transition: all 0.3s ease;
+      }
+      .part-button.selected,
+      .part-button:hover {
+        background-color: #374151;
+        border-color: #4f46e5;
+        color: #fff;
+      }
+      textarea {
+        background-color: #374151;
+        border: 1px solid #4b5563;
+      }
+      textarea:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 2px #4f46e5;
+      }
+      .feedback-card {
+        background-color: #374151;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        border-left: 4px solid #4f46e5;
+      }
+      .band-score {
+        background-color: #4f46e5;
+        color: white;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.25rem;
+      }
+      .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top: 4px solid #4f46e5;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .recording-btn {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+        transition: all 0.3s ease;
+      }
+      .recording-btn.is-recording {
+        background-color: #dc2626;
+        animation: pulse 1.5s infinite;
+      }
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 15px rgba(220, 38, 38, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+        }
+      }
+    </style>
+  </head>
+  <body class="flex items-center justify-center min-h-screen p-4 sm:p-6">
+    <div class="main-container w-full max-w-4xl">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-white">
+          AI-Powered IELTS Speaking Tutor
+        </h1>
+        <p class="mt-2 text-lg text-gray-400">
+          Practice for your test with realistic questions and instant feedback.
+        </p>
+      </div>
+
+      <div id="main-content">
+        <div id="part-selection" class="mb-6">
+          <h2 class="text-2xl font-bold text-white mb-4 text-center">
+            Select a Part to Begin
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <button
+              class="part-button p-6 rounded-lg font-semibold text-lg"
+              data-part="1"
+            >
+              Part 1<br /><span class="text-sm font-normal text-gray-400"
+                >Introduction & Interview</span
+              >
+            </button>
+            <button
+              class="part-button p-6 rounded-lg font-semibold text-lg"
+              data-part="2"
+            >
+              Part 2<br /><span class="text-sm font-normal text-gray-400"
+                >Individual Long Turn</span
+              >
+            </button>
+            <button
+              class="part-button p-6 rounded-lg font-semibold text-lg"
+              data-part="3"
+            >
+              Part 3<br /><span class="text-sm font-normal text-gray-400"
+                >Two-way Discussion</span
+              >
+            </button>
+          </div>
+        </div>
+
+        <div id="practice-screen" class="hidden">
+          <button
+            id="back-to-parts"
+            class="mb-4 text-indigo-400 hover:text-indigo-300 font-semibold"
+          >
+            &larr; Change Part
+          </button>
+
+          <div id="question-card" class="bg-gray-800 p-6 rounded-lg mb-4">
+            <h3 class="text-xl font-semibold text-white mb-2">
+              Your Question:
+            </h3>
+            <p id="question-text" class="text-lg text-gray-300"></p>
+          </div>
+
+          <div class="text-center my-6">
+            <button
+              id="record-button"
+              class="recording-btn btn-primary text-white font-bold rounded-full shadow-lg flex items-center justify-center mx-auto"
+            >
+              <i class="fas fa-microphone"></i>
+            </button>
+            <p id="recording-status" class="mt-3 text-gray-400 h-5">
+              Click the microphone to start recording
+            </p>
+          </div>
+
+          <textarea
+            id="user-answer"
+            class="w-full h-40 p-4 rounded-lg text-white placeholder-gray-500"
+            placeholder="Your transcribed answer will appear here..."
+          ></textarea>
+
+          <div class="flex justify-center mt-4">
+            <button
+              id="get-feedback-button"
+              class="btn-primary text-white font-bold py-3 px-8 rounded-lg shadow-lg"
+              disabled
+            >
+              Get Feedback
+            </button>
+          </div>
+        </div>
+
+        <div id="loading-indicator" class="text-center p-8 hidden">
+          <div class="spinner mx-auto"></div>
+          <p class="mt-4 text-white font-semibold">
+            Analyzing your response...
+          </p>
+        </div>
+
+        <div id="feedback-screen" class="hidden">
+          <button
+            id="practice-again"
+            class="mb-4 text-indigo-400 hover:text-indigo-300 font-semibold"
+          >
+            &larr; Practice Another Question
+          </button>
+          <h2 class="text-3xl font-bold text-white mb-6 text-center">
+            Your Feedback Report
+          </h2>
+          <div id="feedback-content" class="space-y-6"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const partSelection = document.getElementById("part-selection");
+      const practiceScreen = document.getElementById("practice-screen");
+      const feedbackScreen = document.getElementById("feedback-screen");
+      const loadingIndicator = document.getElementById("loading-indicator");
+
+      const questionText = document.getElementById("question-text");
+      const userAnswer = document.getElementById("user-answer");
+      const feedbackContent = document.getElementById("feedback-content");
+
+      const getFeedbackButton = document.getElementById("get-feedback-button");
+      const backToPartsButton = document.getElementById("back-to-parts");
+      const practiceAgainButton = document.getElementById("practice-again");
+      const recordButton = document.getElementById("record-button");
+      const recordingStatus = document.getElementById("recording-status");
+
+      let currentPart = null;
+      let currentQuestion = null;
+      let isRecording = false;
+
+      // Speech Recognition Setup
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      let recognition;
+
+      if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = "en-US";
+
+        recognition.onresult = (event) => {
+          let interimTranscript = "";
+          let finalTranscript = "";
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              finalTranscript += event.results[i][0].transcript;
+            } else {
+              interimTranscript += event.results[i][0].transcript;
+            }
+          }
+          userAnswer.value = finalTranscript + interimTranscript;
+          if (finalTranscript.length > 0) {
+            getFeedbackButton.disabled = false;
+          }
+        };
+
+        recognition.onerror = (event) => {
+          console.error("Speech recognition error", event.error);
+          recordingStatus.textContent = `Error: ${event.error}. Please try again.`;
+          stopRecording();
+        };
+      } else {
+        recordingStatus.textContent =
+          "Speech recognition is not supported in this browser.";
+        recordButton.disabled = true;
+      }
+
+      // --- Event Listeners ---
+      partSelection.addEventListener("click", async (e) => {
+        if (e.target.closest(".part-button")) {
+          const button = e.target.closest(".part-button");
+          document
+            .querySelectorAll(".part-button")
+            .forEach((btn) => btn.classList.remove("selected"));
+          button.classList.add("selected");
+
+          currentPart = button.dataset.part;
+          showScreen("loading");
+          try {
+            currentQuestion = await getIELTSQuestion(currentPart);
+            questionText.innerHTML = currentQuestion.replace(/\n/g, "<br>");
+            userAnswer.value = "";
+            getFeedbackButton.disabled = true;
+            showScreen("practice");
+          } catch (error) {
+            console.error("Failed to get question:", error);
+            questionText.textContent =
+              "Sorry, couldn't load a question. Please try again.";
+            showScreen("practice");
+          }
+        }
+      });
+
+      recordButton.addEventListener("click", () => {
+        if (isRecording) {
+          stopRecording();
+        } else {
+          startRecording();
+        }
+      });
+
+      function startRecording() {
+        if (!recognition) return;
+        isRecording = true;
+        userAnswer.value = "";
+        recognition.start();
+        recordButton.classList.add("is-recording");
+        recordButton.innerHTML = '<i class="fas fa-stop"></i>';
+        recordingStatus.textContent = "Listening...";
+        getFeedbackButton.disabled = true;
+      }
+
+      function stopRecording() {
+        if (!recognition) return;
+        isRecording = false;
+        recognition.stop();
+        recordButton.classList.remove("is-recording");
+        recordButton.innerHTML = '<i class="fas fa-microphone"></i>';
+        recordingStatus.textContent = "Click the microphone to start recording";
+        if (userAnswer.value.trim().length > 0) {
+          getFeedbackButton.disabled = false;
+        }
+      }
+
+      getFeedbackButton.addEventListener("click", async () => {
+        const answer = userAnswer.value.trim();
+        if (!answer) return;
+        showScreen("loading");
+        try {
+          const feedback = await getFeedback(currentQuestion, answer);
+          renderFeedback(feedback);
+          showScreen("feedback");
+        } catch (error) {
+          console.error("Failed to get feedback:", error);
+          feedbackContent.innerHTML = `<p class="text-red-400 text-center">Sorry, an error occurred while generating feedback. Please try again.</p>`;
+          showScreen("feedback");
+        }
+      });
+
+      backToPartsButton.addEventListener("click", () => {
+        if (isRecording) stopRecording();
+        showScreen("selection");
+      });
+
+      practiceAgainButton.addEventListener("click", () => {
+        document
+          .querySelector(`.part-button[data-part="${currentPart}"]`)
+          .click();
+      });
+
+      // --- UI Control ---
+      function showScreen(screenName) {
+        partSelection.classList.add("hidden");
+        practiceScreen.classList.add("hidden");
+        feedbackScreen.classList.add("hidden");
+        loadingIndicator.classList.add("hidden");
+
+        if (screenName === "selection")
+          partSelection.classList.remove("hidden");
+        else if (screenName === "practice")
+          practiceScreen.classList.remove("hidden");
+        else if (screenName === "feedback")
+          feedbackScreen.classList.remove("hidden");
+        else if (screenName === "loading")
+          loadingIndicator.classList.remove("hidden");
+      }
+
+      // --- API Calls ---
+      async function getIELTSQuestion(part) {
+        const prompt = `Generate a single, typical IELTS Speaking Part ${part} question. For Part 2, include the main topic and the three bullet points of things to cover. Do not add any extra text, just the question itself.`;
+        const payload = {
+          contents: [{ parts: [{ text: prompt }] }],
+        };
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) throw new Error("API request failed");
+        const result = await response.json();
+        return result.candidates[0].content.parts[0].text;
+      }
+
+      async function getFeedback(question, answer) {
+        const prompt = `Act as an expert IELTS examiner. Analyze the following response to an IELTS Speaking question.
+            Question: "${question}"
+            Answer: "${answer}"
+
+            Provide a detailed feedback report in a JSON object format. The object must have the following structure:
+            {
+                "feedback_summary": {
+                    "fluency_coherence": { "band": "float", "feedback": "string with detailed points" },
+                    "lexical_resource": { "band": "float", "feedback": "string with detailed points" },
+                    "grammatical_range": { "band": "float", "feedback": "string with detailed points" },
+                    "pronunciation_analysis": { "band": "float", "feedback": "string with detailed points based on the text provided" }
+                },
+                "overall_band": "float",
+                "sample_answer": "string (a high-quality, band 9 model answer)"
+            }
+            Ensure the band scores are a single number (e.g., 7.5). The feedback for each section should be constructive, highlighting both strengths and areas for improvement. Do not include any text outside the JSON object.`;
+
+        const payload = {
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: "application/json" },
+        };
+        const apiKey = "AIzaSyCsdeFOJrU43BZmnRP5WD1pm80fZH1cxN4";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) throw new Error("API request for feedback failed");
+        const result = await response.json();
+        const jsonString = result.candidates[0].content.parts[0].text;
+        return JSON.parse(jsonString);
+      }
+
+      function renderFeedback(data) {
+        feedbackContent.innerHTML = `
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-semibold text-white">Overall Estimated Band Score</h3>
+                    <div class="band-score mx-auto mt-2">${
+                      data.overall_band
+                    }</div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    ${createFeedbackCard(
+                      "Fluency & Coherence",
+                      data.feedback_summary.fluency_coherence
+                    )}
+                    ${createFeedbackCard(
+                      "Lexical Resource (Vocabulary)",
+                      data.feedback_summary.lexical_resource
+                    )}
+                    ${createFeedbackCard(
+                      "Grammatical Range & Accuracy",
+                      data.feedback_summary.grammatical_range
+                    )}
+                    ${createFeedbackCard(
+                      "Pronunciation Analysis",
+                      data.feedback_summary.pronunciation_analysis
+                    )}
+                </div>
+
+                <div class="feedback-card mt-6">
+                    <h3 class="text-2xl font-bold text-white mb-3">Band 9 Sample Answer</h3>
+                    <p class="text-gray-300">${data.sample_answer.replace(
+                      /\n/g,
+                      "<br>"
+                    )}</p>
+                </div>
+            `;
+      }
+
+      function createFeedbackCard(title, { band, feedback }) {
+        return `
+                <div class="feedback-card">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="text-xl font-bold text-white">${title}</h4>
+                        <div class="band-score !w-10 !h-10 !text-base">${band}</div>
+                    </div>
+                    <p class="text-gray-300">${feedback.replace(
+                      /\n/g,
+                      "<br>"
+                    )}</p>
+                </div>
+            `;
+      }
+    </script>
+  </body>
+</html>
