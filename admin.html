@@ -1957,9 +1957,7 @@
                 resource.title
               }</h3><p class="text-red-600 text-sm mb-2">${
                 resource.category
-              }</p><p class="text-gray-500 text-xs mb-3">${formattedDate}</p><p class="text-gray-700 text-sm flex-grow mb-3">${
-                resource.summary || "No summary available."
-              }</p><div class="flex flex-wrap gap-2 mt-auto">${
+              }</p><p class="text-gray-500 text-xs mb-3">${formattedDate}</p><div class="flex flex-wrap gap-2 mt-auto">${
                 resource.status === "inactive"
                   ? `<button class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateFreeResourceStatus('${resource.id}', 'active')">Activate</button>`
                   : `<button class="bg-orange-600 hover:bg-orange-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updateFreeResourceStatus('${resource.id}', 'inactive')">Deactivate</button>`
