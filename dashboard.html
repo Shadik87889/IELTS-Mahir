@@ -956,6 +956,12 @@
         leaderboardItemsPerPage: 10, // Number of items per page for leaderboards
         dailyResetTimerInterval: null, // Interval ID for the daily reset timer
         dailyResetTime: null, // Next daily reset timestamp
+        // New pagination states for history lists
+        dashboardQuizHistoryPage: 1,
+        dashboardMockTestHistoryPage: 1,
+        fullQuizHistoryPage: 1,
+        historyItemsPerPage: 10, // Items on the full history page
+        dashboardItemsPerPage: 5, // Items on the dashboard recent activity
       };
 
       // Sidebar state for mobile
@@ -1234,6 +1240,77 @@
                     <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
                 </div>
             `;
+      }
+
+      /**
+       * Renders pagination controls.
+       * @param {number} currentPage - The current active page.
+       * @param {number} totalPages - The total number of pages.
+       * @param {string} paginationType - A unique identifier for these controls (e.g., 'dashboardQuiz', 'fullQuizHistory').
+       * @returns {string} HTML string for the pagination controls.
+       */
+      function renderPaginationControls(
+        currentPage,
+        totalPages,
+        paginationType
+      ) {
+        if (totalPages <= 1) {
+          return "";
+        }
+
+        let pageButtons = "";
+        const maxVisiblePages = 5;
+        let startPage, endPage;
+
+        if (totalPages <= maxVisiblePages) {
+          startPage = 1;
+          endPage = totalPages;
+        } else {
+          const maxPagesBeforeCurrent = Math.floor(maxVisiblePages / 2);
+          const maxPagesAfterCurrent = Math.ceil(maxVisiblePages / 2) - 1;
+          if (currentPage <= maxPagesBeforeCurrent) {
+            startPage = 1;
+            endPage = maxVisiblePages;
+          } else if (currentPage + maxPagesAfterCurrent >= totalPages) {
+            startPage = totalPages - maxVisiblePages + 1;
+            endPage = totalPages;
+          } else {
+            startPage = currentPage - maxPagesBeforeCurrent;
+            endPage = currentPage + maxPagesAfterCurrent;
+          }
+        }
+
+        if (startPage > 1) {
+          pageButtons += `<button class="page-number" data-page="1" data-pagination-type="${paginationType}">1</button>`;
+          if (startPage > 2) {
+            pageButtons += `<span class="pagination-ellipsis">...</span>`;
+          }
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+          pageButtons += `<button class="page-number ${
+            i === currentPage ? "active" : ""
+          }" data-page="${i}" data-pagination-type="${paginationType}">${i}</button>`;
+        }
+
+        if (endPage < totalPages) {
+          if (endPage < totalPages - 1) {
+            pageButtons += `<span class="pagination-ellipsis">...</span>`;
+          }
+          pageButtons += `<button class="page-number" data-page="${totalPages}" data-pagination-type="${paginationType}">${totalPages}</button>`;
+        }
+
+        return `
+            <div class="pagination-controls">
+                <button data-page="prev" data-pagination-type="${paginationType}" ${
+          currentPage === 1 ? "disabled" : ""
+        }>Previous</button>
+                ${pageButtons}
+                <button data-page="next" data-pagination-type="${paginationType}" ${
+          currentPage === totalPages ? "disabled" : ""
+        }>Next</button>
+            </div>
+        `;
       }
 
       /**
@@ -2537,63 +2614,72 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                ${
-                                  dashboardState.quizResults.length > 0
-                                    ? dashboardState.quizResults
-                                        .slice(0, 5) // Show only the 5 most recent
-                                        .map((result) => {
-                                          const category = quizCategories.find(
-                                            (cat) =>
-                                              cat.id === result.categoryId
-                                          );
-                                          const categoryName = category
-                                            ? category.name
-                                            : "N/A";
-                                          const date = result.timestamp
-                                            ? new Date(
-                                                result.timestamp.toDate()
-                                              ).toLocaleDateString()
-                                            : "N/A";
-                                          // Robust Test Title Lookup
-                                          const foundTest = allQuizTests.find(
-                                            (test) =>
-                                              String(test.id) ===
-                                              String(result.testId)
-                                          );
-                                          const testTitle =
-                                            foundTest?.title ||
-                                            `Test ID: ${result.testId} (Title Not Found)`;
+                                ${(() => {
+                                  const {
+                                    quizResults,
+                                    dashboardQuizHistoryPage,
+                                    dashboardItemsPerPage,
+                                  } = dashboardState;
+                                  const startIndex =
+                                    (dashboardQuizHistoryPage - 1) *
+                                    dashboardItemsPerPage;
+                                  const endIndex =
+                                    startIndex + dashboardItemsPerPage;
+                                  const paginatedResults = quizResults.slice(
+                                    startIndex,
+                                    endIndex
+                                  );
 
-                                          console.log(
-                                            `Dashboard Recent Activity - result.testId: ${result.testId}, resolved testTitle: ${testTitle}`
-                                          );
+                                  if (paginatedResults.length > 0) {
+                                    return paginatedResults
+                                      .map((result) => {
+                                        const category = quizCategories.find(
+                                          (cat) => cat.id === result.categoryId
+                                        );
+                                        const categoryName = category
+                                          ? category.name
+                                          : "N/A";
+                                        const date = result.timestamp
+                                          ? new Date(
+                                              result.timestamp.toDate()
+                                            ).toLocaleDateString()
+                                          : "N/A";
+                                        const foundTest = allQuizTests.find(
+                                          (test) =>
+                                            String(test.id) ===
+                                            String(result.testId)
+                                        );
+                                        const testTitle =
+                                          foundTest?.title ||
+                                          `Test ID: ${result.testId} (Title Not Found)`;
 
-                                          return `
-                                                <tr data-quiz-result-id="${
-                                                  result.id
-                                                }">
-                                                    <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
-                                                    <td class="whitespace-nowrap text-sm text-gray-900">${categoryName}</td>
-                                                    <td class="whitespace-nowrap text-sm text-gray-900">${testTitle}</td>
-                                                    <td class="whitespace-nowrap text-sm text-gray-900">${
-                                                      result.score
-                                                    }</td>
-                                                    <td class="whitespace-nowrap text-sm text-gray-900">${(
-                                                      result.percentage || 0
-                                                    ).toFixed(2)}%</td>
-                                                    <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
-                                                      result.timeTakenSeconds
-                                                    )}</td>
-                                                    <td class="whitespace-nowrap text-right text-sm font-medium">
-                                                        <a href="quiz-detail-review.html?resultId=${
-                                                          result.id
-                                                        }" class="text-blue-600 hover:text-blue-900">View Details</a>
-                                                    </td>
-                                                </tr>
-                                            `;
-                                        })
-                                        .join("")
-                                    : `
+                                        return `
+                                            <tr data-quiz-result-id="${
+                                              result.id
+                                            }">
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${categoryName}</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${testTitle}</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${
+                                                  result.score
+                                                }</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${(
+                                                  result.percentage || 0
+                                                ).toFixed(2)}%</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
+                                                  result.timeTakenSeconds
+                                                )}</td>
+                                                <td class="whitespace-nowrap text-right text-sm font-medium">
+                                                    <a href="quiz-detail-review.html?resultId=${
+                                                      result.id
+                                                    }" class="text-blue-600 hover:text-blue-900">View Details</a>
+                                                </td>
+                                            </tr>
+                                        `;
+                                      })
+                                      .join("");
+                                  } else {
+                                    return `
                                         <tr class="no-data-row">
                                             <td colspan="7" class="py-12 text-lg text-gray-500">
                                                 ${
@@ -2603,22 +2689,22 @@
                                                 }
                                             </td>
                                         </tr>
-                                        `
-                                }
+                                    `;
+                                  }
+                                })()}
                             </tbody>
                         </table>
                     </div>
-                    ${
-                      dashboardState.quizResults.length > 5
-                        ? `
-                            <div class="flex justify-center mt-6">
-                                <button id="view-all-history-btn" class="flex items-center gap-2 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg shadow-md hover:bg-gray-300 transition-colors duration-200 font-semibold text-base transform active:scale-95" data-view="quizHistory">
-                                    ${Icons.History} View All History
-                                </button>
-                            </div>
-                        `
-                        : ""
-                    }
+                    <div class="flex justify-center mt-2">
+                        ${renderPaginationControls(
+                          dashboardState.dashboardQuizHistoryPage,
+                          Math.ceil(
+                            dashboardState.quizResults.length /
+                              dashboardState.dashboardItemsPerPage
+                          ),
+                          "dashboardQuiz"
+                        )}
+                    </div>
                 </div>
                 
                 <!-- Recent Mock Test Activity Section -->
@@ -2636,55 +2722,81 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                ${
-                                  dashboardState.mockTestResults.length > 0
-                                    ? dashboardState.mockTestResults
-                                        .slice(0, 5) // Show only the 5 most recent
-                                        .map((result) => {
-                                          const date = result.timestamp
-                                            ? new Date(
-                                                result.timestamp.toDate()
-                                              ).toLocaleDateString()
-                                            : "N/A";
-                                          return `
-                                                <tr>
-                                                    <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
-                                                    <td class="whitespace-nowrap text-sm text-gray-900">${
-                                                      result.testTitle || "N/A"
-                                                    }</td>
-                                                    <td class="whitespace-nowrap text-sm text-gray-900 font-bold text-green-600">${
-                                                      result.bandScore
-                                                    }</td>
-                                                    <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
-                                                      result.timeTakenSeconds
-                                                    )}</td>
-                                                    <td class="whitespace-nowrap text-right text-sm font-medium">
-                                                        <a href="mock-test.html?module=${
-                                                          result.moduleId
-                                                        }&test=${
-                                            result.testId
-                                          }&score=${
-                                            result.correctAnswers
-                                          }&total=${
-                                            result.totalQuestions
-                                          }&band=${result.bandScore}&time=${
-                                            result.timeTakenSeconds
-                                          }" class="text-blue-600 hover:text-blue-900">View Results</a>
-                                                    </td>
-                                                </tr>
-                                            `;
-                                        })
-                                        .join("")
-                                    : `
-                                        <tr class="no-data-row">
-                                            <td colspan="5" class="py-12 text-lg text-gray-500">
-                                                No recent mock test activity. Take a test to see your results here!
-                                            </td>
-                                        </tr>
-                                        `
-                                }
+                                ${(() => {
+                                  const {
+                                    mockTestResults,
+                                    dashboardMockTestHistoryPage,
+                                    dashboardItemsPerPage,
+                                  } = dashboardState;
+                                  const startIndex =
+                                    (dashboardMockTestHistoryPage - 1) *
+                                    dashboardItemsPerPage;
+                                  const endIndex =
+                                    startIndex + dashboardItemsPerPage;
+                                  const paginatedResults = mockTestResults.slice(
+                                    startIndex,
+                                    endIndex
+                                  );
+
+                                  if (paginatedResults.length > 0) {
+                                    return paginatedResults
+                                      .map((result) => {
+                                        const date = result.timestamp
+                                          ? new Date(
+                                              result.timestamp.toDate()
+                                            ).toLocaleDateString()
+                                          : "N/A";
+                                        return `
+                                            <tr>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${
+                                                  result.testTitle || "N/A"
+                                                }</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900 font-bold text-green-600">${
+                                                  result.bandScore
+                                                }</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
+                                                  result.timeTakenSeconds
+                                                )}</td>
+                                                <td class="whitespace-nowrap text-right text-sm font-medium">
+                                                    <a href="mock-test.html?module=${
+                                                      result.moduleId
+                                                    }&test=${
+                                          result.testId
+                                        }&score=${
+                                          result.correctAnswers
+                                        }&total=${result.totalQuestions}&band=${
+                                          result.bandScore
+                                        }&time=${
+                                          result.timeTakenSeconds
+                                        }" class="text-blue-600 hover:text-blue-900">View Results</a>
+                                                </td>
+                                            </tr>
+                                        `;
+                                      })
+                                      .join("");
+                                  } else {
+                                    return `
+                                    <tr class="no-data-row">
+                                        <td colspan="5" class="py-12 text-lg text-gray-500">
+                                            No recent mock test activity. Take a test to see your results here!
+                                        </td>
+                                    </tr>
+                                    `;
+                                  }
+                                })()}
                             </tbody>
                         </table>
+                    </div>
+                     <div class="flex justify-center mt-2">
+                        ${renderPaginationControls(
+                          dashboardState.dashboardMockTestHistoryPage,
+                          Math.ceil(
+                            dashboardState.mockTestResults.length /
+                              dashboardState.dashboardItemsPerPage
+                          ),
+                          "dashboardMock"
+                        )}
                     </div>
                 </div>
 
@@ -2790,36 +2902,46 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            ${
-                              dashboardState.quizResults.length > 0
-                                ? dashboardState.quizResults
-                                    .map((result) => {
-                                      const category = quizCategories.find(
-                                        (cat) => cat.id === result.categoryId
-                                      );
-                                      const categoryName = category
-                                        ? category.name
-                                        : "N/A";
-                                      const date = result.timestamp
-                                        ? new Date(
-                                            result.timestamp.toDate()
-                                          ).toLocaleDateString()
-                                        : "N/A";
-                                      // Robust Test Title Lookup
-                                      const foundTest = allQuizTests.find(
-                                        (test) =>
-                                          String(test.id) ===
-                                          String(result.testId)
-                                      );
-                                      const testTitle =
-                                        foundTest?.title ||
-                                        `Test ID: ${result.testId} (Title Not Found)`;
+                             ${(() => {
+                               const {
+                                 quizResults,
+                                 fullQuizHistoryPage,
+                                 historyItemsPerPage,
+                               } = dashboardState;
+                               const startIndex =
+                                 (fullQuizHistoryPage - 1) *
+                                 historyItemsPerPage;
+                               const endIndex =
+                                 startIndex + historyItemsPerPage;
+                               const paginatedResults = quizResults.slice(
+                                 startIndex,
+                                 endIndex
+                               );
 
-                                      console.log(
-                                        `Quiz History - result.testId: ${result.testId}, resolved testTitle: ${testTitle}`
-                                      );
+                               if (paginatedResults.length > 0) {
+                                 return paginatedResults
+                                   .map((result) => {
+                                     const category = quizCategories.find(
+                                       (cat) => cat.id === result.categoryId
+                                     );
+                                     const categoryName = category
+                                       ? category.name
+                                       : "N/A";
+                                     const date = result.timestamp
+                                       ? new Date(
+                                           result.timestamp.toDate()
+                                         ).toLocaleDateString()
+                                       : "N/A";
+                                     const foundTest = allQuizTests.find(
+                                       (test) =>
+                                         String(test.id) ===
+                                         String(result.testId)
+                                     );
+                                     const testTitle =
+                                       foundTest?.title ||
+                                       `Test ID: ${result.testId} (Title Not Found)`;
 
-                                      return `
+                                     return `
                                         <tr data-quiz-result-id="${result.id}">
                                             <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
                                             <td class="whitespace-nowrap text-sm text-gray-900">${categoryName}</td>
@@ -2840,9 +2962,10 @@
                                             </td>
                                         </tr>
                                     `;
-                                    })
-                                    .join("")
-                                : `
+                                   })
+                                   .join("");
+                               } else {
+                                 return `
                                 <tr class="no-data-row">
                                     <td colspan="7" class="py-12 text-lg text-gray-500">
                                         ${
@@ -2852,10 +2975,21 @@
                                         }
                                     </td>
                                 </tr>
-                                `
-                            }
+                                `;
+                               }
+                             })()}
                         </tbody>
                     </table>
+                </div>
+                 <div class="flex justify-center mt-4">
+                    ${renderPaginationControls(
+                      dashboardState.fullQuizHistoryPage,
+                      Math.ceil(
+                        dashboardState.quizResults.length /
+                          dashboardState.historyItemsPerPage
+                      ),
+                      "fullQuizHistory"
+                    )}
                 </div>
             </section>
         `;
@@ -3084,7 +3218,7 @@
 
         const paginationControlsHtml = `
             <div id="${paginationId}" class="pagination-controls">
-                <button data-page="prev" data-leaderboard-type="${
+                <button data-page="prev" data-pagination-type="${
                   isDaily ? "daily" : "global"
                 }" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
                 ${Array.from({ length: totalPages }, (_, i) => i + 1)
@@ -3092,13 +3226,13 @@
                     (page) => `
                     <button class="page-number ${
                       page === currentPage ? "active" : ""
-                    }" data-page="${page}" data-leaderboard-type="${
+                    }" data-page="${page}" data-pagination-type="${
                       isDaily ? "daily" : "global"
                     }">${page}</button>
                 `
                   )
                   .join("")}
-                <button data-page="next" data-leaderboard-type="${
+                <button data-page="next" data-pagination-type="${
                   isDaily ? "daily" : "global"
                 }" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
             </div>
@@ -3529,41 +3663,72 @@
             closeMobileSidebar();
           });
 
-        // Pagination event listeners (delegated to document for dynamic elements)
-        document
-          .querySelectorAll(".pagination-controls button")
-          .forEach((button) => {
-            button.onclick = (event) => {
-              const pageAction = event.currentTarget.dataset.page;
-              const leaderboardType =
-                event.currentTarget.dataset.leaderboardType;
-              let currentPage =
-                leaderboardType === "daily"
-                  ? dashboardState.dailyLeaderboardCurrentPage
-                  : dashboardState.globalLeaderboardCurrentPage;
-              const totalPages = Math.ceil(
-                (leaderboardType === "daily"
-                  ? dashboardState.dailyLeaderboardData.length
-                  : dashboardState.globalLeaderboard.length) /
-                  dashboardState.leaderboardItemsPerPage
-              );
+        // Remove previous listener to avoid duplicates.
+        if (window.paginationListener) {
+          document.removeEventListener("click", window.paginationListener);
+        }
 
-              if (pageAction === "prev") {
-                currentPage = Math.max(1, currentPage - 1);
-              } else if (pageAction === "next") {
-                currentPage = Math.min(totalPages, currentPage + 1);
-              } else {
-                currentPage = parseInt(pageAction);
-              }
+        // Define the new delegated listener for all pagination controls.
+        window.paginationListener = function (event) {
+          const button = event.target.closest(".pagination-controls button");
+          if (!button || button.disabled) return;
 
-              if (leaderboardType === "daily") {
-                dashboardState.dailyLeaderboardCurrentPage = currentPage;
-              } else {
-                dashboardState.globalLeaderboardCurrentPage = currentPage;
-              }
-              renderApp(); // Re-render the current view to update the table
-            };
-          });
+          event.preventDefault();
+
+          const pageAction = button.dataset.page;
+          const paginationType = button.dataset.paginationType;
+          let stateKey, dataArray, itemsPerPageState;
+
+          switch (paginationType) {
+            case "dashboardQuiz":
+              stateKey = "dashboardQuizHistoryPage";
+              dataArray = dashboardState.quizResults;
+              itemsPerPageState = "dashboardItemsPerPage";
+              break;
+            case "dashboardMock":
+              stateKey = "dashboardMockTestHistoryPage";
+              dataArray = dashboardState.mockTestResults;
+              itemsPerPageState = "dashboardItemsPerPage";
+              break;
+            case "fullQuizHistory":
+              stateKey = "fullQuizHistoryPage";
+              dataArray = dashboardState.quizResults;
+              itemsPerPageState = "historyItemsPerPage";
+              break;
+            case "global":
+              stateKey = "globalLeaderboardCurrentPage";
+              dataArray = dashboardState.globalLeaderboard;
+              itemsPerPageState = "leaderboardItemsPerPage";
+              break;
+            case "daily":
+              stateKey = "dailyLeaderboardCurrentPage";
+              dataArray = dashboardState.dailyLeaderboardData;
+              itemsPerPageState = "leaderboardItemsPerPage";
+              break;
+          }
+
+          if (stateKey && dataArray && itemsPerPageState) {
+            let currentPage = dashboardState[stateKey];
+            const itemsPerPage = dashboardState[itemsPerPageState];
+            const totalPages = Math.ceil(dataArray.length / itemsPerPage);
+
+            if (pageAction === "prev") {
+              currentPage = Math.max(1, currentPage - 1);
+            } else if (pageAction === "next") {
+              currentPage = Math.min(totalPages, currentPage + 1);
+            } else if (!isNaN(parseInt(pageAction))) {
+              currentPage = parseInt(pageAction);
+            }
+
+            if (dashboardState[stateKey] !== currentPage) {
+              dashboardState[stateKey] = currentPage;
+              renderApp(); // Re-render to show the new page
+            }
+          }
+        };
+
+        // Attach the single, delegated listener.
+        document.addEventListener("click", window.paginationListener);
       }
 
       /**

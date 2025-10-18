@@ -177,6 +177,7 @@ export async function initFirebaseAuth(onAuthChangeCallback) {
           newUserProfileData = {
             name: user.displayName || `User-${user.uid.substring(0, 5)}`, // Now user.displayName should be updated
             email: user.email || "",
+            role: "free",
             bandGoal: "N/A",
             preparationStatus: "New Learner",
             reputation: 0,
@@ -313,6 +314,7 @@ export async function signUpEmailPassword(email, password, name = "") {
       bandGoal: "N/A",
       preparationStatus: "New Learner",
       reputation: 0,
+      role: "free", // <-- ADDING THIS LINE: Default role for sign-ups
       badges: [],
       createdAt: serverTimestamp(),
       userId: user.uid,

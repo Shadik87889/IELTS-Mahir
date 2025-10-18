@@ -219,6 +219,55 @@
         align-items: center;
         gap: 0.5rem;
       }
+
+      /* Toast Notification Styles */
+      .toast {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+        border-radius: 0.75rem; /* 12px */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: translateY(1rem) scale(0.95);
+        transition: all 0.3s ease-out;
+        width: 100%;
+        max-width: 380px;
+        font-family: "Inter", sans-serif;
+        font-size: 0.925rem; /* 15px */
+        font-weight: 500;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      .toast-success {
+        background-color: #eef2ff; /* A light, neutral blue/indigo */
+        color: #312e81; /* Darker text */
+      }
+      .toast-error {
+        background-color: #fef2f2; /* Light red */
+        color: #991b1b; /* Darker red */
+      }
+      .toast-icon {
+        margin-right: 0.75rem;
+        flex-shrink: 0;
+        width: 1.5rem; /* 24px */
+        height: 1.5rem; /* 24px */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+      }
+      .toast-success .toast-icon {
+        background-color: #312e81; /* Same as text for consistency */
+        color: #eef2ff; /* Inverted background color */
+      }
+      .toast-error .toast-icon {
+        background-color: #991b1b;
+        color: #fef2f2;
+      }
     </style>
   </head>
   <body class="py-0 px-0">
@@ -281,7 +330,6 @@
       import {
         initFirebaseAuth,
         authAppState,
-        showToast,
         Icons,
         signOutUser,
       } from "./auth.js"; // Adjust path as necessary
@@ -300,7 +348,51 @@
         doc,
         getDoc,
         setDoc, // Added setDoc for initializing userGameStats if not exists
+        collection,
+        addDoc,
+        serverTimestamp,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      /**
+       * Displays a professional toast notification.
+       * @param {string} message - The message to display.
+       * @param {string} type - 'success' or 'error'.
+       * @param {number} duration - Time in ms to show the toast.
+       */
+      function showToast(message, type = "success", duration = 4000) {
+        const container = document.getElementById("toast-container");
+        if (!container) return;
+
+        const toast = document.createElement("div");
+        toast.className = `toast toast-${type}`;
+
+        const iconHtml =
+          type === "success"
+            ? `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>`
+            : `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>`;
+
+        toast.innerHTML = `
+          <div class="toast-icon">${iconHtml}</div>
+          <span>${message}</span>
+        `;
+
+        container.prepend(toast);
+
+        // Animate in
+        setTimeout(() => {
+          toast.classList.add("show");
+        }, 100);
+
+        // Animate out and remove
+        setTimeout(() => {
+          toast.classList.remove("show");
+          toast.addEventListener("transitionend", () => {
+            if (toast.parentElement) {
+              toast.remove();
+            }
+          });
+        }, duration);
+      }
 
       // Firebase instances (will be populated by auth.js)
       let db;
@@ -363,6 +455,182 @@
       }
 
       /**
+       * Renders the HTML for the speaking session booking modal.
+       */
+      function renderSpeakingBookingModal() {
+        const modalContainer = document.getElementById("modal-container");
+        if (!modalContainer) return;
+
+        // Pre-fill user info if available
+        const userName = authAppState.userProfile?.name || "";
+        const userEmail = authAppState.user?.email || "";
+
+        modalContainer.innerHTML = `
+        <div id="speaking-booking-modal" class="fixed inset-0 bg-gray-900 bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-[99] hidden animate-fade-in">
+            <div id="speaking-modal-content" class="bg-white rounded-2xl shadow-2xl w-full max-w-lg m-4 p-6 sm:p-8 transform transition-transform duration-300 scale-95">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-anton">Book a Speaking Session</h2>
+                    <button id="close-speaking-modal-btn" class="text-gray-500 hover:text-gray-800 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                <p class="text-gray-600 mb-6 font-inter">Fill out the form below to request a 1-on-1 speaking practice session. We'll contact you via email to confirm your booking.</p>
+                <form id="speaking-booking-form">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="userName" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                            <input type="text" id="userName" name="userName" value="${userName}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow" placeholder="e.g., John Doe">
+                        </div>
+                        <div>
+                            <label for="userEmail" class="block text-sm font-medium text-gray-700 mb-1">Your Email</label>
+                            <input type="email" id="userEmail" name="userEmail" value="${userEmail}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow" placeholder="e.g., john.doe@example.com">
+                        </div>
+                        <div>
+                            <label for="mobilePhone" class="block text-sm font-medium text-gray-700 mb-1">Mobile Phone</label>
+                            <input type="tel" id="mobilePhone" name="mobilePhone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow" placeholder="e.g., 01712345678" pattern="^(?:\\+880|01)[1-9]\\d{8}$" title="Please enter a valid Bangladeshi mobile number (e.g., 01712345678).">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="preferredDate" class="block text-sm font-medium text-gray-700 mb-1">Preferred Date</label>
+                                <input type="date" id="preferredDate" name="preferredDate" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow">
+                            </div>
+                            <div>
+                                <label for="preferredTime" class="block text-sm font-medium text-gray-700 mb-1">Preferred Time</label>
+                                <input type="time" id="preferredTime" name="preferredTime" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Additional Notes (Optional)</label>
+                            <textarea id="notes" name="notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow" placeholder="Any specific topics you want to cover?"></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <button type="submit" id="submit-booking-btn" class="w-full flex justify-center items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all text-base font-semibold transform active:scale-95">
+                            <span id="submit-btn-text">Submit Request</span>
+                            <div id="submit-btn-spinner" class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white hidden"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        `;
+
+        // Set min date for date input to today
+        const dateInput = document.getElementById("preferredDate");
+        if (dateInput) {
+          dateInput.min = new Date().toISOString().split("T")[0];
+        }
+      }
+
+      /**
+       * Handles the submission of the speaking session booking form.
+       * @param {Event} event - The form submission event.
+       */
+      async function handleBookingFormSubmit(event) {
+        event.preventDefault();
+        const submitBtn = document.getElementById("submit-booking-btn");
+        const btnText = document.getElementById("submit-btn-text");
+        const btnSpinner = document.getElementById("submit-btn-spinner");
+
+        // Show loading state
+        submitBtn.disabled = true;
+        btnText.textContent = "Submitting...";
+        btnSpinner.classList.remove("hidden");
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        const bookingData = {
+          userName: formData.get("userName"),
+          userEmail: formData.get("userEmail"),
+          mobilePhone: formData.get("mobilePhone"),
+          preferredDate: formData.get("preferredDate"),
+          preferredTime: formData.get("preferredTime"),
+          notes: formData.get("notes"),
+          submittedAt: serverTimestamp(),
+          status: "pending", // To track request status
+        };
+
+        // Include user ID if logged in
+        if (authAppState.userId) {
+          bookingData.userId = authAppState.userId;
+        }
+
+        try {
+          const docRef = await addDoc(
+            collection(
+              db,
+              `artifacts/ielts-mahir-community-forum/public/data/speakingSessionRequests`
+            ),
+            bookingData
+          );
+
+          console.log("Booking request submitted with ID: ", docRef.id);
+          showToast(
+            "Your booking request has been sent! We'll be in touch soon.",
+            "success"
+          );
+          document
+            .getElementById("speaking-booking-modal")
+            .classList.add("hidden");
+          form.reset();
+        } catch (error) {
+          console.error("Error adding document: ", error);
+          showToast(
+            "There was an error submitting your request. Please try again.",
+            "error"
+          );
+        } finally {
+          // Reset button state
+          submitBtn.disabled = false;
+          btnText.textContent = "Submit Request";
+          btnSpinner.classList.add("hidden");
+        }
+      }
+
+      /**
+       * Initializes event listeners for the speaking session booking modal.
+       */
+      function initSpeakingModalListeners() {
+        const modal = document.getElementById("speaking-booking-modal");
+        const openBtn = document.getElementById("book-speaking-session-card");
+        const closeBtn = document.getElementById("close-speaking-modal-btn");
+        const form = document.getElementById("speaking-booking-form");
+        const modalContent = document.getElementById("speaking-modal-content");
+
+        if (!modal || !openBtn || !closeBtn || !form || !modalContent) {
+          console.warn(
+            "Speaking modal elements not found, listeners not attached."
+          );
+          return;
+        }
+
+        const openModal = () => {
+          modal.classList.remove("hidden");
+          // Trigger the animation
+          setTimeout(() => {
+            modalContent.classList.remove("scale-95");
+          }, 10);
+        };
+
+        const closeModal = () => {
+          modalContent.classList.add("scale-95");
+          setTimeout(() => {
+            modal.classList.add("hidden");
+          }, 300); // match transition duration
+        };
+
+        openBtn.addEventListener("click", openModal);
+        closeBtn.addEventListener("click", closeModal);
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            closeModal();
+          }
+        });
+        form.addEventListener("submit", handleBookingFormSubmit);
+      }
+
+      /**
        * Updates the navigation bar and user ID display based on authentication status.
        * @param {object|null} user - The Firebase User object or null if signed out.
        */
@@ -379,49 +647,49 @@
 
             // User is signed in: Show profile dropdown and game stats
             authButtonsContainer.innerHTML = `
-                        <div class="flex items-center gap-4">
-                            
-                            <div class="relative">
-                                <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 h-10 rounded-full bg-blue-600 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-700 transition-colors">
-                                    ${(
-                                      authAppState.userProfile?.name ||
-                                      user.email ||
-                                      user.uid
-                                    )
-                                      .charAt(0)
-                                      .toUpperCase()}
-                                </button>
-                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden text-gray-800">
-                                    <div class="px-4 py-2 text-sm border-b border-gray-200">Hello, ${
-                                      authAppState.userProfile?.name ||
-                                      user.email ||
-                                      user.uid.substring(0, 8)
-                                    }</div>
-                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-200">Level: ${
-                                      userGameStats.level
-                                    }</div>
-                                    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
-                                        ${Icons.Dashboard.replace(
-                                          /stroke="currentColor"/g,
-                                          'stroke="gray"'
-                                        )} Dashboard
-                                    </a>
-                                    <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
-                                        ${Icons.Forum.replace(
-                                          /stroke="currentColor"/g,
-                                          'stroke="gray"'
-                                        )} Forum
-                                    </a>
-                                    <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-b-lg">
-                                        ${Icons.SignOut.replace(
-                                          /stroke="currentColor"/g,
-                                          'stroke="red"'
-                                        )} Sign Out
+                            <div class="flex items-center gap-4">
+                                
+                                <div class="relative">
+                                    <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 h-10 rounded-full bg-blue-600 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-700 transition-colors">
+                                        ${(
+                                          authAppState.userProfile?.name ||
+                                          user.email ||
+                                          user.uid
+                                        )
+                                          .charAt(0)
+                                          .toUpperCase()}
                                     </button>
+                                    <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden text-gray-800">
+                                        <div class="px-4 py-2 text-sm border-b border-gray-200">Hello, ${
+                                          authAppState.userProfile?.name ||
+                                          user.email ||
+                                          user.uid.substring(0, 8)
+                                        }</div>
+                                        <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-200">Level: ${
+                                          userGameStats.level
+                                        }</div>
+                                        <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                            ${Icons.Dashboard.replace(
+                                              /stroke="currentColor"/g,
+                                              'stroke="gray"'
+                                            )} Dashboard
+                                        </a>
+                                        <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                            ${Icons.Forum.replace(
+                                              /stroke="currentColor"/g,
+                                              'stroke="gray"'
+                                            )} Forum
+                                        </a>
+                                        <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-b-lg">
+                                            ${Icons.SignOut.replace(
+                                              /stroke="currentColor"/g,
+                                              'stroke="red"'
+                                            )} Sign Out
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
+                        `;
 
             const profileIconBtn = document.getElementById("profile-icon-btn");
             const profileDropdown = document.getElementById("profile-dropdown");
@@ -450,10 +718,10 @@
           } else {
             // User is signed out: Show sign-in button
             authButtonsContainer.innerHTML = `
-                        <a href="auth.html" id="sign-in-nav-btn" class="px-4 py-2 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
-                            Join beta user
-                        </a>
-                    `;
+                            <a href="auth.html" id="sign-in-nav-btn" class="px-4 py-2 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                                Join beta user
+                            </a>
+                        `;
           }
         }
       }
@@ -470,11 +738,11 @@
 
         if (!currentModuleId) {
           appDiv.innerHTML = `
-                        <div class="text-center text-red-500 text-xl mt-12">
-                            Error: No module specified in the URL.
-                            <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to modules</a>
-                        </div>
-                    `;
+                                <div class="text-center text-red-500 text-xl mt-12">
+                                    Error: No module specified in the URL.
+                                    <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to modules</a>
+                                </div>
+                            `;
           return;
         }
 
@@ -483,11 +751,11 @@
         );
         if (!module) {
           appDiv.innerHTML = `
-                        <div class="text-center text-red-500 text-xl mt-12">
-                            Error: Module not found.
-                            <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to modules</a>
-                        </div>
-                    `;
+                                <div class="text-center text-red-500 text-xl mt-12">
+                                    Error: Module not found.
+                                    <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to modules</a>
+                                </div>
+                            `;
           return;
         }
 
@@ -519,15 +787,14 @@
                 </section>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-6xl mx-auto py-8">
-                    ${
-                      testsInThisModule.length > 0
-                        ? testsInThisModule
-                            .map((test) => {
-                              // For now, no locking mechanism based on level for mock tests,
-                              // but can be added later if gamification extends to mock tests.
-                              const isLocked = false; // Placeholder for future logic
-                              const lockOverlay = isLocked
-                                ? `
+                    ${(() => {
+                      let cardsHtml = testsInThisModule
+                        .map((test) => {
+                          // For now, no locking mechanism based on level for mock tests,
+                          // but can be added later if gamification extends to mock tests.
+                          const isLocked = false; // Placeholder for future logic
+                          const lockOverlay = isLocked
+                            ? `
                                         <div class="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center rounded-3xl z-40 p-4">
                                             <div class="relative mb-4">
                                                 <i class="fas fa-lock text-6xl text-yellow-400 drop-shadow-lg animate-pulse-slow"></i>
@@ -543,111 +810,178 @@
                                             </p>
                                         </div>
                                         `
-                                : "";
+                            : "";
 
-                              // Corrected logic to count questions, handling table_fill_in_the_blank and multiple_choice_multiple_answers
-                              const totalQuestions =
-                                test.moduleId === "writing"
-                                  ? 2 // Hardcode 2 questions for writing module
-                                  : test.sections.reduce((totalAcc, sec) => {
-                                      // Safely access questionGroups, defaulting to an empty array if undefined
-                                      return (
-                                        totalAcc +
-                                        (sec.questionGroups || []).reduce(
-                                          (groupAcc, group) => {
-                                            if (group.questions) {
-                                              return (
-                                                groupAcc +
-                                                group.questions.reduce(
-                                                  (qAcc, question) => {
-                                                    if (
-                                                      question.type ===
-                                                        "table_fill_in_the_blank" &&
-                                                      question.correctAnswer
-                                                    ) {
-                                                      // Count individual answers for table fill-in-the-blank
-                                                      return (
-                                                        qAcc +
-                                                        Object.keys(
-                                                          question.correctAnswer
-                                                        ).length
-                                                      );
-                                                    } else if (
-                                                      group.type ===
-                                                        "multiple_choice_multiple_answers" &&
-                                                      question.correctAnswer
-                                                    ) {
-                                                      // For MCAA, count the number of correct options
-                                                      return (
-                                                        qAcc +
-                                                        question.correctAnswer
-                                                          .length
-                                                      );
-                                                    } else {
-                                                      // For all other types, count as 1 question
-                                                      return qAcc + 1;
-                                                    }
-                                                  },
-                                                  0
-                                                )
-                                              );
-                                            } else {
-                                              return groupAcc;
-                                            }
-                                          },
-                                          0
-                                        )
-                                      );
-                                    }, 0);
+                          // Corrected logic to count questions, handling all question types
+                          const totalQuestions =
+                            test.moduleId === "writing"
+                              ? 2 // Hardcode 2 questions for writing module
+                              : test.sections.reduce((totalAcc, sec) => {
+                                  return (
+                                    totalAcc +
+                                    (sec.questionGroups || []).reduce(
+                                      (groupAcc, group) => {
+                                        // Handle 'matching' which doesn't have a 'questions' array for counting
+                                        if (group.type === "matching") {
+                                          return (
+                                            groupAcc +
+                                            (group.matchingItems
+                                              ? group.matchingItems.length
+                                              : 0)
+                                          );
+                                        }
 
-                              return `
+                                        if (group.questions) {
+                                          return (
+                                            groupAcc +
+                                            group.questions.reduce(
+                                              (qAcc, question) => {
+                                                if (
+                                                  question.type ===
+                                                    "table_fill_in_the_blank" &&
+                                                  question.correctAnswer
+                                                ) {
+                                                  // Count individual answers for table fill-in-the-blank
+                                                  return (
+                                                    qAcc +
+                                                    Object.keys(
+                                                      question.correctAnswer
+                                                    ).length
+                                                  );
+                                                } else if (
+                                                  group.type ===
+                                                    "multiple_choice_multiple_answers" &&
+                                                  question.correctAnswer
+                                                ) {
+                                                  // For MCAA, count the number of correct options
+                                                  return (
+                                                    qAcc +
+                                                    question.correctAnswer
+                                                      .length
+                                                  );
+                                                } else if (
+                                                  question.type === "flow_chart"
+                                                ) {
+                                                  // New: Handle 'flow_chart' which has multiple steps
+                                                  return (
+                                                    qAcc +
+                                                    (question.steps
+                                                      ? question.steps.length
+                                                      : 0)
+                                                  );
+                                                } else {
+                                                  // For all other types, count as 1 question
+                                                  return qAcc + 1;
+                                                }
+                                              },
+                                              0
+                                            )
+                                          );
+                                        } else {
+                                          return groupAcc;
+                                        }
+                                      },
+                                      0
+                                    )
+                                  );
+                                }, 0);
+
+                          return `
                                 <a href="${
                                   isLocked
                                     ? "#"
                                     : `mock-test.html?module=${currentModuleId}&test=${test.id}`
                                 }"
-                                       class="test-card relative block overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in p-0 flex flex-col items-center text-center ${
-                                         isLocked
-                                           ? "cursor-not-allowed opacity-70"
-                                           : ""
-                                       }">
-                                        ${lockOverlay}
-                                        <div class="test-card-thumbnail-area ${
-                                          module.color || "bg-gray-600"
-                                        }">
-                                            ${
-                                              module.icon ||
-                                              '<i class="fas fa-question-circle"></i>'
-                                            }
+                                   class="test-card relative block overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in p-0 flex flex-col items-center text-center ${
+                                     isLocked
+                                       ? "cursor-not-allowed opacity-70"
+                                       : ""
+                                   }">
+                                    ${lockOverlay}
+                                    <div class="test-card-thumbnail-area ${
+                                      module.color || "bg-gray-600"
+                                    }">
+                                        ${
+                                          module.icon ||
+                                          '<i class="fas fa-question-circle"></i>'
+                                        }
+                                    </div>
+                                    <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between w-full">
+                                        <h2 class="text-2xl sm:text-3xl font-bold lg:font-extrabold mb-2 leading-tight text-gray-800 font-anton">${
+                                          test.title
+                                        }</h2>
+                                        <p class="text-sm sm:text-base text-gray-600 mb-4 flex-grow font-inter">${
+                                          test.description
+                                        }</p>
+                                        <div class="flex justify-between items-center text-gray-600 text-sm font-inter">
+                                            <span class="flex items-center gap-1">
+                                                ${ClockIconSVG}
+                                                ${test.duration} mins
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                ${QuestionMarkIconSVG}
+                                                ${totalQuestions} Qs
+                                            </span>
                                         </div>
-                                        <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between w-full">
-                                            <h2 class="text-2xl sm:text-3xl font-bold lg:font-extrabold mb-2 leading-tight text-gray-800 font-anton">${
-                                              test.title
-                                            }</h2>
-                                            <p class="text-sm sm:text-base text-gray-600 mb-4 flex-grow font-inter">${
-                                              test.description
-                                            }</p>
-                                            <div class="flex justify-between items-center text-gray-600 text-sm font-inter">
-                                                <span class="flex items-center gap-1">
-                                                    ${ClockIconSVG}
-                                                    ${test.duration} mins
-                                                </span>
-                                                <span class="flex items-center gap-1">
-                                                    ${QuestionMarkIconSVG}
-                                                    ${totalQuestions} Qs
-                                                </span>
-                                            </div>
-                                        </div>
+                                    </div>
                                 </a>
                             `;
-                            })
-                            .join("")
-                        : `
-                        <div class="md:col-span-3 text-center text-gray-600 py-8 font-inter">
-                            <p class="text-lg sm:text-xl">No mock tests available for this module yet.</p>
-                        </div>
-                    `
-                    }
+                        })
+                        .join("");
+
+                      if (currentModuleId === "speaking") {
+                        cardsHtml += `
+                                <div id="book-speaking-session-card" class="test-card relative block overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in p-0 flex flex-col items-center text-center cursor-pointer">
+                                    <div class="test-card-thumbnail-area bg-teal-500">
+                                        <i class="fas fa-headset text-6xl"></i>
+                                    </div>
+                                    <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between w-full">
+                                        <h2 class="text-2xl sm:text-3xl font-bold lg:font-extrabold mb-2 leading-tight text-gray-800 font-anton">Personalized Speaking Practice</h2>
+                                        <p class="text-sm sm:text-base text-gray-600 mb-4 flex-grow font-inter">Schedule a live 1-on-1 session with an IELTS expert to improve your speaking score.</p>
+                                        <div class="mt-auto">
+                                            <span class="inline-block w-full px-6 py-3 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-all text-sm sm:text-base font-semibold transform active:scale-95">
+                                                Book a Session
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                      }
+
+                      if (cardsHtml.length > 0) {
+                        return cardsHtml;
+                      }
+
+                      if (currentModuleId === "writing") {
+                        return `
+                                <div class="test-card relative block overflow-hidden rounded-3xl shadow-xl transition-all duration-300 p-0 flex flex-col items-center text-center opacity-60 cursor-not-allowed">
+                                    <div class="test-card-thumbnail-area bg-gray-500">
+                                        <i class="fas fa-pen-nib text-6xl"></i>
+                                    </div>
+                                    <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between w-full">
+                                        <h2 class="text-2xl sm:text-3xl font-bold lg:font-extrabold mb-2 leading-tight text-gray-700 font-anton">Coming Soon</h2>
+                                        <p class="text-sm sm:text-base text-gray-500 mb-4 flex-grow font-inter">New writing mock tests are being developed. Check back soon for updates!</p>
+                                        <div class="flex justify-between items-center text-gray-500 text-sm font-inter">
+                                            <span class="flex items-center gap-1">
+                                                ${ClockIconSVG}
+                                                -- mins
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                ${QuestionMarkIconSVG}
+                                                -- Qs
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                      }
+
+                      return `
+                                <div class="md:col-span-3 text-center text-gray-600 py-8 font-inter">
+                                    <p class="text-lg sm:text-xl">No mock tests available for this module yet.</p>
+                                </div>
+                            `;
+                    })()}
                 </div>
             `;
 
@@ -662,10 +996,16 @@
             heroSection.style.backgroundImage = `url("https://images.pexels.com/photos/753695/pexels-photo-753695.jpeg")`;
           }
         }
+
+        // After rendering, attach listeners for dynamic elements
+        if (currentModuleId === "speaking") {
+          initSpeakingModalListeners();
+        }
       }
 
       // Initialization Logic
       window.onload = async function () {
+        renderSpeakingBookingModal(); // Render modal structure immediately
         // Initialize Firebase Auth and listen for state changes
         initFirebaseAuth(updateAuthUI)
           .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {

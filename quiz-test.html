@@ -1126,11 +1126,8 @@
             quizState.currentQuestionIndex === quizState.questions.length - 1;
         }
         if (finishBtn) {
-          // Enable finish button only if all questions have been answered
-          const allAnswered = quizState.questions.every(
-            (q, index) => quizState.userAnswers[index] !== undefined
-          );
-          finishBtn.disabled = !allAnswered;
+          // The finish button is now always enabled, allowing submission at any time.
+          finishBtn.disabled = false;
         }
       }
 

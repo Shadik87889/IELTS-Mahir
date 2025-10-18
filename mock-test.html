@@ -1265,6 +1265,14 @@
         isLoadingResults: false, // For loading state of results section
         activeReadingTab: "questions", // New: 'passage' or 'questions' for mobile reading
         activeWritingTab: "instructions", // New: 'instructions' or 'response' for mobile writing
+        passageStates: {}, // New: { sectionId: modifiedHtml }
+      };
+
+      // New: State for passage highlighting and notes
+      let highlightState = {
+        notes: {}, // { spanId: 'note text' }
+        currentSelection: null, // Stores the current text Range object
+        highlightCounter: 0, // To generate unique IDs for highlights
       };
 
       // New: Array to map palette numbers to question IDs and their HTML element IDs
@@ -1341,6 +1349,321 @@
           modalOverlay.classList.remove("visible");
         }
       }
+
+      /**
+       * Shows a user's note in a modal.
+       * @param {string} noteText - The text of the note to display.
+       */
+      function showNote(noteText) {
+        showModal(
+          "Note",
+          `<p class="text-gray-700 whitespace-pre-wrap">${noteText}</p>`,
+          false,
+          () => hideModal()
+        );
+      }
+
+      /**
+       * Shows the popover for text selection.
+       * @param {Range} range - The selected text range.
+       */
+      function showSelectionPopover(range) {
+        const popover = document.getElementById("selection-popover");
+        if (!popover) return;
+
+        const rect = range.getBoundingClientRect();
+
+        // Get dimensions
+        const popoverHeight = popover.offsetHeight;
+        const popoverWidth = popover.offsetWidth;
+
+        // Calculate position
+        let top = rect.top + window.scrollY - popoverHeight - 5;
+        let left =
+          rect.left + window.scrollX + rect.width / 2 - popoverWidth / 2;
+
+        // Boundary checks to keep it on screen
+        if (top < window.scrollY) {
+          top = rect.bottom + window.scrollY + 5; // Position below if not enough space on top
+        }
+        if (left < 0) {
+          left = 5;
+        }
+        if (left + popoverWidth > document.documentElement.clientWidth) {
+          left = document.documentElement.clientWidth - popoverWidth - 5;
+        }
+
+        popover.style.top = `${top}px`;
+        popover.style.left = `${left}px`;
+        popover.classList.add("visible");
+      }
+
+      /**
+       * Hides the text selection popover.
+       */
+      function hideSelectionPopover() {
+        const popover = document.getElementById("selection-popover");
+        if (popover) {
+          popover.classList.remove("visible");
+        }
+      }
+
+      /**
+       * Shows the modal for adding a new note.
+       */
+      function showNoteModal() {
+        const noteModal = document.getElementById("note-modal-container");
+        noteModal.classList.remove("hidden");
+        document.getElementById("note-textarea").focus();
+      }
+
+      /**
+       * Hides the note-taking modal.
+       */
+      function hideNoteModal() {
+        const noteModal = document.getElementById("note-modal-container");
+        noteModal.classList.add("hidden");
+        document.getElementById("note-textarea").value = "";
+      }
+
+      /**
+       * Wraps the current selection in a span to apply a highlight or note style.
+       * @param {string} type - 'highlight' or 'note'.
+       * @returns {string|null} The ID of the created span, or null if failed.
+       */
+      function applyHighlight(type) {
+        if (!highlightState.currentSelection) return null;
+
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+          // Restore the selection before applying the highlight
+          selection.removeAllRanges();
+          selection.addRange(highlightState.currentSelection);
+        }
+
+        const span = document.createElement("span");
+        const spanId = `highlight-${highlightState.highlightCounter++}`;
+        span.id = spanId;
+        span.className = type === "note" ? "note-text" : "highlighted-text";
+
+        try {
+          highlightState.currentSelection.surroundContents(span);
+          selection.removeAllRanges();
+          highlightState.currentSelection = null;
+          return spanId;
+        } catch (e) {
+          console.error("Could not surround contents:", e);
+          showToast(
+            "Highlighting failed. Please select text within a single paragraph.",
+            "error"
+          );
+          selection.removeAllRanges();
+          highlightState.currentSelection = null;
+          return null;
+        }
+      }
+
+      /**
+       * Saves the note from the modal and applies the note highlight.
+       */
+      function saveNote() {
+        const noteText = document.getElementById("note-textarea").value.trim();
+        if (noteText) {
+          const spanId = applyHighlight("note");
+          if (spanId) {
+            highlightState.notes[spanId] = noteText;
+          }
+        }
+        hideNoteModal();
+      }
+
+      /**
+       * Handles the mouseup event on the passage to detect text selection.
+       * @param {MouseEvent} event - The mouseup event object.
+       */
+      function handlePassageMouseUp(event) {
+        const popover = document.getElementById("selection-popover");
+        if (!popover) return; // Guard clause to prevent error if popover is missing
+
+        const passageArea = event.currentTarget; // Capture currentTarget outside the timeout
+        const target = event.target; // Capture target as well for safety
+
+        // Debounce hiding to allow popover button clicks
+        setTimeout(() => {
+          const selection = window.getSelection();
+
+          if (
+            selection.rangeCount > 0 &&
+            !selection.isCollapsed &&
+            passageArea &&
+            passageArea.contains(selection.anchorNode)
+          ) {
+            highlightState.currentSelection = selection
+              .getRangeAt(0)
+              .cloneRange();
+            showSelectionPopover(highlightState.currentSelection);
+          } else {
+            // If the click was not on the popover, hide it.
+            if (!popover.contains(target)) {
+              hideSelectionPopover();
+            }
+          }
+        }, 10);
+      }
+
+      // --- START: Flow Chart Helper Functions ---
+
+      /**
+       * Renders the HTML for a flow chart question.
+       * @param {object} question - The question object of type 'flow_chart'.
+       * @returns {string} The HTML string for the flow chart.
+       */
+      function renderFlowChartQuestion(question) {
+        if (!question.steps || question.steps.length === 0) {
+          return "<p>Flow chart data is missing.</p>";
+        }
+        return `
+          <div class="flow-chart-wrapper bg-slate-50 p-4 sm:p-6 rounded-xl border border-slate-200">
+              <div class="flow-chart-container mx-auto max-w-2xl">
+                  ${question.steps
+                    .map((step, index) => {
+                      const questionId = `q${step.questionNumber}`;
+                      const inputField = `<input type="text" id="${questionId}" placeholder="Answer"
+                                                 oninput="handleAnswerInput('${questionId}', this.value)"
+                                                 value="${
+                                                   testState.userAnswers[
+                                                     questionId
+                                                   ] || ""
+                                                 }"
+                                                 class="inline-input mx-1" style="width: 150px;">`;
+                      const stepText = step.text.replace(
+                        /\[GAP\]/g,
+                        inputField
+                      );
+
+                      return `
+                          <div class="flow-chart-item" id="question-${
+                            step.questionNumber
+                          }">
+                              <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-center">
+                                  <p class="text-base sm:text-lg text-gray-800 leading-relaxed">
+                                      <span class="font-bold mr-2">${
+                                        step.questionNumber
+                                      }.</span>
+                                      ${stepText}
+                                  </p>
+                              </div>
+                          </div>
+                          ${
+                            index < question.steps.length - 1
+                              ? `
+                          <div class="flex justify-center my-4">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 h-8 w-8"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                          </div>
+                          `
+                              : ""
+                          }
+                      `;
+                    })
+                    .join("")}
+              </div>
+          </div>
+        `;
+      }
+
+      /**
+       * Scores a flow chart question.
+       * @param {object} question - The question object of type 'flow_chart'.
+       * @param {object} userAnswers - The user's answers object.
+       * @returns {number} The number of correct answers for this question group.
+       */
+      function scoreFlowChartQuestion(question, userAnswers) {
+        let correctCount = 0;
+        if (question.steps && question.steps.length > 0) {
+          question.steps.forEach((step) => {
+            const questionId = `q${step.questionNumber}`;
+            const userAnswer = userAnswers[questionId];
+            const correctAnswer = step.correctAnswer;
+            let isCorrect = false;
+
+            if (userAnswer && correctAnswer) {
+              if (Array.isArray(correctAnswer)) {
+                isCorrect = correctAnswer.some(
+                  (ans) => ans.toLowerCase() === userAnswer.toLowerCase()
+                );
+              } else {
+                isCorrect =
+                  userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+              }
+            }
+            if (isCorrect) {
+              correctCount++;
+            }
+          });
+        }
+        return correctCount;
+      }
+
+      /**
+       * Renders the feedback HTML for a flow chart question.
+       * @param {object} question - The question object of type 'flow_chart'.
+       * @param {object} userAnswers - The user's answers object.
+       * @returns {string} The HTML string for the feedback.
+       */
+      function renderFlowChartFeedback(question, userAnswers) {
+        if (!question.steps || question.steps.length === 0) {
+          return "";
+        }
+        return question.steps
+          .map((step) => {
+            const questionId = `q${step.questionNumber}`;
+            const userAnswerDisplay = userAnswers[questionId] || "Unattempted";
+            const correctAnswer = step.correctAnswer;
+            let correctAnswerDisplay = "";
+            let isCorrect = false;
+
+            if (Array.isArray(correctAnswer)) {
+              correctAnswerDisplay = correctAnswer.join(" / ");
+              isCorrect = correctAnswer.some(
+                (ans) => ans.toLowerCase() === userAnswerDisplay.toLowerCase()
+              );
+            } else {
+              correctAnswerDisplay = correctAnswer;
+              isCorrect =
+                userAnswerDisplay.toLowerCase() ===
+                correctAnswerDisplay.toLowerCase();
+            }
+
+            const questionTextForDisplay = step.text.replace(
+              /\[GAP\]/g,
+              "________"
+            );
+
+            return `
+              <div class="p-4 rounded-lg border ${
+                isCorrect
+                  ? "border-green-300 bg-green-50"
+                  : "border-red-300 bg-red-50"
+              }">
+                  <p class="font-semibold text-gray-900 mb-2">
+                      Question ${step.questionNumber}: ${questionTextForDisplay}
+                  </p>
+                  <p class="text-sm text-gray-700">
+                      Your Answer: <span class="${
+                        isCorrect ? "correct-answer" : "incorrect-answer"
+                      }">${userAnswerDisplay}</span>
+                  </p>
+                  <p class="text-sm text-gray-700">
+                      Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
+                  </p>
+              </div>
+          `;
+          })
+          .join("");
+      }
+
+      // --- END: Flow Chart Helper Functions ---
+
       /**
        * Calls the Gemini API to get feedback on a writing task.
        * @param {string} taskInstructions - The instructions for the writing task.
@@ -1583,23 +1906,47 @@
           updateQuestionPalette(); // Only update palette for listening
         } else if (currentModuleId === "writing") {
           // Update word count for writing tasks
-          const task = currentTest.sections.find((s) => s.id === questionId);
-          if (task) {
-            const wordCount = calculateWordCount(answer);
-            const wordCountSpan = document.getElementById(
-              `word-count-${questionId}`
-            );
-            if (wordCountSpan) {
-              wordCountSpan.textContent = wordCount;
-              if (wordCount < task.wordCountMin) {
-                wordCountSpan.classList.remove("text-green-600");
-                wordCountSpan.classList.add("text-red-600");
-              } else {
-                wordCountSpan.classList.remove("text-red-600");
-                wordCountSpan.classList.add("text-green-600");
-              }
-            }
+          // ... existing code ... -->
+        }
+      }
+
+      /**
+       * Clears a user's answer for a 'matching' type question.
+       * @param {string} questionNumber - The question number to clear (e.g., "21").
+       */
+      function clearMatchingAnswer(questionNumber) {
+        const questionId = `q${questionNumber}`;
+        // Only proceed if there is an answer to clear
+        if (testState.userAnswers[questionId]) {
+          testState.userAnswers[questionId] = "";
+          const dropzone = document.getElementById(
+            `dropzone-${questionNumber}`
+          );
+          if (dropzone) {
+            dropzone.innerHTML = "";
+            dropzone.classList.remove("answered");
           }
+          updateQuestionPalette();
+        }
+      }
+
+      /**
+       * Handles user answer input for the new 'matching' drag-and-drop questions.
+       * @param {string} questionNumber - The question number (e.g., "21").
+       * @param {string} optionLetter - The letter of the dropped option (e.g., "A").
+       */
+      function handleMatchingAnswer(questionNumber, optionLetter) {
+        const questionId = `q${questionNumber}`;
+        testState.userAnswers[questionId] = optionLetter;
+        updateQuestionPalette();
+        const dropzone = document.getElementById(`dropzone-${questionNumber}`);
+        const optionEl = document.querySelector(
+          `.matching-option[data-option-id="${optionLetter}"]`
+        );
+        if (dropzone && optionEl) {
+          // The new content must also be draggable to allow it to be moved or cleared
+          dropzone.innerHTML = `<div class="matching-option-content" draggable="true" data-option-id="${optionLetter}" data-source-question-number="${questionNumber}">${optionEl.innerHTML}</div>`;
+          dropzone.classList.add("answered");
         }
       }
 
@@ -1628,42 +1975,58 @@
        * Updates the question palette to reflect answered/unanswered questions.
        */
       function updateQuestionPalette() {
+        const multiAnswerSlotCounter = {}; // { questionId: count }
+
         questionPaletteItems.forEach((item) => {
-          // Update desktop palette
           const desktopButton = document.querySelector(
             `#question-palette-desktop .question-palette-btn[data-palette-number="${item.paletteNumber}"]`
           );
-          if (desktopButton) {
-            const userAnswer = testState.userAnswers[item.questionId];
-            if (userAnswer && userAnswer !== "" && !Array.isArray(userAnswer)) {
-              desktopButton.classList.remove("unanswered");
-              desktopButton.classList.add("answered");
-            } else if (Array.isArray(userAnswer) && userAnswer.length > 0) {
-              desktopButton.classList.remove("unanswered");
-              desktopButton.classList.add("answered");
-            } else {
-              desktopButton.classList.remove("answered");
-              desktopButton.classList.add("unanswered");
-            }
-          }
-
-          // Update mobile palette
           const mobileButton = document.querySelector(
             `#question-palette-mobile .question-palette-btn[data-palette-number="${item.paletteNumber}"]`
           );
-          if (mobileButton) {
+
+          const processButton = (button) => {
+            if (!button) return;
+
             const userAnswer = testState.userAnswers[item.questionId];
-            if (userAnswer && userAnswer !== "" && !Array.isArray(userAnswer)) {
-              mobileButton.classList.remove("unanswered");
-              mobileButton.classList.add("answered");
-            } else if (Array.isArray(userAnswer) && userAnswer.length > 0) {
-              mobileButton.classList.remove("unanswered");
-              mobileButton.classList.add("answered");
+            let isAnswered = false;
+
+            if (item.isMultiAnswerPart) {
+              // This is a slot in a multi-answer question
+              if (!multiAnswerSlotCounter[item.questionId]) {
+                multiAnswerSlotCounter[item.questionId] = 0;
+              }
+              const answeredCount = Array.isArray(userAnswer)
+                ? userAnswer.length
+                : 0;
+              if (multiAnswerSlotCounter[item.questionId] < answeredCount) {
+                isAnswered = true;
+              }
+              multiAnswerSlotCounter[item.questionId]++;
             } else {
-              mobileButton.classList.remove("answered");
-              mobileButton.classList.add("unanswered");
+              // Standard logic for other question types
+              if (
+                userAnswer &&
+                userAnswer !== "" &&
+                !Array.isArray(userAnswer)
+              ) {
+                isAnswered = true;
+              } else if (Array.isArray(userAnswer) && userAnswer.length > 0) {
+                isAnswered = true;
+              }
             }
-          }
+
+            if (isAnswered) {
+              button.classList.remove("unanswered");
+              button.classList.add("answered");
+            } else {
+              button.classList.remove("answered");
+              button.classList.add("unanswered");
+            }
+          };
+
+          processButton(desktopButton);
+          processButton(mobileButton);
         });
         highlightCurrentQuestionInPalette();
       }
@@ -2021,30 +2384,44 @@
                 qGroup.type === "yes_no_not_given" ||
                 qGroup.type === "multiple_choice_multiple_answers" ||
                 qGroup.type === "which_paragraph_contains" ||
-                qGroup.type === "matching_sentence_endings"
+                qGroup.type === "matching_sentence_endings" ||
+                qGroup.type === "matching" // Add the new type here
               ) {
                 if (qGroup.questions && qGroup.questions.length > 0) {
-                  qGroup.questions.forEach((question) => {
-                    let userAnswer;
-                    let correctAnswer;
-                    let isCorrect = false;
+                  if (qGroup.type === "matching") {
+                    qGroup.matchingItems.forEach((item) => {
+                      const questionId = `q${item.number}`;
+                      const userAnswer = testState.userAnswers[questionId];
+                      const correctAnswer = item.correctAnswer;
+                      if (userAnswer === correctAnswer) {
+                        correctAnswersCount++;
+                      }
+                    });
+                  } else {
+                    qGroup.questions.forEach((question) => {
+                      let userAnswer;
+                      let correctAnswer;
+                      let isCorrect = false;
 
-                    if (qGroup.type === "multiple_choice_multiple_answers") {
-                      userAnswer = testState.userAnswers[question.id] || [];
-                      correctAnswer = question.correctAnswer || [];
-                      isCorrect =
-                        userAnswer.length === correctAnswer.length &&
-                        userAnswer.every((ans) => correctAnswer.includes(ans));
-                    } else {
-                      userAnswer = testState.userAnswers[question.id];
-                      correctAnswer = question.correctAnswer;
-                      isCorrect = userAnswer === correctAnswer;
-                    }
+                      if (qGroup.type === "multiple_choice_multiple_answers") {
+                        userAnswer = testState.userAnswers[question.id] || [];
+                        correctAnswer = question.correctAnswer || [];
+                        isCorrect =
+                          userAnswer.length === correctAnswer.length &&
+                          userAnswer.every((ans) =>
+                            correctAnswer.includes(ans)
+                          );
+                      } else {
+                        userAnswer = testState.userAnswers[question.id];
+                        correctAnswer = question.correctAnswer;
+                        isCorrect = userAnswer === correctAnswer;
+                      }
 
-                    if (isCorrect) {
-                      correctAnswersCount++;
-                    }
-                  });
+                      if (isCorrect) {
+                        correctAnswersCount++;
+                      }
+                    });
+                  }
                 }
               } else if (qGroup.type === "table_fill_in_the_blank") {
                 if (
@@ -2103,6 +2480,11 @@
                       if (isCorrect) {
                         correctAnswersCount++;
                       }
+                    } else if (question.type === "flow_chart") {
+                      correctAnswersCount += scoreFlowChartQuestion(
+                        question,
+                        testState.userAnswers
+                      );
                     } else if (question.type === "table_fill_in_the_blank") {
                       if (question.correctAnswer) {
                         for (const subQuestionId in question.correctAnswer) {
@@ -2338,6 +2720,7 @@
                                     .map((qGroup) => {
                                       let groupReviewHtml = "";
                                       if (
+                                        qGroup.type === "matching" || // Add new type here
                                         qGroup.type === "matching_headings" ||
                                         qGroup.type ===
                                           "which_paragraph_contains" ||
@@ -2348,17 +2731,19 @@
                                           qGroup.questions &&
                                           qGroup.questions.length > 0
                                         ) {
-                                          groupReviewHtml = qGroup.questions
-                                            .map((question) => {
-                                              const userAnswerDisplay =
-                                                userAnswers[question.id] ||
-                                                "Unattempted";
-                                              const correctAnswerDisplay =
-                                                question.correctAnswer;
-                                              const isCorrect =
-                                                userAnswerDisplay ===
-                                                correctAnswerDisplay;
-                                              return `
+                                          if (qGroup.type === "matching") {
+                                            groupReviewHtml = qGroup.matchingItems
+                                              .map((item) => {
+                                                const questionId = `q${item.number}`;
+                                                const userAnswerDisplay =
+                                                  userAnswers[questionId] ||
+                                                  "Unattempted";
+                                                const correctAnswerDisplay =
+                                                  item.correctAnswer;
+                                                const isCorrect =
+                                                  userAnswerDisplay ===
+                                                  correctAnswerDisplay;
+                                                return `
                                                 <div class="p-4 rounded-lg border ${
                                                   isCorrect
                                                     ? "border-green-300 bg-green-50"
@@ -2366,12 +2751,8 @@
                                                 }">
                                                     <p class="font-semibold text-gray-900 mb-2">
                                                         Question ${
-                                                          question.questionNumber
-                                                        }: ${
-                                                question.text ||
-                                                question.statement ||
-                                                `Paragraph ${question.paragraphId}`
-                                              }
+                                                          item.number
+                                                        }: ${item.text}
                                                     </p>
                                                     <p class="text-sm text-gray-700">
                                                         Your Answer: <span class="${
@@ -2385,8 +2766,49 @@
                                                     </p>
                                                 </div>
                                             `;
-                                            })
-                                            .join("");
+                                              })
+                                              .join("");
+                                          } else {
+                                            groupReviewHtml = qGroup.questions
+                                              .map((question) => {
+                                                const userAnswerDisplay =
+                                                  userAnswers[question.id] ||
+                                                  "Unattempted";
+                                                const correctAnswerDisplay =
+                                                  question.correctAnswer;
+                                                const isCorrect =
+                                                  userAnswerDisplay ===
+                                                  correctAnswerDisplay;
+                                                return `
+                                                <div class="p-4 rounded-lg border ${
+                                                  isCorrect
+                                                    ? "border-green-300 bg-green-50"
+                                                    : "border-red-300 bg-red-50"
+                                                }">
+                                                    <p class="font-semibold text-gray-900 mb-2">
+                                                        Question ${
+                                                          question.questionNumber
+                                                        }: ${
+                                                  question.text ||
+                                                  question.statement ||
+                                                  `Paragraph ${question.paragraphId}`
+                                                }
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Your Answer: <span class="${
+                                                          isCorrect
+                                                            ? "correct-answer"
+                                                            : "incorrect-answer"
+                                                        }">${userAnswerDisplay}</span>
+                                                    </p>
+                                                    <p class="text-sm text-gray-700">
+                                                        Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
+                                                    </p>
+                                                </div>
+                                            `;
+                                              })
+                                              .join("");
+                                          }
                                         }
                                       } else if (
                                         qGroup.type ===
@@ -2449,37 +2871,56 @@
                                             question.correctAnswer || [];
                                           const userAnswerDisplay =
                                             userAnsArr.length > 0
-                                              ? userAnsArr.join(", ")
+                                              ? userAnsArr.sort().join(", ")
                                               : "Unattempted";
-                                          const correctAnswerDisplay = correctAnsArr.join(
-                                            ", "
+                                          const correctAnswerDisplay = correctAnsArr
+                                            .sort()
+                                            .join(", ");
+
+                                          // New logic for correctness
+                                          const correctUserChoices = userAnsArr.filter(
+                                            (ans) => correctAnsArr.includes(ans)
                                           );
-                                          const isCorrect =
-                                            userAnsArr.length ===
-                                              correctAnsArr.length &&
-                                            userAnsArr.every((ans) =>
-                                              correctAnsArr.includes(ans)
-                                            );
+                                          const numberCorrect =
+                                            correctUserChoices.length;
+                                          const totalCorrect =
+                                            correctAnsArr.length;
+
+                                          let resultClass =
+                                            "border-red-300 bg-red-50"; // Default incorrect
+                                          // Fully correct if user got all answers right AND didn't select any extra wrong ones
+                                          if (
+                                            numberCorrect === totalCorrect &&
+                                            userAnsArr.length === totalCorrect
+                                          ) {
+                                            resultClass =
+                                              "border-green-300 bg-green-50"; // Fully correct
+                                          } else if (numberCorrect > 0) {
+                                            // Use a yellow/orange color for partial correctness
+                                            resultClass =
+                                              "border-yellow-400 bg-yellow-50";
+                                          }
+
                                           groupReviewHtml = `
-                                                <div class="p-4 rounded-lg border ${
-                                                  isCorrect
-                                                    ? "border-green-300 bg-green-50"
-                                                    : "border-red-300 bg-red-50"
-                                                }">
+                                                <div class="p-4 rounded-lg border ${resultClass}">
                                                     <p class="font-semibold text-gray-900 mb-2">
-                                                        Question ${
+                                                        Questions ${
                                                           question.questionNumber
                                                         }: ${question.text}
                                                     </p>
                                                     <p class="text-sm text-gray-700">
-                                                        Your Answer: <span class="${
-                                                          isCorrect
-                                                            ? "correct-answer"
-                                                            : "incorrect-answer"
-                                                        }">${userAnswerDisplay}</span>
+                                                        Your Answer: <span class="font-bold">${userAnswerDisplay}</span>
+                                                        <span class="ml-2 font-semibold ${
+                                                          numberCorrect ===
+                                                            totalCorrect &&
+                                                          userAnsArr.length ===
+                                                            totalCorrect
+                                                            ? "text-green-700"
+                                                            : "text-yellow-800"
+                                                        }">(${numberCorrect}/${totalCorrect} correct)</span>
                                                     </p>
                                                     <p class="text-sm text-gray-700">
-                                                        Correct Answer: <span class="correct-answer">${correctAnswerDisplay}</span>
+                                                        Correct Answer: <span class="font-bold text-green-700">${correctAnswerDisplay}</span>
                                                     </p>
                                                 </div>
                                             `;
@@ -2671,6 +3112,13 @@
                                                     userAnswerDisplay.toLowerCase() ===
                                                     correctAnswerDisplay.toLowerCase();
                                                 }
+                                              } else if (
+                                                question.type === "flow_chart"
+                                              ) {
+                                                return renderFlowChartFeedback(
+                                                  question,
+                                                  userAnswers
+                                                );
                                               } else if (
                                                 question.type ===
                                                 "table_fill_in_the_blank"
@@ -2909,6 +3357,18 @@
        * Navigates to the next section of the test (for Reading/Writing).
        */
       function goToNextSection() {
+        // Save current passage state before navigating
+        if (currentModuleId === "reading") {
+          const passageArea = document.querySelector(
+            ".passage-content-area .prose"
+          );
+          if (passageArea) {
+            const currentSectionId =
+              currentTest.sections[testState.currentSectionIndex].id;
+            testState.passageStates[currentSectionId] = passageArea.innerHTML;
+          }
+        }
+
         if (testState.currentSectionIndex < currentTest.sections.length - 1) {
           testState.currentSectionIndex++;
           renderApp();
@@ -2926,6 +3386,18 @@
        * Navigates to the previous section of the test (for Reading/Writing).
        */
       function goToPreviousSection() {
+        // Save current passage state before navigating
+        if (currentModuleId === "reading") {
+          const passageArea = document.querySelector(
+            ".passage-content-area .prose"
+          );
+          if (passageArea) {
+            const currentSectionId =
+              currentTest.sections[testState.currentSectionIndex].id;
+            testState.passageStates[currentSectionId] = passageArea.innerHTML;
+          }
+        }
+
         if (testState.currentSectionIndex > 0) {
           testState.currentSectionIndex--;
           renderApp();
@@ -3154,7 +3626,8 @@
                             ${
                               currentModuleId === "reading" &&
                               currentSection.passageContent
-                                ? currentSection.passageContent
+                                ? testState.passageStates[currentSection.id] ||
+                                  currentSection.passageContent
                                 : "<p class='text-gray-500'>No passage available for this section/module.</p>"
                             }
                         </div>
@@ -3287,6 +3760,30 @@
             `;
         }
 
+        // --- START: Passage Interaction Logic ---
+        const passageArea = appDiv.querySelector(
+          ".passage-content-area .prose"
+        );
+        if (passageArea) {
+          // Listen for text selection
+          passageArea.addEventListener("mouseup", handlePassageMouseUp);
+          passageArea.addEventListener("touchend", handlePassageMouseUp); // For mobile
+
+          // Listen for clicks on notes (event delegation)
+          passageArea.addEventListener("click", (event) => {
+            if (
+              event.target.classList.contains("note-text") &&
+              event.target.id
+            ) {
+              const noteText = highlightState.notes[event.target.id];
+              if (noteText) {
+                showNote(noteText);
+              }
+            }
+          });
+        }
+        // --- END: Passage Interaction Logic ---
+
         // Helper function to render writing instructions
         function renderWritingInstructions(task) {
           return `
@@ -3336,7 +3833,181 @@
           return section.questionGroups
             .map((qGroup) => {
               let questionsHtml = "";
-              if (qGroup.type === "matching_headings") {
+              if (qGroup.type === "matching") {
+                const optionsHtml = Object.entries(qGroup.matchingOptions)
+                  .filter(([key]) => key !== "title")
+                  .map(
+                    ([key, value]) => `
+                        <div class="matching-option" draggable="true" data-option-id="${key}">
+                            <strong>${key}.</strong> ${value}
+                        </div>
+                    `
+                  )
+                  .join("");
+
+                const tableRowsHtml = qGroup.matchingItems
+                  .map((item) => {
+                    const userAnswer = testState.userAnswers[`q${item.number}`];
+                    const dropzoneContent = userAnswer
+                      ? `<div class="matching-option-content" draggable="true" data-option-id="${userAnswer}" data-source-question-number="${item.number}"><strong>${userAnswer}.</strong> ${qGroup.matchingOptions[userAnswer]}</div>`
+                      : "";
+
+                    return `
+                        <tr id="question-${item.number}">
+                            <td class="matching-question-text font-semibold">${
+                              item.number
+                            }. ${item.text}</td>
+                            <td>
+                                <div class="matching-dropzone ${
+                                  userAnswer ? "answered" : ""
+                                }" id="dropzone-${
+                      item.number
+                    }" data-question-number="${item.number}">
+                                    ${dropzoneContent}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                  })
+                  .join("");
+
+                questionsHtml = `
+                    <style>
+                        .matching-layout-container {
+                            display: grid;
+                            grid-template-columns: 1fr;
+                            gap: 24px;
+                            margin-bottom: 2vw;
+                        }
+                        @media (min-width: 1024px) {
+                            .matching-layout-container {
+                                grid-template-columns: 3fr 2fr;
+                            }
+                        }
+                        .matching-options-box {
+                            background-color: #f0f4f8;
+                            border: 1px solid #e2e8f0;
+                            border-radius: 12px;
+                            padding: 16px;
+                            align-self: start; /* Stick to top */
+                            transition: all 0.2s ease;
+                        }
+                        .matching-options-box.drag-over-clear {
+                            border-style: dashed;
+                            border-color: #f56565;
+                            background-color: #fed7d7;
+                        }
+                        .matching-options-box h4 {
+                            font-weight: 700;
+                            margin-top: 0;
+                            margin-bottom: 12px;
+                            color: #2c5282;
+                            font-size: 1.1rem;
+                        }
+                        .matching-option {
+                            background-color: white;
+                            border: 1px solid #cbd5e0;
+                            border-radius: 8px;
+                            padding: 10px 12px;
+                            margin-bottom: 8px;
+                            cursor: grab;
+                            transition: all 0.2s ease;
+                            user-select: none;
+                            font-size: 0.9rem;
+                        }
+                        .matching-option:active {
+                            cursor: grabbing;
+                            background-color: #e2e8f0;
+                            transform: scale(1.02);
+                        }
+                        .matching-option.dragging {
+                            opacity: 0.5;
+                            border-style: dashed;
+                        }
+                        .matching-table-container {
+                            overflow-x: auto;
+                        }
+                        .matching-table {
+                            width: 100%;
+                            border-collapse: separate;
+                            border-spacing: 0;
+                            border: 1px solid #e2e8f0;
+                            border-radius: 12px;
+                            overflow: hidden;
+                        }
+                        .matching-table td {
+                            padding: 16px;
+                            vertical-align: middle;
+                            border-bottom: 1px solid #e2e8f0;
+                        }
+                        .matching-table tr:last-child td {
+                             border-bottom: none;
+                        }
+                        .matching-table tr:nth-child(even) {
+                             background-color: #f7fafc;
+                        }
+                        .matching-question-text {
+                            color: #2d3748;
+                            width: 60%;
+                        }
+                        .matching-dropzone {
+                            width: 100%;
+                            min-height: 50px;
+                            border: 2px dashed #a0b4c8;
+                            border-radius: 8px;
+                            padding: 5px;
+                            color: #a0aec0;
+                            transition: all 0.2s ease;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        .matching-dropzone.drag-over {
+                            background-color: #bee3f8;
+                            border-color: #3182ce;
+                        }
+                        .matching-dropzone.dragging-source {
+                            background-color: #fefcbf !important;
+                            border-color: #f6e05e;
+                        }
+                        /* When answered, remove placeholder styles */
+                        .matching-dropzone.answered {
+                            border-style: none;
+                            background-color: transparent;
+                            padding: 0;
+                        }
+                        /* The styled content inside the dropzone */
+                        .matching-option-content {
+                            background-color: white;
+                            border: 1px solid #a0b4c8;
+                            border-radius: 8px;
+                            padding: 10px 12px;
+                            font-size: 0.9rem;
+                            text-align: left;
+                            width: 100%;
+                            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+                            cursor: grab;
+                        }
+                        .matching-option-content:active {
+                            cursor: grabbing;
+                            transform: scale(1.02);
+                        }
+                    </style>
+                    <div class="matching-layout-container">
+                        <div class="matching-table-container">
+                            <table class="matching-table">
+                                <tbody>
+                                    ${tableRowsHtml}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="matching-options-box">
+                            <h4>${qGroup.matchingOptions.title}</h4>
+                            ${optionsHtml}
+                        </div>
+                    </div>
+                `;
+              } else if (qGroup.type === "matching_headings") {
                 if (qGroup.questions && qGroup.questions.length > 0) {
                   questionsHtml = `
                       <div class="question-item" id="question-${
@@ -3822,30 +4493,39 @@
                                                              ] || ""
                                                            }" class="${inputClass}">`;
 
+                        // Create a styled number badge
+                        const numberBadge = `<span class="inline-flex items-center justify-center w-7 h-7 mr-2 text-sm font-bold text-white bg-blue-600 rounded-full shadow-lg transform -translate-y-1">${question.questionNumber}</span>`;
+
+                        // Combine the styled number and the input field
+                        const numberedInputField = `${numberBadge}${inputField}`;
+
                         let questionTextContent = "";
                         let inputElementHtml = "";
 
                         if (question.inputPlacement === "newline") {
-                          questionTextContent = "";
-                          inputElementHtml = inputField;
+                          questionTextContent = question.text; // The question text itself
+                          inputElementHtml = numberedInputField; // The numbered input goes on the line below
                         } else {
-                          // For inline inputs within text (like summary completion)
-                          // Replace [GAP] with the input field
+                          // For inline inputs, replace [GAP] with the numbered input field
                           questionTextContent = question.text.includes("[GAP]")
-                            ? question.text.replace(/\[GAP\]/g, inputField)
-                            : `${question.text} ${inputField}`; // Fallback if [GAP] isn't present
+                            ? question.text.replace(
+                                /\[GAP\]/g,
+                                numberedInputField
+                              )
+                            : `${question.text} ${numberedInputField}`; // Fallback if [GAP] isn't present
                           inputElementHtml = "";
                         }
 
                         questionHtml = `
                                 <div class="question-item" id="question-${question.questionNumber}">
                                     <p class="inline-question-text">
-                                        <span class="font-semibold text-lg text-gray-800">${question.questionNumber}.</span>
                                         ${questionTextContent}
                                     </p>
                                     ${inputElementHtml}
                                 </div>
                               `;
+                      } else if (question.type === "flow_chart") {
+                        questionHtml = renderFlowChartQuestion(question);
                       } else if (question.type === "table_fill_in_the_blank") {
                         if (
                           question.tableData &&
@@ -3993,6 +4673,113 @@
               ) {
                 const questionId = event.target.id.substring(2);
                 handleAnswerInput(questionId, event.target.value);
+              }
+            });
+
+            // Corrected drag-and-drop event listener attachment
+            const matchingContainers = testQuestionsContainer.querySelectorAll(
+              ".matching-layout-container"
+            );
+            matchingContainers.forEach((matchingContainer) => {
+              if (!matchingContainer) return;
+
+              matchingContainer.addEventListener("dragstart", (e) => {
+                let dragData = null;
+
+                if (e.target.classList.contains("matching-option")) {
+                  dragData = {
+                    optionId: e.target.dataset.optionId,
+                    sourceQuestion: null,
+                  };
+                  e.target.classList.add("dragging");
+                } else if (
+                  e.target.classList.contains("matching-option-content")
+                ) {
+                  dragData = {
+                    optionId: e.target.dataset.optionId,
+                    sourceQuestion: e.target.dataset.sourceQuestionNumber,
+                  };
+                  e.target
+                    .closest(".matching-dropzone")
+                    .classList.add("dragging-source");
+                }
+
+                if (dragData) {
+                  e.dataTransfer.setData(
+                    "application/json",
+                    JSON.stringify(dragData)
+                  );
+                  e.dataTransfer.effectAllowed = "move";
+                }
+              });
+
+              matchingContainer.addEventListener("dragend", (e) => {
+                document
+                  .querySelectorAll(".dragging, .dragging-source")
+                  .forEach((el) => {
+                    el.classList.remove("dragging", "dragging-source");
+                  });
+              });
+
+              const dropzones = matchingContainer.querySelectorAll(
+                ".matching-dropzone"
+              );
+              dropzones.forEach((zone) => {
+                zone.addEventListener("dragover", (e) => {
+                  e.preventDefault();
+                  zone.classList.add("drag-over");
+                });
+                zone.addEventListener("dragleave", (e) => {
+                  zone.classList.remove("drag-over");
+                });
+                zone.addEventListener("drop", (e) => {
+                  e.preventDefault();
+                  zone.classList.remove("drag-over");
+                  try {
+                    const data = JSON.parse(
+                      e.dataTransfer.getData("application/json")
+                    );
+                    const targetQuestionNumber =
+                      e.currentTarget.dataset.questionNumber;
+
+                    if (
+                      data.sourceQuestion &&
+                      data.sourceQuestion !== targetQuestionNumber
+                    ) {
+                      clearMatchingAnswer(data.sourceQuestion);
+                    }
+                    handleMatchingAnswer(targetQuestionNumber, data.optionId);
+                  } catch (err) {
+                    console.error("Error processing drop event:", err);
+                  }
+                });
+              });
+
+              const optionsBox = matchingContainer.querySelector(
+                ".matching-options-box"
+              );
+              if (optionsBox) {
+                optionsBox.addEventListener("dragover", (e) => {
+                  e.preventDefault();
+                  optionsBox.classList.add("drag-over-clear");
+                });
+                optionsBox.addEventListener("dragleave", (e) => {
+                  optionsBox.classList.remove("drag-over-clear");
+                });
+                optionsBox.addEventListener("drop", (e) => {
+                  e.preventDefault();
+                  optionsBox.classList.remove("drag-over-clear");
+                  try {
+                    const data = JSON.parse(
+                      e.dataTransfer.getData("application/json")
+                    );
+                    if (data.sourceQuestion) {
+                      clearMatchingAnswer(data.sourceQuestion);
+                    }
+                  } catch (err) {
+                    console.error("Error processing drop event:", err);
+                  }
+                });
               }
             });
           }
@@ -4169,15 +4956,31 @@
               } else {
                 // Existing logic for Listening/Reading
                 // Iterate through questionPaletteItems to accurately count unanswered questions
+                const processedMultiAnswerIds = new Set();
                 questionPaletteItems.forEach((item) => {
-                  const userAnswer = testState.userAnswers[item.questionId];
-                  if (
-                    userAnswer === undefined ||
-                    userAnswer === null ||
-                    userAnswer === "" ||
-                    (Array.isArray(userAnswer) && userAnswer.length === 0)
-                  ) {
-                    unansweredCount++;
+                  if (item.isMultiAnswerPart) {
+                    if (!processedMultiAnswerIds.has(item.questionId)) {
+                      const userAnswer = testState.userAnswers[item.questionId];
+                      const answeredCount = Array.isArray(userAnswer)
+                        ? userAnswer.length
+                        : 0;
+                      const requiredCount = item.requiredAnswers || 0;
+                      const remaining = requiredCount - answeredCount;
+                      if (remaining > 0) {
+                        unansweredCount += remaining;
+                      }
+                      processedMultiAnswerIds.add(item.questionId);
+                    }
+                  } else {
+                    const userAnswer = testState.userAnswers[item.questionId];
+                    if (
+                      userAnswer === undefined ||
+                      userAnswer === null ||
+                      userAnswer === "" ||
+                      (Array.isArray(userAnswer) && userAnswer.length === 0)
+                    ) {
+                      unansweredCount++;
+                    }
                   }
                 });
 
@@ -4204,11 +5007,99 @@
 
       // Expose functions to global scope for oninput/onchange attributes
       window.handleAnswerInput = handleAnswerInput;
+      window.handleMatchingAnswer = handleMatchingAnswer;
       window.setActiveReadingTab = setActiveReadingTab; // Expose for tab buttons
       window.setActiveWritingTab = setActiveWritingTab; // Expose for tab buttons
 
       // Initialization Logic
       window.onload = async function () {
+        // --- START: Dynamic creation of highlighter UI elements ---
+        const highlighterStyles = `
+            .highlighted-text { background-color: #fffb8f; border-radius: 3px; padding: 1px 0; }
+            .note-text { background-color: #a7e1ff; border-radius: 3px; padding: 1px 0; cursor: pointer; border-bottom: 2px dotted #005a8d; }
+            #selection-popover { 
+                position: absolute; 
+                background-color: #333; 
+                color: white; 
+                padding: 5px 10px; 
+                border-radius: 8px; 
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+                z-index: 1000; 
+                display: flex; 
+                gap: 10px; 
+                transition: opacity 0.1s ease-in-out;
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+            #selection-popover.visible {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+            }
+            #selection-popover button { background: none; border: none; color: white; cursor: pointer; font-size: 14px; padding: 5px; }
+            #selection-popover button:hover { color: #a7e1ff; }
+            #note-modal-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1001; }
+            #note-modal-container.hidden { display: none; }
+            #note-modal-content { background-color: white; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+            #note-modal-content h3 { margin-top: 0; font-size: 1.25rem; font-weight: bold; color: #333; }
+            #note-textarea { width: 100%; margin-top: 10px; border: 1px solid #ccc; border-radius: 8px; padding: 10px; font-family: inherit; resize: vertical; }
+            #note-modal-buttons { margin-top: 15px; text-align: right; display: flex; gap: 10px; justify-content: flex-end; }
+            #note-modal-buttons button { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
+            #save-note-btn { background-color: #2563eb; color: white; }
+            #cancel-note-btn { background-color: #e5e7eb; color: #374151; }
+        `;
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = highlighterStyles;
+        document.head.appendChild(styleSheet);
+
+        const popover = document.createElement("div");
+        popover.id = "selection-popover";
+        popover.innerHTML = `
+            <button id="highlight-btn" title="Highlight selection">Highlight</button>
+            <button id="add-note-btn" title="Add note to selection">Add Note</button>
+        `;
+        document.body.appendChild(popover);
+
+        const noteModal = document.createElement("div");
+        noteModal.id = "note-modal-container";
+        noteModal.className = "hidden";
+        noteModal.innerHTML = `
+            <div id="note-modal-content" onclick="event.stopPropagation();">
+                <h3>Add a Note</h3>
+                <textarea id="note-textarea" rows="4" placeholder="Type your note here..."></textarea>
+                <div id="note-modal-buttons">
+                    <button id="cancel-note-btn">Cancel</button>
+                    <button id="save-note-btn">Save</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(noteModal);
+
+        // Add event listeners for highlighter UI
+        document
+          .getElementById("highlight-btn")
+          .addEventListener("click", () => {
+            applyHighlight("highlight");
+            hideSelectionPopover();
+          });
+        document
+          .getElementById("add-note-btn")
+          .addEventListener("click", () => {
+            showNoteModal();
+            hideSelectionPopover();
+          });
+        document
+          .getElementById("save-note-btn")
+          .addEventListener("click", saveNote);
+        document
+          .getElementById("cancel-note-btn")
+          .addEventListener("click", hideNoteModal);
+        document
+          .getElementById("note-modal-container")
+          .addEventListener("click", hideNoteModal); // Close on overlay click
+        // --- END: Dynamic creation of highlighter UI elements ---
+
         // Initialize Firebase Auth and listen for state changes
         initFirebaseAuth(updateAuthUI)
           .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
@@ -4273,7 +5164,13 @@
                   // Not a completed test, initialize for a new test
                   testState.testCompleted = false;
                   testState.userAnswers = {}; // Reset user answers
+                  testState.passageStates = {}; // Reset passage states
                   questionPaletteItems = []; // Reset palette items
+                  highlightState = {
+                    notes: {},
+                    currentSelection: null,
+                    highlightCounter: 0,
+                  }; // Reset highlights and notes
                   testState.currentQuestionIndex = 0; // Reset for listening
                   testState.currentSectionIndex = 0; // Reset for reading/writing
                   testState.activeReadingTab = "questions"; // Default to questions tab for reading
@@ -4295,8 +5192,6 @@
                             qGroup.type === "true_false_not_given" ||
                             qGroup.type === "matching_items" ||
                             qGroup.type === "which_paragraph_contains" ||
-                            qGroup.type ===
-                              "multiple_choice_multiple_answers" ||
                             qGroup.type === "matching_sentence_endings"
                           ) {
                             qGroup.questions.forEach((question) => {
@@ -4307,6 +5202,50 @@
                                 htmlElementId: `question-${question.questionNumber}`,
                               });
                               currentPaletteNumber++;
+                            });
+                          } else if (qGroup.type === "matching") {
+                            qGroup.matchingItems.forEach((item) => {
+                              const questionId = `q${item.number}`;
+                              testState.userAnswers[questionId] = "";
+                              questionPaletteItems.push({
+                                paletteNumber: currentPaletteNumber,
+                                questionId: questionId,
+                                htmlElementId: `question-${item.number}`,
+                              });
+                              currentPaletteNumber++;
+                            });
+                          } else if (
+                            qGroup.type === "multiple_choice_multiple_answers"
+                          ) {
+                            qGroup.questions.forEach((question) => {
+                              testState.userAnswers[question.id] = []; // Initialize as array
+                              const questionNumberRange = String(
+                                question.questionNumber
+                              ).split("-");
+                              if (questionNumberRange.length === 2) {
+                                const start = parseInt(questionNumberRange[0]);
+                                const end = parseInt(questionNumberRange[1]);
+                                const count = end - start + 1;
+                                for (let i = 0; i < count; i++) {
+                                  questionPaletteItems.push({
+                                    paletteNumber: currentPaletteNumber,
+                                    questionId: question.id, // All parts point to the same question ID
+                                    htmlElementId: `question-${question.questionNumber}`,
+                                    isMultiAnswerPart: true,
+                                    requiredAnswers: count,
+                                  });
+                                  currentPaletteNumber++;
+                                }
+                              } else {
+                                // Fallback for single number (should not happen for this type but for safety)
+                                questionPaletteItems.push({
+                                  paletteNumber: currentPaletteNumber,
+                                  questionId: question.id,
+                                  htmlElementId: `question-${question.questionNumber}`,
+                                  isMultiAnswerPart: false, // Treat as a normal question
+                                });
+                                currentPaletteNumber++;
+                              }
                             });
                           } else if (
                             qGroup.type === "table_fill_in_the_blank"
@@ -4336,6 +5275,22 @@
                                     });
                                     currentPaletteNumber++;
                                   }
+                                }
+                              } else if (question.type === "flow_chart") {
+                                if (
+                                  question.steps &&
+                                  question.steps.length > 0
+                                ) {
+                                  question.steps.forEach((step) => {
+                                    const questionId = `q${step.questionNumber}`;
+                                    testState.userAnswers[questionId] = "";
+                                    questionPaletteItems.push({
+                                      paletteNumber: currentPaletteNumber,
+                                      questionId: questionId,
+                                      htmlElementId: `question-${step.questionNumber}`,
+                                    });
+                                    currentPaletteNumber++;
+                                  });
                                 }
                               } else {
                                 testState.userAnswers[question.id] = "";
@@ -4408,8 +5363,53 @@
                   const audioPlayer = document.getElementById(
                     "test-audio-player"
                   );
-                  if (audioPlayer) {
+                  if (audioPlayer && currentTest.audioUrl) {
                     audioPlayer.src = currentTest.audioUrl;
+
+                    // --- IELTS Listening Audio Rules ---
+                    if (currentModuleId === "listening") {
+                      // The 'loadeddata' event ensures we can get the duration and play the audio.
+                      audioPlayer.addEventListener("loadeddata", () => {
+                        // Auto-start the audio
+                        audioPlayer
+                          .play()
+                          .catch((e) =>
+                            console.error(
+                              "Autoplay was prevented by the browser:",
+                              e
+                            )
+                          );
+                      });
+
+                      let lastTime = 0;
+
+                      // 1. Prevent pausing
+                      audioPlayer.addEventListener("pause", () => {
+                        // Silently resume if a pause is attempted before the audio ends.
+                        if (!audioPlayer.ended) {
+                          audioPlayer.play();
+                        }
+                      });
+
+                      // 2. Prevent seeking (rewinding and forwarding)
+                      audioPlayer.addEventListener("timeupdate", () => {
+                        // If the time jumps by more than 1 second, it's a seek attempt. Reset it.
+                        // We check lastTime to avoid an issue on initial load.
+                        if (
+                          lastTime &&
+                          Math.abs(audioPlayer.currentTime - lastTime) > 1
+                        ) {
+                          audioPlayer.currentTime = lastTime;
+                        }
+                        lastTime = audioPlayer.currentTime;
+                      });
+
+                      // 3. Prevent replay after the audio has finished
+                      audioPlayer.addEventListener("ended", () => {
+                        // Silently do nothing. The timeupdate logic prevents seeking back to the start.
+                      });
+                    }
+                    // --- End of IELTS Listening Audio Rules ---
                   }
                   renderApp(); // Render test UI
                 }
