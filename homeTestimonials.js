@@ -180,6 +180,11 @@ const renderTestimonials = () => {
           (a.name || "").localeCompare(b.name || "")
         ); // Example sort
 
+        // Limit the number of testimonials to a maximum of 3
+        if (testimonialsData.length > 3) {
+          testimonialsData = testimonialsData.slice(0, 3);
+        }
+
         testimonialsData.forEach((testimonial, index) => {
           const card = document.createElement("div");
           card.classList.add("testimonial-card");

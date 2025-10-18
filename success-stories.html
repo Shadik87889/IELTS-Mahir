@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Success Stories - IELTS Mahir</title>
+    <!-- Using existing CSS references, assuming they are in the same directory -->
+    <link rel="stylesheet" href="navigation-dark.css" />
+    <link rel="stylesheet" href="style.css" />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Favicon -->
+    <link
+      rel="shortcut icon"
+      href="assets/278115481_106536582034386_7446598694214552893_n.jpg"
+      type="image/x-icon"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Basic body styling */
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: #f8f9fa; /* Lighter grey background */
+        color: #343a40;
+      }
+
+      /* Main container for the page content */
+      .page-container {
+        min-height: 100vh;
+        padding-top: 80px; /* Adjust based on nav height */
+        max-width: 1400px;
+        margin: 0 auto;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+
+      /* New Page Header */
+      .testimonials-header {
+        text-align: center;
+        padding: 3rem 0;
+      }
+      .testimonials-header .main-heading {
+        font-family: "Anton", sans-serif;
+        font-size: 3rem;
+        color: #212529;
+        margin-bottom: 0.5rem;
+      }
+      .testimonials-header .subtitle {
+        font-size: 1.15rem;
+        color: #6c757d;
+        max-width: 650px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      /* Tab-based Filter Controls */
+      .filter-tabs {
+        display: flex;
+        justify-content: center;
+        border-bottom: 2px solid #dee2e6;
+        margin-bottom: 3rem;
+      }
+      .filter-tab {
+        background: none;
+        border: none;
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #6c757d;
+        position: relative;
+        transition: color 0.3s ease;
+      }
+      .filter-tab:hover {
+        color: #1e3a8a;
+      }
+      .filter-tab.active {
+        color: #1e3a8a;
+      }
+      .filter-tab.active::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #1e3a8a;
+      }
+
+      /* Responsive grid for testimonials */
+      .testimonials-page-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        padding-bottom: 4rem;
+      }
+
+      /* New styling for individual testimonial cards */
+      .testimonial-card {
+        background-color: #ffffff;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        padding: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .testimonial-card.video-card {
+        padding: 0;
+      }
+      .testimonial-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
+      }
+      .card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+      .card-header .avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 1rem;
+      }
+      .card-header .user-info {
+        text-align: left;
+      }
+      .card-header .name {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #1e3a8a;
+      }
+      .card-header .role {
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+      .card-body .text {
+        font-style: italic;
+        color: #495057;
+        font-size: 1rem;
+        line-height: 1.7;
+        border-left: 3px solid #bfdbfe;
+        padding-left: 1.5rem;
+      }
+
+      /* Video card specific styles */
+      .card-body .video-container {
+        position: relative;
+        cursor: pointer;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .card-body .video-thumbnail {
+        width: 100%;
+        display: block;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+      }
+      .card-body .tes-video {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        display: none; /* Hidden by default */
+      }
+      .card-body .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background-color: rgba(30, 58, 138, 0.8);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+      .card-body .play-button:hover {
+        background-color: rgba(30, 58, 138, 1);
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+      .video-container.playing .play-button {
+        display: none;
+      }
+      .video-container.playing .tes-video {
+        display: block;
+      }
+      .video-container.playing .video-thumbnail {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation (copied from index.html for consistency) -->
+    <nav>
+      <div class="logo-ai-parent">
+        <div class="hamburger-menu">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+        <a href="home" class="logo">
+          <img
+            src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+            alt="Ielts mahir logo"
+          />
+        </a>
+        <a href="ai-feature" class="ai-button" aria-label="AI Tools">
+          <i class="fas fa-robot" aria-hidden="true"></i>
+          <span>AI</span>
+        </a>
+      </div>
+      <!-- <div class="menu-item">
+        <a href="home">Home</a>
+        <div class="dropdown">
+          <a class="down-arrow" href="javascript:void(0)"
+            >Free Resources <span class="arrow">&gt;</span></a
+          >
+          <div class="submenu">
+            <a href="ielts-all" class="category-link">All</a>
+            <a href="ielts-speaking" class="category-link">Speaking</a>
+            <a href="ielts-writing" class="category-link">Writing</a>
+            <a href="ielts-reading" class="category-link">Reading</a>
+            <a href="ielts-listening" class="category-link">Listening</a>
+            <a href="ielts-grammar" class="category-link">Grammar</a>
+            <a href="ielts-study-plan" class="category-link">Study Plan</a>
+            <a href="higher-study" class="category-link">higher Study</a>
+            <a href="live-classes" class="category-link">Live Classes</a>
+            <a href="ielts-motivation" class="category-link"
+              >IELTS Motivation</a
+            >
+          </div>
+        </div>
+        <a href="mock-test-home">Mock Test</a>
+        <a href="quiz-home">Quizzes</a>
+        <a href="home#ielts-programs-section" class="program-menu-btn"
+          >Programs</a
+        >
+        <a href="ielts-tips-and-tricks">IELTS Tips and Tricks</a>
+        <a href="ielts-mahir-community-forum">Community Forum</a>
+        <a href="blog">Blog</a>
+        <a href="contact">Contact</a>
+      </div> -->
+      <div id="auth-buttons-container" class="auth-container">
+        <!-- Auth buttons will be loaded here -->
+      </div>
+    </nav>
+
+    <!-- Main Page Content -->
+    <main id="main" class="page-container">
+      <div class="testimonials-header">
+        <h1 class="main-heading">Our Students' Success</h1>
+        <p class="subtitle">
+          Real stories from students who achieved their goals. Get inspired by
+          their journey and see what's possible with IELTS Mahir.
+        </p>
+      </div>
+
+      <div class="filter-tabs" id="filter-tabs">
+        <button class="filter-tab active" data-filter="all">All Stories</button>
+        <button class="filter-tab" data-filter="text">Written Reviews</button>
+        <button class="filter-tab" data-filter="video">
+          Video Testimonials
+        </button>
+      </div>
+
+      <div class="testimonials-page-grid" id="testimonials-page-grid">
+        <p style="text-align: center; grid-column: 1 / -1; color: #6c757d;">
+          Loading testimonials...
+        </p>
+      </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-top">
+          <div class="contact-banner">
+            <div class="contact-content">
+              <h2 class="anton">Achieve Your Desired IELTS Band</h2>
+              <p class="montserrat">Certified mentors guiding you every step of the way</p>
+              <div class="contact-buttons">
+               <a href="mock-test-home" class="btn primary montserrat">Explore IELTS Modules</a>
+               <a href="dashboard" class="btn link montserrat">Your Dashboard <i class="fa-solid fa-arrow-right"></i></a></a>
+              </div>
+
+            </div>
+            <div class="contact-image">
+              <div class="bg-letter">
+                <span class="im-i">I</span>
+                <span class="im-m">M</span>
+              </div>
+              <img src="assets/LELTS-Mahir.png" alt="IELTS Student Image" />
+            </div>
+
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4 class="anton">Quick Access</h4>
+            <ul class="montserrat">
+              <li><a href="#success-journey-section">Why Choose Us</a></li>
+              <li><a href="contact">Contact Support</a></li>
+              <li><a href="#faq-section">IELTS FAQs</a></li>
+              <li>
+                <a href="terms-and-conditions">Terms & Conditions</a>
+              </li>
+              <li><a href="privacy-guidelines">Privacy Guidelines</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4 class="anton">Learning Hub</h4>
+            <ul class="montserrat">
+              <li><a href="#page5">IELTS Blog</a></li>
+              <li><a href="#page3">Student Reviews</a></li>
+              <li><a href="#success-journey-section">Band 9 Roadmap</a></li>
+              <li><a href="mock-test-home">Mock Test</a></li>
+              <li><a href="#faq-section">Help & Guidance</a></li>
+            </ul>
+          </div>
+          <div class="footer-column subscribe">
+            <h4 class="anton">Connect with a Mentor</h4>
+            <p class="montserrat">Get personalized guidance and expert support for your IELTS preparation.</p>
+            <button href="contact" class="anton connect-btn" data-url="http://127.0.0.1:5500/our-teacher">Contact a Mentor <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="branding anton">IELTS MAHIR.</div>
+          
+          <div class="footer-socials">
+            <a href="https://www.facebook.com/IELTSMahir1"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png" alt="Facebook" /></a>
+            <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png" alt="Instagram" /></a>
+            <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png" alt="LinkedIn" /></a>
+            <a href="https://www.youtube.com/c/ieltsmahir/about"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" alt="YouTube" /></a>
+          </div>
+          <p class="montserrat copyright">© 2024 IELTS Mahir. All rights reserved.</p>
+          
+        </div>
+        <a href="http://www.ruralpeace.org/portfolio" class="footer-creator-img" target="_blank" aria-label="Creator's Profile">
+            <img src="assets/my-pic.jpg" alt="Creator Profile Image" />
+          </a>
+      </footer>
+
+    <!-- Scripts -->
+    <script src="dropdown-settings.js"></script>
+    <script src="navigation.js"></script>
+    <script type="module" src="./auth.js"></script>
+    <script type="module" src="./auth-page-loading.js"></script>
+    <script type="module" src="success-story.js"></script>
+    <script src="gsap.js"></script>
+    <script src="footer.js"></script>
+  </body>
+</html>
