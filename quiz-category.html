@@ -188,7 +188,7 @@
         animation: pulse-slow 3s infinite ease-in-out;
       }
 
-      /* Styles for the new hero section (copied from quiz-home.html) */
+      /* Styles for the new hero section (copied from quiz-home) */
       .hero-section-new {
         min-height: 400px; /* Adjust height as needed */
         display: flex;
@@ -218,7 +218,7 @@
     </style>
   </head>
   <body class="py-0 px-0">
-    <!-- Header / Navigation Bar (Now identical to quiz-home.html) -->
+    <!-- Header / Navigation Bar (Now identical to quiz-home) -->
     <header
       id="app-header"
       class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
@@ -226,7 +226,7 @@
       <div class="flex items-center gap-2 sm:gap-4">
         <!-- Replaced text with image logo -->
         <div class="ai-logo-parent">
-          <a href="home.html">
+          <a href="home">
             <img
               src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
               alt="IELTS Mahir Logo"
@@ -234,7 +234,7 @@
               onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
             />
           </a>
-          <a href="ai-feature.html" class="ai-button" aria-label="AI Tools">
+          <a href="ai-feature" class="ai-button" aria-label="AI Tools">
             <i class="fas fa-robot" aria-hidden="true"></i>
             <span>AI</span>
           </a>
@@ -502,13 +502,13 @@
                                     <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-200">Level: ${
                                       userGameStats.level
                                     }</div>
-                                    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                    <a href="dashboard" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
                                         ${Icons.Dashboard.replace(
                                           /stroke="currentColor"/g,
                                           'stroke="gray"'
                                         )} Dashboard
                                     </a>
-                                    <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                    <a href="ielts-mahir-community-forum" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
                                         ${Icons.Forum.replace(
                                           /stroke="currentColor"/g,
                                           'stroke="gray"'
@@ -560,7 +560,7 @@
           } else {
             // User is signed out: Show sign-in button
             authButtonsContainer.innerHTML = `
-                        <a href="auth.html" id="sign-in-nav-btn" class="px-4 py-2 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                        <a href="auth" id="sign-in-nav-btn" class="px-4 py-2 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
                             Join beta user
                         </a>
                     `;
@@ -582,7 +582,7 @@
           appDiv.innerHTML = `
                     <div class="text-center text-red-500 text-xl mt-12">
                         Error: No category specified in the URL.
-                        <br><a href="quiz-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to categories</a>
+                        <br><a href="quiz-home" class="text-blue-600 hover:underline mt-4 inline-block">Go back to categories</a>
                     </div>
                 `;
           return;
@@ -595,7 +595,7 @@
           appDiv.innerHTML = `
                     <div class="text-center text-red-500 text-xl mt-12">
                         Error: Category not found.
-                        <br><a href="quiz-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to categories</a>
+                        <br><a href="quiz-home" class="text-blue-600 hover:underline mt-4 inline-block">Go back to categories</a>
                     </div>
                 `;
           return;
@@ -606,7 +606,7 @@
         );
 
         appDiv.innerHTML = `
-                <!-- Hero Section (Updated to match the provided image from quiz-home.html) -->
+                <!-- Hero Section (Updated to match the provided image from quiz-home) -->
                 <section class="hero-section-new max-w-6xl mx-auto my-8 relative overflow-hidden rounded-3xl">
                     <!-- Background image and overlay -->
                     <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/5428830/pexels-photo-5428830.jpeg');">
@@ -664,7 +664,7 @@
                                 <a href="${
                                   isLocked
                                     ? "#"
-                                    : `quiz-test.html?category=${currentCategoryId}&test=${test.id}`
+                                    : `quiz-test?category=${currentCategoryId}&test=${test.id}`
                                 }"
                                    class="category-card relative block overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in p-0 flex flex-col items-center text-center ${
                                      isLocked
@@ -720,7 +720,7 @@
           .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
             db = firestoreDb;
             auth = firebaseAuth;
-            console.log("Firebase initialized in quiz-category.html:", {
+            console.log("Firebase initialized in quiz-category:", {
               db,
               auth,
             });
@@ -736,7 +736,7 @@
           })
           .catch((error) => {
             console.error(
-              "Failed to initialize Firebase in quiz-category.html:",
+              "Failed to initialize Firebase in quiz-category:",
               error
             );
             showToast(

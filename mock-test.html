@@ -1102,7 +1102,7 @@
       class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
     >
       <div class="flex items-center gap-2 sm:gap-4">
-        <a href="home.html">
+        <a href="home">
           <img
             src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
             alt="IELTS Mahir Logo"
@@ -1799,13 +1799,13 @@
                                       user.email ||
                                       user.uid.substring(0, 8)
                                     }</div>
-                                    <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                    <a href="dashboard" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
                                         ${Icons.Dashboard.replace(
                                           /stroke="currentColor"/g,
                                           'stroke="gray"'
                                         )} Dashboard
                                     </a>
-                                    <a href="ielts-mahir-community-forum.html" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+                                    <a href="ielts-mahir-community-forum" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
                                         ${Icons.Forum.replace(
                                           /stroke="currentColor"/g,
                                           'stroke="gray"'
@@ -1849,7 +1849,7 @@
           } else {
             // User is signed out: Show sign-in button
             authButtonsContainer.innerHTML = `
-                        <a href="auth.html" id="sign-in-nav-btn" class="px-4 py-2 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                        <a href="auth" id="sign-in-nav-btn" class="px-4 py-2 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
                             Join beta user
                         </a>
                     `;
@@ -2544,7 +2544,7 @@
       }
       /**
        * Renders the mock test feedback section.
-       * This function is now part of mock-test.html
+       * This function is now part of mock-test
        * @param {HTMLElement} parentDiv - The div to render the feedback into.
        */
       function renderMockTestFeedbackSection(parentDiv) {
@@ -3342,10 +3342,10 @@
                     </div>
 
                     <div class="flex justify-center mt-8 gap-3 flex-wrap">
-                        <a href="mock-test-home.html" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
+                        <a href="mock-test-home" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
                         <i class="fas fa-home w-5 h-5"></i> Back to Mock Tests
                         </a>
-                         <a href="daily-leaderboard.html" class="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
+                         <a href="daily-leaderboard" class="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
                          <i class="fas fa-list-ol w-5 h-5"></i> Daily Leaderboard
                          </a>
                     </div>
@@ -5105,7 +5105,7 @@
           .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
             db = firestoreDb;
             auth = firebaseAuth;
-            console.log("Firebase initialized in mock-test.html:", {
+            console.log("Firebase initialized in mock-test:", {
               db,
               auth,
             });
@@ -5418,7 +5418,7 @@
                 appDiv.innerHTML = `
                         <div class="text-center text-red-500 text-xl mt-12">
                             Error: Mock test not found.
-                            <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
+                            <br><a href="mock-test-home" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
                         </div>
                     `;
               }
@@ -5427,16 +5427,13 @@
               appDiv.innerHTML = `
                     <div class="text-center text-red-500 text-xl mt-12">
                         Error: No module or test specified in the URL.
-                        <br><a href="mock-test-home.html" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
+                        <br><a href="mock-test-home" class="text-blue-600 hover:underline mt-4 inline-block">Go back to mock tests</a>
                     </div>
                 `;
             }
           })
           .catch((error) => {
-            console.error(
-              "Failed to initialize Firebase in mock-test.html:",
-              error
-            );
+            console.error("Failed to initialize Firebase in mock-test:", error);
             showToast(
               "Failed to initialize Firebase. Some features may not work.",
               "error"

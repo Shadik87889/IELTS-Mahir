@@ -73,7 +73,7 @@
         class="py-3 px-4 md:py-4 md:px-8 flex items-center justify-between bg-white border-b border-gray-100 rounded-b-xl transition-colors duration-300 sticky top-0 z-50"
       >
         <div class="flex items-center gap-4">
-          <a href="home.html" class="logo">
+          <a href="home" class="logo">
             <img
               src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
               alt="Ielts mahir logo"
@@ -251,11 +251,11 @@
       function handleAuthChange(user) {
         if (user) {
           // User is signed in - redirect to the main forum page
-          window.location.href = "dashboard.html"; // Assuming index.html is your main forum page
+          window.location.href = "dashboard"; // Assuming index is your main forum page
         } else {
           // User is signed out - keep auth form visible
           elements.authButtonsContainer.innerHTML = `
-            <a href="auth.html" id="sign-in-nav-btn" class="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-xs sm:text-sm font-semibold transform active:scale-95"> ${Icons.SignIn} <span class="hidden sm:inline">Sign In</span> </a>
+            <a href="auth" id="sign-in-nav-btn" class="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-xs sm:text-sm font-semibold transform active:scale-95"> ${Icons.SignIn} <span class="hidden sm:inline">Sign In</span> </a>
           `;
         }
       }
@@ -332,7 +332,7 @@
         // Pass the callback to initFirebaseAuth to handle UI updates/redirections
         initFirebaseAuth(handleAuthChange);
 
-        // Check if there's a hash in the URL (e.g., auth.html#signup) to set initial mode
+        // Check if there's a hash in the URL (e.g., auth#signup) to set initial mode
         if (window.location.hash === "#signup") {
           toggleAuthModeUI("signup");
         } else {

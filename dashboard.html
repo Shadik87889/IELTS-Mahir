@@ -220,7 +220,7 @@
         transform: translateY(-1px);
       }
 
-      /* Hero section styles (consistent with quiz-category.html) */
+      /* Hero section styles (consistent with quiz-category) */
       .hero-section-new {
         min-height: 300px; /* Slightly reduced height for history page */
         display: flex;
@@ -802,7 +802,7 @@
         </button>
         <!-- Replaced text with image logo -->
         <div class="ai-logo-parent">
-          <a href="home.html">
+          <a href="home">
             <img
               src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
               alt="IELTS Mahir Logo"
@@ -810,20 +810,20 @@
               onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
             />
           </a>
-          <a href="ai-feature.html" class="ai-button" aria-label="AI Tools">
+          <a href="ai-feature" class="ai-button" aria-label="AI Tools">
             <i class="fas fa-robot" aria-hidden="true"></i>
             <span>AI</span>
           </a>
         </div>
         <!-- Top navigation links (hidden on desktop, now handled by left sidebar) -->
         <nav class="hidden md:flex gap-6 ml-8 font-inter">
-          <a href="home.html">Home</a>
-          <a href="mock-test-home.html">Mock Test</a>
-          <a href="quiz-home.html">Quizzes</a>
-          <a href="ielts-tips-and-tricks.html">IELTS Tips and Tricks</a>
-          <a href="ielts-mahir-community-forum.html">Community Forum</a>
-          <a href="blog.html">Blog</a>
-          <a href="contact.html">Contact</a>
+          <a href="home">Home</a>
+          <a href="mock-test-home">Mock Test</a>
+          <a href="quiz-home">Quizzes</a>
+          <a href="ielts-tips-and-tricks">IELTS Tips and Tricks</a>
+          <a href="ielts-mahir-community-forum">Community Forum</a>
+          <a href="blog">Blog</a>
+          <a href="contact">Contact</a>
         </nav>
       </div>
       <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
@@ -2162,7 +2162,7 @@
           } else {
             // User is signed out: Show sign-in button
             authButtonsContainer.innerHTML = `
-                        <a href="auth.html" id="sign-in-nav-btn" class="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
+                        <a href="auth" id="sign-in-nav-btn" class="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
                             ${Icons.SignIn} <span class="hidden sm:inline">Sign In</span>
                         </a>
                     `;
@@ -2670,7 +2670,7 @@
                                                   result.timeTakenSeconds
                                                 )}</td>
                                                 <td class="whitespace-nowrap text-right text-sm font-medium">
-                                                    <a href="quiz-detail-review.html?resultId=${
+                                                    <a href="quiz-detail-review?resultId=${
                                                       result.id
                                                     }" class="text-blue-600 hover:text-blue-900">View Details</a>
                                                 </td>
@@ -2759,7 +2759,7 @@
                                                   result.timeTakenSeconds
                                                 )}</td>
                                                 <td class="whitespace-nowrap text-right text-sm font-medium">
-                                                    <a href="mock-test.html?module=${
+                                                    <a href="mock-test?module=${
                                                       result.moduleId
                                                     }&test=${
                                           result.testId
@@ -2956,7 +2956,7 @@
                                               result.timeTakenSeconds
                                             )}</td>
                                             <td class="whitespace-nowrap text-right text-sm font-medium">
-                                                <a href="quiz-detail-review.html?resultId=${
+                                                <a href="quiz-detail-review?resultId=${
                                                   result.id
                                                 }" class="text-blue-600 hover:text-blue-900">View Details</a>
                                             </td>
@@ -3611,7 +3611,7 @@
           button.addEventListener("click", (event) => {
             const categoryId = event.target.dataset.categoryId;
             if (categoryId) {
-              window.location.href = `quiz-category.html?category=${categoryId}`;
+              window.location.href = `quiz-category?category=${categoryId}`;
               console.log(categoryId);
             }
           });
@@ -3624,7 +3624,7 @@
           // button.addEventListener("click", (event) => {
           //   const quizResultId = event.target.dataset.quizResultId;
           //   if (quizResultId) {
-          //     window.location.href = `quiz-detail-review.html?resultId=${quizResultId}`;
+          //     window.location.href = `quiz-detail-review?resultId=${quizResultId}`;
           //   }
           // });
         });
@@ -4013,10 +4013,7 @@
             renderApp(); // Render the app after data is processed
           });
         } catch (error) {
-          console.error(
-            "Failed to initialize Firebase in dashboard.html:",
-            error
-          );
+          console.error("Failed to initialize Firebase in dashboard:", error);
           showToast(
             "Failed to initialize Firebase. Some features may not work.",
             "error"

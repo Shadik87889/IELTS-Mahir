@@ -962,7 +962,7 @@
         />
         <span class="site-title">IELTS MAHIR BLOG</span>
       </div>
-      <a href="blog.html" class="back-button">
+      <a href="blog" class="back-button">
         <i class="fas fa-arrow-left mr-2"></i> Back to Blog
       </a>
     </header>
@@ -1491,7 +1491,7 @@ Mastering IELTS is an achievable goal with dedication and the right strategies. 
               featuredPost.content.substring(0, 80) + "...";
           }
           if (featuredLink)
-            featuredLink.href = `blog-detail.html?id=${featuredPost.id}`;
+            featuredLink.href = `blog-detail?id=${featuredPost.id}`;
         } else {
           // Fallback: If the only static post is the current one being viewed,
           // or staticFeaturedPosts is empty, the sidebar will remain hidden.
@@ -1548,7 +1548,7 @@ Mastering IELTS is an achievable goal with dedication and the right strategies. 
               });
 
               const item = document.createElement("a");
-              item.href = `blog-detail.html?id=${post.id}`;
+              item.href = `blog-detail?id=${post.id}`;
               item.classList.add("recent-post-item", "block");
               item.innerHTML = `
                         <img src="${
@@ -1958,7 +1958,7 @@ Mastering IELTS is an achievable goal with dedication and the right strategies. 
               "The requested blog post does not exist. Redirecting to blog home."
             );
             setTimeout(() => {
-              window.location.href = "blog.html";
+              window.location.href = "blog";
             }, 3000);
           }
         } catch (error) {
@@ -2005,13 +2005,13 @@ Mastering IELTS is an achievable goal with dedication and the right strategies. 
             // Ensure current post was found in dynamic list
             if (currentIndex > 0) {
               const prevDoc = allPosts[currentIndex - 1];
-              prevLink.href = `blog-detail.html?id=${prevDoc.id}`;
+              prevLink.href = `blog-detail?id=${prevDoc.id}`;
               prevLink.classList.remove("disabled");
             }
 
             if (currentIndex < allPosts.length - 1) {
               const nextDoc = allPosts[currentIndex + 1];
-              nextLink.href = `blog-detail.html?id=${nextDoc.id}`;
+              nextLink.href = `blog-detail?id=${nextDoc.id}`;
               nextLink.classList.remove("disabled");
             }
           }
@@ -2064,7 +2064,7 @@ Mastering IELTS is an achievable goal with dedication and the right strategies. 
             "No blog post ID provided in the URL. Redirecting to blog home."
           );
           setTimeout(() => {
-            window.location.href = "blog.html";
+            window.location.href = "blog";
           }, 3000);
         }
       });
