@@ -1,8 +1,18 @@
+# services:
+#   - type: web
+#     name: my-ielts-site # You can name this whatever you like
+#     env: static
+#     staticPublishPath: . # Serve files from the root directory
+#     rewrites:
+#       - source: "/:path*"
+#         destination: "/:path*.html"
 services:
   - type: web
-    name: my-ielts-site # You can name this whatever you like
+    name: my-ielts-site
     env: static
-    staticPublishPath: . # Serve files from the root directory
+    staticPublishPath: .
     rewrites:
+      - source: "/"
+        destination: "/home.html"
       - source: "/:path*"
         destination: "/:path*.html"
