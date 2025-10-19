@@ -331,8 +331,7 @@ async function renderFeaturedBlog(currentBlogId) {
       featuredExcerpt.textContent =
         featuredPost.content.substring(0, 80) + "...";
     }
-    if (featuredLink)
-      featuredLink.href = `blog-detail.html?id=${featuredPost.id}`;
+    if (featuredLink) featuredLink.href = `blog-detail?id=${featuredPost.id}`;
   } else {
     // Fallback: If the only static post is the current one being viewed,
     // or staticFeaturedPosts is empty, the sidebar will remain hidden.
@@ -385,7 +384,7 @@ async function renderMostRecentPosts(currentBlogId) {
         });
 
         const item = document.createElement("a");
-        item.href = `blog-detail.html?id=${post.id}`;
+        item.href = `blog-detail?id=${post.id}`;
         item.classList.add("recent-post-item", "block");
         item.innerHTML = `
                         <img src="${
@@ -792,7 +791,7 @@ async function renderBlogPostDetail(blogId) {
         "The requested blog post does not exist. Redirecting to blog home."
       );
       setTimeout(() => {
-        window.location.href = "blog.html";
+        window.location.href = "blog";
       }, 3000);
     }
   } catch (error) {
@@ -836,13 +835,13 @@ async function setupPrevNextNavigation(currentBlogId, currentTimestamp) {
       // Ensure current post was found in dynamic list
       if (currentIndex > 0) {
         const prevDoc = allPosts[currentIndex - 1];
-        prevLink.href = `blog-detail.html?id=${prevDoc.id}`;
+        prevLink.href = `blog-detail?id=${prevDoc.id}`;
         prevLink.classList.remove("disabled");
       }
 
       if (currentIndex < allPosts.length - 1) {
         const nextDoc = allPosts[currentIndex + 1];
-        nextLink.href = `blog-detail.html?id=${nextDoc.id}`;
+        nextLink.href = `blog-detail?id=${nextDoc.id}`;
         nextLink.classList.remove("disabled");
       }
     }
@@ -893,7 +892,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       "No blog post ID provided in the URL. Redirecting to blog home."
     );
     setTimeout(() => {
-      window.location.href = "blog.html";
+      window.location.href = "blog";
     }, 3000);
   }
 });
