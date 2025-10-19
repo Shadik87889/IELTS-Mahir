@@ -231,7 +231,7 @@ function renderTopFeature(featuredPost) {
       <div class="feature-left">
         <h2>${featuredPost.title}</h2>
         <p>${featuredPost.content.substring(0, 200)}...</p>
-        <a href="blog-detail.html?id=${featuredPost.id}" class="read-btn">
+        <a href="blog-detail?id=${featuredPost.id}" class="read-btn">
           <span class="blog-card-arrow">➜</span> Read full article (${readingTime})
         </a>
       </div>
@@ -275,7 +275,7 @@ function renderArticles(page = 1) {
           });
           const readingTime = calculateReadingTime(article.content); // Calculate reading time for each article
           return `
-              <a href="blog-detail.html?id=${
+              <a href="blog-detail?id=${
                 article.id
               }" class="card cursor-pointer">
                 <img src="${

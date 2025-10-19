@@ -181,7 +181,7 @@ async function renderBlogContent() {
 
   if (!topFeatureDiv || !articleCardsDiv) {
     console.warn(
-      "Required blog display elements (#page5 .top-feature or #page5 .article-cards) not found on home.html."
+      "Required blog display elements (#page5 .top-feature or #page5 .article-cards) not found on home."
     );
     return;
   }
@@ -204,7 +204,7 @@ async function renderBlogContent() {
       <div class="feature-left">
         <h2>${staticFeaturedPost.title}</h2>
         <p>${staticFeaturedPost.content.substring(0, 200)}...</p>
-        <a href="blog-detail.html?id=${staticFeaturedPost.id}" class="read-btn">
+        <a href="blog-detail?id=${staticFeaturedPost.id}" class="read-btn">
           <span class="blog-card-arrow">➜</span> Read full article (${readingTime})
         </a>
       </div>
@@ -261,7 +261,7 @@ async function renderBlogContent() {
               index === 2 ? "tablet-elimination" : ""; // Apply to the 3rd card only
 
             return `
-              <a href="blog-detail.html?id=${
+              <a href="blog-detail?id=${
                 article.id
               }" class="card cursor-pointer no-underline ${tabletEliminationClass}">
                 <img src="${
@@ -308,6 +308,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // IMPORTANT: Remember to apply the `DOMContentLoaded` and null-check for `playBtn`
-// in the relevant file (likely `app.js` or directly in `home.html` if it's there).
+// in the relevant file (likely `app.js` or directly in `home` if it's there).
 // This specific fix is not part of homeBlog.js but addresses a separate error
 // you initially reported.
