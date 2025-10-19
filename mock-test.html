@@ -2406,11 +2406,14 @@
                       if (qGroup.type === "multiple_choice_multiple_answers") {
                         userAnswer = testState.userAnswers[question.id] || [];
                         correctAnswer = question.correctAnswer || [];
-                        isCorrect =
-                          userAnswer.length === correctAnswer.length &&
-                          userAnswer.every((ans) =>
-                            correctAnswer.includes(ans)
-                          );
+                        // IELTS scoring: award one point for each correct option selected.
+                        const correctSelections = userAnswer.filter((ans) =>
+                          correctAnswer.includes(ans)
+                        );
+                        correctAnswersCount += correctSelections.length;
+
+                        // Set isCorrect to false because we have already handled scoring for this type.
+                        isCorrect = false;
                       } else {
                         userAnswer = testState.userAnswers[question.id];
                         correctAnswer = question.correctAnswer;

@@ -11149,7 +11149,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
               <p>Complete the table below. Choose NO MORE THAN THREE WORDS from Reading Passage 2 for each answer. Write your answers in boxes 23-26 on your answer sheet.</p>
               <p>Research programs launched by universities and organizations</p>
               <div class="map-image-container">
-                  <img src="assets/Screenshot 2025-07-23 103255.png" alt="Container Diagram" class="rounded-lg">
+                  <img src="reading_test/reading_test_imgs/r-6-1.png" alt="Container Diagram" class="rounded-lg">
               </div>
             `,
             questions: [
@@ -12618,7 +12618,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "summary_completion",
 
                 text: "among[GAP] w.p.m.",
-                correctAnswer: "Not Given",
+                correctAnswer: "NOTE GIVEN",
               },
               {
                 id: "q9-r8s1",
@@ -12660,7 +12660,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: "10-13",
                 text:
                   "Which FOUR of the followings are the factors that affect interpreting?",
-                correctAnswer: ["FALSE", "FALSE", "Not Given", "TRUE"],
+                correctAnswer: ["FALSE", "FALSE", "NOT GIVEN", "TRUE"],
               },
             ],
           },
@@ -12863,7 +12863,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q23-r8s2",
                 questionNumber: 23,
                 text: "E-coli is the most difficult bacteria to combat.",
-                correctAnswer: "Not Given",
+                correctAnswer: "NOT GIVEN",
               },
             ],
           },
@@ -14227,7 +14227,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C. The attitudes of anthropologists towards adolescence are changing.",
                   "D. The work of anthropologists could inform our understanding of modem adolescence.",
                 ],
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "A", // Placeholder
               },
               {
                 id: "q2-r10s1",
@@ -14240,7 +14240,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C. His skeleton and teeth could not be compared to those from a more modem age.",
                   "D. He must have grown much faster than others alive at the time.",
                 ],
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "C", // Placeholder
               },
               {
                 id: "q3-r10s1",
@@ -14253,7 +14253,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C. Humans have different rates of development from each other depending on living conditions.",
                   "D. The growth phase in most apes lasts longer if more food is available.",
                 ],
-                correctAnswer: "A", // Placeholder
+                correctAnswer: "B", // Placeholder
               },
               {
                 id: "q4-r10s1",
@@ -14299,14 +14299,14 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 7,
                 text:
                   "Susan Anton’s conclusion about the Turkana boy reinforces an established idea.",
-                correctAnswer: "YES", // Placeholder
+                correctAnswer: "NO", // Placeholder
               },
               {
                 id: "q8-r10s1",
                 questionNumber: 8,
                 text:
                   "Steen Leigh’s ideas are likely to be met with disbelief by many anthropologists.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "YES", // Placeholder
               },
               {
                 id: "q9-r10s1",
@@ -14320,7 +14320,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 10,
                 text:
                   "There has been too little research comparing the brains of Homo erectus and Neanderthals.",
-                correctAnswer: "NO", // Placeholder
+                correctAnswer: "NOT GIVEN", // Placeholder
               },
             ],
           },
@@ -14355,7 +14355,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 11,
                 statement:
                   "Until recently, delayed growth in humans until adolescence was felt to be due to",
-                correctAnswer: "D", // Placeholder
+                correctAnswer: "G", // Placeholder
               },
               {
                 id: "q12-r10s1",
@@ -14368,7 +14368,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 13,
                 statement:
                   "Steven Leigh thought the existence of adolescence is connected to",
-                correctAnswer: "G", // Placeholder
+                correctAnswer: "B", // Placeholder
               },
               {
                 id: "q14-r10s1",
@@ -14522,7 +14522,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 15,
                 type: "fill_in_the_blank",
                 text: "performance of two groups is almost [GAP]",
-                correctAnswer: "Harvard", // Placeholder
+                correctAnswer: "indentical", // Placeholder
               },
               {
                 id: "q16-r10s2",
@@ -14530,7 +14530,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 text:
                   "chose between two sets of [GAP] which are altered behaviour of female birds was objerved",
-                correctAnswer: "Oxford", // Placeholder
+                correctAnswer: "balls of paper", // Placeholder
               },
               {
                 id: "q17-r10s2",
@@ -14538,7 +14538,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 text:
                   "chicks can do calculations in order to shoose larger group bird seems to have ablity to [GAP]",
-                correctAnswer: "Cambridge", // Placeholder
+                correctAnswer: ["Count", "Caculate eggs"], // Placeholder
               },
               {
                 id: "q18-r10s2",
@@ -14546,14 +14546,14 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 text:
                   "offered clear tubes containing different quantities [GAP]",
-                correctAnswer: "Stanford", // Placeholder
+                correctAnswer: "fruits flies", // Placeholder
               },
               {
                 id: "q19-r10s2",
                 questionNumber: 19,
                 type: "fill_in_the_blank",
                 text: "Salmanders [GAP]",
-                correctAnswer: "MIT", // Placeholder
+                correctAnswer: "mosquitofish", // Placeholder
               },
               {
                 id: "q20-r10s2",
@@ -14561,14 +14561,14 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 text:
                   "these are used to check influence of total [GAP] and brightness",
-                correctAnswer: "Yale", // Placeholder
+                correctAnswer: "surface area", // Placeholder
               },
               {
                 id: "q21-r10s2",
                 questionNumber: 21,
                 type: "fill_in_the_blank",
                 text: "had to learn where [GAP] was stored",
-                correctAnswer: "Princeton", // Placeholder
+                correctAnswer: "super water", // Placeholder
               },
             ],
           },
@@ -14594,14 +14594,14 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 23,
                 text:
                   "Jurgen Tautz trained the insects in his experiment to recognise the shapes of individual numbers.",
-                correctAnswer: "NOT GIVEN", // Placeholder
+                correctAnswer: "FALSE", // Placeholder
               },
               {
                 id: "q24-r10s2",
                 questionNumber: 24,
                 text:
                   "The research involving young chicks took place over two separate days.",
-                correctAnswer: "FALSE", // Placeholder
+                correctAnswer: "NOT GIVEN", // Placeholder
               },
               {
                 id: "q25-r10s2",
@@ -14782,28 +14782,28 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 28,
                 type: "summary_completion",
                 text: "[GAP] bones in linner ear",
-                correctAnswer: "Placeholder 28", // Placeholder
+                correctAnswer: "hammar", // Placeholder
               },
               {
                 id: "q29-r10s3",
                 questionNumber: 29,
                 type: "summary_completion",
                 text: "an extremely large [GAP]",
-                correctAnswer: "Placeholder 29", // Placeholder
+                correctAnswer: "body", // Placeholder
               },
               {
                 id: "q30-r10s3",
                 questionNumber: 30,
                 type: "summary_completion",
                 text: "toe and fatty [GAP]",
-                correctAnswer: "Placeholder 30", // Placeholder
+                correctAnswer: "pad", // Placeholder
               },
               {
                 id: "q31-r10s3",
                 questionNumber: 31,
                 type: "summary_completion",
                 text: "big sized brain skull with many [GAP]",
-                correctAnswer: "Placeholder 31", // Placeholder
+                correctAnswer: ["cavities", "sinus cavities"], // Placeholder
               },
             ],
           },
@@ -14820,35 +14820,35 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 32,
                 type: "summary_completion",
                 text: "listening” with their [GAP]",
-                correctAnswer: "feet", // Placeholder
+                correctAnswer: "trunks and feet", // Placeholder
               },
               {
                 id: "q33-r10s3",
                 questionNumber: 33,
                 type: "summary_completion",
                 text: "both [GAP] frequency",
-                correctAnswer: "low", // Placeholder
+                correctAnswer: "infrasonic", // Placeholder
               },
               {
                 id: "q34-r10s3",
                 questionNumber: 34,
                 type: "summary_completion",
                 text: "neurophysiology and [GAP]",
-                correctAnswer: "bioacoustics", // Placeholder
+                correctAnswer: "ecology", // Placeholder
               },
               {
                 id: "q35-r10s3",
                 questionNumber: 35,
                 type: "summary_completion",
                 text: "sending and receiving [GAP]",
-                correctAnswer: "seismic signals", // Placeholder
+                correctAnswer: "seismic messages", // Placeholder
               },
               {
                 id: "q36-r10s3",
                 questionNumber: 36,
                 type: "summary_completion",
                 text: "approach other than [GAP]",
-                correctAnswer: "audible calls", // Placeholder
+                correctAnswer: ["communication", "communications"], // Placeholder
               },
               {
                 id: "q37-r10s3",
@@ -15063,85 +15063,85 @@ integration, our cognitive memory is less burdened; it has to deal with only a
         questionGroups: [
           {
             instructions: `
-              <p>Questions 1-4</p>
-              <p>The reading Passage has seven paragraphs A-T. Which paragraphs contains the following information? Write the correct letter A-H, in boxesl-4 on your answer sheet. NB You may use a letter more than once.</p>
-            `,
+                  <p>Questions 1-4</p>
+                  <p>The reading Passage has seven paragraphs A-T. Which paragraphs contains the following information? Write the correct letter A-H, in boxesl-4 on your answer sheet. NB You may use a letter more than once.</p>
+                `,
             type: "which_paragraph_contains",
             questions: [
               {
                 id: "q1-r11s1",
                 questionNumber: 1,
                 text: "A reason for changing the exhibition programs.",
-                correctAnswer: "Placeholder 1", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q2-r11s1",
                 questionNumber: 2,
                 text:
                   "The time people have to wait in a queue in order to enjoy exhibitions.",
-                correctAnswer: "Placeholder 2", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q3-r11s1",
                 questionNumber: 3,
                 text: "Terms people used when referring to blockbuster",
-                correctAnswer: "Placeholder 3", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q4-r11s1",
                 questionNumber: 4,
                 text:
                   "There was some controversy over confining target groups of blockbuster.",
-                correctAnswer: "Placeholder 4", // Placeholder
+                correctAnswer: "B",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 5-8</p>
-              <p>Summary</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage, using no more than three words from the Reading Passage for each answer. Write your answers in boxes 5-8 on your answer sheet.</p>
-              <p>Instead of being visitors, people turned out to be____5_____, who require the creation or hiring of blockbuster exhibitions as well as regular exhibition changes and innovations. Business nous and ____6_____simply summarized in a magazine are not only important factors for directors, but also an ability to attract a crowd of audiences. _____7_____ has contributed to the linking of museums, the heritage industry, and tourism, profit-making and pleasure-giving. There occurs some controversy over whether it is proper to consider museums mainly as_____8______. </p>
-            `,
+                  <p>Questions 5-8</p>
+                  <p>Summary</p>
+                  <p>Complete the following summary of the paragraphs of Reading Passage, using no more than three words from the Reading Passage for each answer. Write your answers in boxes 5-8 on your answer sheet.</p>
+                  <p>Instead of being visitors, people turned out to be____5_____, who require the creation or hiring of blockbuster exhibitions as well as regular exhibition changes and innovations. Business nous and ____6_____simply summarized in a magazine are not only important factors for directors, but also an ability to attract a crowd of audiences. _____7_____ has contributed to the linking of museums, the heritage industry, and tourism, profit-making and pleasure-giving. There occurs some controversy over whether it is proper to consider museums mainly as_____8______. </p>
+                `,
             questions: [
               {
                 id: "q5-r11s1",
                 type: "summary_completion",
                 questionNumber: 5,
                 text: "people turned out to be [GAP]",
-                correctAnswer: "Placeholder 5", // Placeholder
+                correctAnswer: "customers",
               },
               {
                 id: "q6-r11s1",
                 type: "summary_completion",
                 questionNumber: 6,
                 text: "Business nous and [GAP] simply summarized in a magazine",
-                correctAnswer: "Placeholder 6", // Placeholder
+                correctAnswer: "public relation skills",
               },
               {
                 id: "q7-r11s1",
                 type: "summary_completion",
                 questionNumber: 7,
                 text: "[GAP] has contributed to the linking of museums",
-                correctAnswer: "Placeholder 7", // Placeholder
+                correctAnswer: ["museology", "(the new) museology"],
               },
               {
                 id: "q8-r11s1",
                 type: "summary_completion",
                 questionNumber: 8,
                 text: "consider museums mainly as [GAP]",
-                correctAnswer: "Placeholder 8", // Placeholder
+                correctAnswer: "tourist attractions",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 9-10</p>
-              <p>Choose TWO letters A-E.</p>
-              <p>Write your answer in boxes 9-10 on your answer sheet.</p>
-              <p>The list below gives some advantages of blockbuster.</p>
-              <p>Which TWO advantages are mentioned by the writer of the text?</p>
-            `,
+                  <p>Questions 9-10</p>
+                  <p>Choose TWO letters A-E.</p>
+                  <p>Write your answer in boxes 9-10 on your answer sheet.</p>
+                  <p>The list below gives some advantages of blockbuster.</p>
+                  <p>Which TWO advantages are mentioned by the writer of the text?</p>
+                `,
             type: "multiple_choice_multiple_answers",
             options: [
               {
@@ -15166,17 +15166,17 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: "9-10",
                 text:
                   "Which TWO advantages are mentioned by the writer of the text?",
-                correctAnswer: ["Placeholder 9", "Placeholder 10"], // Placeholder
+                correctAnswer: ["A", "D"],
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 11 - 13</p>
-              <p>Choose THREE letters A-F. Write your answer in boxes 11-13on your answer sheet.</p>
-              <p>The list below gives some disadvantages of blockbuster.</p>
-              <p>Which THREE disadvantages are mentioned by the writer of the text?</p>
-            `,
+                  <p>Questions 11 - 13</p>
+                  <p>Choose THREE letters A-F. Write your answer in boxes 11-13on your answer sheet.</p>
+                  <p>The list below gives some disadvantages of blockbuster.</p>
+                  <p>Which THREE disadvantages are mentioned by the writer of the text?</p>
+                `,
             type: "multiple_choice_multiple_answers",
             options: [
               { id: "A", text: "People felt hesitated to choose exhibitions." },
@@ -15207,11 +15207,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: "11-13",
                 text:
                   "Which THREE disadvantages are mentioned by the writer of the text?",
-                correctAnswer: [
-                  "Placeholder 11",
-                  "Placeholder 12",
-                  "Placeholder 13",
-                ], // Placeholder
+                correctAnswer: ["B", "C", "E"],
               },
             ],
           },
@@ -15349,10 +15345,10 @@ integration, our cognitive memory is less burdened; it has to deal with only a
         questionGroups: [
           {
             instructions: `
-              <p>Questions 14-18</p>
-              <p>Use the information in the passage to match the people (listed A-D) with opinions or deeds below. Write the appropriate letters A-D in boxes 14-18 on your answer sheet.</p>
-              <p>NB you may use any letter more than once</p>
-            `,
+                  <p>Questions 14-18</p>
+                  <p>Use the information in the passage to match the people (listed A-D) with opinions or deeds below. Write the appropriate letters A-D in boxes 14-18 on your answer sheet.</p>
+                  <p>NB you may use any letter more than once</p>
+                `,
             type: "matching_items",
             listItems: [
               { id: "A", text: "Jan Elsnera" },
@@ -15366,44 +15362,44 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 14,
                 statement:
                   "Work stress usually happens in the high level of a business.",
-                correctAnswer: "Placeholder 14", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q15-r11s2",
                 questionNumber: 15,
                 statement:
                   "More people's ideas involved would be beneficial for stress relief",
-                correctAnswer: "Placeholder 15", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q16-r11s2",
                 questionNumber: 16,
                 statement:
                   "Temporary holiday sometimes doesn't mean less work.",
-                correctAnswer: "Placeholder 16", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q17-r11s2",
                 questionNumber: 17,
                 statement:
                   "Stress leads to a wrong direction when trying to satisfy customers.",
-                correctAnswer: "Placeholder 17", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q18-r11s2",
                 questionNumber: 18,
                 statement:
                   "It is not correct that stress in the future will be eased more than now",
-                correctAnswer: "Placeholder 18", // Placeholder
+                correctAnswer: "C",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 19-21</p>
-              <p>Choose the correct letter, A, B, c or D.</p>
-              <p>Write your answers in boxes 19-21 on your answer sheet.</p>
-            `,
+                  <p>Questions 19-21</p>
+                  <p>Choose the correct letter, A, B, c or D.</p>
+                  <p>Write your answers in boxes 19-21 on your answer sheet.</p>
+                `,
             questions: [
               {
                 id: "q19-r11s2",
@@ -15417,7 +15413,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C Inadequate time of sleep",
                   "D Alteration of appointment",
                 ],
-                correctAnswer: "Placeholder 19", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q20-r11s2",
@@ -15431,7 +15427,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C. Lower expectation",
                   "D. Do sports and massage",
                 ],
-                correctAnswer: "Placeholder 20", // Placeholder
+                correctAnswer: "D",
               },
               {
                 id: "q21-r11s2",
@@ -15445,59 +15441,59 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C Emotional and cognitive affection is superior to physical one",
                   "D One well designed solution can release all stress",
                 ],
-                correctAnswer: "Placeholder 21", // Placeholder
+                correctAnswer: "A",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 22-27</p>
-              <p>Summary</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage, using no more than two words from the Reading Passage for each answer. Write your answers in boxes 22-27 on your answer sheet.</p>
-              <p>Statistics from National worker's compensation indicate stress plays the most important role in____22_____ which cause the time losses. Staffs take about ____23______ for absence from work caused by stress. Not just time is our main concern but great expenses generated consequently. An official insurer wrote sometime that about ____24_____ of all claims were mental issues whereas nearly 27% costs in all claims. Sports such as _____25______, as well as 26 could be a treatment to release stress; however, specialists recommended another practical way out, analyse _____27____once again.</p>
-            `,
+                  <p>Questions 22-27</p>
+                  <p>Summary</p>
+                  <p>Complete the following summary of the paragraphs of Reading Passage, using no more than two words from the Reading Passage for each answer. Write your answers in boxes 22-27 on your answer sheet.</p>
+                  <p>Statistics from National worker's compensation indicate stress plays the most important role in____22_____ which cause the time losses. Staffs take about ____23______ for absence from work caused by stress. Not just time is our main concern but great expenses generated consequently. An official insurer wrote sometime that about ____24_____ of all claims were mental issues whereas nearly 27% costs in all claims. Sports such as _____25______, as well as 26 could be a treatment to release stress; however, specialists recommended another practical way out, analyse _____27____once again.</p>
+                `,
             questions: [
               {
                 id: "q22-r11s2",
                 type: "summary_completion",
                 questionNumber: 22,
                 text: "most important role in [GAP]",
-                correctAnswer: "Placeholder 22", // Placeholder
+                correctAnswer: "workplace injury",
               },
               {
                 id: "q23-r11s2",
                 type: "summary_completion",
                 questionNumber: 23,
                 text: "Staffs take about [GAP] for absence from work",
-                correctAnswer: "Placeholder 23", // Placeholder
+                correctAnswer: "16.6 weeks",
               },
               {
                 id: "q24-r11s2",
                 type: "summary_completion",
                 questionNumber: 24,
                 text: "about [GAP] of all claims were mental issues",
-                correctAnswer: "Placeholder 24", // Placeholder
+                correctAnswer: "7%",
               },
               {
                 id: "q25-r11s2",
                 type: "summary_completion",
                 questionNumber: 25,
                 text: "Sports such as [GAP]",
-                correctAnswer: "Placeholder 25", // Placeholder
+                correctAnswer: "golf",
               },
               {
                 id: "q26-r11s2",
                 type: "summary_completion",
                 questionNumber: 26,
                 text: "as well as [GAP] could be a treatment",
-                correctAnswer: "Placeholder 26", // Placeholder
+                correctAnswer: "massage",
               },
               {
                 id: "q27-r11s2",
                 type: "summary_completion",
                 questionNumber: 27,
                 text: "analyse [GAP] once again.",
-                correctAnswer: "Placeholder 27", // Placeholder
+                correctAnswer: "workloads",
               },
             ],
           },
@@ -15649,59 +15645,59 @@ integration, our cognitive memory is less burdened; it has to deal with only a
         questionGroups: [
           {
             instructions: `
-              <p>Questions 28-33</p>
-              <p>The reading Passage has ten paragraphs A-J. Which paragraph contains the following information? Write the correct letter A-J, in boxes 28-33 on your answer sheet NB You may use any letter more than once.</p>
-            `,
+                  <p>Questions 28-33</p>
+                  <p>The reading Passage has ten paragraphs A-J. Which paragraph contains the following information? Write the correct letter A-J, in boxes 28-33 on your answer sheet NB You may use any letter more than once.</p>
+                `,
             type: "which_paragraph_contains",
             questions: [
               {
                 id: "q28-r11s3",
                 questionNumber: 28,
                 text: "Approach to retain best employees",
-                correctAnswer: "Placeholder 28", // Placeholder
+                correctAnswer: "F",
               },
               {
                 id: "q29-r11s3",
                 questionNumber: 29,
                 text: "Safeguarding expenses on innovative idea",
-                correctAnswer: "Placeholder 29", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q30-r11s3",
                 questionNumber: 30,
                 text:
                   "Integrating outside firms might produce certain counter effect",
-                correctAnswer: "Placeholder 30", // Placeholder
+                correctAnswer: "G",
               },
               {
                 id: "q31-r11s3",
                 questionNumber: 31,
                 text: "Example of three famous American companies' innovation",
-                correctAnswer: "Placeholder 31", // Placeholder
+                correctAnswer: "B",
               },
               {
                 id: "q32-r11s3",
                 questionNumber: 32,
                 text: "Example of one company changing its focus",
-                correctAnswer: "Placeholder 32", // Placeholder
+                correctAnswer: "F",
               },
               {
                 id: "q33-r11s3",
                 questionNumber: 33,
                 text:
                   "Example of a company resolving financial difficulties itself",
-                correctAnswer: "Placeholder 33", // Placeholder
+                correctAnswer: "E",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 34-37</p>
-              <p>Do the following statements agree with the information given ỉ n Reading Passage 3? In boxes 34-37 on your answer sheet, write</p>
-              <p><strong>TRUE</strong> if the statement is true</p>
-              <p><strong>FALSE</strong> if the statement is false</p>
-              <p><strong>NOT GIVEN</strong> if the information is not given in the passage</p>
-            `,
+                  <p>Questions 34-37</p>
+                  <p>Do the following statements agree with the information given ỉ n Reading Passage 3? In boxes 34-37 on your answer sheet, write</p>
+                  <p><strong>TRUE</strong> if the statement is true</p>
+                  <p><strong>FALSE</strong> if the statement is false</p>
+                  <p><strong>NOT GIVEN</strong> if the information is not given in the passage</p>
+                `,
             type: "true_false_not_given",
             questions: [
               {
@@ -15709,36 +15705,36 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 34,
                 text:
                   "Umagic is the most successful innovative company in this new field.",
-                correctAnswer: "Placeholder 34", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q35-r11s3",
                 questionNumber: 35,
                 text:
                   "Amazon and Wal-Mart exchanged their innovation experience.",
-                correctAnswer: "Placeholder 35", // Placeholder
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q36-r11s3",
                 questionNumber: 36,
                 text:
                   "New idea holder had already been known to take it to small company in the past.",
-                correctAnswer: "Placeholder 36", // Placeholder
+                correctAnswer: "FALSE",
               },
               {
                 id: "q37-r11s3",
                 questionNumber: 37,
                 text:
                   "IBM failed to understand Umagic's proposal of one new idea.",
-                correctAnswer: "Placeholder 37", // Placeholder
+                correctAnswer: "TRUE",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 38-40</p>
-              <p>Choose the correct letter, A, B, c or D. Write your answers in boxes 38-40 on your answer sheet.</p>
-            `,
+                  <p>Questions 38-40</p>
+                  <p>Choose the correct letter, A, B, c or D. Write your answers in boxes 38-40 on your answer sheet.</p>
+                `,
             questions: [
               {
                 id: "q38-r11s3",
@@ -15752,7 +15748,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C. It is getting more important",
                   "D. Effect on American companies is more evident",
                 ],
-                correctAnswer: "Placeholder 38", // Placeholder
+                correctAnswer: "C",
               },
               {
                 id: "q39-r11s3",
@@ -15765,7 +15761,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C. We need to cut the cost when risks occur",
                   "D. New ideas are more likely going to big companies",
                 ],
-                correctAnswer: "Placeholder 39", // Placeholder
+                correctAnswer: "A",
               },
               {
                 id: "q40-r11s3",
@@ -15779,7 +15775,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C. IBM sets a good example on innovation",
                   "D. The author’s attitude is uncertain on innovation",
                 ],
-                correctAnswer: "Placeholder 40", // Placeholder
+                correctAnswer: "D",
               },
             ],
           },
@@ -15921,10 +15917,10 @@ integration, our cognitive memory is less burdened; it has to deal with only a
         questionGroups: [
           {
             instructions: `
-              <p>Questions 1-7</p>
-              <p>Reading Passage 1 has ten paragraphs A-J.</p>
-              <p>List of Headings</p>
-            `,
+                  <p>Questions 1-7</p>
+                  <p>Reading Passage 1 has ten paragraphs A-J.</p>
+                  <p>List of Headings</p>
+                `,
             type: "matching_headings",
             listHeadings: [
               { id: "i", text: "Limited success in suppressing the game" },
@@ -15946,51 +15942,51 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q1-r12s1",
                 questionNumber: 1,
                 paragraphId: "D",
-                correctAnswer: "Placeholder 1",
+                correctAnswer: "ix",
               },
               {
                 id: "q2-r12s1",
                 questionNumber: 2,
                 paragraphId: "E",
-                correctAnswer: "Placeholder 2",
+                correctAnswer: "x",
               },
               {
                 id: "q3-r12s1",
                 questionNumber: 3,
                 paragraphId: "F",
-                correctAnswer: "Placeholder 3",
+                correctAnswer: "i",
               },
               {
                 id: "q4-r12s1",
                 questionNumber: 4,
                 paragraphId: "G",
-                correctAnswer: "Placeholder 4",
+                correctAnswer: "vii",
               },
               {
                 id: "q5-r12s1",
                 questionNumber: 5,
                 paragraphId: "H",
-                correctAnswer: "Placeholder 5",
+                correctAnswer: "iii",
               },
               {
                 id: "q6-r12s1",
                 questionNumber: 6,
                 paragraphId: "I",
-                correctAnswer: "Placeholder 6",
+                correctAnswer: "viii",
               },
               {
                 id: "q7-r12s1",
                 questionNumber: 7,
                 paragraphId: "J",
-                correctAnswer: "Placeholder 7",
+                correctAnswer: "vi",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 8-13</p>
-              <p>Complete each sentence with the correct ending A-l from the box below. Write the correct letter A-F in boxes 8-13 on your answer sheet.</p>
-            `,
+                  <p>Questions 8-13</p>
+                  <p>Complete each sentence with the correct ending A-l from the box below. Write the correct letter A-F in boxes 8-13 on your answer sheet.</p>
+                `,
             type: "matching_items", // Using matching_items for "matching endings"
             listItems: [
               { id: "A", text: "Placeholder A (from passage)" },
@@ -16008,40 +16004,40 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q8-r12s1",
                 questionNumber: 8,
                 statement: "Tsu'chu",
-                correctAnswer: "Placeholder 8",
+                correctAnswer: "I",
               },
               {
                 id: "q9-r12s1",
                 questionNumber: 9,
                 statement: "Kemari",
-                correctAnswer: "Placeholder 9",
+                correctAnswer: "D",
               },
               {
                 id: "q10-r12s1",
                 questionNumber: 10,
                 statement: "Harpastum",
-                correctAnswer: "Placeholder 10",
+                correctAnswer: "B",
               },
               {
                 id: "q11-r12s1",
                 questionNumber: 11,
                 statement:
                   "From the 8th to the 19th centuries, football in the British Isles",
-                correctAnswer: "Placeholder 11",
+                correctAnswer: "H",
               },
               {
                 id: "q12-r12s1",
                 questionNumber: 12,
                 statement:
                   "In the past, the authorities legitimately despised the football and acted on the belief that football",
-                correctAnswer: "Placeholder 12",
+                correctAnswer: "E",
               },
               {
                 id: "q13-r12s1",
                 questionNumber: 13,
                 statement:
                   "When it was accepted in academic settings, football",
-                correctAnswer: "Placeholder 13",
+                correctAnswer: "A",
               },
             ],
           },
@@ -16199,9 +16195,9 @@ integration, our cognitive memory is less burdened; it has to deal with only a
         questionGroups: [
           {
             instructions: `
-              <p>Question 14-16</p>
-              <p>Choose the correct letter, A, B, c or D. Write the correct letter in box 14-16 on your answer sheet.</p>
-            `,
+                  <p>Question 14-16</p>
+                  <p>Choose the correct letter, A, B, c or D. Write the correct letter in box 14-16 on your answer sheet.</p>
+                `,
             questions: [
               {
                 id: "q14-r12s2",
@@ -16215,7 +16211,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C a possible climate change happened 12,000 years ago.",
                   "D the possibility of a small ice age in the future.",
                 ],
-                correctAnswer: "Placeholder 14",
+                correctAnswer: "D",
               },
               {
                 id: "q15-r12s2",
@@ -16229,7 +16225,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C because migration seems impossible for the reason of closed borders.",
                   "D because climate changes accelerate the process of moving southward.",
                 ],
-                correctAnswer: "Placeholder 15",
+                correctAnswer: "C",
               },
               {
                 id: "q16-r12s2",
@@ -16243,17 +16239,17 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C because Boston and Rome are at the same latitude.",
                   "D because the ice formation happens in North America.",
                 ],
-                correctAnswer: "Placeholder 16",
+                correctAnswer: "A",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 17-21</p>
-              <p>Match each statement (Questions 17-21) with the correct person A-D in the box below.</p>
-              <p>Write the correct letter A, B, C or D in boxes 17-21 on your answer sheet.</p>
-              <p>NB: You may use any letter more than once.</p>
-            `,
+                  <p>Questions 17-21</p>
+                  <p>Match each statement (Questions 17-21) with the correct person A-D in the box below.</p>
+                  <p>Write the correct letter A, B, C or D in boxes 17-21 on your answer sheet.</p>
+                  <p>NB: You may use any letter more than once.</p>
+                `,
             type: "matching_items",
             listItems: [
               { id: "A", text: "Bob Dickson" },
@@ -16266,83 +16262,83 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q17-r12s2",
                 questionNumber: 17,
                 statement: "A quick climate change wreaks great disruption.",
-                correctAnswer: "Placeholder 17",
+                correctAnswer: "D",
               },
               {
                 id: "q18-r12s2",
                 questionNumber: 18,
                 statement:
                   "Most Americans are not prepared for the next cooling period.",
-                correctAnswer: "Placeholder 18",
+                correctAnswer: "B",
               },
               {
                 id: "q19-r12s2",
                 questionNumber: 19,
                 statement:
                   "A case of a change of ocean water is mentioned in a conference.",
-                correctAnswer: "Placeholder 19",
+                correctAnswer: "A",
               },
               {
                 id: "q20-r12s2",
                 questionNumber: 20,
                 statement:
                   "Global warming urges the appearance of the ice age.",
-                correctAnswer: "Placeholder 20",
+                correctAnswer: "B",
               },
               {
                 id: "q21-r12s2",
                 questionNumber: 21,
                 statement:
                   "The temperature will not drop to the same degree as it used to be.",
-                correctAnswer: "Placeholder 21",
+                correctAnswer: "C",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 22-26</p>
-              <p>Complete the flow chart below.</p>
-              <p>ChooseNO MORE THAN THREE WORDS from the passage for each answer. Write your answers in boxes 22-26 on your answer sheet.</p>
-              <div class="map-image-container">
-                  <img src="assets/Screenshot 2025-07-27 223421.png" alt="Container Diagram" class="rounded-lg">
-              </div>
+                  <p>Questions 22-26</p>
+                  <p>Complete the flow chart below.</p>
+                  <p>ChooseNO MORE THAN THREE WORDS from the passage for each answer. Write your answers in boxes 22-26 on your answer sheet.</p>
+                  <div class="map-image-container">
+                      <img src="assets/Screenshot 2025-07-27 223421.png" alt="Container Diagram" class="rounded-lg">
+                  </div>
 
-            `,
+                `,
             questions: [
               {
                 id: "q22-r12s2",
                 type: "fill_in_the_blank",
                 questionNumber: 22,
                 text: "Flow chart item 1: [GAP]",
-                correctAnswer: "Placeholder 22",
+                correctAnswer: "heat",
               },
               {
                 id: "q23-r12s2",
                 type: "fill_in_the_blank",
                 questionNumber: 23,
                 text: "Flow chart item 2: [GAP]",
-                correctAnswer: "Placeholder 23",
+                correctAnswer: "denser",
               },
               {
                 id: "q24-r12s2",
                 type: "fill_in_the_blank",
                 questionNumber: 24,
                 text: "Flow chart item 3: [GAP]",
-                correctAnswer: "Placeholder 24",
+                correctAnswer: "Great ocean Conveyor",
               },
               {
                 id: "q25-r12s2",
                 type: "fill_in_the_blank",
                 questionNumber: 25,
                 text: "Flow chart item 4: [GAP]",
-                correctAnswer: "Placeholder 25",
+                correctAnswer: "freshwater",
               },
               {
                 id: "q26-r12s2",
                 type: "fill_in_the_blank",
                 questionNumber: 26,
                 text: "Flow chart item 5: [GAP]",
-                correctAnswer: "Placeholder 26",
+                correctAnswer: "southward",
               },
             ],
           },
@@ -16525,9 +16521,9 @@ integration, our cognitive memory is less burdened; it has to deal with only a
         questionGroups: [
           {
             instructions: `
-              <p>Questions 27-34</p>
-              <p>The reading Passage has ten paragraphs A-J. Which paragraph contains the following information? Write the correct letter A-J, in boxes 27-34 on your answer sheet NB You may use any letter more than once.</p>
-            `,
+                  <p>Questions 27-34</p>
+                  <p>The reading Passage has ten paragraphs A-J. Which paragraph contains the following information? Write the correct letter A-J, in boxes 27-34 on your answer sheet NB You may use any letter more than once.</p>
+                `,
             type: "matching_headings",
             listHeadings: [
               {
@@ -16557,57 +16553,57 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q27-r12s3",
                 questionNumber: 27,
                 paragraphId: "A",
-                correctAnswer: "Placeholder 27",
+                correctAnswer: "iv",
               },
               {
                 id: "q28-r12s3",
                 questionNumber: 28,
                 paragraphId: "B",
-                correctAnswer: "Placeholder 28",
+                correctAnswer: "xii",
               },
               {
                 id: "q29-r12s3",
                 questionNumber: 29,
                 paragraphId: "D",
-                correctAnswer: "Placeholder 29",
+                correctAnswer: "ii",
               },
               {
                 id: "q30-r12s3",
                 questionNumber: 30,
                 paragraphId: "E",
-                correctAnswer: "Placeholder 30",
+                correctAnswer: "x",
               },
               {
                 id: "q31-r12s3",
                 questionNumber: 31,
                 paragraphId: "F",
-                correctAnswer: "Placeholder 31",
+                correctAnswer: "i",
               },
               {
                 id: "q32-r12s3",
                 questionNumber: 32,
                 paragraphId: "G",
-                correctAnswer: "Placeholder 32",
+                correctAnswer: "ix",
               },
               {
                 id: "q33-r12s3",
                 questionNumber: 33,
                 paragraphId: "H",
-                correctAnswer: "Placeholder 33",
+                correctAnswer: "v",
               },
               {
                 id: "q34-r12s3",
                 questionNumber: 34,
                 paragraphId: "I",
-                correctAnswer: "Placeholder 34",
+                correctAnswer: "vii",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 35-37</p>
-              <p>Choose the correct letter A, B, c or D. Write your answers in boxes 35-37 on your answer sheet.</p>
-            `,
+                  <p>Questions 35-37</p>
+                  <p>Choose the correct letter A, B, c or D. Write your answers in boxes 35-37 on your answer sheet.</p>
+                `,
             questions: [
               {
                 id: "q35-r12s3",
@@ -16621,7 +16617,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C industrial production increased.",
                   "D Stalin was confident about Soviet’s potential.",
                 ],
-                correctAnswer: "Placeholder 35",
+                correctAnswer: "C",
               },
               {
                 id: "q36-r12s3",
@@ -16634,7 +16630,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C get rid of undesirable work hours.",
                   "D change the already establish three-shift work system.",
                 ],
-                correctAnswer: "Placeholder 36",
+                correctAnswer: "B",
               },
               {
                 id: "q37-r12s3",
@@ -16648,15 +16644,15 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C they were able to apply it.",
                   "D workers hated the new plan.",
                 ],
-                correctAnswer: "Placeholder 37",
+                correctAnswer: "A",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 38-40</p>
-              <p>Answer the questions below using NO MORE THAN TWO WORDS from the passage for each answer. Write your answers in boxes 38-40 on your answer sheet.</p>
-            `,
+                  <p>Questions 38-40</p>
+                  <p>Answer the questions below using NO MORE THAN TWO WORDS from the passage for each answer. Write your answers in boxes 38-40 on your answer sheet.</p>
+                `,
             questions: [
               {
                 id: "q38-r12s3",
@@ -16664,7 +16660,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 38,
                 text:
                   "Whose idea of continuous work week did Stalin approve and helped to implement?",
-                correctAnswer: "Placeholder 38",
+                correctAnswer: "Yuri Larin",
               },
               {
                 id: "q39-r12s3",
@@ -16672,7 +16668,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 39,
                 text:
                   "What method was used to help workers to remember the rotation of theft off days?",
-                correctAnswer: "Placeholder 39",
+                correctAnswer: ["Colour-coding", "colour"],
               },
               {
                 id: "q40-r12s3",
@@ -16680,7 +16676,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 40,
                 text:
                   "What was the most resistant force to the new work week scheme?",
-                correctAnswer: "Placeholder 40",
+                correctAnswer: "family",
               },
             ],
           },
@@ -16816,10 +16812,10 @@ integration, our cognitive memory is less burdened; it has to deal with only a
         questionGroups: [
           {
             instructions: `
-              <p>Questions 1-7</p>
-              <p>Reading passage 1 has seven paragraphs, A-G Choose the correct heading for paragraphs A -G from the list of headings below. Write the correct number, i-x, in boxes 1-7 on your answer sheet.</p>
-              <p>List of headings</p>
-            `,
+                  <p>Questions 1-7</p>
+                  <p>Reading passage 1 has seven paragraphs, A-G Choose the correct heading for paragraphs A -G from the list of headings below. Write the correct number, i-x, in boxes 1-7 on your answer sheet.</p>
+                  <p>List of headings</p>
+                `,
             type: "matching_headings",
             listHeadings: [
               {
@@ -16849,51 +16845,51 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q1-r13s1",
                 questionNumber: 1,
                 paragraphId: "A",
-                correctAnswer: "Placeholder 1",
+                correctAnswer: "iv",
               },
               {
                 id: "q2-r13s1",
                 questionNumber: 2,
                 paragraphId: "B",
-                correctAnswer: "Placeholder 2",
+                correctAnswer: "vii",
               },
               {
                 id: "q3-r13s1",
                 questionNumber: 3,
                 paragraphId: "C",
-                correctAnswer: "Placeholder 3",
+                correctAnswer: "x",
               },
               {
                 id: "q4-r13s1",
                 questionNumber: 4,
                 paragraphId: "D",
-                correctAnswer: "Placeholder 4",
+                correctAnswer: "i",
               },
               {
                 id: "q5-r13s1",
                 questionNumber: 5,
                 paragraphId: "E",
-                correctAnswer: "Placeholder 5",
+                correctAnswer: "vi",
               },
               {
                 id: "q6-r13s1",
                 questionNumber: 6,
                 paragraphId: "F",
-                correctAnswer: "Placeholder 6",
+                correctAnswer: "ii",
               },
               {
                 id: "q7-r13s1",
                 questionNumber: 7,
                 paragraphId: "G",
-                correctAnswer: "Placeholder 7",
+                correctAnswer: "viii",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 8-13</p>
-              <p>Complete the sentences below. Choose NO MORE THAN THREE WORDS from the passage for each answer. Write your answers in boxes 8-13 on your answer sheet.</p>
-            `,
+                  <p>Questions 8-13</p>
+                  <p>Complete the sentences below. Choose NO MORE THAN THREE WORDS from the passage for each answer. Write your answers in boxes 8-13 on your answer sheet.</p>
+                `,
             questions: [
               {
                 id: "q8-r13s1",
@@ -16901,7 +16897,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 8,
                 text:
                   "Being disturbed repeatedly, the harried mother feels frustrated for the lack of [GAP]",
-                correctAnswer: "Placeholder 8",
+                correctAnswer: "privacy",
               },
               {
                 id: "q9-r13s1",
@@ -16909,7 +16905,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 9,
                 text:
                   "Inmates in high density settings were more aggressive in [GAP]",
-                correctAnswer: "Placeholder 9",
+                correctAnswer: "male prison",
               },
               {
                 id: "q10-r13s1",
@@ -16917,7 +16913,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 10,
                 text:
                   "The different result between male and female is associated with the varying need of [GAP]",
-                correctAnswer: "Placeholder 10",
+                correctAnswer: "personal space",
               },
               {
                 id: "q11-r13s1",
@@ -16925,7 +16921,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 11,
                 text:
                   "Especially for male, Baum and Greenberg found that [GAP] declined with high density.",
-                correctAnswer: "Placeholder 11",
+                correctAnswer: ["attraction", "attraction levels"],
               },
               {
                 id: "q12-r13s1",
@@ -16933,7 +16929,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 12,
                 text:
                   "The idea of responsibility diffusion may explain a person's reluctant to [GAP]",
-                correctAnswer: "Placeholder 12",
+                correctAnswer: "help",
               },
               {
                 id: "q13-r13s1",
@@ -16941,7 +16937,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 13,
                 text:
                   "Schmidt and Keating suggest that if more [GAP] was present there would be a reduction in crowding stress.",
-                correctAnswer: "Placeholder 13",
+                correctAnswer: "control",
               },
             ],
           },
@@ -17074,10 +17070,10 @@ integration, our cognitive memory is less burdened; it has to deal with only a
         questionGroups: [
           {
             instructions: `
-              <p>Questions 14-20</p>
-              <p>Reading Passage 2 has seven paragraphs, A-G. Choose the correct heading for paragraphs, A-G from the list below. Write the correct number, i-x, in boxes 14-20 on your answer sheet.</p>
-              <p>List of Headings</p>
-            `,
+                  <p>Questions 14-20</p>
+                  <p>Reading Passage 2 has seven paragraphs, A-G. Choose the correct heading for paragraphs, A-G from the list below. Write the correct number, i-x, in boxes 14-20 on your answer sheet.</p>
+                  <p>List of Headings</p>
+                `,
             type: "matching_headings",
             listHeadings: [
               { id: "i", text: "Financial hardship of community" },
@@ -17126,51 +17122,51 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q14-r13s2",
                 questionNumber: 14,
                 paragraphId: "A",
-                correctAnswer: "Placeholder 14",
+                correctAnswer: "vi",
               },
               {
                 id: "q15-r13s2",
                 questionNumber: 15,
                 paragraphId: "B",
-                correctAnswer: "Placeholder 15",
+                correctAnswer: "viii",
               },
               {
                 id: "q16-r13s2",
                 questionNumber: 16,
                 paragraphId: "C",
-                correctAnswer: "Placeholder 16",
+                correctAnswer: "v",
               },
               {
                 id: "q17-r13s2",
                 questionNumber: 17,
                 paragraphId: "D",
-                correctAnswer: "Placeholder 17",
+                correctAnswer: "iii",
               },
               {
                 id: "q18-r13s2",
                 questionNumber: 18,
                 paragraphId: "E",
-                correctAnswer: "Placeholder 18",
+                correctAnswer: "ix",
               },
               {
                 id: "q19-r13s2",
                 questionNumber: 19,
                 paragraphId: "F",
-                correctAnswer: "Placeholder 19",
+                correctAnswer: "vii",
               },
               {
                 id: "q20-r13s2",
                 questionNumber: 20,
                 paragraphId: "G",
-                correctAnswer: "Placeholder 20",
+                correctAnswer: "ii",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 21-23</p>
-              <p>List of people</p>
-            `,
+                  <p>Questions 21-23</p>
+                  <p>List of people</p>
+                `,
             type: "matching_items",
             listItems: [
               { id: "A", text: "Michael Thompson" },
@@ -17185,43 +17181,43 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 21,
                 statement:
                   "Design should meet the need of mix-raced cultural background",
-                correctAnswer: "Placeholder 21",
+                correctAnswer: "D",
               },
               {
                 id: "q22-r13s2",
                 questionNumber: 22,
                 statement:
                   "for better living environment, regulations and social control should be imperative",
-                correctAnswer: "Placeholder 22",
+                correctAnswer: "B",
               },
               {
                 id: "q23-r13s2",
                 questionNumber: 23,
                 statement:
                   "organising more community's activities helps strengthening relationship in community",
-                correctAnswer: "Placeholder 23",
+                correctAnswer: "C",
               },
             ],
           },
           {
             instructions: `
-              <p>Questions 24-27</p>
-              <p>Complete the folbwing summary of the paragraphs of Reading Passage 2 Choose NO MORE THAN TWO WORDS from the passage for each answer. Write your answers in boxes 24-27 on your answer sheet.</p>
-            `,
+                  <p>Questions 24-27</p>
+                  <p>Complete the folbwing summary of the paragraphs of Reading Passage 2 Choose NO MORE THAN TWO WORDS from the passage for each answer. Write your answers in boxes 24-27 on your answer sheet.</p>
+                `,
             questions: [
               {
                 id: "q24-r13s2",
                 type: "fill_in_the_blank",
                 questionNumber: 24,
                 text: "people complain about the high living [GAP]",
-                correctAnswer: "Placeholder 24",
+                correctAnswer: "density",
               },
               {
                 id: "q25-r13s2",
                 type: "fill_in_the_blank",
                 questionNumber: 25,
                 text: "under the designs of many [GAP] together",
-                correctAnswer: "Placeholder 25",
+                correctAnswer: "architects",
               },
               {
                 id: "q26-r13s2",
@@ -17229,14 +17225,14 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 26,
                 text:
                   "reconstruction program's major concern is to build a house within low [GAP]",
-                correctAnswer: "Placeholder 26",
+                correctAnswer: "budget",
               },
               {
                 id: "q27-r13s2",
                 type: "fill_in_the_blank",
                 questionNumber: 27,
                 text: "conventional house in its own [GAP]",
-                correctAnswer: "Placeholder 27",
+                correctAnswer: "garden",
               },
             ],
           },
@@ -17386,7 +17382,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C. Introduction of types of video games.",
                   "D. Introduction of the background of this passage.",
                 ],
-                correctAnswer: "Placeholder 28",
+                correctAnswer: "D",
               },
               {
                 id: "q29-r13s3",
@@ -17400,7 +17396,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C. Even there is a certain proportion of violence in most video games; scientists and psychologists see its benefits of children’s intellectual abilities.",
                   "D Many parents regard video games as time-wasters, which rot children’s brain.",
                 ],
-                correctAnswer: "Placeholder 29",
+                correctAnswer: "C",
               },
               {
                 id: "q30-r13s3",
@@ -17413,7 +17409,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C Some surgeons have better skills because they play more video games.",
                   "D Skillful fighter pilots in this generation love to play video games.",
                 ],
-                correctAnswer: "Placeholder 30",
+                correctAnswer: "B",
               },
               {
                 id: "q31-r13s3",
@@ -17427,7 +17423,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C Strategy game players have better ability to make quick decisions.",
                   "D Video games help increase the speed of players’ reaction effectively.",
                 ],
-                correctAnswer: "Placeholder 31",
+                correctAnswer: "D",
               },
             ],
           },
@@ -17446,28 +17442,28 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 32,
                 text:
                   "Most video games are popular because of their violent content.",
-                correctAnswer: "Placeholder 32",
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q33-r13s3",
                 questionNumber: 33,
                 text:
                   "The action game players minimized the percentage of making mistakes in the experiment.",
-                correctAnswer: "Placeholder 33",
+                correctAnswer: "FALSE",
               },
               {
                 id: "q34-r13s3",
                 questionNumber: 34,
                 text:
                   "It would be a good idea for schools to apply video games in their classrooms.",
-                correctAnswer: "Placeholder 34",
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q35-r13s3",
                 questionNumber: 35,
                 text:
                   "Those people who are addicted to video games have lots of dopamine in their brains.",
-                correctAnswer: "Placeholder 35",
+                correctAnswer: "TRUE",
               },
             ],
           },
@@ -17491,35 +17487,35 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 36,
                 statement:
                   "Video games as other daily life skills alter the brain’s physical structure.",
-                correctAnswer: "Placeholder 36",
+                correctAnswer: "C",
               },
               {
                 id: "q37-r13s3",
                 questionNumber: 37,
                 statement:
                   "Brain is ready to make decisions without hesitation when players are immersed in playing stressful games.",
-                correctAnswer: "Placeholder 37",
+                correctAnswer: "D",
               },
               {
                 id: "q38-r13s3",
                 questionNumber: 38,
                 statement:
                   "The purpose-motivated experience that video games offer plays an essential role in studying.",
-                correctAnswer: "Placeholder 38",
+                correctAnswer: "B",
               },
               {
                 id: "q39-r13s3",
                 questionNumber: 39,
                 statement:
                   "Players are good at tackling prompt issues with future intensions.",
-                correctAnswer: "Placeholder 39",
+                correctAnswer: "E",
               },
               {
                 id: "q40-r13s3",
                 questionNumber: 40,
                 statement:
                   "It helps children broaden their horizon in many aspects and gain self-confidence.",
-                correctAnswer: "Placeholder 40",
+                correctAnswer: "A",
               },
             ],
           },
@@ -17662,33 +17658,33 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q1-r14s1",
                 questionNumber: 1,
                 text: "All living animals can lie.",
-                correctAnswer: "Placeholder 1",
+                correctAnswer: "TRUE",
               },
               {
                 id: "q2-r14s1",
                 questionNumber: 2,
                 text: "Some people tell lies for self-preservation.",
-                correctAnswer: "Placeholder 2",
+                correctAnswer: "TRUE",
               },
               {
                 id: "q3-r14s1",
                 questionNumber: 3,
                 text: "The fact of lying is more important than detecting one.",
-                correctAnswer: "Placeholder 3",
+                correctAnswer: "FALSE",
               },
               {
                 id: "q4-r14s1",
                 questionNumber: 4,
                 text:
                   "Researchers are using equipment to study which part of the brain is responsible for telling lies.",
-                correctAnswer: "Placeholder 4",
+                correctAnswer: "NOT GIVEN",
               },
               {
                 id: "q5-r14s1",
                 questionNumber: 5,
                 text:
                   "To be a good liar, one has to understand other people’s emotions.",
-                correctAnswer: "Placeholder 5",
+                correctAnswer: "TRUE",
               },
             ],
           },
@@ -17709,7 +17705,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C It illustrates the reasons about the emotional change when one is tested.",
                   "D It monitors several physical reactions in the person undergoing the test.",
                 ],
-                correctAnswer: "Placeholder 6",
+                correctAnswer: "D",
               },
               {
                 id: "q7-r14s1",
@@ -17722,7 +17718,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C because the lights are too hot.",
                   "D because the statistic data on the lie detectors are not accurate.",
                 ],
-                correctAnswer: "Placeholder 7",
+                correctAnswer: "B",
               },
               {
                 id: "q8-r14s1",
@@ -17735,7 +17731,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C to demonstrate the paralyzed patient’s ability to smile.",
                   "D to emphasize that the patient is in a state of stroke.",
                 ],
-                correctAnswer: "Placeholder 8",
+                correctAnswer: "A",
               },
               {
                 id: "q9-r14s1",
@@ -17748,7 +17744,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C are conscious of the surroundings.",
                   "D can think before action.",
                 ],
-                correctAnswer: "Placeholder 9",
+                correctAnswer: "B",
               },
             ],
           },
@@ -17772,25 +17768,25 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q10-r14s1",
                 questionNumber: 10,
                 statement: "Lines formed above eyebrows",
-                correctAnswer: "Placeholder 10",
+                correctAnswer: "C",
               },
               {
                 id: "q11-r14s1",
                 questionNumber: 11,
                 statement: "Movement from muscle that orbits the eye",
-                correctAnswer: "Placeholder 11",
+                correctAnswer: "A",
               },
               {
                 id: "q12-r14s1",
                 questionNumber: 12,
                 statement: "Eyebrows down",
-                correctAnswer: "Placeholder 12",
+                correctAnswer: "B",
               },
               {
                 id: "q13-r14s1",
                 questionNumber: 13,
                 statement: "Inner comer of eyebrows raised",
-                correctAnswer: "Placeholder 13",
+                correctAnswer: "C",
               },
             ],
           },
@@ -17962,38 +17958,38 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 14,
                 statement:
                   "Build small nests and live with different foreign fungus.",
-                correctAnswer: "Placeholder 14",
+                correctAnswer: "B",
               },
               {
                 id: "q15-r14s2",
                 questionNumber: 15,
                 statement: "Use toxic leaves to feed fungus o",
-                correctAnswer: "Placeholder 15",
+                correctAnswer: "A",
               },
               {
                 id: "q16-r14s2",
                 questionNumber: 16,
                 statement:
                   "Raise fungus which don't live with other foreingers.",
-                correctAnswer: "Placeholder 16",
+                correctAnswer: "A",
               },
               {
                 id: "q17-r14s2",
                 questionNumber: 17,
                 statement: "Use substance to fight against escovopsis.",
-                correctAnswer: "Placeholder 17",
+                correctAnswer: "C",
               },
               {
                 id: "q18-r14s2",
                 questionNumber: 18,
                 statement: "Use dead vegetable to feed fungus.",
-                correctAnswer: "Placeholder 18",
+                correctAnswer: "B",
               },
               {
                 id: "q19-r14s2",
                 questionNumber: 19,
                 statement: "Are free of parasites explained previously.",
-                correctAnswer: "Placeholder 19",
+                correctAnswer: "A",
               },
             ],
           },
@@ -18008,31 +18004,31 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q20-r14s2",
                 questionNumber: 20,
                 text: "Dangerous outcome of Escovopsis.",
-                correctAnswer: "Placeholder 20",
+                correctAnswer: "F",
               },
               {
                 id: "q21-r14s2",
                 questionNumber: 21,
                 text: "Disadvantage of growing single fungus.",
-                correctAnswer: "Placeholder 21",
+                correctAnswer: "H",
               },
               {
                 id: "q22-r14s2",
                 questionNumber: 22,
                 text: "Comparison of features of two different nests.",
-                correctAnswer: "Placeholder 22",
+                correctAnswer: "C",
               },
               {
                 id: "q23-r14s2",
                 questionNumber: 23,
                 text: "Two achievements made by ants earlier than human.",
-                correctAnswer: "Placeholder 23",
+                correctAnswer: "J",
               },
               {
                 id: "q24-r14s2",
                 questionNumber: 24,
                 text: "Advantage of growing new breed of fungus.",
-                correctAnswer: "Placeholder 24",
+                correctAnswer: "G",
               },
             ],
           },
@@ -18053,7 +18049,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C. no details mentioned in article.",
                   "D his opinion was proved to be wrong.",
                 ],
-                correctAnswer: "Placeholder 25",
+                correctAnswer: "A",
               },
               {
                 id: "q26-r14s2",
@@ -18067,7 +18063,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C. a substance which is useful to humans.",
                   "D. a substance which suppresses growth of fungus.",
                 ],
-                correctAnswer: "Placeholder 26",
+                correctAnswer: "C",
               },
             ],
           },
@@ -18261,43 +18257,43 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q27-r14s3",
                 questionNumber: 27,
                 paragraphId: "A",
-                correctAnswer: "Placeholder 27",
+                correctAnswer: "v",
               },
               {
                 id: "q28-r14s3",
                 questionNumber: 28,
                 paragraphId: "B",
-                correctAnswer: "Placeholder 28",
+                correctAnswer: "x",
               },
               {
                 id: "q29-r14s3",
                 questionNumber: 29,
                 paragraphId: "D",
-                correctAnswer: "Placeholder 29",
+                correctAnswer: "iii",
               },
               {
                 id: "q30-r14s3",
                 questionNumber: 30,
                 paragraphId: "E",
-                correctAnswer: "Placeholder 30",
+                correctAnswer: "i",
               },
               {
                 id: "q31-r14s3",
                 questionNumber: 31,
                 paragraphId: "F",
-                correctAnswer: "Placeholder 31",
+                correctAnswer: "vii",
               },
               {
                 id: "q32-r14s3",
                 questionNumber: 32,
                 paragraphId: "G",
-                correctAnswer: "Placeholder 32",
+                correctAnswer: "viii",
               },
               {
                 id: "q33-r14s3",
                 questionNumber: 33,
                 paragraphId: "H",
-                correctAnswer: "Placeholder 33",
+                correctAnswer: "ii",
               },
             ],
           },
@@ -18320,32 +18316,32 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q34-r14s3",
                 questionNumber: 34,
                 statement: "Reported language conservation practice in Hawaii",
-                correctAnswer: "Placeholder 34",
+                correctAnswer: "C",
               },
               {
                 id: "q35-r14s3",
                 questionNumber: 35,
                 statement: "Predicted that many languages would disappear soon",
-                correctAnswer: "Placeholder 35",
+                correctAnswer: "B",
               },
               {
                 id: "q36-r14s3",
                 questionNumber: 36,
                 statement:
                   "Experienced process that languages die out personally",
-                correctAnswer: "Placeholder 36",
+                correctAnswer: "E",
               },
               {
                 id: "q37-r14s3",
                 questionNumber: 37,
                 statement: "Raised language fund in England",
-                correctAnswer: "Placeholder 37",
+                correctAnswer: "A",
               },
               {
                 id: "q38-r14s3",
                 questionNumber: 38,
                 statement: "Not enough effort on saving until recent work",
-                correctAnswer: "Placeholder 38",
+                correctAnswer: "D",
               },
             ],
           },
@@ -18367,7 +18363,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C postpone the dying date for some endangered languages",
                   "D Increase communication between students",
                 ],
-                correctAnswer: "Placeholder 39",
+                correctAnswer: "C",
               },
               {
                 id: "q40-r14s3",
@@ -18381,7 +18377,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C They should show their loyalty to a dying language",
                   "D They should be more tolerant to minority language speaker",
                 ],
-                correctAnswer: "Placeholder 40",
+                correctAnswer: "D",
               },
             ],
           },
@@ -18527,43 +18523,43 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q1-r15s1",
                 questionNumber: 1,
                 paragraphId: "A",
-                correctAnswer: "Placeholder 1",
+                correctAnswer: "iii",
               },
               {
                 id: "q2-r15s1",
                 questionNumber: 2,
                 paragraphId: "B",
-                correctAnswer: "Placeholder 2",
+                correctAnswer: "x",
               },
               {
                 id: "q3-r15s1",
                 questionNumber: 3,
                 paragraphId: "C",
-                correctAnswer: "Placeholder 3",
+                correctAnswer: "viii",
               },
               {
                 id: "q4-r15s1",
                 questionNumber: 4,
                 paragraphId: "D",
-                correctAnswer: "Placeholder 4",
+                correctAnswer: "ix",
               },
               {
                 id: "q5-r15s1",
                 questionNumber: 5,
                 paragraphId: "E",
-                correctAnswer: "Placeholder 5",
+                correctAnswer: "vi",
               },
               {
                 id: "q6-r15s1",
                 questionNumber: 6,
                 paragraphId: "F",
-                correctAnswer: "Placeholder 6",
+                correctAnswer: "i",
               },
               {
                 id: "q7-r15s1",
                 questionNumber: 7,
                 paragraphId: "G",
-                correctAnswer: "Placeholder 7",
+                correctAnswer: "iv",
               },
             ],
           },
@@ -18581,7 +18577,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 8,
                 text:
                   "[GAP] are exclusively offered to girls in the feeding programme.",
-                correctAnswer: "Placeholder 8",
+                correctAnswer: "extra snacks",
               },
               {
                 id: "q9-r15s1",
@@ -18589,7 +18585,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 9,
                 text:
                   "Instead of going to school, many children in poverty are sent to collect [GAP] in the fields.",
-                correctAnswer: "Placeholder 9",
+                correctAnswer: "firewood",
               },
               {
                 id: "q10-r15s1",
@@ -18597,7 +18593,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 10,
                 text:
                   "The pass rate at Msekeni has risen to [GAP] with the help of the feeding programme.",
-                correctAnswer: "Placeholder 10",
+                correctAnswer: "85%",
               },
               {
                 id: "q11-r15s1",
@@ -18605,7 +18601,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 11,
                 text:
                   "Since the industrial revolution, the size of the modern human has grown by[GAP]",
-                correctAnswer: "Placeholder 11",
+                correctAnswer: "50%",
               },
             ],
           },
@@ -18646,7 +18642,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q12-13-r15s1",
                 questionNumber: "12-13",
                 text: "Which TWO of the following statements are true?",
-                correctAnswer: ["Placeholder 12", "Placeholder 13"],
+                correctAnswer: ["A", "C"],
               },
             ],
           },
@@ -18810,43 +18806,43 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q14-r15s2",
                 questionNumber: 14,
                 paragraphId: "A",
-                correctAnswer: "Placeholder 14",
+                correctAnswer: "ii",
               },
               {
                 id: "q15-r15s2",
                 questionNumber: 15,
                 paragraphId: "B",
-                correctAnswer: "Placeholder 15",
+                correctAnswer: "v",
               },
               {
                 id: "q16-r15s2",
                 questionNumber: 16,
                 paragraphId: "C",
-                correctAnswer: "Placeholder 16",
+                correctAnswer: "i",
               },
               {
                 id: "q17-r15s2",
                 questionNumber: 17,
                 paragraphId: "D",
-                correctAnswer: "Placeholder 17",
+                correctAnswer: "viii",
               },
               {
                 id: "q18-r15s2",
                 questionNumber: 18,
                 paragraphId: "F",
-                correctAnswer: "Placeholder 18",
+                correctAnswer: "vi",
               },
               {
                 id: "q19-r15s2",
                 questionNumber: 19,
                 paragraphId: "G",
-                correctAnswer: "Placeholder 19",
+                correctAnswer: "iii",
               },
               {
                 id: "q20-r15s2",
                 questionNumber: 20,
                 paragraphId: "H",
-                correctAnswer: "Placeholder 20",
+                correctAnswer: "iv",
               },
             ],
           },
@@ -18862,28 +18858,28 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 questionNumber: 21,
                 text: "When did the bird of bitten reach its peak of number?",
-                correctAnswer: "Placeholder 21",
+                correctAnswer: "1950s",
               },
               {
                 id: "q22-r15s2",
                 type: "fill_in_the_blank",
                 questionNumber: 22,
                 text: "What does the author describe the bittern's character?",
-                correctAnswer: "Placeholder 22",
+                correctAnswer: ["(being) shy", "shyness"],
               },
               {
                 id: "q23-r15s2",
                 type: "fill_in_the_blank",
                 questionNumber: 23,
                 text: "What is the main cause for the chick bittern's death?",
-                correctAnswer: "Placeholder 23",
+                correctAnswer: "starvation",
               },
               {
                 id: "q24-r15s2",
                 type: "fill_in_the_blank",
                 questionNumber: 24,
                 text: "What is the main food for chick bittern?",
-                correctAnswer: "Placeholder 24",
+                correctAnswer: "(native) fish",
               },
               {
                 id: "q25-r15s2",
@@ -18891,7 +18887,11 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 25,
                 text:
                   "What system does it secure the stability for bittern's population?",
-                correctAnswer: "Placeholder 25",
+                correctAnswer: [
+                  "partnership project",
+                  "network (of sites)",
+                  "partnership project network",
+                ],
               },
               {
                 id: "q26-r15s2",
@@ -18899,7 +18899,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 26,
                 text:
                   "Besides bittern and rare vegetation, what mammal does the protection plan benefit?",
-                correctAnswer: "Placeholder 26",
+                correctAnswer: "Otter and brown-hare",
               },
             ],
           },
@@ -18920,7 +18920,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                   "C The difficulty of access information of bittern's habitat and diet.",
                   "D To save wetland and reed bed in UK.",
                 ],
-                correctAnswer: "Placeholder 27",
+                correctAnswer: "B",
               },
             ],
           },
@@ -19108,37 +19108,37 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q28-r15s3",
                 questionNumber: 28,
                 paragraphId: "A",
-                correctAnswer: "Placeholder 28",
+                correctAnswer: "i",
               },
               {
                 id: "q29-r15s3",
                 questionNumber: 29,
                 paragraphId: "B",
-                correctAnswer: "Placeholder 29",
+                correctAnswer: "ix",
               },
               {
                 id: "q30-r15s3",
                 questionNumber: 30,
                 paragraphId: "C",
-                correctAnswer: "Placeholder 30",
+                correctAnswer: "iv",
               },
               {
                 id: "q31-r15s3",
                 questionNumber: 31,
                 paragraphId: "D",
-                correctAnswer: "Placeholder 31",
+                correctAnswer: "vii",
               },
               {
                 id: "q32-r15s3",
                 questionNumber: 32,
                 paragraphId: "E",
-                correctAnswer: "Placeholder 32",
+                correctAnswer: "v",
               },
               {
                 id: "q33-r15s3",
                 questionNumber: 33,
                 paragraphId: "F",
-                correctAnswer: "Placeholder 33",
+                correctAnswer: "iii",
               },
             ],
           },
@@ -19153,28 +19153,28 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q34-r15s3",
                 questionNumber: 34,
                 text: "Projected Basic Blue in IBM achieved a great success.",
-                correctAnswer: "Placeholder 34",
+                correctAnswer: "A",
               },
               {
                 id: "q35-r15s3",
                 questionNumber: 35,
                 text:
                   "E-learning wins as a priority for many corporations as its flexibility.",
-                correctAnswer: "Placeholder 35",
+                correctAnswer: "B",
               },
               {
                 id: "q36-r15s3",
                 questionNumber: 36,
                 text:
                   "The combination of the traditional and c-training environments may prevail.",
-                correctAnswer: "Placeholder 36",
+                correctAnswer: "F",
               },
               {
                 id: "q37-r15s3",
                 questionNumber: 37,
                 text:
                   "Example of a fast electronic delivery for a company’s products to its customers.",
-                correctAnswer: "Placeholder 37",
+                correctAnswer: "D",
               },
             ],
           },
@@ -19213,11 +19213,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q38-40-r15s3",
                 questionNumber: "38-40",
                 text: "Choose Three correct letters, among A-E",
-                correctAnswer: [
-                  "Placeholder 38",
-                  "Placeholder 39",
-                  "Placeholder 40",
-                ],
+                correctAnswer: ["B", "C", "E"],
               },
             ],
           },

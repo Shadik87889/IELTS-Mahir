@@ -430,14 +430,19 @@ const renderTestimonials = () => {
         );
 
         testimonialsGrid.addEventListener("touchend", () => {
-          const minSwipeDistance = 50; // Minimum pixels for a recognized swipe
-          if (touchStartX - touchEndX > minSwipeDistance) {
-            // Swiped left
-            goToNextTestimonial();
-          } else if (touchEndX - touchStartX > minSwipeDistance) {
-            // Swiped right
-            goToPrevTestimonial();
+          // A swipe is only registered if touchmove has occurred and updated touchEndX.
+          // This prevents a tap/click from being misinterpreted as a swipe.
+          if (touchEndX !== 0) {
+            const minSwipeDistance = 50; // Minimum pixels for a recognized swipe
+            if (touchStartX - touchEndX > minSwipeDistance) {
+              // Swiped left
+              goToNextTestimonial();
+            } else if (touchEndX - touchStartX > minSwipeDistance) {
+              // Swiped right
+              goToPrevTestimonial();
+            }
           }
+          // Reset values for the next touch event
           touchStartX = 0;
           touchEndX = 0;
         });
