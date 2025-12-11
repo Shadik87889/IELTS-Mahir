@@ -1107,8 +1107,9 @@
         elements.aiModalOverlay.classList.remove("hidden");
         elements.aiModalOverlay.classList.add("opacity-100");
         try {
-          const apiKey = "AIzaSyCsdeFOJrU43BZmnRP5WD1pm80fZH1cxN4";
-          const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+          const apiKey = "AIzaSyBT7xtDNU5yumt4-XQVQDcyVSrA7jG3aZs";
+          const model = "gemini-2.5-flash-preview-09-2025";
+          const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
           const response = await fetch(apiUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },

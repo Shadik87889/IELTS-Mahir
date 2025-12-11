@@ -25,8 +25,7 @@ const questions = [
   "Do you prefer to travel alone or with others? Why?",
 ];
 
-// Use the provided API key
-const API_KEY = "AIzaSyCsdeFOJrU43BZmnRP5WD1pm80fZH1cxN4";
+const apiKey = "AIzaSyBT7xtDNU5yumt4-XQVQDcyVSrA7jG3aZs";
 
 function showLoader(show) {
   if (show) {
@@ -162,7 +161,9 @@ async function generateTTS(text) {
     },
     model: "gemini-2.5-flash-preview-tts",
   };
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${API_KEY}`;
+  const apiKey = "AIzaSyBT7xtDNU5yumt4-XQVQDcyVSrA7jG3aZs";
+  const model = "gemini-2.5-flash-preview-09-2025";
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
   try {
     const response = await fetch(apiUrl, {
