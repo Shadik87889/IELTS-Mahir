@@ -12488,7 +12488,7 @@ export const allQuizTests = [
     description:
       "Analyze the provided charts and graphs to answer the questions.",
     duration: 25,
-    minLevel: 2,
+    minLevel: 1,
     questions: [
       {
         id: "di1q1",
@@ -12765,7 +12765,7 @@ export const allQuizTests = [
     description:
       "Choose the best meaning or definition of the underlined word based on how it is used in the sentence.",
     duration: 20,
-    minLevel: 2,
+    minLevel: 1,
     questions: [
       {
         id: "wt1v1q1",
@@ -13071,7 +13071,7 @@ export const allQuizTests = [
     description:
       "Choose the most appropriate formal word or phrase to replace the informal word in bold.",
     duration: 20,
-    minLevel: 2,
+    minLevel: 1,
     questions: [
       {
         id: "wt2fwc1q1",
