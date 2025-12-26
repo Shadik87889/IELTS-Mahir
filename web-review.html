@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  class="antialiased scroll-smooth selection:bg-gold selection:text-void"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Mahir | Site Overview & Review</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Anton&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              void: "#051C2C", // Deep Navy/Black mix for premium feel
+              cream: "#FDFBF7", // Soft warm white
+              gold: "#C6A87C", // Muted, elegant gold
+              "gold-light": "#E5D4B8",
+              surface: "#ffffff",
+            },
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', "sans-serif"],
+              serif: ['"Playfair Display"', "serif"],
+              display: ['"Anton"', "sans-serif"],
+              bebas: ['"Bebas Neue"', "sans-serif"],
+            },
+            backgroundImage: {
+              "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        background-color: #fdfbf7;
+        color: #051c2c;
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #fdfbf7;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #c6a87c;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #051c2c;
+      }
+
+      .nav-link {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        padding-left: 1.5rem; /* Space for the line */
+        display: block;
+      }
+
+      /* The vertical line indicator */
+      .nav-link::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 2px;
+        height: 0%;
+        background-color: #c6a87c;
+        transition: height 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: #c6a87c;
+      }
+
+      .nav-link.active {
+        color: #051c2c;
+        font-weight: 700;
+      }
+
+      .nav-link.active::before {
+        height: 100%;
+      }
+
+      /* Sticky Nav Container */
+      .sticky-sidebar {
+        position: sticky;
+        top: 6rem;
+        height: fit-content;
+      }
+
+      /* Smooth Reveal Animation classes */
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.8s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body class="font-sans bg-cream text-void">
+    <!-- Navbar (Global Top) -->
+    <nav
+      class="fixed top-0 w-full px-6 py-4 z-50 flex justify-between items-center bg-cream/90 backdrop-blur-lg border-b border-void/5 transition-all duration-300"
+      id="navbar"
+    >
+      <a href="#" class="group flex items-center gap-3">
+        <div
+          class="relative w-10 h-10 overflow-hidden rounded-sm border border-gold/20"
+        >
+          <img
+            src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+            alt="IM"
+            class="object-cover w-full h-full"
+          />
+        </div>
+        <span class="font-display text-2xl tracking-wide uppercase text-void"
+          >IELTS Mahir</span
+        >
+      </a>
+
+      <div class="hidden md:flex items-center gap-6">
+        <a
+          href="#home"
+          class="text-xs font-bold tracking-widest uppercase text-gold hover:text-void transition-colors"
+          >Web Review</a
+        >
+        <div class="h-4 w-px bg-void/10"></div>
+        <a
+          href="#"
+          class="px-5 py-2 bg-void text-white text-xs font-bold uppercase tracking-wider hover:bg-gold hover:text-void transition-all duration-300"
+          >Live Site</a
+        >
+      </div>
+    </nav>
+
+    <!-- Header / Hero -->
+    <header
+      class="relative pt-32 pb-16 px-6 overflow-hidden border-b border-void/5"
+    >
+      <div
+        class="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-end justify-between gap-8"
+      >
+        <div class="max-w-3xl">
+          <span
+            class="inline-block py-1 px-3 border border-gold/50 rounded-full text-gold text-[10px] font-bold tracking-[0.2em] uppercase mb-4"
+          >
+            Website Architecture
+          </span>
+          <h1 class="font-serif text-5xl md:text-7xl leading-tight text-void">
+            Reviewing the <br />
+            <span class="italic text-gold">Expanded Feature Set.</span>
+          </h1>
+        </div>
+        <div class="md:text-right pb-2">
+          <p class="text-void/60 font-light text-sm max-w-xs ml-auto">
+            A comprehensive breakdown of all 13 modules, ensuring full
+            transparency of the platform's capabilities.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="max-w-7xl mx-auto px-6 py-12 md:py-16">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+        <!-- Sidebar Navigation (Sticky) -->
+        <aside class="lg:col-span-3 hidden lg:block relative z-40">
+          <div class="sticky-sidebar">
+            <h3
+              class="font-display text-xl mb-6 text-void/40 uppercase tracking-widest border-b border-void/10 pb-2"
+            >
+              Navigation
+            </h3>
+            <nav class="flex flex-col space-y-2">
+              <a
+                href="#home"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >01. Home Page</a
+              >
+              <a
+                href="#mock-test"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >02. Mock Test</a
+              >
+              <a
+                href="#practice-arena"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >03. Practice Arena</a
+              >
+              <a
+                href="#ai-hub"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >04. AI Features</a
+              >
+              <a
+                href="#dashboard"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >05. Student Dashboard</a
+              >
+              <a
+                href="#admin-panel"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >06. Admin Panel</a
+              >
+              <a
+                href="#resources"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >07. Resources</a
+              >
+              <a
+                href="#faculty"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >08. Faculty & Success</a
+              >
+              <a
+                href="#blog"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >09. Blog</a
+              >
+              <a
+                href="#community"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >10. Community</a
+              >
+              <a
+                href="#tech-stack"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >11. Tech Stack</a
+              >
+              <a
+                href="#contact"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >12. Contact</a
+              >
+              <a
+                href="#legal"
+                class="nav-link text-void/50 hover:text-void text-sm uppercase tracking-widest font-medium"
+                >13. Legal Compliance</a
+              >
+            </nav>
+
+            <!-- Quick Stats -->
+            <div class="mt-12 p-6 bg-white border border-void/5 rounded-sm">
+              <div
+                class="text-xs font-bold text-gold uppercase tracking-widest mb-2"
+              >
+                DB Status
+              </div>
+              <div
+                class="flex items-center gap-2 text-void text-sm font-semibold"
+              >
+                <span
+                  class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"
+                ></span>
+                Firebase Connected
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="lg:col-span-9 space-y-32">
+          <!-- 1. HOME PAGE SECTION -->
+          <section id="home" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">01. Home Page</h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >The landing experience</span
+              >
+            </div>
+
+            <!-- Hero Area Representation -->
+            <div
+              class="bg-void text-cream p-10 md:p-14 rounded-sm relative overflow-hidden mb-8 group"
+            >
+              <div
+                class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"
+              ></div>
+              <div class="relative z-10 text-center">
+                <h3
+                  class="font-bebas text-5xl md:text-7xl mb-4 tracking-wide group-hover:scale-105 transition-transform duration-500"
+                >
+                  GET <span class="text-gold">IELTS-READY</span> WITH <br />
+                  IELTS MAHIR!
+                </h3>
+                <div class="flex justify-center gap-4 mt-8">
+                  <span
+                    class="px-6 py-3 border border-cream text-xs font-bold uppercase tracking-widest hover:bg-cream hover:text-void transition-colors cursor-default"
+                    >Google Login &rarr;</span
+                  >
+                  <span
+                    class="px-6 py-3 bg-gold text-void border border-gold text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors cursor-default"
+                    >Start Quiz &rarr;</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Feature Cards Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div
+                class="bg-white p-6 border border-void/5 hover:border-gold/50 transition-colors group"
+              >
+                <div
+                  class="text-gold mb-3 text-2xl group-hover:translate-x-1 transition-transform"
+                >
+                  <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h4 class="font-display text-lg text-void leading-none">
+                  Band 9 <br />
+                  Study Plans
+                </h4>
+              </div>
+              <div
+                class="bg-white p-6 border border-void/5 hover:border-gold/50 transition-colors group"
+              >
+                <div
+                  class="text-gold mb-3 text-2xl group-hover:translate-x-1 transition-transform"
+                >
+                  <i class="fas fa-spell-check"></i>
+                </div>
+                <h4 class="font-display text-lg text-void leading-none">
+                  Grammar <br />
+                  Checker
+                </h4>
+              </div>
+              <div
+                class="bg-white p-6 border border-void/5 hover:border-gold/50 transition-colors group"
+              >
+                <div
+                  class="text-gold mb-3 text-2xl group-hover:translate-x-1 transition-transform"
+                >
+                  <i class="fas fa-chart-line"></i>
+                </div>
+                <h4 class="font-display text-lg text-void leading-none">
+                  Global <br />
+                  Leaderboard
+                </h4>
+              </div>
+              <div
+                class="bg-white p-6 border border-void/5 hover:border-gold/50 transition-colors group"
+              >
+                <div
+                  class="text-gold mb-3 text-2xl group-hover:translate-x-1 transition-transform"
+                >
+                  <i class="fas fa-laptop-code"></i>
+                </div>
+                <h4 class="font-display text-lg text-void leading-none">
+                  Mock <br />
+                  Test
+                </h4>
+              </div>
+            </div>
+          </section>
+
+          <!-- 2. MOCK TEST SECTION -->
+          <section id="mock-test" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">02. Mock Test</h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >Assessment Hub</span
+              >
+            </div>
+
+            <div class="bg-white p-8 border-l-4 border-gold shadow-sm">
+              <p class="font-serif text-xl text-void/80 mb-6">
+                "Extensive simulation modules. Each module contains
+                <span class="text-gold font-bold">20 full-length tests</span>."
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div
+                  class="p-4 bg-gray-50 border border-gray-100 relative group"
+                >
+                  <span
+                    class="absolute top-2 right-2 text-[10px] font-bold bg-gold text-void px-2 py-0.5"
+                    >20 Tests</span
+                  >
+                  <h5 class="font-bold text-void mb-2">
+                    <i class="fas fa-headphones text-gold mr-2"></i> Listening
+                  </h5>
+                  <p class="text-xs text-void/60">
+                    30 minutes • 4 Sections • UK/AUS/USA Accents
+                  </p>
+                </div>
+                <div
+                  class="p-4 bg-gray-50 border border-gray-100 relative group"
+                >
+                  <span
+                    class="absolute top-2 right-2 text-[10px] font-bold bg-gold text-void px-2 py-0.5"
+                    >20 Tests</span
+                  >
+                  <h5 class="font-bold text-void mb-2">
+                    <i class="fas fa-book-open text-gold mr-2"></i> Reading
+                  </h5>
+                  <p class="text-xs text-void/60">
+                    60 minutes • 3 Long Texts • Academic & GT
+                  </p>
+                </div>
+                <div
+                  class="p-4 bg-gray-50 border border-gray-100 relative group"
+                >
+                  <span
+                    class="absolute top-2 right-2 text-[10px] font-bold bg-gold text-void px-2 py-0.5"
+                    >20 Tests</span
+                  >
+                  <h5 class="font-bold text-void mb-2">
+                    <i class="fas fa-pen-nib text-gold mr-2"></i> Writing
+                  </h5>
+                  <p class="text-xs text-void/60">
+                    60 minutes • Task 1 & Task 2 • AI Evaluation
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3. PRACTICE ARENA -->
+          <section id="practice-arena" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">
+                03. Practice Arena
+              </h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >Gamified Learning</span
+              >
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- Quiz Types -->
+              <div class="space-y-4">
+                <div
+                  class="bg-void text-cream p-6 rounded-sm relative overflow-hidden"
+                >
+                  <div
+                    class="absolute -right-4 -top-4 text-gold/10 text-9xl font-display"
+                  >
+                    20
+                  </div>
+                  <h3 class="text-xl font-bold mb-2">Quiz Modules</h3>
+                  <p class="text-sm text-white/60 mb-4">
+                    Comprehensive question banks for daily practice.
+                  </p>
+                  <div class="space-y-2">
+                    <div
+                      class="flex items-center justify-between text-sm border-b border-white/10 pb-2"
+                    >
+                      <span>Grammar Quiz</span>
+                      <span class="text-gold">20 Sets</span>
+                    </div>
+                    <div
+                      class="flex items-center justify-between text-sm border-b border-white/10 pb-2"
+                    >
+                      <span>Vocabulary Builder</span>
+                      <span class="text-gold">20 Sets</span>
+                    </div>
+                    <div
+                      class="flex items-center justify-between text-sm border-b border-white/10 pb-2"
+                    >
+                      <span>Spelling Bee</span>
+                      <span class="text-gold">20 Sets</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Real Time Score Feature -->
+                <div
+                  class="bg-white border border-void/5 p-6 flex items-center gap-4"
+                >
+                  <div
+                    class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xl"
+                  >
+                    <i class="fas fa-bolt"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-void">Real-Time Scoring</h4>
+                    <p class="text-xs text-void/60">
+                      Instant feedback with detailed explanations for every
+                      wrong answer.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Leaderboard & Progress -->
+              <div class="bg-cream border border-void/10 p-6">
+                <h4
+                  class="font-display text-lg mb-6 text-void uppercase tracking-widest"
+                >
+                  Global Rankings
+                </h4>
+
+                <!-- Fake Leaderboard -->
+                <div class="space-y-3 mb-8">
+                  <div
+                    class="flex items-center gap-3 p-3 bg-white shadow-sm border-l-4 border-gold"
+                  >
+                    <div class="font-display text-2xl text-gold">01</div>
+                    <div
+                      class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden"
+                    >
+                      <img
+                        src="https://i.ibb.co/680zC4r/student-image-three.png"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div class="flex-1">
+                      <div class="text-xs font-bold text-void">User_992</div>
+                      <div class="text-[10px] text-void/50">XP: 12,450</div>
+                    </div>
+                    <div class="text-gold"><i class="fas fa-crown"></i></div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 p-3 bg-white shadow-sm border-l-4 border-gray-300"
+                  >
+                    <div class="font-display text-2xl text-void/30">02</div>
+                    <div
+                      class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden"
+                    >
+                      <img
+                        src="https://i.ibb.co/h97p67C/student-image-six.png"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div class="flex-1">
+                      <div class="text-xs font-bold text-void">Sarah_K</div>
+                      <div class="text-[10px] text-void/50">XP: 11,200</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="bg-white p-3 text-center border border-void/5">
+                    <i class="fas fa-history text-void/20 mb-1"></i>
+                    <div class="text-[10px] uppercase font-bold text-void">
+                      Quiz History
+                    </div>
+                  </div>
+                  <div class="bg-white p-3 text-center border border-void/5">
+                    <i class="fas fa-chart-pie text-void/20 mb-1"></i>
+                    <div class="text-[10px] uppercase font-bold text-void">
+                      Progress Tracker
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 4. AI HUB (SPLIT) -->
+          <section id="ai-hub" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">04. AI Features</h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >The Brain</span
+              >
+            </div>
+
+            <div
+              class="bg-gradient-to-r from-void to-[#0A2A3D] p-8 md:p-12 text-white rounded-sm mb-8"
+            >
+              <div>
+                <span
+                  class="bg-gold text-void text-[10px] font-bold px-2 py-1 uppercase tracking-widest mb-4 inline-block"
+                  >Premium Core</span
+                >
+                <h3 class="font-display text-3xl mb-4">The AI Hub</h3>
+                <p class="text-white/60 max-w-lg mb-6 text-sm">
+                  Access cutting-edge tools designed to simulate real examiners.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div
+                    class="flex items-center gap-2 text-sm text-gold-light p-3 bg-white/5 border border-white/10 rounded"
+                  >
+                    <i class="fas fa-magic text-gold"></i>
+                    <div>
+                      <span class="block font-bold">Grammar Checker</span>
+                      <span class="text-xs text-white/50"
+                        >Auto-correction in real-time</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-2 text-sm text-gold-light p-3 bg-white/5 border border-white/10 rounded"
+                  >
+                    <i class="fas fa-pen-fancy text-gold"></i>
+                    <div>
+                      <span class="block font-bold">Writing Grader</span>
+                      <span class="text-xs text-white/50"
+                        >Band score estimation</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-2 text-sm text-gold-light p-3 bg-white/5 border border-white/10 rounded"
+                  >
+                    <i class="fas fa-lightbulb text-gold"></i>
+                    <div>
+                      <span class="block font-bold">Idea Generator</span>
+                      <span class="text-xs text-white/50"
+                        >Brainstorm for Task 2</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-2 text-sm text-gold-light p-3 bg-white/5 border border-white/10 rounded"
+                  >
+                    <i class="fas fa-microphone-alt text-gold"></i>
+                    <div>
+                      <span class="block font-bold">Speaking Partner</span>
+                      <span class="text-xs text-white/50"
+                        >Voice-to-voice simulation</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 5. STUDENT DASHBOARD (SPLIT) -->
+          <section id="dashboard" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">
+                05. Student Dashboard
+              </h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >Your Personal HQ</span
+              >
+            </div>
+
+            <div
+              class="bg-white border border-void/5 p-8 relative overflow-hidden"
+            >
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-bl-full z-0"
+              ></div>
+              <div
+                class="relative z-10 flex flex-col md:flex-row gap-8 items-center"
+              >
+                <div class="w-full md:w-1/2">
+                  <h3 class="font-bold text-2xl text-void mb-4">
+                    Dedicated Analytics
+                  </h3>
+                  <p class="text-sm text-void/60 mb-6">
+                    Track your band score progression over time. Identify weak
+                    areas in listening or reading and get personalized
+                    recommendations.
+                  </p>
+                  <div class="space-y-3">
+                    <div
+                      class="flex items-center justify-between text-xs font-bold text-void"
+                    >
+                      <span>Listening Progress</span>
+                      <span>85%</span>
+                    </div>
+                    <div
+                      class="w-full bg-gray-100 h-2 rounded-full overflow-hidden"
+                    >
+                      <div class="bg-green-500 h-full w-[85%]"></div>
+                    </div>
+                    <div
+                      class="flex items-center justify-between text-xs font-bold text-void pt-2"
+                    >
+                      <span>Vocabulary Bank</span>
+                      <span>420 Words</span>
+                    </div>
+                    <div
+                      class="w-full bg-gray-100 h-2 rounded-full overflow-hidden"
+                    >
+                      <div class="bg-gold h-full w-[60%]"></div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="w-full md:w-1/2 bg-cream p-6 border border-void/10 rounded text-center"
+                >
+                  <div
+                    class="w-16 h-16 bg-void text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
+                  >
+                    <i class="fas fa-user-circle"></i>
+                  </div>
+                  <div class="text-sm font-bold text-void">
+                    Secure Authentication
+                  </div>
+                  <div class="text-xs text-void/50 mb-4">
+                    Powered by Google & Email Auth
+                  </div>
+                  <button
+                    class="bg-white border border-void/20 px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-gold hover:text-white transition-colors"
+                  >
+                    View Profile
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 6. ADMIN PANEL (SPLIT) -->
+          <section id="admin-panel" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">06. Admin Panel</h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >Control Center</span
+              >
+            </div>
+
+            <div class="bg-void text-white p-8 border-l-4 border-red-500">
+              <div
+                class="flex flex-col md:flex-row justify-between items-center gap-8"
+              >
+                <div>
+                  <h3 class="font-display text-2xl mb-2">
+                    <i class="fas fa-user-shield text-red-500 mr-2"></i> Premium
+                    Administration
+                  </h3>
+                  <p class="text-white/60 text-sm max-w-xl">
+                    Complete oversight of the platform. Manage users, create new
+                    quiz modules, review AI grading logs, and monitor system
+                    health from a single secure interface.
+                  </p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div
+                    class="bg-white/10 p-4 rounded text-center min-w-[120px]"
+                  >
+                    <div class="text-2xl font-bold text-white mb-1">20k+</div>
+                    <div class="text-[10px] uppercase text-white/50">
+                      Users Managed
+                    </div>
+                  </div>
+                  <div
+                    class="bg-white/10 p-4 rounded text-center min-w-[120px]"
+                  >
+                    <div class="text-2xl font-bold text-white mb-1">150+</div>
+                    <div class="text-[10px] uppercase text-white/50">
+                      Tests Added
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 7. LEARNING HUB -->
+          <section id="resources" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">
+                07. Learning Resources
+              </h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >Free Content</span
+              >
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- Video Resources -->
+              <div
+                class="bg-white border border-void/5 p-6 group cursor-pointer hover:border-gold/30 transition-all"
+              >
+                <div
+                  class="relative aspect-video bg-gray-200 mb-4 overflow-hidden"
+                >
+                  <div
+                    class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors"
+                  >
+                    <div
+                      class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-void shadow-lg group-hover:scale-110 transition-transform"
+                    >
+                      <i class="fas fa-play ml-1"></i>
+                    </div>
+                  </div>
+                  <img
+                    src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+                    class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                  />
+                </div>
+                <h3 class="font-display text-xl text-void mb-2">
+                  Free Video Library
+                </h3>
+                <p class="text-sm text-void/60">
+                  Hours of high-quality video lessons covering Speaking parts
+                  1-3, Writing structures, and Listening strategies.
+                </p>
+                <a
+                  href="#"
+                  class="inline-block mt-4 text-xs font-bold text-gold uppercase tracking-widest border-b border-gold pb-1"
+                  >Watch Now</a
+                >
+              </div>
+
+              <!-- Tips & Tricks -->
+              <div class="bg-cream border border-void/10 p-6">
+                <h3 class="font-display text-xl text-void mb-4">
+                  <i class="fas fa-lightbulb text-gold mr-2"></i> Tips & Tricks
+                </h3>
+                <div class="space-y-4">
+                  <div class="flex gap-4 items-start">
+                    <span class="text-gold font-bold text-lg">01.</span>
+                    <div>
+                      <h4 class="font-bold text-void text-sm">
+                        The 2-Minute Rule
+                      </h4>
+                      <p class="text-xs text-void/60">
+                        Learn how to manage your time in Speaking Part 2
+                        effectively.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex gap-4 items-start">
+                    <span class="text-gold font-bold text-lg">02.</span>
+                    <div>
+                      <h4 class="font-bold text-void text-sm">
+                        Skimming vs Scanning
+                      </h4>
+                      <p class="text-xs text-void/60">
+                        Master the reading module with these essential
+                        techniques.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex gap-4 items-start">
+                    <span class="text-gold font-bold text-lg">03.</span>
+                    <div>
+                      <h4 class="font-bold text-void text-sm">
+                        Vocabulary Expansion
+                      </h4>
+                      <p class="text-xs text-void/60">
+                        Daily words to boost your lexical resource score.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 8. FACULTY & SUCCESS -->
+          <section id="faculty" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">
+                08. Faculty & Success
+              </h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >Proven Results</span
+              >
+            </div>
+
+            <!-- Our Teacher -->
+            <div class="mb-12">
+              <h3
+                class="text-void font-serif text-2xl font-bold mb-6 text-center"
+              >
+                Meet the Mentor
+              </h3>
+              <div
+                class="bg-white border border-void/5 p-8 flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto"
+              >
+                <div
+                  class="w-32 h-32 md:w-48 md:h-48 shrink-0 rounded-full border-4 border-gold/20 overflow-hidden"
+                >
+                  <img
+                    src="assets/teacher-mahir.jpg"
+                    alt="Instructor"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div class="text-center md:text-left">
+                  <div
+                    class="inline-block bg-void text-white text-[10px] font-bold px-2 py-1 mb-2 uppercase tracking-widest"
+                  >
+                    Head Instructor
+                  </div>
+                  <h4 class="text-3xl font-display text-void mb-3">
+                    Mahir Mahmud
+                  </h4>
+                  <p class="text-void/60 italic mb-4">
+                    "Guiding students towards their dream universities for over
+                    5 years. Expert in IELTS Writing analysis."
+                  </p>
+                  <div
+                    class="flex justify-center md:justify-start gap-4 text-gold"
+                  >
+                    <i
+                      class="fab fa-linkedin hover:text-void cursor-pointer transition-colors"
+                    ></i>
+                    <i
+                      class="fab fa-twitter hover:text-void cursor-pointer transition-colors"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Success Stories -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="bg-cream p-6 border-t-4 border-green-500 shadow-sm">
+                <div class="flex items-center gap-3 mb-4">
+                  <div
+                    class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden"
+                  >
+                    <img
+                      src="https://randomuser.me/api/portraits/women/44.jpg"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold text-void">Ayesha R.</div>
+                    <div class="text-[10px] text-green-600 font-bold">
+                      Band 8.0
+                    </div>
+                  </div>
+                </div>
+                <p class="text-xs text-void/70 italic">
+                  "The Writing Grader AI was a game changer. I went from 6.5 to
+                  7.5 in writing in just 2 weeks."
+                </p>
+              </div>
+              <div class="bg-cream p-6 border-t-4 border-green-500 shadow-sm">
+                <div class="flex items-center gap-3 mb-4">
+                  <div
+                    class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden"
+                  >
+                    <img
+                      src="https://randomuser.me/api/portraits/men/32.jpg"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold text-void">Rahul K.</div>
+                    <div class="text-[10px] text-green-600 font-bold">
+                      Band 7.5
+                    </div>
+                  </div>
+                </div>
+                <p class="text-xs text-void/70 italic">
+                  "The mock tests are harder than the real exam, which made the
+                  actual test feel easy!"
+                </p>
+              </div>
+              <div class="bg-cream p-6 border-t-4 border-green-500 shadow-sm">
+                <div class="flex items-center gap-3 mb-4">
+                  <div
+                    class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden"
+                  >
+                    <img
+                      src="https://randomuser.me/api/portraits/women/68.jpg"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold text-void">Fatima Z.</div>
+                    <div class="text-[10px] text-green-600 font-bold">
+                      Band 8.5
+                    </div>
+                  </div>
+                </div>
+                <p class="text-xs text-void/70 italic">
+                  "The speaking partner feature helped me overcome my anxiety.
+                  Highly recommended."
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- 9. BLOG (SPLIT) -->
+          <section id="blog" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">09. Blog</h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >Knowledge Base</span
+              >
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div
+                class="w-full bg-white border border-void/5 p-6 hover:shadow-lg transition-shadow"
+              >
+                <div class="text-xs text-gold font-bold uppercase mb-2">
+                  Writing Task 2
+                </div>
+                <h4 class="font-serif font-bold text-xl mb-2 text-void">
+                  Structure for Band 8
+                </h4>
+                <p class="text-sm text-void/60 mb-4">
+                  A definitive guide to paragraphing and coherence.
+                </p>
+                <a href="#" class="text-xs font-bold text-void underline"
+                  >Read Article</a
+                >
+              </div>
+              <div
+                class="w-full bg-white border border-void/5 p-6 hover:shadow-lg transition-shadow"
+              >
+                <div class="text-xs text-gold font-bold uppercase mb-2">
+                  Speaking
+                </div>
+                <h4 class="font-serif font-bold text-xl mb-2 text-void">
+                  Common Idioms 2024
+                </h4>
+                <p class="text-sm text-void/60 mb-4">
+                  Stop using "Raining cats and dogs" and sound more natural.
+                </p>
+                <a href="#" class="text-xs font-bold text-void underline"
+                  >Read Article</a
+                >
+              </div>
+            </div>
+          </section>
+
+          <!-- 10. COMMUNITY (SPLIT) -->
+          <section id="community" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">10. Community</h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >Connect</span
+              >
+            </div>
+            <div
+              class="w-full bg-void text-cream p-12 text-center rounded-sm flex flex-col justify-center relative overflow-hidden"
+            >
+              <div
+                class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diagonal-striped-brick.png')]"
+              ></div>
+              <div class="relative z-10">
+                <div
+                  class="w-16 h-16 bg-gold text-void rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
+                >
+                  <i class="fas fa-users"></i>
+                </div>
+                <h3 class="font-display text-3xl mb-2">Join the Forum</h3>
+                <p class="text-white/60 text-sm mb-6 max-w-md mx-auto">
+                  Connect with thousands of students, share your results, and
+                  find study partners for the speaking module.
+                </p>
+                <button
+                  class="bg-gold text-void text-xs font-bold py-3 px-6 uppercase tracking-widest mx-auto hover:bg-white transition-colors"
+                >
+                  Enter Discussion
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- 11. TECH STACK (UPDATED WITH COST) -->
+          <section id="tech-stack" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">
+                11. Tech Infrastructure
+              </h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >Under the hood</span
+              >
+            </div>
+
+            <div class="bg-white border border-void/5 p-8 shadow-sm mb-12">
+              <div class="text-center mb-10">
+                <h3 class="font-display text-3xl text-void mb-4">
+                  Why we chose <span class="text-orange-500">Firebase</span>
+                </h3>
+                <p class="text-void/60 max-w-2xl mx-auto text-sm">
+                  IELTS Mahir relies on real-time data for quizzes,
+                  leaderboards, and AI interaction. Here is how the costs
+                  compare.
+                </p>
+              </div>
+
+              <!-- 1. Side-by-Side Comparison Summary -->
+              <div class="overflow-x-auto mb-12">
+                <h4
+                  class="font-display text-xl text-void mb-4 border-l-4 border-gold pl-3"
+                >
+                  Overview: Firebase vs. MongoDB Atlas
+                </h4>
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr
+                      class="bg-void text-white text-xs uppercase tracking-widest"
+                    >
+                      <th class="p-4 rounded-tl-sm">Feature</th>
+                      <th class="p-4 bg-orange-600">Firebase (Blaze Plan)</th>
+                      <th class="p-4 bg-green-800 rounded-tr-sm">
+                        MongoDB Atlas (M2)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-sm">
+                    <tr class="border-b border-void/5">
+                      <td class="p-4 font-bold text-void">Free Tier</td>
+                      <td class="p-4 bg-orange-50 text-void font-medium">
+                        Yes (Spark)
+                      </td>
+                      <td class="p-4 text-void/60">Yes (M0)</td>
+                    </tr>
+                    <tr class="border-b border-void/5">
+                      <td class="p-4 font-bold text-void">Storage</td>
+                      <td class="p-4 bg-orange-50 text-void font-medium">
+                        5 GB (Cloud Storage)
+                      </td>
+                      <td class="p-4 text-void/60">
+                        2 GB (M2), 5 GB (M5)
+                      </td>
+                    </tr>
+                    <tr class="border-b border-void/5">
+                      <td class="p-4 font-bold text-void">Database Type</td>
+                      <td class="p-4 bg-orange-50 text-void font-medium">
+                        Firestore (NoSQL)
+                      </td>
+                      <td class="p-4 text-void/60">
+                        MongoDB (NoSQL)
+                      </td>
+                    </tr>
+                    <tr class="border-b border-void/5">
+                      <td class="p-4 font-bold text-void">Authentication</td>
+                      <td class="p-4 bg-orange-50 text-void font-medium">
+                        <i class="fas fa-check text-green-600 mr-2"></i>Built-in
+                      </td>
+                      <td class="p-4 text-void/60">
+                        Requires setup
+                      </td>
+                    </tr>
+                    <tr class="border-b border-void/5">
+                      <td class="p-4 font-bold text-void">Hosting</td>
+                      <td class="p-4 bg-orange-50 text-void font-medium">
+                        <i class="fas fa-check text-green-600 mr-2"></i>Included
+                      </td>
+                      <td class="p-4 text-void/60">
+                        External required
+                      </td>
+                    </tr>
+                    <tr class="border-b border-void/5">
+                      <td class="p-4 font-bold text-void">Realtime</td>
+                      <td class="p-4 bg-orange-50 text-void font-medium">
+                        <i class="fas fa-bolt text-gold mr-2"></i>Native
+                        (Firestore)
+                      </td>
+                      <td class="p-4 text-void/60">
+                        Limited / Add-on
+                      </td>
+                    </tr>
+                    <tr class="bg-gray-50">
+                      <td
+                        class="p-4 font-bold text-void border-l-4 border-gold"
+                      >
+                        Pricing Model
+                      </td>
+                      <td
+                        class="p-4 bg-orange-100/50 text-void font-bold border-l border-orange-200"
+                      >
+                        Pay-as-you-go
+                      </td>
+                      <td class="p-4 text-void/60 border-l border-gray-200">
+                        Fixed Monthly
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- 2. Detailed Breakdown Grid -->
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Firebase Column -->
+                <div
+                  class="border border-orange-200 rounded-lg overflow-hidden"
+                >
+                  <div
+                    class="bg-orange-50 p-4 border-b border-orange-200 flex justify-between items-center"
+                  >
+                    <h4 class="font-display text-lg text-void">
+                      <i class="fas fa-fire text-orange-500 mr-2"></i>Firebase
+                      Pricing
+                    </h4>
+                    <span
+                      class="text-xs bg-orange-200 text-orange-800 px-2 py-1 rounded font-bold uppercase"
+                      >Winner</span
+                    >
+                  </div>
+
+                  <!-- Spark -->
+                  <div class="p-6 border-b border-orange-100">
+                    <h5 class="font-bold text-void mb-2">
+                      Free Tier: Spark Plan ($0/mo)
+                    </h5>
+                    <p class="text-xs text-void/60 mb-3 italic">
+                      Ideal for prototypes & MVPs
+                    </p>
+                    <ul class="space-y-2 text-sm text-void/80">
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-check text-green-500 mt-1 mr-2 text-xs"
+                        ></i>
+                        <span
+                          ><strong>Firestore:</strong> 50k reads, 20k
+                          writes/day</span
+                        >
+                      </li>
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-check text-green-500 mt-1 mr-2 text-xs"
+                        ></i>
+                        <span
+                          ><strong>Hosting:</strong> 1 GB storage, 10 GB
+                          bandwidth</span
+                        >
+                      </li>
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-check text-green-500 mt-1 mr-2 text-xs"
+                        ></i>
+                        <span><strong>Auth:</strong> Unlimited users</span>
+                      </li>
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-check text-green-500 mt-1 mr-2 text-xs"
+                        ></i>
+                        <span
+                          ><strong>Functions:</strong> 2M invocations/mo</span
+                        >
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Blaze -->
+                  <div class="p-6 bg-orange-50/30">
+                    <h5 class="font-bold text-void mb-2">
+                      Paid: Blaze Plan (Pay-as-you-go)
+                    </h5>
+                    <p class="text-xs text-void/60 mb-3 italic">
+                      Scales perfectly with usage
+                    </p>
+                    <ul class="space-y-2 text-sm text-void/80">
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-coins text-orange-400 mt-1 mr-2 text-xs"
+                        ></i>
+                        <span><strong>Reads:</strong> $0.06 per 100k</span>
+                      </li>
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-coins text-orange-400 mt-1 mr-2 text-xs"
+                        ></i>
+                        <span><strong>Writes:</strong> $0.18 per 100k</span>
+                      </li>
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-coins text-orange-400 mt-1 mr-2 text-xs"
+                        ></i>
+                        <span><strong>Hosting:</strong> $0.026/GB storage</span>
+                      </li>
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-coins text-orange-400 mt-1 mr-2 text-xs"
+                        ></i>
+                        <span
+                          ><strong>Functions:</strong> $0.40/million
+                          invocations</span
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- MongoDB Column -->
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                  <div class="bg-gray-100 p-4 border-b border-gray-200">
+                    <h4 class="font-display text-lg text-void">
+                      <i class="fas fa-leaf text-green-700 mr-2"></i>MongoDB
+                      Atlas
+                    </h4>
+                  </div>
+
+                  <!-- M0 -->
+                  <div class="p-6 border-b border-gray-100">
+                    <h5 class="font-bold text-void mb-2">
+                      Free Tier: M0 Cluster ($0/mo)
+                    </h5>
+                    <p class="text-xs text-void/60 mb-3 italic">
+                      Dev/Test only
+                    </p>
+                    <ul class="space-y-2 text-sm text-void/70">
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-minus text-gray-400 mt-1 mr-2 text-xs"
+                        ></i>
+                        <span>512 MB Storage & RAM</span>
+                      </li>
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-minus text-gray-400 mt-1 mr-2 text-xs"
+                        ></i>
+                        <span>Shared CPU</span>
+                      </li>
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-times text-red-400 mt-1 mr-2 text-xs"
+                        ></i>
+                        <span>No Backups</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Paid Clusters -->
+                  <div class="p-6 bg-gray-50">
+                    <h5 class="font-bold text-void mb-2">Paid Clusters</h5>
+                    <div class="space-y-4">
+                      <div>
+                        <p class="text-sm font-bold text-void">
+                          M2 Cluster ($9/mo)
+                        </p>
+                        <p class="text-xs text-void/60">
+                          2 GB Storage, Shared CPU
+                        </p>
+                      </div>
+                      <div>
+                        <p class="text-sm font-bold text-void">
+                          M5 Cluster ($25/mo)
+                        </p>
+                        <p class="text-xs text-void/60">
+                          5 GB Storage, Shared CPU
+                        </p>
+                      </div>
+                      <div class="pt-2 border-t border-gray-200">
+                        <p class="text-sm font-bold text-void">
+                          M10 Dedicated ($57/mo)
+                        </p>
+                        <p class="text-xs text-void/60">
+                          10 GB Storage, Dedicated CPU
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 12. CONTACT (SPLIT) -->
+          <section id="contact" class="scroll-mt-32 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">12. Contact</h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >Get in touch</span
+              >
+            </div>
+
+            <div class="bg-white p-8 border border-void/5 max-w-2xl">
+              <h3 class="font-serif text-2xl text-void mb-4">
+                Send us a message
+              </h3>
+              <form class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      class="block text-xs font-bold uppercase text-void/60 mb-1"
+                      >Name</label
+                    >
+                    <input
+                      type="text"
+                      class="w-full border border-void/20 p-2 bg-cream focus:border-gold outline-none text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-xs font-bold uppercase text-void/60 mb-1"
+                      >Email</label
+                    >
+                    <input
+                      type="email"
+                      class="w-full border border-void/20 p-2 bg-cream focus:border-gold outline-none text-sm"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    class="block text-xs font-bold uppercase text-void/60 mb-1"
+                    >Message</label
+                  >
+                  <textarea
+                    rows="4"
+                    class="w-full border border-void/20 p-2 bg-cream focus:border-gold outline-none text-sm"
+                  ></textarea>
+                </div>
+                <button
+                  class="bg-void text-white px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-gold transition-colors w-full md:w-auto"
+                >
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </section>
+
+          <!-- 13. LEGAL (SPLIT) -->
+          <section id="legal" class="scroll-mt-32 mb-20 reveal">
+            <div class="flex items-end gap-4 mb-8 border-b border-void/10 pb-4">
+              <h2 class="font-display text-4xl text-void">
+                13. Legal Compliance
+              </h2>
+              <span class="text-gold text-sm font-serif italic mb-1"
+                >Terms & Conditions</span
+              >
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="bg-cream border border-void/5 p-8 h-full">
+                <h3 class="font-serif text-xl text-void mb-4">Documents</h3>
+                <ul class="space-y-3">
+                  <li
+                    class="flex items-center justify-between border-b border-void/5 pb-2 cursor-pointer group"
+                  >
+                    <span
+                      class="text-sm font-bold text-void group-hover:text-gold transition-colors"
+                      >Terms of Service</span
+                    >
+                    <i class="fas fa-file-alt text-xs text-void/30"></i>
+                  </li>
+                  <li
+                    class="flex items-center justify-between border-b border-void/5 pb-2 cursor-pointer group"
+                  >
+                    <span
+                      class="text-sm font-bold text-void group-hover:text-gold transition-colors"
+                      >Privacy Guidelines</span
+                    >
+                    <i class="fas fa-shield-alt text-xs text-void/30"></i>
+                  </li>
+                  <li
+                    class="flex items-center justify-between border-b border-void/5 pb-2 cursor-pointer group"
+                  >
+                    <span
+                      class="text-sm font-bold text-void group-hover:text-gold transition-colors"
+                      >Cookie Policy</span
+                    >
+                    <i class="fas fa-cookie-bite text-xs text-void/30"></i>
+                  </li>
+                </ul>
+              </div>
+              <div class="bg-void text-white p-8">
+                <h3 class="font-serif text-xl mb-4 text-gold">
+                  Data Protection
+                </h3>
+                <p class="text-sm text-white/60 mb-4">
+                  Our platform adheres to strict data privacy standards. All
+                  student data is encrypted and stored securely via Firebase
+                  Security Rules.
+                </p>
+                <div class="flex items-center gap-4 text-2xl text-white/20">
+                  <i class="fab fa-cc-visa"></i>
+                  <i class="fab fa-cc-mastercard"></i>
+                  <i class="fas fa-lock"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-void border-t border-white/5 py-12 px-6">
+      <div
+        class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-white/40 text-xs"
+      >
+        <div class="mb-4 md:mb-0">
+          <span class="font-display text-xl text-white block mb-1"
+            >IELTS MAHIR.</span
+          >
+          &copy; 2024 IELTS Mahir. All Rights Reserved.
+        </div>
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-gold transition-colors">Facebook</a>
+          <a href="#" class="hover:text-gold transition-colors">Instagram</a>
+          <a href="#" class="hover:text-gold transition-colors">YouTube</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Intersection Observer for ScrollSpy
+      const observerOptions = {
+        root: null,
+        rootMargin: "-20% 0px -60% 0px", // Trigger active state when section is near top
+        threshold: 0,
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("id");
+            document.querySelectorAll(".nav-link").forEach((link) => {
+              link.classList.remove("active");
+              if (link.getAttribute("href") === `#${id}`) {
+                link.classList.add("active");
+              }
+            });
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll("section[id]").forEach((section) => {
+        observer.observe(section);
+      });
+
+      // Scroll Animation Observer
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => revealObserver.observe(el));
+
+      // Navbar transparency on scroll
+      window.addEventListener("scroll", () => {
+        const nav = document.getElementById("navbar");
+        if (window.scrollY > 50) {
+          nav.classList.add("shadow-md");
+        } else {
+          nav.classList.remove("shadow-md");
+        }
+      });
+    </script>
+  </body>
+</html>
