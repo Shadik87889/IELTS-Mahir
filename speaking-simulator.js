@@ -161,7 +161,7 @@ async function generateTTS(text) {
     },
     model: "gemini-2.5-flash-preview-tts",
   };
-  const apiKey = "AIzaSyBT7xtDNU5yumt4-XQVQDcyVSrA7jG3aZs";
+  const apiKey = "AIzaSyBDhbGi2vry_bxSJni4TzbrpYe6md1z11M";
   const model = "gemini-2.5-flash-preview-09-2025";
   const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
