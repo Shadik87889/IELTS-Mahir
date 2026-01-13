@@ -4319,3 +4319,464 @@ body {
     text-align: center;
   }
 }
+/* === NEW WORLD CLASS HERO SECTION STYLES === */
+
+.new-hero-wrapper {
+  background: linear-gradient(135deg, #f5fcfc 0%, #eafcfb 100%);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 2vw;
+  /* Replacing page1 defaults */
+  min-height: auto;
+}
+
+.mahir-hero-section {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 8vw 5vw 4vw 5vw; /* Top padding for nav */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Decorative Background Elements */
+.hero-decorative-circle {
+  position: absolute;
+  top: -10vw;
+  right: -5vw;
+  width: 50vw;
+  height: 50vw;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(0, 150, 137, 0.08) 0%,
+    transparent 70%
+  );
+  z-index: 0;
+}
+
+.hero-decorative-blur {
+  position: absolute;
+  top: 20%;
+  left: -10%;
+  width: 40vw;
+  height: 40vw;
+  background: #28b8ce;
+  filter: blur(120px);
+  opacity: 0.15;
+  z-index: 0;
+}
+
+/* Grid Layout */
+.hero-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4vw;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Left Content Styles */
+.hero-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5vw;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  background: rgba(0, 150, 137, 0.1);
+  color: #009689;
+  border-radius: 2rem;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  width: fit-content;
+  border: 1px solid rgba(0, 150, 137, 0.2);
+}
+
+.hero-main-title {
+  font-family: "Anton", sans-serif;
+  font-size: 5.5vw;
+  line-height: 1.1;
+  color: #063956;
+  text-transform: uppercase;
+}
+
+.hero-name-highlight {
+  color: transparent;
+  background: linear-gradient(90deg, #009689, #28b8ce);
+  -webkit-background-clip: text;
+  background-clip: text;
+  position: relative;
+}
+
+.hero-subtext {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.2vw;
+  color: #555;
+  line-height: 1.6;
+  max-width: 90%;
+}
+
+/* Buttons */
+.hero-cta-group {
+  display: flex;
+  gap: 1.5vw;
+  margin-top: 1vw;
+}
+
+.hero-btn-primary {
+  padding: 1vw 2.5vw;
+  background: #009689;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.8vw;
+  font-family: "Anton", sans-serif;
+  text-transform: uppercase;
+  font-size: 1.1vw;
+  display: flex;
+  align-items: center;
+  gap: 0.8vw;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 150, 137, 0.2);
+}
+
+.hero-btn-primary:hover {
+  background: #007a6e;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(0, 150, 137, 0.3);
+}
+
+.hero-btn-secondary {
+  padding: 1vw 2.5vw;
+  background: white;
+  color: #063956;
+  text-decoration: none;
+  border-radius: 0.8vw;
+  font-family: "Anton", sans-serif;
+  text-transform: uppercase;
+  font-size: 1.1vw;
+  display: flex;
+  align-items: center;
+  gap: 0.8vw;
+  border: 2px solid #063956;
+  transition: all 0.3s ease;
+}
+
+.hero-btn-secondary:hover {
+  background: #063956;
+  color: white;
+  transform: translateY(-3px);
+}
+
+/* Stats Row */
+.hero-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 2vw;
+  margin-top: 2vw;
+  background: white;
+  padding: 1.5vw 2vw;
+  border-radius: 1vw;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  width: fit-content;
+}
+
+.h-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.hs-num {
+  font-family: "Anton", sans-serif;
+  font-size: 1.8vw;
+  color: #063956;
+}
+
+.hs-label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8vw;
+  color: #888;
+  font-weight: 500;
+}
+
+.h-divider {
+  width: 1px;
+  height: 2.5vw;
+  background: #ddd;
+}
+
+/* Right Image Area */
+.hero-image-area {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 40vw;
+}
+
+.hero-img-bg-shape {
+  position: absolute;
+  bottom: 0;
+  width: 32vw;
+  height: 32vw;
+  background: #fdecd4; /* Light orange from your palette */
+  border-radius: 50% 50% 0 0; /* semicircle ish */
+  z-index: 1;
+}
+
+.mahir-hero-img {
+  position: relative;
+  width: 30vw; /* Adjust based on actual image aspect ratio */
+  height: auto;
+  z-index: 2;
+  bottom: -2px;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+  transition: transform 0.5s ease;
+}
+
+.mahir-hero-img:hover {
+  transform: scale(1.02);
+}
+
+/* Floating Cards */
+.float-card {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 1vw 1.5vw;
+  border-radius: 1vw;
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  z-index: 3;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  animation: floatCard 4s ease-in-out infinite;
+}
+
+.card-top-right {
+  top: 8vw;
+  right: 2vw;
+  animation-delay: 0s;
+}
+
+.card-bottom-left {
+  bottom: 8vw;
+  left: -2vw;
+  animation-delay: 2s;
+}
+
+.fc-icon {
+  width: 3vw;
+  height: 3vw;
+  background: #e5fcf9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #009689;
+  font-size: 1.2vw;
+}
+
+.fc-icon.purple {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+.fc-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.fc-text strong {
+  font-family: "Anton", sans-serif;
+  font-size: 1.2vw;
+  color: #333;
+}
+
+.fc-text span {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8vw;
+  color: #666;
+}
+
+@keyframes floatCard {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* Hero Ticker */
+.hero-ticker-wrap {
+  width: 100%;
+  overflow: hidden;
+  background: #063956;
+  color: white;
+  padding: 1vw 0;
+  margin-top: 2vw;
+  transform: rotate(-1deg) scale(1.05);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0.6vw;
+}
+
+.hero-ticker-track {
+  white-space: nowrap;
+  animation: scrollText 20s linear infinite;
+}
+
+.hero-ticker-track span {
+  font-family: "Anton", sans-serif;
+  font-size: 1.5vw;
+  margin-right: 2vw;
+  letter-spacing: 2px;
+}
+
+@keyframes scrollText {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .mahir-hero-section {
+    padding-top: 30vw; /* More space for nav */
+  }
+
+  .hero-main-title {
+    font-size: 7vw;
+  }
+
+  .hero-subtext {
+    font-size: 2vw;
+  }
+
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    font-size: 1.8vw;
+    padding: 1.5vw 3vw;
+  }
+
+  .hs-num {
+    font-size: 2.5vw;
+  }
+  .hs-label {
+    font-size: 1.2vw;
+  }
+
+  .fc-text strong {
+    font-size: 1.8vw;
+  }
+  .fc-text span {
+    font-size: 1.2vw;
+  }
+  .fc-icon {
+    width: 5vw;
+    height: 5vw;
+    font-size: 2vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-grid-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 8vw;
+  }
+
+  .hero-text-content {
+    align-items: center;
+  }
+
+  .hero-main-title {
+    font-size: 10vw;
+  }
+
+  .hero-subtext {
+    font-size: 3.5vw;
+    max-width: 100%;
+  }
+
+  .hero-cta-group {
+    width: 100%;
+    justify-content: center;
+    gap: 3vw;
+  }
+
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    font-size: 3.5vw;
+    padding: 3vw 6vw;
+    border-radius: 2vw;
+  }
+
+  .hero-stats-row {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .hs-num {
+    font-size: 4.5vw;
+  }
+  .hs-label {
+    font-size: 2.5vw;
+  }
+
+  .hero-image-area {
+    height: 70vw;
+    margin-top: 5vw;
+  }
+
+  .hero-img-bg-shape {
+    width: 60vw;
+    height: 60vw;
+  }
+
+  .mahir-hero-img {
+    width: 55vw;
+  }
+
+  .float-card {
+    padding: 2vw 3vw;
+    border-radius: 2vw;
+  }
+
+  .fc-icon {
+    width: 8vw;
+    height: 8vw;
+    font-size: 4vw;
+  }
+  .fc-text strong {
+    font-size: 3vw;
+  }
+  .fc-text span {
+    font-size: 2vw;
+  }
+
+  .card-top-right {
+    right: 5vw;
+    top: 5vw;
+  }
+  .card-bottom-left {
+    left: 5vw;
+    bottom: 5vw;
+  }
+
+  .hero-ticker-track span {
+    font-size: 4vw;
+  }
+}

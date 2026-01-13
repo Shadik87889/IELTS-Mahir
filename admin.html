@@ -207,7 +207,17 @@
         data-page="free-resources"
       >
         <i class="fas fa-file-alt text-lg mr-4"></i>
-        Free Resources
+        Video Resources
+      </a>
+    </li>
+    <li>
+      <a
+        href="#"
+        class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+        data-page="pdf-resources"
+      >
+        <i class="fas fa-file-pdf text-lg mr-4"></i>
+        PDF Resources
       </a>
     </li>
     <li>
@@ -407,6 +417,14 @@
       let freeResourceCurrentPage = 1;
       const freeResourceItemsPerPage = 6;
       let freeResourceCurrentFilters = {
+        status: "all",
+        category: "all categories",
+        searchTerm: "",
+      };
+
+      let pdfResourceCurrentPage = 1;
+      const pdfResourceItemsPerPage = 6;
+      let pdfResourceCurrentFilters = {
         status: "all",
         category: "all categories",
         searchTerm: "",
@@ -1873,6 +1891,129 @@
         };
       };
 
+      // --- PDF Resources Functions ---
+      window.updatePdfResourceStatus = async (id, newStatus) => {
+        if (!isAuthReady) return showMessage("Firebase not ready. Please try again.");
+        try {
+          await updateDoc(doc(db, "artifacts", appId, "public", "data", "pdfResources", id), { status: newStatus });
+          showMessage(`PDF resource status updated to '${newStatus}'.`);
+        } catch (error) {
+          console.error("Error updating PDF resource status:", error);
+          showMessage(`Failed to update PDF resource status: ${error.message}.`);
+        }
+      };
+
+      window.editPdfResource = async (id) => {
+        if (!isAuthReady) return showMessage("Firebase not ready. Please try again.");
+        try {
+          const docSnap = await getDoc(doc(db, "artifacts", appId, "public", "data", "pdfResources", id));
+          if (!docSnap.exists()) return showMessage("PDF resource not found.");
+          const resource = docSnap.data();
+          document.getElementById("pdf-resource-id").value = id;
+          document.getElementById("pdf-resource-title").value = resource.title;
+          document.getElementById("pdf-resource-category").value = resource.category;
+          document.getElementById("pdf-resource-link").value = resource.link;
+          document.getElementById("pdf-resource-description").value = resource.description || "";
+          document.getElementById("pdf-resource-image-drop-zone")._setImage(resource.img || "");
+          document.getElementById("add-pdf-resource-btn").textContent = "Update PDF Resource";
+          showMessage("Form populated for editing. Update and submit to save changes.");
+        } catch (error) {
+          console.error("Error fetching PDF resource for edit:", error);
+          showMessage(`Failed to load PDF resource for editing: ${error.message}.`);
+        }
+      };
+
+      window.deletePdfResource = async (id) => {
+        if (!isAuthReady) return showMessage("Firebase not ready. Please try again.");
+        const messageBox = document.getElementById("message-box");
+        const messageContent = document.getElementById("message-content");
+        const closeMessageBoxBtn = document.getElementById("close-message-box");
+        messageContent.textContent = "Are you sure you want to delete this PDF resource? This action cannot be undone.";
+        messageBox.classList.remove("hidden");
+
+        const confirmDeleteBtn = document.createElement("button");
+        confirmDeleteBtn.textContent = "Confirm Delete";
+        confirmDeleteBtn.className = "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
+        confirmDeleteBtn.id = "confirm-delete-btn";
+        messageBox.querySelector(".text-center").appendChild(confirmDeleteBtn);
+
+        confirmDeleteBtn.addEventListener("click", async () => {
+          try {
+            await deleteDoc(doc(db, "artifacts", appId, "public", "data", "pdfResources", id));
+            showMessage("PDF resource deleted successfully.");
+          } catch (error) {
+            console.error("Error deleting PDF resource:", error);
+            showMessage(`Failed to delete PDF resource: ${error.message}.`);
+          } finally {
+            confirmDeleteBtn.remove();
+            messageBox.classList.add("hidden");
+          }
+        });
+
+        const originalCloseHandler = closeMessageBoxBtn.onclick;
+        closeMessageBoxBtn.onclick = () => {
+          confirmDeleteBtn.remove();
+          messageBox.classList.add("hidden");
+          if (originalCloseHandler) originalCloseHandler();
+          closeMessageBoxBtn.onclick = originalCloseHandler;
+        };
+      };
+
+      const renderPdfResources = (filters, currentPage, itemsPerPage) => {
+        if (!isAuthReady) return showMessage("PDF resources cannot be loaded because Firebase authentication is not ready.");
+        const [container, pagination] = [
+          document.getElementById("pdf-resources-list-container"),
+          document.getElementById("pdf-resource-pagination"),
+        ];
+        if (!container || !pagination) return console.error("PDF resource elements not found.");
+
+        onSnapshot(collection(db, "artifacts", appId, "public", "data", "pdfResources"), (snapshot) => {
+            [container, pagination].forEach((el) => (el.innerHTML = ""));
+            let allResources = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            let filteredResources = allResources.filter(
+              (r) =>
+                (filters.status === "all" || r.status === filters.status) &&
+                (filters.category === "all categories" || r.category.toLowerCase() === filters.category.toLowerCase()) &&
+                (filters.searchTerm === "" ||
+                  r.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+                  r.category.toLowerCase().includes(filters.searchTerm.toLowerCase()))
+            );
+            filteredResources.sort((a, b) => (b.timestamp?.toDate() || new Date(0)).getTime() - (a.timestamp?.toDate() || new Date(0)).getTime());
+
+            const totalPages = Math.ceil(filteredResources.length / itemsPerPage);
+            const paginatedResources = filteredResources.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+            if (paginatedResources.length === 0) container.innerHTML = '<p class="text-gray-500 text-center col-span-full">No PDF resources found matching your criteria.</p>';
+
+            paginatedResources.forEach((resource) => {
+              const formattedDate = (resource.timestamp?.toDate() || new Date()).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+              const card = document.createElement("div");
+              card.classList.add("bg-white", "p-4", "rounded-lg", "shadow-sm", "flex", "flex-col", "border", "border-gray-300");
+              card.innerHTML = `<div class="relative mb-4"><img src="${resource.img || 'https://placehold.co/400x200/cccccc/white?text=PDF+Preview'}" alt="${resource.title}" class="w-full h-36 object-cover rounded-md" onerror="this.src='https://placehold.co/400x200/cccccc/white?text=PDF+Preview'"><div class="absolute top-2 right-2 bg-red-600 text-white p-1 rounded"><i class="fas fa-file-pdf"></i></div></div><h3 class="font-bold text-gray-800 text-lg mb-1">${resource.title}</h3><p class="text-red-600 text-sm mb-2">${resource.category}</p><p class="text-gray-500 text-xs mb-3">${formattedDate}</p><div class="flex flex-wrap gap-2 mt-auto">${resource.status === "inactive" ? `<button class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updatePdfResourceStatus('${resource.id}', 'active')">Activate</button>` : `<button class="bg-orange-600 hover:bg-orange-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="updatePdfResourceStatus('${resource.id}', 'inactive')">Deactivate</button>`}<button class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="editPdfResource('${resource.id}')">Edit</button><button class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200" onclick="deletePdfResource('${resource.id}')">Delete</button><a href="${resource.link}" target="_blank" class="bg-gray-600 hover:bg-gray-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200"><i class="fas fa-external-link-alt"></i> View</a></div>`;
+              container.appendChild(card);
+            });
+
+            pagination.innerHTML = "";
+            if (totalPages > 1) {
+              const paginationNav = document.createElement("nav");
+              paginationNav.className = "flex justify-center items-center space-x-2 mt-4";
+              const createButton = (text, page, disabled, onClick) => {
+                const btn = document.createElement("button");
+                btn.textContent = text;
+                btn.className = `px-3 py-1 rounded-lg text-sm transition-colors duration-200 ${disabled ? "bg-gray-200 text-gray-500 cursor-not-allowed" : page === currentPage ? "bg-red-600 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`;
+                btn.disabled = disabled;
+                btn.addEventListener("click", onClick);
+                return btn;
+              };
+              paginationNav.appendChild(createButton("Previous", currentPage - 1, currentPage === 1, () => { pdfResourceCurrentPage--; renderPdfResources(filters, pdfResourceCurrentPage, itemsPerPage); }));
+              for (let i = 1; i <= totalPages; i++) { paginationNav.appendChild(createButton(i, i, false, () => { pdfResourceCurrentPage = i; renderPdfResources(filters, pdfResourceCurrentPage, itemsPerPage); })); }
+              paginationNav.appendChild(createButton("Next", currentPage + 1, currentPage === totalPages, () => { pdfResourceCurrentPage++; renderPdfResources(filters, pdfResourceCurrentPage, itemsPerPage); }));
+              pagination.appendChild(paginationNav);
+            }
+        }, (error) => showMessage(`Error loading PDF resources: ${error.message}.`));
+      };
+      // --- End PDF Resources Functions ---
+
       const renderFreeResources = (filters, currentPage, itemsPerPage) => {
         if (!isAuthReady)
           return showMessage(
@@ -2061,7 +2202,8 @@
             totalBlogPosts,
             totalTeachers,
             totalResources,
-            totalForumPosts
+            totalForumPosts,
+            totalPdfResources // Added
         ] = await Promise.all([
             getCollectionCount('posts', [where('status', '==', 'pending')]),
             getCollectionCount('testimonials', [where('status', '==', 'pending')]),
@@ -2070,7 +2212,8 @@
             getCollectionCount('blogPosts'),
             getCollectionCount('teachers'),
             getCollectionCount('freeResources'),
-            getCollectionCount('posts')
+            getCollectionCount('posts'),
+            getCollectionCount('pdfResources') // Added
         ]);
 
         // Helper to update text content and remove loading animation
@@ -2321,20 +2464,22 @@
             getCollectionCount('teachers'),
             getCollectionCount('testimonials'),
             getCollectionCount('freeResources'),
-            getCollectionCount('posts')
+            getCollectionCount('posts'),
+            getCollectionCount('pdfResources') // Added
         ]);
         
         const chartData = {
-            labels: ['Blog Posts', 'Teachers', 'Testimonials', 'Resources', 'Forum Posts'],
+            labels: ['Blog Posts', 'Teachers', 'Testimonials', 'Resources', 'Forum Posts', 'PDFs'], // Added PDFs
             datasets: [{
                 label: 'Content Count',
-                data: [blogCount, teacherCount, testimonialCount, resourceCount, forumPostCount],
+                data: [blogCount, teacherCount, testimonialCount, resourceCount, forumPostCount, pdfResources], // Added pdfResources variable (needs to be defined in Promise above)
                 backgroundColor: [
                   'rgba(239, 68, 68, 0.8)', // red-500
                   'rgba(59, 130, 246, 0.8)', // blue-500
                   'rgba(16, 185, 129, 0.8)', // green-500
                   'rgba(245, 158, 11, 0.8)', // amber-500
-                  'rgba(139, 92, 246, 0.8)' // violet-500
+                  'rgba(139, 92, 246, 0.8)', // violet-500
+                  'rgba(236, 72, 153, 0.8)'  // pink-500 for PDFs
                 ],
                 borderColor: '#ffffff',
                 borderWidth: 2,
@@ -3526,13 +3671,13 @@
             <div id="speaking-request-pagination" class="mt-8 flex justify-center"></div>
         </div>`;
 
-      const OUR_TEACHER_HTML = `
+   const OUR_TEACHER_HTML = `
         ${generatePageHeader("Teacher Management")}
         <div class="bg-white p-6 rounded-xl shadow-md">
             <p class="text-gray-700">Add, edit, and manage profiles for all your IELTS teachers. Use the rich text editor for detailed biographies.</p>
             <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
                 <h3 class="text-lg font-semibold text-gray-800 mb-3">Add/Edit Teacher</h3>
-                <form id="teacher-form"><input type="hidden" id="teacher-id"><div class="mb-4"><label for="teacher-name" class="block text-gray-700 text-sm font-semibold mb-2">Teacher Name</label><input type="text" id="teacher-name" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., Mahir Hossain" required></div><div class="mb-4"><label for="teacher-expertise" class="block text-gray-700 text-sm font-semibold mb-2">Expertise</label><select id="teacher-expertise" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" required><option value="">Select an Expertise</option><option value="IELTS Speaking">IELTS Speaking</option><option value="IELTS Writing">IELTS Writing</option><option value="IELTS Listening">IELTS Listening</option><option value="IELTS Reading">IELTS Reading</option><option value="IELTS General Training">IELTS General Training</option><option value="IELTS Academic">IELTS Academic</option><option value="Grammar & Vocabulary">Grammar & Vocabulary</option><option value="Test Strategies">Test Strategies</option><option value="Beginner IELTS">Beginner IELTS</option><option value="Advanced IELTS">Advanced IELTS</option><option value="Overall IELTS">Overall IELTS</option></select></div><div class="mb-4"><label for="teacher-bio" class="block text-gray-700 text-sm font-semibold mb-2">Biography</label><textarea id="teacher-bio" name="bio" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-48"></textarea></div><div class="mb-6"><label class="block text-gray-700 text-sm font-semibold mb-2">Teacher Image</label><input type="hidden" id="teacher-image"><div id="teacher-image-drop-zone" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-red-400 transition-colors duration-200"><img id="teacher-image-preview" class="hidden max-w-full h-auto mx-auto mb-2 rounded-full w-24 h-24 object-cover" src="" alt="Teacher Image Preview"><p class="text-gray-500 placeholder-text"><i class="fas fa-cloud-upload-alt mr-2"></i> Drag & drop an image here or click to select</p><p class="text-gray-500 change-text hidden"><i class="fas fa-sync-alt mr-2"></i> Click or drag to change image</p></div></div><button type="submit" id="add-teacher-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Teacher</button></form>
+                <form id="teacher-form"><input type="hidden" id="teacher-id"><div class="mb-4"><label for="teacher-name" class="block text-gray-700 text-sm font-semibold mb-2">Teacher Name</label><input type="text" id="teacher-name" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., Mahir Hossain" required></div><div class="mb-4"><label for="teacher-expertise" class="block text-gray-700 text-sm font-semibold mb-2">Expertise</label><select id="teacher-expertise" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" required><option value="">Select an Expertise</option><option value="IELTS Instructor">IELTS Instructor</option><option value="Spoken English Instructor">Spoken English Instructor</option><option value="Faculty Member">Faculty Member</option></select></div><div class="mb-4"><label for="teacher-bio" class="block text-gray-700 text-sm font-semibold mb-2">Biography</label><textarea id="teacher-bio" name="bio" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-48"></textarea></div><div class="mb-6"><label class="block text-gray-700 text-sm font-semibold mb-2">Teacher Image</label><input type="hidden" id="teacher-image"><div id="teacher-image-drop-zone" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-red-400 transition-colors duration-200"><img id="teacher-image-preview" class="hidden max-w-full h-auto mx-auto mb-2 rounded-full w-24 h-24 object-cover" src="" alt="Teacher Image Preview"><p class="text-gray-500 placeholder-text"><i class="fas fa-cloud-upload-alt mr-2"></i> Drag & drop an image here or click to select</p><p class="text-gray-500 change-text hidden"><i class="fas fa-sync-alt mr-2"></i> Click or drag to change image</p></div></div><button type="submit" id="add-teacher-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add Teacher</button></form>
             </div>
             <div class="mt-8 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
                 <h3 class="text-lg font-semibold text-gray-800 mb-3">Filter Teachers</h3>
@@ -3544,7 +3689,6 @@
             <div class="mt-8"><h3 class="text-xl font-semibold text-gray-800 mb-4">All Teachers</h3><div id="teachers-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
             <div id="teacher-pagination" class="mt-8 flex justify-center"></div>
         </div>`;
-
       const COMMUNITY_FORUM_HTML = `
         ${generatePageHeader("Community Forum Management")}
         <div class="bg-white p-6 rounded-xl shadow-md mb-8">
@@ -3647,6 +3791,89 @@
             <div id="free-resource-pagination" class="mt-8 flex justify-center"></div>
         </div>`;
 
+      const PDF_RESOURCES_HTML = `
+        ${generatePageHeader("PDF Resources Management")}
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Manage downloadable PDF materials such as e-books, grammar guides, and practice tests.</p>
+            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Add/Edit PDF Resource</h3>
+                <form id="pdf-resource-form">
+                    <input type="hidden" id="pdf-resource-id">
+                    <div class="mb-4">
+                        <label for="pdf-resource-title" class="block text-gray-700 text-sm font-semibold mb-2">Title</label>
+                        <input type="text" id="pdf-resource-title" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., IELTS Grammar Guide 2024" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="pdf-resource-category" class="block text-gray-700 text-sm font-semibold mb-2">Category</label>
+                        <select id="pdf-resource-category" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" required>
+                            <option value="">Select a Category</option>
+                            <option value="Grammar">Grammar</option>
+                            <option value="Vocabulary">Vocabulary</option>
+                            <option value="Reading">Reading</option>
+                            <option value="Writing">Writing</option>
+                            <option value="Speaking">Speaking</option>
+                            <option value="Practice Tests">Practice Tests</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="pdf-resource-link" class="block text-gray-700 text-sm font-semibold mb-2">PDF Link (URL)</label>
+                        <input type="url" id="pdf-resource-link" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="e.g., https://drive.google.com/file/..." required>
+                        <p class="text-xs text-gray-500 mt-1">Paste a direct link to the PDF file (Google Drive, Dropbox, etc.).</p>
+                    </div>
+                    <div class="mb-4">
+                        <label for="pdf-resource-description" class="block text-gray-700 text-sm font-semibold mb-2">Description</label>
+                        <textarea id="pdf-resource-description" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 h-24" placeholder="Brief description of the PDF content"></textarea>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-semibold mb-2">Thumbnail Image</label>
+                        <input type="hidden" id="pdf-resource-image">
+                        <div id="pdf-resource-image-drop-zone" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-red-400 transition-colors duration-200">
+                            <img id="pdf-resource-image-preview" class="hidden max-w-full h-auto mx-auto mb-2 w-32 object-contain" src="" alt="Thumbnail Preview">
+                            <p class="text-gray-500 placeholder-text"><i class="fas fa-cloud-upload-alt mr-2"></i> Drag & drop a thumbnail image here</p>
+                            <p class="text-gray-500 change-text hidden"><i class="fas fa-sync-alt mr-2"></i> Click to change thumbnail</p>
+                        </div>
+                    </div>
+                    <button type="submit" id="add-pdf-resource-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">Add PDF Resource</button>
+                </form>
+            </div>
+            <div class="mt-8 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Filter PDF Resources</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="pdf-resource-filter-status" class="block text-gray-700 text-sm font-semibold mb-2">Status</label>
+                        <select id="pdf-resource-filter-status" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500">
+                            <option value="all">All Statuses</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="pdf-resource-filter-category" class="block text-gray-700 text-sm font-semibold mb-2">Category</label>
+                        <select id="pdf-resource-filter-category" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500">
+                            <option value="all categories">All Categories</option>
+                            <option value="Grammar">Grammar</option>
+                            <option value="Vocabulary">Vocabulary</option>
+                            <option value="Reading">Reading</option>
+                            <option value="Writing">Writing</option>
+                            <option value="Speaking">Speaking</option>
+                            <option value="Practice Tests">Practice Tests</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="pdf-resource-filter-search" class="block text-gray-700 text-sm font-semibold mb-2">Search</label>
+                        <input type="text" id="pdf-resource-filter-search" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Search by title, category...">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">All PDF Resources</h3>
+                <div id="pdf-resources-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+            <div id="pdf-resource-pagination" class="mt-8 flex justify-center"></div>
+        </div>`;
+
       const TESTIMONIAL_HTML = `
         ${generatePageHeader("Testimonial Management")}
         <div class="testimonials-section-admin bg-white p-6 rounded-xl shadow-md">
@@ -3743,6 +3970,9 @@
             break;
           case "free-resources":
             contentHtml = FREE_RESOURCES_HTML;
+            break;
+          case "pdf-resources":
+            contentHtml = PDF_RESOURCES_HTML;
             break;
           case "testimonial":
             contentHtml = TESTIMONIAL_HTML;
@@ -4059,6 +4289,25 @@
               freeResourceCurrentPage,
               freeResourceItemsPerPage
             );
+          }
+          if (pageName === "pdf-resources") {
+            setupImageDragAndDrop("pdf-resource-image", "pdf-resource-image-drop-zone", "pdf-resource-image-preview", 300, 400);
+            document.getElementById("pdf-resource-filter-status").addEventListener("change", (e) => {
+                pdfResourceCurrentFilters.status = e.target.value;
+                pdfResourceCurrentPage = 1;
+                renderPdfResources(pdfResourceCurrentFilters, pdfResourceCurrentPage, pdfResourceItemsPerPage);
+            });
+            document.getElementById("pdf-resource-filter-category").addEventListener("change", (e) => {
+                pdfResourceCurrentFilters.category = e.target.value;
+                pdfResourceCurrentPage = 1;
+                renderPdfResources(pdfResourceCurrentFilters, pdfResourceCurrentPage, pdfResourceItemsPerPage);
+            });
+            document.getElementById("pdf-resource-filter-search").addEventListener("input", (e) => {
+                pdfResourceCurrentFilters.searchTerm = e.target.value;
+                pdfResourceCurrentPage = 1;
+                renderPdfResources(pdfResourceCurrentFilters, pdfResourceCurrentPage, pdfResourceItemsPerPage);
+            });
+            renderPdfResources(pdfResourceCurrentFilters, pdfResourceCurrentPage, pdfResourceItemsPerPage);
           }
           if (pageName === "community-forum") {
             // Setup for Filter Posts
@@ -4405,6 +4654,23 @@
                 };
                 successMessage = "Free resource";
                 break;
+              case "pdf-resource-form":
+                collectionName = "pdfResources";
+                idField = "pdf-resource-id";
+                addBtnId = "add-pdf-resource-btn";
+                imageDropZoneId = "pdf-resource-image-drop-zone";
+                imagePreviewId = "pdf-resource-image";
+                data = {
+                  title: document.getElementById("pdf-resource-title").value,
+                  category: document.getElementById("pdf-resource-category").value,
+                  link: document.getElementById("pdf-resource-link").value,
+                  description: document.getElementById("pdf-resource-description").value,
+                  img: document.getElementById("pdf-resource-image").value || "https://placehold.co/400x200/cccccc/white?text=PDF+Preview",
+                  timestamp: serverTimestamp(),
+                  status: "active",
+                };
+                successMessage = "PDF resource";
+                break;
               default:
                 return;
             }
@@ -4460,7 +4726,7 @@
           });
       });
     </script>
+   <script src="admin-pdf-resources.js"></script>
 
   </body>
 </html>
-

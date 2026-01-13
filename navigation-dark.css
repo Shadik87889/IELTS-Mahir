@@ -402,14 +402,14 @@ nav .logo img:hover {
 /* ≥ 1440 px: large laptop / desktop */
 @media (min-width: 1440px) {
   nav .menu-item {
-    left: 18.5vw;
+    left: 10.5vw;
   }
 }
 
 /* 1024 – 1439 px: 13–15″ laptops */
 @media (min-width: 1024px) and (max-width: 1439px) {
   nav .menu-item {
-    left: 15vw;
+    left: 8vw;
   }
 }
 /* Loading state styles */
