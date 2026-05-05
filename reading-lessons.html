@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Reading Lessons - IELTS Mahir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;600;800&family=Montserrat:wght@400;500;600;700&family=Hind+Siliguri:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: #ffffff;
+        color: #333;
+      }
+
+      /* Premium Brand Typography */
+      .anton-text {
+        font-family: "Anton", sans-serif;
+        letter-spacing: 0.05em;
+      }
+
+      /* Hero Section - Emerald Theme */
+      .brand-hero-section {
+        background: linear-gradient(
+          135deg,
+          #064e3b 0%,
+          /* emerald-900 */ #059669 100% /* emerald-600 */
+        ) !important;
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 8rem;
+      }
+
+      /* Animated Blob Backgrounds */
+      @keyframes blob {
+        0% {
+          transform: translate(0px, 0px) scale(1);
+        }
+        33% {
+          transform: translate(30px, -50px) scale(1.1);
+        }
+        66% {
+          transform: translate(-20px, 20px) scale(0.9);
+        }
+        100% {
+          transform: translate(0px, 0px) scale(1);
+        }
+      }
+      .animate-blob {
+        animation: blob 7s infinite;
+      }
+      .animation-delay-2000 {
+        animation-delay: 2s;
+      }
+      .animation-delay-4000 {
+        animation-delay: 4s;
+      }
+
+      /* Gradient Animation for Playlist Button */
+      @keyframes gradient-xy {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      .animate-gradient {
+        background-size: 200% 200%;
+        animation: gradient-xy 3s ease infinite;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        background: rgba(52, 211, 153, 0.15); /* emerald-400 */
+        color: #34d399;
+        border-radius: 2rem;
+        font-family: "Outfit", sans-serif;
+        font-weight: 600;
+        font-size: 0.9rem;
+        border: 1px solid rgba(52, 211, 153, 0.3);
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-btn-secondary {
+        padding: 0.8rem 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 0.5rem;
+        font-family: "Anton", sans-serif;
+        text-transform: uppercase;
+        font-size: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(4px);
+        transition: all 0.3s ease;
+      }
+
+      .hero-btn-secondary:hover {
+        background: #ffffff;
+        color: #064e3b;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Dope Video Card Styles */
+      .video-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.02);
+        overflow: hidden;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .video-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15); /* emerald-500 shadow */
+      }
+
+      .play-overlay {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      .video-card:hover .play-overlay {
+        opacity: 1;
+      }
+      .play-icon {
+        transform: scale(0.5);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: #10b981; /* emerald-500 */
+        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.5);
+      }
+      .video-card:hover .play-icon {
+        transform: scale(1);
+      }
+
+      /* Skeleton Loader */
+      .skeleton {
+        background: #e2e8f0;
+        background: linear-gradient(
+          110deg,
+          #ececec 8%,
+          #f5f5f5 18%,
+          #ececec 33%
+        );
+        border-radius: 5px;
+        background-size: 200% 100%;
+        animation: 1.5s shine linear infinite;
+      }
+      @keyframes shine {
+        to {
+          background-position-x: -200%;
+        }
+      }
+
+      /* Custom Scrollbar */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f8fafc;
+        border-radius: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* Modal Animations */
+      #video-modal {
+        backdrop-filter: blur(5px);
+      }
+      .modal-enter {
+        animation: modalFadeIn 0.3s ease-out forwards;
+      }
+      .modal-leave {
+        animation: modalFadeOut 0.2s ease-in forwards;
+      }
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes modalFadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      .modal-content-enter {
+        animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+      @keyframes scaleUp {
+        from {
+          transform: scale(0.95) translateY(10px);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1) translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Pagination Styles */
+      .page-btn {
+        transition: all 0.2s ease;
+      }
+      .page-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <!-- Premium Brand Hero Section -->
+    <header class="brand-hero-section pt-8 px-6 md:px-12">
+      <!-- Floating Abstract Background Blobs -->
+      <div
+        class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-[#10b981] rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-blob"
+      ></div>
+      <div
+        class="absolute top-[20%] right-[-5%] w-80 h-80 bg-[#34d399] rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-blob animation-delay-2000"
+      ></div>
+      <div
+        class="absolute bottom-[10%] left-[20%] w-72 h-72 bg-[#059669] rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-blob animation-delay-4000"
+      ></div>
+
+      <div class="max-w-7xl mx-auto relative z-10">
+        <!-- Navigation Action -->
+        <a href="home" class="hero-btn-secondary mb-10 shadow-sm relative z-20">
+          <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+
+        <div
+          class="flex flex-col md:flex-row items-center justify-between gap-12"
+        >
+          <!-- Text Content -->
+          <div class="flex-1 md:pr-10 z-10 text-center md:text-left">
+            <div class="hero-badge shadow-sm">
+              <i class="fas fa-book-open text-[#34d399]"></i> Academic & General
+            </div>
+
+            <h1
+              class="anton-text text-5xl md:text-6xl lg:text-7xl text-white leading-[1.1] mb-6 drop-shadow-md"
+            >
+              IELTS READING <br />
+              <span class="text-[#34d399]">MASTERY</span>
+            </h1>
+
+            <p
+              class="text-lg md:text-xl text-emerald-100 max-w-xl font-medium leading-relaxed mx-auto md:mx-0"
+            >
+              Conquer the toughest passages. Learn advanced skimming, scanning,
+              and strategy techniques to ace all question types and secure a
+              Band 9.
+            </p>
+          </div>
+
+          <!-- Image Area: Arched Portrait Window -->
+          <div
+            class="flex-1 relative flex justify-center items-center w-full mt-16 md:mt-0 z-10"
+          >
+            <!-- Arched Framed Window (Soft Green) -->
+            <div
+              class="relative w-[280px] sm:w-[320px] h-[380px] bg-gradient-to-b from-[#d1fae5] to-[#a7f3d0] rounded-t-[160px] rounded-b-3xl overflow-hidden shadow-2xl border-4 border-white/80 backdrop-blur-sm z-10"
+            >
+              <!-- Image perfectly masked at the bottom -->
+              <img
+                src="https://i.postimg.cc/Hs4Z2TQR/student-image-three.png"
+                alt="Happy Student"
+                class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-auto object-contain origin-bottom hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+
+            <!-- Floating Accent -->
+            <div
+              class="absolute top-12 right-0 md:-right-2 bg-white/95 backdrop-blur-sm p-3 rounded-xl shadow-xl border border-white z-20 flex items-center gap-3 animate-bounce"
+              style="animation-duration: 3.5s;"
+            >
+              <div
+                class="w-10 h-10 bg-[#ecfdf5] text-[#10b981] rounded-full flex items-center justify-center text-lg"
+              >
+                <i class="fas fa-search"></i>
+              </div>
+              <div>
+                <p class="anton-text text-[#064e3b] text-lg leading-tight">
+                  Reading
+                </p>
+                <p class="text-xs text-slate-500 font-semibold">Strategies</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elegant SVG Bottom Curve Divider -->
+      <div
+        class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-10"
+      >
+        <svg
+          class="relative block w-full h-[60px] md:h-[100px]"
+          data-name="Layer 1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+            fill="#ffffff"
+          ></path>
+        </svg>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-6 md:px-12 py-10 bg-white relative z-20">
+      <div
+        class="flex flex-col sm:flex-row justify-between items-center sm:items-end mb-12 gap-4 border-b border-slate-100 pb-6"
+      >
+        <div>
+          <h2
+            class="anton-text text-3xl md:text-4xl text-[#064e3b] tracking-wide"
+          >
+            READING LESSONS
+          </h2>
+          <div class="h-1.5 w-16 bg-[#10b981] mt-3 rounded-full"></div>
+        </div>
+        <div
+          class="flex flex-wrap justify-center sm:justify-end items-center gap-3"
+        >
+          <!-- SUPER PREMIUM PLAYLIST BUTTON (Link to Youtube) -->
+          <a
+            href="https://youtube.com/playlist?list=PLZcJqvwRH7EtA5ven3SP81oeSZJ0853JK&si=-BF7mO71v-uWvvqj"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group relative px-6 py-2.5 font-bold text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden hidden sm:flex"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 animate-gradient"
+            ></div>
+            <div
+              class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300"
+            ></div>
+            <div class="relative flex items-center gap-2">
+              <i class="fas fa-list-ol"></i> Watch Full Playlist
+            </div>
+          </a>
+
+          <!-- Standard Count Indicator -->
+          <div
+            class="text-sm font-semibold text-[#10b981] bg-[#ecfdf5] px-5 py-2.5 rounded-xl shadow-sm border border-[#10b981]/20 flex items-center gap-2"
+          >
+            <i class="fas fa-play-circle text-lg"></i>
+            <span id="video-count" class="text-base">0</span> Videos
+          </div>
+        </div>
+
+        <!-- Mobile Playlist Button (Full width) -->
+        <a
+          href="https://youtube.com/playlist?list=PLZcJqvwRH7EtA5ven3SP81oeSZJ0853JK&si=-BF7mO71v-uWvvqj"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full sm:hidden group relative px-6 py-3 font-bold text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden mt-2"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-500 animate-gradient"
+          ></div>
+          <div class="relative flex items-center justify-center gap-2 text-lg">
+            <i class="fas fa-list-ol"></i> Watch Full Playlist
+          </div>
+        </a>
+      </div>
+
+      <!-- Dynamic Container -->
+      <div
+        id="video-grid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      >
+        <!-- Grid populated by JS -->
+      </div>
+
+      <!-- Pagination Container -->
+      <div
+        id="pagination-container"
+        class="mt-12 flex items-center justify-center gap-2 border-t border-slate-100 pt-8 hidden"
+      >
+        <!-- Buttons injected by JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div
+        id="empty-state"
+        class="hidden text-center py-24 bg-[#f8fafc] rounded-2xl border-2 border-dashed border-slate-200 mt-8"
+      >
+        <div
+          class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full mb-5 shadow-sm"
+        >
+          <i class="fas fa-book-reader text-3xl text-slate-300"></i>
+        </div>
+        <h3
+          class="text-2xl font-bold text-[#064e3b] mb-2 anton-text tracking-wide"
+        >
+          NO READING LESSONS YET
+        </h3>
+        <p class="text-slate-500 font-medium">
+          Expert IELTS Reading lessons are being prepared. Check back soon!
+        </p>
+      </div>
+    </main>
+
+    <!-- Video Preview Modal System -->
+    <div
+      id="video-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-sm"
+    >
+      <div class="absolute inset-0" id="modal-backdrop"></div>
+
+      <div
+        id="modal-content"
+        class="relative w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col lg:flex-row max-h-[95vh] lg:max-h-[85vh] border border-slate-100"
+      >
+        <!-- Video Player Area -->
+        <div
+          class="relative w-full lg:w-[65%] bg-black flex-shrink-0 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-800"
+        >
+          <div class="w-full aspect-video relative">
+            <iframe
+              id="youtube-player"
+              class="absolute top-0 left-0 w-full h-full"
+              src=""
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          </div>
+
+          <!-- Mobile Close Button -->
+          <button
+            class="close-modal-btn lg:hidden absolute top-4 right-4 w-10 h-10 bg-black/50 hover:bg-red-600 rounded-full text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 z-10 border border-white/20"
+          >
+            <i class="fas fa-times text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Video Info Area -->
+        <div
+          class="w-full lg:w-[35%] p-6 md:p-8 lg:p-10 overflow-y-auto bg-white flex flex-col relative custom-scrollbar"
+        >
+          <!-- Desktop Close Button -->
+          <button
+            class="close-modal-btn hidden lg:flex absolute top-6 right-6 w-10 h-10 bg-slate-100 hover:bg-red-50 rounded-full text-slate-400 hover:text-red-500 items-center justify-center transition-colors duration-300 z-10 shadow-sm"
+          >
+            <i class="fas fa-times text-lg"></i>
+          </button>
+
+          <div class="flex items-center gap-3 mb-4 mt-2 lg:mt-0">
+            <span
+              class="bg-[#ecfdf5] text-[#10b981] px-3 py-1 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-widest border border-[#10b981]/20 shadow-sm"
+            >
+              <i class="fas fa-book-open mr-1"></i> IELTS Reading
+            </span>
+          </div>
+
+          <h3
+            id="modal-title"
+            class="anton-text text-2xl sm:text-3xl lg:text-4xl text-[#064e3b] mb-6 pr-8 lg:pr-12 leading-tight"
+          >
+            Video Title
+          </h3>
+
+          <div class="prose prose-sm sm:prose-base text-slate-600 mb-8">
+            <p
+              id="modal-summary"
+              class="leading-relaxed font-medium text-[15px]"
+            >
+              Video summary will appear here.
+            </p>
+          </div>
+
+          <div
+            class="bg-gradient-to-br from-[#f8fafc] to-[#f1f5f9] p-5 sm:p-6 rounded-xl border border-slate-200 mt-auto shadow-inner"
+          >
+            <h4
+              class="text-sm font-bold text-[#064e3b] uppercase tracking-wider mb-5 flex items-center"
+            >
+              <div
+                class="w-8 h-8 bg-white text-[#f59e0b] rounded-lg flex items-center justify-center mr-3 shadow-sm border border-slate-100"
+              >
+                <i class="fas fa-lightbulb"></i>
+              </div>
+              Key Takeaways
+            </h4>
+            <ul
+              id="modal-keypoints"
+              class="space-y-4 text-slate-600 text-sm font-medium"
+            >
+              <!-- Keypoints injected here -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logic & Data -->
+    <script>
+      // UI Elements
+      const grid = document.getElementById("video-grid");
+      const emptyState = document.getElementById("empty-state");
+      const videoCount = document.getElementById("video-count");
+      const paginationContainer = document.getElementById(
+        "pagination-container",
+      );
+
+      // Modal Elements
+      const modal = document.getElementById("video-modal");
+      const modalBackdrop = document.getElementById("modal-backdrop");
+      const modalContent = document.getElementById("modal-content");
+      const closeBtns = document.querySelectorAll(".close-modal-btn");
+      const ytPlayer = document.getElementById("youtube-player");
+      const modalTitle = document.getElementById("modal-title");
+      const modalSummary = document.getElementById("modal-summary");
+      const modalKeypoints = document.getElementById("modal-keypoints");
+
+      // Pagination Variables
+      let currentPage = 1;
+      const itemsPerPage = 9;
+
+      // Hardcoded Reading video data from screenshots (27 items)
+      const localReadingLessons = [
+        {
+          id: "r1",
+          title:
+            "IELTS Reading List of Headings Tips and Tricks Bangla | Best Live Class In Bangla | IELTS Mahir",
+          summary:
+            "Master the List of Headings question type with proven tricks and a comprehensive live class breakdown.",
+          link: "https://www.youtube.com/live/vp9t6isdkKQ?si=FTLQ4gr9DxLVMy5_",
+          img:
+            "https://i.ytimg.com/vi/vp9t6isdkKQ/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAZtED6NDML1xE0xGlzwCGXJYcEKg",
+          keypoints: ["List of Headings", "Live Class", "Bangla"],
+        },
+        {
+          id: "r2",
+          title: "১৫ দিনে কিভাবে IELTS reading স্কোর বাড়াবেন?",
+          summary:
+            "A targeted 15-day strategy to rapidly improve your IELTS Reading score.",
+          link: "https://youtu.be/MMycSZw03C0?si=PGL4jsMZwXJEh-12",
+          img:
+            "https://i.ytimg.com/vi/MMycSZw03C0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCyMJvGqAEALM17-1rfR50ReSBSkg",
+          keypoints: ["15-Day Plan", "Score Boost", "Strategy"],
+        },
+        {
+          id: "r3",
+          title:
+            "IELTS Reading: Multiple Choice Questions Practice with IELTS Mahir | IELTS Reading || IELTS Mahir |",
+          summary:
+            "Detailed practice session focusing entirely on tackling tricky Multiple Choice Questions.",
+          link: "https://youtu.be/rRIzT8f-n7Q?si=JGI-pfgyF661N14b",
+          img:
+            "https://i.ytimg.com/vi/rRIzT8f-n7Q/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDIYTSb_ejwi8Bije1q4oJhVoZO3w",
+          keypoints: ["MCQs", "Practice Session", "Elimination"],
+        },
+        {
+          id: "r4",
+          title:
+            "Matching Paragraph Information IELTS Reading Tips | Winning Strategy by IELTS Mahir",
+          summary:
+            "Winning strategies to quickly locate and match information to correct paragraphs.",
+          link: "https://www.youtube.com/live/UH33zR8I4NY?si=-CBNzjZlwXZh_58D",
+          img:
+            "https://i.ytimg.com/vi/UH33zR8I4NY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCZITAotHdcdKSsOs7ghfsNLGDpYQ",
+          keypoints: ["Matching Info", "Scanning", "Paragraphs"],
+        },
+        {
+          id: "r5",
+          title:
+            "IELTS Reading: How to Solve Matching Sentence Endings, Yes No Not Given and Summary",
+          summary:
+            "A combined lesson covering Sentence Endings, Y/N/NG, and Summary Completion questions.",
+          link: "https://www.youtube.com/live/ng8RCx4othE?si=s4J9rgfDJIphuJ36",
+          img:
+            "https://i.ytimg.com/vi/ng8RCx4othE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB1v51RdrZAKmpySS4v4OCNdA1TSA",
+          keypoints: ["Sentence Endings", "Y/N/NG", "Summary"],
+        },
+        {
+          id: "r6",
+          title:
+            "IELTS Reading True False Not Given Tips in Bangla | IELTS Mahir",
+          summary:
+            "Clear up the confusion between False and Not Given with these simple tips in Bangla.",
+          link: "https://www.youtube.com/live/dJHvjTS52aY?si=hF2tzGT_DCvyQu0k",
+          img:
+            "https://i.ytimg.com/vi/dJHvjTS52aY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCpXN-xJari0k94FuVLQDO3SCYoVQ",
+          keypoints: ["T/F/NG", "Logic Traps", "Bangla"],
+        },
+        {
+          id: "r7",
+          title:
+            "IELTS Reading Tips: Improve IELTS Reading Score | IELTS Reading || IELTS Mahir |",
+          summary:
+            "General overarching tips and habits to build a stronger foundation in academic reading.",
+          link: "https://youtu.be/fnxeAMfZFvo?si=Neqq9t8hubvXWGpf",
+          img: "https://i.ytimg.com/vi/fnxeAMfZFvo/maxresdefault.jpg",
+          keypoints: ["General Tips", "Score Improvement", "Habits"],
+        },
+        {
+          id: "r8",
+          title:
+            "How to Solve Problems in Specific Reading Question Type | IELTS Mahir |",
+          summary:
+            "Troubleshooting common issues students face with highly specific question formats.",
+          link: "https://youtu.be/8KYkBU63mus?si=XHeI05qOMi2MjYUL",
+          img:
+            "https://i.ytimg.com/vi/8KYkBU63mus/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCnnAkQNqfft5OqJaxpQIHK9TWjbg",
+          keypoints: ["Problem Solving", "Specific Types", "Techniques"],
+        },
+        {
+          id: "r9",
+          title:
+            "IELTS Reading Tips and Tricks Bangla | Improve Your Reading Score | IELTS Mahir",
+          summary:
+            "A comprehensive guide in Bangla filled with shortcuts and tricks for the reading test.",
+          link: "https://youtu.be/7tOVSU3oxbs?si=w_fGAuk3TQVsEc7P",
+          img:
+            "https://i.ytimg.com/vi/7tOVSU3oxbs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBAeQVKlskcd1TRAFC_wFjmP-sAqA",
+          keypoints: ["Tips & Tricks", "Bangla", "Shortcuts"],
+        },
+        {
+          id: "r10",
+          title:
+            "IELTS Reading এ কোন প্রশ্ন আগে সমাধান করবো? | IELTS Reading | IELTS Mahir |",
+          summary:
+            "Learn which questions to attack first to maximize your time management in the exam.",
+          link: "https://youtu.be/i8fV7QPCpoI?si=nukXPMTdEIc7JHVW",
+          img: "https://i.ytimg.com/vi_webp/i8fV7QPCpoI/maxresdefault.webp",
+          keypoints: ["Time Management", "Question Order", "Strategy"],
+        },
+        {
+          id: "r11",
+          title: "যে দুটি কাজ করে IELTS Reading Score 4.5 থেকে 6.0 এ নিবেন?",
+          summary:
+            "Two crucial changes you need to make to jump from a Band 4.5 to a Band 6.0.",
+          link: "https://youtu.be/FZ1PuIm67E4?si=8NzhK7WOIVQ6hDWt",
+          img:
+            "https://i.ytimg.com/vi/FZ1PuIm67E4/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDY5OJpFVYhiG1cdOVbZKnXLHQ9Hw",
+          keypoints: ["Band 4.5 to 6.0", "Core Changes", "Improvement"],
+        },
+        {
+          id: "r12",
+          title:
+            "IELTS Reading এ 8.5 Score করার Tips | IELTS Mahir | IELTS Reading |",
+          summary:
+            "Advanced level tips for students aiming for a near-perfect Band 8.5 in Reading.",
+          link: "https://youtu.be/jyohYyx2wn0?si=5YwpGKft7JJU-eme",
+          img:
+            "https://i.ytimg.com/vi/jyohYyx2wn0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA_i9ekPv-O5dWdECxNx2zG_ZCnPw",
+          keypoints: ["Band 8.5", "Advanced Tips", "High Score"],
+        },
+        {
+          id: "r13",
+          title:
+            "IELTS Reading এ 8.5 Score করার Tips (Part 2) | Reading tips for IELTS academic | IELTS Mahir",
+          summary:
+            "Part 2 of the advanced guide, focusing on deep academic reading strategies.",
+          link: "https://youtu.be/789f1MCa0qY?si=1sIQLisC8vm3VkPN",
+          img:
+            "https://i.ytimg.com/vi/789f1MCa0qY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDWZK8elJs7v1Xd8ykZLAUc5lKBUg",
+          keypoints: ["Part 2", "Academic Reading", "Band 8.5"],
+        },
+        {
+          id: "r14",
+          title:
+            "IELTS Reading MCQ Solving Tips & Tricks | Proven Strategies for High Scores | IELTS Mahir",
+          summary:
+            "More proven methods specifically for decoding complex Multiple Choice Questions.",
+          link: "https://youtu.be/rRIzT8f-n7Q?si=SJzu1JQofrLEBAdB",
+          img:
+            "https://i.ytimg.com/vi/rRIzT8f-n7Q/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDIYTSb_ejwi8Bije1q4oJhVoZO3w",
+          keypoints: ["MCQs", "Proven Strategies", "Decoding"],
+        },
+        {
+          id: "r15",
+          title:
+            "Reading Study Plan for Beginners by IELTS Mahir | IELTS Mahir |",
+          summary:
+            "A foundational step-by-step study plan tailored for those just starting IELTS Reading.",
+          link: "https://youtu.be/9FIdVDbBBSg?si=XWCyIv32K62BYhBp",
+          img:
+            "https://i.ytimg.com/vi/9FIdVDbBBSg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCLutD5kMvXApzYUW5h1Vaha4d-fQ",
+          keypoints: ["Beginners", "Study Plan", "Foundation"],
+        },
+        {
+          id: "r16",
+          title:
+            "IELTS Reading এ স্কোর কিভাবে আপনি 7 থেকে 8+ এ নিবেন | IELTS Mahir |",
+          summary:
+            "How to break through the plateau and push your score from a Band 7 to an 8 or higher.",
+          link: "https://youtu.be/_YnpBvs5jtE?si=FzeGpNokYZC9je23",
+          img: "https://i.ytimg.com/vi/_YnpBvs5jtE/maxresdefault.jpg",
+          keypoints: ["Band 7 to 8+", "Plateau Breaker", "Advanced"],
+        },
+        {
+          id: "r17",
+          title: "কিভাবে IELTS Reading এ MCQs Solve করবেন | IELTS Mahir |",
+          summary:
+            "A fundamental breakdown of the process to solve reading MCQs accurately.",
+          link: "https://youtu.be/rVO40-b1nzE?si=zJ7SpYWWlc-gmeVp",
+          img:
+            "https://i.ytimg.com/vi/rVO40-b1nzE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLABR96VdlqbaFAwWahqLJdzrYkZ4w",
+          keypoints: ["MCQ Basics", "Accuracy", "Process"],
+        },
+        {
+          id: "r18",
+          title:
+            "IELTS Reading স্কোর কিভাবে ৪/৪.৫ থেকে ৬+ করবেন | IELTS Reading | IELTS Mahir|",
+          summary:
+            "A realistic guide to moving from a beginner score of 4/4.5 to a solid 6+.",
+          link: "https://youtu.be/CrRw5xkSWpQ?si=UXFzma-zJO37jsSM",
+          img:
+            "https://i.ytimg.com/vi/CrRw5xkSWpQ/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC7O0INNkuvCE6xUenjBn8dgZPnQA",
+          keypoints: ["Band 4 to 6", "Realistic Goals", "Progress"],
+        },
+        {
+          id: "r19",
+          title:
+            "IELTS Reading এ ৩বার 8.5 পাওয়ার গল্প | IELTS Reading | IELTS Mahir |",
+          summary:
+            "My personal story and exact methods for achieving an 8.5 in reading three consecutive times.",
+          link: "https://youtu.be/-ncYvK-Zy5w?si=kYzxLk3IieWiH-a6",
+          img:
+            "https://i.ytimg.com/vi/-ncYvK-Zy5w/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDYEo-9wCK4vXJXnpsfxCAHlHa6Xw",
+          keypoints: ["Personal Story", "Consistency", "Band 8.5"],
+        },
+        {
+          id: "r20",
+          title:
+            "IELTS Reading Tip: ভালো স্কোর করার জন্য Tips and Tricks কতটুকু গুরুত্বপূর্ণ?",
+          summary:
+            "An honest discussion on balancing 'tricks' with actual reading comprehension skills.",
+          link: "https://youtu.be/rcxUs_4AXVc?si=-7g23TA5ogpnqXzC",
+          img:
+            "https://i.ytimg.com/vi/rcxUs_4AXVc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBO_Ixiz4qqwcLRYvxcq7dEB2kamg",
+          keypoints: ["Reality Check", "Comprehension", "Tips vs Skills"],
+        },
+        {
+          id: "r21",
+          title:
+            "IELTS Reading এর জন্য VOCABULARY কিভাবে শিখবেন | IELTS Mahir | #ielts #ieltsmahir #ieltsreading",
+          summary:
+            "The most effective ways to build the necessary vocabulary for the reading test.",
+          link: "https://youtube.com/shorts/yvQtaIY3MlM?si=FUL5jD3y8-ENvbcm",
+          img:
+            "https://i.ytimg.com/vi/yvQtaIY3MlM/hq720_2.jpg?sqp=-oaymwE2CNAFEJQDSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARg3IFQofzAP&rs=AOn4CLAonocPJgMKrzCNzzJ6f2B0Gh5iRA",
+          keypoints: ["Vocabulary", "Context Learning", "Retention"],
+        },
+        {
+          id: "r22",
+          title:
+            "IELTS Listening এবং Reading-এর উত্তরগুলো Capital Letter-এ লিখব, না কি Small Letter-এ? | IELTS Mahir",
+          summary:
+            "Clarifying the rules on capitalization for transferring your answers to the answer sheet.",
+          link: "https://youtube.com/shorts/h5UY7gBF-Ec?si=3MPNKTTufh2XuCoB",
+          img:
+            "https://i.ytimg.com/vi/h5UY7gBF-Ec/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AG2CIACgA-KAgwIABABGHIgWygRMA8=&rs=AOn4CLDLNhfwktTgTZGepck0xOu778E6EQ",
+          keypoints: ["Answer Sheet", "Capitalization", "Rules"],
+        },
+        {
+          id: "r23",
+          title:
+            "IEITS Listening এবং IELTS Reading-এ Brackets এর ভেতরের Word কি লিখতে হবে? | IELTS Mahir",
+          summary:
+            "Explaining how to handle words inside brackets when writing your final answers.",
+          link: "https://www.youtube.com/shorts/Hh-uYAe6G1g",
+          img:
+            "https://i.ytimg.com/vi/Hh-uYAe6G1g/oardefault.jpg?sqp=-oaymwEdCJUDENAFSFWQAgHyq4qpAwwIARUAAIhCcAHAAQY=&rs=AOn4CLBAdrpcbWF61uDt8wejuj9j6JuKvA&usqp=CCk",
+          keypoints: ["Brackets", "Formatting Answers", "Guidelines"],
+        },
+        {
+          id: "r24",
+          title:
+            "Reading Test দেয়ার সময় যে Common Mistake-টা কখনো করা যাবে না | IELTS Mahir",
+          summary:
+            "The single biggest mistake students make during the actual test and how to avoid it.",
+          link: "https://www.youtube.com/shorts/xJVzpYLU4a8",
+          img:
+            "https://i.ytimg.com/vi/xJVzpYLU4a8/oardefault.jpg?sqp=-oaymwEdCJUDENAFSFWQAgHyq4qpAwwIARUAAIhCcAHAAQY=&rs=AOn4CLAAu_l0rkMqfEzz5zxGtbAy0DysRQ&usqp=CCk",
+          keypoints: ["Common Mistakes", "Test Day", "Avoidance"],
+        },
+        {
+          id: "r25",
+          title: "IELTS Reading-এ সবার আগে কোন Passage Solve করবেন?",
+          summary:
+            "Strategy on selecting which of the three passages to tackle first for optimal scoring.",
+          link: "https://www.youtube.com/shorts/g0yg4sPDnwc",
+          img:
+            "https://i.ytimg.com/vi/g0yg4sPDnwc/oardefault.jpg?sqp=-oaymwEdCJUDENAFSFWQAgHyq4qpAwwIARUAAIhCcAHAAQY=&rs=AOn4CLDVgpIeI47SVcJI7WNaEFQj1ndcbw&usqp=CCk",
+          keypoints: ["Passage Selection", "Strategy", "Prioritization"],
+        },
+        {
+          id: "r26",
+          title: "Cambridge Books Practice করা শেষ এখন কী করবেন | IELTS Mahir",
+          summary:
+            "What to do for practice once you have exhausted all the official Cambridge books.",
+          link: "https://youtu.be/6DztibhqWAM?si=mf4OUDlj99nR_vz6",
+          img:
+            "https://i.ytimg.com/vi/6DztibhqWAM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB7kCXAjljFoNXGyQnyfHHTgLtF3w",
+          keypoints: ["Post-Cambridge", "Extra Practice", "Next Steps"],
+        },
+        {
+          id: "r27",
+          title: "💡IELTS Reading-এ 7+ তোলার ৬টি গোপন TIPS | IELTS Mahir",
+          summary:
+            "Six secret tips that are essential for consistently scoring a Band 7 or higher.",
+          link: "https://youtu.be/yUNQb9DOtKI?si=RGmpeUQuME7KAXZp",
+          img:
+            "https://i.ytimg.com/vi/yUNQb9DOtKI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDwua13p4AxsOJVlsxf7sCOz4wXSQ",
+          keypoints: ["Secret Tips", "Band 7+", "Consistency"],
+        },
+      ];
+
+      // Helper to extract YouTube Embed URL
+      function getEmbedUrl(url) {
+        let videoId = "";
+        try {
+          if (url.includes("youtube.com/watch")) {
+            videoId = new URLSearchParams(new URL(url).search).get("v");
+          } else if (url.includes("youtu.be/")) {
+            videoId = url.split("youtu.be/")[1]?.split("?")[0];
+          }
+        } catch (e) {
+          console.error("Invalid URL", e);
+        }
+        return videoId
+          ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`
+          : "";
+      }
+
+      // Modal Logic
+      function openModal(data) {
+        modalTitle.textContent = data.title || "Reading Lesson";
+        modalSummary.textContent =
+          data.summary || "No summary provided for this lesson.";
+
+        modalKeypoints.innerHTML = "";
+        if (
+          data.keypoints &&
+          Array.isArray(data.keypoints) &&
+          data.keypoints.length > 0
+        ) {
+          data.keypoints.forEach((kp) => {
+            modalKeypoints.insertAdjacentHTML(
+              "beforeend",
+              `
+                <li class="flex items-start">
+                    <i class="fas fa-check text-[#10b981] mt-1 mr-3 text-sm"></i>
+                    <span>${kp}</span>
+                </li>
+            `,
+            );
+          });
+        } else {
+          modalKeypoints.innerHTML =
+            '<li class="text-slate-400 italic text-sm">No keypoints available.</li>';
+        }
+
+        ytPlayer.src = getEmbedUrl(data.link);
+
+        modal.classList.remove("hidden");
+        modal.classList.add("flex", "modal-enter");
+        modalContent.classList.add("modal-content-enter");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        ytPlayer.src = ""; // Stop video
+        modal.classList.replace("modal-enter", "modal-leave");
+        setTimeout(() => {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex", "modal-leave");
+          modalContent.classList.remove("modal-content-enter");
+          document.body.style.overflow = "";
+        }, 200);
+      }
+
+      // Event Listeners for Modal
+      closeBtns.forEach((btn) => btn.addEventListener("click", closeModal));
+      modalBackdrop.addEventListener("click", closeModal);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.classList.contains("hidden"))
+          closeModal();
+      });
+
+      // Pagination UI Renderer
+      function renderPagination(totalItems) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        paginationContainer.innerHTML = "";
+
+        if (totalPages <= 1) {
+          paginationContainer.classList.add("hidden");
+          return;
+        }
+        paginationContainer.classList.remove("hidden");
+
+        // Prev Button
+        const prevBtn = document.createElement("button");
+        prevBtn.className = `page-btn px-4 py-2 rounded-lg font-medium border flex items-center gap-2 ${
+          currentPage === 1
+            ? "bg-slate-50 text-slate-400 border-slate-200"
+            : "bg-white text-[#064e3b] border-slate-200 hover:bg-[#ecfdf5] hover:border-[#10b981]"
+        }`;
+        prevBtn.innerHTML = '<i class="fas fa-chevron-left text-xs"></i> Prev';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = () => {
+          if (currentPage > 1) {
+            currentPage--;
+            renderLessons();
+          }
+        };
+        paginationContainer.appendChild(prevBtn);
+
+        // Page Numbers
+        for (let i = 1; i <= totalPages; i++) {
+          const pageBtn = document.createElement("button");
+          const isActive = i === currentPage;
+          pageBtn.className = `page-btn w-10 h-10 rounded-lg font-bold border flex items-center justify-center ${
+            isActive
+              ? "bg-[#10b981] text-white border-[#10b981] shadow-md shadow-[#10b981]/20"
+              : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+          }`;
+          pageBtn.innerText = i;
+          pageBtn.onclick = () => {
+            currentPage = i;
+            renderLessons();
+          };
+          paginationContainer.appendChild(pageBtn);
+        }
+
+        // Next Button
+        const nextBtn = document.createElement("button");
+        nextBtn.className = `page-btn px-4 py-2 rounded-lg font-medium border flex items-center gap-2 ${
+          currentPage === totalPages
+            ? "bg-slate-50 text-slate-400 border-slate-200"
+            : "bg-white text-[#064e3b] border-slate-200 hover:bg-[#ecfdf5] hover:border-[#10b981]"
+        }`;
+        nextBtn.innerHTML = 'Next <i class="fas fa-chevron-right text-xs"></i>';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.onclick = () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            renderLessons();
+          }
+        };
+        paginationContainer.appendChild(nextBtn);
+      }
+
+      // Render lessons to the DOM based on Pagination
+      function renderLessons() {
+        const plans = localReadingLessons;
+        grid.innerHTML = "";
+        videoCount.textContent = plans.length;
+
+        if (plans.length === 0) {
+          emptyState.classList.remove("hidden");
+          paginationContainer.classList.add("hidden");
+          return;
+        } else {
+          emptyState.classList.add("hidden");
+        }
+
+        // Calculate Pagination Slices
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedPlans = plans.slice(startIndex, endIndex);
+
+        paginatedPlans.forEach((plan) => {
+          const imgSrc =
+            plan.img ||
+            "https://placehold.co/600x400/d1fae5/10b981?text=Play+Lesson";
+          let keypointHtml = "";
+          if (plan.keypoints && Array.isArray(plan.keypoints)) {
+            plan.keypoints.slice(0, 2).forEach((kp) => {
+              keypointHtml += `<span class="inline-block bg-[#f8fafc] text-[#064e3b] text-[11px] font-bold px-2.5 py-1 rounded-md border border-slate-200 truncate max-w-[140px]">${kp}</span>`;
+            });
+            if (plan.keypoints.length > 2) {
+              keypointHtml += `<span class="inline-block bg-[#ecfdf5] text-[#10b981] text-[11px] font-bold px-2.5 py-1 rounded-md border border-[#10b981]/20">+${
+                plan.keypoints.length - 2
+              }</span>`;
+            }
+          }
+
+          const card = document.createElement("div");
+          card.className = "video-card group";
+
+          card.innerHTML = `
+            <div class="relative overflow-hidden aspect-[16/9] bg-slate-100 border-b border-slate-100">
+                <img src="${imgSrc}" alt="${
+            plan.title
+          }" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://placehold.co/600x400/d1fae5/10b981?text=Play+Lesson'">
+                <div class="play-overlay absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon w-14 h-14 text-white rounded-full flex items-center justify-center">
+                        <i class="fas fa-play text-xl ml-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="p-5 flex flex-col flex-grow bg-white">
+                <h3 class="text-lg font-bold text-[#064e3b] line-clamp-2 mb-2 group-hover:text-[#10b981] transition-colors">${
+                  plan.title
+                }</h3>
+                <p class="text-sm text-slate-500 line-clamp-2 mb-4 font-medium">${
+                  plan.summary || "Click to view this reading lesson."
+                }</p>
+                <div class="mt-auto pt-4 border-t border-slate-100">
+                    <div class="flex flex-wrap gap-2">
+                        ${keypointHtml}
+                    </div>
+                </div>
+            </div>
+            `;
+
+          card.addEventListener("click", () => openModal(plan));
+          grid.appendChild(card);
+        });
+
+        // Update Pagination Controls
+        renderPagination(plans.length);
+
+        // Smooth scroll to top of grid when page changes (optional UX enhancement)
+        if (currentPage > 1 || startIndex > 0) {
+          const heroHeight = document.querySelector(".brand-hero-section")
+            .offsetHeight;
+          window.scrollTo({ top: heroHeight - 50, behavior: "smooth" });
+        }
+      }
+
+      // Initialize App
+      function init() {
+        renderLessons();
+      }
+
+      // Start the app
+      init();
+    </script>
+  </body>
+</html>

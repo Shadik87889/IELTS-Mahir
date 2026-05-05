@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Listening Free Resources - IELTS Mahir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;600;800&family=Montserrat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: #f8fafc;
+        color: #0f172a;
+        overflow-x: hidden;
+      }
+
+      /* Premium Brand Typography */
+      .anton-text {
+        font-family: "Anton", sans-serif;
+        letter-spacing: 0.05em;
+      }
+
+      /* Hero Section - Amber Grid Background */
+      .brand-hero-section {
+        background-color: #451a03 !important; /* Deep amber/brown base */
+        background-image: radial-gradient(
+            ellipse at 50% 0%,
+            rgba(245, 158, 11, 0.45) 0%,
+            transparent 70%
+          ),
+          linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px) !important;
+        background-size: 100% 100%, 36px 36px, 36px 36px !important;
+        background-position: top center !important;
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 4rem; /* Reduced for mobile */
+      }
+
+      @media (min-width: 768px) {
+        .brand-hero-section {
+          padding-bottom: 8rem;
+        }
+      }
+
+      /* Animated Blob Backgrounds for Depth */
+      @keyframes blob {
+        0% {
+          transform: translate(0px, 0px) scale(1) rotate(0deg);
+        }
+        33% {
+          transform: translate(30px, -50px) scale(1.1) rotate(10deg);
+        }
+        66% {
+          transform: translate(-20px, 20px) scale(0.9) rotate(-10deg);
+        }
+        100% {
+          transform: translate(0px, 0px) scale(1) rotate(0deg);
+        }
+      }
+      .animate-blob {
+        animation: blob 8s infinite alternate;
+      }
+      .animation-delay-2000 {
+        animation-delay: 2s;
+      }
+      .animation-delay-4000 {
+        animation-delay: 4s;
+      }
+
+      /* Sleek Hero Badges */
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 1rem;
+        background: rgba(253, 230, 138, 0.15); /* amber-200 */
+        color: #fde68a;
+        border-radius: 2rem;
+        font-family: "Outfit", sans-serif;
+        font-weight: 600;
+        font-size: 0.85rem;
+        border: 1px solid rgba(253, 230, 138, 0.3);
+        margin-bottom: 1rem;
+        backdrop-filter: blur(8px);
+      }
+
+      /* Primary & Secondary Buttons */
+      .hero-btn-secondary {
+        padding: 0.6rem 1.2rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 0.5rem;
+        font-family: "Anton", sans-serif;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(4px);
+        transition: all 0.3s ease;
+      }
+
+      .hero-btn-secondary:hover {
+        background: #ffffff;
+        color: #78350f;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Premium Video Card Styles */
+      .video-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: white;
+        border-radius: 1.25rem;
+        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.05);
+        border: 1px solid rgba(245, 158, 11, 0.1);
+        overflow: hidden;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 1;
+      }
+
+      .video-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(245, 158, 11, 0.03) 100%
+        );
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+
+      .video-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(245, 158, 11, 0.15); /* amber-500 shadow */
+        border-color: rgba(245, 158, 11, 0.3);
+      }
+      .video-card:hover::before {
+        opacity: 1;
+      }
+
+      .play-overlay {
+        background: rgba(69, 26, 3, 0.4); /* Dark brown overlay */
+        backdrop-filter: blur(3px);
+        opacity: 0;
+        transition: all 0.4s ease;
+      }
+      .video-card:hover .play-overlay {
+        opacity: 1;
+      }
+      .play-icon {
+        transform: scale(0.5);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: #f59e0b; /* amber-500 */
+        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.6);
+      }
+      .video-card:hover .play-icon {
+        transform: scale(1);
+      }
+
+      /* Custom Badges for Cards */
+      .card-badge {
+        background: #fffbeb;
+        color: #b45309;
+        border: 1px solid rgba(180, 83, 9, 0.2);
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 0.25rem 0.6rem;
+        border-radius: 0.375rem;
+        white-space: nowrap;
+      }
+
+      /* Skeleton Loader */
+      .skeleton {
+        background: #e2e8f0;
+        background: linear-gradient(
+          110deg,
+          #ececec 8%,
+          #f5f5f5 18%,
+          #ececec 33%
+        );
+        border-radius: 0.5rem;
+        background-size: 200% 100%;
+        animation: 1.5s shine linear infinite;
+      }
+      @keyframes shine {
+        to {
+          background-position-x: -200%;
+        }
+      }
+
+      /* Playlist Button Glow */
+      .playlist-glow {
+        box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .playlist-glow:hover {
+        box-shadow: 0 0 30px rgba(220, 38, 38, 0.7);
+        transform: translateY(-3px) scale(1.02);
+      }
+
+      /* Advanced Pagination Styles */
+      .pagination-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 3.5rem;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: modalFadeIn 0.5s ease-out forwards;
+      }
+      .page-btn {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #64748b;
+        background: #ffffff;
+        border: 2px solid transparent;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+      }
+      .page-btn:hover:not(:disabled):not(.active) {
+        background: #fffbeb;
+        color: #d97706;
+        border-color: #fde68a;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(245, 158, 11, 0.15);
+      }
+      .page-btn.active {
+        background: linear-gradient(135deg, #f59e0b, #ea580c);
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
+        transform: scale(1.05);
+      }
+      .page-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        background: #f8fafc;
+        box-shadow: none;
+      }
+      .page-nav-btn {
+        padding: 0 1.2rem;
+        height: 42px;
+        border-radius: 9999px;
+        width: auto;
+        gap: 0.5rem;
+      }
+
+      /* Custom Scrollbar Utilities */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f8fafc;
+        border-radius: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* Advanced Modal Animations */
+      #video-modal {
+        backdrop-filter: blur(8px);
+      }
+      .modal-enter {
+        animation: modalFadeIn 0.3s ease-out forwards;
+      }
+      .modal-leave {
+        animation: modalFadeOut 0.2s ease-in forwards;
+      }
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes modalFadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+      .modal-content-enter {
+        animation: scaleUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+      @keyframes scaleUp {
+        from {
+          transform: scale(0.9) translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1) translateY(0);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <!-- Premium Brand Hero Section -->
+    <header class="brand-hero-section pt-4 md:pt-6 px-4 md:px-12">
+      <!-- Floating Abstract Background Blobs (Amber & Orange) -->
+      <div
+        class="absolute top-[-10%] left-[-10%] w-[30rem] h-[30rem] bg-[#fcd34d] rounded-full mix-blend-screen filter blur-[120px] opacity-30 animate-blob pointer-events-none"
+      ></div>
+      <div
+        class="absolute top-[20%] right-[-5%] w-[25rem] h-[25rem] bg-[#fb923c] rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-blob animation-delay-2000 pointer-events-none"
+      ></div>
+      <div
+        class="absolute bottom-[-10%] left-[20%] w-[28rem] h-[28rem] bg-[#f59e0b] rounded-full mix-blend-screen filter blur-[100px] opacity-30 animate-blob animation-delay-4000 pointer-events-none"
+      ></div>
+
+      <div class="max-w-7xl mx-auto relative z-10">
+        <!-- Navigation Action -->
+        <div class="pt-2 md:pt-4 mb-4 md:mb-8">
+          <a href="home" class="hero-btn-secondary shadow-sm">
+            <i class="fas fa-arrow-left"></i> Back
+          </a>
+        </div>
+
+        <div
+          class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-12 pb-4 md:pb-8"
+        >
+          <!-- Text Content -->
+          <div
+            class="flex-1 md:pr-10 z-10 text-center md:text-left mt-2 md:mt-0"
+          >
+            <div class="hero-badge shadow-lg">
+              <i class="fas fa-headphones text-[#fef08a]"></i> Audio
+              Comprehension
+            </div>
+
+            <h1
+              class="anton-text text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[1.05] mb-4 md:mb-6 drop-shadow-xl"
+            >
+              LISTENING <br />
+              <span class="text-[#fbbf24]">FREE RESOURCES</span>
+            </h1>
+
+            <p
+              class="text-base sm:text-lg md:text-xl text-amber-50 max-w-xl font-medium leading-relaxed mx-auto md:mx-0 shadow-sm"
+            >
+              Master different accents and audio speeds. Access premium map
+              labelling guides, spelling hacks, and full listening mock tests.
+            </p>
+          </div>
+
+          <!-- Spectacular Image Area: Hidden on mobile to save space, visible on md+ -->
+          <div
+            class="hidden md:flex flex-1 relative justify-center items-center w-full z-10"
+          >
+            <!-- Arched Framed Window (Soft Yellow to Amber) -->
+            <div
+              class="relative w-[340px] h-[400px] bg-gradient-to-br from-[#fffbeb] to-[#fef3c7] rounded-t-[180px] rounded-b-[40px] overflow-hidden shadow-[0_20px_50px_rgba(180,83,9,0.5)] border-4 border-white/90 backdrop-blur-md z-10"
+            >
+              <!-- Placeholder for Listening Student (High quality generic unplash for demo) -->
+              <img
+                src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Focused Listening Student"
+                class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-full object-cover origin-bottom hover:scale-105 transition-transform duration-700 opacity-90"
+              />
+              <!-- Inner Gradient to blend image bottom -->
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-[#fef3c7] via-transparent to-transparent opacity-60"
+              ></div>
+            </div>
+
+            <!-- Floating Accents -->
+            <div
+              class="absolute top-16 -right-6 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-2xl border border-white z-20 flex items-center gap-3 animate-bounce"
+              style="animation-duration: 4s;"
+            >
+              <div
+                class="w-12 h-12 bg-[#fffbeb] text-[#d97706] rounded-xl flex items-center justify-center text-xl shadow-inner border border-amber-100"
+              >
+                <i class="fas fa-podcast"></i>
+              </div>
+              <div>
+                <p class="anton-text text-[#78350f] text-xl leading-none">
+                  Band 9
+                </p>
+                <p
+                  class="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1"
+                >
+                  Spelling
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="absolute bottom-12 -left-8 bg-white/95 backdrop-blur-md p-3 rounded-xl shadow-2xl border border-white z-20 flex items-center gap-3 animate-bounce"
+              style="animation-duration: 5s; animation-delay: 1s;"
+            >
+              <div
+                class="w-10 h-10 bg-[#fff7ed] text-[#ea580c] rounded-full flex items-center justify-center text-lg"
+              >
+                <i class="fas fa-map-marked-alt"></i>
+              </div>
+              <div>
+                <p
+                  class="text-xs text-slate-500 font-bold uppercase tracking-wider"
+                >
+                  Part 2
+                </p>
+                <p
+                  class="anton-text text-[#9a3412] text-lg leading-none mt-0.5"
+                >
+                  Map Labels
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elegant SVG Bottom Curve Divider -->
+      <!-- Modified viewBox and path to draw fully beneath the visible boundary, eliminating anti-aliasing artifacts -->
+      <div
+        class="absolute bottom-[-1px] left-0 w-full overflow-hidden leading-none z-10"
+      >
+        <svg
+          class="relative block w-full h-[40px] sm:h-[60px] md:h-[120px]"
+          data-name="Layer 1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V130H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+            fill="#f8fafc"
+          ></path>
+        </svg>
+      </div>
+      <!-- Absolute bottom cover to ensure 100% seam hiding from sub-pixel browser rendering -->
+      <div
+        class="absolute bottom-0 left-0 w-full h-[2px] bg-[#f8fafc] z-20"
+      ></div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main
+      class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-12 relative z-20"
+    >
+      <!-- Category Navigation Sub-Menu (Scrollable on mobile, visible overflow on desktop) -->
+      <nav
+        class="flex overflow-x-auto md:overflow-visible hide-scrollbar md:flex-wrap justify-start lg:justify-start gap-3 md:gap-4 mb-8 md:mb-12 py-2 px-2 -mx-2 md:p-1 md:m-0"
+      >
+        <a
+          href="free-reading-resources.html"
+          class="shrink-0 flex items-center gap-2.5 px-5 md:px-6 py-2.5 md:py-3 bg-white border border-slate-200 rounded-xl font-bold text-slate-600 hover:bg-slate-50 hover:border-emerald-300 hover:text-emerald-700 transition-all shadow-sm"
+        >
+          <i class="fas fa-book-open text-lg text-emerald-500"></i> Reading
+        </a>
+        <a
+          href="free-speaking-resources.html"
+          class="shrink-0 flex items-center gap-2.5 px-5 md:px-6 py-2.5 md:py-3 bg-white border border-slate-200 rounded-xl font-bold text-slate-600 hover:bg-slate-50 hover:border-purple-300 hover:text-purple-700 transition-all shadow-sm"
+        >
+          <i class="fas fa-microphone-alt text-lg text-purple-500"></i> Speaking
+        </a>
+        <a
+          href="free-writing-resources.html"
+          class="shrink-0 flex items-center gap-2.5 px-5 md:px-6 py-2.5 md:py-3 bg-white border border-slate-200 rounded-xl font-bold text-slate-600 hover:bg-slate-50 hover:border-sky-300 hover:text-sky-700 transition-all shadow-sm"
+        >
+          <i class="fas fa-pen-nib text-lg text-sky-500"></i> Writing
+        </a>
+        <!-- Listening is the Active Tab -->
+        <a
+          href="free-listening-resources.html"
+          class="shrink-0 flex items-center gap-2.5 px-5 md:px-6 py-2.5 md:py-3 bg-[#fffbeb] border-2 border-[#f59e0b] rounded-xl font-bold text-[#b45309] shadow-[0_0_15px_rgba(245,158,11,0.15)] transition-all transform scale-105 z-10"
+        >
+          <i class="fas fa-headphones text-lg text-[#f59e0b]"></i> Listening
+        </a>
+      </nav>
+
+      <!-- Section Header -->
+      <div
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 md:mb-12 gap-4 md:gap-6 border-b border-slate-200 pb-4 md:pb-6"
+      >
+        <div>
+          <h2
+            class="anton-text text-2xl md:text-3xl lg:text-4xl text-[#451a03] tracking-wide uppercase drop-shadow-sm"
+          >
+            Latest Listening Videos
+          </h2>
+          <div
+            class="h-1.5 w-16 md:w-20 bg-gradient-to-r from-[#f59e0b] to-[#ea580c] mt-2 md:mt-3 rounded-full"
+          ></div>
+        </div>
+        <div
+          class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto justify-center sm:justify-start"
+        >
+          <div
+            class="text-xs md:text-sm font-bold text-[#b45309] bg-white px-4 md:px-6 py-2.5 md:py-3 rounded-xl shadow-sm md:shadow-md border border-amber-100 flex items-center gap-2 w-full sm:w-auto justify-center"
+          >
+            <i class="fas fa-play-circle text-lg md:text-xl text-[#f59e0b]"></i>
+            <span id="video-count" class="text-base md:text-lg">0</span> Lessons
+            Available
+          </div>
+          <a
+            href="https://youtube.com/playlist?list=PLZcJqvwRH7Euo6dfHywY7yGG8vX_blO9-&si=2igXwTbjz_qibnM3"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="playlist-glow bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white px-5 py-2.5 md:py-3 rounded-xl font-bold flex items-center justify-center gap-2 border border-red-400/30 w-full sm:w-auto shadow-md transition-all"
+          >
+            <i class="fab fa-youtube text-lg md:text-xl drop-shadow-md"></i>
+            <span class="uppercase tracking-wider text-xs md:text-sm"
+              >Watch Full Playlist</span
+            >
+          </a>
+        </div>
+      </div>
+
+      <!-- Dynamic Video Grid -->
+      <div
+        id="video-grid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 xl:gap-10"
+      >
+        <!-- Initial Loading Skeletons -->
+        <div class="video-card h-[380px] md:h-[400px]">
+          <div class="w-full h-48 md:h-52 skeleton"></div>
+          <div class="p-5 md:p-6 flex flex-col gap-4 flex-grow">
+            <div class="h-6 w-3/4 skeleton"></div>
+            <div class="h-4 w-full skeleton mt-1"></div>
+            <div class="h-4 w-5/6 skeleton"></div>
+            <div class="mt-auto flex gap-2">
+              <div class="h-6 w-20 skeleton rounded-md"></div>
+              <div class="h-6 w-24 skeleton rounded-md"></div>
+            </div>
+          </div>
+        </div>
+        <div class="video-card h-[380px] md:h-[400px] hidden md:flex">
+          <div class="w-full h-48 md:h-52 skeleton"></div>
+          <div class="p-5 md:p-6 flex flex-col gap-4 flex-grow">
+            <div class="h-6 w-4/5 skeleton"></div>
+            <div class="h-4 w-full skeleton mt-1"></div>
+            <div class="h-4 w-3/4 skeleton"></div>
+            <div class="mt-auto flex gap-2">
+              <div class="h-6 w-24 skeleton rounded-md"></div>
+            </div>
+          </div>
+        </div>
+        <div class="video-card h-[380px] md:h-[400px] hidden lg:flex">
+          <div class="w-full h-48 md:h-52 skeleton"></div>
+          <div class="p-5 md:p-6 flex flex-col gap-4 flex-grow">
+            <div class="h-6 w-3/4 skeleton"></div>
+            <div class="h-4 w-full skeleton mt-1"></div>
+            <div class="h-4 w-4/5 skeleton"></div>
+            <div class="mt-auto flex gap-2">
+              <div class="h-6 w-16 skeleton rounded-md"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Pagination Container -->
+      <div id="pagination-controls" class="pagination-container hidden"></div>
+
+      <!-- Empty State (Hidden by default) -->
+      <div
+        id="empty-state"
+        class="hidden text-center py-16 md:py-24 bg-white rounded-3xl border-2 border-dashed border-amber-200 mt-8 shadow-sm px-4"
+      >
+        <div
+          class="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-[#fffbeb] rounded-full mb-6 shadow-inner border border-amber-100"
+        >
+          <i class="fas fa-headphones text-3xl md:text-4xl text-[#fbbf24]"></i>
+        </div>
+        <h3
+          class="text-2xl md:text-3xl font-bold text-[#78350f] mb-3 anton-text tracking-wide"
+        >
+          NO LISTENING RESOURCES YET
+        </h3>
+        <p
+          class="text-slate-500 font-medium text-base md:text-lg max-w-md mx-auto"
+        >
+          Our experts are curating top-tier listening lessons. Check back soon
+          for updates!
+        </p>
+      </div>
+    </main>
+
+    <!-- Cinematic Video Preview Modal -->
+    <div
+      id="video-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 lg:p-12 bg-[#0f172a]/80 backdrop-blur-md"
+    >
+      <div class="absolute inset-0" id="modal-backdrop"></div>
+
+      <div
+        id="modal-content"
+        class="relative w-full max-w-7xl bg-white rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.4)] overflow-hidden flex flex-col lg:flex-row max-h-[95vh] lg:max-h-[85vh] border border-white/20"
+      >
+        <!-- Video Player Area -->
+        <div
+          class="relative w-full lg:w-[65%] bg-black flex-shrink-0 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-200 shadow-[inset_-10px_0_20px_rgba(0,0,0,0.05)]"
+        >
+          <div class="w-full aspect-video relative">
+            <iframe
+              id="youtube-player"
+              class="absolute top-0 left-0 w-full h-full"
+              src=""
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          </div>
+
+          <!-- Mobile Close Button -->
+          <button
+            class="close-modal-btn lg:hidden absolute top-4 right-4 w-10 h-10 bg-black/60 hover:bg-rose-600 rounded-full text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 z-10 border border-white/20 shadow-lg"
+          >
+            <i class="fas fa-times text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Video Info & Meta Area -->
+        <div
+          class="w-full lg:w-[35%] p-5 md:p-8 lg:p-10 overflow-y-auto bg-[#f8fafc] flex flex-col relative custom-scrollbar"
+        >
+          <!-- Desktop Close Button -->
+          <button
+            class="close-modal-btn hidden lg:flex absolute top-6 right-6 w-10 h-10 bg-white hover:bg-rose-50 rounded-full text-slate-400 hover:text-rose-600 items-center justify-center transition-all duration-300 z-10 shadow-md border border-slate-100 hover:border-rose-200 hover:rotate-90"
+          >
+            <i class="fas fa-times text-xl"></i>
+          </button>
+
+          <div class="flex items-center gap-3 mb-4 mt-2 lg:mt-0">
+            <span
+              class="bg-[#fffbeb] text-[#d97706] px-3 py-1.5 rounded-lg text-[11px] md:text-xs font-bold uppercase tracking-widest border border-amber-200 shadow-sm flex items-center"
+            >
+              <i class="fas fa-headphones mr-2"></i> Listening Lesson
+            </span>
+          </div>
+
+          <h3
+            id="modal-title"
+            class="anton-text text-2xl sm:text-3xl md:text-4xl text-[#451a03] mb-4 md:mb-6 pr-8 lg:pr-12 leading-tight"
+          >
+            Video Title
+          </h3>
+
+          <div class="prose prose-sm sm:prose-base text-slate-600 mb-6 md:mb-8">
+            <p
+              id="modal-summary"
+              class="leading-relaxed font-medium text-sm md:text-[15px]"
+            >
+              Video summary will appear here.
+            </p>
+          </div>
+
+          <!-- Key Takeaways Box with Scrollbar -->
+          <div
+            class="bg-white p-4 sm:p-5 md:p-6 rounded-2xl border border-amber-100 mt-auto shadow-sm relative flex flex-col overflow-hidden max-h-[35vh] lg:max-h-[300px] shrink-0"
+          >
+            <!-- Decorative accent -->
+            <div
+              class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#fffbeb] to-transparent rounded-bl-full opacity-50 pointer-events-none z-0"
+            ></div>
+
+            <h4
+              class="text-xs md:text-sm font-extrabold text-[#78350f] uppercase tracking-wider mb-3 md:mb-4 flex items-center shrink-0 relative z-10"
+            >
+              <div
+                class="w-7 h-7 md:w-8 md:h-8 bg-gradient-to-br from-[#f59e0b] to-[#ea580c] text-white rounded-lg flex items-center justify-center mr-3 shadow-md"
+              >
+                <i class="fas fa-bolt text-xs md:text-sm"></i>
+              </div>
+              Key Takeaways
+            </h4>
+
+            <!-- Scrollable List Container -->
+            <div class="overflow-y-auto custom-scrollbar pr-2 relative z-10">
+              <ul
+                id="modal-keypoints"
+                class="space-y-3 md:space-y-4 text-slate-700 text-xs md:text-sm font-semibold pb-2"
+              >
+                <!-- Keypoints injected here -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDK & Core Logic -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        onSnapshot,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+      import {
+        getAuth,
+        signInAnonymously,
+        signInWithCustomToken,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+      // Firebase Configuration
+      const appId =
+        typeof __app_id !== "undefined"
+          ? __app_id
+          : "ielts-mahir-community-forum";
+      const firebaseConfig =
+        typeof __firebase_config !== "undefined"
+          ? JSON.parse(__firebase_config)
+          : {
+              apiKey: "AIzaSyAxsd0CnLsh7t7yFy3ZPp6saGD_YpLL1mY",
+              authDomain: "ielts-mahir-community-forum.firebaseapp.com",
+              projectId: "ielts-mahir-community-forum",
+              storageBucket: "ielts-mahir-community-forum.firebasestorage.app",
+              messagingSenderId: "1036043607546",
+              appId: "1:1036043607546:web:bd217e04cc0ec5f296d843",
+            };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      // DOM Elements
+      const grid = document.getElementById("video-grid");
+      const emptyState = document.getElementById("empty-state");
+      const videoCount = document.getElementById("video-count");
+      const paginationControls = document.getElementById("pagination-controls");
+
+      // Pagination State
+      let allLessons = [];
+      let currentPage = 1;
+      const itemsPerPage = 6; // Set to 6 to allow grid wrapping cleanly
+
+      // Modal DOM Elements
+      const modal = document.getElementById("video-modal");
+      const modalBackdrop = document.getElementById("modal-backdrop");
+      const modalContent = document.getElementById("modal-content");
+      const closeBtns = document.querySelectorAll(".close-modal-btn");
+      const ytPlayer = document.getElementById("youtube-player");
+      const modalTitle = document.getElementById("modal-title");
+      const modalSummary = document.getElementById("modal-summary");
+      const modalKeypoints = document.getElementById("modal-keypoints");
+
+      // Helper: Extract YouTube Embed URL
+      function getEmbedUrl(url) {
+        if (!url) return "";
+        // Support direct embed urls like playlists
+        if (url.includes("youtube.com/embed/")) {
+          return url.includes("autoplay=1")
+            ? url
+            : url + (url.includes("?") ? "&autoplay=1" : "?autoplay=1");
+        }
+
+        let videoId = "";
+        try {
+          if (url.includes("youtube.com/watch")) {
+            videoId = new URLSearchParams(new URL(url).search).get("v");
+          } else if (url.includes("youtu.be/")) {
+            videoId = url.split("youtu.be/")[1]?.split("?")[0];
+          }
+        } catch (e) {
+          console.error("Invalid URL format:", e);
+        }
+        return videoId
+          ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`
+          : "";
+      }
+
+      // Modal Controller
+      function openModal(data) {
+        modalTitle.textContent = data.title || "Listening Lesson";
+        modalSummary.textContent =
+          data.summary || "No summary provided for this lesson.";
+
+        modalKeypoints.innerHTML = "";
+        if (
+          data.keypoints &&
+          Array.isArray(data.keypoints) &&
+          data.keypoints.length > 0
+        ) {
+          data.keypoints.forEach((kp) => {
+            modalKeypoints.insertAdjacentHTML(
+              "beforeend",
+              `
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-[#f59e0b] mt-0.5 mr-3 text-base drop-shadow-sm"></i>
+                    <span>${kp}</span>
+                </li>
+              `,
+            );
+          });
+        } else {
+          modalKeypoints.innerHTML =
+            '<li class="text-slate-400 italic text-sm font-normal">No keypoints available for this lesson.</li>';
+        }
+
+        ytPlayer.src = getEmbedUrl(data.link);
+
+        modal.classList.remove("hidden");
+        modal.classList.add("flex", "modal-enter");
+        modalContent.classList.add("modal-content-enter");
+        document.body.style.overflow = "hidden"; // Prevent background scrolling
+      }
+
+      function closeModal() {
+        ytPlayer.src = ""; // Stop video playback
+        modal.classList.replace("modal-enter", "modal-leave");
+        setTimeout(() => {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex", "modal-leave");
+          modalContent.classList.remove("modal-content-enter");
+          document.body.style.overflow = "";
+        }, 250);
+      }
+
+      // Modal Event Listeners
+      closeBtns.forEach((btn) => btn.addEventListener("click", closeModal));
+      modalBackdrop.addEventListener("click", closeModal);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.classList.contains("hidden"))
+          closeModal();
+      });
+
+      // Pagination Click Handler (Event Delegation)
+      paginationControls.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-page]");
+        if (!btn || btn.disabled) return;
+
+        const newPage = parseInt(btn.dataset.page);
+        if (newPage === currentPage) return;
+
+        currentPage = newPage;
+        renderPage(currentPage);
+      });
+
+      // Render a Specific Page of Resources
+      function renderPage(page) {
+        grid.innerHTML = ""; // Clear existing grid
+
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedLessons = allLessons.slice(startIndex, endIndex);
+
+        paginatedLessons.forEach((lesson) => {
+          // High quality fallback image for listening if none provided
+          const imgSrc =
+            lesson.img ||
+            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+
+          // Generate Keypoint Badges
+          let keypointHtml = "";
+          if (lesson.keypoints && Array.isArray(lesson.keypoints)) {
+            lesson.keypoints.slice(0, 2).forEach((kp) => {
+              keypointHtml += `<span class="card-badge truncate max-w-[150px]">${kp}</span>`;
+            });
+            if (lesson.keypoints.length > 2) {
+              keypointHtml += `<span class="bg-[#fffbeb] text-[#b45309] border border-amber-100 font-bold text-[0.7rem] px-2 py-0.5 rounded-md">+${
+                lesson.keypoints.length - 2
+              }</span>`;
+            }
+          }
+
+          // Create Card
+          const card = document.createElement("div");
+          card.className = "video-card group";
+
+          card.innerHTML = `
+                <div class="relative overflow-hidden aspect-[16/9] bg-slate-200 border-b border-slate-100">
+                    <img src="${imgSrc}" alt="${
+            lesson.title
+          }" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://placehold.co/800x450/fef3c7/f59e0b?text=Listening+Lesson'">
+                    <div class="play-overlay absolute inset-0 flex items-center justify-center">
+                        <div class="play-icon w-16 h-16 text-white rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
+                            <i class="fas fa-play text-2xl ml-1"></i>
+                        </div>
+                    </div>
+                    <!-- Category Label overlay -->
+                    <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-[#b45309] uppercase tracking-wider shadow-sm">
+                      Listening
+                    </div>
+                </div>
+                <div class="p-5 md:p-6 flex flex-col flex-grow bg-white/80 backdrop-blur-sm">
+                    <h3 class="text-lg md:text-xl font-bold text-[#0f172a] line-clamp-2 mb-2 md:mb-3 group-hover:text-[#d97706] transition-colors leading-tight">${
+                      lesson.title
+                    }</h3>
+                    <p class="text-xs md:text-sm text-slate-500 line-clamp-2 mb-4 md:mb-5 font-medium leading-relaxed">${
+                      lesson.summary ||
+                      "Click to master your listening skills with this lesson."
+                    }</p>
+                    <div class="mt-auto pt-3 md:pt-4 border-t border-slate-100">
+                        <div class="flex flex-wrap gap-2">
+                            ${keypointHtml}
+                        </div>
+                    </div>
+                </div>
+              `;
+
+          card.addEventListener("click", () => openModal(lesson));
+          grid.appendChild(card);
+        });
+
+        renderPagination();
+
+        // Smooth scroll slightly up if not initial load
+        if (page !== 1 || (page === 1 && document.readyState === "complete")) {
+          const headerElement = document.querySelector("h2.anton-text");
+          if (headerElement) {
+            const yOffset = -100;
+            const y =
+              headerElement.getBoundingClientRect().top +
+              window.pageYOffset +
+              yOffset;
+            window.scrollTo({ top: y, behavior: "smooth" });
+          }
+        }
+      }
+
+      // Logic to Render the Pagination Buttons
+      function renderPagination() {
+        const totalPages = Math.ceil(allLessons.length / itemsPerPage);
+
+        if (totalPages <= 1) {
+          paginationControls.innerHTML = "";
+          paginationControls.classList.add("hidden");
+          return;
+        }
+
+        paginationControls.classList.remove("hidden");
+        let html = "";
+
+        // Prev Button
+        html += `<button class="page-btn page-nav-btn" data-page="${
+          currentPage - 1
+        }" ${currentPage === 1 ? "disabled" : ""}>
+                      <i class="fas fa-arrow-left mr-1.5"></i> Prev
+                   </button>`;
+
+        // Page Numbers (Smart display strategy)
+        let startPage = Math.max(1, currentPage - 1);
+        let endPage = Math.min(totalPages, currentPage + 1);
+
+        if (currentPage === 1) endPage = Math.min(3, totalPages);
+        if (currentPage === totalPages) startPage = Math.max(1, totalPages - 2);
+
+        if (startPage > 1) {
+          html += `<button class="page-btn" data-page="1">1</button>`;
+          if (startPage > 2)
+            html += `<span class="px-1 text-slate-400 font-bold tracking-widest">...</span>`;
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+          html += `<button class="page-btn ${
+            i === currentPage ? "active" : ""
+          }" data-page="${i}">${i}</button>`;
+        }
+
+        if (endPage < totalPages) {
+          if (endPage < totalPages - 1)
+            html += `<span class="px-1 text-slate-400 font-bold tracking-widest">...</span>`;
+          html += `<button class="page-btn" data-page="${totalPages}">${totalPages}</button>`;
+        }
+
+        // Next Button
+        html += `<button class="page-btn page-nav-btn" data-page="${
+          currentPage + 1
+        }" ${currentPage === totalPages ? "disabled" : ""}>
+                      Next <i class="fas fa-arrow-right ml-1.5"></i>
+                   </button>`;
+
+        paginationControls.innerHTML = html;
+      }
+
+      // Data Fetching and Rendering
+      function loadListeningResources() {
+        const resourcesRef = collection(
+          db,
+          "artifacts",
+          appId,
+          "public",
+          "data",
+          "freeResources",
+        );
+
+        onSnapshot(
+          resourcesRef,
+          (snapshot) => {
+            grid.innerHTML = ""; // Clear loaders
+
+            // Filter for 'Listening' category as per Admin Panel structure
+            allLessons = snapshot.docs
+              .map((doc) => ({ id: doc.id, ...doc.data() }))
+              .filter(
+                (r) => r.status === "active" && r.category === "Listening",
+              )
+              .sort(
+                (a, b) =>
+                  (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0),
+              );
+
+            videoCount.textContent = allLessons.length;
+
+            if (allLessons.length === 0) {
+              emptyState.classList.remove("hidden");
+              paginationControls.classList.add("hidden");
+              return;
+            } else {
+              emptyState.classList.add("hidden");
+
+              // Validate current page in case items were deleted
+              const totalPages = Math.ceil(allLessons.length / itemsPerPage);
+              if (currentPage > totalPages && totalPages > 0) {
+                currentPage = totalPages;
+              } else if (currentPage === 0 && totalPages > 0) {
+                currentPage = 1;
+              }
+
+              renderPage(currentPage);
+            }
+          },
+          (error) => {
+            console.error("Firestore read error:", error);
+            grid.innerHTML = `<div class="col-span-full p-6 md:p-8 bg-rose-50 border border-rose-100 text-rose-600 rounded-2xl text-center font-bold shadow-sm"><i class="fas fa-exclamation-triangle mr-2 text-xl"></i> Failed to load resources. Please check your connection.</div>`;
+          },
+        );
+      }
+
+      // Initialization and Auth Flow
+      async function init() {
+        try {
+          if (
+            typeof __initial_auth_token !== "undefined" &&
+            __initial_auth_token
+          ) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+        } catch (err) {
+          console.warn(
+            "Auth Notice (Proceeding to read public data):",
+            err.message,
+          );
+        }
+
+        // Trigger Data Load
+        loadListeningResources();
+      }
+
+      // Start App
+      init();
+    </script>
+  </body>
+</html>

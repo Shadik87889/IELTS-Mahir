@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Dynamic SEO Meta Tags -->
+    <title id="page-title">Loading Article... - IELTS Mahir</title>
+    <meta
+      name="description"
+      content="Read expert IELTS strategies and tips on the IELTS Mahir official blog."
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Premium Editorial Typography -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8fafc;
+        color: #334155;
+        overflow-x: hidden;
+      }
+
+      .heading-font {
+        font-family: "Outfit", sans-serif;
+      }
+
+      /* Reading Progress Bar */
+      #reading-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 5px;
+        background: linear-gradient(to right, #4f46e5, #8b5cf6, #ec4899);
+        z-index: 99999;
+        transition: width 0.1s ease-out;
+      }
+
+      /* Print Styles */
+      @media print {
+        #main-nav,
+        aside,
+        #related-section,
+        #mobile-share-bar,
+        .no-print {
+          display: none !important;
+        }
+        body {
+          background-color: white;
+          color: black;
+        }
+        .rich-text-content {
+          font-size: 12pt;
+        }
+        article {
+          width: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+      }
+
+      /* =========================================================
+         SUPER POWERFUL RICH TEXT STYLES (Summernote overrides)
+         ========================================================= */
+      .rich-text-content {
+        font-family: "Merriweather", Georgia, serif;
+        font-size: 1.15rem;
+        line-height: 1.85;
+        color: #1e293b;
+      }
+
+      /* Paragraphs & Spacing */
+      .rich-text-content p {
+        margin-bottom: 1.75em;
+      }
+      .rich-text-content p:empty,
+      .rich-text-content p:has(br):empty {
+        margin-bottom: 0;
+      }
+
+      /* Headings */
+      .rich-text-content h1,
+      .rich-text-content h2,
+      .rich-text-content h3,
+      .rich-text-content h4,
+      .rich-text-content h5 {
+        font-family: "Outfit", sans-serif;
+        color: #0f172a;
+        font-weight: 800;
+        margin-top: 2em;
+        margin-bottom: 0.75em;
+        line-height: 1.3;
+        letter-spacing: -0.02em;
+        scroll-margin-top: 100px;
+      }
+
+      .rich-text-content h2 {
+        font-size: 2.25rem;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 0.5rem;
+      }
+
+      .rich-text-content h3 {
+        font-size: 1.75rem;
+        color: #1e293b;
+      }
+
+      /* Links */
+      .rich-text-content a {
+        color: #4f46e5;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        text-decoration-thickness: 2px;
+        text-decoration-color: rgba(79, 70, 229, 0.4);
+        transition: all 0.2s ease;
+      }
+      .rich-text-content a:hover {
+        text-decoration-color: #4f46e5;
+        background-color: rgba(79, 70, 229, 0.1);
+      }
+
+      /* Blockquotes */
+      .rich-text-content blockquote {
+        border-left: 5px solid #6366f1;
+        background: linear-gradient(to right, #f1f5f9, rgba(241, 245, 249, 0));
+        padding: 1.5em 2em;
+        margin: 2.5em 0;
+        font-style: italic;
+        color: #334155;
+        border-radius: 0 1.5rem 1.5rem 0;
+        font-size: 1.25rem;
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Lists */
+      .rich-text-content ul,
+      .rich-text-content ol {
+        margin-bottom: 1.5em;
+        padding-left: 1.5em;
+      }
+      .rich-text-content ul {
+        list-style-type: disc;
+      }
+      .rich-text-content ul li::marker {
+        color: #6366f1;
+      }
+      .rich-text-content ol {
+        list-style-type: decimal;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .rich-text-content ol li span {
+        font-weight: 400;
+        font-family: "Merriweather", serif;
+        color: #1e293b;
+      }
+      .rich-text-content li {
+        margin-bottom: 0.75em;
+      }
+
+      /* Images injected by Summernote */
+      .rich-text-content img {
+        max-width: 100% !important;
+        height: auto !important;
+        border-radius: 1.5rem;
+        margin: 3em auto;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        display: block;
+      }
+
+      /* Tables injected by Summernote */
+      .rich-text-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2.5em 0;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        background-color: white;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border-radius: 1rem;
+        overflow: hidden;
+      }
+      .rich-text-content th,
+      .rich-text-content td {
+        border: 1px solid #e2e8f0;
+        padding: 1.25rem;
+        text-align: left;
+      }
+      .rich-text-content th {
+        background-color: #f8fafc;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      /* =========================================================
+         SIDEBAR & TOC STYLES
+         ========================================================= */
+      .toc-link {
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+        padding-left: 1rem;
+      }
+      .toc-link:hover {
+        color: #4f46e5;
+        border-left-color: #cbd5e1;
+      }
+      .toc-link.active {
+        color: #4f46e5;
+        font-weight: 700;
+        border-left-color: #4f46e5;
+        background: linear-gradient(to right, #eef2ff, transparent);
+      }
+
+      /* Hover states */
+      .solid-hover {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .solid-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      /* Skeleton Loaders */
+      .skeleton {
+        background: #e2e8f0;
+        background: linear-gradient(
+          110deg,
+          #ececec 8%,
+          #f5f5f5 18%,
+          #ececec 33%
+        );
+        background-size: 200% 100%;
+        animation: 1.5s shine linear infinite;
+      }
+      @keyframes shine {
+        to {
+          background-position-x: -200%;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="antialiased selection:bg-indigo-200 selection:text-indigo-900 relative pb-20 lg:pb-0"
+  >
+    <!-- Reading Progress Bar -->
+    <div id="reading-progress"></div>
+
+    <!-- Navigation Header -->
+    <header
+      class="bg-white/90 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200 shadow-sm transition-all duration-300"
+      id="main-nav"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center"
+      >
+        <a
+          href="ielts-mahir-blog"
+          class="inline-flex items-center gap-2 text-slate-700 hover:text-indigo-600 font-bold transition-colors"
+        >
+          <div
+            class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-indigo-100 transition-colors border border-slate-200"
+          >
+            <i class="fas fa-arrow-left"></i>
+          </div>
+          Back to Blog
+        </a>
+
+        <div class="flex items-center gap-3">
+          <button
+            onclick="window.print()"
+            class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 flex items-center justify-center transition-all shadow-sm border border-slate-200 hidden sm:flex"
+            title="Print Article"
+          >
+            <i class="fas fa-print"></i>
+          </button>
+          <button
+            onclick="shareLink()"
+            class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 hover:bg-indigo-600 hover:text-white flex items-center justify-center transition-all shadow-sm border border-slate-200 hover:border-indigo-600"
+            title="Copy Link"
+          >
+            <i class="fas fa-link"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Article Layout -->
+    <main
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:flex lg:gap-12 xl:gap-16 items-start"
+    >
+      <!-- LEFT COLUMN: Content (70%) -->
+      <article class="w-full lg:w-[70%]">
+        <!-- Loading Skeleton Header -->
+        <div id="article-loading" class="w-full">
+          <div class="h-6 w-32 skeleton rounded-full mb-6"></div>
+          <div class="h-12 md:h-16 w-full skeleton rounded-xl mb-4"></div>
+          <div class="h-12 md:h-16 w-3/4 skeleton rounded-xl mb-8"></div>
+          <div
+            class="flex items-center gap-4 mb-8 border-y border-slate-200 py-6"
+          >
+            <div class="h-14 w-14 skeleton rounded-full"></div>
+            <div>
+              <div class="h-4 w-32 skeleton rounded mb-2"></div>
+              <div class="h-3 w-24 skeleton rounded"></div>
+            </div>
+          </div>
+          <div class="w-full h-[50vh] skeleton rounded-3xl mb-12"></div>
+          <div class="space-y-4">
+            <div class="h-4 w-full skeleton rounded"></div>
+            <div class="h-4 w-full skeleton rounded"></div>
+            <div class="h-4 w-5/6 skeleton rounded"></div>
+            <div class="h-4 w-full skeleton rounded"></div>
+          </div>
+        </div>
+
+        <!-- Actual Article Container (Hidden initially) -->
+        <div id="article-container" class="hidden">
+          <!-- Category Badge -->
+          <div class="mb-6 flex items-center gap-4">
+            <a
+              id="cat-link"
+              href="#"
+              class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold uppercase tracking-widest border border-indigo-200 hover:bg-indigo-100 hover:shadow-md transition-all"
+            >
+              <i id="article-icon" class="fas fa-newspaper"></i>
+              <span id="article-category">Category</span>
+            </a>
+            <span
+              class="text-sm font-bold text-slate-400 flex items-center gap-1.5"
+            >
+              <i class="far fa-clock"></i>
+              <span id="article-read-time">5 min read</span>
+            </span>
+          </div>
+
+          <!-- Title -->
+          <h1
+            id="article-title"
+            class="heading-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.1] tracking-tight mb-8"
+          >
+            Article Title
+          </h1>
+
+          <!-- Author & Date Meta -->
+          <div
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-slate-200 py-4 mb-10 bg-white rounded-3xl px-4 sm:px-6 shadow-sm"
+          >
+            <div class="flex items-center gap-4">
+              <img
+                id="article-author-img"
+                src=""
+                alt="Author"
+                class="w-14 h-14 rounded-full object-cover border-2 border-slate-100 shadow-sm bg-slate-50"
+              />
+              <div>
+                <p
+                  class="text-base font-bold text-slate-900"
+                  id="article-author"
+                >
+                  Author Name
+                </p>
+                <p
+                  class="text-[10px] font-extrabold text-indigo-600 uppercase tracking-widest"
+                >
+                  IELTS Expert Mentor
+                </p>
+              </div>
+            </div>
+            <div
+              class="sm:text-right flex sm:flex-col gap-3 sm:gap-1 items-center sm:items-end border-t sm:border-t-0 pt-4 sm:pt-0 border-slate-100"
+            >
+              <span
+                class="text-xs font-bold text-slate-400 uppercase tracking-widest"
+                >Published on</span
+              >
+              <span class="text-sm font-bold text-slate-800" id="article-date"
+                >Jan 01, 2024</span
+              >
+            </div>
+          </div>
+
+          <!-- Featured Image -->
+          <div
+            class="mb-12 relative group rounded-3xl overflow-hidden shadow-2xl shadow-slate-200/60 border border-slate-200"
+          >
+            <img
+              id="article-image"
+              src=""
+              alt="Featured Image"
+              class="w-full h-[40vh] md:h-[55vh] object-cover bg-slate-100 transform hover:scale-105 transition-transform duration-700"
+            />
+            <div
+              class="absolute inset-0 ring-1 ring-inset ring-black/10 pointer-events-none"
+            ></div>
+          </div>
+
+          <!-- The Rich Text Content Body -->
+          <div id="article-body" class="rich-text-content relative">
+            <!-- HTML content from Summernote gets injected here -->
+          </div>
+
+          <!-- Article Tags & Share Footer -->
+          <div
+            class="mt-16 pt-8 border-t-2 border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6"
+          >
+            <div class="flex flex-wrap gap-2 items-center">
+              <span class="text-sm font-bold text-slate-500 mr-2"
+                ><i class="fas fa-tags"></i> Tags:</span
+              >
+              <span
+                class="px-4 py-1.5 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl border border-slate-200"
+                >IELTS</span
+              >
+              <span
+                id="dynamic-tag"
+                class="px-4 py-1.5 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl border border-slate-200"
+                >Band 9</span
+              >
+            </div>
+
+            <!-- Horizontal Share (Hidden on Mobile, replaced by sticky bar) -->
+            <div class="hidden lg:flex items-center gap-3">
+              <span class="text-sm font-bold text-slate-500">Share:</span>
+              <button
+                onclick="shareSocial('facebook')"
+                class="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md"
+              >
+                <i class="fab fa-facebook-f"></i>
+              </button>
+              <button
+                onclick="shareSocial('twitter')"
+                class="w-10 h-10 rounded-full bg-[#1DA1F2] text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md"
+              >
+                <i class="fab fa-twitter"></i>
+              </button>
+              <button
+                onclick="shareSocial('linkedin')"
+                class="w-10 h-10 rounded-full bg-[#0A66C2] text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md"
+              >
+                <i class="fab fa-linkedin-in"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Author Bio Box -->
+          <div
+            class="mt-12 p-8 bg-white rounded-3xl border-2 border-indigo-50 shadow-xl shadow-indigo-100/50 flex flex-col sm:flex-row gap-6 items-center sm:items-start text-center sm:text-left relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full -z-10"
+            ></div>
+            <img
+              id="bio-author-img"
+              src=""
+              alt="Author"
+              class="w-24 h-24 rounded-full object-cover shadow-lg border-4 border-white bg-slate-100 flex-shrink-0 z-10"
+            />
+            <div class="z-10">
+              <h3
+                class="heading-font text-2xl font-extrabold text-slate-900 mb-2"
+              >
+                Written by <span id="bio-author-name">Author</span>
+              </h3>
+              <p
+                class="text-slate-600 text-sm leading-relaxed mb-5 font-medium"
+              >
+                Our instructors are certified experts dedicated to helping you
+                achieve your target band. We break down complex strategies into
+                simple, actionable steps for guaranteed success.
+              </p>
+              <a
+                href="our-teacher"
+                class="inline-flex items-center gap-2 text-sm font-bold text-white bg-indigo-600 px-5 py-2.5 rounded-full hover:bg-indigo-700 hover:shadow-lg transition-all"
+              >
+                View all instructors <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="hidden text-center py-32">
+          <div
+            class="inline-flex items-center justify-center w-24 h-24 bg-rose-50 rounded-full mb-6 text-rose-500"
+          >
+            <i class="fas fa-exclamation-triangle text-4xl"></i>
+          </div>
+          <h1 class="heading-font text-3xl font-extrabold text-slate-900 mb-4">
+            Article Not Found
+          </h1>
+          <p class="text-slate-500 mb-8 max-w-md mx-auto">
+            The article you are looking for has been moved, deleted, or the link
+            is incorrect.
+          </p>
+          <a
+            href="ielts-mahir-blog"
+            class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-colors shadow-md hover:shadow-lg"
+          >
+            Return to Blog Hub
+          </a>
+        </div>
+      </article>
+
+      <!-- RIGHT COLUMN: Sidebar (30%) -->
+      <aside class="w-full lg:w-[30%] mt-16 lg:mt-0 relative hidden lg:block">
+        <div class="sticky top-28 space-y-8">
+          <!-- Floating Social Actions (Vertical) -->
+          <div
+            class="absolute -left-16 top-0 hidden xl:flex flex-col gap-4 items-center"
+          >
+            <div class="w-px h-12 bg-slate-300 mb-2"></div>
+            <button
+              onclick="shareSocial('facebook')"
+              class="share-btn w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1877F2] flex items-center justify-center shadow-md hover:border-[#1877F2] text-lg"
+            >
+              <i class="fab fa-facebook-f"></i>
+            </button>
+            <button
+              onclick="shareSocial('twitter')"
+              class="share-btn w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1DA1F2] flex items-center justify-center shadow-md hover:border-[#1DA1F2] text-lg"
+            >
+              <i class="fab fa-twitter"></i>
+            </button>
+            <button
+              onclick="shareSocial('linkedin')"
+              class="share-btn w-10 h-10 rounded-full bg-white border border-slate-200 text-[#0A66C2] flex items-center justify-center shadow-md hover:border-[#0A66C2] text-lg"
+            >
+              <i class="fab fa-linkedin-in"></i>
+            </button>
+          </div>
+
+          <!-- Table of Contents -->
+          <div
+            class="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 p-6"
+            id="toc-container"
+            style="display: none;"
+          >
+            <h3
+              class="heading-font text-xl font-extrabold text-slate-900 mb-5 flex items-center gap-3 border-b border-slate-100 pb-4"
+            >
+              <div
+                class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600"
+              >
+                <i class="fas fa-list-ul text-sm"></i>
+              </div>
+              In this article
+            </h3>
+            <ul
+              id="toc-list"
+              class="space-y-3 text-sm font-medium text-slate-500"
+            >
+              <!-- Dynamic ToC Items -->
+            </ul>
+          </div>
+
+          <!-- NEW: Facebook Page CTA Widget -->
+          <div
+            class="bg-gradient-to-br from-blue-600 to-blue-900 rounded-3xl shadow-2xl shadow-blue-900/20 p-8 text-center text-white overflow-hidden relative solid-hover border border-blue-500"
+          >
+            <div
+              class="absolute -top-12 -right-12 w-32 h-32 bg-blue-400 rounded-full mix-blend-screen filter blur-[40px] opacity-50"
+            ></div>
+            <div
+              class="absolute -bottom-8 -left-8 w-24 h-24 bg-cyan-400 rounded-full mix-blend-screen filter blur-[30px] opacity-40"
+            ></div>
+
+            <div class="relative z-10">
+              <div
+                class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-5 backdrop-blur-md border border-white/30 shadow-inner"
+              >
+                <i class="fab fa-facebook-f text-3xl text-white"></i>
+              </div>
+              <h3 class="heading-font text-2xl font-extrabold mb-3">
+                Join Our Community
+              </h3>
+              <p class="text-blue-100 text-sm mb-6 leading-relaxed font-medium">
+                Get daily IELTS tips, free live classes, and connect with
+                thousands of successful students on our official Facebook page.
+              </p>
+              <a
+                href="https://www.facebook.com/IELTSMahir1"
+                target="_blank"
+                class="block w-full py-3.5 bg-white text-blue-900 font-extrabold rounded-xl shadow-lg hover:bg-blue-50 hover:-translate-y-1 transition-all"
+              >
+                Follow on Facebook
+                <i class="fas fa-external-link-alt ml-1 text-xs"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Read Next / Related Articles Section -->
+    <section
+      class="bg-slate-50 border-t border-slate-200 py-16 md:py-24 mt-12 hidden"
+      id="related-section"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-end mb-10">
+          <h2
+            class="heading-font text-3xl md:text-4xl font-extrabold text-slate-900"
+          >
+            Read Next
+          </h2>
+          <a
+            href="ielts-mahir-blog"
+            class="text-indigo-600 font-bold hover:text-indigo-800 transition-colors flex items-center gap-1 bg-indigo-50 px-4 py-2 rounded-full border border-indigo-100"
+          >
+            View all <i class="fas fa-arrow-right text-xs"></i>
+          </a>
+        </div>
+
+        <div id="related-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Related posts injected here via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Mobile Sticky Share Bar -->
+    <div
+      id="mobile-share-bar"
+      class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-slate-200 p-4 flex justify-between items-center z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] pb-6 sm:pb-4"
+    >
+      <span
+        class="text-xs font-extrabold text-slate-400 uppercase tracking-widest ml-2"
+        >Share Article</span
+      >
+      <div class="flex gap-3">
+        <button
+          onclick="shareSocial('facebook')"
+          class="w-10 h-10 rounded-full bg-[#1877F2]/10 text-[#1877F2] text-lg flex items-center justify-center hover:scale-110 transition-transform"
+        >
+          <i class="fab fa-facebook-f"></i>
+        </button>
+        <button
+          onclick="shareSocial('twitter')"
+          class="w-10 h-10 rounded-full bg-[#1DA1F2]/10 text-[#1DA1F2] text-lg flex items-center justify-center hover:scale-110 transition-transform"
+        >
+          <i class="fab fa-twitter"></i>
+        </button>
+        <button
+          onclick="shareSocial('linkedin')"
+          class="w-10 h-10 rounded-full bg-[#0A66C2]/10 text-[#0A66C2] text-lg flex items-center justify-center hover:scale-110 transition-transform"
+        >
+          <i class="fab fa-linkedin-in"></i>
+        </button>
+        <button
+          onclick="shareLink()"
+          class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 text-lg flex items-center justify-center hover:scale-110 transition-transform mr-2"
+        >
+          <i class="fas fa-link"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer Area (Simple) -->
+    <footer class="bg-slate-900 py-12 text-center mt-auto">
+      <p class="text-slate-400 text-sm font-medium">
+        © 2024 IELTS Mahir Editorial. All rights reserved.
+      </p>
+    </footer>
+
+    <!-- Custom Toast Notification -->
+    <div
+      id="toast"
+      class="fixed top-20 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 font-bold text-sm transition-all duration-300 transform -translate-y-20 opacity-0 z-[99999]"
+    >
+      <i class="fas fa-check-circle text-emerald-400 text-lg"></i>
+      <span id="toast-msg">Link copied to clipboard!</span>
+    </div>
+
+    <!-- Firebase SDK & Core Logic -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        doc,
+        getDoc,
+        getDocs,
+        query,
+        where,
+        limit,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+      import {
+        getAuth,
+        signInAnonymously,
+        signInWithCustomToken,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+      // --- 1. FIREBASE SETUP ---
+      const appId =
+        typeof __app_id !== "undefined"
+          ? __app_id
+          : "ielts-mahir-community-forum";
+      const firebaseConfig =
+        typeof __firebase_config !== "undefined"
+          ? JSON.parse(__firebase_config)
+          : {
+              apiKey: "AIzaSyAxsd0CnLsh7t7yFy3ZPp6saGD_YpLL1mY",
+              authDomain: "ielts-mahir-community-forum.firebaseapp.com",
+              projectId: "ielts-mahir-community-forum",
+              storageBucket: "ielts-mahir-community-forum.firebasestorage.app",
+              messagingSenderId: "1036043607546",
+              appId: "1:1036043607546:web:bd217e04cc0ec5f296d843",
+            };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      // --- 2. GET URL PARAMETER ---
+      const urlParams = new URLSearchParams(window.location.search);
+      const postId = urlParams.get("id");
+
+      // --- 3. DOM ELEMENTS ---
+      const dom = {
+        loading: document.getElementById("article-loading"),
+        container: document.getElementById("article-container"),
+        error: document.getElementById("error-state"),
+
+        title: document.getElementById("article-title"),
+        body: document.getElementById("article-body"),
+        image: document.getElementById("article-image"),
+        category: document.getElementById("article-category"),
+        catLink: document.getElementById("cat-link"),
+        icon: document.getElementById("article-icon"),
+
+        authorName: document.getElementById("article-author"),
+        authorImg: document.getElementById("article-author-img"),
+        bioAuthorName: document.getElementById("bio-author-name"),
+        bioAuthorImg: document.getElementById("bio-author-img"),
+
+        date: document.getElementById("article-date"),
+        readTime: document.getElementById("article-read-time"),
+        tag: document.getElementById("dynamic-tag"),
+
+        pageTitle: document.getElementById("page-title"),
+        tocContainer: document.getElementById("toc-container"),
+        tocList: document.getElementById("toc-list"),
+
+        relatedSection: document.getElementById("related-section"),
+        relatedGrid: document.getElementById("related-grid"),
+      };
+
+      // --- 4. HELPERS ---
+      function estimateReadTime(htmlContent) {
+        if (!htmlContent) return "1 min read";
+        const text = htmlContent.replace(/<[^>]*>?/gm, "");
+        const wordCount = text.split(/\s+/).length;
+        const minutes = Math.ceil(wordCount / 200);
+        return `${minutes === 0 ? 1 : minutes} min read`;
+      }
+
+      function getCategoryIcon(cat) {
+        const lCat = (cat || "").toLowerCase();
+        if (lCat.includes("speaking")) return "fa-microphone-alt";
+        if (lCat.includes("reading")) return "fa-book-open";
+        if (lCat.includes("writing")) return "fa-pen-nib";
+        if (lCat.includes("listening")) return "fa-headphones";
+        if (lCat.includes("grammar") || lCat.includes("vocab"))
+          return "fa-spell-check";
+        return "fa-newspaper";
+      }
+
+      function createSnippet(htmlContent, maxLength = 100) {
+        if (!htmlContent) return "";
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = htmlContent;
+        let text = tempDiv.textContent || tempDiv.innerText || "";
+        text = text.replace(/\s+/g, " ").trim();
+        return text.length > maxLength
+          ? text.substring(0, maxLength) + "..."
+          : text;
+      }
+
+      // --- 5. PROGRESS BAR ---
+      window.addEventListener("scroll", () => {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("reading-progress").style.width =
+          scrolled + "%";
+      });
+
+      // --- 6. SHARING LOGIC ---
+      window.shareSocial = (platform) => {
+        const url = encodeURIComponent(window.location.href);
+        const title = encodeURIComponent(document.title);
+        let shareUrl = "";
+
+        if (platform === "facebook")
+          shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+        if (platform === "twitter")
+          shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+        if (platform === "linkedin")
+          shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}`;
+
+        if (shareUrl) window.open(shareUrl, "_blank", "width=600,height=400");
+      };
+
+      window.shareLink = () => {
+        const tempInput = document.createElement("input");
+        tempInput.value = window.location.href;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+
+        // Show Toast (Top aligned to not conflict with mobile bar)
+        const toast = document.getElementById("toast");
+        toast.classList.remove("-translate-y-20", "opacity-0");
+        setTimeout(() => {
+          toast.classList.add("-translate-y-20", "opacity-0");
+        }, 3000);
+      };
+
+      // --- 7. TABLE OF CONTENTS GENERATOR ---
+      function generateTableOfContents() {
+        const headings = dom.body.querySelectorAll("h2, h3");
+        if (headings.length < 2) return;
+
+        dom.tocContainer.style.display = "block";
+        dom.tocList.innerHTML = "";
+
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px 0px -60% 0px",
+          threshold: 1.0,
+        };
+
+        const tocMap = new Map();
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              document
+                .querySelectorAll(".toc-link")
+                .forEach((link) => link.classList.remove("active"));
+              const link = tocMap.get(entry.target);
+              if (link) link.classList.add("active");
+            }
+          });
+        }, observerOptions);
+
+        headings.forEach((heading, index) => {
+          if (!heading.id) {
+            heading.id = `section-${index}-${heading.textContent
+              .trim()
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")}`;
+          }
+
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.href = `#${heading.id}`;
+          a.textContent = heading.textContent;
+          a.className = "toc-link block py-1.5";
+
+          if (heading.tagName === "H3") {
+            li.classList.add("ml-4");
+            a.classList.add("text-xs");
+          } else {
+            a.classList.add("text-sm", "font-semibold", "text-slate-700");
+          }
+
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            heading.scrollIntoView({ behavior: "smooth" });
+            window.history.pushState(null, null, `#${heading.id}`);
+          });
+
+          li.appendChild(a);
+          dom.tocList.appendChild(li);
+
+          tocMap.set(heading, a);
+          observer.observe(heading);
+        });
+      }
+
+      // --- 8. FETCH RELATED POSTS ---
+      async function fetchRelatedPosts(currentCategory) {
+        try {
+          const postsRef = collection(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "blogPosts",
+          );
+          const q = query(
+            postsRef,
+            where("status", "==", "published"),
+            where("category", "==", currentCategory),
+            limit(4),
+          );
+
+          const snapshot = await getDocs(q);
+          let related = snapshot.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() }))
+            .filter((post) => post.id !== postId);
+
+          if (related.length < 3) {
+            const fallbackQ = query(
+              postsRef,
+              where("status", "==", "published"),
+              limit(5),
+            );
+            const fallbackSnap = await getDocs(fallbackQ);
+            const fallbackPosts = fallbackSnap.docs
+              .map((doc) => ({ id: doc.id, ...doc.data() }))
+              .filter(
+                (post) =>
+                  post.id !== postId && !related.some((r) => r.id === post.id),
+              );
+
+            related = [...related, ...fallbackPosts];
+          }
+
+          related = related.slice(0, 3);
+
+          if (related.length > 0) {
+            dom.relatedSection.classList.remove("hidden");
+
+            related.forEach((post) => {
+              const imgSrc =
+                post.image ||
+                "https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+              const date = (
+                post.timestamp?.toDate() || new Date()
+              ).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+              const card = document.createElement("a");
+              card.href = `blog-details.html?id=${post.id}`;
+              card.className =
+                "related-card bg-white rounded-3xl border border-slate-200 overflow-hidden flex flex-col group";
+
+              card.innerHTML = `
+                          <div class="h-48 overflow-hidden bg-slate-100 border-b border-slate-100">
+                              <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${
+                post.title
+              }">
+                          </div>
+                          <div class="p-6 flex flex-col flex-grow">
+                              <div class="text-[10px] font-extrabold text-indigo-500 uppercase tracking-widest mb-3">${
+                                post.category || "Article"
+                              } • ${date}</div>
+                              <h3 class="heading-font font-bold text-slate-900 text-xl leading-snug mb-3 group-hover:text-indigo-600 transition-colors">${
+                                post.title
+                              }</h3>
+                              <p class="text-sm text-slate-500 font-medium line-clamp-2 mt-auto">${createSnippet(
+                                post.content,
+                                80,
+                              )}</p>
+                          </div>
+                      `;
+              dom.relatedGrid.appendChild(card);
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching related posts:", error);
+        }
+      }
+
+      // --- 9. MAIN INIT FUNCTION ---
+      async function loadArticle() {
+        if (!postId) {
+          dom.loading.classList.add("hidden");
+          dom.error.classList.remove("hidden");
+          return;
+        }
+
+        // Separate authentication block
+        try {
+          if (
+            typeof __initial_auth_token !== "undefined" &&
+            __initial_auth_token
+          ) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+        } catch (err) {
+          console.warn(
+            "Auth Notice (Proceeding to read public data):",
+            err.message,
+          );
+        }
+
+        try {
+          // Fetch Document
+          const docRef = doc(
+            db,
+            "artifacts",
+            appId,
+            "public",
+            "data",
+            "blogPosts",
+            postId,
+          );
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists() && docSnap.data().status === "published") {
+            const data = docSnap.data();
+
+            // Format Data
+            const formattedDate = (
+              data.timestamp?.toDate() || new Date()
+            ).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            });
+            const fallbackImg =
+              "https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80";
+            const fallbackAvatar =
+              "https://placehold.co/100x100/e2e8f0/64748b?text=A";
+
+            // Update SEO Title
+            dom.pageTitle.textContent = `${data.title} - IELTS Mahir`;
+
+            // Populate DOM
+            dom.title.textContent = data.title;
+            dom.body.innerHTML = data.content || "<p>No content available.</p>";
+            dom.category.textContent = data.category || "Article";
+            dom.icon.className = `fas ${getCategoryIcon(data.category)}`;
+
+            dom.catLink.href = `ielts-mahir-blog?category=${encodeURIComponent(
+              data.category || "all",
+            )}`;
+            dom.tag.textContent = data.category || "IELTS";
+
+            dom.image.src = data.image || fallbackImg;
+
+            dom.authorName.textContent = data.author || "Editorial Team";
+            dom.bioAuthorName.textContent = data.author || "Editorial Team";
+
+            dom.authorImg.src = data.authorImg || fallbackAvatar;
+            dom.bioAuthorImg.src = data.authorImg || fallbackAvatar;
+
+            dom.date.textContent = formattedDate;
+            dom.readTime.textContent = estimateReadTime(data.content);
+
+            // Switch UI States
+            dom.loading.classList.add("hidden");
+            dom.container.classList.remove("hidden");
+
+            // Post-render generation
+            generateTableOfContents();
+            fetchRelatedPosts(data.category);
+          } else {
+            dom.loading.classList.add("hidden");
+            dom.error.classList.remove("hidden");
+          }
+        } catch (error) {
+          console.error("Error loading article:", error);
+          dom.loading.classList.add("hidden");
+          dom.error.classList.remove("hidden");
+        }
+      }
+
+      // Start execution
+      loadArticle();
+    </script>
+  </body>
+</html>

@@ -3,698 +3,466 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IELTS Mahir - Quiz Categories</title>
-    <!-- Tailwind CSS CDN -->
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="test-left-header.css" />
+    <title>ShadikHyperWeb - Client Tracker</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome for icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
     />
-    <style id="common-styles">
-      /* Common styles for the entire application */
+
+    <style>
+      :root {
+        --bg-color: #f5f5f7;
+        --card-bg: #ffffff;
+        --text-main: #1d1d1f;
+        --border-color: rgba(0, 0, 0, 0.06);
+      }
       body {
         font-family: "Inter", sans-serif;
-        background-color: #f0f2f5; /* Lighter background color */
-        color: #333333; /* Default text color for light theme */
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        background-image: linear-gradient(
+            var(--border-color) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+        background-size: 40px 40px;
+        background-position: center top;
       }
-
-      /* Custom font classes */
-      .font-anton {
-        font-family: "Anton", sans-serif;
+      .bento-card {
+        background: var(--card-bg);
+        border-radius: 24px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.02);
+        transition: all 0.4s ease;
       }
-      .font-inter {
-        font-family: "Inter", sans-serif;
+      .progress-track {
+        background: #e8e8ed;
+        border-radius: 999px;
+        height: 6px;
+        width: 100%;
+        overflow: hidden;
       }
-
-      /* Custom styles for professional light theme look */
-      .category-card {
-        background: #ffffff; /* White background for cards */
-        border: 1px solid #e0e0e0; /* Lighter border */
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08),
-          0 4px 10px rgba(0, 0, 0, 0.05); /* Enhanced soft shadow */
-        transition: all 0.3s ease-in-out;
+      .progress-fill {
+        background: #0066cc;
+        height: 100%;
+        border-radius: 999px;
+        width: 0%;
+        transition: width 1.5s cubic-bezier(0.65, 0, 0.35, 1);
       }
-
-      .category-card:hover {
-        transform: translateY(-8px); /* More pronounced lift on hover */
-        box-shadow: 0 16px 35px rgba(0, 0, 0, 0.15),
-          0 8px 18px rgba(0, 0, 0, 0.1); /* Deeper shadow on hover */
-        border-color: #a0c3f8; /* Subtle blue border on hover */
+      .live-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #34c759;
+        border-radius: 50%;
+        animation: pulse-green 2s infinite;
       }
-
-      /* Styles for the new thumbnail area */
-      .category-card-thumbnail-area {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%; /* Full width of the card */
-        height: 160px; /* Fixed height for the thumbnail area (h-40) */
-        border-top-left-radius: 1.5rem; /* rounded-3xl */
-        border-top-right-radius: 1.5rem; /* rounded-3xl */
-        font-size: 4rem; /* Larger icon size */
-        color: white; /* Icon color */
-        box-shadow: inset 0 -8px 15px rgba(0, 0, 0, 0.25); /* More pronounced inner shadow for depth */
-        position: relative; /* For potential overlay effects */
-        overflow: hidden; /* Ensure content doesn't spill */
+      @keyframes pulse-green {
+        0%,
+        100% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.4);
+        }
+        50% {
+          transform: scale(1);
+          box-shadow: 0 0 0 6px rgba(52, 199, 89, 0);
+        }
       }
-
-      .category-card-thumbnail-area::before {
+      .dark-card {
+        background: #0a0a0a;
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .timeline-container::before {
         content: "";
         position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          to bottom,
-          rgba(0, 0, 0, 0.15) 0%,
-          rgba(0, 0, 0, 0.3) 100%
-        ); /* Stronger overlay for depth */
-        z-index: 1;
+        top: 24px;
+        bottom: 24px;
+        left: 23px;
+        width: 2px;
+        background: #e8e8ed;
+        z-index: 0;
       }
-
-      .category-card-thumbnail-area i {
-        position: relative; /* To be above the ::before overlay */
-        z-index: 2;
+      
+      /* Premium Loading Animations */
+      #loader {
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       }
-
-      /* Animations */
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+      @keyframes sweep-bar {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(200%); }
       }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+      .animate-sweep {
+        animation: sweep-bar 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
       }
-
-      .animate-fade-in {
-        animation: fadeIn 0.5s ease-out forwards;
+      .ring-spin-slow {
+        animation: spin 10s linear infinite;
       }
-
-      .animate-fade-in-up {
-        animation: fadeInUp 0.6s ease-out forwards;
-      }
-
-      .points-display {
-        background: linear-gradient(
-          45deg,
-          #84cc16,
-          #22c55e
-        ); /* Lime to green gradient (can remain) */
-        color: white;
-        padding: 0.35rem 0.9rem;
-        border-radius: 9999px;
-        font-weight: bold;
-        font-size: 0.875rem; /* text-sm */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      /* New styles for the header section */
-      .site-header {
-        background-color: #ffffff; /* White header background */
-        border-bottom: 1px solid #e0e0e0; /* Lighter border */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* More prominent shadow */
-      }
-
-      .site-header .nav-link {
-        font-weight: 500; /* Medium font weight */
-        color: #555555; /* Darker gray for links */
-      }
-
-      .site-header .nav-link:hover {
-        color: #1d4ed8; /* Blue on hover */
-        transform: translateY(-1px);
-      }
-
-      /* New Hero Section Styles */
-      .hero-section-new {
-        min-height: 400px; /* Adjust height as needed */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: left; /* Align text to left within the section */
-      }
-
-      .hero-section-new .text-shadow-lg {
-        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6); /* Stronger shadow for text */
-      }
-
-      /* Updated hero-category-tag styles */
-      .hero-category-tag {
-        color: white;
-        padding: 0.75rem 1.5rem; /* Increased padding for better button feel */
-        border-radius: 0.75rem; /* Slightly less rounded than full for a modern button look */
-        font-weight: 700; /* Bolder text */
-        font-size: 0.9rem; /* Slightly larger text */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Stronger shadow */
-        transition: all 0.3s ease-in-out; /* Smooth transitions */
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none; /* Remove underline for links */
-        /* Sizing Fixes: Removed fixed height/min-width to allow flexibility */
-        flex-shrink: 0; /* Prevent shrinking */
-        white-space: nowrap; /* Prevent text wrapping */
-      }
-
-      .hero-category-tag:hover {
-        transform: translateY(-3px); /* More pronounced lift on hover */
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Even stronger shadow on hover */
-      }
-
-      /* Pagination styles */
-      .pagination-button {
-        background-color: #ffffff; /* White for pagination buttons */
-        color: #555555; /* Darker text */
-        border-radius: 0.75rem; /* rounded-xl */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
-        transition: all 0.3s ease-in-out;
-        border: 1px solid #e0e0e0; /* Added border */
-      }
-
-      .pagination-button:hover:not(:disabled) {
-        background-color: #f0f0f0;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      }
-
-      .pagination-button.active {
-        background-color: #3b82f6; /* Blue for active page */
-        color: white;
-        font-weight: bold;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4); /* Blue shadow for active */
-      }
-
-      /* User ID display styling */
-      .user-id-display {
-        background-color: rgba(
-          255,
-          255,
-          255,
-          0.7
-        ); /* Lighter, more transparent background */
-        border: 1px solid #d1d5db; /* Lighter border */
-        color: #4b5563; /* Darker text */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow */
-        backdrop-filter: blur(3px); /* Added blur for a modern look */
-      }
-      .footer {
-        margin-top: 6rem;
+      .ring-spin-reverse {
+        animation: spin 7s linear infinite reverse;
       }
     </style>
   </head>
-  <body class="py-0 px-0">
-    <!-- Header / Navigation Bar -->
-    <header
-      id="app-header"
-      class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
+  <body class="min-h-screen p-4 md:p-8 lg:p-12 flex justify-center relative">
+    
+    <!-- SPECTACULAR LOADING SCREEN -->
+    <div
+      id="loader"
+      class="fixed inset-0 bg-[#050505] z-50 flex flex-col items-center justify-center overflow-hidden"
     >
-      <div class="flex items-center gap-2 sm:gap-4">
-        <!-- Replaced text with image logo -->
-        <div class="ai-logo-parent">
-          <a href="home">
-            <img
-              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
-              alt="IELTS Mahir Logo"
-              class="h-8 md:h-10 w-auto"
-              onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
-            />
-          </a>
-          <a href="ai-feature" class="ai-button" aria-label="AI Tools">
-            <i class="fas fa-robot" aria-hidden="true"></i>
-            <span>AI</span>
-          </a>
+      <!-- Ambient Backlight -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-blue-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+      <!-- Center Logo & Rings -->
+      <div class="relative flex items-center justify-center mb-12">
+        <!-- Glowing animated rings -->
+        <div class="absolute inset-[-40px] rounded-[36px] border border-blue-500/20 ring-spin-slow"></div>
+        <div class="absolute inset-[-20px] rounded-[28px] border border-cyan-400/10 ring-spin-reverse"></div>
+        
+        <!-- Dark Logo Container -->
+        <div class="bg-[#0a0a0a] p-5 rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.8)] relative overflow-hidden border border-gray-800 z-10 backdrop-blur-xl">
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent"></div>
+          <img 
+            src="https://i.postimg.cc/yddXd3db/Chat-GPT-Image-Apr-19-2026-08-20-37-PM.png" 
+            alt="ShadikHyperWeb Logo" 
+            class="h-20 w-auto object-contain relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]" 
+          />
         </div>
       </div>
-      <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
-        <!-- Authentication status will be handled by auth.js -->
-        <div class="animate-pulse flex space-x-4">
-          <div class="rounded-full bg-gray-300 h-8 w-8 sm:h-10 sm:w-10"></div>
-          <div class="flex-1 space-y-4 py-1 hidden sm:block">
-            <div class="h-2 bg-gray-300 rounded"></div>
-            <div class="space-y-2">
-              <div class="grid grid-cols-3 gap-2">
-                <div class="h-2 bg-gray-300 rounded col-span-2"></div>
-                <div class="h-2 bg-gray-300 rounded col-span-1"></div>
+
+      <!-- Premium Loading Bar (Wrapper added to swap out on error easily) -->
+      <div id="loader-ui" class="w-64 max-w-[80vw] flex flex-col items-center gap-5 relative z-10">
+        <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden shadow-inner">
+          <div class="w-1/2 h-full bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-600 rounded-full animate-sweep shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
+        </div>
+        <p class="text-[10px] font-bold text-gray-400 tracking-[0.3em] uppercase animate-pulse drop-shadow-md">
+          Establishing Secure Link...
+        </p>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div
+      class="max-w-[1200px] w-full hidden opacity-0 transition-opacity duration-1000"
+      id="main-content"
+    >
+      <!-- SHADIKHYPERWEB BRANDING -->
+      <div class="flex items-center gap-4 mb-10 border-b border-gray-200 pb-6">
+        
+        <!-- Premium Dark Logo Box (Header) -->
+        <div class="bg-[#0a0a0a] p-2.5 rounded-xl shadow-lg border border-gray-800 flex items-center justify-center relative overflow-hidden group">
+          <div class="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-transparent opacity-50 group-hover:opacity-100 transition duration-500"></div>
+          <img 
+            src="https://i.postimg.cc/yddXd3db/Chat-GPT-Image-Apr-19-2026-08-20-37-PM.png" 
+            alt="ShadikHyperWeb Logo" 
+            class="h-10 w-auto object-contain relative z-10 drop-shadow-md" 
+          />
+        </div>
+
+        <div>
+          <h1
+            class="text-2xl font-extrabold tracking-tighter text-black leading-none"
+          >
+            Shadik<span class="text-blue-600">Hyper</span>Web
+          </h1>
+          <p
+            class="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-1"
+          >
+            Live Project Tracker
+          </p>
+        </div>
+      </div>
+
+      <header
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8"
+      >
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <div
+              class="px-3 py-1 bg-white border border-gray-200 rounded-full text-[11px] font-bold tracking-wider text-gray-500 uppercase flex items-center gap-2 shadow-sm"
+            >
+              <i class="ph ph-buildings text-sm"></i> Client:
+              <span id="client-name" class="text-black">...</span>
+            </div>
+            <div
+              class="px-3 py-1 bg-white border border-gray-200 rounded-full text-[11px] font-bold tracking-wider text-gray-900 uppercase flex items-center gap-2 shadow-sm"
+            >
+              <div class="live-dot"></div>
+              Live Sync Active
+            </div>
+          </div>
+          <h2
+            class="text-4xl font-bold tracking-tight text-[#1D1D1F]"
+            id="project-name"
+          >
+            ...
+          </h2>
+        </div>
+      </header>
+
+      <main class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-7 flex flex-col gap-6">
+          <!-- Current Focus (Dark Theme) -->
+          <div
+            class="bento-card dark-card p-8 relative overflow-hidden group shadow-2xl"
+          >
+            <div
+              class="absolute -right-20 -top-20 w-64 h-64 bg-blue-500 opacity-10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"
+            ></div>
+            <div class="mb-10 relative z-10">
+              <p
+                class="text-blue-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2"
+              >
+                <i class="ph ph-terminal-window text-lg"></i> Developer's
+                Current Focus
+              </p>
+              <h3
+                class="text-3xl font-bold tracking-tight text-white"
+                id="current-focus-title"
+              >
+                ...
+              </h3>
+            </div>
+            <div
+              class="bg-white/[0.03] border border-white/10 rounded-xl p-5 relative z-10 backdrop-blur-sm"
+            >
+              <div class="flex items-center gap-3 mb-2">
+                <span
+                  class="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.5)]"
+                ></span>
+                <span
+                  class="text-xs font-bold text-gray-400 uppercase tracking-widest"
+                  >Live Terminal Log</span
+                >
               </div>
-              <div class="h-2 bg-gray-300 rounded"></div>
+              <p
+                id="live-activity-text"
+                class="text-lg font-medium text-emerald-400 font-mono mt-2 h-7 transition-opacity duration-300"
+              ></p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div
+              class="bento-card p-6 flex flex-col justify-between h-48 border-t-4 border-t-blue-500"
+            >
+              <div>
+                <h3
+                  class="text-sm font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2"
+                >
+                  <i class="ph ph-chart-pie-slice text-xl"></i> Total Completion
+                </h3>
+              </div>
+              <div>
+                <div class="flex justify-between items-end mb-3">
+                  <span
+                    class="text-5xl font-extrabold tracking-tighter"
+                    id="progress-text"
+                    >0%</span
+                  >
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" id="main-progress"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bento-card p-6 flex flex-col justify-between h-48">
+              <div>
+                <h3
+                  class="text-sm font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2"
+                >
+                  <i class="ph ph-calendar-check text-xl"></i> Estimated
+                  Delivery
+                </h3>
+              </div>
+              <div>
+                <p
+                  class="text-2xl font-bold tracking-tight text-black mb-1"
+                  id="eta-text"
+                >
+                  TBD
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </header>
 
-    <div id="app" class="container mx-auto px-4 sm:px-6 lg:px-8 flex-grow">
-      <!-- Application content will be rendered here by JavaScript -->
+        <!-- Architecture Map -->
+        <div class="lg:col-span-5 bento-card p-8 flex flex-col">
+          <div
+            class="flex justify-between items-center mb-8 pb-4 border-b border-gray-100"
+          >
+            <h2
+              class="text-xl font-bold tracking-tight flex items-center gap-2"
+            >
+              <i class="ph ph-map-trifold text-blue-600"></i> Architecture Map
+            </h2>
+          </div>
+          <div
+            class="relative timeline-container flex-1 overflow-y-auto pr-2"
+            id="timeline"
+          ></div>
+        </div>
+      </main>
     </div>
 
-    <!-- Toast Container -->
-    <div id="toast-container" class="fixed bottom-4 right-4 z-[100]"></div>
-
-    <!-- Modal Container -->
-    <div id="modal-container"></div>
-
+    <!-- Firebase SDK (Module) -->
     <script type="module">
-      // Import authentication functions and state from the central auth.js file
-      import {
-        initFirebaseAuth,
-        authAppState,
-        showToast,
-        Icons, // Assuming Icons are exported from auth.js or a common utility file
-        signOutUser, // Import signOutUser function
-      } from "./auth.js"; // Adjust path as necessary
-
-      // Import quiz data and common styles
-      import {
-        quizCategories,
-        allQuizTests, // Ensure allQuizTests is imported
-        commonStyles,
-        QuizIcons, // Ensure QuizIcons are imported
-      } from "./quiz-test-data.js";
-
-      // Firebase imports for Firestore
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
       import {
         getFirestore,
         doc,
-        getDoc,
-        collection,
-        query,
-        where,
-        getDocs,
-      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        onSnapshot,
+      } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-      // Inject common styles from quiz-test-data.js
-      // Note: This line might cause issues if commonStyles is empty or not defined in quiz-test-data.js
-      // For this redesign, most styles are inline or in the main <style> block.
-      // document.getElementById("common-styles").innerHTML += commonStyles; // Keep if quiz-test-data.js has essential styles
-
-      // Firebase instances (will be populated by auth.js)
-      let db;
-      let auth;
-
-      // Mapping of category IDs to specific Font Awesome icons and Tailwind colors
-      const categoryVisualsMap = {
-        reading: { icon: "fas fa-book-reader", color: "bg-blue-600" },
-        listening: { icon: "fas fa-headphones-alt", color: "bg-green-600" },
-        writing: { icon: "fas fa-pencil-alt", color: "bg-purple-600" },
-        speaking: { icon: "fas fa-microphone-alt", color: "bg-red-600" },
-        grammar: { icon: "fas fa-language", color: "bg-yellow-600" },
-        vocabulary: { icon: "fas fa-spell-check", color: "bg-indigo-600" },
-        // Add more categories and their visuals here
-        general: { icon: "fas fa-star", color: "bg-gray-600" }, // Default/fallback
+      const firebaseConfig = {
+        apiKey: "AIzaSyDLip1JbemlO2OOqI_P9KfWSLVhvgixUmY",
+        authDomain: "shadikwebhyper.firebaseapp.com",
+        projectId: "shadikwebhyper",
+        storageBucket: "shadikwebhyper.firebasestorage.app",
+        messagingSenderId: "93254122264",
+        appId: "1:93254122264:web:181405dce44e473f4a7c6d",
       };
 
-      // Pagination state
-      let currentPage = 1;
-      const categoriesPerPage = 6; // Number of categories to display per page
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
-      // User game stats (will be fetched from Firestore)
-      let userGameStats = {
-        totalPoints: 0,
-        level: 1,
-        completedTests: [], // Array of test IDs
-      };
+      let liveLogsArray =[];
+      let logInterval;
 
-      /**
-       * Fetches user's game stats from Firestore.
-       * @param {string} userId - The ID of the current user.
-       */
-      async function fetchUserGameStats(userId) {
-        if (!db || !userId) return;
-        const appId =
-          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
-        const userStatsDocRef = doc(
-          db,
-          `artifacts/${appId}/users/${userId}/gameStats/summary`
-        );
+      function startTypewriter() {
+        clearInterval(logInterval);
+        if (!liveLogsArray || liveLogsArray.length === 0) return;
 
-        try {
-          const docSnap = await getDoc(userStatsDocRef);
-          if (docSnap.exists()) {
-            userGameStats = { ...userGameStats, ...docSnap.data() };
-            console.log("Fetched user game stats:", userGameStats);
-          } else {
-            console.log("No game stats found for user, initializing defaults.");
-            // Optionally, save initial stats if none exist
-            // await setDoc(userStatsDocRef, userGameStats);
-          }
-        } catch (error) {
-          console.error("Error fetching user game stats:", error);
-          showToast("Failed to load your game progress.", "error");
-        }
+        let i = 0;
+        const el = document.getElementById("live-activity-text");
+        el.innerText = liveLogsArray[0];
+
+        logInterval = setInterval(() => {
+          i = (i + 1) % liveLogsArray.length;
+          el.style.opacity = "0";
+          setTimeout(() => {
+            el.innerText = liveLogsArray[i];
+            el.style.opacity = "1";
+          }, 300);
+        }, 3500);
       }
 
-      /**
-       * Renders the pagination controls.
-       * @param {number} totalPages - Total number of pages.
-       * @returns {string} HTML string for pagination controls.
-       */
-      function renderPaginationControls(totalPages) {
-        if (totalPages <= 1) return ""; // Don't show pagination if only one page
+      // --- CRITICAL FIX: GET ID FROM URL PARAMETER ---
+      // This grabs the "?id=XXXX" part of the URL. If there is no ID, it falls back to "main_project".
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectId = urlParams.get('id') || "main_project";
 
-        let paginationHtml = `<div class="flex justify-center items-center gap-2 sm:gap-3 mt-8 font-inter">`;
+      // Realtime Sync Listener - dynamically searches for the correct project ID
+      onSnapshot(doc(db, "projects", projectId), (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
 
-        // Previous Button
-        paginationHtml += `<button id="prev-page-btn" class="pagination-button flex items-center px-4 py-2 text-sm sm:text-base" ${
-          currentPage === 1 ? "disabled" : ""
-        }>
-            ${Icons.ChevronLeft.replace(
-              /width="24" height="24"/g,
-              'width="16" height="16" class="w-4 h-4 mr-1"'
-            )} Previous
-        </button>`;
+          // Show Content
+          document.getElementById("loader").style.opacity = "0";
+          setTimeout(() => {
+            document.getElementById("loader").style.display = "none";
+            const main = document.getElementById("main-content");
+            main.classList.remove("hidden");
+            setTimeout(() => main.classList.remove("opacity-0"), 50);
+          }, 800); // slightly longer fade out for cinematic effect
 
-        // Page numbers
-        for (let i = 1; i <= totalPages; i++) {
-          paginationHtml += `<button class="page-number-btn pagination-button px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base ${
-            currentPage === i ? "active" : ""
-          }" data-page="${i}">
-            ${i}
-        </button>`;
-        }
+          // Update Text (Fallback if empty)
+          document.getElementById("client-name").innerText =
+            data.clientName || "Valued Client";
+          document.getElementById("project-name").innerText =
+            data.projectName || "Project Configuration";
+          document.getElementById("eta-text").innerText = data.eta || "TBD";
+          document.getElementById("current-focus-title").innerText =
+            data.currentFocus || "Awaiting Developer Action...";
 
-        // Next Button
-        paginationHtml += `<button id="next-page-btn" class="pagination-button flex items-center px-4 py-2 text-sm sm:text-base" ${
-          currentPage === totalPages ? "disabled" : ""
-        }>
-            Next ${Icons.ChevronRight.replace(
-              /width="24" height="24"/g,
-              'width="16" height="16" class="w-4 h-4 ml-1"'
-            )}
-        </button>`;
+          // Update Progress safely
+          const progressNum = parseInt(data.progress) || 0;
+          document.getElementById("progress-text").innerText =
+            progressNum + "%";
+          setTimeout(() => {
+            document.getElementById("main-progress").style.width =
+              progressNum + "%";
+          }, 100);
 
-        paginationHtml += `</div>`;
-        return paginationHtml;
-      }
+          // Update Logs
+          liveLogsArray =
+            data.logs && data.logs.length > 0
+              ? data.logs
+              :["System standby...", "Awaiting developer input..."];
+          startTypewriter();
 
-      /**
-       * Navigates to a specific page of categories.
-       * @param {number} pageNumber - The page number to navigate to.
-       */
-      function goToPage(pageNumber) {
-        currentPage = pageNumber;
-        renderApp(); // Re-render the app with the new page
-        window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top
-      }
-
-      /**
-       * Updates the navigation bar and user ID display based on authentication status.
-       * @param {object|null} user - The Firebase User object or null if signed out.
-       */
-      async function updateAuthUI(user) {
-        const authButtonsContainer = document.getElementById(
-          "auth-buttons-container"
-        );
-        if (authButtonsContainer) {
-          if (user) {
-            // Fetch game stats if user is logged in
-            if (db && user.uid) {
-              await fetchUserGameStats(user.uid);
-            }
-
-            // User is signed in: Show profile dropdown and game stats
-            authButtonsContainer.innerHTML = `
-                        <div class="flex items-center gap-4">
-                            <div class="points-display">
-                                ${QuizIcons.Trophy.replace(
-                                  /width="24" height="24"/g,
-                                  'width="18" height="18" class="text-yellow-300"'
-                                )}
-                                <span class="text-sm font-semibold">${
-                                  userGameStats.totalPoints
-                                } Pts</span>
-                                <span class="text-xs text-green-200">|</span>
-                                <span class="text-sm font-semibold">Lvl ${
-                                  userGameStats.level
-                                }</span>
-                            </div>
-                            <div class="relative">
-                                <button id="profile-icon-btn" class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-700 transition-colors">
-                                    ${(
-                                      authAppState.userProfile?.name ||
-                                      user.email ||
-                                      user.uid
-                                    )
-                                      .charAt(0)
-                                      .toUpperCase()}
-                                </button>
-                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden text-gray-800">
-                                    <div class="px-4 py-2 text-sm border-b border-gray-200">Hello, ${
-                                      authAppState.userProfile?.name ||
-                                      user.email ||
-                                      user.uid.substring(0, 8)
-                                    }</div>
-                                    <div class="px-4 py-2 text-xs text-gray-500 border-b border-gray-200">Level: ${
-                                      userGameStats.level
-                                    }</div>
-                                    <a href="dashboard" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
-                                        ${Icons.Dashboard.replace(
-                                          /stroke="currentColor"/g,
-                                          'stroke="gray"'
-                                        )} Dashboard
-                                    </a>
-                                    <a href="ielts-mahir-community-forum" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
-                                        ${Icons.Forum.replace(
-                                          /stroke="currentColor"/g,
-                                          'stroke="gray"'
-                                        )} Forum
-                                    </a>
-                                    <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-b-lg">
-                                        ${Icons.SignOut.replace(
-                                          /stroke="currentColor"/g,
-                                          'stroke="red"'
-                                        )} Sign Out
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-
-            const profileIconBtn = document.getElementById("profile-icon-btn");
-            const profileDropdown = document.getElementById("profile-dropdown");
-            const signOutDropdownBtn = document.getElementById(
-              "sign-out-dropdown-btn"
-            );
-
-            profileIconBtn.addEventListener("click", (event) => {
-              event.stopPropagation();
-              profileDropdown.classList.toggle("hidden");
-            });
-
-            document.addEventListener("click", (event) => {
-              if (
-                !profileDropdown.contains(event.target) &&
-                !profileIconBtn.contains(event.target)
-              ) {
-                profileDropdown.classList.add("hidden");
-              }
-            });
-
-            signOutDropdownBtn.addEventListener("click", async () => {
-              await signOutUser();
-              // Redirect will happen via onAuthStateChanged in auth.js
-            });
-          } else {
-            // User is signed out: Show sign-in button (Join beta user style)
-            authButtonsContainer.innerHTML = `
-                        <a href="auth" id="sign-in-nav-btn" class="px-4 py-2 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
-                            Join beta user
-                        </a>
-                    `;
-          }
-        }
-      }
-
-      /**
-       * Renders the main application content.
-       */
-      function renderApp() {
-        const appDiv = document.getElementById("app");
-        if (!appDiv) return;
-
-        // Calculate pagination details for categories
-        const totalCategories = quizCategories.length;
-        const totalPages = Math.ceil(totalCategories / categoriesPerPage);
-        const startIndex = (currentPage - 1) * categoriesPerPage;
-        const endIndex = startIndex + categoriesPerPage;
-        const currentCategories = quizCategories.slice(startIndex, endIndex);
-
-        appDiv.innerHTML = `
-                <!-- Hero Section (Updated to match the provided image) -->
-                <section class="hero-section-new max-w-6xl mx-auto my-8 relative overflow-hidden rounded-3xl">
-                    <!-- Background image and overlay -->
-                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/5428830/pexels-photo-5428830.jpeg');">
-                        <div class="absolute inset-0 bg-gradient-to-br from-orange-600/70 to-yellow-600/70"></div>
-                    </div>
-
-                    <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col md:flex-row items-center md:items-start justify-between md:gap-x-24 text-white">
-                        <!-- Left side: Titles -->
-                        <div class="text-left mb-8 md:mb-0 md:w-1/2">
-                            <p class="font-inter text-xl sm:text-2xl font-medium mb-2 text-shadow-lg">IELTS MAHIR</p>
-                            <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
-                                THE<br>QUIZZES<br>SHOW
-                            </h1>
-                        </div>
-
-                        <!-- Right side: Categories (Updated with meaningful buttons and Daily Leaderboard) -->
-                        <div class="md:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-4 text-center md:text-right">
-                            <a href="quiz-history" class="hero-category-tag w-full bg-white/30 hover:bg-white/50"><i class="fas fa-history mr-2"></i> QUIZ HISTORY</a>
-                            <a href="progress-tracking" class="hero-category-tag w-full bg-white/30 hover:bg-white/50"><i class="fas fa-chart-line mr-2"></i> TRACK PROGRESS</a>
-                            <a href="daily-leaderboard" class="hero-category-tag w-full col-span-1 sm:col-span-2 bg-white/30 hover:bg-white/50">
-                                <i class="fas fa-trophy mr-2"></i> DAILY LEADERBOARD
-                            </a>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="mt-12 mb-8 max-w-6xl mx-auto px-4">
-                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 font-inter text-left">Quiz Categories</h2>
-                    ${
-                      authAppState.isAuthReady && authAppState.userId
-                        ? `
-                    <p class="mt-4 sm:mt-6 text-sm sm:text-lg font-mono user-id-display inline-block px-3 py-1 sm:px-4 sm:py-2 rounded-xl mb-8">
-                        User ID: <span class="font-semibold text-gray-800">${authAppState.userId}</span>
-                    </p>
-                    `
-                        : ""
-                    }
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-                        ${currentCategories
-                          .map((category) => {
-                            const categoryVisuals =
-                              categoryVisualsMap[category.id] ||
-                              categoryVisualsMap["general"];
-                            const isLocked = false; // For now, all are unlocked
-                            const lockOverlay = isLocked
-                              ? `
-                                <div class="absolute inset-0 bg-gray-200 bg-opacity-70 flex items-center justify-center rounded-3xl z-40">
-                                    <span class="text-gray-800 text-2xl font-bold flex items-center">
-                                        <i class="fas fa-lock mr-2"></i> Locked
-                                    </span>
-                                </div>
-                            `
-                              : "";
-
-                            return `
-                            <a href="quiz-category?category=${category.id}"
-                               class="category-card relative block overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in p-0 flex flex-col items-center text-center ${
-                                 isLocked ? "cursor-not-allowed" : ""
-                               }">
-                                ${lockOverlay}
-                                <div class="category-card-thumbnail-area ${
-                                  categoryVisuals.color
-                                }">
-                                    <i class="${categoryVisuals.icon}"></i>
-                                </div>
-                                <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between w-full">
-                                    <h2 class="text-2xl sm:text-3xl font-bold mb-2 leading-tight text-gray-800">${
-                                      category.name
-                                    }</h2>
-                                    <p class="text-sm sm:text-base text-gray-600 mb-4 flex-grow">${
-                                      category.description
-                                    }</p>
-                                </div>
-                            </a>
-                        `;
-                          })
-                          .join("")}
-                        ${
-                          currentCategories.length === 0
-                            ? `
-                            <div class="md:col-span-3 text-center text-gray-500 py-8">
-                                <p class="text-lg sm:text-xl">No categories available on this page. Try navigating to a different page.</p>
-                            </div>
-                        `
-                            : ""
-                        }
-                    </div>
-                </section>
-
-                <!-- Pagination Controls -->
-                ${renderPaginationControls(totalPages)}
+          // Render Timeline
+          renderTimeline(data.roadmap ||[]);
+        } else {
+            // --- CRITICAL FIX: HANDLE DOCUMENT NOT FOUND ---
+            // If the project doesn't exist, we stop the loading animation and show an error.
+            document.getElementById("loader-ui").innerHTML = `
+              <div class="text-center mt-4 bg-red-500/10 border border-red-500/20 p-4 rounded-xl backdrop-blur-md">
+                  <i class="ph-fill ph-warning-circle text-3xl text-red-500 mb-2"></i>
+                  <p class="text-sm font-bold text-white tracking-widest uppercase">Project Not Found</p>
+                  <p class="text-[10px] text-gray-400 mt-1">ID: ${projectId} does not exist in the database.</p>
+              </div>
             `;
+        }
+      }, (error) => {
+          // --- Handle Firebase Errors (e.g. permission issues or network disconnected) ---
+          console.error("Firebase Error:", error);
+          document.getElementById("loader-ui").innerHTML = `
+              <div class="text-center mt-4 bg-red-500/10 border border-red-500/20 p-4 rounded-xl backdrop-blur-md">
+                  <i class="ph-fill ph-wifi-x text-3xl text-red-500 mb-2"></i>
+                  <p class="text-sm font-bold text-white tracking-widest uppercase">Connection Error</p>
+                  <p class="text-[10px] text-gray-400 mt-1">Could not connect to database.</p>
+              </div>
+          `;
+      });
 
-        // Attach event listeners for pagination buttons after rendering
-        const prevBtn = document.getElementById("prev-page-btn");
-        if (prevBtn) {
-          prevBtn.onclick = () => goToPage(currentPage - 1);
+      function renderTimeline(roadmap) {
+        let html = "";
+        if (roadmap.length === 0) {
+          html = `<p class="text-gray-400 text-sm italic">No phases deployed yet.</p>`;
         }
 
-        const nextBtn = document.getElementById("next-page-btn");
-        if (nextBtn) {
-          nextBtn.onclick = () => goToPage(currentPage + 1);
-        }
+        roadmap.forEach((item) => {
+          let iconBox,
+            contentStyle,
+            badge = "";
 
-        document.querySelectorAll(".page-number-btn").forEach((button) => {
-          button.onclick = (e) => goToPage(parseInt(e.target.dataset.page));
+          // Safe fallbacks if Admin left it empty
+          let title = item.title || "Untitled Phase";
+          let desc = item.desc || "";
+
+          if (item.status === "done") {
+            iconBox = `<div class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center relative z-10 shrink-0 border-4 border-[#F5F5F7] shadow-sm"><i class="ph ph-check text-xl font-bold"></i></div>`;
+            contentStyle = `opacity: 0.7;`;
+          } else if (item.status === "current") {
+            iconBox = `<div class="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center relative z-10 shrink-0 border-4 border-black shadow-[0_0_0_4px_rgba(0,0,0,0.05)]"><div class="w-3 h-3 bg-blue-600 rounded-full animate-pulse"></div></div>`;
+            contentStyle = `background: white; border: 1px solid #E8E8ED; padding: 16px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);`;
+            badge = `<div class="mt-4 bg-blue-50 border border-blue-100 rounded-lg p-3 flex items-center gap-3"><i class="ph ph-spinner-gap animate-spin text-blue-600"></i><span class="text-xs font-bold text-blue-900 uppercase tracking-wide">Currently Working</span></div>`;
+          } else {
+            iconBox = `<div class="w-12 h-12 rounded-full bg-gray-50 text-gray-400 flex items-center justify-center relative z-10 shrink-0 border-4 border-[#E8E8ED]"><i class="ph ph-lock-key text-xl"></i></div>`;
+            contentStyle = `opacity: 0.5;`;
+          }
+
+          html += `
+                    <div class="flex gap-6 mb-8 relative">
+                        ${iconBox}
+                        <div class="flex-1 pt-1 transition-all" style="${contentStyle}">
+                            <h3 class="text-base font-bold text-[#1D1D1F]">${title}</h3>
+                            ${
+                              desc
+                                ? `<p class="text-sm text-[#86868B] mt-1 font-medium">${desc}</p>`
+                                : ""
+                            }
+                            ${badge}
+                        </div>
+                    </div>`;
         });
+        document.getElementById("timeline").innerHTML = html;
       }
-
-      // Initialization Logic
-      window.onload = async function () {
-        // Initialize Firebase Auth and listen for state changes
-        initFirebaseAuth(updateAuthUI)
-          .then(({ db: firestoreDb, auth: firebaseAuth }) => {
-            db = firestoreDb;
-            auth = firebaseAuth; // 'auth' is assigned here
-            console.log("Firebase initialized in quiz-home:", {
-              db,
-              auth,
-            });
-            // Ensure renderApp is called after auth state is known and game stats are fetched
-            // This line was moved inside the .then() block
-            auth.onAuthStateChanged(async (user) => {
-              // Redirect to auth page if user is not signed in
-              if (!user) {
-                window.location.href = "auth";
-                return; // Stop execution to prevent rendering the page
-              }
-
-              await fetchUserGameStats(user.uid);
-              renderApp();
-            });
-          })
-          .catch((error) => {
-            console.error("Failed to initialize Firebase in quiz-home:", error);
-            showToast(
-              "Failed to initialize Firebase. Some features may not work.",
-              "error"
-            );
-            renderApp(); // Still render app even if Firebase fails, but features might be limited
-          });
-      };
     </script>
   </body>
 </html>

@@ -1266,6 +1266,10 @@
         activeReadingTab: "questions", // New: 'passage' or 'questions' for mobile reading
         activeWritingTab: "instructions", // New: 'instructions' or 'response' for mobile writing
         passageStates: {}, // New: { sectionId: modifiedHtml }
+        isPremiumTest: false, // Added for premium logic
+        isCheckingAuth: true, // Added to show loading while checking premium
+        accessDenied: false, // Added to show locked screen
+        isUserPremium: false, // Added to store user's premium status
       };
 
       // New: State for passage highlighting and notes
@@ -1291,7 +1295,7 @@
         message,
         showConfirmButton,
         onConfirm,
-        onCancel
+        onCancel,
       ) {
         const modalOverlay = document.getElementById("modal-container");
         const modalTitle = document.getElementById("modal-title");
@@ -1359,7 +1363,7 @@
           "Note",
           `<p class="text-gray-700 whitespace-pre-wrap">${noteText}</p>`,
           false,
-          () => hideModal()
+          () => hideModal(),
         );
       }
 
@@ -1455,7 +1459,7 @@
           console.error("Could not surround contents:", e);
           showToast(
             "Highlighting failed. Please select text within a single paragraph.",
-            "error"
+            "error",
           );
           selection.removeAllRanges();
           highlightState.currentSelection = null;
@@ -1538,7 +1542,7 @@
                                                  class="inline-input mx-1" style="width: 150px;">`;
                       const stepText = step.text.replace(
                         /\[GAP\]/g,
-                        inputField
+                        inputField,
                       );
 
                       return `
@@ -1589,7 +1593,7 @@
             if (userAnswer && correctAnswer) {
               if (Array.isArray(correctAnswer)) {
                 isCorrect = correctAnswer.some(
-                  (ans) => ans.toLowerCase() === userAnswer.toLowerCase()
+                  (ans) => ans.toLowerCase() === userAnswer.toLowerCase(),
                 );
               } else {
                 isCorrect =
@@ -1625,7 +1629,7 @@
             if (Array.isArray(correctAnswer)) {
               correctAnswerDisplay = correctAnswer.join(" / ");
               isCorrect = correctAnswer.some(
-                (ans) => ans.toLowerCase() === userAnswerDisplay.toLowerCase()
+                (ans) => ans.toLowerCase() === userAnswerDisplay.toLowerCase(),
               );
             } else {
               correctAnswerDisplay = correctAnswer;
@@ -1636,7 +1640,7 @@
 
             const questionTextForDisplay = step.text.replace(
               /\[GAP\]/g,
-              "________"
+              "________",
             );
 
             return `
@@ -1749,7 +1753,7 @@
           if (!response.ok) {
             const errorBody = await response.text();
             throw new Error(
-              `API request failed with status ${response.status}: ${errorBody}`
+              `API request failed with status ${response.status}: ${errorBody}`,
             );
           }
 
@@ -1776,7 +1780,7 @@
        */
       async function updateAuthUI(user) {
         const authButtonsContainer = document.getElementById(
-          "auth-buttons-container"
+          "auth-buttons-container",
         );
         if (authButtonsContainer) {
           if (user) {
@@ -1802,19 +1806,19 @@
                                     <a href="dashboard" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
                                         ${Icons.Dashboard.replace(
                                           /stroke="currentColor"/g,
-                                          'stroke="gray"'
+                                          'stroke="gray"',
                                         )} Dashboard
                                     </a>
                                     <a href="ielts-mahir-community-forum" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
                                         ${Icons.Forum.replace(
                                           /stroke="currentColor"/g,
-                                          'stroke="gray"'
+                                          'stroke="gray"',
                                         )} Forum
                                     </a>
                                     <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-b-lg">
                                         ${Icons.SignOut.replace(
                                           /stroke="currentColor"/g,
-                                          'stroke="red"'
+                                          'stroke="red"',
                                         )} Sign Out
                                     </button>
                                 </div>
@@ -1825,7 +1829,7 @@
             const profileIconBtn = document.getElementById("profile-icon-btn");
             const profileDropdown = document.getElementById("profile-dropdown");
             const signOutDropdownBtn = document.getElementById(
-              "sign-out-dropdown-btn"
+              "sign-out-dropdown-btn",
             );
 
             profileIconBtn.addEventListener("click", (event) => {
@@ -1920,7 +1924,7 @@
         if (testState.userAnswers[questionId]) {
           testState.userAnswers[questionId] = "";
           const dropzone = document.getElementById(
-            `dropzone-${questionNumber}`
+            `dropzone-${questionNumber}`,
           );
           if (dropzone) {
             dropzone.innerHTML = "";
@@ -1941,7 +1945,7 @@
         updateQuestionPalette();
         const dropzone = document.getElementById(`dropzone-${questionNumber}`);
         const optionEl = document.querySelector(
-          `.matching-option[data-option-id="${optionLetter}"]`
+          `.matching-option[data-option-id="${optionLetter}"]`,
         );
         if (dropzone && optionEl) {
           // The new content must also be draggable to allow it to be moved or cleared
@@ -1979,10 +1983,10 @@
 
         questionPaletteItems.forEach((item) => {
           const desktopButton = document.querySelector(
-            `#question-palette-desktop .question-palette-btn[data-palette-number="${item.paletteNumber}"]`
+            `#question-palette-desktop .question-palette-btn[data-palette-number="${item.paletteNumber}"]`,
           );
           const mobileButton = document.querySelector(
-            `#question-palette-mobile .question-palette-btn[data-palette-number="${item.paletteNumber}"]`
+            `#question-palette-mobile .question-palette-btn[data-palette-number="${item.paletteNumber}"]`,
           );
 
           const processButton = (button) => {
@@ -2036,14 +2040,14 @@
        */
       function highlightCurrentQuestionInPalette() {
         const desktopPaletteButtons = document.querySelectorAll(
-          "#question-palette-desktop .question-palette-btn"
+          "#question-palette-desktop .question-palette-btn",
         );
         desktopPaletteButtons.forEach((button) => {
           button.classList.remove("current");
         });
 
         const mobilePaletteButtons = document.querySelectorAll(
-          "#question-palette-mobile .question-palette-btn"
+          "#question-palette-mobile .question-palette-btn",
         );
         mobilePaletteButtons.forEach((button) => {
           button.classList.remove("current");
@@ -2052,13 +2056,13 @@
         if (questionPaletteItems.length > 0) {
           const currentPaletteNumber = testState.currentQuestionIndex + 1;
           const currentDesktopQBtn = document.querySelector(
-            `#question-palette-desktop .question-palette-btn[data-palette-number="${currentPaletteNumber}"]`
+            `#question-palette-desktop .question-palette-btn[data-palette-number="${currentPaletteNumber}"]`,
           );
           if (currentDesktopQBtn) {
             currentDesktopQBtn.classList.add("current");
           }
           const currentMobileQBtn = document.querySelector(
-            `#question-palette-mobile .question-palette-btn[data-palette-number="${currentPaletteNumber}"]`
+            `#question-palette-mobile .question-palette-btn[data-palette-number="${currentPaletteNumber}"]`,
           );
           if (currentMobileQBtn) {
             currentMobileQBtn.classList.add("current");
@@ -2072,7 +2076,7 @@
        */
       function scrollToQuestion(paletteNumber) {
         const item = questionPaletteItems.find(
-          (i) => i.paletteNumber === paletteNumber
+          (i) => i.paletteNumber === paletteNumber,
         );
         if (item) {
           const questionElement = document.getElementById(item.htmlElementId);
@@ -2094,13 +2098,13 @@
         if (testState.timerInterval) clearInterval(testState.timerInterval); // Clear any existing timer
 
         const mobileTimerDisplay = document.getElementById(
-          "timer-display-mobile"
+          "timer-display-mobile",
         );
         const desktopTimerDisplaySidebar = document.getElementById(
-          "timer-display-desktop-sidebar"
+          "timer-display-desktop-sidebar",
         ); // For sidebar timer
         const topBarTimerDisplay = document.getElementById(
-          "timer-display-top-bar"
+          "timer-display-top-bar",
         ); // New: For the sticky top bar timer
 
         testState.timerInterval = setInterval(() => {
@@ -2148,12 +2152,12 @@
         totalQuestions,
         bandScore,
         timeTakenSeconds,
-        geminiFeedback = {} // Add new parameter with a default value
+        geminiFeedback = {}, // Add new parameter with a default value
       ) {
         if (!db || !authAppState.userId) {
           showToast(
             "Not logged in. Mock test results will not be saved.",
-            "warning"
+            "warning",
           );
           return;
         }
@@ -2186,9 +2190,9 @@
           const privateDocRef = await addDoc(
             collection(
               db,
-              `artifacts/${appId}/users/${userId}/mockTestResults`
+              `artifacts/${appId}/users/${userId}/mockTestResults`,
             ),
-            resultData
+            resultData,
           );
           console.log("Mock test result saved to private collection.");
           testState.userResultDoc = { id: privateDocRef.id, ...resultData }; // Store the saved document
@@ -2197,9 +2201,9 @@
           await addDoc(
             collection(
               db,
-              `artifacts/${appId}/public/data/mockTestGlobalResults`
+              `artifacts/${appId}/public/data/mockTestGlobalResults`,
             ),
-            resultData
+            resultData,
           );
           console.log("Mock test result saved to public collection.");
         } catch (error) {
@@ -2219,12 +2223,12 @@
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const resultsRef = collection(
           db,
-          `artifacts/${appId}/users/${userId}/mockTestResults`
+          `artifacts/${appId}/users/${userId}/mockTestResults`,
         );
         const q = query(
           resultsRef,
           where("testId", "==", testId),
-          where("userId", "==", userId)
+          where("userId", "==", userId),
         );
 
         try {
@@ -2259,7 +2263,7 @@
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const leaderboardRef = collection(
           db,
-          `artifacts/${appId}/public/data/mockTestGlobalResults`
+          `artifacts/${appId}/public/data/mockTestGlobalResults`,
         );
         const q = query(leaderboardRef, where("testId", "==", currentTestId));
 
@@ -2309,7 +2313,7 @@
           // Find user's rank
           if (authAppState.userId) {
             const userEntry = leaderboard.find(
-              (entry) => entry.userId === authAppState.userId
+              (entry) => entry.userId === authAppState.userId,
             );
             if (userEntry) {
               testState.userRank = leaderboard.indexOf(userEntry) + 1;
@@ -2340,7 +2344,7 @@
         showModal(
           "Submitting Test",
           "Calculating your score and generating AI feedback...",
-          false
+          false,
         );
 
         let correctAnswersCount = 0;
@@ -2360,7 +2364,7 @@
             // Get AI feedback for the task
             const feedback = await callGeminiApi(
               task.instructions,
-              userAnswerText
+              userAnswerText,
             );
             if (feedback) {
               geminiFeedback[task.id] = feedback;
@@ -2408,7 +2412,7 @@
                         correctAnswer = question.correctAnswer || [];
                         // IELTS scoring: award one point for each correct option selected.
                         const correctSelections = userAnswer.filter((ans) =>
-                          correctAnswer.includes(ans)
+                          correctAnswer.includes(ans),
                         );
                         correctAnswersCount += correctSelections.length;
 
@@ -2470,7 +2474,7 @@
                           // If correctAnswer is an array, check if userAnswer is one of the valid answers
                           isCorrect = correctAnswer.some(
                             (ans) =>
-                              ans.toLowerCase() === userAnswer.toLowerCase()
+                              ans.toLowerCase() === userAnswer.toLowerCase(),
                           );
                         } else {
                           // Otherwise, do a direct string comparison
@@ -2486,7 +2490,7 @@
                     } else if (question.type === "flow_chart") {
                       correctAnswersCount += scoreFlowChartQuestion(
                         question,
-                        testState.userAnswers
+                        testState.userAnswers,
                       );
                     } else if (question.type === "table_fill_in_the_blank") {
                       if (question.correctAnswer) {
@@ -2513,7 +2517,7 @@
           });
           bandScore = calculateIELTSBandScore(
             correctAnswersCount,
-            totalQuestions
+            totalQuestions,
           );
         }
 
@@ -2525,7 +2529,7 @@
           totalQuestions,
           bandScore,
           timeTakenSeconds,
-          geminiFeedback // Pass the new feedback object
+          geminiFeedback, // Pass the new feedback object
         );
 
         // Fetch leaderboard after saving the user's result
@@ -2542,7 +2546,7 @@
         showModal(
           "Success!",
           "Mock test results and AI analysis are ready!",
-          false
+          false,
         );
       }
       /**
@@ -2594,7 +2598,7 @@
                         <h3 class="text-xl sm:text-2xl font-bold text-blue-800 mb-3 flex items-center gap-2">
                             ${MockTestIcons.ChartBar.replace(
                               /width="24" height="24"/g,
-                              'width="24" height="24" class="w-6 h-6 text-blue-600"'
+                              'width="24" height="24" class="w-6 h-6 text-blue-600"',
                             )} Overall Performance
                         </h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
@@ -2611,7 +2615,7 @@
                             <h3 class="text-xl font-bold text-green-800 mb-3 flex items-center gap-2">
                                 ${MockTestIcons.ThumbsUp.replace(
                                   /width="24" height="24"/g,
-                                  'width="24" height="24" class="w-6 h-6 text-green-600"'
+                                  'width="24" height="24" class="w-6 h-6 text-green-600"',
                                 )} Strengths
                             </h3>
                             <ul class="list-disc pl-5 text-gray-700">
@@ -2628,7 +2632,7 @@
                             <h3 class="text-xl font-bold text-red-800 mb-3 flex items-center gap-2">
                                 ${MockTestIcons.Warning.replace(
                                   /width="24" height="24"/g,
-                                  'width="24" height="24" class="w-6 h-6 text-red-600"'
+                                  'width="24" height="24" class="w-6 h-6 text-red-600"',
                                 )} Areas for Improvement
                             </h3>
                             <ul class="list-disc pl-5 text-gray-700">
@@ -2648,7 +2652,7 @@
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                             ${MockTestIcons.Review.replace(
                               /width="24" height="24"/g,
-                              'width="24" height="24" class="w-6 h-6 text-gray-600"'
+                              'width="24" height="24" class="w-6 h-6 text-gray-600"',
                             )} Question Review
                         </h3>
                         <div class="space-y-6 custom-scrollbar max-h-96 overflow-y-auto pr-2">
@@ -2659,7 +2663,7 @@
                                   const userAnswerText =
                                     userAnswers[section.id] || "";
                                   const wordCount = calculateWordCount(
-                                    userAnswerText
+                                    userAnswerText,
                                   );
                                   const meetsWordCount =
                                     wordCount >= section.wordCountMin;
@@ -2855,7 +2859,7 @@
                                                         }</span>
                                                     </p>
                                                 </div>
-                                            `
+                                            `,
                                             )
                                             .join("");
                                         }
@@ -2882,7 +2886,8 @@
 
                                           // New logic for correctness
                                           const correctUserChoices = userAnsArr.filter(
-                                            (ans) => correctAnsArr.includes(ans)
+                                            (ans) =>
+                                              correctAnsArr.includes(ans),
                                           );
                                           const numberCorrect =
                                             correctUserChoices.length;
@@ -2982,7 +2987,7 @@
                                           qGroup.questions[0].correctAnswer
                                         ) {
                                           groupReviewHtml = Object.keys(
-                                            qGroup.questions[0].correctAnswer
+                                            qGroup.questions[0].correctAnswer,
                                           )
                                             .map((subQuestionId) => {
                                               const subUserAnswer =
@@ -2997,7 +3002,7 @@
 
                                               const displayQuestionNumber = subQuestionId.replace(
                                                 "q",
-                                                ""
+                                                "",
                                               );
                                               let originalCellContent = "";
                                               qGroup.questions[0].tableData.forEach(
@@ -3005,16 +3010,16 @@
                                                   row.forEach((cell) => {
                                                     if (
                                                       cell.includes(
-                                                        `${displayQuestionNumber}. [INPUT]`
+                                                        `${displayQuestionNumber}. [INPUT]`,
                                                       )
                                                     ) {
                                                       originalCellContent = cell.replace(
                                                         /\[INPUT\]/,
-                                                        "..."
+                                                        "...",
                                                       );
                                                     }
                                                   });
-                                                }
+                                                },
                                               );
 
                                               return `
@@ -3085,7 +3090,7 @@
                                               ) {
                                                 questionTextForDisplay = question.text.replace(
                                                   /\[GAP\]/g,
-                                                  "________"
+                                                  "________",
                                                 );
                                                 userAnswerDisplay =
                                                   userAnswers[question.id] ||
@@ -3100,13 +3105,13 @@
                                                 ) {
                                                   // If it's an array, join the answers with "or" for display
                                                   correctAnswerDisplay = correctAnswer.join(
-                                                    " / "
+                                                    " / ",
                                                   );
                                                   // Check if the user's answer is one of the correct ones
                                                   isCorrect = correctAnswer.some(
                                                     (ans) =>
                                                       ans.toLowerCase() ===
-                                                      userAnswerDisplay.toLowerCase()
+                                                      userAnswerDisplay.toLowerCase(),
                                                   );
                                                 } else {
                                                   // If it's a single string
@@ -3120,7 +3125,7 @@
                                               ) {
                                                 return renderFlowChartFeedback(
                                                   question,
-                                                  userAnswers
+                                                  userAnswers,
                                                 );
                                               } else if (
                                                 question.type ===
@@ -3129,7 +3134,7 @@
                                                 // Handle table questions that might be in a generic qGroup for feedback display
                                                 if (question.correctAnswer) {
                                                   return Object.keys(
-                                                    question.correctAnswer
+                                                    question.correctAnswer,
                                                   )
                                                     .map((subQuestionId) => {
                                                       const subUserAnswer =
@@ -3146,7 +3151,7 @@
 
                                                       const displayQuestionNumber = subQuestionId.replace(
                                                         "q",
-                                                        ""
+                                                        "",
                                                       );
                                                       let originalCellContent =
                                                         "";
@@ -3158,17 +3163,17 @@
                                                               (cell) => {
                                                                 if (
                                                                   cell.includes(
-                                                                    `${displayQuestionNumber}. [INPUT]`
+                                                                    `${displayQuestionNumber}. [INPUT]`,
                                                                   )
                                                                 ) {
                                                                   originalCellContent = cell.replace(
                                                                     /\[INPUT\]/,
-                                                                    "..."
+                                                                    "...",
                                                                   );
                                                                 }
-                                                              }
+                                                              },
                                                             );
-                                                          }
+                                                          },
                                                         );
                                                       }
 
@@ -3209,7 +3214,7 @@
                                                 console.warn(
                                                   "Unhandled question type in feedback rendering:",
                                                   question.type,
-                                                  question
+                                                  question,
                                                 );
                                                 questionTextForDisplay = `Question ${
                                                   question.questionNumber ||
@@ -3267,7 +3272,7 @@
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                             ${MockTestIcons.Leaderboard.replace(
                               /width="24" height="24"/g,
-                              'width="24" height="24" class="w-6 h-6 text-gray-600"'
+                              'width="24" height="24" class="w-6 h-6 text-gray-600"',
                             )} Leaderboard for This Test
                         </h3>
                         <div class="leaderboard-table-container">
@@ -3320,10 +3325,10 @@
                                                   entry.bandScore
                                                 }</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatTime(
-                                                  entry.timeTakenSeconds
+                                                  entry.timeTakenSeconds,
                                                 )}</td>
                                             </tr>
-                                        `
+                                        `,
                                             )
                                             .join("")
                                         : `<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">No results yet. Be the first!</td></tr>`
@@ -3363,7 +3368,7 @@
         // Save current passage state before navigating
         if (currentModuleId === "reading") {
           const passageArea = document.querySelector(
-            ".passage-content-area .prose"
+            ".passage-content-area .prose",
           );
           if (passageArea) {
             const currentSectionId =
@@ -3392,7 +3397,7 @@
         // Save current passage state before navigating
         if (currentModuleId === "reading") {
           const passageArea = document.querySelector(
-            ".passage-content-area .prose"
+            ".passage-content-area .prose",
           );
           if (passageArea) {
             const currentSectionId =
@@ -3439,32 +3444,62 @@
         const appDiv = document.getElementById("app");
         const body = document.body;
         const audioPlayerWrapper = document.getElementById(
-          "fixed-audio-player-wrapper"
+          "fixed-audio-player-wrapper",
         );
         const mobilePaletteWrapper = document.getElementById(
-          "mobile-question-palette-wrapper"
+          "mobile-question-palette-wrapper",
         );
         const testInfoBar = document.getElementById("test-info-bar"); // New: Get reference to the info bar
         const topBarTimerDisplay = document.getElementById(
-          "timer-display-top-bar"
+          "timer-display-top-bar",
         );
         const topBarSectionInfo = document.getElementById(
-          "section-info-top-bar"
+          "section-info-top-bar",
         );
         const topBarTestTitle = document.getElementById("test-title-top-bar");
 
         if (!appDiv) return;
 
-        if (testState.isLoadingResults) {
+        if (testState.isCheckingAuth || testState.isLoadingResults) {
           appDiv.innerHTML = `
             <div class="flex justify-center items-center h-full min-h-[50vh]">
                 <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
-                <p class="ml-4 text-lg text-gray-600">Loading results...</p>
+                <p class="ml-4 text-lg text-gray-600">${
+                  testState.isCheckingAuth
+                    ? "Verifying access..."
+                    : "Loading results..."
+                }</p>
             </div>
           `;
           audioPlayerWrapper.style.display = "none";
           if (testInfoBar) testInfoBar.style.display = "none"; // Hide info bar on results page
           if (mobilePaletteWrapper) mobilePaletteWrapper.style.display = "none"; // Hide mobile palette
+          body.classList.remove("listening-body-padding");
+        } else if (testState.accessDenied) {
+          appDiv.innerHTML = `
+            <div class="flex flex-col justify-center items-center h-full min-h-[60vh] px-4 w-full">
+                <div class="bg-white p-8 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-slate-100 max-w-lg w-full text-center transform transition-all hover:scale-[1.01]">
+                    <div class="w-24 h-24 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-inner">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-anton text-slate-800 uppercase tracking-wide mb-4">Premium Content</h2>
+                    <p class="text-slate-600 mb-8 font-inter text-lg leading-relaxed">
+                        This mock test is exclusively available for <strong class="text-amber-500">Premium</strong> users. Upgrade your account to unlock all tests and skyrocket your IELTS score!
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="mock-test-category?module=${currentModuleId}" class="px-6 py-3.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors font-inter">
+                            View Free Tests
+                        </a>
+                        <a href="payment-system?module=${currentModuleId}" class="px-6 py-3.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl shadow-lg hover:shadow-orange-500/30 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 font-inter">
+                            <i class="fas fa-crown"></i> Upgrade to Premium
+                        </a>
+                    </div>
+                </div>
+            </div>
+          `;
+          audioPlayerWrapper.style.display = "none";
+          if (testInfoBar) testInfoBar.style.display = "none";
+          if (mobilePaletteWrapper) mobilePaletteWrapper.style.display = "none";
           body.classList.remove("listening-body-padding");
         } else if (testState.testCompleted) {
           renderMockTestFeedbackSection(appDiv);
@@ -3717,7 +3752,7 @@
                                         ${qGroupRenderer(section)}
                                     </div>
                                 </div>
-                            `
+                            `,
                                     )
                                     .join("")
                             }
@@ -3735,7 +3770,7 @@
                             <div class="flex items-center justify-center gap-2 text-xl font-bold text-white">
                                 <i class="fas fa-clock"></i>
                                 <span id="timer-display-desktop-sidebar">${formatTime(
-                                  testState.timeLeft
+                                  testState.timeLeft,
                                 )}</span>
                             </div>
                         </div>
@@ -3765,7 +3800,7 @@
 
         // --- START: Passage Interaction Logic ---
         const passageArea = appDiv.querySelector(
-          ".passage-content-area .prose"
+          ".passage-content-area .prose",
         );
         if (passageArea) {
           // Listen for text selection
@@ -3844,7 +3879,7 @@
                         <div class="matching-option" draggable="true" data-option-id="${key}">
                             <strong>${key}.</strong> ${value}
                         </div>
-                    `
+                    `,
                   )
                   .join("");
 
@@ -4024,7 +4059,7 @@
                                     `<div class="flex items-center p-3 bg-white rounded-lg border border-gray-200">
                                         <span class="font-bold text-blue-600 text-lg w-8 flex-shrink-0">${heading.id}.</span>
                                         <span class="ml-2 text-gray-800">${heading.text}</span>
-                                    </div>`
+                                    </div>`,
                                 )
                                 .join("")}
                           </div>
@@ -4059,12 +4094,12 @@
                                           }>
                                               ${heading.id}
                                           </option>
-                                      `
+                                      `,
                                         )
                                         .join("")}
                                   </select>
                               </div>
-                          `
+                          `,
                             )
                             .join("")}
                       </div>
@@ -4137,12 +4172,12 @@
                                           }>
                                               ${option}
                                           </option>
-                                      `
+                                      `,
                                         )
                                         .join("")}
                                   </select>
                               </div>
-                          `
+                          `,
                             )
                             .join("")}
                       </div>
@@ -4210,7 +4245,7 @@
                               </label>
                           </div>
                       </div>
-                  `
+                  `,
                     )
                     .join("");
                 }
@@ -4272,7 +4307,7 @@
                         </label>
                     </div>
                 </div>
-            `
+            `,
                     )
                     .join("");
                 }
@@ -4290,7 +4325,7 @@
                                     `<div class="flex items-center p-3 bg-white rounded-lg border border-gray-200">
                                         <span class="font-bold text-blue-600 text-lg w-8 flex-shrink-0">${item.id}.</span>
                                         <span class="ml-2 text-gray-800">${item.text}</span>
-                                    </div>`
+                                    </div>`,
                                 )
                                 .join("")}
                           </div>
@@ -4324,12 +4359,12 @@
                                           }>
                                               ${item.id}
                                           </option>
-                                      `
+                                      `,
                                         )
                                         .join("")}
                                   </select>
                               </div>
-                          `
+                          `,
                             )
                             .join("")}
                       </div>
@@ -4349,7 +4384,7 @@
                                     `<div class="flex items-center p-3 bg-white rounded-lg border border-gray-200">
                                         <span class="font-bold text-blue-600 text-lg w-8 flex-shrink-0">${item.id}.</span>
                                         <span class="ml-2 text-gray-800">${item.text}</span>
-                                    </div>`
+                                    </div>`,
                                 )
                                 .join("")}
                           </div>
@@ -4383,12 +4418,12 @@
                                           }>
                                               ${item.id}
                                           </option>
-                                      `
+                                      `,
                                         )
                                         .join("")}
                                   </select>
                               </div>
-                          `
+                          `,
                             )
                             .join("")}
                       </div>
@@ -4428,7 +4463,7 @@
                                         option.text
                                       }</span>
                                   </label>
-                              `
+                              `,
                                 )
                                 .join("")}
                           </div>
@@ -4468,7 +4503,7 @@
                                                    }>
                                             <span class="ml-2 text-gray-700">${option}</span>
                                         </label>
-                                    `
+                                    `,
                                       )
                                       .join("")}
                                 </div>
@@ -4513,7 +4548,7 @@
                           questionTextContent = question.text.includes("[GAP]")
                             ? question.text.replace(
                                 /\[GAP\]/g,
-                                numberedInputField
+                                numberedInputField,
                               )
                             : `${question.text} ${numberedInputField}`; // Fallback if [GAP] isn't present
                           inputElementHtml = "";
@@ -4546,7 +4581,7 @@
                                                     ? `<tr>${question.tableData[0]
                                                         .map(
                                                           (header) =>
-                                                            `<th class="py-2 px-4 border border-gray-300 bg-gray-100">${header}</th>`
+                                                            `<th class="py-2 px-4 border border-gray-300 bg-gray-100">${header}</th>`,
                                                         )
                                                         .join("")}</tr>`
                                                     : ""
@@ -4565,7 +4600,7 @@
                                                               let displayContent = cellContent;
                                                               let inputId = "";
                                                               const match = cellContent.match(
-                                                                inputPattern
+                                                                inputPattern,
                                                               );
 
                                                               if (match) {
@@ -4584,7 +4619,7 @@
                                                                                                  class="table-input">`;
                                                                 displayContent = cellContent.replace(
                                                                   /\[INPUT\]/,
-                                                                  inputFieldHtml
+                                                                  inputFieldHtml,
                                                                 );
                                                               }
                                                               return `
@@ -4592,11 +4627,11 @@
                                                                     ${displayContent}
                                                                 </td>
                                                             `;
-                                                            }
+                                                            },
                                                           )
                                                           .join("")}
                                                     </tr>
-                                                `
+                                                `,
                                                   )
                                                   .join("")}
                                             </tbody>
@@ -4624,10 +4659,15 @@
             .join("");
         }
 
-        // Attach event listeners for question inputs only if test is not completed
-        if (!testState.testCompleted) {
+        // Attach event listeners and start timer only if test is actively being taken
+        const isTakingTest =
+          !testState.testCompleted &&
+          !testState.accessDenied &&
+          !testState.isCheckingAuth &&
+          !testState.isLoadingResults;
+        if (isTakingTest) {
           const testQuestionsContainer = document.getElementById(
-            "test-questions-container"
+            "test-questions-container",
           );
           if (testQuestionsContainer) {
             testQuestionsContainer.addEventListener("input", (event) => {
@@ -4641,7 +4681,7 @@
               ) {
                 const questionId = event.target.id.replace(
                   "writing-response-",
-                  ""
+                  "",
                 ); // For writing tasks, ID is task.id
                 handleAnswerInput(questionId, event.target.value);
               }
@@ -4666,7 +4706,7 @@
                 handleMultipleChoiceInput(
                   questionId,
                   event.target.value,
-                  event.target.checked
+                  event.target.checked,
                 );
               }
               // For select dropdowns (Matching Headings, Matching Items, Which Paragraph Contains, Matching Sentence Endings)
@@ -4681,7 +4721,7 @@
 
             // Corrected drag-and-drop event listener attachment
             const matchingContainers = testQuestionsContainer.querySelectorAll(
-              ".matching-layout-container"
+              ".matching-layout-container",
             );
             matchingContainers.forEach((matchingContainer) => {
               if (!matchingContainer) return;
@@ -4710,7 +4750,7 @@
                 if (dragData) {
                   e.dataTransfer.setData(
                     "application/json",
-                    JSON.stringify(dragData)
+                    JSON.stringify(dragData),
                   );
                   e.dataTransfer.effectAllowed = "move";
                 }
@@ -4725,7 +4765,7 @@
               });
 
               const dropzones = matchingContainer.querySelectorAll(
-                ".matching-dropzone"
+                ".matching-dropzone",
               );
               dropzones.forEach((zone) => {
                 zone.addEventListener("dragover", (e) => {
@@ -4740,7 +4780,7 @@
                   zone.classList.remove("drag-over");
                   try {
                     const data = JSON.parse(
-                      e.dataTransfer.getData("application/json")
+                      e.dataTransfer.getData("application/json"),
                     );
                     const targetQuestionNumber =
                       e.currentTarget.dataset.questionNumber;
@@ -4759,7 +4799,7 @@
               });
 
               const optionsBox = matchingContainer.querySelector(
-                ".matching-options-box"
+                ".matching-options-box",
               );
               if (optionsBox) {
                 optionsBox.addEventListener("dragover", (e) => {
@@ -4774,7 +4814,7 @@
                   optionsBox.classList.remove("drag-over-clear");
                   try {
                     const data = JSON.parse(
-                      e.dataTransfer.getData("application/json")
+                      e.dataTransfer.getData("application/json"),
                     );
                     if (data.sourceQuestion) {
                       clearMatchingAnswer(data.sourceQuestion);
@@ -4790,19 +4830,19 @@
           // Populate question palette (both desktop and mobile) if listening test
           if (currentModuleId === "listening") {
             const questionPaletteDesktop = document.getElementById(
-              "question-palette-desktop"
+              "question-palette-desktop",
             );
             const questionPaletteMobile = document.getElementById(
-              "question-palette-mobile"
+              "question-palette-mobile",
             );
             const desktopTimerDisplaySidebar = document.getElementById(
-              "timer-display-desktop-sidebar"
+              "timer-display-desktop-sidebar",
             );
 
             // Update sidebar timer display
             if (desktopTimerDisplaySidebar) {
               desktopTimerDisplaySidebar.textContent = formatTime(
-                testState.timeLeft
+                testState.timeLeft,
               );
             }
 
@@ -4817,7 +4857,7 @@
               questionPaletteDesktop.addEventListener("click", (event) => {
                 if (event.target.classList.contains("question-palette-btn")) {
                   const paletteNum = parseInt(
-                    event.target.dataset.paletteNumber
+                    event.target.dataset.paletteNumber,
                   );
                   scrollToQuestion(paletteNum);
                 }
@@ -4828,15 +4868,15 @@
               questionPaletteMobile.addEventListener("click", (event) => {
                 if (event.target.classList.contains("question-palette-btn")) {
                   const paletteNum = parseInt(
-                    event.target.dataset.paletteNumber
+                    event.target.dataset.paletteNumber,
                   );
                   scrollToQuestion(paletteNum);
                   // Collapse the palette after clicking a question on mobile
                   const mobilePaletteWrapper = document.getElementById(
-                    "mobile-question-palette-wrapper"
+                    "mobile-question-palette-wrapper",
                   );
                   const paletteToggleIcon = document.getElementById(
-                    "palette-toggle-icon"
+                    "palette-toggle-icon",
                   );
 
                   if (mobilePaletteWrapper.classList.contains("expanded")) {
@@ -4850,13 +4890,13 @@
 
             // Mobile palette dropdown logic
             const mobilePaletteHeader = document.getElementById(
-              "mobile-palette-header"
+              "mobile-palette-header",
             );
             const mobilePaletteContent = document.getElementById(
-              "mobile-palette-content"
+              "mobile-palette-content",
             );
             const paletteToggleIcon = document.getElementById(
-              "palette-toggle-icon"
+              "palette-toggle-icon",
             );
 
             if (
@@ -4867,7 +4907,7 @@
             ) {
               mobilePaletteHeader.addEventListener("click", () => {
                 const isExpanded = mobilePaletteWrapper.classList.toggle(
-                  "expanded"
+                  "expanded",
                 ); // Corrected: toggle on wrapper
                 if (isExpanded) {
                   paletteToggleIcon.classList.remove("ph-caret-down");
@@ -4902,7 +4942,7 @@
             if (currentModuleId === "reading") {
               const passageTabBtn = document.getElementById("passage-tab-btn");
               const questionsTabBtn = document.getElementById(
-                "questions-tab-btn"
+                "questions-tab-btn",
               );
 
               if (passageTabBtn) {
@@ -4916,10 +4956,10 @@
             // Mobile writing tabs event listeners (only for writing)
             if (currentModuleId === "writing") {
               const instructionsTabBtn = document.getElementById(
-                "instructions-tab-btn"
+                "instructions-tab-btn",
               );
               const responseTabBtn = document.getElementById(
-                "response-tab-btn"
+                "response-tab-btn",
               );
 
               if (instructionsTabBtn) {
@@ -4954,7 +4994,7 @@
                   }`,
                   true,
                   () => handleSubmitTest(), // On confirm
-                  () => hideModal() // On cancel
+                  () => hideModal(), // On cancel
                 );
               } else {
                 // Existing logic for Listening/Reading
@@ -4989,7 +5029,7 @@
 
                 console.log(
                   "Calculated unanswered questions:",
-                  unansweredCount
+                  unansweredCount,
                 ); // Debugging line
 
                 showModal(
@@ -4997,7 +5037,7 @@
                   `Are you sure you want to submit the test? You have ${unansweredCount} unanswered questions.`,
                   true,
                   () => handleSubmitTest(), // On confirm
-                  () => hideModal() // On cancel
+                  () => hideModal(), // On cancel
                 );
               }
             });
@@ -5121,10 +5161,24 @@
             if (currentModuleId && currentTestId) {
               currentTest = allMockTests.find(
                 (test) =>
-                  test.moduleId === currentModuleId && test.id === currentTestId
+                  test.moduleId === currentModuleId &&
+                  test.id === currentTestId,
               );
 
               if (currentTest) {
+                // Determine if the test is premium
+                const moduleTests = allMockTests.filter(
+                  (t) => t.moduleId === currentModuleId,
+                );
+                const testIndex = moduleTests.findIndex(
+                  (t) => t.id === currentTestId,
+                );
+                // Based on mock-test-category.html, reading & listening have premium logic starting from index 5
+                testState.isPremiumTest =
+                  (currentModuleId === "reading" ||
+                    currentModuleId === "listening") &&
+                  testIndex >= 5;
+
                 const scoreParam = urlParams.get("score");
                 const totalParam = urlParams.get("total");
                 const bandParam = urlParams.get("band");
@@ -5139,16 +5193,18 @@
                   // This means we are loading a completed test's results directly
                   testState.testCompleted = true;
                   testState.isLoadingResults = true; // Set loading state for results
+                  testState.isCheckingAuth = false; // Not checking auth for direct results viewing
+
                   // Fetch the actual user result document to get userAnswers
                   auth.onAuthStateChanged(async (user) => {
                     if (authAppState.userId) {
                       testState.userResultDoc = await fetchUserMockTestResult(
                         authAppState.userId,
-                        currentTestId
+                        currentTestId,
                       );
                     } else {
                       console.warn(
-                        "User not authenticated, cannot fetch specific user result for display."
+                        "User not authenticated, cannot fetch specific user result for display.",
                       );
                       testState.userResultDoc = {
                         testTitle: currentTest.title,
@@ -5165,137 +5221,107 @@
                   });
                 } else {
                   // Not a completed test, initialize for a new test
-                  testState.testCompleted = false;
-                  testState.userAnswers = {}; // Reset user answers
-                  testState.passageStates = {}; // Reset passage states
-                  questionPaletteItems = []; // Reset palette items
-                  highlightState = {
-                    notes: {},
-                    currentSelection: null,
-                    highlightCounter: 0,
-                  }; // Reset highlights and notes
-                  testState.currentQuestionIndex = 0; // Reset for listening
-                  testState.currentSectionIndex = 0; // Reset for reading/writing
-                  testState.activeReadingTab = "questions"; // Default to questions tab for reading
-                  testState.activeWritingTab = "instructions"; // Default to instructions tab for writing
+                  // Set loading state to verify premium access
+                  testState.isCheckingAuth = true;
+                  renderApp(); // Show "Verifying access..." spinner
 
-                  if (currentModuleId === "writing") {
-                    currentTest.sections.forEach((task) => {
-                      testState.userAnswers[task.id] = ""; // Initialize writing task answers
-                    });
-                    totalQuestions = currentTest.sections.length; // Total tasks for writing
-                  } else {
-                    let currentPaletteNumber = 1;
+                  let isTestInitialized = false;
 
-                    currentTest.sections.forEach((section) => {
-                      section.questionGroups.forEach((qGroup) => {
-                        if (qGroup.questions && qGroup.questions.length > 0) {
-                          if (
-                            qGroup.type === "matching_headings" ||
-                            qGroup.type === "true_false_not_given" ||
-                            qGroup.type === "matching_items" ||
-                            qGroup.type === "which_paragraph_contains" ||
-                            qGroup.type === "matching_sentence_endings"
-                          ) {
-                            qGroup.questions.forEach((question) => {
-                              testState.userAnswers[question.id] = "";
-                              questionPaletteItems.push({
-                                paletteNumber: currentPaletteNumber,
-                                questionId: question.id,
-                                htmlElementId: `question-${question.questionNumber}`,
-                              });
-                              currentPaletteNumber++;
-                            });
-                          } else if (qGroup.type === "matching") {
-                            qGroup.matchingItems.forEach((item) => {
-                              const questionId = `q${item.number}`;
-                              testState.userAnswers[questionId] = "";
-                              questionPaletteItems.push({
-                                paletteNumber: currentPaletteNumber,
-                                questionId: questionId,
-                                htmlElementId: `question-${item.number}`,
-                              });
-                              currentPaletteNumber++;
-                            });
-                          } else if (
-                            qGroup.type === "multiple_choice_multiple_answers"
-                          ) {
-                            qGroup.questions.forEach((question) => {
-                              testState.userAnswers[question.id] = []; // Initialize as array
-                              const questionNumberRange = String(
-                                question.questionNumber
-                              ).split("-");
-                              if (questionNumberRange.length === 2) {
-                                const start = parseInt(questionNumberRange[0]);
-                                const end = parseInt(questionNumberRange[1]);
-                                const count = end - start + 1;
-                                for (let i = 0; i < count; i++) {
-                                  questionPaletteItems.push({
-                                    paletteNumber: currentPaletteNumber,
-                                    questionId: question.id, // All parts point to the same question ID
-                                    htmlElementId: `question-${question.questionNumber}`,
-                                    isMultiAnswerPart: true,
-                                    requiredAnswers: count,
-                                  });
-                                  currentPaletteNumber++;
-                                }
-                              } else {
-                                // Fallback for single number (should not happen for this type but for safety)
-                                questionPaletteItems.push({
-                                  paletteNumber: currentPaletteNumber,
-                                  questionId: question.id,
-                                  htmlElementId: `question-${question.questionNumber}`,
-                                  isMultiAnswerPart: false, // Treat as a normal question
-                                });
-                                currentPaletteNumber++;
-                              }
-                            });
-                          } else if (
-                            qGroup.type === "table_fill_in_the_blank"
-                          ) {
-                            if (qGroup.questions[0].correctAnswer) {
-                              for (const subQuestionId in qGroup.questions[0]
-                                .correctAnswer) {
-                                testState.userAnswers[subQuestionId] = "";
-                                questionPaletteItems.push({
-                                  paletteNumber: currentPaletteNumber,
-                                  questionId: subQuestionId,
-                                  htmlElementId: `question-${qGroup.questions[0].questionNumber}`,
-                                });
-                                currentPaletteNumber++;
-                              }
+                  auth.onAuthStateChanged(async (user) => {
+                    // Check premium status if user is logged in
+                    if (user) {
+                      const appId =
+                        typeof __app_id !== "undefined"
+                          ? __app_id
+                          : "ielts-mahir-community-forum"; // FIX: Matches Admin Panel Database
+                      const userStatsDocRef = doc(
+                        db,
+                        `artifacts/${appId}/users/${user.uid}/gameStats/summary`,
+                      );
+                      try {
+                        const docSnap = await getDoc(userStatsDocRef);
+                        if (docSnap.exists()) {
+                          const data = docSnap.data();
+                          if (data.isPremium === true) {
+                            // Verify they have the correct package for this specific module
+                            if (
+                              !data.premiumPackage ||
+                              data.premiumPackage === "Full Premium Bundle"
+                            ) {
+                              testState.isUserPremium = true;
+                            } else if (
+                              data.premiumPackage === "Reading Pass" &&
+                              currentModuleId === "reading"
+                            ) {
+                              testState.isUserPremium = true;
+                            } else if (
+                              data.premiumPackage === "Listening Pass" &&
+                              currentModuleId === "listening"
+                            ) {
+                              testState.isUserPremium = true;
+                            } else {
+                              testState.isUserPremium = false;
                             }
                           } else {
-                            qGroup.questions.forEach((question) => {
-                              if (question.type === "table_fill_in_the_blank") {
-                                if (question.correctAnswer) {
-                                  for (const subQuestionId in question.correctAnswer) {
-                                    testState.userAnswers[subQuestionId] = "";
-                                    questionPaletteItems.push({
-                                      paletteNumber: currentPaletteNumber,
-                                      questionId: subQuestionId,
-                                      htmlElementId: `question-${question.questionNumber}`,
-                                    });
-                                    currentPaletteNumber++;
-                                  }
-                                }
-                              } else if (question.type === "flow_chart") {
-                                if (
-                                  question.steps &&
-                                  question.steps.length > 0
-                                ) {
-                                  question.steps.forEach((step) => {
-                                    const questionId = `q${step.questionNumber}`;
-                                    testState.userAnswers[questionId] = "";
-                                    questionPaletteItems.push({
-                                      paletteNumber: currentPaletteNumber,
-                                      questionId: questionId,
-                                      htmlElementId: `question-${step.questionNumber}`,
-                                    });
-                                    currentPaletteNumber++;
-                                  });
-                                }
-                              } else {
+                            testState.isUserPremium = false;
+                          }
+                        }
+                      } catch (e) {
+                        console.error("Error fetching user stats:", e);
+                      }
+                    } else {
+                      testState.isUserPremium = false; // Explicitly handle logged out
+                    }
+
+                    // Enforce Premium Access
+                    if (testState.isPremiumTest && !testState.isUserPremium) {
+                      testState.accessDenied = true;
+                      testState.isCheckingAuth = false;
+                      renderApp(); // Render Locked Screen
+                      return; // STOP execution here
+                    }
+
+                    // Prevent resetting the test if already actively taking it (fixes token refresh bug)
+                    if (isTestInitialized && !testState.accessDenied) {
+                      return;
+                    }
+
+                    // Access Granted: Initialize test
+                    isTestInitialized = true;
+                    testState.accessDenied = false; // FIX: Reset state properly so it doesn't get stuck!
+                    testState.testCompleted = false;
+                    testState.userAnswers = {}; // Reset user answers
+                    testState.passageStates = {}; // Reset passage states
+                    questionPaletteItems = []; // Reset palette items
+                    highlightState = {
+                      notes: {},
+                      currentSelection: null,
+                      highlightCounter: 0,
+                    }; // Reset highlights and notes
+                    testState.currentQuestionIndex = 0; // Reset for listening
+                    testState.currentSectionIndex = 0; // Reset for reading/writing
+                    testState.activeReadingTab = "questions"; // Default to questions tab for reading
+                    testState.activeWritingTab = "instructions"; // Default to instructions tab for writing
+
+                    if (currentModuleId === "writing") {
+                      currentTest.sections.forEach((task) => {
+                        testState.userAnswers[task.id] = ""; // Initialize writing task answers
+                      });
+                      totalQuestions = currentTest.sections.length; // Total tasks for writing
+                    } else {
+                      let currentPaletteNumber = 1;
+
+                      currentTest.sections.forEach((section) => {
+                        section.questionGroups.forEach((qGroup) => {
+                          if (qGroup.questions && qGroup.questions.length > 0) {
+                            if (
+                              qGroup.type === "matching_headings" ||
+                              qGroup.type === "true_false_not_given" ||
+                              qGroup.type === "matching_items" ||
+                              qGroup.type === "which_paragraph_contains" ||
+                              qGroup.type === "matching_sentence_endings"
+                            ) {
+                              qGroup.questions.forEach((question) => {
                                 testState.userAnswers[question.id] = "";
                                 questionPaletteItems.push({
                                   paletteNumber: currentPaletteNumber,
@@ -5303,118 +5329,223 @@
                                   htmlElementId: `question-${question.questionNumber}`,
                                 });
                                 currentPaletteNumber++;
+                              });
+                            } else if (qGroup.type === "matching") {
+                              qGroup.matchingItems.forEach((item) => {
+                                const questionId = `q${item.number}`;
+                                testState.userAnswers[questionId] = "";
+                                questionPaletteItems.push({
+                                  paletteNumber: currentPaletteNumber,
+                                  questionId: questionId,
+                                  htmlElementId: `question-${item.number}`,
+                                });
+                                currentPaletteNumber++;
+                              });
+                            } else if (
+                              qGroup.type === "multiple_choice_multiple_answers"
+                            ) {
+                              qGroup.questions.forEach((question) => {
+                                testState.userAnswers[question.id] = []; // Initialize as array
+                                const questionNumberRange = String(
+                                  question.questionNumber,
+                                ).split("-");
+                                if (questionNumberRange.length === 2) {
+                                  const start = parseInt(
+                                    questionNumberRange[0],
+                                  );
+                                  const end = parseInt(questionNumberRange[1]);
+                                  const count = end - start + 1;
+                                  for (let i = 0; i < count; i++) {
+                                    questionPaletteItems.push({
+                                      paletteNumber: currentPaletteNumber,
+                                      questionId: question.id, // All parts point to the same question ID
+                                      htmlElementId: `question-${question.questionNumber}`,
+                                      isMultiAnswerPart: true,
+                                      requiredAnswers: count,
+                                    });
+                                    currentPaletteNumber++;
+                                  }
+                                } else {
+                                  // Fallback for single number (should not happen for this type but for safety)
+                                  questionPaletteItems.push({
+                                    paletteNumber: currentPaletteNumber,
+                                    questionId: question.id,
+                                    htmlElementId: `question-${question.questionNumber}`,
+                                    isMultiAnswerPart: false, // Treat as a normal question
+                                  });
+                                  currentPaletteNumber++;
+                                }
+                              });
+                            } else if (
+                              qGroup.type === "table_fill_in_the_blank"
+                            ) {
+                              if (qGroup.questions[0].correctAnswer) {
+                                for (const subQuestionId in qGroup.questions[0]
+                                  .correctAnswer) {
+                                  testState.userAnswers[subQuestionId] = "";
+                                  questionPaletteItems.push({
+                                    paletteNumber: currentPaletteNumber,
+                                    questionId: subQuestionId,
+                                    htmlElementId: `question-${qGroup.questions[0].questionNumber}`,
+                                  });
+                                  currentPaletteNumber++;
+                                }
                               }
+                            } else {
+                              qGroup.questions.forEach((question) => {
+                                if (
+                                  question.type === "table_fill_in_the_blank"
+                                ) {
+                                  if (question.correctAnswer) {
+                                    for (const subQuestionId in question.correctAnswer) {
+                                      testState.userAnswers[subQuestionId] = "";
+                                      questionPaletteItems.push({
+                                        paletteNumber: currentPaletteNumber,
+                                        questionId: subQuestionId,
+                                        htmlElementId: `question-${question.questionNumber}`,
+                                      });
+                                      currentPaletteNumber++;
+                                    }
+                                  }
+                                } else if (question.type === "flow_chart") {
+                                  if (
+                                    question.steps &&
+                                    question.steps.length > 0
+                                  ) {
+                                    question.steps.forEach((step) => {
+                                      const questionId = `q${step.questionNumber}`;
+                                      testState.userAnswers[questionId] = "";
+                                      questionPaletteItems.push({
+                                        paletteNumber: currentPaletteNumber,
+                                        questionId: questionId,
+                                        htmlElementId: `question-${step.questionNumber}`,
+                                      });
+                                      currentPaletteNumber++;
+                                    });
+                                  }
+                                } else {
+                                  testState.userAnswers[question.id] = "";
+                                  questionPaletteItems.push({
+                                    paletteNumber: currentPaletteNumber,
+                                    questionId: question.id,
+                                    htmlElementId: `question-${question.questionNumber}`,
+                                  });
+                                  currentPaletteNumber++;
+                                }
+                              });
+                            }
+                          }
+                        });
+                      });
+
+                      // After populating questionPaletteItems from the test data:
+                      // Ensure totalQuestions is always 40 for Listening and Reading,
+                      // and pad questionPaletteItems if necessary.
+                      if (
+                        currentModuleId === "listening" ||
+                        currentModuleId === "reading"
+                      ) {
+                        const expectedTotalQuestions = 40;
+                        const actualParsedQuestions =
+                          questionPaletteItems.length;
+
+                        if (actualParsedQuestions < expectedTotalQuestions) {
+                          console.warn(
+                            `Warning: ${currentModuleId} test '${currentTestId}' has ${actualParsedQuestions} answerable questions in data. Padding to ${expectedTotalQuestions} for IELTS standard.`,
+                          );
+                          for (
+                            let i = actualParsedQuestions;
+                            i < expectedTotalQuestions;
+                            i++
+                          ) {
+                            const dummyQuestionId = `dummy_q_${i + 1}`;
+                            testState.userAnswers[dummyQuestionId] = ""; // Initialize dummy answer as unanswered
+                            questionPaletteItems.push({
+                              paletteNumber: i + 1,
+                              questionId: dummyQuestionId,
+                              htmlElementId: `dummy-question-${i + 1}`, // Dummy ID, won't be scrolled to
                             });
                           }
-                        }
-                      });
-                    });
-
-                    // After populating questionPaletteItems from the test data:
-                    // Ensure totalQuestions is always 40 for Listening and Reading,
-                    // and pad questionPaletteItems if necessary.
-                    if (
-                      currentModuleId === "listening" ||
-                      currentModuleId === "reading"
-                    ) {
-                      const expectedTotalQuestions = 40;
-                      const actualParsedQuestions = questionPaletteItems.length;
-
-                      if (actualParsedQuestions < expectedTotalQuestions) {
-                        console.warn(
-                          `Warning: ${currentModuleId} test '${currentTestId}' has ${actualParsedQuestions} answerable questions in data. Padding to ${expectedTotalQuestions} for IELTS standard.`
-                        );
-                        for (
-                          let i = actualParsedQuestions;
-                          i < expectedTotalQuestions;
-                          i++
+                        } else if (
+                          actualParsedQuestions > expectedTotalQuestions
                         ) {
-                          const dummyQuestionId = `dummy_q_${i + 1}`;
-                          testState.userAnswers[dummyQuestionId] = ""; // Initialize dummy answer as unanswered
-                          questionPaletteItems.push({
-                            paletteNumber: i + 1,
-                            questionId: dummyQuestionId,
-                            htmlElementId: `dummy-question-${i + 1}`, // Dummy ID, won't be scrolled to
-                          });
-                        }
-                      } else if (
-                        actualParsedQuestions > expectedTotalQuestions
-                      ) {
-                        console.warn(
-                          `Warning: ${currentModuleId} test '${currentTestId}' has ${actualParsedQuestions} answerable questions in data, which is more than the standard 40. This might affect scoring accuracy.`
-                        );
-                        // If there are more than 40 actual questions, we'll still score out of 40,
-                        // but the unanswered count will reflect the actual number of input fields.
-                      }
-                      totalQuestions = expectedTotalQuestions; // Force totalQuestions to 40 for scoring
-                    } else {
-                      // For other modules, totalQuestions is just the count of parsed questions
-                      totalQuestions = questionPaletteItems.length;
-                    }
-                  }
-
-                  console.log(
-                    "Final total questions (for scoring):",
-                    totalQuestions
-                  );
-                  console.log(
-                    "Question Palette Items (for UI/unanswered count):",
-                    questionPaletteItems.length
-                  );
-
-                  testState.timeLeft = currentTest.duration * 60;
-                  const audioPlayer = document.getElementById(
-                    "test-audio-player"
-                  );
-                  if (audioPlayer && currentTest.audioUrl) {
-                    audioPlayer.src = currentTest.audioUrl;
-
-                    // --- IELTS Listening Audio Rules ---
-                    if (currentModuleId === "listening") {
-                      // The 'loadeddata' event ensures we can get the duration and play the audio.
-                      audioPlayer.addEventListener("loadeddata", () => {
-                        // Auto-start the audio
-                        audioPlayer
-                          .play()
-                          .catch((e) =>
-                            console.error(
-                              "Autoplay was prevented by the browser:",
-                              e
-                            )
+                          console.warn(
+                            `Warning: ${currentModuleId} test '${currentTestId}' has ${actualParsedQuestions} answerable questions in data, which is more than the standard 40. This might affect scoring accuracy.`,
                           );
-                      });
-
-                      let lastTime = 0;
-
-                      // 1. Prevent pausing
-                      audioPlayer.addEventListener("pause", () => {
-                        // Silently resume if a pause is attempted before the audio ends.
-                        if (!audioPlayer.ended) {
-                          audioPlayer.play();
+                          // If there are more than 40 actual questions, we'll still score out of 40,
+                          // but the unanswered count will reflect the actual number of input fields.
                         }
-                      });
-
-                      // 2. Prevent seeking (rewinding and forwarding)
-                      audioPlayer.addEventListener("timeupdate", () => {
-                        // If the time jumps by more than 1 second, it's a seek attempt. Reset it.
-                        // We check lastTime to avoid an issue on initial load.
-                        if (
-                          lastTime &&
-                          Math.abs(audioPlayer.currentTime - lastTime) > 1
-                        ) {
-                          audioPlayer.currentTime = lastTime;
-                        }
-                        lastTime = audioPlayer.currentTime;
-                      });
-
-                      // 3. Prevent replay after the audio has finished
-                      audioPlayer.addEventListener("ended", () => {
-                        // Silently do nothing. The timeupdate logic prevents seeking back to the start.
-                      });
+                        totalQuestions = expectedTotalQuestions; // Force totalQuestions to 40 for scoring
+                      } else {
+                        // For other modules, totalQuestions is just the count of parsed questions
+                        totalQuestions = questionPaletteItems.length;
+                      }
                     }
-                    // --- End of IELTS Listening Audio Rules ---
-                  }
-                  renderApp(); // Render test UI
+
+                    console.log(
+                      "Final total questions (for scoring):",
+                      totalQuestions,
+                    );
+                    console.log(
+                      "Question Palette Items (for UI/unanswered count):",
+                      questionPaletteItems.length,
+                    );
+
+                    testState.timeLeft = currentTest.duration * 60;
+                    const audioPlayer = document.getElementById(
+                      "test-audio-player",
+                    );
+                    if (audioPlayer && currentTest.audioUrl) {
+                      audioPlayer.src = currentTest.audioUrl;
+
+                      // --- IELTS Listening Audio Rules ---
+                      if (currentModuleId === "listening") {
+                        // The 'loadeddata' event ensures we can get the duration and play the audio.
+                        audioPlayer.addEventListener("loadeddata", () => {
+                          // Auto-start the audio
+                          audioPlayer
+                            .play()
+                            .catch((e) =>
+                              console.error(
+                                "Autoplay was prevented by the browser:",
+                                e,
+                              ),
+                            );
+                        });
+
+                        let lastTime = 0;
+
+                        // 1. Prevent pausing
+                        audioPlayer.addEventListener("pause", () => {
+                          // Silently resume if a pause is attempted before the audio ends.
+                          if (!audioPlayer.ended) {
+                            audioPlayer.play();
+                          }
+                        });
+
+                        // 2. Prevent seeking (rewinding and forwarding)
+                        audioPlayer.addEventListener("timeupdate", () => {
+                          // If the time jumps by more than 1 second, it's a seek attempt. Reset it.
+                          // We check lastTime to avoid an issue on initial load.
+                          if (
+                            lastTime &&
+                            Math.abs(audioPlayer.currentTime - lastTime) > 1
+                          ) {
+                            audioPlayer.currentTime = lastTime;
+                          }
+                          lastTime = audioPlayer.currentTime;
+                        });
+
+                        // 3. Prevent replay after the audio has finished
+                        audioPlayer.addEventListener("ended", () => {
+                          // Silently do nothing. The timeupdate logic prevents seeking back to the start.
+                        });
+                      }
+                      // --- End of IELTS Listening Audio Rules ---
+                    }
+                    testState.isCheckingAuth = false;
+                    renderApp(); // Render actual test UI
+                  });
                 }
               } else {
                 // Test not found
@@ -5439,7 +5570,7 @@
             console.error("Failed to initialize Firebase in mock-test:", error);
             showToast(
               "Failed to initialize Firebase. Some features may not work.",
-              "error"
+              "error",
             );
             // Even if Firebase fails, try to render the app, but features might be limited
             testState.isLoadingResults = false; // Ensure loading is off

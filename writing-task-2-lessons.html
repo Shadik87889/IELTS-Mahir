@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Writing Task 2 Lessons - IELTS Mahir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;600;800&family=Montserrat:wght@400;500;600;700&family=Hind+Siliguri:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: #ffffff;
+        color: #333;
+      }
+
+      /* Premium Brand Typography */
+      .anton-text {
+        font-family: "Anton", sans-serif;
+        letter-spacing: 0.05em;
+      }
+
+      /* Hero Section - Deep Navy Theme */
+      .brand-hero-section {
+        background: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          /* slate-900 */ #1e3a8a 100% /* blue-900 */
+        ) !important;
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 8rem;
+      }
+
+      /* Animated Blob Backgrounds */
+      @keyframes blob {
+        0% {
+          transform: translate(0px, 0px) scale(1);
+        }
+        33% {
+          transform: translate(30px, -50px) scale(1.1);
+        }
+        66% {
+          transform: translate(-20px, 20px) scale(0.9);
+        }
+        100% {
+          transform: translate(0px, 0px) scale(1);
+        }
+      }
+      .animate-blob {
+        animation: blob 7s infinite;
+      }
+      .animation-delay-2000 {
+        animation-delay: 2s;
+      }
+      .animation-delay-4000 {
+        animation-delay: 4s;
+      }
+
+      /* Gradient Animation for Playlist Button */
+      @keyframes gradient-xy {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      .animate-gradient {
+        background-size: 200% 200%;
+        animation: gradient-xy 3s ease infinite;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        background: rgba(56, 189, 248, 0.15); /* sky-400 */
+        color: #38bdf8;
+        border-radius: 2rem;
+        font-family: "Outfit", sans-serif;
+        font-weight: 600;
+        font-size: 0.9rem;
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-btn-secondary {
+        padding: 0.8rem 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 0.5rem;
+        font-family: "Anton", sans-serif;
+        text-transform: uppercase;
+        font-size: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(4px);
+        transition: all 0.3s ease;
+      }
+
+      .hero-btn-secondary:hover {
+        background: #ffffff;
+        color: #0f172a;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Dope Video Card Styles */
+      .video-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.02);
+        overflow: hidden;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .video-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(14, 165, 233, 0.15); /* sky-500 shadow */
+      }
+
+      .play-overlay {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      .video-card:hover .play-overlay {
+        opacity: 1;
+      }
+      .play-icon {
+        transform: scale(0.5);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: #0284c7; /* sky-600 */
+        box-shadow: 0 10px 25px rgba(2, 132, 199, 0.5);
+      }
+      .video-card:hover .play-icon {
+        transform: scale(1);
+      }
+
+      /* Skeleton Loader */
+      .skeleton {
+        background: #e2e8f0;
+        background: linear-gradient(
+          110deg,
+          #ececec 8%,
+          #f5f5f5 18%,
+          #ececec 33%
+        );
+        border-radius: 5px;
+        background-size: 200% 100%;
+        animation: 1.5s shine linear infinite;
+      }
+      @keyframes shine {
+        to {
+          background-position-x: -200%;
+        }
+      }
+
+      /* Custom Scrollbar for Modal Description */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f8fafc;
+        border-radius: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* Modal Animations */
+      #video-modal {
+        backdrop-filter: blur(5px);
+      }
+      .modal-enter {
+        animation: modalFadeIn 0.3s ease-out forwards;
+      }
+      .modal-leave {
+        animation: modalFadeOut 0.2s ease-in forwards;
+      }
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes modalFadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+      .modal-content-enter {
+        animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+      @keyframes scaleUp {
+        from {
+          transform: scale(0.95) translateY(10px);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1) translateY(0);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <!-- Premium Brand Hero Section -->
+    <header class="brand-hero-section pt-8 px-6 md:px-12">
+      <!-- Floating Abstract Background Blobs (Deep Blues & Purples) -->
+      <div
+        class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-[#3b82f6] rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-blob"
+      ></div>
+      <div
+        class="absolute top-[20%] right-[-5%] w-80 h-80 bg-[#8b5cf6] rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-blob animation-delay-2000"
+      ></div>
+      <div
+        class="absolute bottom-[10%] left-[20%] w-72 h-72 bg-[#0ea5e9] rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-blob animation-delay-4000"
+      ></div>
+
+      <div class="max-w-7xl mx-auto relative z-10">
+        <!-- Navigation Action -->
+        <a href="home" class="hero-btn-secondary mb-10 shadow-sm relative z-20">
+          <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+
+        <div
+          class="flex flex-col md:flex-row items-center justify-between gap-12"
+        >
+          <!-- Text Content -->
+          <div class="flex-1 md:pr-10 z-10 text-center md:text-left">
+            <div class="hero-badge shadow-sm">
+              <i class="fas fa-pen-nib text-[#38bdf8]"></i> Academic & General
+            </div>
+
+            <h1
+              class="anton-text text-5xl md:text-6xl lg:text-7xl text-white leading-[1.1] mb-6 drop-shadow-md"
+            >
+              WRITING TASK 2 <br />
+              <span class="text-[#38bdf8]">LESSONS</span>
+            </h1>
+
+            <p
+              class="text-lg md:text-xl text-slate-300 max-w-xl font-medium leading-relaxed mx-auto md:mx-0"
+            >
+              Master the art of essay writing. Build strong arguments, express
+              your opinions flawlessly, and learn the essential structures for a
+              perfect Band 9 essay.
+            </p>
+          </div>
+
+          <!-- NEW Image Area: Arched Portrait Window -->
+          <div
+            class="flex-1 relative flex justify-center items-center w-full mt-16 md:mt-0 z-10"
+          >
+            <!-- Arched Framed Window (Soft Sky Blue to contrast the dark background) -->
+            <div
+              class="relative w-[280px] sm:w-[320px] h-[380px] bg-gradient-to-b from-[#e0f2fe] to-[#bae6fd] rounded-t-[160px] rounded-b-3xl overflow-hidden shadow-2xl border-4 border-white/80 backdrop-blur-sm z-10"
+            >
+              <!-- Image perfectly masked at the bottom -->
+              <img
+                src="https://i.postimg.cc/Hs4Z2TQR/student-image-three.png"
+                alt="Happy Student"
+                class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-auto object-contain origin-bottom hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+
+            <!-- Floating Accent -->
+            <div
+              class="absolute top-12 right-0 md:-right-2 bg-white/95 backdrop-blur-sm p-3 rounded-xl shadow-xl border border-white z-20 flex items-center gap-3 animate-bounce"
+              style="animation-duration: 3.5s;"
+            >
+              <div
+                class="w-10 h-10 bg-[#f0f9ff] text-[#0284c7] rounded-full flex items-center justify-center text-lg"
+              >
+                <i class="fas fa-paragraph"></i>
+              </div>
+              <div>
+                <p class="anton-text text-[#0f172a] text-lg leading-tight">
+                  Essays
+                </p>
+                <p class="text-xs text-slate-500 font-semibold">& Arguments</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elegant SVG Bottom Curve Divider -->
+      <div
+        class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-10"
+      >
+        <svg
+          class="relative block w-full h-[60px] md:h-[100px]"
+          data-name="Layer 1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+            fill="#ffffff"
+          ></path>
+        </svg>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-6 md:px-12 py-10 bg-white relative z-20">
+      <div
+        class="flex flex-col sm:flex-row justify-between items-center sm:items-end mb-12 gap-4 border-b border-slate-100 pb-6"
+      >
+        <div>
+          <h2
+            class="anton-text text-3xl md:text-4xl text-[#0f172a] tracking-wide"
+          >
+            LATEST ESSAY LESSONS
+          </h2>
+          <div class="h-1.5 w-16 bg-[#0284c7] mt-3 rounded-full"></div>
+        </div>
+        <div
+          class="flex flex-wrap justify-center sm:justify-end items-center gap-3"
+        >
+          <!-- SUPER PREMIUM PLAYLIST BUTTON (Link to Youtube) -->
+          <a
+            href="https://www.youtube.com/playlist?list=PLZcJqvwRH7EvOWYOSzxqxaQ-BdOV3LGgI"
+            target="_blank"
+            rel="noopener noreferrer"
+            id="btn-playlist"
+            class="group relative px-6 py-2.5 font-bold text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden hidden sm:flex"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-sky-500 animate-gradient"
+            ></div>
+            <div
+              class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300"
+            ></div>
+            <div class="relative flex items-center gap-2">
+              <i class="fas fa-list-ol"></i> Binge Playlist
+            </div>
+          </a>
+
+          <!-- Standard Count Indicator -->
+          <div
+            class="text-sm font-semibold text-[#0284c7] bg-[#f0f9ff] px-5 py-2.5 rounded-xl shadow-sm border border-[#0284c7]/20 flex items-center gap-2"
+          >
+            <i class="fas fa-play-circle text-lg"></i>
+            <span id="video-count" class="text-base">0</span> Videos
+          </div>
+        </div>
+
+        <!-- Mobile Playlist Button (Full width, Link to Youtube) -->
+        <a
+          href="https://www.youtube.com/playlist?list=PLZcJqvwRH7EvOWYOSzxqxaQ-BdOV3LGgI"
+          target="_blank"
+          rel="noopener noreferrer"
+          id="btn-playlist-mobile"
+          class="w-full sm:hidden group relative px-6 py-3 font-bold text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden mt-2"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-sky-500 animate-gradient"
+          ></div>
+          <div class="relative flex items-center justify-center gap-2 text-lg">
+            <i class="fas fa-list-ol"></i> Watch Full Playlist
+          </div>
+        </a>
+      </div>
+
+      <!-- Dynamic Container -->
+      <div
+        id="video-grid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      >
+        <!-- Loading Skeletons -->
+        <div class="video-card h-[380px]">
+          <div class="w-full h-48 skeleton"></div>
+          <div class="p-6 flex flex-col gap-3 flex-grow">
+            <div class="h-6 w-3/4 skeleton"></div>
+            <div class="h-4 w-full skeleton mt-2"></div>
+            <div class="h-4 w-2/3 skeleton"></div>
+            <div class="mt-auto flex gap-2">
+              <div class="h-6 w-16 skeleton rounded-full"></div>
+              <div class="h-6 w-20 skeleton rounded-full"></div>
+            </div>
+          </div>
+        </div>
+        <div class="video-card h-[380px] hidden md:flex">
+          <div class="w-full h-48 skeleton"></div>
+          <div class="p-6 flex flex-col gap-3 flex-grow">
+            <div class="h-6 w-3/4 skeleton"></div>
+            <div class="h-4 w-full skeleton mt-2"></div>
+            <div class="h-4 w-2/3 skeleton"></div>
+            <div class="mt-auto flex gap-2">
+              <div class="h-6 w-24 skeleton rounded-full"></div>
+            </div>
+          </div>
+        </div>
+        <div class="video-card h-[380px] hidden lg:flex">
+          <div class="w-full h-48 skeleton"></div>
+          <div class="p-6 flex flex-col gap-3 flex-grow">
+            <div class="h-6 w-3/4 skeleton"></div>
+            <div class="h-4 w-full skeleton mt-2"></div>
+            <div class="h-4 w-2/3 skeleton"></div>
+            <div class="mt-auto flex gap-2">
+              <div class="h-6 w-20 skeleton rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div
+        id="empty-state"
+        class="hidden text-center py-24 bg-[#f8fafc] rounded-2xl border-2 border-dashed border-slate-200 mt-8"
+      >
+        <div
+          class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full mb-5 shadow-sm"
+        >
+          <i class="fas fa-pen-square text-3xl text-slate-300"></i>
+        </div>
+        <h3
+          class="text-2xl font-bold text-[#0f172a] mb-2 anton-text tracking-wide"
+        >
+          NO ESSAY LESSONS YET
+        </h3>
+        <p class="text-slate-500 font-medium">
+          Expert Writing Task 2 lessons are being prepared. Check back soon!
+        </p>
+      </div>
+    </main>
+
+    <!-- Video Preview Modal System -->
+    <div
+      id="video-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-sm"
+    >
+      <div class="absolute inset-0" id="modal-backdrop"></div>
+
+      <div
+        id="modal-content"
+        class="relative w-full max-w-7xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col lg:flex-row max-h-[95vh] lg:max-h-[85vh] border border-slate-100"
+      >
+        <!-- Video Player Area (Left on Desktop, Top on Mobile) -->
+        <div
+          class="relative w-full lg:w-[65%] bg-black flex-shrink-0 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-800"
+        >
+          <div class="w-full aspect-video relative">
+            <iframe
+              id="youtube-player"
+              class="absolute top-0 left-0 w-full h-full"
+              src=""
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          </div>
+
+          <!-- Mobile Close Button (Hidden on Desktop) -->
+          <button
+            class="close-modal-btn lg:hidden absolute top-4 right-4 w-10 h-10 bg-black/50 hover:bg-red-600 rounded-full text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 z-10 border border-white/20"
+          >
+            <i class="fas fa-times text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Video Info Area (Right on Desktop, Bottom on Mobile) -->
+        <div
+          class="w-full lg:w-[35%] p-6 md:p-8 lg:p-10 overflow-y-auto bg-white flex flex-col relative custom-scrollbar"
+        >
+          <!-- Desktop Close Button (Hidden on Mobile) -->
+          <button
+            class="close-modal-btn hidden lg:flex absolute top-6 right-6 w-10 h-10 bg-slate-100 hover:bg-red-50 rounded-full text-slate-400 hover:text-red-500 items-center justify-center transition-colors duration-300 z-10 shadow-sm"
+          >
+            <i class="fas fa-times text-lg"></i>
+          </button>
+
+          <div class="flex items-center gap-3 mb-4 mt-2 lg:mt-0">
+            <span
+              id="modal-badge"
+              class="bg-[#f0f9ff] text-[#0284c7] px-3 py-1 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-widest border border-[#0284c7]/20 shadow-sm"
+            >
+              <i class="fas fa-pen-fancy mr-1"></i> Writing Task 2
+            </span>
+          </div>
+
+          <h3
+            id="modal-title"
+            class="anton-text text-2xl sm:text-3xl lg:text-4xl text-[#0f172a] mb-6 pr-8 lg:pr-12 leading-tight"
+          >
+            Video Title
+          </h3>
+
+          <div class="prose prose-sm sm:prose-base text-slate-600 mb-8">
+            <p
+              id="modal-summary"
+              class="leading-relaxed font-medium text-[15px]"
+            >
+              Video summary will appear here.
+            </p>
+          </div>
+
+          <div
+            id="modal-bottom-box"
+            class="bg-gradient-to-br from-[#f8fafc] to-[#f1f5f9] p-5 sm:p-6 rounded-xl border border-slate-200 mt-auto shadow-inner"
+          >
+            <h4
+              id="modal-dynamic-header"
+              class="text-sm font-bold text-[#0f172a] uppercase tracking-wider mb-5 flex items-center"
+            >
+              <div
+                class="w-8 h-8 bg-white text-[#f59e0b] rounded-lg flex items-center justify-center mr-3 shadow-sm border border-slate-100"
+              >
+                <i class="fas fa-lightbulb"></i>
+              </div>
+              Key Takeaways
+            </h4>
+            <ul
+              id="modal-keypoints"
+              class="space-y-4 text-slate-600 text-sm font-medium"
+            >
+              <!-- Dynamic Content injected here -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDK & Logic -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        onSnapshot,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+      import {
+        getAuth,
+        signInAnonymously,
+        signInWithCustomToken,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+      // Global Config
+      const appId =
+        typeof __app_id !== "undefined"
+          ? __app_id
+          : "ielts-mahir-community-forum";
+      const firebaseConfig =
+        typeof __firebase_config !== "undefined"
+          ? JSON.parse(__firebase_config)
+          : {
+              apiKey: "AIzaSyAxsd0CnLsh7t7yFy3ZPp6saGD_YpLL1mY",
+              authDomain: "ielts-mahir-community-forum.firebaseapp.com",
+              projectId: "ielts-mahir-community-forum",
+              storageBucket: "ielts-mahir-community-forum.firebasestorage.app",
+              messagingSenderId: "1036043607546",
+              appId: "1:1036043607546:web:bd217e04cc0ec5f296d843",
+            };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      // UI Elements
+      const grid = document.getElementById("video-grid");
+      const emptyState = document.getElementById("empty-state");
+      const videoCount = document.getElementById("video-count");
+
+      // Modal Elements
+      const modal = document.getElementById("video-modal");
+      const modalBackdrop = document.getElementById("modal-backdrop");
+      const modalContent = document.getElementById("modal-content");
+      const closeBtns = document.querySelectorAll(".close-modal-btn");
+      const ytPlayer = document.getElementById("youtube-player");
+      const modalTitle = document.getElementById("modal-title");
+      const modalSummary = document.getElementById("modal-summary");
+      const modalKeypoints = document.getElementById("modal-keypoints");
+      const modalDynamicHeader = document.getElementById(
+        "modal-dynamic-header",
+      );
+      const modalBadge = document.getElementById("modal-badge");
+
+      // Helper to extract YouTube Embed URL
+      function getEmbedUrl(url) {
+        let videoId = "";
+        try {
+          if (url.includes("youtube.com/watch")) {
+            videoId = new URLSearchParams(new URL(url).search).get("v");
+          } else if (url.includes("youtu.be/")) {
+            videoId = url.split("youtu.be/")[1]?.split("?")[0];
+          }
+        } catch (e) {
+          console.error("Invalid URL", e);
+        }
+        return videoId
+          ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`
+          : "";
+      }
+
+      // ----------------------------------------------------
+      // Standard Single Video Modal Logic
+      // ----------------------------------------------------
+      function openModal(data) {
+        modalBadge.innerHTML = `<i class="fas fa-pen-fancy mr-1"></i> Writing Task 2`;
+        modalBadge.className =
+          "bg-[#f0f9ff] text-[#0284c7] px-3 py-1 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-widest border border-[#0284c7]/20 shadow-sm";
+
+        modalTitle.textContent = data.title || "Writing Task 2 Lesson";
+        modalSummary.textContent =
+          data.summary || "No summary provided for this lesson.";
+
+        // Reset Dynamic Header to Key Takeaways
+        modalDynamicHeader.innerHTML = `
+            <div class="w-8 h-8 bg-white text-[#f59e0b] rounded-lg flex items-center justify-center mr-3 shadow-sm border border-slate-100">
+                <i class="fas fa-lightbulb"></i>
+            </div>
+            Key Takeaways
+        `;
+
+        modalKeypoints.innerHTML = "";
+        if (
+          data.keypoints &&
+          Array.isArray(data.keypoints) &&
+          data.keypoints.length > 0
+        ) {
+          data.keypoints.forEach((kp) => {
+            modalKeypoints.insertAdjacentHTML(
+              "beforeend",
+              `
+                <li class="flex items-start">
+                    <i class="fas fa-check text-[#0284c7] mt-1 mr-3 text-sm"></i>
+                    <span>${kp}</span>
+                </li>
+            `,
+            );
+          });
+        } else {
+          modalKeypoints.innerHTML =
+            '<li class="text-slate-400 italic text-sm">No keypoints available.</li>';
+        }
+
+        ytPlayer.src = getEmbedUrl(data.link);
+
+        triggerModalAnimation();
+      }
+
+      function triggerModalAnimation() {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex", "modal-enter");
+        modalContent.classList.add("modal-content-enter");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        ytPlayer.src = ""; // Stop video playback
+        modal.classList.replace("modal-enter", "modal-leave");
+        setTimeout(() => {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex", "modal-leave");
+          modalContent.classList.remove("modal-content-enter");
+          document.body.style.overflow = "";
+        }, 200);
+      }
+
+      // Event Listeners for Modal
+      closeBtns.forEach((btn) => btn.addEventListener("click", closeModal));
+      modalBackdrop.addEventListener("click", closeModal);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.classList.contains("hidden"))
+          closeModal();
+      });
+
+      // Hardcoded Task 2 video data from your screenshot
+      const localTask2Lessons = [
+        {
+          id: "t2_v1",
+          title:
+            "Discuss Both Views Essay কিভাবে লিখবেন? | IELTS Writing Task 2",
+          summary:
+            "Learn the step-by-step approach to structuring and writing a 'Discuss Both Views' essay.",
+          link: "https://youtu.be/9x7NQJpzAo0?si=-0FzlfzSKaz0yhXG", // You can add your YouTube link here later
+          img:
+            "https://i.ytimg.com/vi/9x7NQJpzAo0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAow1_6YRlSGsaayxpNFsyxLcyO0w", // You can add your image URL here later
+          keypoints: ["Discuss Both Views", "Essay Structure", "Task 2"],
+        },
+        {
+          id: "t2_v2",
+          title:
+            "Agree or Disagree Essay কিভাবে লিখবেন | Agree or Disagree ILETS Writing Task 2",
+          summary:
+            "Techniques for presenting a clear position and supporting arguments in an Agree/Disagree essay.",
+          link: "https://youtu.be/3KKvQVjojJk?si=UeLastMt_T9cxQzh", // You can add your YouTube link here later
+          img:
+            "https://i.ytimg.com/vi/3KKvQVjojJk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBaFNL8hS7zR0J6Y8ugDPdzgHmmBg", // You can add your image URL here later
+          keypoints: ["Agree/Disagree", "Argumentation", "Task 2"],
+        },
+        {
+          id: "t2_v3",
+          title:
+            "Two-Part Questions/ Double Questions Essay কীভাবে লিখবেন? Double Question Essay ILETS Writing Task 2",
+          summary:
+            "How to effectively address and organize your response for essays with two distinct questions.",
+          link: "https://youtu.be/s32JHjcNlCc?si=DPSqKreqKgr4LpsC", // You can add your YouTube link here later
+          img:
+            "https://i.ytimg.com/vi/s32JHjcNlCc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB1v-hdDI2bAPE6UWCBzYRaDP8trQ", // You can add your image URL here later
+          keypoints: ["Two-Part Questions", "Organization", "Task 2"],
+        },
+        {
+          id: "t2_v4",
+          title:
+            "IELTS Writing Task 2 তে Problem Solution Essay কিভাবে লিখবেন? ILETS Mahir",
+          summary:
+            "A guide on identifying problems and proposing logical solutions for this specific essay type.",
+          link: "https://youtu.be/1xVa1sNhmHE?si=zfVn4mek5LPI36-N", // You can add your YouTube link here later
+          img:
+            "https://i.ytimg.com/vi/1xVa1sNhmHE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDUUNbhzDlG5Rrx1qTh2stxI5mtJA", // You can add your image URL here later
+          keypoints: ["Problem & Solution", "Idea Generation", "Task 2"],
+        },
+        {
+          id: "t2_v5",
+          title:
+            "IELTS Writing Task 2 | How to Write Advantage-Disadvantage Essay for a High Score | ILETS Mahir",
+          summary:
+            "How to balance your essay by discussing both the benefits and drawbacks of a given topic.",
+          link: "https://youtu.be/ylnpuT5gd_I?si=i0eePW31kB1AUV5V", // You can add your YouTube link here later
+          img:
+            "https://i.ytimg.com/vi/ylnpuT5gd_I/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDKRynFPUEjpoe0lIq3Ow2YHvOpzg", // You can add your image URL here later
+          keypoints: ["Advantage/Disadvantage", "Balancing Views", "Task 2"],
+        },
+        {
+          id: "t2_v6",
+          title:
+            "2026 সালে ঘরে বসেই কীভাবে IELTS Writing Task 2-এর প্রস্তুতি নেবেন? | IELTS Mahir",
+          summary:
+            "Tips and strategies for preparing for IELTS Writing Task 2 effectively from home.",
+          link: "https://youtu.be/CIf7_GG1WR8?si=87y49DsGjYiTTDmc", // You can add your YouTube link here later
+          img:
+            "https://i.ytimg.com/vi/CIf7_GG1WR8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBnNFH7vIZpLI5vzVMO3b-96t63fQ", // You can add your image URL here later
+          keypoints: ["Preparation Guide", "Home Study", "Task 2"],
+        },
+      ];
+
+      function renderLessons(lessons) {
+        grid.innerHTML = ""; // Clear skeletons
+        videoCount.textContent = lessons.length;
+
+        if (lessons.length === 0) {
+          emptyState.classList.remove("hidden");
+          return;
+        } else {
+          emptyState.classList.add("hidden");
+        }
+
+        lessons.forEach((lesson) => {
+          const imgSrc =
+            lesson.img ||
+            "https://placehold.co/600x400/e0f2fe/0284c7?text=Play+Lesson";
+
+          let keypointHtml = "";
+          if (lesson.keypoints && Array.isArray(lesson.keypoints)) {
+            lesson.keypoints.slice(0, 2).forEach((kp) => {
+              keypointHtml += `<span class="inline-block bg-[#f8fafc] text-[#0f172a] text-[11px] font-bold px-2.5 py-1 rounded-md border border-slate-200 truncate max-w-[140px]">${kp}</span>`;
+            });
+            if (lesson.keypoints.length > 2) {
+              keypointHtml += `<span class="inline-block bg-[#f0f9ff] text-[#0284c7] text-[11px] font-bold px-2.5 py-1 rounded-md border border-[#0284c7]/20">+${
+                lesson.keypoints.length - 2
+              }</span>`;
+            }
+          }
+
+          const card = document.createElement("div");
+          card.className = "video-card group";
+
+          card.innerHTML = `
+            <div class="relative overflow-hidden aspect-[16/9] bg-slate-100 border-b border-slate-100">
+                <img src="${imgSrc}" alt="${
+            lesson.title
+          }" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://placehold.co/600x400/e0f2fe/0284c7?text=Play+Lesson'">
+                <div class="play-overlay absolute inset-0 flex items-center justify-center">
+                    <div class="play-icon w-14 h-14 text-white rounded-full flex items-center justify-center">
+                        <i class="fas fa-play text-xl ml-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="p-5 flex flex-col flex-grow bg-white">
+                <h3 class="text-lg font-bold text-[#0f172a] line-clamp-2 mb-2 group-hover:text-[#0284c7] transition-colors">${
+                  lesson.title
+                }</h3>
+                <p class="text-sm text-slate-500 line-clamp-2 mb-4 font-medium">${
+                  lesson.summary || "Click to view this writing lesson."
+                }</p>
+                <div class="mt-auto pt-4 border-t border-slate-100">
+                    <div class="flex flex-wrap gap-2">
+                        ${keypointHtml}
+                    </div>
+                </div>
+            </div>
+          `;
+
+          card.addEventListener("click", () => openModal(lesson));
+          grid.appendChild(card);
+        });
+      }
+
+      // Load Data Function
+      function loadTask2Lessons() {
+        // Render the hardcoded local data
+        renderLessons(localTask2Lessons);
+      }
+
+      // Initialize App Auth with Error Catching
+      async function init() {
+        try {
+          if (
+            typeof __initial_auth_token !== "undefined" &&
+            __initial_auth_token
+          ) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+        } catch (err) {
+          console.warn(
+            "Auth Notice (Proceeding to read public data):",
+            err.message,
+          );
+        }
+
+        loadTask2Lessons();
+      }
+
+      init();
+    </script>
+  </body>
+</html>

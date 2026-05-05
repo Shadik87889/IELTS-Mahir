@@ -3,527 +3,637 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Our IELTS Teachers</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Our Expert Mentors - IELTS Mahir</title>
+    <meta
+      name="description"
+      content="Meet the elite team of IELTS mentors and certified instructors at IELTS Mahir."
+    />
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter & Montserrat for professional typography -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
       rel="stylesheet"
     />
-    <!-- Font Awesome for icons -->
+
+    <!-- Premium Editorial Typography -->
     <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap"
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+
     <style>
-      /* Base styles for body */
       body {
         font-family: "Inter", sans-serif;
-        background-color: #f8f8f8; /* Lighter background for a cleaner look */
-        color: #333; /* Slightly darker text for better contrast */
-        min-height: 100vh; /* Ensure body takes full viewport height */
-        display: flex;
-        flex-direction: column;
-        line-height: 1.6;
-      }
-      /* Main container for consistent padding */
-      .container {
-        max-width: 1280px; /* Slightly wider max-width */
-        margin: 0 auto;
-        padding: 1.5rem; /* Default padding for mobile (px-6 py-6) */
-      }
-      /* Responsive padding for larger screens */
-      @media (min-width: 768px) {
-        .container {
-          padding: 2.5rem; /* md:px-10 md:py-10 */
-        }
-      }
-      @media (min-width: 1024px) {
-        .container {
-          padding: 3rem; /* lg:px-12 lg:py-12 */
-        }
+        background-color: #f8fafc;
+        color: #334155;
+        overflow-x: hidden;
       }
 
-      /* Teacher Card Enhancements */
-      .teacher-card {
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        border: 1px solid #e5e7eb; /* Subtle border for definition */
-        border-radius: 0.75rem; /* More rounded corners */
-      }
-      .teacher-card:hover {
-        transform: translateY(-8px) scale(1.02); /* More pronounced lift and slight scale */
-        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
-      }
-      .teacher-image {
-        width: 120px;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 9999px; /* rounded-full */
-        border: 4px solid #fca5a5; /* border-red-300 */
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow */
-      }
-      .teacher-name {
-        font-family: "Montserrat", sans-serif; /* Use Montserrat for names */
-        font-weight: 700; /* Bold name */
-        color: #1f2937; /* Darker name color */
-      }
-      .teacher-expertise {
-        color: #ef4444; /* Red color for expertise */
-        font-weight: 600; /* Semi-bold expertise */
+      .heading-font {
+        font-family: "Outfit", sans-serif;
       }
 
-      /* Special Styling for Head of Institution */
-      .head-teacher-card {
-        background-color: #e0f2fe; /* Light blue background */
-        border: 2px solid #3b82f6; /* Blue border */
-        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); /* Blue shadow */
-        transform: scale(1.03); /* Slightly larger by default */
-        z-index: 10; /* Ensure it's above other cards */
-      }
-      .head-teacher-card:hover {
-        transform: translateY(-10px) scale(1.05); /* More pronounced hover */
-        box-shadow: 0 20px 35px rgba(59, 130, 246, 0.3); /* Stronger blue shadow on hover */
-      }
-      .head-teacher-card .teacher-image {
-        border-color: #3b82f6; /* Blue border for Mahir's image */
-      }
-      .head-teacher-card .teacher-name {
-        color: #1d4ed8; /* Darker blue for Mahir's name */
-      }
-      .head-teacher-card .teacher-expertise {
-        color: #1e40af; /* Even darker blue for expertise */
+      /* === Premium Mesh-Grid Hero Section === */
+      .faculty-hero {
+        background-color: #ffffff !important;
+        background-image: radial-gradient(
+            ellipse at 50% 0%,
+            rgba(220, 38, 38, 0.08) 0%,
+            transparent 70%
+          ),
+          linear-gradient(rgba(220, 38, 38, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(220, 38, 38, 0.04) 1px, transparent 1px) !important;
+        background-size: 100% 100%, 40px 40px, 40px 40px !important;
+        background-position: top center !important;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid #f1f5f9;
       }
 
-      /* Primary Button Styling */
-      .btn-primary {
-        background-color: #ef4444; /* red-500 */
-        color: white;
-        padding: 0.85rem 1.75rem; /* Slightly larger padding */
-        border-radius: 0.625rem; /* More rounded */
-        font-weight: 600; /* font-semibold */
-        transition: background-color 0.2s ease-in-out,
-          transform 0.2s ease-in-out;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to button */
-      }
-      .btn-primary:hover {
-        background-color: #dc2626; /* red-600 */
-        transform: translateY(-2px); /* Slight lift on hover */
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-      }
-
-      /* Skeleton Loader Animation */
-      .skeleton-loader {
-        background: linear-gradient(
-          90deg,
-          #f0f0f0 25%,
-          #e0e0e0 50%,
-          #f0f0f0 75%
-        );
-        background-size: 200% 100%;
-        animation: loading 1.5s infinite;
-      }
-      @keyframes loading {
+      /* Animated Blobs for Visual Depth */
+      @keyframes blob {
         0% {
-          background-position: -200% 0;
+          transform: translate(0px, 0px) scale(1);
+        }
+        33% {
+          transform: translate(30px, -50px) scale(1.1);
+        }
+        66% {
+          transform: translate(-20px, 20px) scale(0.9);
         }
         100% {
-          background-position: 200% 0;
+          transform: translate(0px, 0px) scale(1);
+        }
+      }
+      .animate-blob {
+        animation: blob 10s infinite alternate;
+      }
+
+      /* === Elite Teacher Cards (Circular & Professional) === */
+      .teacher-card {
+        background: #ffffff;
+        border-radius: 2rem;
+        padding: 2.5rem 1.5rem 2rem 1.5rem;
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06);
+        border: 1px solid #f1f5f9;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: 100%;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .teacher-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px -12px rgba(220, 38, 38, 0.12);
+        border-color: #fee2e2; /* light red border on hover */
+      }
+
+      /* Subtle top accent line for premium feel */
+      .teacher-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: transparent;
+        transition: background 0.4s ease;
+      }
+      .teacher-card:hover::before {
+        background: linear-gradient(90deg, #ef4444, #f43f5e);
+      }
+
+      .teacher-avatar {
+        width: 8rem; /* 128px */
+        height: 8rem;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        border: 4px solid #ffffff;
+        background-color: #f8fafc;
+        transition: transform 0.5s ease;
+      }
+
+      .teacher-card:hover .teacher-avatar {
+        transform: scale(1.05);
+      }
+
+      /* High-end Badges */
+      .teacher-badge {
+        display: inline-flex;
+        align-items: center;
+        background: #fef2f2;
+        color: #dc2626;
+        padding: 0.35rem 1rem;
+        border-radius: 9999px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        border: 1px solid #fee2e2;
+        margin-bottom: 1rem;
+      }
+
+      /* Modal Styling Overrides */
+      .rich-text-content {
+        font-family: "Merriweather", serif;
+        font-size: 1.1rem;
+        line-height: 1.9;
+        color: #1e293b;
+      }
+
+      .rich-text-content h2 {
+        font-family: "Outfit", sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-top: 1.5em;
+        margin-bottom: 0.75em;
+        border-bottom: 2px solid #f1f5f9;
+        padding-bottom: 0.5rem;
+      }
+
+      #teacher-modal {
+        backdrop-filter: blur(12px);
+      }
+      .modal-content-enter {
+        animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95) translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
         }
       }
 
-      /* Message Box Styling */
-      .message-box {
-        background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 5px;
       }
-      .message-box-content {
-        background-color: #ffffff;
-        padding: 2.5rem; /* More generous padding */
-        border-radius: 1rem; /* More rounded */
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #e2e8f0;
+        border-radius: 10px;
       }
-      .message-box-content p {
-        font-size: 1.25rem; /* Larger text */
-        margin-bottom: 1.5rem;
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #cbd5e1;
       }
-      .message-box-content button {
-        background-color: #ef4444;
-        color: white;
-        padding: 0.75rem 2rem;
-        border-radius: 0.75rem;
-        font-weight: 600;
-        transition: background-color 0.2s ease;
+
+      /* Skeleton Loader */
+      .skeleton {
+        background: #e2e8f0;
+        background: linear-gradient(
+          110deg,
+          #ececec 8%,
+          #f5f5f5 18%,
+          #ececec 33%
+        );
+        background-size: 200% 100%;
+        animation: 1.5s shine linear infinite;
       }
-      .message-box-content button:hover {
-        background-color: #dc2626;
+      @keyframes shine {
+        to {
+          background-position-x: -200%;
+        }
       }
     </style>
   </head>
-  <body>
-    <div class="container py-8 md:py-12">
-      <!-- Page Header -->
-      <header class="text-center mb-10 md:mb-16">
-        <h1
-          class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 leading-tight"
-        >
-          Meet Our Expert IELTS Teachers
-        </h1>
-        <p
-          class="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto px-4 sm:px-0"
-        >
-          Our dedicated team of certified IELTS instructors is here to guide you
-          to success. Learn more about their expertise and experience.
-        </p>
-      </header>
-
-      <!-- Search and Filter Section -->
-      <section class="mb-8 bg-white p-6 md:p-8 rounded-xl shadow-md">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-end">
-          <div>
-            <label
-              for="teacher-search"
-              class="block text-gray-700 text-sm font-semibold mb-2"
-              >Search Teachers</label
-            >
-            <div class="relative">
-              <input
-                type="text"
-                id="teacher-search"
-                placeholder="Search by name or expertise..."
-                class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-800"
-              />
-              <i
-                class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              ></i>
-            </div>
-          </div>
-          <div>
-            <label
-              for="teacher-filter-expertise"
-              class="block text-gray-700 text-sm font-semibold mb-2"
-              >Filter by Expertise</label
-            >
-            <select
-              id="teacher-filter-expertise"
-              class="w-full py-2.5 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white text-gray-800 appearance-none pr-8"
-            >
-              <option value="all">All Expertise Areas</option>
-              <option value="ielts speaking">IELTS Speaking</option>
-              <option value="ielts writing">IELTS Writing</option>
-              <option value="ielts listening">IELTS Listening</option>
-              <option value="ielts reading">IELTS Reading</option>
-              <option value="ielts general">IELTS General Training</option>
-              <option value="ielts academic">IELTS Academic</option>
-              <option value="grammar">Grammar & Vocabulary</option>
-              <option value="test strategies">Test Strategies</option>
-              <option value="beginner">Beginner IELTS</option>
-              <option value="advanced">Advanced IELTS</option>
-            </select>
-            <!-- Custom arrow for select to ensure consistent appearance -->
-            <div
-              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-            >
-              <svg
-                class="fill-current h-4 w-4"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Teachers Grid -->
-      <section>
-        <h2
-          class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center"
-        >
-          Our Dedicated Instructors
-        </h2>
-        <div
-          id="teachers-grid"
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-        >
-          <!-- Skeleton loaders for initial loading -->
-          <div
-            class="teacher-card bg-white p-6 rounded-xl shadow-md text-center flex flex-col items-center skeleton-loader"
-          >
-            <div class="teacher-image bg-gray-200 mb-4"></div>
-            <div class="h-6 w-3/4 bg-gray-200 rounded mb-2"></div>
-            <div class="h-4 w-1/2 bg-gray-200 rounded"></div>
-            <div class="mt-4 h-10 w-2/3 bg-gray-200 rounded-lg"></div>
-          </div>
-          <div
-            class="teacher-card bg-white p-6 rounded-xl shadow-md text-center flex flex-col items-center skeleton-loader"
-          >
-            <div class="teacher-image bg-gray-200 mb-4"></div>
-            <div class="h-6 w-3/4 bg-gray-200 rounded mb-2"></div>
-            <div class="h-4 w-1/2 bg-gray-200 rounded"></div>
-            <div class="mt-4 h-10 w-2/3 bg-gray-200 rounded-lg"></div>
-          </div>
-          <div
-            class="teacher-card bg-white p-6 rounded-xl shadow-md text-center flex flex-col items-center skeleton-loader"
-          >
-            <div class="teacher-image bg-gray-200 mb-4"></div>
-            <div class="h-6 w-3/4 bg-gray-200 rounded mb-2"></div>
-            <div class="h-4 w-1/2 bg-gray-200 rounded"></div>
-            <div class="mt-4 h-10 w-2/3 bg-gray-200 rounded-lg"></div>
-          </div>
-        </div>
-        <div
-          id="no-teachers-found"
-          class="hidden text-center text-gray-600 text-xl mt-8"
-        >
-          <p>No teachers found matching your criteria.</p>
-        </div>
-      </section>
-    </div>
-
-    <!-- Message Box (replaces alert) -->
-    <div
-      id="message-box"
-      class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-[1000] hidden"
+  <body class="antialiased flex flex-col min-h-screen">
+    <!-- Sticky Navigation -->
+    <header
+      class="bg-white/80 backdrop-blur-xl sticky top-0 z-[60] border-b border-slate-100 transition-all"
     >
       <div
-        class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center message-box-content"
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center"
       >
-        <p id="message-content" class="text-gray-800 text-lg mb-4"></p>
-        <button
-          id="close-message-box"
-          class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200"
+        <a
+          href="home"
+          class="group flex items-center gap-3 text-slate-700 hover:text-red-600 font-bold transition-all"
         >
-          OK
+          <div
+            class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200 group-hover:bg-red-50 group-hover:border-red-200 transition-all"
+          >
+            <i class="fas fa-arrow-left"></i>
+          </div>
+          <span class="hidden sm:block">Back to Home</span>
+        </a>
+
+        <div class="flex items-center gap-4">
+          <a
+            href="contact"
+            class="px-6 py-2.5 rounded-full bg-slate-900 text-white font-bold hover:bg-red-600 hover:shadow-xl hover:shadow-red-600/20 transition-all text-sm"
+          >
+            Book a Consultation
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Faculty Hero Section -->
+    <section
+      class="faculty-hero pt-24 pb-20 md:pt-32 md:pb-28 px-4 sm:px-6 lg:px-8 text-center"
+    >
+      <!-- Background Accents -->
+      <div
+        class="absolute top-0 left-1/4 w-96 h-96 bg-red-100/40 rounded-full blur-[100px] animate-blob pointer-events-none"
+      ></div>
+      <div
+        class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-100/30 rounded-full blur-[100px] animate-blob pointer-events-none"
+        style="animation-delay: 3s;"
+      ></div>
+
+      <div class="relative z-10 max-w-4xl mx-auto">
+        <span
+          class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-50 text-red-600 text-[10px] font-extrabold uppercase tracking-widest mb-6 border border-red-100 shadow-sm"
+        >
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+          IELTS Experts
+        </span>
+
+        <h1
+          class="heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 mb-6 leading-[1.1] tracking-tight"
+        >
+          Meet the
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-500"
+            >IELTS Masters.</span
+          >
+        </h1>
+
+        <p
+          class="text-base md:text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium"
+        >
+          Learn from a handpicked team of certified examiners and senior
+          instructors dedicated to breaking down Band 9 strategies for your
+          dream score.
+        </p>
+      </div>
+    </section>
+
+    <!-- Main Faculty Grid -->
+    <main
+      class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-20 flex-grow relative z-20 -mt-10"
+    >
+      <div
+        id="teachers-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-10"
+      >
+        <!-- Premium Circular Skeletons -->
+        <div class="teacher-card">
+          <div class="w-32 h-32 rounded-full skeleton mb-6"></div>
+          <div class="h-5 w-24 skeleton rounded-full mb-4"></div>
+          <div class="h-8 w-3/4 skeleton rounded-lg mb-4"></div>
+          <div class="h-4 w-full skeleton rounded-md mt-auto"></div>
+          <div class="h-4 w-5/6 skeleton rounded-md mt-2"></div>
+        </div>
+        <div class="teacher-card hidden sm:flex">
+          <div class="w-32 h-32 rounded-full skeleton mb-6"></div>
+          <div class="h-5 w-24 skeleton rounded-full mb-4"></div>
+          <div class="h-8 w-3/4 skeleton rounded-lg mb-4"></div>
+          <div class="h-4 w-full skeleton rounded-md mt-auto"></div>
+          <div class="h-4 w-5/6 skeleton rounded-md mt-2"></div>
+        </div>
+        <div class="teacher-card hidden lg:flex">
+          <div class="w-32 h-32 rounded-full skeleton mb-6"></div>
+          <div class="h-5 w-24 skeleton rounded-full mb-4"></div>
+          <div class="h-8 w-3/4 skeleton rounded-lg mb-4"></div>
+          <div class="h-4 w-full skeleton rounded-md mt-auto"></div>
+          <div class="h-4 w-5/6 skeleton rounded-md mt-2"></div>
+        </div>
+        <div class="teacher-card hidden xl:flex">
+          <div class="w-32 h-32 rounded-full skeleton mb-6"></div>
+          <div class="h-5 w-24 skeleton rounded-full mb-4"></div>
+          <div class="h-8 w-3/4 skeleton rounded-lg mb-4"></div>
+          <div class="h-4 w-full skeleton rounded-md mt-auto"></div>
+          <div class="h-4 w-5/6 skeleton rounded-md mt-2"></div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div
+        id="empty-state"
+        class="hidden text-center py-28 bg-white rounded-[2.5rem] border-2 border-dashed border-slate-200 shadow-sm mt-8"
+      >
+        <div
+          class="inline-flex items-center justify-center w-24 h-24 bg-slate-50 rounded-full mb-6 text-slate-300"
+        >
+          <i class="fas fa-users-cog text-4xl"></i>
+        </div>
+        <h3 class="heading-font text-3xl font-bold text-slate-800 mb-3">
+          Updating Faculty...
+        </h3>
+        <p class="text-slate-500 text-lg max-w-sm mx-auto font-medium">
+          Our team is currently finalizing some profile updates. Check back in a
+          few moments!
+        </p>
+      </div>
+    </main>
+
+    <!-- Professional Profile Modal -->
+    <div
+      id="teacher-modal"
+      class="fixed inset-0 z-[100] hidden items-center justify-center p-0 md:p-6 lg:p-10 bg-slate-950/80"
+    >
+      <div class="absolute inset-0" id="modal-backdrop"></div>
+
+      <div
+        id="modal-content"
+        class="relative w-full h-full md:h-auto max-w-6xl bg-white md:rounded-[2.5rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row max-h-[100vh] md:max-h-[90vh]"
+      >
+        <!-- Action: Mobile Close -->
+        <button
+          class="close-modal-btn md:hidden absolute top-6 right-6 w-12 h-12 bg-white shadow-xl rounded-full text-red-600 flex items-center justify-center z-[70] border border-red-50"
+        >
+          <i class="fas fa-times text-xl"></i>
         </button>
+
+        <!-- Profile Intro Panel (Sticky Sidebar Style) -->
+        <div
+          class="w-full md:w-5/12 lg:w-4/12 bg-slate-50 md:border-r border-slate-200 flex-shrink-0 flex flex-col overflow-hidden"
+        >
+          <div
+            class="w-full aspect-square md:aspect-auto md:h-full relative overflow-hidden"
+          >
+            <img
+              id="modal-img"
+              src=""
+              alt="Mentor Profile"
+              class="w-full h-full object-cover object-top"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent md:bg-gradient-to-t md:from-slate-950/20"
+            ></div>
+
+            <div class="absolute bottom-0 left-0 p-8 w-full text-white">
+              <span
+                id="modal-expertise-mobile"
+                class="inline-flex px-3 py-1 bg-red-600 rounded-full text-[10px] font-extrabold uppercase tracking-widest mb-3 border border-red-500"
+                >Expertise</span
+              >
+              <h2
+                id="modal-name-mobile"
+                class="heading-font text-4xl font-extrabold leading-none mb-2"
+              >
+                Name
+              </h2>
+              <p
+                class="text-red-300 text-sm font-bold uppercase tracking-wider"
+              >
+                IELTS Senior Faculty
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bio Content Scrollable Area -->
+        <div
+          class="w-full md:w-7/12 lg:w-8/12 bg-white p-8 md:p-12 lg:p-20 overflow-y-auto custom-scrollbar relative flex flex-col"
+        >
+          <!-- Desktop Close -->
+          <button
+            class="close-modal-btn hidden md:flex absolute top-10 right-10 w-12 h-12 bg-slate-50 hover:bg-red-50 rounded-full text-slate-400 hover:text-red-600 items-center justify-center transition-all duration-300 z-10 border border-slate-200 hover:rotate-90"
+          >
+            <i class="fas fa-times text-xl"></i>
+          </button>
+
+          <div class="mb-10">
+            <h3
+              class="heading-font text-2xl font-extrabold text-slate-900 mb-4 flex items-center gap-3"
+            >
+              <span class="w-8 h-1 bg-red-600 rounded-full"></span>
+              Biography & Expertise
+            </h3>
+
+            <!-- Rich Text Bio -->
+            <div id="modal-bio" class="rich-text-content">
+              <!-- Summernote code -->
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- Official Brand Footer -->
+    <footer class="bg-slate-950 py-16 text-center mt-auto">
+      <div class="max-w-7xl mx-auto px-6">
+        <h2
+          class="heading-font text-white text-2xl font-extrabold mb-8 uppercase tracking-widest opacity-50"
+        >
+          IELTS Mahir Editorial
+        </h2>
+        <div class="flex justify-center gap-6 mb-10">
+          <a
+            href="#"
+            class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-white/10 transition-all"
+            ><i class="fab fa-facebook-f text-xl"></i
+          ></a>
+          <a
+            href="#"
+            class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-white/10 transition-all"
+            ><i class="fab fa-instagram text-xl"></i
+          ></a>
+          <a
+            href="#"
+            class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-white/10 transition-all"
+            ><i class="fab fa-youtube text-xl"></i
+          ></a>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">
+          © 2024 IELTS Mahir Academy. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Firebase System -->
     <script type="module">
-      // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
       import {
         getFirestore,
         collection,
-        query,
-        where,
         onSnapshot,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-      // Removed: getAuth, signInAnonymously, signInWithCustomToken imports
+      import {
+        getAuth,
+        signInAnonymously,
+        signInWithCustomToken,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-      // Firebase configuration and initialization
-      const defaultAppId = "ielts-mahir-community-forum";
-      const defaultFirebaseConfig = {
-        apiKey: "AIzaSyAxsd0CnLsh7t7yFy3ZPp6saGD_YpLL1mY",
-        authDomain: "ielts-mahir-community-forum.firebaseapp.com",
-        projectId: "ielts-mahir-community-forum",
-        storageBucket: "ielts-mahir-community-forum.firebasestorage.app",
-        messagingSenderId: "1036043607546",
-        appId: "1:1036043607546:web:bd217e04cc0ec5f296d843",
-        measurementId: "G-YC4CG1WKD3",
-      };
-
+      // --- Firebase Init ---
+      const appId =
+        typeof __app_id !== "undefined"
+          ? __app_id
+          : "ielts-mahir-community-forum";
       const firebaseConfig =
         typeof __firebase_config !== "undefined"
           ? JSON.parse(__firebase_config)
-          : defaultFirebaseConfig;
+          : {
+              apiKey: "AIzaSyAxsd0CnLsh7t7yFy3ZPp6saGD_YpLL1mY",
+              authDomain: "ielts-mahir-community-forum.firebaseapp.com",
+              projectId: "ielts-mahir-community-forum",
+              storageBucket: "ielts-mahir-community-forum.firebasestorage.app",
+              messagingSenderId: "1036043607546",
+              appId: "1:1036043607546:web:bd217e04cc0ec5f296d843",
+            };
+
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
-      // Removed: const auth = getAuth(app);
-      const appId = typeof __app_id !== "undefined" ? __app_id : defaultAppId;
+      const auth = getAuth(app);
 
-      // Removed: let isAuthReady = false; // Flag to indicate if auth is ready
+      // --- Elements ---
+      const grid = document.getElementById("teachers-grid");
+      const emptyState = document.getElementById("empty-state");
 
-      // Define the ID for the head of the institution's profile
-      // IMPORTANT: Replace "mahir-ielts-head-id" with the actual Firestore document ID for Mahir's profile.
-      const headOfInstitutionId = "mahir-ielts-head-id";
+      const modal = document.getElementById("teacher-modal");
+      const modalBackdrop = document.getElementById("modal-backdrop");
+      const modalContent = document.getElementById("modal-content");
+      const closeBtns = document.querySelectorAll(".close-modal-btn");
 
-      // Current filters for teachers
-      let currentFilters = { expertise: "all", searchTerm: "" };
+      const modalImg = document.getElementById("modal-img");
+      const modalNameMobile = document.getElementById("modal-name-mobile");
+      const modalExpertiseMobile = document.getElementById(
+        "modal-expertise-mobile",
+      );
+      const modalBio = document.getElementById("modal-bio");
 
-      // Removed: authenticateFirebase function and its related isAuthReady flag.
+      // --- Modal Functions ---
+      function openModal(teacher) {
+        modalImg.src =
+          teacher.image ||
+          "https://placehold.co/600x800/f1f5f9/94a3b8?text=Instructor";
+        modalNameMobile.textContent = teacher.name || "Instructor";
+        modalExpertiseMobile.textContent = teacher.expertise || "IELTS Expert";
+        modalBio.innerHTML =
+          teacher.bio ||
+          "<p class='italic text-slate-400'>Biography is coming soon...</p>";
 
-      // --- Message Box Utility (replaces alert) ---
-      const showMessage = (message) => {
-        const messageBox = document.getElementById("message-box");
-        const messageContent = document.getElementById("message-content");
-        messageContent.textContent = message;
-        messageBox.classList.remove("hidden");
-      };
+        modal.classList.remove("hidden");
+        modal.classList.add("flex", "modal-enter");
+        modalContent.classList.add("modal-content-enter");
+        document.body.style.overflow = "hidden";
+      }
 
-      // --- Render Teachers Function ---
-      const renderTeachers = (filters) => {
-        // Removed: if (!isAuthReady) check
-        const teachersGrid = document.getElementById("teachers-grid");
-        const noTeachersFound = document.getElementById("no-teachers-found");
-        if (!teachersGrid || !noTeachersFound) {
-          console.error(
-            "Teachers grid or no teachers message not found in DOM. Cannot render."
-          );
-          return;
-        }
+      function closeModal() {
+        modal.classList.replace("modal-enter", "modal-leave");
+        setTimeout(() => {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex", "modal-leave");
+          modalContent.classList.remove("modal-content-enter");
+          document.body.style.overflow = "";
+          setTimeout(() => {
+            modalBio.innerHTML = "";
+          }, 150);
+        }, 300);
+      }
 
-        // Clear existing content and show skeleton loaders
-        teachersGrid.innerHTML = `
-            <div class="teacher-card bg-white p-6 rounded-xl shadow-md text-center flex flex-col items-center skeleton-loader">
-                <div class="teacher-image bg-gray-200 mb-4"></div>
-                <div class="h-6 w-3/4 bg-gray-200 rounded mb-2"></div>
-                <div class="h-4 w-1/2 bg-gray-200 rounded"></div>
-                <div class="mt-4 h-10 w-2/3 bg-gray-200 rounded-lg"></div>
-            </div>
-            <div class="teacher-card bg-white p-6 rounded-xl shadow-md text-center flex flex-col items-center skeleton-loader">
-                <div class="teacher-image bg-gray-200 mb-4"></div>
-                <div class="h-6 w-3/4 bg-gray-200 rounded mb-2"></div>
-                <div class="h-4 w-1/2 bg-gray-200 rounded"></div>
-                <div class="mt-4 h-10 w-2/3 bg-gray-200 rounded-lg"></div>
-            </div>
-            <div class="teacher-card bg-white p-6 rounded-xl shadow-md text-center flex flex-col items-center skeleton-loader">
-                <div class="teacher-image bg-gray-200 mb-4"></div>
-                <div class="h-6 w-3/4 bg-gray-200 rounded mb-2"></div>
-                <div class="h-4 w-1/2 bg-gray-200 rounded"></div>
-                <div class="mt-4 h-10 w-2/3 bg-gray-200 rounded-lg"></div>
-            </div>
-        `;
-        noTeachersFound.classList.add("hidden");
+      closeBtns.forEach((btn) => btn.addEventListener("click", closeModal));
+      modalBackdrop.addEventListener("click", closeModal);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.classList.contains("hidden"))
+          closeModal();
+      });
 
+      // --- Data Core ---
+      function loadFaculty() {
         const teachersRef = collection(
           db,
           "artifacts",
           appId,
           "public",
           "data",
-          "teachers"
+          "teachers",
         );
-
-        // Build query with filters
-        let q = query(teachersRef, where("status", "==", "active")); // Only show active teachers
 
         onSnapshot(
-          q,
+          teachersRef,
           (snapshot) => {
-            teachersGrid.innerHTML = ""; // Clear loaders once data arrives
-            let teachers = [];
-            snapshot.forEach((doc) => {
-              teachers.push({ id: doc.id, ...doc.data() });
-            });
+            grid.innerHTML = "";
 
-            // Apply client-side search and expertise filter
-            let filteredTeachers = teachers.filter((teacher) => {
-              const matchesExpertise =
-                filters.expertise === "all" ||
-                (teacher.expertise &&
-                  teacher.expertise
-                    .toLowerCase()
-                    .includes(filters.expertise.toLowerCase()));
-              const matchesSearchTerm =
-                filters.searchTerm === "" ||
-                (teacher.name &&
-                  teacher.name
-                    .toLowerCase()
-                    .includes(filters.searchTerm.toLowerCase())) ||
-                (teacher.expertise &&
-                  teacher.expertise
-                    .toLowerCase()
-                    .includes(filters.searchTerm.toLowerCase()));
-              return matchesExpertise && matchesSearchTerm;
-            });
+            const teachers = snapshot.docs
+              .map((doc) => ({ id: doc.id, ...doc.data() }))
+              .filter((t) => t.status === "active")
+              .sort(
+                (a, b) =>
+                  (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0),
+              );
 
-            if (filteredTeachers.length === 0) {
-              noTeachersFound.classList.remove("hidden");
+            if (teachers.length === 0) {
+              emptyState.classList.remove("hidden");
+              return;
             } else {
-              noTeachersFound.classList.add("hidden");
-              filteredTeachers.forEach((teacher) => {
-                const teacherCard = document.createElement("div");
-                teacherCard.classList.add(
-                  "teacher-card",
-                  "bg-white",
-                  "p-6",
-                  "rounded-xl",
-                  "shadow-md",
-                  "text-center",
-                  "flex",
-                  "flex-col",
-                  "items-center",
-                  "transform",
-                  "hover:scale-105" // Add a subtle scale effect on hover
-                );
-
-                // Add special class if this is the head of the institution
-                if (teacher.id === headOfInstitutionId) {
-                  teacherCard.classList.add("head-teacher-card");
-                }
-
-                teacherCard.innerHTML = `
-                                    <img
-                                        src="${
-                                          teacher.image ||
-                                          "https://placehold.co/120x120/9CA3AF/white?text=Teacher"
-                                        }"
-                                        alt="${teacher.name}"
-                                        class="teacher-image mb-4"
-                                        onerror="this.src='https://placehold.co/120x120/9CA3AF/white?text=Teacher'"
-                                    />
-                                    <h3 class="text-xl teacher-name mb-2">
-                                        ${teacher.name}
-                                    </h3>
-                                    <p class="text-base teacher-expertise mb-4">
-                                        ${teacher.expertise}
-                                    </p>
-                                    <a
-                                        href="teacher-details?id=${teacher.id}"
-                                        class="btn-primary inline-block mt-auto"
-                                    >
-                                        View Profile
-                                    </a>
-                                `;
-                teachersGrid.appendChild(teacherCard);
-              });
+              emptyState.classList.add("hidden");
             }
+
+            teachers.forEach((teacher) => {
+              const imgSrc =
+                teacher.image ||
+                "https://placehold.co/400x400/f1f5f9/94a3b8?text=Instructor";
+
+              // Text Snippet Logic
+              const tempDiv = document.createElement("div");
+              tempDiv.innerHTML = teacher.bio || "";
+              let snippet = tempDiv.textContent || tempDiv.innerText || "";
+              snippet = snippet.replace(/\s+/g, " ").trim();
+              if (snippet.length > 85)
+                snippet = snippet.substring(0, 85) + "...";
+
+              const card = document.createElement("div");
+              card.className = "teacher-card group";
+
+              card.innerHTML = `
+                      <img src="${imgSrc}" class="teacher-avatar" alt="${
+                teacher.name
+              }" onerror="this.src='https://placehold.co/400x400/f1f5f9/94a3b8?text=Instructor'">
+                      <span class="teacher-badge">${
+                        teacher.expertise || "Mentor"
+                      }</span>
+                      <h3 class="heading-font text-2xl font-extrabold text-slate-900 mb-3 leading-tight group-hover:text-red-600 transition-colors text-center">
+                          ${teacher.name}
+                      </h3>
+                      <p class="text-sm text-slate-500 font-medium leading-relaxed line-clamp-3 text-center mt-auto">
+                          ${
+                            snippet ||
+                            "Experienced IELTS instructor dedicated to helping you achieve your band score goals."
+                          }
+                      </p>
+                  `;
+
+              card.addEventListener("click", () => openModal(teacher));
+              grid.appendChild(card);
+            });
           },
           (error) => {
-            console.error("Error fetching teachers:", error);
-            showMessage(
-              `Error loading teachers: ${error.message}. Please check your internet connection.`
-            );
-            teachersGrid.innerHTML = `
-              <p class="text-red-600 text-center col-span-full">Failed to load teachers. Please check your internet connection.</p>
-            `;
-          }
+            console.error("Firestore read error:", error);
+            grid.innerHTML = `<div class="col-span-full p-10 bg-red-50 text-red-600 rounded-[2.5rem] text-center font-bold border-2 border-red-100 shadow-sm"><i class="fas fa-wifi-slash mr-3"></i> System error. Please check your internet connection and refresh.</div>`;
+          },
         );
-      };
+      }
 
-      // --- Event Listeners ---
-      document.addEventListener("DOMContentLoaded", async () => {
-        // Removed: await authenticateFirebase();
+      // --- Boot ---
+      async function init() {
+        try {
+          if (
+            typeof __initial_auth_token !== "undefined" &&
+            __initial_auth_token
+          ) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+        } catch (err) {
+          console.warn("Auth Info:", err.message);
+        }
+        loadFaculty();
+      }
 
-        // Initial render of teachers
-        renderTeachers(currentFilters);
-
-        // Close message box
-        document
-          .getElementById("close-message-box")
-          .addEventListener("click", () => {
-            document.getElementById("message-box").classList.add("hidden");
-          });
-
-        // Search input event listener
-        document
-          .getElementById("teacher-search")
-          .addEventListener("input", (e) => {
-            currentFilters.searchTerm = e.target.value.toLowerCase();
-            renderTeachers(currentFilters);
-          });
-
-        // Expertise filter event listener
-        document
-          .getElementById("teacher-filter-expertise")
-          .addEventListener("change", (e) => {
-            currentFilters.expertise = e.target.value.toLowerCase();
-            renderTeachers(currentFilters);
-          });
-      });
+      init();
     </script>
   </body>
 </html>
