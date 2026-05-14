@@ -14,6 +14,12 @@
       href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="shortcut icon"
+      href="assets/Ielts-mahir-fav.png"
+      type="image/x-icon"
+    />
+
     <!-- Font Awesome for icons -->
     <link
       rel="stylesheet"
@@ -801,29 +807,125 @@
           <i class="fas fa-bars"></i>
         </button>
         <!-- Replaced text with image logo -->
-        <div class="ai-logo-parent">
-          <a href="home">
-            <img
-              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
-              alt="IELTS Mahir Logo"
-              class="h-8 md:h-10 w-auto"
-              onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
-            />
-          </a>
-          <a href="ai-feature" class="ai-button" aria-label="AI Tools">
-            <i class="fas fa-robot" aria-hidden="true"></i>
-            <span>AI</span>
-          </a>
-        </div>
-        <!-- Top navigation links (hidden on desktop, now handled by left sidebar) -->
-        <nav class="hidden md:flex gap-6 ml-8 font-inter">
-          <a href="home">Home</a>
-          <a href="mock-test-home">Mock Test</a>
-          <a href="quiz-home">Quizzes</a>
-          <a href="ielts-tips-and-tricks">IELTS Tips and Tricks</a>
-          <a href="ielts-mahir-community-forum">Community Forum</a>
-          <a href="blog">Blog</a>
-          <a href="contact">Contact</a>
+        <a href="home" class="flex-shrink-0">
+          <img
+            src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+            alt="IELTS Mahir Logo"
+            class="h-8 md:h-10 w-auto"
+            onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+          />
+        </a>
+        <!-- Top navigation links (matches home page structure) -->
+        <nav
+          class="hidden lg:flex items-center gap-6 ml-6 font-inter relative z-50"
+        >
+          <a href="home" class="nav-link">Home</a>
+
+          <!-- Free Resources Dropdown -->
+          <div class="relative group">
+            <button
+              class="nav-link flex items-center gap-1.5 focus:outline-none"
+            >
+              Free Resources <i class="fas fa-chevron-down text-[10px]"></i>
+            </button>
+            <div
+              class="absolute left-0 top-full pt-4 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
+            >
+              <div
+                class="bg-white rounded-xl shadow-lg border border-gray-100 py-2 flex flex-col"
+              >
+                <a
+                  href="free-speaking-resources"
+                  class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                  >Speaking</a
+                >
+                <a
+                  href="free-reading-resources"
+                  class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                  >Reading</a
+                >
+                <a
+                  href="free-listening-resources"
+                  class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                  >Listening</a
+                >
+                <a
+                  href="free-writing-resources"
+                  class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                  >Writing</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- IELTS Tips & Tricks Dropdown -->
+          <div class="relative group">
+            <button
+              class="nav-link flex items-center gap-1.5 focus:outline-none"
+            >
+              IELTS Tips & Tricks
+              <i class="fas fa-chevron-down text-[10px]"></i>
+            </button>
+            <div
+              class="absolute left-0 top-full pt-4 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
+            >
+              <div
+                class="bg-white rounded-xl shadow-lg border border-gray-100 py-2 flex flex-col"
+              >
+                <a
+                  href="downloadable-pdf-resources"
+                  class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                  >Downloadable PDF resources</a
+                >
+
+                <!-- Sub-dropdown for Blog -->
+                <div class="relative group/sub w-full">
+                  <button
+                    class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors flex justify-between items-center"
+                  >
+                    Blog <i class="fas fa-chevron-right text-[10px]"></i>
+                  </button>
+                  <div
+                    class="absolute left-full top-0 ml-1 w-48 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-300 z-50"
+                  >
+                    <div
+                      class="bg-white rounded-xl shadow-lg border border-gray-100 py-2 flex flex-col"
+                    >
+                      <a
+                        href="ielts-mahir-blog?category=Speaking"
+                        class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                        >Speaking</a
+                      >
+                      <a
+                        href="ielts-mahir-blog?category=Reading"
+                        class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                        >Reading</a
+                      >
+                      <a
+                        href="ielts-mahir-blog?category=Listening"
+                        class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                        >Listening</a
+                      >
+                      <a
+                        href="ielts-mahir-blog?category=Writing"
+                        class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                        >Writing</a
+                      >
+                      <a
+                        href="ielts-mahir-blog?category=Others"
+                        class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                        >Others</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a href="mock-test-home" class="nav-link">Mock Test</a>
+          <a href="quiz-home" class="nav-link">Quizzes</a>
+          <a href="contact" class="nav-link">Contact</a>
         </nav>
       </div>
       <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
@@ -1149,7 +1251,7 @@
                                 (band) =>
                                   `<option value="${band}" ${
                                     currentBandGoal == band ? "selected" : ""
-                                  }>${band}</option>`
+                                  }>${band}</option>`,
                               )
                               .join("")}
                         </select>
@@ -1166,7 +1268,7 @@
         const cancelButton = document.getElementById("modal-cancel-btn");
         const nameInput = document.getElementById("profile-name-input");
         const bandGoalInput = document.getElementById(
-          "profile-band-goal-input"
+          "profile-band-goal-input",
         );
 
         saveButton.onclick = async () => {
@@ -1190,7 +1292,7 @@
             typeof __app_id !== "undefined" ? __app_id : "default-app-id";
           const userProfileRef = doc(
             authAppState.db,
-            `artifacts/${appId}/users/${dashboardState.userId}/userProfile/profile`
+            `artifacts/${appId}/users/${dashboardState.userId}/userProfile/profile`,
           );
 
           try {
@@ -1252,7 +1354,7 @@
       function renderPaginationControls(
         currentPage,
         totalPages,
-        paginationType
+        paginationType,
       ) {
         if (totalPages <= 1) {
           return "";
@@ -1323,7 +1425,7 @@
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const userStatsDocRef = doc(
           authAppState.db,
-          `artifacts/${appId}/users/${userId}/gameStats/summary`
+          `artifacts/${appId}/users/${userId}/gameStats/summary`,
         );
 
         try {
@@ -1335,7 +1437,7 @@
             };
             console.log(
               "Fetched local user game stats:",
-              dashboardState.userGameStats
+              dashboardState.userGameStats,
             );
           } else {
             console.log("No game stats found for user, initializing defaults.");
@@ -1362,7 +1464,7 @@
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const quizResultsRef = collection(
           authAppState.db,
-          `artifacts/${appId}/users/${userId}/quizResults`
+          `artifacts/${appId}/users/${userId}/quizResults`,
         );
 
         try {
@@ -1380,7 +1482,7 @@
           console.error("Error fetching quiz results:", error);
           showToast(
             "Failed to load quiz results for progress tracking.",
-            "error"
+            "error",
           );
         }
       }
@@ -1399,7 +1501,7 @@
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const mockTestResultsRef = collection(
           authAppState.db,
-          `artifacts/${appId}/users/${userId}/mockTestResults`
+          `artifacts/${appId}/users/${userId}/mockTestResults`,
         );
 
         try {
@@ -1412,12 +1514,12 @@
           // Sort by timestamp descending (most recent first)
           results.sort(
             (a, b) =>
-              (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0)
+              (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0),
           );
           dashboardState.mockTestResults = results;
           console.log(
             "Mock test results fetched:",
-            dashboardState.mockTestResults
+            dashboardState.mockTestResults,
           );
         } catch (error) {
           console.error("Error fetching mock test results:", error);
@@ -1449,7 +1551,7 @@
         });
 
         metrics.averageBandScore = (totalBandScoreSum / results.length).toFixed(
-          1
+          1,
         );
         metrics.totalTimeSpentOnMocks = totalTimeSeconds;
 
@@ -1463,7 +1565,7 @@
       function getStartOfTodayUTC() {
         const now = new Date();
         const startOfToday = new Date(
-          Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+          Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
         );
         return startOfToday;
       }
@@ -1483,14 +1585,14 @@
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const dailyResultsRef = collection(
           authAppState.db,
-          `artifacts/${appId}/public/data/quizGlobalResults`
+          `artifacts/${appId}/public/data/quizGlobalResults`,
         );
 
         const startOfToday = getStartOfTodayUTC();
 
         const q = query(
           dailyResultsRef,
-          where("timestamp", ">=", startOfToday)
+          where("timestamp", ">=", startOfToday),
         );
 
         try {
@@ -1516,13 +1618,13 @@
 
           let dailyLeaderboard = Array.from(dailyScoresMap.values());
           dailyLeaderboard.sort(
-            (a, b) => b.totalDailyScore - a.totalDailyScore
+            (a, b) => b.totalDailyScore - a.totalDailyScore,
           );
 
           dashboardState.dailyLeaderboardData = dailyLeaderboard;
 
           const userEntry = dailyLeaderboard.find(
-            (entry) => entry.userId === userId
+            (entry) => entry.userId === userId,
           );
           if (userEntry) {
             dashboardState.dailyLeaderboardRank =
@@ -1532,11 +1634,11 @@
           }
           console.log(
             "Daily Leaderboard Data:",
-            dashboardState.dailyLeaderboardData
+            dashboardState.dailyLeaderboardData,
           );
           console.log(
             "Daily Leaderboard Rank:",
-            dashboardState.dailyLeaderboardRank
+            dashboardState.dailyLeaderboardRank,
           );
         } catch (error) {
           console.error("Error fetching daily leaderboard data:", error);
@@ -1550,7 +1652,7 @@
       async function fetchGlobalLeaderboard() {
         if (!authAppState.db) {
           console.warn(
-            "Firestore DB not initialized. Cannot fetch global leaderboard."
+            "Firestore DB not initialized. Cannot fetch global leaderboard.",
           );
           dashboardState.globalLeaderboard = [];
           return;
@@ -1560,15 +1662,15 @@
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const quizGlobalResultsRef = collection(
           authAppState.db,
-          `artifacts/${appId}/public/data/quizGlobalResults`
+          `artifacts/${appId}/public/data/quizGlobalResults`,
         );
         const userGameStatsCollectionRef = collection(
           authAppState.db,
-          `artifacts/${appId}/users`
+          `artifacts/${appId}/users`,
         ); // Collection of user data
 
         console.log(
-          `Attempting to fetch global leaderboard from: artifacts/${appId}/public/data/quizGlobalResults`
+          `Attempting to fetch global leaderboard from: artifacts/${appId}/public/data/quizGlobalResults`,
         );
 
         try {
@@ -1600,7 +1702,7 @@
           const fetchPromises = userIds.map(async (userId) => {
             const userStatsDocRef = doc(
               userGameStatsCollectionRef,
-              `${userId}/gameStats/summary`
+              `${userId}/gameStats/summary`,
             );
             try {
               const docSnap = await getDoc(userStatsDocRef);
@@ -1616,7 +1718,7 @@
             } catch (error) {
               console.error(
                 `Error fetching game stats for user ${userId}:`,
-                error
+                error,
               );
               // If there's an error or no stats, keep default level and points
             }
@@ -1634,7 +1736,7 @@
           // Find user's global rank based on totalPoints
           if (authAppState.userId) {
             const userEntry = globalLeaderboard.find(
-              (entry) => entry.userId === authAppState.userId
+              (entry) => entry.userId === authAppState.userId,
             );
             if (userEntry) {
               dashboardState.userGlobalRank =
@@ -1648,12 +1750,12 @@
 
           console.log(
             "Global Leaderboard fetched for dashboard:",
-            dashboardState.globalLeaderboard
+            dashboardState.globalLeaderboard,
           );
         } catch (error) {
           console.error(
             "Error fetching global leaderboard for dashboard:",
-            error
+            error,
           );
           showToast("Failed to load global ranking.", "error");
         }
@@ -1705,7 +1807,7 @@
           // Process for score trend
           if (result.timestamp) {
             const date = new Date(result.timestamp.toDate()).toLocaleDateString(
-              "en-CA"
+              "en-CA",
             ); // YYYY-MM-DD
             scoreTrendData.push({
               date: date,
@@ -1718,7 +1820,7 @@
         metrics.totalTimeSpent = totalTimeSeconds;
         metrics.averageScore = (totalScoreSum / results.length).toFixed(2);
         metrics.averageAccuracy = (totalAccuracySum / results.length).toFixed(
-          2
+          2,
         );
 
         metrics.categoryPerformance = Object.keys(categoryPerformanceMap).map(
@@ -1734,7 +1836,7 @@
               averageAccuracy: (data.totalAccuracy / data.count).toFixed(2),
               count: data.count,
             };
-          }
+          },
         );
 
         scoreTrendData.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -1768,10 +1870,10 @@
         const categoryCtx = document.getElementById("categoryPerformanceChart");
         if (categoryCtx) {
           const categoryLabels = categoryPerformance.map(
-            (cp) => cp.categoryName
+            (cp) => cp.categoryName,
           );
           const categoryData = categoryPerformance.map((cp) =>
-            parseFloat(cp.averageAccuracy)
+            parseFloat(cp.averageAccuracy),
           );
 
           window.categoryChartInstance = new Chart(categoryCtx, {
@@ -1992,12 +2094,12 @@
 
         const categoryThreshold = 75; // Example: above 75% is a strength
         const overallAverageAccuracy = parseFloat(
-          dashboardState.performanceMetrics.averageAccuracy
+          dashboardState.performanceMetrics.averageAccuracy,
         );
 
         if (dashboardState.performanceMetrics.totalQuizzesCompleted === 0) {
           insights.weaknesses.push(
-            "No quizzes completed yet. Start practicing to see your progress!"
+            "No quizzes completed yet. Start practicing to see your progress!",
           );
           return insights;
         }
@@ -2008,7 +2110,7 @@
           insights.strengths.push("Solid overall performance.");
         } else {
           insights.weaknesses.push(
-            "Consider focusing on improving overall accuracy."
+            "Consider focusing on improving overall accuracy.",
           );
         }
 
@@ -2021,20 +2123,20 @@
               const accuracy = parseFloat(cat.averageAccuracy);
               if (accuracy >= categoryThreshold) {
                 insights.strengths.push(
-                  `Strong performance in ${cat.categoryName}.`
+                  `Strong performance in ${cat.categoryName}.`,
                 );
               } else if (accuracy < categoryThreshold && cat.count > 0) {
                 insights.weaknesses.push(
-                  `Consider reviewing ${cat.categoryName} concepts.`
+                  `Consider reviewing ${cat.categoryName} concepts.`,
                 );
               }
-            }
+            },
           );
         }
 
         if (dashboardState.performanceMetrics.totalQuizzesCompleted < 5) {
           insights.weaknesses.push(
-            "Keep taking more quizzes to get a clearer picture of your progress."
+            "Keep taking more quizzes to get a clearer picture of your progress.",
           );
         }
 
@@ -2097,7 +2199,7 @@
        */
       async function updateAuthUI(user) {
         const authButtonsContainer = document.getElementById(
-          "auth-buttons-container"
+          "auth-buttons-container",
         );
         if (authButtonsContainer) {
           if (user) {
@@ -2112,7 +2214,7 @@
                                 <button id="profile-icon-btn" class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold shadow-md hover:bg-blue-600 transition-colors duration-200 ease-in-out transform active:scale-95">
                                     ${(
                                       dashboardState.userProfile?.name?.charAt(
-                                        0
+                                        0,
                                       ) || // Use first char of name if available
                                       user.email?.charAt(0) || // Use first char of email if name is not available
                                       user.uid.charAt(0)
@@ -2138,7 +2240,7 @@
             const profileIconBtn = document.getElementById("profile-icon-btn");
             const profileDropdown = document.getElementById("profile-dropdown");
             const signOutDropdownBtn = document.getElementById(
-              "sign-out-dropdown-btn"
+              "sign-out-dropdown-btn",
             );
 
             profileIconBtn.addEventListener("click", (event) => {
@@ -2265,7 +2367,7 @@
                         ${item.icon}
                         <span>${item.text}</span>
                     </button>
-                `
+                `,
                   )
                   .join("")}
             </nav>
@@ -2319,7 +2421,7 @@
             ${item.icon}
             <span class="text-xs font-semibold">${item.text}</span>
           </button>
-        `
+        `,
           )
           .join("");
 
@@ -2345,7 +2447,7 @@
         const currentUserRank = dashboardState.userGlobalRank; // Get global rank
         const globalLeaderboardSnippet = dashboardState.globalLeaderboard.slice(
           0,
-          3
+          3,
         ); // Top 3 players
 
         // Safely access authAppState.auth.currentUser.email only if authAppState.auth and authAppState.auth.currentUser are defined
@@ -2491,7 +2593,7 @@
                                                       player.totalPoints
                                                     } Pts</span>
                                                 </li>
-                                            `
+                                            `,
                                             )
                                             .join("")
                                         : '<li class="text-gray-500">No global players yet.</li>'
@@ -2544,7 +2646,7 @@
                                     ? insights.strengths
                                         .map(
                                           (s) =>
-                                            `<li class="strength-item">${Icons.CheckCircle} <span>${s}</span></li>`
+                                            `<li class="strength-item">${Icons.CheckCircle} <span>${s}</span></li>`,
                                         )
                                         .join("")
                                     : "<li>No specific strengths identified yet. Keep practicing!</li>"
@@ -2561,7 +2663,7 @@
                                     ? insights.weaknesses
                                         .map(
                                           (w) =>
-                                            `<li class="weakness-item">${Icons.X} <span>${w}</span></li>`
+                                            `<li class="weakness-item">${Icons.X} <span>${w}</span></li>`,
                                         )
                                         .join("")
                                     : "<li>Great job! No major areas for improvement detected.</li>"
@@ -2627,27 +2729,27 @@
                                     startIndex + dashboardItemsPerPage;
                                   const paginatedResults = quizResults.slice(
                                     startIndex,
-                                    endIndex
+                                    endIndex,
                                   );
 
                                   if (paginatedResults.length > 0) {
                                     return paginatedResults
                                       .map((result) => {
                                         const category = quizCategories.find(
-                                          (cat) => cat.id === result.categoryId
+                                          (cat) => cat.id === result.categoryId,
                                         );
                                         const categoryName = category
                                           ? category.name
                                           : "N/A";
                                         const date = result.timestamp
                                           ? new Date(
-                                              result.timestamp.toDate()
+                                              result.timestamp.toDate(),
                                             ).toLocaleDateString()
                                           : "N/A";
                                         const foundTest = allQuizTests.find(
                                           (test) =>
                                             String(test.id) ===
-                                            String(result.testId)
+                                            String(result.testId),
                                         );
                                         const testTitle =
                                           foundTest?.title ||
@@ -2667,7 +2769,7 @@
                                                   result.percentage || 0
                                                 ).toFixed(2)}%</td>
                                                 <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
-                                                  result.timeTakenSeconds
+                                                  result.timeTakenSeconds,
                                                 )}</td>
                                                 <td class="whitespace-nowrap text-right text-sm font-medium">
                                                     <a href="quiz-detail-review?resultId=${
@@ -2700,9 +2802,9 @@
                           dashboardState.dashboardQuizHistoryPage,
                           Math.ceil(
                             dashboardState.quizResults.length /
-                              dashboardState.dashboardItemsPerPage
+                              dashboardState.dashboardItemsPerPage,
                           ),
-                          "dashboardQuiz"
+                          "dashboardQuiz",
                         )}
                     </div>
                 </div>
@@ -2735,7 +2837,7 @@
                                     startIndex + dashboardItemsPerPage;
                                   const paginatedResults = mockTestResults.slice(
                                     startIndex,
-                                    endIndex
+                                    endIndex,
                                   );
 
                                   if (paginatedResults.length > 0) {
@@ -2743,7 +2845,7 @@
                                       .map((result) => {
                                         const date = result.timestamp
                                           ? new Date(
-                                              result.timestamp.toDate()
+                                              result.timestamp.toDate(),
                                             ).toLocaleDateString()
                                           : "N/A";
                                         return `
@@ -2756,7 +2858,7 @@
                                                   result.bandScore
                                                 }</td>
                                                 <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
-                                                  result.timeTakenSeconds
+                                                  result.timeTakenSeconds,
                                                 )}</td>
                                                 <td class="whitespace-nowrap text-right text-sm font-medium">
                                                     <a href="mock-test?module=${
@@ -2793,9 +2895,9 @@
                           dashboardState.dashboardMockTestHistoryPage,
                           Math.ceil(
                             dashboardState.mockTestResults.length /
-                              dashboardState.dashboardItemsPerPage
+                              dashboardState.dashboardItemsPerPage,
                           ),
-                          "dashboardMock"
+                          "dashboardMock",
                         )}
                     </div>
                 </div>
@@ -2854,7 +2956,7 @@
                                 Start Quiz
                             </button>
                         </div>
-                    `
+                    `,
                       )
                       .join("")}
                 </div>
@@ -2915,27 +3017,27 @@
                                  startIndex + historyItemsPerPage;
                                const paginatedResults = quizResults.slice(
                                  startIndex,
-                                 endIndex
+                                 endIndex,
                                );
 
                                if (paginatedResults.length > 0) {
                                  return paginatedResults
                                    .map((result) => {
                                      const category = quizCategories.find(
-                                       (cat) => cat.id === result.categoryId
+                                       (cat) => cat.id === result.categoryId,
                                      );
                                      const categoryName = category
                                        ? category.name
                                        : "N/A";
                                      const date = result.timestamp
                                        ? new Date(
-                                           result.timestamp.toDate()
+                                           result.timestamp.toDate(),
                                          ).toLocaleDateString()
                                        : "N/A";
                                      const foundTest = allQuizTests.find(
                                        (test) =>
                                          String(test.id) ===
-                                         String(result.testId)
+                                         String(result.testId),
                                      );
                                      const testTitle =
                                        foundTest?.title ||
@@ -2953,7 +3055,7 @@
                                               result.percentage || 0
                                             ).toFixed(2)}%</td>
                                             <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
-                                              result.timeTakenSeconds
+                                              result.timeTakenSeconds,
                                             )}</td>
                                             <td class="whitespace-nowrap text-right text-sm font-medium">
                                                 <a href="quiz-detail-review?resultId=${
@@ -2986,9 +3088,9 @@
                       dashboardState.fullQuizHistoryPage,
                       Math.ceil(
                         dashboardState.quizResults.length /
-                          dashboardState.historyItemsPerPage
+                          dashboardState.historyItemsPerPage,
                       ),
-                      "fullQuizHistory"
+                      "fullQuizHistory",
                     )}
                 </div>
             </section>
@@ -3105,7 +3207,7 @@
                                 ? insights.strengths
                                     .map(
                                       (s) =>
-                                        `<li class="strength-item">${Icons.CheckCircle} <span>${s}</span></li>`
+                                        `<li class="strength-item">${Icons.CheckCircle} <span>${s}</span></li>`,
                                     )
                                     .join("")
                                 : "<li>No specific strengths identified yet. Keep practicing!</li>"
@@ -3122,7 +3224,7 @@
                                 ? insights.weaknesses
                                     .map(
                                       (w) =>
-                                        `<li class="weakness-item">${Icons.X} <span>${w}</span></li>`
+                                        `<li class="weakness-item">${Icons.X} <span>${w}</span></li>`,
                                     )
                                     .join("")
                                 : "<li>Great job! No major areas for improvement detected.</li>"
@@ -3154,7 +3256,7 @@
         itemsPerPage,
         tableId,
         paginationId,
-        isDaily = false
+        isDaily = false,
       ) {
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
@@ -3229,7 +3331,7 @@
                     }" data-page="${page}" data-pagination-type="${
                       isDaily ? "daily" : "global"
                     }">${page}</button>
-                `
+                `,
                   )
                   .join("")}
                 <button data-page="next" data-pagination-type="${
@@ -3318,7 +3420,7 @@
                   dashboardState.globalLeaderboardCurrentPage,
                   dashboardState.leaderboardItemsPerPage,
                   "global-leaderboard-table",
-                  "global-pagination-controls"
+                  "global-pagination-controls",
                 )}
             </section>
         `;
@@ -3333,7 +3435,7 @@
 
         const currentDailyRank = dashboardState.dailyLeaderboardRank;
         const userDailyScore = dashboardState.dailyLeaderboardData.find(
-          (entry) => entry.userId === dashboardState.userId
+          (entry) => entry.userId === dashboardState.userId,
         )?.totalDailyScore;
 
         appContentDiv.innerHTML = `
@@ -3389,7 +3491,7 @@
                   dashboardState.leaderboardItemsPerPage,
                   "daily-leaderboard-table",
                   "daily-pagination-controls",
-                  true
+                  true,
                 )}
             </section>
         `;
@@ -3745,8 +3847,8 @@
             0, // 00 hours
             0, // 00 minutes
             0, // 00 seconds
-            0 // 000 milliseconds
-          )
+            0, // 000 milliseconds
+          ),
         );
         return nextMidnightUTC.getTime(); // Return timestamp in milliseconds
       }
@@ -3756,7 +3858,7 @@
        */
       async function updateDailyResetCountdown() {
         const countdownElement = document.getElementById(
-          "daily-reset-countdown"
+          "daily-reset-countdown",
         );
         if (!countdownElement) {
           clearInterval(dashboardState.dailyResetTimerInterval);
@@ -3781,17 +3883,17 @@
         }
 
         const hours = Math.floor(
-          (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
         );
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
         countdownElement.textContent = `${String(hours).padStart(
           2,
-          "0"
+          "0",
         )}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
           2,
-          "0"
+          "0",
         )}`;
       }
 
@@ -3806,7 +3908,7 @@
         updateDailyResetCountdown(); // Initial call to display immediately
         dashboardState.dailyResetTimerInterval = setInterval(
           updateDailyResetCountdown,
-          1000
+          1000,
         );
       }
 
@@ -3827,7 +3929,7 @@
           const unsubscribeUserProfile = onSnapshot(
             doc(
               authAppState.db,
-              `artifacts/${appId}/users/${dashboardState.userId}/userProfile/profile`
+              `artifacts/${appId}/users/${dashboardState.userId}/userProfile/profile`,
             ),
             (docSnap) => {
               if (docSnap.exists()) {
@@ -3836,7 +3938,7 @@
                 };
               } else {
                 console.warn(
-                  "User profile not found in listener, attempting to create default."
+                  "User profile not found in listener, attempting to create default.",
                 );
                 // Create a default profile with a name if it doesn't exist
                 const defaultProfile = {
@@ -3845,36 +3947,36 @@
                     authAppState.auth.currentUser?.email?.split("@")[0] ||
                     `User-${authAppState.auth.currentUser?.uid.substring(
                       0,
-                      5
+                      5,
                     )}`,
                   bandGoal: "", // Initialize band goal
                 };
                 setDoc(
                   doc(
                     authAppState.db,
-                    `artifacts/${appId}/users/${dashboardState.userId}/userProfile/profile`
+                    `artifacts/${appId}/users/${dashboardState.userId}/userProfile/profile`,
                   ),
                   defaultProfile,
-                  { merge: true }
+                  { merge: true },
                 )
                   .then(() => (dashboardState.userProfile = defaultProfile))
                   .catch((e) =>
                     console.error(
                       "Error creating default profile in listener:",
-                      e
-                    )
+                      e,
+                    ),
                   );
               }
               // Re-render relevant parts of the UI after profile update
               updateAuthUI(
-                authAppState.auth ? authAppState.auth.currentUser : null
+                authAppState.auth ? authAppState.auth.currentUser : null,
               ); // Pass authAppState.auth.currentUser safely
               renderLeftSidebar(); // Update left sidebar with user stats
               renderMobileBottomNav(); // Update profile button active state
               renderApp(); // Re-render current view if profile data affects it
             },
             (error) =>
-              console.error("Error fetching current user profile:", error)
+              console.error("Error fetching current user profile:", error),
           );
           dashboardState.unsubscribeAll.push(unsubscribeUserProfile); // Store unsubscribe function
 
@@ -3882,7 +3984,7 @@
           const unsubscribeGameStats = onSnapshot(
             doc(
               authAppState.db,
-              `artifacts/${appId}/users/${dashboardState.userId}/gameStats/summary`
+              `artifacts/${appId}/users/${dashboardState.userId}/gameStats/summary`,
             ),
             (docSnap) => {
               if (docSnap.exists()) {
@@ -3902,12 +4004,12 @@
                 };
               }
               updateAuthUI(
-                authAppState.auth ? authAppState.auth.currentUser : null
+                authAppState.auth ? authAppState.auth.currentUser : null,
               ); // Pass authAppState.auth.currentUser safely
               renderLeftSidebar(); // Update points/level in left sidebar
               renderApp(); // Re-render to update dashboard stats
             },
-            (error) => console.error("Error fetching game stats:", error)
+            (error) => console.error("Error fetching game stats:", error),
           );
           dashboardState.unsubscribeAll.push(unsubscribeGameStats);
 
@@ -3915,7 +4017,7 @@
           const unsubscribeQuizResults = onSnapshot(
             collection(
               authAppState.db,
-              `artifacts/${appId}/users/${dashboardState.userId}/quizResults`
+              `artifacts/${appId}/users/${dashboardState.userId}/quizResults`,
             ),
             (snapshot) => {
               const results = [];
@@ -3925,13 +4027,13 @@
               // Sort by timestamp descending for recent activity
               results.sort(
                 (a, b) =>
-                  (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0)
+                  (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0),
               );
               dashboardState.quizResults = results;
               processDashboardData(); // Re-process performance metrics
               renderApp(); // Re-render to update quiz history/charts
             },
-            (error) => console.error("Error fetching quiz results:", error)
+            (error) => console.error("Error fetching quiz results:", error),
           );
           dashboardState.unsubscribeAll.push(unsubscribeQuizResults);
 
@@ -3955,7 +4057,7 @@
                 typeof __app_id !== "undefined" ? __app_id : "default-app-id";
               const userProfileRef = doc(
                 authAppState.db,
-                `artifacts/${appId}/users/${user.uid}/userProfile/profile`
+                `artifacts/${appId}/users/${user.uid}/userProfile/profile`,
               );
               const userProfileSnap = await getDoc(userProfileRef);
 
@@ -4016,7 +4118,7 @@
           console.error("Failed to initialize Firebase in dashboard:", error);
           showToast(
             "Failed to initialize Firebase. Some features may not work.",
-            "error"
+            "error",
           );
           dashboardState.isLoading = false;
           renderApp();

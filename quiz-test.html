@@ -6,7 +6,6 @@
     <title>IELTS Mahir - Quiz Test</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="test-left-header.css" />
     <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,13 +13,17 @@
       href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="shortcut icon"
+      href="assets/Ielts-mahir-fav.png"
+      type="image/x-icon"
+    />
+
     <!-- Font Awesome for icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <!-- Tone.js for sound effects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <link
@@ -455,21 +458,16 @@
       class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
     >
       <div class="flex items-center gap-2 sm:gap-4">
-        <!-- Replaced text with image logo -->
-        <div class="ai-logo-parent">
-          <a href="home">
-            <img
-              src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
-              alt="IELTS Mahir Logo"
-              class="h-8 md:h-10 w-auto"
-              onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
-            />
-          </a>
-          <a href="ai-feature" class="ai-button" aria-label="AI Tools">
-            <i class="fas fa-robot" aria-hidden="true"></i>
-            <span>AI</span>
-          </a>
-        </div>
+        <!-- Hamburger Menu Button (Mobile Only) -->
+
+        <a href="home" class="flex-shrink-0">
+          <img
+            src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
+            alt="IELTS Mahir Logo"
+            class="h-8 md:h-10 w-auto"
+            onerror="this.onerror=null; this.src='https://placehold.co/100x40/E0E0E0/333333?text=Logo';"
+          />
+        </a>
       </div>
       <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
         <!-- Authentication status will be handled by auth.js -->
@@ -548,30 +546,6 @@
       // Firebase instances (will be populated by auth.js)
       let db;
       let auth;
-
-      // Tone.js setup for sound effects
-      const correctSound = new Tone.Synth().toDestination();
-      const incorrectSound = new Tone.Synth().toDestination();
-      const levelUpSound = new Tone.Synth().toDestination();
-
-      // Configure sounds
-      correctSound.oscillator.type = "sine";
-      correctSound.envelope.attack = 0.005;
-      correctSound.envelope.decay = 0.1;
-      correctSound.envelope.sustain = 0.05;
-      correctSound.envelope.release = 0.1;
-
-      incorrectSound.oscillator.type = "sawtooth";
-      incorrectSound.envelope.attack = 0.005;
-      incorrectSound.envelope.decay = 0.1;
-      incorrectSound.envelope.sustain = 0.05;
-      incorrectSound.envelope.release = 0.1;
-
-      levelUpSound.oscillator.type = "triangle";
-      levelUpSound.envelope.attack = 0.01;
-      levelUpSound.envelope.decay = 0.2;
-      levelUpSound.envelope.sustain = 0.1;
-      levelUpSound.envelope.release = 0.5;
 
       // Quiz state management
       const quizState = {
@@ -659,21 +633,21 @@
               type === "success"
                 ? QuizIcons.CheckCircle.replace(
                     /width="24" height="24"/g,
-                    'width="20" height="20"'
+                    'width="20" height="20"',
                   )
                 : type === "error"
                 ? QuizIcons.XCircle.replace(
                     /width="24" height="24"/g,
-                    'width="20" height="20"'
+                    'width="20" height="20"',
                   )
                 : type === "warning"
                 ? QuizIcons.ExclamationTriangle.replace(
                     /width="24" height="24"/g,
-                    'width="20" height="20"'
+                    'width="20" height="20"',
                   )
                 : QuizIcons.InfoCircle.replace(
                     /width="24" height="24"/g,
-                    'width="20" height="20"'
+                    'width="20" height="20"',
                   )
             }
             <span>${message}</span>
@@ -695,7 +669,7 @@
        */
       async function updateAuthUI(user) {
         const authButtonsContainer = document.getElementById(
-          "auth-buttons-container"
+          "auth-buttons-container",
         );
         if (authButtonsContainer) {
           // Capture old stats before potential update
@@ -715,12 +689,6 @@
             const pointsIncreased = currentPoints > oldPoints;
             const levelIncreased = currentLevel > oldLevel;
 
-            // Play sound effects if points or level increased
-            if (pointsIncreased) {
-              correctSound.triggerAttackRelease("E5", "8n"); // Play a sound for points gain
-            }
-            // levelUpSound is already played in awardPoints function, no need to duplicate here
-
             const pointsAnimationClass = pointsIncreased
               ? "animate-points-gain"
               : "";
@@ -734,7 +702,7 @@
                             <div class="points-display flex items-center gap-2 px-3 py-1.5 rounded-full shadow-md text-white bg-gradient-to-br from-green-500 to-lime-600">
                                 ${QuizIcons.Trophy.replace(
                                   /width="24" height="24"/g,
-                                  'width="16" height="16" class="text-white fill-current"'
+                                  'width="16" height="16" class="text-white fill-current"',
                                 )}
                                 <span id="total-points-display" class="text-sm font-semibold ${pointsAnimationClass}">${
               quizState.userGameStats.totalPoints
@@ -766,19 +734,19 @@
                                     <a href="dashboard" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
                                         ${QuizIcons.Dashboard.replace(
                                           /width="24" height="24"/g,
-                                          'width="18" height="18" class="text-gray-600"'
+                                          'width="18" height="18" class="text-gray-600"',
                                         )} Dashboard
                                     </a>
                                     <a href="ielts-mahir-community-forum" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
                                         ${QuizIcons.Forum.replace(
                                           /width="24" height="24"/g,
-                                          'width="18" height="18" class="text-gray-600"'
+                                          'width="18" height="18" class="text-gray-600"',
                                         )} Forum
                                     </a>
                                     <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg transition-colors">
                                         ${QuizIcons.SignOut.replace(
                                           /width="24" height="24"/g,
-                                          'width="18" height="18" class="text-red-500"'
+                                          'width="18" height="18" class="text-red-500"',
                                         )} Sign Out
                                     </button>
                                 </div>
@@ -793,7 +761,7 @@
             const profileIconBtn = document.getElementById("profile-icon-btn");
             const profileDropdown = document.getElementById("profile-dropdown");
             const signOutDropdownBtn = document.getElementById(
-              "sign-out-dropdown-btn"
+              "sign-out-dropdown-btn",
             );
 
             profileIconBtn.addEventListener("click", (event) => {
@@ -820,7 +788,7 @@
                         <a href="auth" id="sign-in-nav-btn" class="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
                             ${QuizIcons.SignIn.replace(
                               /width="24" height="24"/g,
-                              'width="18" height="18"'
+                              'width="18" height="18"',
                             )} <span class="hidden sm:inline">Sign In</span>
                         </a>
                     `;
@@ -910,7 +878,7 @@
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const userStatsDocRef = doc(
           db,
-          `artifacts/${appId}/users/${userId}/gameStats/summary`
+          `artifacts/${appId}/users/${userId}/gameStats/summary`,
         );
 
         try {
@@ -944,7 +912,7 @@
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const userStatsDocRef = doc(
           db,
-          `artifacts/${appId}/users/${authAppState.userId}/gameStats/summary`
+          `artifacts/${appId}/users/${authAppState.userId}/gameStats/summary`,
         );
 
         try {
@@ -965,7 +933,7 @@
       async function awardPoints(points) {
         quizState.userGameStats.totalPoints += points;
         console.log(
-          `Awarded ${points} points. Total: ${quizState.userGameStats.totalPoints}`
+          `Awarded ${points} points. Total: ${quizState.userGameStats.totalPoints}`,
         );
 
         let newLevel = quizState.userGameStats.level;
@@ -980,7 +948,6 @@
         if (newLevel > quizState.userGameStats.level) {
           quizState.userGameStats.level = newLevel;
           showToast(`Level Up! You are now Level ${newLevel}!`, "success");
-          levelUpSound.triggerAttackRelease("C5", "8n"); // Play a level up sound
           console.log(`User leveled up to Level ${newLevel}`);
         }
 
@@ -1017,7 +984,7 @@
         if (!quizState.categoryId || !quizState.testId) {
           showMessageModal(
             "Error",
-            "Quiz category or test ID is missing from the URL."
+            "Quiz category or test ID is missing from the URL.",
           );
           quizState.isLoading = false;
           renderApp();
@@ -1030,7 +997,7 @@
         // For this scenario, assuming allQuizTests is globally available after import.
         quizState.test = allQuizTests.find(
           (t) =>
-            t.categoryId === quizState.categoryId && t.id === quizState.testId
+            t.categoryId === quizState.categoryId && t.id === quizState.testId,
         );
 
         if (!quizState.test) {
@@ -1042,7 +1009,7 @@
 
         // Filter questions to only include multiple-choice for now
         quizState.questions = quizState.test.questions.filter(
-          (q) => q.type === "multiple-choice"
+          (q) => q.type === "multiple-choice",
         );
         quizState.timeLeft = quizState.test.duration * 60; // Convert minutes to seconds
         quizState.currentQuestionIndex = 0;
@@ -1069,7 +1036,7 @@
             clearInterval(quizState.timer);
             showMessageModal(
               "Time's Up!",
-              "You've run out of time. The quiz will now be submitted."
+              "You've run out of time. The quiz will now be submitted.",
             ).then(() => {
               handleFinishTest();
             });
@@ -1096,7 +1063,7 @@
           timerDisplay.textContent = formatTime(quizState.timeLeft);
         }
         const questionNumberDisplay = document.getElementById(
-          "question-number-display"
+          "question-number-display",
         );
         if (questionNumberDisplay) {
           questionNumberDisplay.textContent = `Question ${
@@ -1205,7 +1172,7 @@
           const regex = new RegExp(`\\b(${question.highlightWord})\\b`, "gi"); // Case-insensitive, whole word match
           formattedQuestionText = question.questionText.replace(
             regex,
-            `<span class="highlight-word">$&</span>`
+            `<span class="highlight-word">$&</span>`,
           );
         }
 
@@ -1231,7 +1198,7 @@
                                 ${question.options
                                   .map((option, index) => {
                                     const optionLetter = getOptionLetter(
-                                      option
+                                      option,
                                     ); // Extract 'A', 'B', etc.
                                     const isSelected =
                                       quizState.userAnswers[
@@ -1277,7 +1244,7 @@
         const confirmation = await showMessageModal(
           "Finish Test?",
           "Are you sure you want to finish the test and view your results?",
-          true
+          true,
         );
         if (!confirmation) {
           startQuizTimer(); // Resume timer if cancelled
@@ -1360,7 +1327,7 @@
           areasForImprovement.push("Review incorrect answers carefully.");
         if (unattemptedCount > 0)
           areasForImprovement.push(
-            "Work on time management to attempt all questions."
+            "Work on time management to attempt all questions.",
           );
 
         // Update user game stats
@@ -1422,7 +1389,7 @@
         if (!db || !authAppState.userId) {
           showToast(
             "Not logged in. Quiz results will not be saved.",
-            "warning"
+            "warning",
           );
           return;
         }
@@ -1455,14 +1422,14 @@
           // Save to private user results collection
           await addDoc(
             collection(db, `artifacts/${appId}/users/${userId}/quizResults`),
-            resultData
+            resultData,
           );
           console.log("Quiz result saved to private collection.");
 
           // Save to public global results collection for leaderboard
           await addDoc(
             collection(db, `artifacts/${appId}/public/data/quizGlobalResults`),
-            resultData
+            resultData,
           );
           console.log("Quiz result saved to public collection.");
           showToast("Quiz results saved successfully!", "success");
@@ -1481,11 +1448,11 @@
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const leaderboardRef = collection(
           db,
-          `artifacts/${appId}/public/data/quizGlobalResults`
+          `artifacts/${appId}/public/data/quizGlobalResults`,
         );
         const q = query(
           leaderboardRef,
-          where("testId", "==", quizState.testId)
+          where("testId", "==", quizState.testId),
           // orderBy("percentage", "desc"), // Removed orderBy to avoid index issues
           // orderBy("timeTakenSeconds", "asc")
         );
@@ -1541,7 +1508,7 @@
           // Find user's rank
           if (authAppState.userId) {
             const userEntry = leaderboard.find(
-              (entry) => entry.userId === authAppState.userId
+              (entry) => entry.userId === authAppState.userId,
             );
             if (userEntry) {
               quizState.userRank = leaderboard.indexOf(userEntry) + 1;
@@ -1578,10 +1545,10 @@
                         <div class="text-xl sm:text-2xl font-bold text-red-600 flex items-center gap-2 bg-red-50 px-4 py-2 rounded-full shadow-inner">
                             ${QuizIcons.Clock.replace(
                               /width="24" height="24"/g,
-                              'width="20" height="20" class="w-5 h-5 text-red-500"'
+                              'width="20" height="20" class="w-5 h-5 text-red-500"',
                             )}
                             <span id="timer-display">${formatTime(
-                              quizState.timeLeft
+                              quizState.timeLeft,
                             )}</span>
                         </div>
                     </div>
@@ -1605,19 +1572,19 @@
                         <button id="prev-question-btn" class="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-5 sm:py-2.5 bg-gray-200 text-gray-800 rounded-lg shadow-md hover:bg-gray-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base transform active:scale-95">
                             ${QuizIcons.ChevronLeft.replace(
                               /width="24" height="24"/g,
-                              'width="16" height="16" sm:w="18" sm:h="18"'
+                              'width="16" height="16" sm:w="18" sm:h="18"',
                             )} <span class="hidden sm:inline">Previous</span>
                         </button>
                         <button id="finish-test-btn" class="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-5 sm:py-2.5 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base transform active:scale-95">
                             ${QuizIcons.Flag.replace(
                               /width="24" height="24"/g,
-                              'width="16" height="16" sm:w="18" sm:h="18"'
+                              'width="16" height="16" sm:w="18" sm:h="18"',
                             )} <span class="hidden sm:inline">Finish Test</span>
                         </button>
                         <button id="next-question-btn" class="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-5 sm:py-2.5 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm sm:text-base transform active:scale-95">
                             <span class="hidden sm:inline">Next</span> ${QuizIcons.ChevronRight.replace(
                               /width="24" height="24"/g,
-                              'width="16" height="16" sm:w="18" sm:h="18"'
+                              'width="16" height="16" sm:w="18" sm:h="18"',
                             )}
                         </button>
                     </div>
@@ -1660,7 +1627,7 @@
         const getFullOptionTextFromLetter = (letter, questionOptions) => {
           if (!letter || !questionOptions) return "N/A"; // Handle unattempted or missing data
           const foundOption = questionOptions.find((opt) =>
-            opt.startsWith(`${letter})`)
+            opt.startsWith(`${letter})`),
           );
           return foundOption || letter; // Return full option or just the letter if not found
         };
@@ -1676,7 +1643,7 @@
                         <h3 class="text-xl sm:text-2xl font-bold text-blue-800 mb-3 flex items-center gap-2">
                             ${QuizIcons.ChartBar.replace(
                               /width="24" height="24"/g,
-                              'width="24" height="24" class="w-6 h-6 text-blue-600"'
+                              'width="24" height="24" class="w-6 h-6 text-blue-600"',
                             )} Overall Performance
                         </h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
@@ -1712,7 +1679,7 @@
                             <h3 class="text-xl font-bold text-green-800 mb-3 flex items-center gap-2">
                                 ${QuizIcons.ThumbsUp.replace(
                                   /width="24" height="24"/g,
-                                  'width="24" height="24" class="w-6 h-6 text-green-600"'
+                                  'width="24" height="24" class="w-6 h-6 text-green-600"',
                                 )} Strengths
                             </h3>
                             <ul class="list-disc pl-5 text-gray-700">
@@ -1729,7 +1696,7 @@
                             <h3 class="text-xl font-bold text-red-800 mb-3 flex items-center gap-2">
                                 ${QuizIcons.Warning.replace(
                                   /width="24" height="24"/g,
-                                  'width="24" height="24" class="w-6 h-6 text-red-600"'
+                                  'width="24" height="24" class="w-6 h-6 text-red-600"',
                                 )} Areas for Improvement
                             </h3>
                             <ul class="list-disc pl-5 text-gray-700">
@@ -1749,7 +1716,7 @@
                         <h3 class="text-xl sm:text-2xl font-bold text-yellow-800 mb-3 flex items-center gap-2">
                             ${QuizIcons.Badge.replace(
                               /width="24" height="24"/g,
-                              'width="24" height="24" class="w-6 h-6 text-yellow-600"'
+                              'width="24" height="24" class="w-6 h-6 text-yellow-600"',
                             )} Your Badges
                         </h3>
                         <div class="flex flex-wrap gap-4">
@@ -1763,7 +1730,7 @@
                                         <div class="flex items-center gap-2 bg-yellow-100 text-yellow-800 px-3 py-1.5 rounded-full text-sm font-semibold shadow-sm">
                                             ${badge.icon.replace(
                                               /width="24" height="24"/g,
-                                              'width="16" height="16"'
+                                              'width="16" height="16"',
                                             )}
                                             <span>${badge.name}</span>
                                         </div>
@@ -1781,7 +1748,7 @@
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                             ${QuizIcons.Review.replace(
                               /width="24" height="24"/g,
-                              'width="24" height="24" class="w-6 h-6 text-gray-600"'
+                              'width="24" height="24" class="w-6 h-6 text-gray-600"',
                             )} Question Review
                         </h3>
                         <div class="space-y-6 custom-scrollbar max-h-96 overflow-y-auto pr-2">
@@ -1797,11 +1764,11 @@
                                 ) {
                                   const regex = new RegExp(
                                     `\\b(${originalQuestion.highlightWord})\\b`,
-                                    "gi"
+                                    "gi",
                                   );
                                   reviewQuestionText = detail.questionText.replace(
                                     regex,
-                                    `<span class="highlight-word">$&</span>`
+                                    `<span class="highlight-word">$&</span>`,
                                   );
                                 }
 
@@ -1824,12 +1791,12 @@
                                 const displayUserAnswer = detail.userAnswer
                                   ? getFullOptionTextFromLetter(
                                       detail.userAnswer,
-                                      originalQuestion.options
+                                      originalQuestion.options,
                                     )
                                   : "Unattempted";
                                 const displayCorrectAnswer = getFullOptionTextFromLetter(
                                   detail.correctAnswer,
-                                  originalQuestion.options
+                                  originalQuestion.options,
                                 );
 
                                 return `
@@ -1873,7 +1840,7 @@
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                             ${QuizIcons.Leaderboard.replace(
                               /width="24" height="24"/g,
-                              'width="24" height="24" class="w-6 h-6 text-gray-600"'
+                              'width="24" height="24" class="w-6 h-6 text-gray-600"',
                             )} Leaderboard for This Test
                         </h3>
                         <div class="leaderboard-table-container">
@@ -1930,10 +1897,10 @@
                                                   entry.percentage || 0
                                                 ).toFixed(2)}%</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatTime(
-                                                  entry.timeTakenSeconds
+                                                  entry.timeTakenSeconds,
                                                 )}</td>
                                             </tr>
-                                        `
+                                        `,
                                             )
                                             .join("")
                                         : `<tr><td colspan="5" class="px-6 py-4 text-center text-gray-500">No results yet. Be the first!</td></tr>`
@@ -1984,18 +1951,6 @@
 
       // Initialization Logic
       window.onload = async function () {
-        // Start Tone.js audio context
-        try {
-          await Tone.start();
-          console.log("Tone.js audio context started successfully.");
-        } catch (error) {
-          console.error("Error starting Tone.js audio context:", error);
-          showToast(
-            "Audio might not play. Please interact with the page to enable sound.",
-            "warning"
-          );
-        }
-
         // Initialize Firebase Auth and listen for state changes
         initFirebaseAuth(updateAuthUI)
           .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
@@ -2019,7 +1974,7 @@
             console.error("Failed to initialize Firebase in quiz-test:", error);
             showToast(
               "Failed to initialize Firebase. Some features may not work.",
-              "error"
+              "error",
             );
             quizState.isLoading = false;
             renderApp(); // Render with error message or limited functionality

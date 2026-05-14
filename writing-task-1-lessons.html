@@ -13,6 +13,11 @@
       href="https://fonts.googleapis.com/css2?family=Anton&family=Outfit:wght@300;400;600;800&family=Montserrat:wght@400;500;600;700&family=Hind+Siliguri:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="shortcut icon"
+      href="assets/Ielts-mahir-fav.png"
+      type="image/x-icon"
+    />
 
     <style>
       body {
@@ -36,7 +41,6 @@
         ) !important;
         position: relative;
         overflow: hidden;
-        padding-bottom: 8rem;
       }
 
       /* Animated Blob Backgrounds */
@@ -80,20 +84,28 @@
       }
 
       .hero-btn-secondary {
-        padding: 0.8rem 2rem;
+        padding: 0.6rem 1.2rem;
         background: rgba(255, 255, 255, 0.1);
         color: #ffffff;
         text-decoration: none;
         border-radius: 0.5rem;
         font-family: "Anton", sans-serif;
         text-transform: uppercase;
-        font-size: 1rem;
+        font-size: 0.85rem;
         display: inline-flex;
         align-items: center;
-        gap: 0.8rem;
+        gap: 0.6rem;
         border: 2px solid rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(4px);
         transition: all 0.3s ease;
+      }
+
+      @media (min-width: 768px) {
+        .hero-btn-secondary {
+          padding: 0.8rem 2rem;
+          font-size: 1rem;
+          gap: 0.8rem;
+        }
       }
 
       .hero-btn-secondary:hover {
@@ -218,7 +230,9 @@
   </head>
   <body class="antialiased">
     <!-- Premium Brand Hero Section -->
-    <header class="brand-hero-section pt-8 px-6 md:px-12">
+    <header
+      class="brand-hero-section pt-6 pb-28 md:pt-8 md:pb-32 px-6 md:px-12"
+    >
       <!-- Floating Abstract Background Blobs -->
       <div
         class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-[#34d399] rounded-full mix-blend-overlay filter blur-[100px] opacity-30 animate-blob"
@@ -230,14 +244,17 @@
         class="absolute bottom-[10%] left-[20%] w-72 h-72 bg-[#10b981] rounded-full mix-blend-overlay filter blur-[100px] opacity-30 animate-blob animation-delay-4000"
       ></div>
 
-      <div class="max-w-7xl mx-auto relative z-10">
+      <div class="max-w-7xl mx-auto relative z-20">
         <!-- Navigation Action -->
-        <a href="home" class="hero-btn-secondary mb-10 shadow-sm relative z-20">
+        <a
+          href="home"
+          class="hero-btn-secondary mb-6 md:mb-10 shadow-sm relative z-20"
+        >
           <i class="fas fa-arrow-left"></i> Back to Home
         </a>
 
         <div
-          class="flex flex-col md:flex-row items-center justify-between gap-12"
+          class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12"
         >
           <!-- Text Content -->
           <div class="flex-1 md:pr-10 z-10 text-center md:text-left">
@@ -246,14 +263,14 @@
             </div>
 
             <h1
-              class="anton-text text-5xl md:text-6xl lg:text-7xl text-white leading-[1.1] mb-6 drop-shadow-md"
+              class="anton-text text-[2.5rem] md:text-6xl lg:text-7xl text-white leading-[1.1] mb-4 md:mb-6 drop-shadow-md"
             >
               WRITING TASK 1 <br />
               <span class="text-[#6ee7b7]">LESSONS</span>
             </h1>
 
             <p
-              class="text-lg md:text-xl text-emerald-100 max-w-xl font-medium leading-relaxed mx-auto md:mx-0"
+              class="text-base md:text-xl text-emerald-100 max-w-xl font-medium leading-relaxed mx-auto md:mx-0"
             >
               Master Academic Writing Task 1. Learn precise vocabulary to
               accurately describe bar charts, line graphs, process diagrams, and
@@ -263,10 +280,10 @@
 
           <!-- Image Area: Arched Portrait Window -->
           <div
-            class="flex-1 relative flex justify-center items-center w-full mt-16 md:mt-0 z-10"
+            class="hidden md:flex flex-1 relative justify-center items-center w-full mt-10 md:mt-0 z-20"
           >
             <div
-              class="relative w-[280px] sm:w-[320px] h-[380px] bg-gradient-to-b from-[#d1fae5] to-[#a7f3d0] rounded-t-[160px] rounded-b-3xl overflow-hidden shadow-2xl border-4 border-white/80 backdrop-blur-sm z-10"
+              class="relative w-[240px] md:w-[320px] h-[320px] md:h-[380px] bg-gradient-to-b from-[#d1fae5] to-[#a7f3d0] rounded-t-full rounded-b-3xl overflow-hidden shadow-2xl border-4 border-white/80 backdrop-blur-sm z-10"
             >
               <img
                 src="https://i.postimg.cc/HLjpQZ7v/student-image-five.png"
@@ -277,7 +294,7 @@
 
             <!-- Floating Accent -->
             <div
-              class="absolute top-12 right-0 md:-right-2 bg-white/95 backdrop-blur-sm p-3 rounded-xl shadow-xl border border-white z-20 flex items-center gap-3 animate-bounce"
+              class="absolute top-6 md:top-12 right-0 md:-right-2 bg-white/95 backdrop-blur-sm p-3 rounded-xl shadow-xl border border-white z-20 flex items-center gap-3 animate-bounce scale-90 md:scale-100 origin-right"
               style="animation-duration: 3.5s;"
             >
               <div

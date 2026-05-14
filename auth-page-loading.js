@@ -50,9 +50,7 @@ function updateNavBarAuthStatus(user) {
                       <button class="dropdown-item" onclick="window.location.href='dashboard.html'">${
                         Icons.Dashboard
                       } Dashboard</button>
-                      <button class="dropdown-item" onclick="window.location.href='ielts-mahir-community-forum.html'">${
-                        Icons.Forum
-                      } Forum</button>
+                     
                       <button id="sign-out-dropdown-btn" class="dropdown-item sign-out-item"> ${
                         Icons.SignOut
                       } Sign Out</button>
@@ -63,7 +61,7 @@ function updateNavBarAuthStatus(user) {
       const profileIconBtn = document.getElementById("profile-icon-btn");
       const profileDropdown = document.getElementById("profile-dropdown");
       const signOutDropdownBtn = document.getElementById(
-        "sign-out-dropdown-btn"
+        "sign-out-dropdown-btn",
       );
 
       if (profileIconBtn && profileDropdown) {

@@ -18,6 +18,12 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <link
+      rel="shortcut icon"
+      href="assets/Ielts-mahir-fav.png"
+      type="image/x-icon"
+    />
+
     <!-- Phosphor Icons for additional UI elements -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Lordicon for animated icons (if used) -->
@@ -389,7 +395,7 @@
           typeof __app_id !== "undefined" ? __app_id : "default-app-id";
         const userStatsDocRef = doc(
           db,
-          `artifacts/${appId}/users/${userId}/gameStats/summary`
+          `artifacts/${appId}/users/${userId}/gameStats/summary`,
         );
 
         try {
@@ -401,7 +407,7 @@
             };
             console.log(
               "Fetched local user game stats:",
-              reviewState.userGameStats
+              reviewState.userGameStats,
             );
           } else {
             console.log("No game stats found for user, initializing defaults.");
@@ -419,7 +425,7 @@
        */
       async function updateAuthUI(user) {
         const authButtonsContainer = document.getElementById(
-          "auth-buttons-container"
+          "auth-buttons-container",
         );
         if (authButtonsContainer) {
           if (user) {
@@ -432,7 +438,7 @@
                             <div class="points-display flex items-center gap-2 px-3 py-1.5 rounded-full shadow-md text-white bg-gradient-to-br from-green-500 to-lime-600">
                                 ${QuizIcons.Trophy.replace(
                                   /width="24" height="24"/g,
-                                  'width="16" height="16" class="text-white fill-current"'
+                                  'width="16" height="16" class="text-white fill-current"',
                                 )}
                                 <span class="text-sm font-semibold">${
                                   reviewState.userGameStats.totalPoints || 0
@@ -464,19 +470,19 @@
                                     <a href="dashboard" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
                                         ${QuizIcons.Dashboard.replace(
                                           /width="24" height="24"/g,
-                                          'width="18" height="18" class="text-gray-600"'
+                                          'width="18" height="18" class="text-gray-600"',
                                         )} Dashboard
                                     </a>
                                     <a href="ielts-mahir-community-forum" class="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors">
                                         ${QuizIcons.Forum.replace(
                                           /width="24" height="24"/g,
-                                          'width="18" height="18" class="text-gray-600"'
+                                          'width="18" height="18" class="text-gray-600"',
                                         )} Forum
                                     </a>
                                     <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg transition-colors">
                                         ${QuizIcons.SignOut.replace(
                                           /width="24" height="24"/g,
-                                          'width="18" height="18" class="text-red-500"'
+                                          'width="18" height="18" class="text-red-500"',
                                         )} Sign Out
                                     </button>
                                 </div>
@@ -487,7 +493,7 @@
             const profileIconBtn = document.getElementById("profile-icon-btn");
             const profileDropdown = document.getElementById("profile-dropdown");
             const signOutDropdownBtn = document.getElementById(
-              "sign-out-dropdown-btn"
+              "sign-out-dropdown-btn",
             );
 
             profileIconBtn.addEventListener("click", (event) => {
@@ -512,7 +518,7 @@
                         <a href="auth" id="sign-in-nav-btn" class="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-md hover:bg-blue-700 transition-all text-sm font-semibold transform active:scale-95">
                             ${QuizIcons.SignIn.replace(
                               /width="24" height="24"/g,
-                              'width="18" height="18"'
+                              'width="18" height="18"',
                             )} <span class="hidden sm:inline">Sign In</span>
                         </a>
                     `;
@@ -605,7 +611,7 @@
         const resultDocRef = doc(
           db,
           `artifacts/${appId}/users/${userId}/quizResults`,
-          quizResultId
+          quizResultId,
         );
 
         try {
@@ -619,7 +625,7 @@
             const originalTest = allQuizTests.find(
               (test) =>
                 test.categoryId === resultData.categoryId &&
-                test.id === resultData.testId
+                test.id === resultData.testId,
             );
 
             if (originalTest) {
@@ -629,7 +635,7 @@
               console.warn("Original test data not found for this result.");
               showToast(
                 "Could not find original test data for detailed review.",
-                "warning"
+                "warning",
               );
             }
           } else {
@@ -664,7 +670,7 @@
                                     <a href="quiz-history" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95">
                                         ${QuizIcons.History.replace(
                                           /width="24" height="24"/g,
-                                          'width="18" height="18"'
+                                          'width="18" height="18"',
                                         )} Back to History
                                     </a>
                                   </div>`;
@@ -701,11 +707,11 @@
             // Find the full option text for user's answer and correct answer
             const userOptionText =
               question.options.find((opt) =>
-                opt.startsWith(`${userAnswerLetter})`)
+                opt.startsWith(`${userAnswerLetter})`),
               ) || `N/A (${userAnswerLetter})`;
             const correctOptionText =
               question.options.find((opt) =>
-                opt.startsWith(`${correctAnswerLetter})`)
+                opt.startsWith(`${correctAnswerLetter})`),
               ) || `N/A (${correctAnswerLetter})`;
 
             return {
@@ -716,11 +722,11 @@
               isCorrect: isCorrect,
               status: status,
             };
-          }
+          },
         );
 
         const category = quizCategories.find(
-          (cat) => cat.id === result.categoryId
+          (cat) => cat.id === result.categoryId,
         );
         const categoryName = category ? category.name : "Unknown Category";
 
@@ -783,7 +789,7 @@
                                     : ""
                                 }
                             </div>
-                        `
+                        `,
                           )
                           .join("")}
                     </div>
@@ -792,7 +798,7 @@
                         <a href="quiz-history" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg transform active:scale-95">
                             ${QuizIcons.History.replace(
                               /width="24" height="24"/g,
-                              'width="18" height="18"'
+                              'width="18" height="18"',
                             )} Back to History
                         </a>
                     </div>
@@ -847,11 +853,11 @@
           .catch((error) => {
             console.error(
               "Failed to initialize Firebase in quiz-detail-review:",
-              error
+              error,
             );
             showToast(
               "Failed to initialize Firebase. Some features may not work.",
-              "error"
+              "error",
             );
             reviewState.isLoading = false;
             renderApp();
