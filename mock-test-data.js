@@ -58,14 +58,18 @@ export const allMockTests = [
                 questionNumber: 1,
                 type: "fill_in_the_blank",
                 text: "Email: [GAP]@worldnet.com",
-                correctAnswer: "EDWINARI",
+                correctAnswer: ["EDWINARI", "Edwinari", "edwinari"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "Nationality: [GAP]",
-                correctAnswer: "New Zealander",
+                correctAnswer: [
+                  "NEW ZEALANDER",
+                  "New Zealander",
+                  "new zealander",
+                ],
               },
               {
                 id: "q3",
@@ -73,28 +77,43 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Reference (professional)- Name: John Keen, Job: manager of [GAP]",
-                correctAnswer: "Play centre",
+                correctAnswer: [
+                  "PLAY CENTRE",
+                  "Play Centre",
+                  "Play centre",
+                  "play centre",
+                ],
               },
               {
                 id: "q4",
                 questionNumber: 4,
                 type: "fill_in_the_blank",
                 text: "Reference (personal) - Name: Eileen Dorsini, Job: [GAP]",
-                correctAnswer: "a professor",
+                correctAnswer: [
+                  "(A) PROFESSOR",
+                  "(A) Professor",
+                  "(a) professor",
+                  "A PROFESSOR",
+                  "A Professor",
+                  "PROFESSOR",
+                  "Professor",
+                  "a professor",
+                  "professor",
+                ],
               },
               {
                 id: "q5",
                 questionNumber: 5,
                 type: "fill_in_the_blank",
                 text: "Special Qualifications: Current [GAP] certificate",
-                correctAnswer: "first aid",
+                correctAnswer: ["FIRST AID", "First Aid", "first aid"],
               },
               {
                 id: "q6",
                 questionNumber: 6,
                 type: "fill_in_the_blank",
                 text: "certificate of competence in [GAP]",
-                correctAnswer: "sailing",
+                correctAnswer: ["SAILING", "Sailing", "sailing"],
               },
             ],
           },
@@ -123,10 +142,10 @@ export const allMockTests = [
                   ],
                 ],
                 correctAnswer: {
-                  q7: "sport",
-                  q8: "two",
-                  q9: "Scotland",
-                  q10: "cook",
+                  q7: ["SPORT", "Sport", "sport"],
+                  q8: ["TWIN", "Twin", "twin", "TWO", "Two", "two"],
+                  q9: ["SCOTLAND", "Scotland", "scotland"],
+                  q10: ["COOK", "Cook", "cook"],
                 },
               },
             ],
@@ -188,42 +207,42 @@ export const allMockTests = [
                 questionNumber: 15,
                 type: "fill_in_the_blank",
                 text: "hotel [GAP]",
-                correctAnswer: "E",
+                correctAnswer: ["E", "e"],
               },
               {
                 id: "q16",
                 questionNumber: 16,
                 type: "fill_in_the_blank",
                 text: "transport hub [GAP]",
-                correctAnswer: "B",
+                correctAnswer: ["B", "b"],
               },
               {
                 id: "q17",
                 questionNumber: 17,
                 type: "fill_in_the_blank",
                 text: "cinema [GAP]",
-                correctAnswer: "A",
+                correctAnswer: ["A", "a"],
               },
               {
                 id: "q18",
                 questionNumber: 18,
                 type: "fill_in_the_blank",
                 text: "fitness centre [GAP]",
-                correctAnswer: "D",
+                correctAnswer: ["D", "d"],
               },
               {
                 id: "q19",
                 questionNumber: 19,
                 type: "fill_in_the_blank",
                 text: "shops [GAP]",
-                correctAnswer: "F",
+                correctAnswer: ["F", "f"],
               },
               {
                 id: "q20",
                 questionNumber: 20,
                 type: "fill_in_the_blank",
                 text: "restaurant [GAP]",
-                correctAnswer: "C",
+                correctAnswer: ["C", "c"],
               },
             ],
           },
@@ -381,7 +400,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Almanacs connected the weather with the positions of different [GAP] at particular times.",
-                correctAnswer: "planets",
+                correctAnswer: ["PLANETS", "Planets", "planets"],
               },
               {
                 id: "q32",
@@ -389,7 +408,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "A hydrometer showed Levels of [GAP] (Nicholas Cusa 1450)",
-                correctAnswer: "humidity",
+                correctAnswer: ["HUMIDITY", "Humidity", "humidity"],
               },
               {
                 id: "q33",
@@ -397,7 +416,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Temperature variations - first measured by a thermometer containing [GAP] (Galileo Galilei 1595)",
-                correctAnswer: "water",
+                correctAnswer: ["WATER", "Water", "water"],
               },
               {
                 id: "q34",
@@ -405,14 +424,22 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The use of the [GAP] allowed information to be passed around the world.",
-                correctAnswer: "telegraph",
+                correctAnswer: [
+                  "(ELECTRIC) TELEGRAPH",
+                  "(Electric) Telegraph",
+                  "(electric) telegraph",
+                ],
               },
               {
                 id: "q35",
                 questionNumber: 35,
                 type: "fill_in_the_blank",
                 text: "Daily [GAP] were produced by the French from 1863.",
-                correctAnswer: "weather maps",
+                correctAnswer: [
+                  "(WEATHER) MAPS",
+                  "(Weather) Maps",
+                  "(weather) maps",
+                ],
               },
             ],
           },
@@ -426,14 +453,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Weather observation stations are found mostly at [GAP] around the country.",
-                correctAnswer: "airports",
+                correctAnswer: ["AIRPORTS", "Airports", "airports"],
               },
               {
                 id: "q37",
                 questionNumber: 37,
                 type: "fill_in_the_blank",
                 text: "Satellite images use the colour orange to show [GAP].",
-                correctAnswer: "dry air",
+                correctAnswer: ["DRY AIR", "Dry Air", "dry air"],
               },
               {
                 id: "q38",
@@ -441,7 +468,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The satellites give so much detail that meteorologists can distinguish a particular [GAP].",
-                correctAnswer: "cloud",
+                correctAnswer: ["CLOUD", "Cloud", "cloud"],
               },
               {
                 id: "q39",
@@ -449,7 +476,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Information about the upper atmosphere is sent from instruments attached to a [GAP].",
-                correctAnswer: "balloon",
+                correctAnswer: ["BALLOON", "Balloon", "balloon"],
               },
               {
                 id: "q40",
@@ -457,7 +484,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Radar is particularly useful for following the movement of [GAP].",
-                correctAnswer: "hurricanes",
+                correctAnswer: ["HURRICANES", "Hurricanes", "hurricanes"],
               },
             ],
           },
@@ -487,14 +514,14 @@ export const allMockTests = [
                 questionNumber: 1,
                 type: "fill_in_the_blank",
                 text: "Don't call a plumber during the [GAP]",
-                correctAnswer: "weekend",
+                correctAnswer: ["WEEKEND(S)", "Weekend(S)", "weekend(s)"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "Look at trade website: www.[GAP].com",
-                correctAnswer: "plasdeco",
+                correctAnswer: ["PLASDECO", "Plasdeco", "plasdeco"],
               },
             ],
           },
@@ -530,14 +557,14 @@ export const allMockTests = [
                   ],
                 ],
                 correctAnswer: {
-                  q3: "clear",
-                  q4: "late",
-                  q5: "cheaper",
-                  q6: "messy",
-                  q7: "designs",
-                  q8: "expensive",
-                  q9: "painting",
-                  q10: "ladder",
+                  q3: ["CLEAR", "Clear", "clear"],
+                  q4: ["LATE", "Late", "late"],
+                  q5: ["CHEAPER", "Cheaper", "cheaper"],
+                  q6: ["MESSY", "Messy", "messy"],
+                  q7: ["DESIGNS", "Designs", "designs"],
+                  q8: ["EXPENSIVE", "Expensive", "expensive"],
+                  q9: ["PAINTING", "Painting", "painting"],
+                  q10: ["LADDER(S)", "Ladder(S)", "ladder(s)"],
                 },
               },
             ],
@@ -627,35 +654,35 @@ export const allMockTests = [
                 questionNumber: 16,
                 type: "fill_in_the_blank",
                 text: "Sign-in office [GAP]",
-                correctAnswer: "C",
+                correctAnswer: ["C", "c"],
               },
               {
                 id: "q17",
                 questionNumber: 17,
                 type: "fill_in_the_blank",
                 text: "Gallery [GAP]",
-                correctAnswer: "I",
+                correctAnswer: ["I", "i"],
               },
               {
                 id: "q18",
                 questionNumber: 18,
                 type: "fill_in_the_blank",
                 text: "Key box [GAP]",
-                correctAnswer: "H",
+                correctAnswer: ["H", "h"],
               },
               {
                 id: "q19",
                 questionNumber: 19,
                 type: "fill_in_the_blank",
                 text: "Kitchen area [GAP]",
-                correctAnswer: "D",
+                correctAnswer: ["D", "d"],
               },
               {
                 id: "q20",
                 questionNumber: 20,
                 type: "fill_in_the_blank",
                 text: "Staff noticeboard [GAP]",
-                correctAnswer: "G",
+                correctAnswer: ["G", "g"],
               },
             ],
           },
@@ -755,7 +782,7 @@ export const allMockTests = [
                 questionNumber: 31,
                 type: "fill_in_the_blank",
                 text: "Most <strong> [GAP]</strong> owl species in UK",
-                correctAnswer: "common",
+                correctAnswer: ["COMMON", "Common", "common"],
               },
               {
                 id: "q32",
@@ -763,14 +790,24 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Mainly lives in <strong> [GAP]</strong>, but can also be seen in urban areas, e.g. parks.",
-                correctAnswer: "woodland",
+                correctAnswer: [
+                  "WOODLAND",
+                  "Woodland",
+                  "woodland",
+                  "WOODS",
+                  "Woods",
+                  "woods",
+                  "FOREST(S)",
+                  "Forest(S)",
+                  "forest(s)",
+                ],
               },
               {
                 id: "q33",
                 questionNumber: 33,
                 type: "fill_in_the_blank",
                 text: "Short wings and <strong> [GAP]</strong>, for navigation",
-                correctAnswer: "tail",
+                correctAnswer: ["TAIL", "Tail", "tail"],
               },
               {
                 id: "q34",
@@ -778,7 +815,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Brown and <strong> [GAP]</strong> feathers, for camouflage",
-                correctAnswer: "grey",
+                correctAnswer: ["GREY", "Grey", "grey", "GRAY", "Gray", "gray"],
               },
               {
                 id: "q35",
@@ -786,7 +823,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Large eyes (more effective than those of <strong> [GAP]</strong>), for good night vision",
-                correctAnswer: "humans",
+                correctAnswer: [
+                  "HUMANS",
+                  "Humans",
+                  "humans",
+                  "PEOPLE",
+                  "People",
+                  "people",
+                ],
               },
               {
                 id: "q36",
@@ -794,7 +838,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Very good spatial <strong> [GAP]</strong>, for predicting where prey might be found",
-                correctAnswer: "memory",
+                correctAnswer: ["MEMORY", "Memory", "memory"],
               },
               {
                 id: "q37",
@@ -802,7 +846,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Excellent <strong> [GAP]</strong>, for locating prey from a perch",
-                correctAnswer: "hearing",
+                correctAnswer: ["HEARING", "Hearing", "hearing"],
               },
               {
                 id: "q38",
@@ -810,7 +854,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Main food is small mammals.<br>Owls in urban areas eat more <strong> [GAP]</strong>.",
-                correctAnswer: "birds",
+                correctAnswer: ["BIRDS", "Birds", "birds"],
               },
               {
                 id: "q39",
@@ -818,7 +862,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Two thirds of young owls die within a <strong> [GAP]</strong>.",
-                correctAnswer: "year",
+                correctAnswer: ["YEAR", "Year", "year"],
               },
               {
                 id: "q40",
@@ -826,7 +870,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Owls seem to dislike flying over large areas of <strong> [GAP]</strong>.",
-                correctAnswer: "water",
+                correctAnswer: ["WATER", "Water", "water"],
               },
             ],
           },
@@ -855,70 +899,70 @@ export const allMockTests = [
                 questionNumber: 1,
                 type: "fill_in_the_blank",
                 text: "Name: Daniel [GAP]",
-                correctAnswer: "HARRIS",
+                correctAnswer: ["HARRIS", "Harris", "harris"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "Departure date: July [GAP]",
-                correctAnswer: "15TH",
+                correctAnswer: ["15, 15TH", "15, 15Th", "15, 15th"],
               },
               {
                 id: "q3",
                 questionNumber: 3,
                 type: "fill_in_the_blank",
                 text: "Length of stay: week(s) [GAP]",
-                correctAnswer: "ONE",
+                correctAnswer: ["ONE", "One", "one"],
               },
               {
                 id: "q4",
                 questionNumber: 4,
                 type: "fill_in_the_blank",
                 text: "Destination country: [GAP]",
-                correctAnswer: "PORTUGAL",
+                correctAnswer: ["PORTUGAL", "Portugal", "portugal"],
               },
               {
                 id: "q5",
                 questionNumber: 5,
                 type: "fill_in_the_blank",
                 text: "Hotel: Hotel [GAP]",
-                correctAnswer: "SEAVIEW",
+                correctAnswer: ["SEAVIEW", "Seaview", "seaview"],
               },
               {
                 id: "q6",
                 questionNumber: 6,
                 type: "fill_in_the_blank",
                 text: "Total cost: £ [GAP]",
-                correctAnswer: "680",
+                correctAnswer: ["680"],
               },
               {
                 id: "q7",
                 questionNumber: 7,
                 type: "fill_in_the_blank",
                 text: "Transfer cost: £ [GAP] per person",
-                correctAnswer: "40",
+                correctAnswer: ["40"],
               },
               {
                 id: "q8",
                 questionNumber: 8,
                 type: "fill_in_the_blank",
                 text: "Facilities: swimming pool, gym, and free [GAP]",
-                correctAnswer: "WI-FI",
+                correctAnswer: ["WI-FI", "Wi-Fi", "wi-fi"],
               },
               {
                 id: "q9",
                 questionNumber: 9,
                 type: "fill_in_the_blank",
                 text: "Extra charge from government: [GAP] tax",
-                correctAnswer: "CITY",
+                correctAnswer: ["CITY", "City", "city"],
               },
               {
                 id: "q10",
                 questionNumber: 10,
                 type: "fill_in_the_blank",
                 text: "Contact number: [GAP]",
-                correctAnswer: "07865 239410",
+                correctAnswer: ["07865 239410"],
               },
             ],
           },
@@ -1002,35 +1046,39 @@ export const allMockTests = [
                 questionNumber: 16,
                 type: "fill_in_the_blank",
                 text: "The cycle hire scheme is operated by a [GAP].",
-                correctAnswer: "LOCAL CHARITY",
+                correctAnswer: [
+                  "LOCAL CHARITY",
+                  "Local Charity",
+                  "local charity",
+                ],
               },
               {
                 id: "q17",
                 questionNumber: 17,
                 type: "fill_in_the_blank",
                 text: "The hospital does not usually accept [GAP].",
-                correctAnswer: "VOLUNTEERS",
+                correctAnswer: ["VOLUNTEERS", "Volunteers", "volunteers"],
               },
               {
                 id: "q18",
                 questionNumber: 18,
                 type: "fill_in_the_blank",
                 text: "The town newsletter is published [GAP].",
-                correctAnswer: "MONTHLY",
+                correctAnswer: ["MONTHLY", "Monthly", "monthly"],
               },
               {
                 id: "q19",
                 questionNumber: 19,
                 type: "fill_in_the_blank",
                 text: "Students often eat cheaply at the [GAP].",
-                correctAnswer: "CAFE",
+                correctAnswer: ["CAFE", "Cafe", "cafe"],
               },
               {
                 id: "q20",
                 questionNumber: 20,
                 type: "fill_in_the_blank",
                 text: "The Westford Festival takes place every [GAP].",
-                correctAnswer: "SEPTEMBER",
+                correctAnswer: ["SEPTEMBER", "September", "september"],
               },
             ],
           },
@@ -1117,7 +1165,11 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The article highlighted the importance of [GAP] than using only one method.",
-                correctAnswer: "TRIANGULATION",
+                correctAnswer: [
+                  "TRIANGULATION",
+                  "Triangulation",
+                  "triangulation",
+                ],
               },
               {
                 id: "q27",
@@ -1125,7 +1177,11 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Funding agencies often favour research with [GAP], they are easier to report.",
-                correctAnswer: "QUANTITATIVE OUTPUTS",
+                correctAnswer: [
+                  "QUANTITATIVE OUTPUTS",
+                  "Quantitative Outputs",
+                  "quantitative outputs",
+                ],
               },
               {
                 id: "q28",
@@ -1133,7 +1189,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Projects that are purely numerical may gain funding but lose [GAP].",
-                correctAnswer: "RICHNESS",
+                correctAnswer: ["RICHNESS", "Richness", "richness"],
               },
               {
                 id: "q29",
@@ -1141,7 +1197,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Some students may claim that [GAP] are more important than words.",
-                correctAnswer: "NUMBERS",
+                correctAnswer: ["NUMBERS", "Numbers", "numbers"],
               },
               {
                 id: "q30",
@@ -1149,7 +1205,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Daniel suggests they may see the [GAP] of the opposing argument.",
-                correctAnswer: "MERIT",
+                correctAnswer: ["MERIT", "Merit", "merit"],
               },
             ],
           },
@@ -1169,7 +1225,11 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Engineers in mountain areas faced higher costs due to unstable rock and [GAP].",
-                correctAnswer: "UNPREDICTABLE WEATHER",
+                correctAnswer: [
+                  "UNPREDICTABLE WEATHER",
+                  "Unpredictable Weather",
+                  "unpredictable weather",
+                ],
               },
               {
                 id: "q32",
@@ -1177,7 +1237,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The Semmering Railway succeeded thanks to bridges and carefully planned [GAP].",
-                correctAnswer: "GRADIENTS",
+                correctAnswer: ["GRADIENTS", "Gradients", "gradients"],
               },
               {
                 id: "q33",
@@ -1185,7 +1245,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Dependence on private funding sometimes restrict public [GAP].",
-                correctAnswer: "ACCESS",
+                correctAnswer: ["ACCESS", "Access", "access"],
               },
               {
                 id: "q34",
@@ -1193,7 +1253,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Tunnelling reduced [GAP] but exposed workers to dangers like toxic gases and flooding.",
-                correctAnswer: "TRAVEL TIMES",
+                correctAnswer: ["TRAVEL TIMES", "Travel Times", "travel times"],
               },
               {
                 id: "q35",
@@ -1201,7 +1261,11 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "High [GAP] were recorded, especially in tunnels with poor ventilation.",
-                correctAnswer: "MORTALITY RATES",
+                correctAnswer: [
+                  "MORTALITY RATES",
+                  "Mortality Rates",
+                  "mortality rates",
+                ],
               },
               {
                 id: "q36",
@@ -1209,14 +1273,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Railways improved access but caused damage to fragile [GAP].",
-                correctAnswer: "ECOSYSTEMS",
+                correctAnswer: ["ECOSYSTEMS", "Ecosystems", "ecosystems"],
               },
               {
                 id: "q37",
                 questionNumber: 37,
                 type: "fill_in_the_blank",
                 text: "Many abandoned lines were left with unused [GAP].",
-                correctAnswer: "STATIONS",
+                correctAnswer: ["STATIONS", "Stations", "stations"],
               },
               {
                 id: "q38",
@@ -1224,7 +1288,11 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Modern monitoring systems are also useful for finding [GAP] early on.",
-                correctAnswer: "STRUCTURAL WEAKNESS",
+                correctAnswer: [
+                  "STRUCTURAL WEAKNESS",
+                  "Structural Weakness",
+                  "structural weakness",
+                ],
               },
               {
                 id: "q39",
@@ -1232,14 +1300,18 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Some communities resist new railways to protect their [GAP].",
-                correctAnswer: "TRADITION",
+                correctAnswer: ["TRADITION", "Tradition", "tradition"],
               },
               {
                 id: "q40",
                 questionNumber: 40,
                 type: "fill_in_the_blank",
                 text: "Projects today must show a clear commitment to [GAP].",
-                correctAnswer: "SUSTAINABILITY",
+                correctAnswer: [
+                  "SUSTAINABILITY",
+                  "Sustainability",
+                  "sustainability",
+                ],
               },
             ],
           },
@@ -1269,14 +1341,18 @@ export const allMockTests = [
                 questionNumber: 1,
                 type: "fill_in_the_blank",
                 text: "Address: Flat 1, 25 [GAP] Harchester HA6 5LD",
-                correctAnswer: "Alpine Avenue",
+                correctAnswer: [
+                  "ALPINE AVENUE",
+                  "Alpine Avenue",
+                  "alpine avenue",
+                ],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "Purchase reference number: [GAP] 8443",
-                correctAnswer: "DMX",
+                correctAnswer: ["DMX", "Dmx", "dmx"],
               },
               {
                 id: "q3",
@@ -1284,14 +1360,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Item description: Aqua Powershot digital camera in a [GAP] case",
-                correctAnswer: "silver",
+                correctAnswer: ["SILVER", "Silver", "silver"],
               },
               {
                 id: "q4",
                 questionNumber: 4,
                 type: "fill_in_the_blank",
                 text: "Insurance: Yes, has a colour [GAP] policy",
-                correctAnswer: "Four Star",
+                correctAnswer: ["FOUR STAR", "Four Star", "four star"],
               },
             ],
           },
@@ -1304,42 +1380,47 @@ export const allMockTests = [
                 questionNumber: 5,
                 type: "fill_in_the_blank",
                 text: "[GAP] missing should",
-                correctAnswer: "memory card",
+                correctAnswer: ["MEMORY CARD", "Memory Card", "memory card"],
               },
               {
                 id: "q6",
                 questionNumber: 6,
                 type: "fill_in_the_blank",
                 text: "[GAP] but isn't",
-                correctAnswer: "waterproof",
+                correctAnswer: ["WATERPROOF", "Waterproof", "waterproof"],
               },
               {
                 id: "q7",
                 questionNumber: 7,
                 type: "fill_in_the_blank",
                 text: "[GAP] on case",
-                correctAnswer: "big scratch",
+                correctAnswer: ["BIG SCRATCH", "Big Scratch", "big scratch"],
               },
               {
                 id: "q8",
                 questionNumber: 8,
                 type: "fill_in_the_blank",
                 text: "If repair not possible, offered to provide a [GAP]",
-                correctAnswer: "replacement",
+                correctAnswer: ["REPLACEMENT", "Replacement", "replacement"],
               },
               {
                 id: "q9",
                 questionNumber: 9,
                 type: "fill_in_the_blank",
                 text: "but customer requests a [GAP]",
-                correctAnswer: "refund",
+                correctAnswer: ["REFUND", "Refund", "refund"],
               },
               {
                 id: "q10",
                 questionNumber: 10,
                 type: "fill_in_the_blank",
                 text: "Asked customer to send item to [GAP]",
-                correctAnswer: "Customer services",
+                correctAnswer: [
+                  "CUSTOMER SERVICES",
+                  "Customer Services",
+                  "Customer services",
+                  "customer services",
+                ],
               },
             ],
           },
@@ -1358,35 +1439,55 @@ export const allMockTests = [
                 questionNumber: 11,
                 type: "fill_in_the_blank",
                 text: "[GAP]",
-                correctAnswer: "Impression roller",
+                correctAnswer: [
+                  "IMPRESSION ROLLER",
+                  "Impression Roller",
+                  "Impression roller",
+                  "impression roller",
+                ],
               },
               {
                 id: "q12",
                 questionNumber: 12,
                 type: "fill_in_the_blank",
                 text: "[GAP] of paper",
-                correctAnswer: "Printed side",
+                correctAnswer: [
+                  "PRINTED  SIDE",
+                  "Printed  Side",
+                  "Printed  side",
+                  "printed  side",
+                ],
               },
               {
                 id: "q13",
                 questionNumber: 13,
                 type: "fill_in_the_blank",
                 text: "gravure [GAP]",
-                correctAnswer: "Cylinder",
+                correctAnswer: ["CYLINDER", "Cylinder", "cylinder"],
               },
               {
                 id: "q14",
                 questionNumber: 14,
                 type: "fill_in_the_blank",
                 text: "[GAP]",
-                correctAnswer: "Ink fountain",
+                correctAnswer: [
+                  "INK FOUNTAIN",
+                  "Ink Fountain",
+                  "Ink fountain",
+                  "ink fountain",
+                ],
               },
               {
                 id: "q15",
                 questionNumber: 15,
                 type: "fill_in_the_blank",
                 text: "[GAP]",
-                correctAnswer: "Doctor blade",
+                correctAnswer: [
+                  "DOCTOR BLADE",
+                  "Doctor Blade",
+                  "Doctor blade",
+                  "doctor blade",
+                ],
               },
             ],
           },
@@ -1400,7 +1501,12 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The main advantage of rotogravure is the large [GAP] which is transferred.",
-                correctAnswer: "Amount of ink",
+                correctAnswer: [
+                  "AMOUNT OF INK",
+                  "Amount Of Ink",
+                  "Amount of ink",
+                  "amount of ink",
+                ],
               },
               {
                 id: "q17",
@@ -1408,7 +1514,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "[GAP] and photographs reproduce well in the rotogravure process.",
-                correctAnswer: "Fine art",
+                correctAnswer: ["FINE ART", "Fine Art", "Fine art", "fine art"],
               },
               {
                 id: "q18",
@@ -1416,7 +1522,12 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Sunday newspapers often contain [GAP] produced by rotogravure",
-                correctAnswer: "Advertising material",
+                correctAnswer: [
+                  "ADVERTISING MATERIAL",
+                  "Advertising Material",
+                  "Advertising material",
+                  "advertising material",
+                ],
               },
               {
                 id: "q19",
@@ -1424,7 +1535,12 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Apart from paper, floor coverings and [GAP] can be printed by rotogravure.",
-                correctAnswer: "Consumer packaging",
+                correctAnswer: [
+                  "CONSUMER PACKAGING",
+                  "Consumer Packaging",
+                  "Consumer packaging",
+                  "consumer packaging",
+                ],
               },
               {
                 id: "q20",
@@ -1432,7 +1548,12 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The main problem with rotogravure is that the [GAP] to the naked eye.",
-                correctAnswer: "Dots are visible",
+                correctAnswer: [
+                  "DOTS ARE VISIBLE",
+                  "Dots Are Visible",
+                  "Dots are visible",
+                  "dots are visible",
+                ],
               },
             ],
           },
@@ -1473,14 +1594,19 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "What two sources of information will the students use when preparing their presentation?",
-                correctAnswer: "Interviews, journal articles",
+                correctAnswer: [
+                  "INTERVIEWS ,JOURNAL ARTICLES",
+                  "Interviews ,Journal Articles",
+                  "Interviews ,journal articles",
+                  "interviews ,journal articles",
+                ],
               },
               {
                 id: "q25",
                 questionNumber: 25,
                 type: "fill_in_the_blank",
                 text: "What will the students show during their presentation?",
-                correctAnswer: "Photos",
+                correctAnswer: ["PHOTOS", "Photos", "photos"],
               },
             ],
           },
@@ -1626,13 +1752,13 @@ export const allMockTests = [
                   ],
                 ],
                 correctAnswer: {
-                  q34: "Program",
-                  q35: "Effective",
-                  q36: "Work",
-                  q37: "2",
-                  q38: "mark",
-                  q39: "lecture",
-                  q40: "physics",
+                  q34: ["PROGRAM", "Program", "program"],
+                  q35: ["EFFECTIVE", "Effective", "effective"],
+                  q36: ["WORK", "Work", "work"],
+                  q37: ["2"],
+                  q38: ["MARK", "Mark", "mark"],
+                  q39: ["LECTURE", "Lecture", "lecture"],
+                  q40: ["PHYSICS", "Physics", "physics"],
                 },
               },
             ],
@@ -1706,35 +1832,40 @@ export const allMockTests = [
                 questionNumber: 6,
                 type: "fill_in_the_blank",
                 text: "The Arabian oryx is mainly [GAP] in colour.",
-                correctAnswer: "white",
+                correctAnswer: ["WHITE", "White", "white"],
               },
               {
                 id: "q7",
                 questionNumber: 7,
                 type: "fill_in_the_blank",
                 text: "It lives in a [GAP] climate.",
-                correctAnswer: "hot(desert)",
+                correctAnswer: ["HOT(DESERT)", "Hot(Desert)", "hot(desert)"],
               },
               {
                 id: "q8",
                 questionNumber: 8,
                 type: "fill_in_the_blank",
                 text: "In [GAP] it became extinct.",
-                correctAnswer: "1972",
+                correctAnswer: ["1972"],
               },
               {
                 id: "q9",
                 questionNumber: 9,
                 type: "fill_in_the_blank",
                 text: "Now, there are about [GAP].",
-                correctAnswer: "300",
+                correctAnswer: ["300"],
               },
               {
                 id: "q10",
                 questionNumber: 10,
                 type: "fill_in_the_blank",
                 text: "in Oman. A crash in the population was caused by [GAP].",
-                correctAnswer: "Illegal hunting",
+                correctAnswer: [
+                  "ILLEGAL HUNTING",
+                  "Illegal Hunting",
+                  "Illegal hunting",
+                  "illegal hunting",
+                ],
               },
             ],
           },
@@ -1784,14 +1915,14 @@ export const allMockTests = [
                 questionNumber: 13,
                 type: "fill_in_the_blank",
                 text: "[GAP] and pasta are an example of Italian food.",
-                correctAnswer: "pizza",
+                correctAnswer: ["PIZZA", "Pizza", "pizza"],
               },
               {
                 id: "q14",
                 questionNumber: 14,
                 type: "fill_in_the_blank",
                 text: "American food consists of [GAP] and hot dog.",
-                correctAnswer: "Hamburgers",
+                correctAnswer: ["HAMBURGERS", "Hamburgers", "hamburgers"],
               },
             ],
           },
@@ -2009,7 +2140,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Influence - Leopold's concept that land should be viewed as a [GAP]",
-                correctAnswer: "Community",
+                correctAnswer: ["COMMUNITY", "Community", "community"],
               },
               {
                 id: "q32",
@@ -2017,7 +2148,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Practice - Restore native plant [GAP] to original condition",
-                correctAnswer: "Communities",
+                correctAnswer: ["COMMUNITIES", "Communities", "communities"],
               },
               {
                 id: "q33",
@@ -2025,14 +2156,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Curtis Prairie is the [GAP] restored prairie in America.",
-                correctAnswer: "Oldest",
+                correctAnswer: ["OLDEST", "Oldest", "oldest"],
               },
               {
                 id: "q34",
                 questionNumber: 34,
                 type: "fill_in_the_blank",
                 text: "Edmond Moukala researched restoring ancient [GAP]",
-                correctAnswer: "Wetlands",
+                correctAnswer: ["WETLANDS", "Wetlands", "wetlands"],
               },
               {
                 id: "q35",
@@ -2040,7 +2171,52 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "in the Congo based on the [GAP] in his homeland. found in the soil of these former communities",
-                correctAnswer: "Seeds",
+                correctAnswer: ["SEEDS", "Seeds", "seeds"],
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 36 - 40</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD OR A NUMBER</strong> for each answer.</p>",
+            questions: [
+              {
+                id: "q36",
+                questionNumber: 36,
+                type: "fill_in_the_blank",
+                text: "Coursework in statistics, theory, ecology and [GAP]",
+                correctAnswer: ["PLANT", "Plant", "plant"],
+              },
+              {
+                id: "q37",
+                questionNumber: 37,
+                type: "fill_in_the_blank",
+                text:
+                  "identification [GAP] help students gain practical experience.",
+                correctAnswer: ["INTERNSHIPS", "Internships", "internships"],
+              },
+              {
+                id: "q38",
+                questionNumber: 38,
+                type: "fill_in_the_blank",
+                text:
+                  "Has so far granted [GAP] Masters Degrees and 122 Ph.D.'s",
+                correctAnswer: ["277"],
+              },
+              {
+                id: "q39",
+                questionNumber: 39,
+                type: "fill_in_the_blank",
+                text:
+                  "One former student is now the [GAP] of the World Wide Fund for Nature,",
+                correctAnswer: ["DIRECTOR", "Director", "director"],
+              },
+              {
+                id: "q40",
+                questionNumber: 40,
+                type: "fill_in_the_blank",
+                text:
+                  "while many others continue to conduct [GAP] in their own university programmes.",
+                correctAnswer: ["RESEARCH", "Research", "research"],
               },
             ],
           },
@@ -2456,7 +2632,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "In Britain, there is a common saying, \"An Englishman's home is his [GAP].",
-                correctAnswer: "Castle",
+                correctAnswer: ["CASTLE", "Castle", "castle"],
               },
               {
                 id: "q32",
@@ -2464,28 +2640,28 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "It's important to cat thoughtfully if you are living in a British [GAP].",
-                correctAnswer: "Home",
+                correctAnswer: ["HOME", "Home", "home"],
               },
               {
                 id: "q33",
                 questionNumber: 33,
                 type: "fill_in_the_blank",
                 text: "There are a few British [GAP].",
-                correctAnswer: "Customs",
+                correctAnswer: ["CUSTOMS", "Customs", "customs"],
               },
               {
                 id: "q34",
                 questionNumber: 34,
                 type: "fill_in_the_blank",
                 text: "You should be [GAP] for meals.",
-                correctAnswer: "punctual",
+                correctAnswer: ["PUNCTUAL", "Punctual", "punctual"],
               },
               {
                 id: "q35",
                 questionNumber: 35,
                 type: "fill_in_the_blank",
                 text: "Make your own bed keep you room clean and [GAP].",
-                correctAnswer: "Tidy",
+                correctAnswer: ["TIDY", "Tidy", "tidy"],
               },
               {
                 id: "q36",
@@ -2493,7 +2669,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "When you stay with a British family for several days you should give a small [GAP] when you leave.",
-                correctAnswer: "Present",
+                correctAnswer: ["PRESENT", "Present", "present"],
               },
               {
                 id: "q37",
@@ -2501,7 +2677,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "British people normally wait unit [GAP] has got their food before they start eating.",
-                correctAnswer: "everyone",
+                correctAnswer: ["EVERYONE", "Everyone", "everyone"],
               },
               {
                 id: "q38",
@@ -2509,7 +2685,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "You'd better use their family [GAP] and title if you are unsure how to call them.",
-                correctAnswer: "Name",
+                correctAnswer: ["NAME", "Name", "name"],
               },
               {
                 id: "q39",
@@ -2517,14 +2693,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "At a formal meal, the host won't [GAP] expect guests to help with household.",
-                correctAnswer: "Normally",
+                correctAnswer: ["NORMALLY", "Normally", "normally"],
               },
               {
                 id: "q40",
                 questionNumber: 40,
                 type: "fill_in_the_blank",
                 text: "[GAP]",
-                correctAnswer: "Chores",
+                correctAnswer: ["CHORES", "Chores", "chores"],
               },
             ],
           },
@@ -2554,42 +2730,76 @@ export const allMockTests = [
                 questionNumber: 1,
                 type: "fill_in_the_blank",
                 text: "Full name: Oliver [GAP]",
-                correctAnswer: "BENNETT",
+                correctAnswer: ["BENNETT", "Bennett", "bennett"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "Membership start date: [GAP] October",
-                correctAnswer: "3RD/THIRD",
+                correctAnswer: ["3RD", "3Rd", "3rd", "THIRD", "Third", "third"],
               },
               {
                 id: "q3",
                 questionNumber: 3,
                 type: "fill_in_the_blank",
                 text: "Duration: Until end of [GAP]",
-                correctAnswer: "JULY",
+                correctAnswer: ["JULY", "July", "july"],
               },
               {
                 id: "q4",
                 questionNumber: 4,
                 type: "fill_in_the_blank",
                 text: "Membership type: [GAP] scheme",
-                correctAnswer: "STUDENT",
+                correctAnswer: ["STUDENT", "Student", "student"],
               },
               {
                 id: "q5",
                 questionNumber: 5,
                 type: "fill_in_the_blank",
                 text: "Branch: Katherine, [GAP] Street",
-                correctAnswer: "KING",
+                correctAnswer: ["KING", "King", "king"],
               },
               {
                 id: "q6",
                 questionNumber: 6,
                 type: "fill_in_the_blank",
                 text: "Distance from campus: [GAP] minutes",
-                correctAnswer: "5",
+                correctAnswer: ["5"],
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 7-10</p><p>Complete the form below.</p><p>Write <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p><h3>Gym Membership Form</h3>",
+            questions: [
+              {
+                id: "q7",
+                questionNumber: 7,
+                type: "fill_in_the_blank",
+                text: "Monthly fee: £ [GAP]",
+                correctAnswer: ["35"],
+              },
+              {
+                id: "q8",
+                questionNumber: 8,
+                type: "fill_in_the_blank",
+                text: "Facilities include: pool and [GAP]",
+                correctAnswer: ["SAUNA", "Sauna", "sauna"],
+              },
+              {
+                id: "q9",
+                questionNumber: 9,
+                type: "fill_in_the_blank",
+                text: "Most popular class: [GAP]",
+                correctAnswer: ["SPINNING", "Spinning", "spinning"],
+              },
+              {
+                id: "q10",
+                questionNumber: 10,
+                type: "fill_in_the_blank",
+                text: "Email: oliver.bennett21@ [GAP]",
+                correctAnswer: ["GMAIL.COM", "Gmail.Com", "gmail.com"],
               },
             ],
           },
@@ -2888,7 +3098,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "One of the earliest medical breakthroughs was the practice of [GAP]",
-                correctAnswer: "HANDWASHING",
+                correctAnswer: ["HANDWASHING", "Handwashing", "handwashing"],
               },
               {
                 id: "q32",
@@ -2896,7 +3106,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Semmelweis recommended cleaning hands with a [GAP] solution.",
-                correctAnswer: "CHLORINE",
+                correctAnswer: ["CHLORINE", "Chlorine", "chlorine"],
               },
               {
                 id: "q33",
@@ -2904,7 +3114,11 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The first public demonstration of pain relief in surgery used [GAP]",
-                correctAnswer: "COLOURLESS LIQUID",
+                correctAnswer: [
+                  "COLOURLESS LIQUID",
+                  "Colourless Liquid",
+                  "colourless liquid",
+                ],
               },
               {
                 id: "q34",
@@ -2912,7 +3126,11 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Joseph Lister used [GAP] to sterilise equipment and wounds.",
-                correctAnswer: "CARBOLIC ACID",
+                correctAnswer: [
+                  "CARBOLIC ACID",
+                  "Carbolic Acid",
+                  "carbolic acid",
+                ],
               },
               {
                 id: "q35",
@@ -2920,7 +3138,11 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Fleming discovered penicillin after mould infected a [GAP]",
-                correctAnswer: "CULTURE PLATE",
+                correctAnswer: [
+                  "CULTURE PLATE",
+                  "Culture Plate",
+                  "culture plate",
+                ],
               },
               {
                 id: "q36",
@@ -2928,14 +3150,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "in 1980 was a public health victory. The formal eradication of [GAP]",
-                correctAnswer: "SMALLPOX",
+                correctAnswer: ["SMALLPOX", "Smallpox", "smallpox"],
               },
               {
                 id: "q37",
                 questionNumber: 37,
                 type: "fill_in_the_blank",
                 text: "MRI scans provide clear images of [GAP]",
-                correctAnswer: "SOFT TISSUE",
+                correctAnswer: ["SOFT TISSUE", "Soft Tissue", "soft tissue"],
               },
               {
                 id: "q38",
@@ -2943,7 +3165,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "In 1954, the first [GAP] transplant was performed successfully.",
-                correctAnswer: "KIDNEY",
+                correctAnswer: ["KIDNEY", "Kidney", "kidney"],
               },
               {
                 id: "q39",
@@ -2951,7 +3173,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Once production [GAP] were improved, insulin therapy became common.",
-                correctAnswer: "METHODS",
+                correctAnswer: ["METHODS", "Methods", "methods"],
               },
               {
                 id: "q40",
@@ -2959,7 +3181,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "In future, medicine may be tailored using individual [GAP] profiles.",
-                correctAnswer: "GENETIC",
+                correctAnswer: ["GENETIC", "Genetic", "genetic"],
               },
             ],
           },
@@ -2989,14 +3211,18 @@ export const allMockTests = [
                 questionNumber: 1,
                 type: "fill_in_the_blank",
                 text: "Express train departs at [GAP] from platform 4.",
-                correctAnswer: "8:10",
+                correctAnswer: ["8:10"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "Closest railway station is [GAP].",
-                correctAnswer: "CENTRAL STATION",
+                correctAnswer: [
+                  "CENTRAL STATION",
+                  "Central Station",
+                  "central station",
+                ],
               },
               {
                 id: "q3",
@@ -3004,21 +3230,21 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Bus number [GAP] goes to Maple Avenue Underground Station.",
-                correctAnswer: "517",
+                correctAnswer: ["517"],
               },
               {
                 id: "q4",
                 questionNumber: 4,
                 type: "fill_in_the_blank",
                 text: "The direct walk to the station takes [GAP] minutes.",
-                correctAnswer: "6",
+                correctAnswer: ["6"],
               },
               {
                 id: "q5",
                 questionNumber: 5,
                 type: "fill_in_the_blank",
                 text: "Trains run every [GAP] minutes.",
-                correctAnswer: "SEVEN",
+                correctAnswer: ["7", "SEVEN", "Seven", "seven"],
               },
             ],
           },
@@ -3039,11 +3265,79 @@ export const allMockTests = [
                   ["Full-day sightseeing boat trip", "$10.00", "10. [INPUT]"],
                 ],
                 correctAnswer: {
-                  q6: "1.50",
-                  q7: "NO DISCOUNT",
-                  q8: "6.40",
-                  q9: "4.60",
-                  q10: "10.78",
+                  q6: ["1.50"],
+                  q7: ["NO DISCOUNT", "No Discount", "no discount"],
+                  q8: ["6.40"],
+                  q9: ["4.60"],
+                  q10: ["78", "10.78"],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "section-2",
+        title: "Section 2",
+        questionGroups: [
+          {
+            instructions:
+              "<p>Questions 11-16</p><p>Complete the table below.</p><p>Write <strong>No more than two words</strong> for each answer.</p>",
+            questions: [
+              {
+                id: "q11-16-table",
+                questionNumber: 11,
+                type: "table_fill_in_the_blank",
+                tableData: [
+                  ["Services offered", "For individuals", "For groups"],
+                  [
+                    "Online support sessions",
+                    "Write down their concerns\n\n11. [INPUT] at your own pace",
+                    "",
+                  ],
+                  [
+                    "In-person one-to-one appointments",
+                    "Speak face-to-face at an\n\n12. [INPUT]",
+                    "",
+                  ],
+                  [
+                    "Group discussions",
+                    "",
+                    "Understand how you relate\n\n13. [INPUT]\n\nCommit to 14. [INPUT] personal growth",
+                  ],
+                  [
+                    "Self-guided materials",
+                    "Explore challenges in more depth 15. [INPUT] at any time. links to various resources.",
+                    "",
+                  ],
+                  [
+                    "Targeted skills sessions",
+                    "",
+                    "Learn about similar topics develop useful 16. [INPUT]",
+                  ],
+                ],
+                correctAnswer: {
+                  q11: ["REFLECT", "Reflect", "reflect"],
+                  q12: ["ARRANGED TIME", "Arranged Time", "arranged time"],
+                  q13: ["OTHER PEOPLE", "Other People", "other people"],
+                  q14: [
+                    "LONG -TERM",
+                    "Long -Term",
+                    "long -term",
+                    "LONG TERM",
+                    "Long term",
+                    "long term",
+                  ],
+                  q15: [
+                    "PRACTICAL STRATEGIES",
+                    "Practical Strategies",
+                    "practical strategies",
+                  ],
+                  q16: [
+                    "COPING TECHNIQUES",
+                    "Coping Techniques",
+                    "coping techniques",
+                  ],
                 },
               },
             ],
@@ -3159,7 +3453,7 @@ export const allMockTests = [
                 questionNumber: 21,
                 type: "fill_in_the_blank",
                 text: "The most important feature of a strong report is [GAP].",
-                correctAnswer: "CLARITY",
+                correctAnswer: ["CLARITY", "Clarity", "clarity"],
               },
               {
                 id: "q22",
@@ -3167,28 +3461,36 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Do not write a report that is only a repetition of [GAP] or other people's conclusions.",
-                correctAnswer: "STATISTICS",
+                correctAnswer: ["STATISTICS", "Statistics", "statistics"],
               },
               {
                 id: "q23",
                 questionNumber: 23,
                 type: "fill_in_the_blank",
                 text: "The second key factor is [GAP].",
-                correctAnswer: "ORGANISATION",
+                correctAnswer: ["ORGANISATION", "Organisation", "organisation"],
               },
               {
                 id: "q24",
                 questionNumber: 24,
                 type: "fill_in_the_blank",
                 text: "Write [GAP] and arguments before starting.",
-                correctAnswer: "ESSENTIAL POINTS",
+                correctAnswer: [
+                  "ESSENTIAL POINTS",
+                  "Essential Points",
+                  "essential points",
+                ],
               },
               {
                 id: "q25",
                 questionNumber: 25,
                 type: "fill_in_the_blank",
                 text: "Consider the [GAP] before you start writing.",
-                correctAnswer: "BIGGER PICTURE",
+                correctAnswer: [
+                  "BIGGER PICTURE",
+                  "Bigger Picture",
+                  "bigger picture",
+                ],
               },
               {
                 id: "q26",
@@ -3196,7 +3498,121 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Know [GAP]. avoid the error of writing solely for yourself.",
-                correctAnswer: "INTENDED AUDIENCE",
+                correctAnswer: [
+                  "INTENDED AUDIENCE",
+                  "Intended Audience",
+                  "intended audience",
+                ],
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 27-30</p><p>Complete the notes below.</p><p>Write <strong>NO MORE THAN THREE WORDS</strong> for each answer.</p><h3>HOW TO WRITE A HISTORY RESEARCH REPORT</h3><h4>Report Structure</h4>",
+            questions: [
+              {
+                id: "q27",
+                questionNumber: 27,
+                type: "fill_in_the_blank",
+                text: "The maximum length of a single section is [GAP].",
+                correctAnswer: ["A4 PAGE", "A4 Page", "a4 page"],
+              },
+              {
+                id: "q28",
+                questionNumber: 28,
+                type: "fill_in_the_blank",
+                text:
+                  "<strong>Flow</strong>\n\nEach point should [GAP] from the one before it.",
+                correctAnswer: [
+                  "FOLLOW NATURALLY",
+                  "Follow Naturally",
+                  "follow naturally",
+                ],
+              },
+              {
+                id: "q29",
+                questionNumber: 29,
+                type: "fill_in_the_blank",
+                text:
+                  "Use [GAP] and expressions to link sections where appropriate.",
+                correctAnswer: [
+                  "CONNECTIVE WORDS",
+                  "Connective Words",
+                  "connective words",
+                ],
+              },
+              {
+                id: "q30",
+                questionNumber: 30,
+                type: "fill_in_the_blank",
+                text:
+                  "<strong>Argument</strong>\n\nA good History report must present a clear argument. It should not be a [GAP] but should explore multiple viewpoints.",
+                correctAnswer: [
+                  "ONE -SIDED MONOLOGUE",
+                  "One -Sided Monologue",
+                  "one -sided monologue",
+                  "ONE-SIDED MONOLOGUE",
+                  "One-Sided Monologue",
+                  "one-sided monologue",
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "section-4",
+        title: "Section 4",
+        questionGroups: [
+          {
+            instructions:
+              "<p>Questions 31-35</p><p>Complete the sentence given below.</p><p>Write <strong>NO MORE THAN THREE WORDS</strong>.</p><h4>The influence of the blue colour</h4>",
+            questions: [
+              {
+                id: "q31",
+                questionNumber: 31,
+                type: "fill_in_the_blank",
+                text:
+                  "Blue is a vivid colour. It has a number of powerful [GAP].",
+                correctAnswer: ["ASSOCIATIONS", "Associations", "associations"],
+              },
+              {
+                id: "q32",
+                questionNumber: 32,
+                type: "fill_in_the_blank",
+                text:
+                  "It is often used internationally on signs that provide [GAP].",
+                correctAnswer: [
+                  "GUIDANCE OR INFORMATION",
+                  "Guidance Or Information",
+                  "guidance or information",
+                ],
+              },
+              {
+                id: "q33",
+                questionNumber: 33,
+                type: "fill_in_the_blank",
+                text: "Our skin can turn [GAP] when we are very cold.",
+                correctAnswer: ["BLUE", "Blue", "blue"],
+              },
+              {
+                id: "q34",
+                questionNumber: 34,
+                type: "fill_in_the_blank",
+                text: "When [GAP] our skin may turn blue due to fear.",
+                correctAnswer: ["FRIGHTENED", "Frightened", "frightened"],
+              },
+              {
+                id: "q35",
+                questionNumber: 35,
+                type: "fill_in_the_blank",
+                text:
+                  "Traditional blue is the shade most often linked with loyalty; the best-known example is its use in [GAP].",
+                correctAnswer: [
+                  "POLICE UNIFORMS",
+                  "Police Uniforms",
+                  "police uniforms",
+                ],
               },
             ],
           },
@@ -3382,35 +3798,92 @@ export const allMockTests = [
                 questionNumber: 1,
                 type: "fill_in_the_blank",
                 text: "Age: [GAP]",
-                correctAnswer: "63",
+                correctAnswer: ["63"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "Postcode: [GAP]",
-                correctAnswer: "GL49PD",
+                correctAnswer: ["GL49PD", "Gl49Pd", "gl49pd"],
               },
               {
                 id: "q3",
                 questionNumber: 3,
                 type: "fill_in_the_blank",
                 text: "COMPUTER FACILITIES ALREADY USED Where?: [GAP]",
-                correctAnswer: "COMMUNITY LIBRARY",
+                correctAnswer: [
+                  "COMMUNITY LIBRARY",
+                  "Community Library",
+                  "community library",
+                ],
               },
               {
                 id: "q4",
                 questionNumber: 4,
                 type: "fill_in_the_blank",
                 text: "SPORTS FACILITIES ALREADY USED Where?: [GAP]",
-                correctAnswer: "POOL",
+                correctAnswer: ["POOL", "Pool", "pool"],
               },
               {
                 id: "q5",
                 questionNumber: 5,
                 type: "fill_in_the_blank",
                 text: "EDUCATION FACILITIES ALREADY USED Where?: [GAP]",
-                correctAnswer: "ADULT LEARNING CENTRE",
+                correctAnswer: [
+                  "ADULT LEARNING CENTRE",
+                  "Adult Learning Centre",
+                  "adult learning centre",
+                ],
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 6-10</p><p>Complete the sentences below.</p><p>Write <strong>NO MORE THAN THREE WORDS AND/OR A NUMBER</strong> for each answer.</p><h3>SUGGESTIONS FOR IMPROVEMENTS AT LEISURE CENTRE</h3>",
+            questions: [
+              {
+                id: "q6",
+                questionNumber: 6,
+                type: "fill_in_the_blank",
+                text: "New sports: [GAP]",
+                correctAnswer: [
+                  "YOGA AND TENNIS",
+                  "Yoga And Tennis",
+                  "yoga and tennis",
+                ],
+              },
+              {
+                id: "q7",
+                questionNumber: 7,
+                type: "fill_in_the_blank",
+                text: "Classes organised especially for: [GAP]",
+                correctAnswer: ["OLDER ADULTS", "Older Adults", "older adults"],
+              },
+              {
+                id: "q8",
+                questionNumber: 8,
+                type: "fill_in_the_blank",
+                text: "Type of education classes suggested: [GAP]",
+                correctAnswer: [
+                  "DANCING AND POTTERY",
+                  "Dancing And Pottery",
+                  "dancing and pottery",
+                ],
+              },
+              {
+                id: "q9",
+                questionNumber: 9,
+                type: "fill_in_the_blank",
+                text: "Willing to pay: £ [GAP] per class",
+                correctAnswer: ["3", "THREE", "Three", "three"],
+              },
+              {
+                id: "q10",
+                questionNumber: 10,
+                type: "fill_in_the_blank",
+                text: "Likely frequency of visits if changes made: [GAP]",
+                correctAnswer: ["FOUR TIMES", "Four Times", "four times"],
               },
             ],
           },
@@ -3711,7 +4184,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "will receive information about economics and the [GAP] to focus on.",
-                correctAnswer: "MAIN AREAS",
+                correctAnswer: ["MAIN AREAS", "Main Areas", "main areas"],
               },
               {
                 id: "q32",
@@ -3719,14 +4192,18 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "will be given a structure for independent study.\nwill have an opportunity to be taught by an [GAP] in the field.",
-                correctAnswer: "EXPERT",
+                correctAnswer: ["EXPERT", "Expert", "expert"],
               },
               {
                 id: "q33",
                 questionNumber: 33,
                 type: "fill_in_the_blank",
                 text: "will take part in the learning culture in [GAP].",
-                correctAnswer: "UNIVERSITY EDUCATION",
+                correctAnswer: [
+                  "UNIVERSITY EDUCATION",
+                  "University Education",
+                  "university education",
+                ],
               },
               {
                 id: "q34",
@@ -3734,14 +4211,18 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>Common problems students have with techniques used in lectures.</strong>\nmay not develop deeper [GAP]: no immediate clarification",
-                correctAnswer: "UNDERSTANDING",
+                correctAnswer: [
+                  "UNDERSTANDING",
+                  "Understanding",
+                  "understanding",
+                ],
               },
               {
                 id: "q35",
                 questionNumber: 35,
                 type: "fill_in_the_blank",
                 text: "modern methods help improve [GAP] more than lectures.",
-                correctAnswer: "OUTCOMES",
+                correctAnswer: ["OUTCOMES", "Outcomes", "outcomes"],
               },
               {
                 id: "q36",
@@ -3749,7 +4230,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>How to avoid problems and make learning easier</strong>\nleave time to read [GAP] on the booklist.",
-                correctAnswer: "TITLES",
+                correctAnswer: ["TITLES", "Titles", "titles"],
               },
               {
                 id: "q37",
@@ -3757,28 +4238,32 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "test yourself with quizzes, if you have had a [GAP] review earlier principles",
-                correctAnswer: "YEAR OFF",
+                correctAnswer: ["YEAR OFF", "Year Off", "year off"],
               },
               {
                 id: "q38",
                 questionNumber: 38,
                 type: "fill_in_the_blank",
                 text: "use the web to do extra [GAP]",
-                correctAnswer: "BACKGROUND STUDY",
+                correctAnswer: [
+                  "BACKGROUND STUDY",
+                  "Background Study",
+                  "background study",
+                ],
               },
               {
                 id: "q39",
                 questionNumber: 39,
                 type: "fill_in_the_blank",
                 text: "check the sources of information on the web are [GAP]",
-                correctAnswer: "TRUSTWORTHY",
+                correctAnswer: ["TRUSTWORTHY", "Trustworthy", "trustworthy"],
               },
               {
                 id: "q40",
                 questionNumber: 40,
                 type: "fill_in_the_blank",
                 text: "[GAP] with your classmates",
-                correctAnswer: "TALK",
+                correctAnswer: ["TALK", "Talk", "talk"],
               },
             ],
           },
@@ -3808,21 +4293,21 @@ export const allMockTests = [
                 questionNumber: 1,
                 type: "fill_in_the_blank",
                 text: "Address: [GAP] Lane, Carlisle",
-                correctAnswer: "OAKBRIDGE",
+                correctAnswer: ["OAKBRIDGE", "Oakbridge", "oakbridge"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "Postcode: [GAP]",
-                correctAnswer: "BT904PK",
+                correctAnswer: ["BT904PK", "Bt904Pk", "bt904pk"],
               },
               {
                 id: "q3",
                 questionNumber: 3,
                 type: "fill_in_the_blank",
                 text: "Telephone: work: [GAP], home: 681474",
-                correctAnswer: "643952",
+                correctAnswer: ["643952"],
               },
             ],
           },
@@ -3878,7 +4363,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The man was happy with the [GAP] process at the airport.",
-                correctAnswer: "SECURITY",
+                correctAnswer: ["SECURITY", "Security", "security"],
               },
               {
                 id: "q8",
@@ -3886,21 +4371,29 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "During the flight, the [GAP] system helped him pass the time.",
-                correctAnswer: "ENTERTAINMENT",
+                correctAnswer: [
+                  "ENTERTAINMENT",
+                  "Entertainment",
+                  "entertainment",
+                ],
               },
               {
                 id: "q9",
                 questionNumber: 9,
                 type: "fill_in_the_blank",
                 text: "The company offered a 25% discount on his next [GAP].",
-                correctAnswer: "HOTEL BOOKING",
+                correctAnswer: [
+                  "HOTEL BOOKING",
+                  "Hotel Booking",
+                  "hotel booking",
+                ],
               },
               {
                 id: "q10",
                 questionNumber: 10,
                 type: "fill_in_the_blank",
                 text: "He also received a [GAP] credit.",
-                correctAnswer: "CALLING CARD",
+                correctAnswer: ["CALLING CARD", "Calling Card", "calling card"],
               },
             ],
           },
@@ -4089,7 +4582,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Since the business was launched, recruitment has remained a major issue, as it is hard to find trained staff and there is no [GAP].",
-                correctAnswer: "SOLUTION",
+                correctAnswer: ["SOLUTION", "Solution", "solution"],
               },
               {
                 id: "q27",
@@ -4097,7 +4590,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Doctor Harris also needs to locate a space for the upcoming training session on finances. Time management is difficult, and the role of [GAP] has proved essential in staying organised.",
-                correctAnswer: "MOTIVATION",
+                correctAnswer: ["MOTIVATION", "Motivation", "motivation"],
               },
               {
                 id: "q28",
@@ -4105,7 +4598,11 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "To improve these skills, students are advised to check the section on [GAP] in the library,",
-                correctAnswer: "WORKPLACE BEHAVIOUR",
+                correctAnswer: [
+                  "WORKPLACE BEHAVIOUR",
+                  "Workplace Behaviour",
+                  "workplace behaviour",
+                ],
               },
               {
                 id: "q29",
@@ -4113,14 +4610,122 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "where valuable books can be found. The library also holds helpful content like video tutorials on time use, literature about [GAP]",
-                correctAnswer: "SYSTEM ADAPTATION METHODS",
+                correctAnswer: [
+                  "SYSTEM ADAPTATION METHODS",
+                  "System Adaptation Methods",
+                  "system adaptation methods",
+                ],
               },
               {
                 id: "q30",
                 questionNumber: 30,
                 type: "fill_in_the_blank",
                 text: "and journal articles on the [GAP].",
-                correctAnswer: "COMMUNITY SERVICE ROLES",
+                correctAnswer: [
+                  "COMMUNITY SERVICE ROLES",
+                  "Community Service Roles",
+                  "community service roles",
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "section-4",
+        title: "Section 4",
+        questionGroups: [
+          {
+            instructions:
+              "<p>Questions 31-40</p><p>Complete the notes below.</p><p>Write <strong>NO MORE THAN TWO WORDS</strong> for each answer.</p><h3>CLIMATE AND ARCHITECTURE</h3><h4>Introduction</h4>",
+            questions: [
+              {
+                id: "q31",
+                questionNumber: 31,
+                type: "fill_in_the_blank",
+                text:
+                  "Cases and examples are from practice conducted in [GAP] as well as rural areas.",
+                correctAnswer: ["CITIES", "Cities", "cities"],
+              },
+              {
+                id: "q32",
+                questionNumber: 32,
+                type: "fill_in_the_blank",
+                text:
+                  "<strong>Acid Rain</strong>\nGovernmental efforts began in the 1970s to cut emissions. Financial support was received from a [GAP].",
+                correctAnswer: ["BANK", "Bank", "bank"],
+              },
+              {
+                id: "q33",
+                questionNumber: 33,
+                type: "fill_in_the_blank",
+                text:
+                  "[GAP] face less risk due to lower pollution at high levels.",
+                correctAnswer: ["SKYSCRAPERS", "Skyscrapers", "skyscrapers"],
+              },
+              {
+                id: "q34",
+                questionNumber: 34,
+                type: "fill_in_the_blank",
+                text:
+                  "In recent years, alter Project focuses on older buildings made of [GAP].",
+                correctAnswer: ["STONE", "Stone", "stone"],
+              },
+              {
+                id: "q35",
+                questionNumber: 35,
+                type: "fill_in_the_blank",
+                text:
+                  "<strong>Pollution</strong>\nBuilding materials like concrete contribute to emissions. [GAP] was used in Sky Tower windows to reduce pollution.",
+                correctAnswer: [
+                  "RECYCLED GLASS",
+                  "Recycled Glass",
+                  "recycled glass",
+                ],
+              },
+              {
+                id: "q36",
+                questionNumber: 36,
+                type: "fill_in_the_blank",
+                text:
+                  "<strong>Water and Humidity</strong>\nRain in [GAP] makes construction timing difficult",
+                correctAnswer: ["WINTER", "Winter", "winter"],
+              },
+              {
+                id: "q37",
+                questionNumber: 37,
+                type: "fill_in_the_blank",
+                text:
+                  "in wood, which may result in serious damage Moisture leads to [GAP].",
+                correctAnswer: [
+                  "PHYSICAL CHANGES",
+                  "Physical Changes",
+                  "physical changes",
+                ],
+              },
+              {
+                id: "q38",
+                questionNumber: 38,
+                type: "fill_in_the_blank",
+                text:
+                  "<strong>Building Design & Technology</strong>\nFoundation issues can occur when [GAP] lacks proper density.",
+                correctAnswer: ["SOIL", "Soil", "soil"],
+              },
+              {
+                id: "q39",
+                questionNumber: 39,
+                type: "fill_in_the_blank",
+                text:
+                  "Engineers now monitor the [GAP] of architectural structures.",
+                correctAnswer: ["MOVEMENTS", "Movements", "movements"],
+              },
+              {
+                id: "q40",
+                questionNumber: 40,
+                type: "fill_in_the_blank",
+                text:
+                  "The government plans to provide [GAP] to support architects in seismic zones.",
+                correctAnswer: ["CHECKLIST", "Checklist", "checklist"],
               },
             ],
           },
@@ -4220,6 +4825,7 @@ export const allMockTests = [
       },
     ],
   },
+
   {
     id: "listening-test-11",
     moduleId: "listening",
@@ -4242,14 +4848,14 @@ export const allMockTests = [
                 questionNumber: 1,
                 type: "fill_in_the_blank",
                 text: "Open in: [GAP]",
-                correctAnswer: "JUNE",
+                correctAnswer: ["JUNE", "June", "june"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "Length of exhibition: [GAP]",
-                correctAnswer: "4 DAYS",
+                correctAnswer: ["4 DAYS", "4 Days", "4 days"],
               },
               {
                 id: "q3",
@@ -4257,7 +4863,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "A broad variety of brands will be displayed.\nSome bikes are only for display: others can be used for [GAP].",
-                correctAnswer: "RIDE",
+                correctAnswer: ["RIDE", "Ride", "ride"],
               },
               {
                 id: "q4",
@@ -4265,7 +4871,59 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "[GAP] are not allowed inside the exhibition hall.\nEach ticket includes one free photograph.",
-                correctAnswer: "PERSONAL PHONES",
+                correctAnswer: [
+                  "PERSONAL PHONES",
+                  "Personal Phones",
+                  "personal phones",
+                ],
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 5-10</p><p>Complete the form below.</p><p>Write <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p>",
+            questions: [
+              {
+                id: "q5",
+                questionNumber: 5,
+                type: "fill_in_the_blank",
+                text: "Price of ticket: £ [GAP] (in advance)",
+                correctAnswer: ["105"],
+              },
+              {
+                id: "q6",
+                questionNumber: 6,
+                type: "fill_in_the_blank",
+                text: "Transfer to Sarah (Ticketing officer) [GAP]",
+                correctAnswer: ["PENDLETON", "Pendleton", "pendleton"],
+              },
+              {
+                id: "q7",
+                questionNumber: 7,
+                type: "fill_in_the_blank",
+                text: "Venue this year: Grand [GAP]",
+                correctAnswer: ["PALACE", "Palace", "palace"],
+              },
+              {
+                id: "q8",
+                questionNumber: 8,
+                type: "fill_in_the_blank",
+                text: "Located near [GAP]",
+                correctAnswer: ["CITY CENTER", "City Center", "city center"],
+              },
+              {
+                id: "q9",
+                questionNumber: 9,
+                type: "fill_in_the_blank",
+                text: "Website: www.[GAP].net",
+                correctAnswer: ["DIRECTION", "Direction", "direction"],
+              },
+              {
+                id: "q10",
+                questionNumber: 10,
+                type: "fill_in_the_blank",
+                text: "Best way to contact: [GAP]",
+                correctAnswer: ["ONLINE", "Online", "online"],
               },
             ],
           },
@@ -4391,35 +5049,35 @@ export const allMockTests = [
                 questionNumber: 16,
                 type: "fill_in_the_blank",
                 text: "Reception Area [GAP]",
-                correctAnswer: "F",
+                correctAnswer: ["F", "f"],
               },
               {
                 id: "q17",
                 questionNumber: 17,
                 type: "fill_in_the_blank",
                 text: "Dr. Harrison's Room [GAP]",
-                correctAnswer: "H",
+                correctAnswer: ["H", "h"],
               },
               {
                 id: "q18",
                 questionNumber: 18,
                 type: "fill_in_the_blank",
                 text: "Records Department [GAP]",
-                correctAnswer: "B",
+                correctAnswer: ["B", "b"],
               },
               {
                 id: "q19",
                 questionNumber: 19,
                 type: "fill_in_the_blank",
                 text: "Surgery Room [GAP]",
-                correctAnswer: "G",
+                correctAnswer: ["G", "g"],
               },
               {
                 id: "q20",
                 questionNumber: 20,
                 type: "fill_in_the_blank",
                 text: "Director's Office [GAP]",
-                correctAnswer: "C",
+                correctAnswer: ["C", "c"],
               },
             ],
           },
@@ -4550,7 +5208,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "In modern Australia, schools promote cricket mainly due to pressure from [GAP].",
-                correctAnswer: "PARENTS",
+                correctAnswer: ["PARENTS", "Parents", "parents"],
               },
               {
                 id: "q34",
@@ -4558,7 +5216,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Before the 19th century, cricket games followed different [GAP].",
-                correctAnswer: "RULES",
+                correctAnswer: ["RULES", "Rules", "rules"],
               },
               {
                 id: "q35",
@@ -4566,7 +5224,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "A unified code was formed to consolidate rules across the [GAP].",
-                correctAnswer: "NATION",
+                correctAnswer: ["NATION", "Nation", "nation"],
               },
               {
                 id: "q36",
@@ -4574,7 +5232,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Match attendance grew as a result of improvements in communication and the [GAP].",
-                correctAnswer: "TRANSPORT",
+                correctAnswer: ["TRANSPORT", "Transport", "transport"],
               },
               {
                 id: "q37",
@@ -4582,7 +5240,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Cricket evolved into a popular [GAP] activity for local communities.",
-                correctAnswer: "COMMUNITY",
+                correctAnswer: ["COMMUNITY", "Community", "community"],
               },
               {
                 id: "q38",
@@ -4590,7 +5248,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Most of the funding and development for the sport was managed by [GAP] clubs.",
-                correctAnswer: "CRICKET",
+                correctAnswer: ["CRICKET", "Cricket", "cricket"],
               },
               {
                 id: "q39",
@@ -4598,7 +5256,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "These clubs also arranged [GAP] with other local and regional teams.",
-                correctAnswer: "COMPETITIONS",
+                correctAnswer: ["COMPETITIONS", "Competitions", "competitions"],
               },
               {
                 id: "q40",
@@ -4606,7 +5264,11 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "In the early 1900s, [GAP] cricketers were formally accepted into the sport.",
-                correctAnswer: "PROFESSIONALS",
+                correctAnswer: [
+                  "PROFESSIONALS",
+                  "Professionals",
+                  "professionals",
+                ],
               },
             ],
           },
@@ -4636,14 +5298,14 @@ export const allMockTests = [
                 questionNumber: 1,
                 type: "fill_in_the_blank",
                 text: "Classes\nAge group: [GAP] years old",
-                correctAnswer: "9",
+                correctAnswer: ["9"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "A minimum of [GAP] children needed to start a group",
-                correctAnswer: "4",
+                correctAnswer: ["4"],
               },
               {
                 id: "q3",
@@ -4651,14 +5313,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Class length: 60 minutes\n\nInstructors and Staff\n\nLead Instructor: Daniel Stone - holds a degree in physical education\nMia Roberts - assistant instructor - award-winning [GAP]",
-                correctAnswer: "SWIMMER",
+                correctAnswer: ["SWIMMER", "Swimmer", "swimmer"],
               },
               {
                 id: "q4",
                 questionNumber: 4,
                 type: "fill_in_the_blank",
                 text: "Emma White - coach - ex-professional [GAP]",
-                correctAnswer: "DIVER",
+                correctAnswer: ["DIVER", "Diver", "diver"],
               },
               {
                 id: "q5",
@@ -4666,7 +5328,51 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Ben Green - nutritionist - helps children with healthy [GAP]",
-                correctAnswer: "HABITS",
+                correctAnswer: ["HABITS", "Habits", "habits"],
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 6-10</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD AND/OR A NUMBER</strong> for each answer.</p><h3>Lakeside Sports Centre - Swimming Lessons</h3>",
+            questions: [
+              {
+                id: "q6",
+                questionNumber: 6,
+                type: "fill_in_the_blank",
+                text:
+                  "Fees\nAdults: £230 per year\nChildren under 15: £180 annually or attend for [GAP] if both parents join",
+                correctAnswer: ["FREE", "Free", "free"],
+              },
+              {
+                id: "q7",
+                questionNumber: 7,
+                type: "fill_in_the_blank",
+                text: "Timings\nOpen daily from 8:00 AM to [GAP] PM",
+                correctAnswer: ["8"],
+              },
+              {
+                id: "q8",
+                questionNumber: 8,
+                type: "fill_in_the_blank",
+                text:
+                  "Facilities\n3 indoor pools available all year\n2 [GAP] pools only for use from April to August",
+                correctAnswer: ["OUTDOOR", "Outdoor", "outdoor"],
+              },
+              {
+                id: "q9",
+                questionNumber: 9,
+                type: "fill_in_the_blank",
+                text: "Dining area serves meals and [GAP].",
+                correctAnswer: ["DESSERTS", "Desserts", "desserts"],
+              },
+              {
+                id: "q10",
+                questionNumber: 10,
+                type: "fill_in_the_blank",
+                text:
+                  "The fitness studio provides a wide range of modern [GAP].",
+                correctAnswer: ["EQUIPMENT", "Equipment", "equipment"],
               },
             ],
           },
@@ -4916,7 +5622,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Josh plans to write a [GAP] for the performance skills workshop.",
-                correctAnswer: "MONOLOGUE",
+                correctAnswer: ["MONOLOGUE", "Monologue", "monologue"],
               },
               {
                 id: "q27",
@@ -4924,7 +5630,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Emily is preparing a talk on the use of [GAP] in storytelling.",
-                correctAnswer: "MASKS",
+                correctAnswer: ["MASKS", "Masks", "masks"],
               },
               {
                 id: "q28",
@@ -4932,7 +5638,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Emily's documentary clip features a teenager who writes [GAP].",
-                correctAnswer: "BLOGS",
+                correctAnswer: ["BLOGS", "Blogs", "blogs"],
               },
               {
                 id: "q29",
@@ -4940,7 +5646,11 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The drummer in Emily's mini-documentary suffering with [GAP].",
-                correctAnswer: "TEMPO CONTROL",
+                correctAnswer: [
+                  "TEMPO CONTROL",
+                  "Tempo Control",
+                  "tempo control",
+                ],
               },
               {
                 id: "q30",
@@ -4948,7 +5658,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The venue Emily selected for her presentation is located in [GAP].",
-                correctAnswer: "WASHINGTON",
+                correctAnswer: ["WASHINGTON", "Washington", "washington"],
               },
             ],
           },
@@ -4968,7 +5678,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "In manufacturing, for instance, AI-powered robots have transformed production lines.\nAI-powered robots improve efficiency by reducing human [GAP].",
-                correctAnswer: "ERROR",
+                correctAnswer: ["ERROR", "Error", "error"],
               },
               {
                 id: "q32",
@@ -4976,7 +5686,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>Artificial intelligence in retail</strong>\nAI chatbots operate on websites to address [GAP].",
-                correctAnswer: "QUESTIONS",
+                correctAnswer: ["QUESTIONS", "Questions", "questions"],
               },
               {
                 id: "q33",
@@ -4984,7 +5694,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>AI in healthcare industry</strong>\nAI helps doctors reading medical [GAP].",
-                correctAnswer: "IMAGES",
+                correctAnswer: ["IMAGES", "Images", "images"],
               },
               {
                 id: "q34",
@@ -4992,7 +5702,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "while AI makes things more efficient, it won't make human [GAP] useless.",
-                correctAnswer: "DOCTORS",
+                correctAnswer: ["DOCTORS", "Doctors", "doctors"],
               },
               {
                 id: "q35",
@@ -5000,7 +5710,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>AI in financial sector</strong>\nAI has raised concerns about job losses in [GAP].",
-                correctAnswer: "BANKING",
+                correctAnswer: ["BANKING", "Banking", "banking"],
               },
               {
                 id: "q36",
@@ -5008,7 +5718,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>How AI affects the job market</strong>\nAI is growing tech, [GAP] and finance employment that didn't exist a decade ago.",
-                correctAnswer: "HEALTHCARE",
+                correctAnswer: ["HEALTHCARE", "Healthcare", "healthcare"],
               },
               {
                 id: "q37",
@@ -5016,7 +5726,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Self-driving vehicles may affect [GAP] in the transportation industry.",
-                correctAnswer: "JOBS",
+                correctAnswer: ["JOBS", "Jobs", "jobs"],
               },
               {
                 id: "q38",
@@ -5024,7 +5734,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The skills [GAP] is a major concern regarding the effects of AI on the job market.",
-                correctAnswer: "GAP",
+                correctAnswer: ["GAP", "Gap", "gap"],
               },
               {
                 id: "q39",
@@ -5032,14 +5742,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Although AI is changing many jobs and sectors, it may not be causing people to lose their [GAP] in large numbers.",
-                correctAnswer: "JOBS",
+                correctAnswer: ["JOBS", "Jobs", "jobs"],
               },
               {
                 id: "q40",
                 questionNumber: 40,
                 type: "fill_in_the_blank",
                 text: "AI has the power to enhance our [GAP] and boost output.",
-                correctAnswer: "LIVES",
+                correctAnswer: ["LIVES", "Lives", "lives"],
               },
             ],
           },
@@ -5070,28 +5780,80 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "a reading lounge with newspapers<br>a larger section with books on [GAP]",
-                correctAnswer: "TRAVEL",
+                correctAnswer: ["TRAVEL", "Travel", "travel"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "a recently created area on local [GAP]",
-                correctAnswer: "HISTORY",
+                correctAnswer: ["HISTORY", "History", "history"],
               },
               {
                 id: "q3",
                 questionNumber: 3,
                 type: "fill_in_the_blank",
                 text: "a room called the Heritage Room (can be used for [GAP])",
-                correctAnswer: "WORK",
+                correctAnswer: ["WORK", "Work", "work"],
               },
               {
                 id: "q4",
                 questionNumber: 4,
                 type: "fill_in_the_blank",
                 text: "a new collection of novels for [GAP]",
-                correctAnswer: "TEENAGERS",
+                correctAnswer: ["TEENAGERS", "Teenagers", "teenagers"],
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 5-10</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD ONLY</strong> for each answer.</p>",
+            questions: [
+              {
+                id: "q5",
+                questionNumber: 5,
+                type: "fill_in_the_blank",
+                text:
+                  "<strong>For younger children:</strong><br>discovery workshop: activities using things from the [GAP]",
+                correctAnswer: ["KITCHEN", "Kitchen", "kitchen"],
+              },
+              {
+                id: "q6",
+                questionNumber: 6,
+                type: "fill_in_the_blank",
+                text:
+                  "book quest: children earn a badge by reading eight books<br><br><strong>For adults:</strong><br>on Wednesday: local writer gives a talk about a real [GAP]",
+                correctAnswer: ["MYSTERY", "Mystery", "mystery"],
+              },
+              {
+                id: "q7",
+                questionNumber: 7,
+                type: "fill_in_the_blank",
+                text: "Monday mornings: tech help is offered no [GAP] needed",
+                correctAnswer: ["BOOKING", "Booking", "booking"],
+              },
+              {
+                id: "q8",
+                questionNumber: 8,
+                type: "fill_in_the_blank",
+                text:
+                  "free testing of blood [GAP] and pressure levels (age 65+ only)",
+                correctAnswer: ["SUGAR", "Sugar", "sugar"],
+              },
+              {
+                id: "q9",
+                questionNumber: 9,
+                type: "fill_in_the_blank",
+                text:
+                  "<strong>Other details:</strong><br>the centre shop sells planners, postcards, and [GAP]",
+                correctAnswer: ["STAMPS", "Stamps", "stamps"],
+              },
+              {
+                id: "q10",
+                questionNumber: 10,
+                type: "fill_in_the_blank",
+                text: "parking is free during [GAP] and weekends",
+                correctAnswer: ["EVENINGS", "Evenings", "evenings"],
               },
             ],
           },
@@ -5264,9 +6026,9 @@ export const allMockTests = [
                   ],
                 ],
                 correctAnswer: {
-                  q18: "STRESS",
-                  q19: "WEIGHT",
-                  q20: "FAMILIES",
+                  q18: ["STRESS", "Stress", "stress"],
+                  q19: ["WEIGHT", "Weight", "weight"],
+                  q20: ["FAMILIES", "Families", "families"],
                 },
               },
             ],
@@ -5411,7 +6173,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>Lead (Pb)</strong><br><ul><li>Once used in paints and pipes</li><li>Emitted into air during [GAP]</li>",
-                correctAnswer: "SMELTING",
+                correctAnswer: ["SMELTING", "Smelting", "smelting"],
               },
               {
                 id: "q32",
@@ -5419,7 +6181,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<li>Was thought to affect only animals that eat fish</li><li>Now also known to affect those that eat [GAP]</li></ul>",
-                correctAnswer: "INSECTS",
+                correctAnswer: ["INSECTS", "Insects", "insects"],
               },
               {
                 id: "q33",
@@ -5427,7 +6189,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>Research by Dr. Hannah Cole</strong><br><ul><li>Studying subtle effects (e.g. changes in [GAP])</li>",
-                correctAnswer: "BEHAVIOUR",
+                correctAnswer: ["BEHAVIOUR", "Behaviour", "behaviour"],
               },
               {
                 id: "q34",
@@ -5435,14 +6197,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<li>Lead may affect brain function, especially [GAP]</li>",
-                correctAnswer: "MEMORY",
+                correctAnswer: ["MEMORY", "Memory", "memory"],
               },
               {
                 id: "q35",
                 questionNumber: 35,
                 type: "fill_in_the_blank",
                 text: "<li>Male frogs learn mating calls from older [GAP]</li>",
-                correctAnswer: "MALES",
+                correctAnswer: ["MALES", "Males", "males"],
               },
               {
                 id: "q36",
@@ -5450,14 +6212,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<li>Contaminated frogs produce calls that are less [GAP]</li>",
-                correctAnswer: "VARIED",
+                correctAnswer: ["VARIED", "Varied", "varied"],
               },
               {
                 id: "q37",
                 questionNumber: 37,
                 type: "fill_in_the_blank",
                 text: "<li>These frogs may be less [GAP] to females</li></ul>",
-                correctAnswer: "APPEALING",
+                correctAnswer: ["APPEALING", "Appealing", "appealing"],
               },
               {
                 id: "q38",
@@ -5465,7 +6227,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>Method</strong><br><ul><li>Combines controlled lab experiments with studies in [GAP]</li>",
-                correctAnswer: "HABITATS",
+                correctAnswer: ["HABITATS", "Habitats", "habitats"],
               },
               {
                 id: "q39",
@@ -5473,7 +6235,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<li>Controlled settings reduce undetermined [GAP]</li></ul>",
-                correctAnswer: "FACTORS",
+                correctAnswer: ["FACTORS", "Factors", "factors"],
               },
               {
                 id: "q40",
@@ -5481,7 +6243,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>Human Impact</strong><br><ul><li>Frogs with lead may be eaten by humans. Lead can affect unborn babies if consumed by a [GAP]</li></ul>",
-                correctAnswer: "WOMAN",
+                correctAnswer: ["WOMAN", "Woman", "woman"],
               },
             ],
           },
@@ -5512,21 +6274,21 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Facilities include: <ul><li>gym</li><li>heated pool</li><li>no hot tub, but there's a [GAP]</li>",
-                correctAnswer: "STEAM ROOM",
+                correctAnswer: ["STEAM ROOM", "Steam Room", "steam room"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "<li>[GAP] court available (booking required)</li>",
-                correctAnswer: "BASKETBALL",
+                correctAnswer: ["BASKETBALL", "Basketball", "basketball"],
               },
               {
                 id: "q3",
                 questionNumber: 3,
                 type: "fill_in_the_blank",
                 text: "<li>[GAP] club not offered</li></ul>",
-                correctAnswer: "CRICKET",
+                correctAnswer: ["CRICKET", "Cricket", "cricket"],
               },
               {
                 id: "q4",
@@ -5534,7 +6296,59 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Opening hours:<ul><li>Weekdays... 6:45-22:15</li><li>Weekends... 7:30-19:30</li></ul><br>Cost to join:<ul><li>£60 deposit,</li><li>£[GAP] each year, paid in instalments.</li></ul>",
-                correctAnswer: "420",
+                correctAnswer: ["420"],
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 5-10</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD AND/OR A NUMBER</strong> for each answer.</p><h3>WELLNESS CENTRE MEMBERSHIP</h3>",
+            questions: [
+              {
+                id: "q5",
+                questionNumber: 5,
+                type: "fill_in_the_blank",
+                text: "<strong>Procedure:</strong><br>fill a [GAP]",
+                correctAnswer: ["FORM", "Form", "form"],
+              },
+              {
+                id: "q6",
+                questionNumber: 6,
+                type: "fill_in_the_blank",
+                text: "choose a [GAP]",
+                correctAnswer: ["PASSWORD", "Password", "password"],
+              },
+              {
+                id: "q7",
+                questionNumber: 7,
+                type: "fill_in_the_blank",
+                text: "receive a digital [GAP]",
+                correctAnswer: ["NEWSLETTER", "Newsletter", "newsletter"],
+              },
+              {
+                id: "q8",
+                questionNumber: 8,
+                type: "fill_in_the_blank",
+                text: "you can meet on any day except [GAP]",
+                correctAnswer: ["WEDNESDAYS", "Wednesdays", "wednesdays"],
+              },
+              {
+                id: "q9",
+                questionNumber: 9,
+                type: "fill_in_the_blank",
+                text: "Name: Claire Johnson<br>Website address: [GAP].org",
+                correctAnswer: [
+                  "WELLNESSCENTRE",
+                  "Wellnesscentre",
+                  "wellnesscentre",
+                ],
+              },
+              {
+                id: "q10",
+                questionNumber: 10,
+                type: "fill_in_the_blank",
+                text: "Mobile no: [GAP]",
+                correctAnswer: ["07392042451"],
               },
             ],
           },
@@ -5727,7 +6541,7 @@ export const allMockTests = [
                 questionNumber: 21,
                 type: "fill_in_the_blank",
                 text: "Topic: The age of [GAP] in bicycle accidents.",
-                correctAnswer: "RIDERS",
+                correctAnswer: ["RIDERS", "Riders", "riders"],
               },
               {
                 id: "q22",
@@ -5735,7 +6549,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Statistics are mainly based on data from [GAP] companies.",
-                correctAnswer: "INSURANCE",
+                correctAnswer: ["INSURANCE", "Insurance", "insurance"],
               },
               {
                 id: "q23",
@@ -5743,7 +6557,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Problem: Not all bike accidents are reported because people aren't obliged to report them. They need to include statistics that don't involve [GAP].",
-                correctAnswer: "INJURIES",
+                correctAnswer: ["INJURIES", "Injuries", "injuries"],
               },
               {
                 id: "q24",
@@ -5751,7 +6565,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "To find some good statistics, Meera should look at a variety of [GAP].",
-                correctAnswer: "SOURCES",
+                correctAnswer: ["SOURCES", "Sources", "sources"],
               },
               {
                 id: "q25",
@@ -5759,7 +6573,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Method used for further research: sending out [GAP] to many different people.",
-                correctAnswer: "SURVEYS",
+                correctAnswer: ["SURVEYS", "Surveys", "surveys"],
               },
               {
                 id: "q26",
@@ -5767,7 +6581,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Meera now feels that she needs more guidance on analysing the [GAP].",
-                correctAnswer: "DATA",
+                correctAnswer: ["DATA", "Data", "data"],
               },
             ],
           },
@@ -5825,7 +6639,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>Sunlight</strong><br>Encourages the production of a [GAP] which improves mood.",
-                correctAnswer: "HORMONE",
+                correctAnswer: ["HORMONE", "Hormone", "hormone"],
               },
               {
                 id: "q32",
@@ -5833,7 +6647,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Lack of sunlight can lead to a condition called [GAP] causing sadness and fatigue.",
-                correctAnswer: "SAD",
+                correctAnswer: ["SAD", "Sad", "sad"],
               },
               {
                 id: "q33",
@@ -5841,14 +6655,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>Temperature:</strong><br>Mild warmth promotes [GAP] and relaxation.",
-                correctAnswer: "FRIENDLINESS",
+                correctAnswer: ["FRIENDLINESS", "Friendliness", "friendliness"],
               },
               {
                 id: "q34",
                 questionNumber: 34,
                 type: "fill_in_the_blank",
                 text: "Intense heat may reduce [GAP] and increase aggression.",
-                correctAnswer: "FOCUS",
+                correctAnswer: ["FOCUS", "Focus", "focus"],
               },
               {
                 id: "q35",
@@ -5856,14 +6670,18 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>Humidity:</strong><br>-High humidity levels can make people feel [GAP].",
-                correctAnswer: "SLUGGISH",
+                correctAnswer: ["SLUGGISH", "Sluggish", "sluggish"],
               },
               {
                 id: "q36",
                 questionNumber: 36,
                 type: "fill_in_the_blank",
                 text: "Drier climates are linked to greater energy and [GAP].",
-                correctAnswer: "CONCENTRATION",
+                correctAnswer: [
+                  "CONCENTRATION",
+                  "Concentration",
+                  "concentration",
+                ],
               },
               {
                 id: "q37",
@@ -5871,7 +6689,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>Rain:</strong><br>The sound of rain can be [GAP] for some people to concentrate and relax.",
-                correctAnswer: "CALMING",
+                correctAnswer: ["CALMING", "Calming", "calming"],
               },
               {
                 id: "q38",
@@ -5879,7 +6697,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "People in rainy regions adapt and are less affected by [GAP] weather changes.",
-                correctAnswer: "SHORT-TERM",
+                correctAnswer: [
+                  "SHORT -TERM",
+                  "Short -Term",
+                  "short -term",
+                  "SHORT-TERM",
+                  "Short-term",
+                  "short-term",
+                ],
               },
               {
                 id: "q39",
@@ -5887,14 +6712,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "<strong>Wind:</strong><br>Strong winds can lead to feelings of [GAP].",
-                correctAnswer: "UNEASE",
+                correctAnswer: ["UNEASE", "Unease", "unease"],
               },
               {
                 id: "q40",
                 questionNumber: 40,
                 type: "fill_in_the_blank",
                 text: "Gentle breezes are generally associated with [GAP].",
-                correctAnswer: "CALM",
+                correctAnswer: ["CALM", "Calm", "calm"],
               },
             ],
           },
@@ -5924,28 +6749,87 @@ export const allMockTests = [
                 questionNumber: 1,
                 type: "fill_in_the_blank",
                 text: "Caller's surname: [GAP]",
-                correctAnswer: "KUMAR",
+                correctAnswer: ["KUMAR", "Kumar", "kumar"],
               },
               {
                 id: "q2",
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "Recommended class: [GAP]",
-                correctAnswer: "LOWER-INTERMEDIATE",
+                correctAnswer: [
+                  "LOWER-INTERMEDIATE",
+                  "Lower-Intermediate",
+                  "lower-intermediate",
+                  "LOWER -INTERMEDIATE",
+                  "Lower -Intermediate",
+                  "lower -intermediate",
+                ],
               },
               {
                 id: "q3",
                 questionNumber: 3,
                 type: "fill_in_the_blank",
                 text: "Class day: [GAP]",
-                correctAnswer: "THURSDAY",
+                correctAnswer: ["THURSDAY", "Thursday", "thursday"],
               },
               {
                 id: "q4",
                 questionNumber: 4,
                 type: "fill_in_the_blank",
                 text: "Course length: [GAP]",
-                correctAnswer: "TWELVE WEEKS",
+                correctAnswer: ["TWELVE WEEKS", "Twelve Weeks", "twelve weeks"],
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 5-10</p><p>Complete the form below.</p><p>Write <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p><h3>Cambridge Language Centre – Registration</h3>",
+            questions: [
+              {
+                id: "q5",
+                questionNumber: 5,
+                type: "fill_in_the_blank",
+                text: "Full course fee: £[GAP]",
+                correctAnswer: ["240"],
+              },
+              {
+                id: "q6",
+                questionNumber: 6,
+                type: "fill_in_the_blank",
+                text: "Students should bring: [GAP]",
+                correctAnswer: ["NOTEBOOK", "Notebook", "notebook"],
+              },
+              {
+                id: "q7",
+                questionNumber: 7,
+                type: "fill_in_the_blank",
+                text: "Needed for student card: [GAP]",
+                correctAnswer: [
+                  "PASSPORT PHOTO",
+                  "Passport Photo",
+                  "passport photo",
+                ],
+              },
+              {
+                id: "q8",
+                questionNumber: 8,
+                type: "fill_in_the_blank",
+                text: "Placement test includes: [GAP] and interview",
+                correctAnswer: ["WRITTEN TEST", "Written Test", "written test"],
+              },
+              {
+                id: "q9",
+                questionNumber: 9,
+                type: "fill_in_the_blank",
+                text: "Missed lessons can be watched as [GAP]",
+                correctAnswer: ["VIDEOS", "Videos", "videos"],
+              },
+              {
+                id: "q10",
+                questionNumber: 10,
+                type: "fill_in_the_blank",
+                text: "Parking spaces are [GAP]",
+                correctAnswer: ["LIMITED", "Limited", "limited"],
               },
             ],
           },
@@ -6013,7 +6897,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Much of the rubbish collected on beaches is carried there by [GAP].",
-                correctAnswer: "TIDES",
+                correctAnswer: ["TIDES", "Tides", "tides"],
               },
               {
                 id: "q12",
@@ -6021,7 +6905,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Volunteers are provided with gloves but must bring their own sturdy [GAP].",
-                correctAnswer: "FOOTWEAR",
+                correctAnswer: ["FOOTWEAR", "Footwear", "footwear"],
               },
               {
                 id: "q13",
@@ -6029,7 +6913,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Participants should carry a [GAP] since no food is available nearby.",
-                correctAnswer: "PACKED LUNCH",
+                correctAnswer: ["PACKED LUNCH", "Packed Lunch", "packed lunch"],
               },
               {
                 id: "q14",
@@ -6037,7 +6921,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Volunteers should avoid touching sharp objects and instead inform a [GAP].",
-                correctAnswer: "TEAM LEADER",
+                correctAnswer: ["TEAM LEADER", "Team Leader", "team leader"],
               },
               {
                 id: "q15",
@@ -6045,7 +6929,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Everyone is expected to be on site by [GAP] before the clean-up begins.",
-                correctAnswer: "8:45",
+                correctAnswer: ["8:45"],
               },
             ],
           },
@@ -6185,7 +7069,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Emma advises Raj to keep only a few clear [GAP] instead of using too many graphs.",
-                correctAnswer: "DIAGRAMS",
+                correctAnswer: ["DIAGRAMS", "Diagrams", "diagrams"],
               },
               {
                 id: "q27",
@@ -6193,21 +7077,29 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Policies should be arranged according to [GAP] rather than chronological order.",
-                correctAnswer: "THEMATIC GROUPING",
+                correctAnswer: [
+                  "THEMATIC GROUPING",
+                  "Thematic Grouping",
+                  "thematic grouping",
+                ],
               },
               {
                 id: "q28",
                 questionNumber: 28,
                 type: "fill_in_the_blank",
                 text: "In the conclusion, the research must stress its [GAP].",
-                correctAnswer: "ARGUMENTS",
+                correctAnswer: ["ARGUMENTS", "Arguments", "arguments"],
               },
               {
                 id: "q29",
                 questionNumber: 29,
                 type: "fill_in_the_blank",
                 text: "Emma tells Raj to replace online blogs with [GAP].",
-                correctAnswer: "ONLINE JOURNALS",
+                correctAnswer: [
+                  "ONLINE JOURNALS",
+                  "Online Journals",
+                  "online journals",
+                ],
               },
               {
                 id: "q30",
@@ -6215,7 +7107,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Emma says that, with the revisions, their presentation will be both coherent and [GAP].",
-                correctAnswer: "CONVINCING",
+                correctAnswer: ["CONVINCING", "Convincing", "convincing"],
               },
             ],
           },
@@ -6302,14 +7194,18 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "Basil seeds may help with weight control because they reduce [GAP].",
-                correctAnswer: "APPETITE",
+                correctAnswer: ["APPETITE", "Appetite", "appetite"],
               },
               {
                 id: "q37",
                 questionNumber: 37,
                 type: "fill_in_the_blank",
                 text: "To maintain quality, seeds should be stored in [GAP].",
-                correctAnswer: "AIRTIGHT CONTAINERS",
+                correctAnswer: [
+                  "AIRTIGHT CONTAINERS",
+                  "Airtight Containers",
+                  "airtight containers",
+                ],
               },
               {
                 id: "q38",
@@ -6317,14 +7213,18 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "The food industry often promotes basil seeds in products such as [GAP].",
-                correctAnswer: "ENERGY DRINKS",
+                correctAnswer: [
+                  "ENERGY DRINKS",
+                  "Energy Drinks",
+                  "energy drinks",
+                ],
               },
               {
                 id: "q39",
                 questionNumber: 39,
                 type: "fill_in_the_blank",
                 text: "Basil requires less [GAP] to grow.",
-                correctAnswer: "WATER",
+                correctAnswer: ["WATER", "Water", "water"],
               },
               {
                 id: "q40",
@@ -6332,7 +7232,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text:
                   "For many cultures, basil seeds have long been part of daily [GAP].",
-                correctAnswer: "DIET",
+                correctAnswer: ["DIET", "Diet", "diet"],
               },
             ],
           },
@@ -6340,6 +7240,7 @@ export const allMockTests = [
       },
     ],
   },
+
   {
     id: "reading-test-1",
     moduleId: "reading",
@@ -6532,7 +7433,7 @@ export const allMockTests = [
                 questionNumber: 7,
                 type: "fill_in_the_blank_passage",
                 text: "How many Leatherback turtles are there in the world?",
-                correctAnswer: "35",
+                correctAnswer: ["35"],
               },
               {
                 id: "q8",
@@ -6540,21 +7441,39 @@ export const allMockTests = [
                 type: "fill_in_the_blank_passage",
                 text:
                   "What is the most noticeable difference between other sea turtles and leatherbacks?",
-                correctAnswer: "The bony carapace",
+                correctAnswer: [
+                  "The bony carapace",
+                  "the bony carapace",
+                  "THE BONY CARAPACE",
+                  "The Bony Carapace",
+                ],
               },
               {
                 id: "q9",
                 questionNumber: 9,
                 type: "fill_in_the_blank_passage",
                 text: "What can leatherback turtles to die in Irish waters?",
-                correctAnswer: ["Cold water", "temperature"],
+                correctAnswer: [
+                  "Cold water temperature",
+                  "cold water temperature",
+                  "COLD WATER TEMPERATURE",
+                  "Cold Water Temperature",
+                ],
               },
               {
                 id: "q10",
                 questionNumber: 10,
                 type: "fill_in_the_blank_passage",
                 text: "Where did the four turtles probably come from?",
-                correctAnswer: ["Florida, America", "The north American"],
+                correctAnswer: [
+                  "Florida, America",
+                  "florida, america",
+                  "FLORIDA, AMERICA",
+                  "The north American",
+                  "the north american",
+                  "THE NORTH AMERICAN",
+                  "The North American",
+                ],
               },
               {
                 id: "q11",
@@ -6562,7 +7481,17 @@ export const allMockTests = [
                 type: "fill_in_the_blank_passage",
                 text:
                   "By which means can sea turtles retrace their migratory paths?",
-                correctAnswer: "(detecting) magnetic fields",
+                correctAnswer: [
+                  "(detecting) magnetic fields",
+                  "(DETECTING) MAGNETIC FIELDS",
+                  "(Detecting) Magnetic Fields",
+                  "detecting magnetic fields",
+                  "DETECTING MAGNETIC FIELDS",
+                  "Detecting Magnetic Fields",
+                  "magnetic fields",
+                  "MAGNETIC FIELDS",
+                  "Magnetic Fields",
+                ],
               },
               {
                 id: "q12",
@@ -6570,7 +7499,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank_passage",
                 text:
                   "For what purpose are Green Sea turtles killed by people?",
-                correctAnswer: "Its meat",
+                correctAnswer: ["Its meat", "its meat", "ITS MEAT", "Its Meat"],
               },
               {
                 id: "q13",
@@ -6578,7 +7507,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank_passage",
                 text:
                   "What kind of species will benefits from a decline in Leatherback populations?",
-                correctAnswer: "Jellyfish",
+                correctAnswer: ["Jellyfish", "jellyfish", "JELLYFISH"],
               },
             ],
           },
@@ -6844,14 +7773,23 @@ export const allMockTests = [
                 questionNumber: 21,
                 type: "summary_completion",
                 text: "given [GAP]",
-                correctAnswer: "working conditions",
+                correctAnswer: [
+                  "Equal opportunity",
+                  "equal opportunity",
+                  "EQUAL OPPORTUNITY",
+                  "Equal Opportunity",
+                ],
               },
               {
                 id: "q22",
                 questionNumber: 22,
                 type: "summary_completion",
                 text: "reduce the [GAP] of accidents",
-                correctAnswer: "cost",
+                correctAnswer: [
+                  "internal costs",
+                  "INTERNAL COSTS",
+                  "Internal Costs",
+                ],
               },
             ],
           },
@@ -7189,14 +8127,24 @@ export const allMockTests = [
                 questionNumber: 38,
                 type: "summary_completion",
                 text: "TV is becoming a worldwide [GAP]",
-                correctAnswer: "phenomenon",
+                correctAnswer: [
+                  "Popular pastime",
+                  "popular pastime",
+                  "POPULAR PASTIME",
+                  "Popular Pastime",
+                ],
               },
               {
                 id: "q39",
                 questionNumber: 39,
                 type: "summary_completion",
                 text: "a small group even claim themselves as [GAP]",
-                correctAnswer: "addicts",
+                correctAnswer: [
+                  "TV addicts",
+                  "tv addicts",
+                  "TV ADDICTS",
+                  "Tv Addicts",
+                ],
               },
               {
                 id: "q40",
@@ -7204,7 +8152,12 @@ export const allMockTests = [
                 type: "summary_completion",
                 text:
                   "described as [GAP] which is built in part of our physiological evolution.",
-                correctAnswer: "orienting response",
+                correctAnswer: [
+                  "Orienting response",
+                  "orienting response",
+                  "ORIENTING RESPONSE",
+                  "Orienting Response",
+                ],
               },
             ],
           },
@@ -7456,7 +8409,7 @@ export const allMockTests = [
                 questionNumber: 9,
                 type: "summary_completion",
                 text: "time of [GAP]",
-                correctAnswer: "Home", // Placeholder
+                correctAnswer: ["Home", "home", "HOME"], // Placeholder
               },
               {
                 id: "q10-p1",
@@ -7464,28 +8417,40 @@ export const allMockTests = [
                 type: "summary_completion",
                 text: "confined to [GAP]",
 
-                correctAnswer: "2.8s", // Placeholder
+                correctAnswer: ["2.8s", "2.8S"], // Placeholder
               },
               {
                 id: "q11-p1",
                 questionNumber: 11,
                 type: "summary_completion",
                 text: "did not rely on [GAP] to work properly.",
-                correctAnswer: ["Oil", "Lubrication"], // Placeholder
+                correctAnswer: [
+                  "Oil",
+                  "oil",
+                  "OIL",
+                  "lubrication",
+                  "LUBRICATION",
+                  "Lubrication",
+                ], // Placeholder
               },
               {
                 id: "q12-p1",
                 questionNumber: 12,
                 type: "summary_completion",
                 text: "competitive mode of [GAP]",
-                correctAnswer: "Sextant", // Placeholder
+                correctAnswer: ["Sextant", "sextant", "SEXTANT"], // Placeholder
               },
               {
                 id: "q13-p1",
                 questionNumber: 13,
                 type: "summary_completion",
                 text: "key components for [GAP]",
-                correctAnswer: "Marine chronometer", // Placeholder
+                correctAnswer: [
+                  "Marine chronometer",
+                  "marine chronometer",
+                  "MARINE CHRONOMETER",
+                  "Marine Chronometer",
+                ], // Placeholder
               },
             ],
           },
@@ -7968,35 +8933,99 @@ export const allMockTests = [
                 questionNumber: 28,
                 type: "summary_completion",
                 text: "initially found approximately [GAP]",
-                correctAnswer: ["400000 years ago", "400,000 years ago"], // Placeholder
+                correctAnswer: [
+                  "400,000 years ago",
+                  "400,000 YEARS AGO",
+                  "400,000 Years Ago",
+                ], // Placeholder
               },
               {
                 id: "q29-p3",
                 questionNumber: 29,
                 type: "summary_completion",
                 text: "Around [GAP], they were driven to live in the plain",
-                correctAnswer: "8000 years ago", // Placeholder
+                correctAnswer: [
+                  "8000 years ago",
+                  "8000 YEARS AGO",
+                  "8000 Years Ago",
+                ], // Placeholder
               },
               {
                 id: "q30-p3",
                 questionNumber: 30,
                 type: "summary_completion",
                 text: "people have not started hunting until [GAP]",
-                correctAnswer: "7000 years ago", // Placeholder
+                correctAnswer: [
+                  "7000 years ago",
+                  "7000 YEARS AGO",
+                  "7000 Years Ago",
+                ], // Placeholder
               },
               {
                 id: "q31-p3",
                 questionNumber: 31,
                 type: "summary_completion",
                 text: "over the span of [GAP]",
-                correctAnswer: "Wooded interglacials", // Placeholder
+                correctAnswer: [
+                  "Wooded interglacials",
+                  "wooded interglacials",
+                  "WOODED INTERGLACIALS",
+                  "Wooded Interglacials",
+                ], // Placeholder
               },
               {
                 id: "q32-p3",
                 questionNumber: 32,
                 type: "summary_completion",
                 text: "mammals become extinct about [GAP]",
-                correctAnswer: "10500 years ago", // Placeholder
+                correctAnswer: [
+                  "10500 years ago",
+                  "10500 YEARS AGO",
+                  "10500 Years Ago",
+                ], // Placeholder
+              },
+            ],
+          },
+          {
+            instructions: `
+              <p>Questions 33-35</p>
+              <p>Answer the questions below. Choose NO MORE THAN THREE WORDS AND/OR A NUMBER from the passage for each answer.</p>
+            `,
+
+            questions: [
+              {
+                id: "q33-p3",
+                type: "fill_in_the_blank_passage",
+                questionNumber: 33,
+                text:
+                  "What kind of physical characteristics eventually contributed to the extinction of Irish elk?",
+                correctAnswer: [
+                  "Male’s huge antlers",
+                  "male’s huge antlers",
+                  "MALE’S HUGE ANTLERS",
+                  "Male’S Huge Antlers",
+                ], // Placeholder
+              },
+              {
+                id: "q34-p3",
+                questionNumber: 34,
+                type: "fill_in_the_blank_passage",
+                text:
+                  "What kind of nutrient substance needed in maintaining the huge size of Irish elk?",
+                correctAnswer: ["Minerals", "minerals", "MINERALS"], // Placeholder
+              },
+              {
+                id: "q35-p3",
+                questionNumber: 35,
+                type: "fill_in_the_blank_passage",
+                text:
+                  "What geographical evidence suggested the advent of human resulted in the extinction of Irish elk?",
+                correctAnswer: [
+                  "Habitat destruction",
+                  "habitat destruction",
+                  "HABITAT DESTRUCTION",
+                  "Habitat Destruction",
+                ], // Placeholder
               },
             ],
           },
@@ -8550,7 +9579,17 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Step 1: [GAP]",
-                correctAnswer: "(high-pressure) air microphones",
+                correctAnswer: [
+                  "(high-pressure) air microphones",
+                  "(HIGH-PRESSURE) AIR MICROPHONES",
+                  "(High-Pressure) Air Microphones",
+                  "high-pressure air microphones",
+                  "HIGH-PRESSURE AIR MICROPHONES",
+                  "High-Pressure Air Microphones",
+                  "air microphones",
+                  "AIR MICROPHONES",
+                  "Air Microphones",
+                ],
               },
               {
                 id: "q20-p3s2",
@@ -8558,7 +9597,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Step 2: [GAP]",
-                correctAnswer: ["sound energy", "sound wave"],
+                correctAnswer: [
+                  "sound energy",
+                  "SOUND ENERGY",
+                  "Sound Energy",
+                  "sound wave",
+                  "SOUND WAVE",
+                  "Sound Wave",
+                ],
               },
               {
                 id: "q21-p3s2",
@@ -8566,7 +9612,7 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Step 3: [GAP]",
-                correctAnswer: "cable",
+                correctAnswer: ["cable", "CABLE", "Cable"],
               },
               {
                 id: "q22-p3s2",
@@ -8574,7 +9620,14 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
 
                 text: "Step 4: [GAP]",
-                correctAnswer: ["hydrophones", "underwater microphones"],
+                correctAnswer: [
+                  "hydrophones",
+                  "HYDROPHONES",
+                  "Hydrophones",
+                  "underwater microphones",
+                  "UNDERWATER MICROPHONES",
+                  "Underwater Microphones",
+                ],
               },
             ],
           },
@@ -8591,35 +9644,47 @@ export const allMockTests = [
                 questionNumber: 23,
                 type: "summary_completion",
                 text: "dismantled and stored in a [GAP]",
-                correctAnswer: "shipping container",
+                correctAnswer: [
+                  "shipping container",
+                  "SHIPPING CONTAINER",
+                  "Shipping Container",
+                ],
               },
               {
                 id: "q24-p3s2",
                 questionNumber: 24,
                 type: "summary_completion",
                 text: "technology they used called [GAP]",
-                correctAnswer: "seismic reflection profiling",
+                correctAnswer: [
+                  "seismic reflection profiling",
+                  "SEISMIC REFLECTION PROFILING",
+                  "Seismic Reflection Profiling",
+                ],
               },
               {
                 id: "q25-p3s2",
                 questionNumber: 25,
                 type: "summary_completion",
                 text: "processed in the [GAP]",
-                correctAnswer: "laboratory",
+                correctAnswer: ["laboratory", "LABORATORY", "Laboratory"],
               },
               {
                 id: "q26-p3s2",
                 questionNumber: 26,
                 type: "summary_completion",
                 text: "building [GAP] view",
-                correctAnswer: "three-dimensional",
+                correctAnswer: [
+                  "three-dimensional",
+                  "THREE-DIMENSIONAL",
+                  "Three-Dimensional",
+                ],
               },
               {
                 id: "q27-p3s2",
                 questionNumber: 27,
                 type: "summary_completion",
                 text: "tree stumps or [GAP] floating",
-                correctAnswer: "fishing nets",
+                correctAnswer: ["fishing nets", "FISHING NETS", "Fishing Nets"],
               },
             ],
           },
@@ -9099,7 +10164,7 @@ export const allMockTests = [
                 questionNumber: 7,
                 type: "summary_completion",
                 text: "powerful [GAP] in the US.",
-                correctAnswer: "Mississippi",
+                correctAnswer: ["Mississippi", "mississippi", "MISSISSIPPI"],
               },
               {
                 id: "q8-p4s1",
@@ -9107,21 +10172,25 @@ export const allMockTests = [
                 type: "summary_completion",
                 text:
                   "not far from the city of [GAP] to protect it from flooding.",
-                correctAnswer: "London",
+                correctAnswer: ["London", "london", "LONDON"],
               },
               {
                 id: "q9-p4s1",
                 questionNumber: 9,
                 type: "summary_completion",
                 text: "thousands of people left the country of [GAP].",
-                correctAnswer: ["Netherlands", "The Netherlands"],
+                correctAnswer: [
+                  "The Netherlands",
+                  "the netherlands",
+                  "THE NETHERLANDS",
+                ],
               },
               {
                 id: "q10-p4s1",
                 questionNumber: 10,
                 type: "summary_completion",
                 text: "porous, [GAP] set a good example for others.",
-                correctAnswer: "Berlin",
+                correctAnswer: ["Berlin", "berlin", "BERLIN"],
               },
               {
                 id: "q11-p4s1",
@@ -9129,7 +10198,14 @@ export const allMockTests = [
                 type: "summary_completion",
                 text:
                   "casually is [GAP], though its government pours billions of dollars each year in order to solve the problem.",
-                correctAnswer: ["Los Angeles", "LA"],
+                correctAnswer: [
+                  "Los Angeles",
+                  "los angeles",
+                  "LOS ANGELES",
+                  "LA",
+                  "la",
+                  "La",
+                ],
               },
             ],
           },
@@ -9407,28 +10483,32 @@ export const allMockTests = [
                 questionNumber: 24,
                 type: "summary_completion",
                 text: "gaining independence by [GAP] against Spain",
-                correctAnswer: "Fighting",
+                correctAnswer: ["Fighting", "fighting", "FIGHTING"],
               },
               {
                 id: "q25-p4s2",
                 questionNumber: 25,
                 type: "summary_completion",
                 text: "entered the area of [GAP].",
-                correctAnswer: "commerce",
+                correctAnswer: ["commerce", "COMMERCE", "Commerce"],
               },
               {
                 id: "q26-p4s2",
                 questionNumber: 26,
                 type: "summary_completion",
                 text: "building great [GAP] and with gardens in surroundings.",
-                correctAnswer: "estates",
+                correctAnswer: ["estates", "ESTATES", "Estates"],
               },
               {
                 id: "q27-p4s2",
                 questionNumber: 27,
                 type: "summary_completion",
                 text: "looking for [GAP] and speculator for sale.",
-                correctAnswer: "flower lovers",
+                correctAnswer: [
+                  "flower lovers",
+                  "FLOWER LOVERS",
+                  "Flower Lovers",
+                ],
               },
             ],
           },
@@ -10641,28 +11721,47 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 37,
                 type: "summary_completion",
                 text: "depleted by a [GAP]",
-                correctAnswer: "growing racist population",
+                correctAnswer: [
+                  "growing population",
+                  "GROWING POPULATION",
+                  "Growing Population",
+                ],
               },
               {
                 id: "q38-p5s3",
                 questionNumber: 38,
                 type: "summary_completion",
                 text: "root of the [GAP] advanced by some scholars.",
-                correctAnswer: "inhuman assumption",
+                correctAnswer: [
+                  "racist assumption",
+                  "RACIST ASSUMPTION",
+                  "Racist Assumption",
+                ],
               },
               {
                 id: "q39-p5s3",
                 questionNumber: 39,
                 type: "summary_completion",
                 text: "did not have adequate [GAP] understandings",
-                correctAnswer: "archeological and historical",
+                correctAnswer: [
+                  "archeological and historical",
+                  "ARCHEOLOGICAL AND HISTORICAL",
+                  "Archeological And Historical",
+                  "archaeological and historical",
+                  "ARCHAEOLOGICAL AND HISTORICAL",
+                  "Archaeological And Historical",
+                ],
               },
               {
                 id: "q40-p5s3",
                 questionNumber: 40,
                 type: "summary_completion",
                 text: "true result of [GAP] nature of events on the island.",
-                correctAnswer: "inhuman behavior",
+                correctAnswer: [
+                  "inhuman behavior",
+                  "INHUMAN BEHAVIOR",
+                  "Inhuman Behavior",
+                ],
               },
             ],
           },
@@ -10869,21 +11968,25 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 6,
                 type: "summary_completion",
                 text: "immersed in the music for a [GAP] period of time",
-                correctAnswer: "short",
+                correctAnswer: ["short", "SHORT", "Short"],
               },
               {
                 id: "q7-p6s1",
                 questionNumber: 7,
                 type: "summary_completion",
                 text: "related to the [GAP] nature of Mozart's music.",
-                correctAnswer: ["complex", "non-repetitive"],
+                correctAnswer: [
+                  "complex, repetitive",
+                  "COMPLEX, REPETITIVE",
+                  "Complex, Repetitive",
+                ],
               },
               {
                 id: "q8-p6s1",
                 questionNumber: 8,
                 type: "summary_completion",
                 text: "conducted on [GAP]",
-                correctAnswer: "rats",
+                correctAnswer: ["rats", "RATS", "Rats"],
               },
             ],
           },
@@ -11109,7 +12212,17 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "summary_completion",
                 text:
                   "they thought that [GAP] and [GAP] might create excessive force on the bridge.",
-                correctAnswer: "winds",
+                correctAnswer: [
+                  "(the) winds",
+                  "(THE) WINDS",
+                  "(The) Winds",
+                  "the winds",
+                  "THE WINDS",
+                  "The Winds",
+                  "winds",
+                  "WINDS",
+                  "Winds",
+                ],
               },
               {
                 id: "q19-p6s2",
@@ -11117,7 +12230,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "summary_completion",
                 text:
                   "they thought that [GAP] and [GAP] might create excessive force on the bridge.",
-                correctAnswer: "(the) pedestrians",
+                correctAnswer: ["pedestrians", "PEDESTRIANS", "Pedestrians"],
               },
               {
                 id: "q20-p6s2",
@@ -11125,21 +12238,31 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "summary_completion",
                 text:
                   "The distribution of [GAP] resulted from human activities",
-                correctAnswer: "horizontal forces",
+                correctAnswer: [
+                  "(excessive horizontal dynamic) forces",
+                  "(EXCESSIVE HORIZONTAL DYNAMIC) FORCES",
+                  "(Excessive Horizontal Dynamic) Forces",
+                  "excessive horizontal dynamic forces",
+                  "EXCESSIVE HORIZONTAL DYNAMIC FORCES",
+                  "Excessive Horizontal Dynamic Forces",
+                  "forces",
+                  "FORCES",
+                  "Forces",
+                ],
               },
               {
                 id: "q21-p6s2",
                 questionNumber: 21,
                 type: "summary_completion",
                 text: "could cause [GAP] throughout the structure.",
-                correctAnswer: "(excessive dynamic) vibration",
+                correctAnswer: ["vibration", "VIBRATION", "Vibration"],
               },
               {
                 id: "q22-p6s2",
                 questionNumber: 22,
                 type: "summary_completion",
                 text: "which in turn reinforced the [GAP]",
-                correctAnswer: "motion",
+                correctAnswer: ["motion", "MOTION", "Motion"],
               },
             ],
           },
@@ -11159,7 +12282,11 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
 
                 text: "Test at [GAP]",
-                correctAnswer: "Imperial College",
+                correctAnswer: [
+                  "Imperial College",
+                  "imperial college",
+                  "IMPERIAL COLLEGE",
+                ],
               },
               {
                 id: "q24-p6s2",
@@ -11167,7 +12294,11 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
 
                 text: "Not enough data on [GAP]",
-                correctAnswer: "normal forward walking",
+                correctAnswer: [
+                  "normal forward walking",
+                  "NORMAL FORWARD WALKING",
+                  "Normal Forward Walking",
+                ],
               },
               {
                 id: "q25-p6s2",
@@ -11175,7 +12306,20 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
 
                 text: "Crowd test conducted by [GAP]",
-                correctAnswer: "(the) Arup engineers",
+                correctAnswer: [
+                  "(the) Arup engineers",
+                  "(the) arup engineers",
+                  "(THE) ARUP ENGINEERS",
+                  "(The) Arup Engineers",
+                  "the Arup engineers",
+                  "the arup engineers",
+                  "THE ARUP ENGINEERS",
+                  "The Arup Engineers",
+                  "Arup engineers",
+                  "arup engineers",
+                  "ARUP ENGINEERS",
+                  "Arup Engineers",
+                ],
               },
               {
                 id: "q26-p6s2",
@@ -11183,7 +12327,17 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
 
                 text: "Aim to verify",
-                correctAnswer: "(the) design assumptions",
+                correctAnswer: [
+                  "(the) design assumptions",
+                  "(THE) DESIGN ASSUMPTIONS",
+                  "(The) Design Assumptions",
+                  "the design assumptions",
+                  "THE DESIGN ASSUMPTIONS",
+                  "The Design Assumptions",
+                  "design assumptions",
+                  "DESIGN ASSUMPTIONS",
+                  "Design Assumptions",
+                ],
               },
             ],
           },
@@ -11521,6 +12675,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
       },
     ],
   },
+
   {
     id: "reading-test-7",
     moduleId: "reading",
@@ -11909,7 +13064,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
 
                 text: "Collection of rhymes [GAP] and games",
-                correctAnswer: "stories",
+                correctAnswer: ["stories", "STORIES", "Stories"],
               },
               {
                 id: "q15-p6s2",
@@ -11917,7 +13072,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
 
                 text: "A Little Pretty Pocket Book (exported to [GAP])",
-                correctAnswer: "America",
+                correctAnswer: ["America", "america", "AMERICA"],
               },
               {
                 id: "q16-p6s2",
@@ -11925,7 +13080,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
 
                 text: "Growing interet in [GAP]",
-                correctAnswer: "folklore",
+                correctAnswer: ["folklore", "FOLKLORE", "Folklore"],
               },
               {
                 id: "q17-p6s2",
@@ -11933,7 +13088,11 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
 
                 text: "Nursery rhymes and [GAP]",
-                correctAnswer: "fairy-stories",
+                correctAnswer: [
+                  "fairy-stories",
+                  "FAIRY-STORIES",
+                  "Fairy-Stories",
+                ],
               },
               {
                 id: "q18-p6s2",
@@ -11941,7 +13100,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
 
                 text: "Stories of harm-free [GAP]",
-                correctAnswer: "adventure",
+                correctAnswer: ["adventure", "ADVENTURE", "Adventure"],
               },
             ],
           },
@@ -12791,7 +13950,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 14,
                 type: "fill_in_the_blank",
                 text: "Combination of [GAP] and organic material, with",
-                correctAnswer: "clay",
+                correctAnswer: ["clay", "CLAY", "Clay"],
               },
               {
                 id: "q15-r8s2",
@@ -12799,35 +13958,42 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 text:
                   "sufficient [GAP] to create a thick mixture sun dried Step two:",
-                correctAnswer: "water",
+                correctAnswer: ["water", "WATER", "Water"],
               },
               {
                 id: "q16-r8s2",
                 questionNumber: 16,
                 type: "fill_in_the_blank",
                 text: "pack [GAP] around the cylinders",
-                correctAnswer: "straw",
+                correctAnswer: ["straw", "STRAW", "Straw"],
               },
               {
                 id: "q17-r8s2",
                 questionNumber: 17,
                 type: "fill_in_the_blank",
                 text: "place them in [GAP] which is as burning fuel for firing",
-                correctAnswer: "cow manure",
+                correctAnswer: ["cow manure", "COW MANURE", "Cow Manure"],
               },
               {
                 id: "q18-r8s2",
                 questionNumber: 18,
                 type: "fill_in_the_blank",
                 text: "(maximum temperature: [GAP])",
-                correctAnswer: "950 degrees",
+                correctAnswer: [
+                  "950 degress",
+                  "950 DEGRESS",
+                  "950 Degress",
+                  "950 degrees",
+                  "950 DEGREES",
+                  "950 Degrees",
+                ],
               },
               {
                 id: "q19-r8s2",
                 questionNumber: 19,
                 type: "fill_in_the_blank",
                 text: "filter being baked in under [GAP]",
-                correctAnswer: "60 minutes",
+                correctAnswer: ["60 minutes", "60 MINUTES", "60 Minutes"],
               },
             ],
           },
@@ -13498,7 +14664,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "summary_completion",
                 text:
                   "The [GAP] covering many of the Efate site did not come from that area.",
-                correctAnswer: "rock",
+                correctAnswer: ["rock", "ROCK", "Rock"],
               },
               {
                 id: "q9-r9s1",
@@ -13506,7 +14672,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "summary_completion",
                 text:
                   "examinations carried out on the [GAP] discovered at Efate site",
-                correctAnswer: "teeth",
+                correctAnswer: ["teeth", "TEETH", "Teeth"],
               },
               {
                 id: "q10-r9s1",
@@ -13514,7 +14680,45 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "summary_completion",
                 text:
                   "DNA could identify the Lapita's nearest [GAP] present-days.",
-                correctAnswer: "descendants",
+                correctAnswer: ["descendants", "DESCENDANTS", "Descendants"],
+              },
+            ],
+          },
+          {
+            instructions: `
+              <p>Questions 11-13</p>
+              <p>Answer the questions below.</p>
+              <p>Choose NO MORE THAN THREE WORDS AND/OR A NUMBER from the passage for each answer.</p>
+            `,
+
+            questions: [
+              {
+                id: "q11-r9s1",
+                questionNumber: 11,
+                type: "fill_in_the_blank",
+                text:
+                  "What did the Lapita travel in when they crossed the oceans?",
+                correctAnswer: ["canoes", "CANOES", "Canoes"],
+              },
+              {
+                id: "q12-r9s1",
+                questionNumber: 12,
+                type: "fill_in_the_blank",
+                text:
+                  "In Irwins’s view, what would the Latipa have relied on to bring them fast back to the base?",
+                correctAnswer: ["trade winds", "TRADE WINDS", "Trade Winds"],
+              },
+              {
+                id: "q13-r9s1",
+                questionNumber: 13,
+                type: "fill_in_the_blank",
+                text:
+                  "Which sea creatures would have been an indication to the Lapita of where to find land?",
+                correctAnswer: [
+                  "seabirds and turtles",
+                  "SEABIRDS AND TURTLES",
+                  "Seabirds And Turtles",
+                ],
               },
             ],
           },
@@ -13758,7 +14962,11 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 20,
                 type: "fill_in_the_blank",
                 text: "What are the two hottest years in Britain besides 2003?",
-                correctAnswer: "1976 and 1995",
+                correctAnswer: [
+                  "1976 and 1995",
+                  "1976 AND 1995",
+                  "1976 And 1995",
+                ],
               },
               {
                 id: "q21-r9s2",
@@ -13766,7 +14974,57 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 21,
                 text:
                   "What will affect UK government policies besides climate change according to Hulme ?",
-                correctAnswer: "2000 floods",
+                correctAnswer: ["2000 floods", "2000 FLOODS", "2000 Floods"],
+              },
+            ],
+          },
+          {
+            instructions: `
+              <p>Questions 22-26</p>
+              <p>Complete the summary below using NO MORE THAN TWO WORDS from the passage. Write your answers in boxes 22-26 On your answer sheet</p>
+              <p>In the summer of 2003, thousands of extra death occurred in the country of____22_____. Moreover, world-widely, the third record of hottest summer date from_____23____, after the year of______24_____. According to Jones, all the 10 hottest years happened from_____25____. However, summer of 2003 was at the peak of previous ____26____years, perhaps even more.</p>
+            `,
+            questions: [
+              {
+                id: "q22-r9s2",
+                type: "summary_completion",
+                questionNumber: 22,
+                text:
+                  "thousands of extra death occurred in the country of [GAP].",
+                correctAnswer: ["France", "france", "FRANCE"],
+              },
+              {
+                id: "q23-r9s2",
+                type: "summary_completion",
+                questionNumber: 23,
+                text: "the third record of hottest summer date from [GAP].",
+                correctAnswer: ["1856"],
+              },
+              {
+                id: "q24-r9s2",
+                type: "summary_completion",
+                questionNumber: 24,
+                text: "after the year of [GAP].",
+                correctAnswer: [
+                  "1988 and 2002",
+                  "1988 AND 2002",
+                  "1988 And 2002",
+                ],
+              },
+              {
+                id: "q25-r9s2",
+                type: "summary_completion",
+                questionNumber: 25,
+                text: "all the 10 hottest years happened from [GAP].",
+                correctAnswer: ["1990"],
+              },
+              {
+                id: "q26-r9s2",
+                type: "summary_completion",
+                questionNumber: 26,
+                text:
+                  "summer of 2003 was at the peak of previous [GAP] years, perhaps even more.",
+                correctAnswer: ["500"],
               },
             ],
           },
@@ -14028,7 +15286,11 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 35,
                 text:
                   "what is the controversial topic arises with the French historian Philippe Ariès's concept",
-                correctAnswer: "history of childhood",
+                correctAnswer: [
+                  "history of childhood",
+                  "HISTORY OF CHILDHOOD",
+                  "History Of Childhood",
+                ],
               },
               {
                 id: "q36-r9s3",
@@ -14036,7 +15298,17 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 36,
                 text:
                   "what image for children did Aries believed to be like in Western Europe during the Middle Ages",
-                correctAnswer: "(as) miniature adults",
+                correctAnswer: [
+                  "(as) miniature adults",
+                  "(AS) MINIATURE ADULTS",
+                  "(As) Miniature Adults",
+                  "as miniature adults",
+                  "AS MINIATURE ADULTS",
+                  "As Miniature Adults",
+                  "miniature adults",
+                  "MINIATURE ADULTS",
+                  "Miniature Adults",
+                ],
               },
               {
                 id: "q37-r9s3",
@@ -14044,7 +15316,17 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 37,
                 text:
                   "what historical event generated the need for great amount child labour to work long time in 18 and 19 century",
-                correctAnswer: "(with the) industrialization",
+                correctAnswer: [
+                  "(with the) industrialization",
+                  "(WITH THE) INDUSTRIALIZATION",
+                  "(With The) Industrialization",
+                  "with the industrialization",
+                  "WITH THE INDUSTRIALIZATION",
+                  "With The Industrialization",
+                  "industrialization",
+                  "INDUSTRIALIZATION",
+                  "Industrialization",
+                ],
               },
               {
                 id: "q38-r9s3",
@@ -14052,7 +15334,12 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 38,
                 text:
                   "what legal format initiated the protection of children from exploitation in 19th centenary",
-                correctAnswer: "The factory Act",
+                correctAnswer: [
+                  "The factory Act",
+                  "the factory act",
+                  "THE FACTORY ACT",
+                  "The Factory Act",
+                ],
               },
               {
                 id: "q39-r9s3",
@@ -14060,7 +15347,11 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 39,
                 text:
                   "what the activities were more and more regarded as being preferable for almost all children time in 19th centenary",
-                correctAnswer: "play and education",
+                correctAnswer: [
+                  "play and education",
+                  "PLAY AND EDUCATION",
+                  "Play And Education",
+                ],
               },
               {
                 id: "q40-r9s3",
@@ -14068,7 +15359,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 40,
                 text:
                   "where has been the central area for children to spend largily of their day as people's expectation in modern society",
-                correctAnswer: "classroom",
+                correctAnswer: ["classroom", "CLASSROOM", "Classroom"],
               },
             ],
           },
@@ -14522,7 +15813,14 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 15,
                 type: "fill_in_the_blank",
                 text: "performance of two groups is almost [GAP]",
-                correctAnswer: "indentical", // Placeholder
+                correctAnswer: [
+                  "indentical",
+                  "INDENTICAL",
+                  "Indentical",
+                  "identical",
+                  "IDENTICAL",
+                  "Identical",
+                ],
               },
               {
                 id: "q16-r10s2",
@@ -14530,7 +15828,11 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 text:
                   "chose between two sets of [GAP] which are altered behaviour of female birds was objerved",
-                correctAnswer: "balls of paper", // Placeholder
+                correctAnswer: [
+                  "balls of paper",
+                  "BALLS OF PAPER",
+                  "Balls Of Paper",
+                ],
               },
               {
                 id: "q17-r10s2",
@@ -14538,7 +15840,17 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 text:
                   "chicks can do calculations in order to shoose larger group bird seems to have ablity to [GAP]",
-                correctAnswer: ["Count", "Caculate eggs"], // Placeholder
+                correctAnswer: [
+                  "Count",
+                  "count",
+                  "COUNT",
+                  "caculate eggs",
+                  "CACULATE EGGS",
+                  "Caculate Eggs",
+                  "calculate eggs",
+                  "CALCULATE EGGS",
+                  "Calculate Eggs",
+                ],
               },
               {
                 id: "q18-r10s2",
@@ -14546,14 +15858,21 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 text:
                   "offered clear tubes containing different quantities [GAP]",
-                correctAnswer: "fruits flies", // Placeholder
+                correctAnswer: [
+                  "fruits flies",
+                  "FRUITS FLIES",
+                  "Fruits Flies",
+                  "fruit flies",
+                  "FRUIT FLIES",
+                  "Fruit Flies",
+                ],
               },
               {
                 id: "q19-r10s2",
                 questionNumber: 19,
                 type: "fill_in_the_blank",
                 text: "Salmanders [GAP]",
-                correctAnswer: "mosquitofish", // Placeholder
+                correctAnswer: ["mosquitofish", "MOSQUITOFISH", "Mosquitofish"],
               },
               {
                 id: "q20-r10s2",
@@ -14561,14 +15880,14 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 text:
                   "these are used to check influence of total [GAP] and brightness",
-                correctAnswer: "surface area", // Placeholder
+                correctAnswer: ["surface area", "SURFACE AREA", "Surface Area"],
               },
               {
                 id: "q21-r10s2",
                 questionNumber: 21,
                 type: "fill_in_the_blank",
                 text: "had to learn where [GAP] was stored",
-                correctAnswer: "super water", // Placeholder
+                correctAnswer: ["sugar water", "SUGAR WATER", "Sugar Water"],
               },
             ],
           },
@@ -14782,28 +16101,109 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 28,
                 type: "summary_completion",
                 text: "[GAP] bones in linner ear",
-                correctAnswer: "hammar", // Placeholder
+                correctAnswer: ["hammer", "HAMMER", "Hammer"],
               },
               {
                 id: "q29-r10s3",
                 questionNumber: 29,
                 type: "summary_completion",
                 text: "an extremely large [GAP]",
-                correctAnswer: "body", // Placeholder
+                correctAnswer: ["body", "BODY", "Body"],
               },
               {
                 id: "q30-r10s3",
                 questionNumber: 30,
                 type: "summary_completion",
                 text: "toe and fatty [GAP]",
-                correctAnswer: "pad", // Placeholder
+                correctAnswer: ["pad", "PAD", "Pad"],
               },
               {
                 id: "q31-r10s3",
                 questionNumber: 31,
                 type: "summary_completion",
                 text: "big sized brain skull with many [GAP]",
-                correctAnswer: ["cavities", "sinus cavities"], // Placeholder
+                correctAnswer: [
+                  "cavities",
+                  "CAVITIES",
+                  "Cavities",
+                  "sinus cavities",
+                  "SINUS CAVITIES",
+                  "Sinus Cavities",
+                ],
+              },
+            ],
+          },
+          {
+            instructions: `
+              <p>Question 32-38</p>
+              <p>Complete the following summary of the paragraphs of Reading Passage, using no more three words or a number from the Reading Passage for each answer.</p>
+              <p>Write your answers in boxes 32-38 on your answer sheet.</p>
+              <p>How the elephants sense these sound vibrations is still unknown, but O’Connell Rodwell, a fresh graduate in entomology at the University of Hawaii, proposes that the elephants are “listening” with their 32............., by two kinds of nerve endings—that responds to vibrations with both 33 .............frequency and slightly higher frequencies, o’Connell-Rodwell work is at the combination of geophysics, neurophysiology and 34 .............and it also was the first to indicate that a large land animal also is sending and receiving 35 ............., O’Connell-Rodwell noticed the freezing behavior by putting a male planthopper communicative approach other than 36………… Scientists have determined that an elephant’s ability to communicate over long distances is essential, especially, when elephant herds are finding a 37............., or are warning of predators. Finally, the results of our 2002 study showed US that elephants can detect warning calls played through the 38.............”</p>
+            `,
+            questions: [
+              {
+                id: "q32-r10s3",
+                questionNumber: 32,
+                type: "summary_completion",
+                text: "listening” with their [GAP]",
+                correctAnswer: [
+                  "trunks and feet",
+                  "TRUNKS AND FEET",
+                  "Trunks And Feet",
+                ],
+              },
+              {
+                id: "q33-r10s3",
+                questionNumber: 33,
+                type: "summary_completion",
+                text: "both [GAP] frequency",
+                correctAnswer: ["infrasonic", "INFRASONIC", "Infrasonic"],
+              },
+              {
+                id: "q34-r10s3",
+                questionNumber: 34,
+                type: "summary_completion",
+                text: "neurophysiology and [GAP]",
+                correctAnswer: ["ecology", "ECOLOGY", "Ecology"],
+              },
+              {
+                id: "q35-r10s3",
+                questionNumber: 35,
+                type: "summary_completion",
+                text: "sending and receiving [GAP]",
+                correctAnswer: [
+                  "seismic messages",
+                  "SEISMIC MESSAGES",
+                  "Seismic Messages",
+                ],
+              },
+              {
+                id: "q36-r10s3",
+                questionNumber: 36,
+                type: "summary_completion",
+                text: "approach other than [GAP]",
+                correctAnswer: [
+                  "acoustic communication",
+                  "ACOUSTIC COMMUNICATION",
+                  "Acoustic Communication",
+                  "communications",
+                  "COMMUNICATIONS",
+                  "Communications",
+                ],
+              },
+              {
+                id: "q37-r10s3",
+                questionNumber: 37,
+                type: "summary_completion",
+                text: "finding a [GAP]",
+                correctAnswer: ["mate", "MATE", "Mate"],
+              },
+              {
+                id: "q38-r10s3",
+                questionNumber: 38,
+                type: "summary_completion",
+                text: "through the [GAP]",
+                correctAnswer: ["ground", "GROUND", "Ground"],
               },
             ],
           },
@@ -15109,28 +16509,46 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "summary_completion",
                 questionNumber: 5,
                 text: "people turned out to be [GAP]",
-                correctAnswer: "customers",
+                correctAnswer: ["customers", "CUSTOMERS", "Customers"],
               },
               {
                 id: "q6-r11s1",
                 type: "summary_completion",
                 questionNumber: 6,
                 text: "Business nous and [GAP] simply summarized in a magazine",
-                correctAnswer: "public relation skills",
+                correctAnswer: [
+                  "public relation skills",
+                  "PUBLIC RELATION SKILLS",
+                  "Public Relation Skills",
+                ],
               },
               {
                 id: "q7-r11s1",
                 type: "summary_completion",
                 questionNumber: 7,
                 text: "[GAP] has contributed to the linking of museums",
-                correctAnswer: ["museology", "(the new) museology"],
+                correctAnswer: [
+                  "museology",
+                  "MUSEOLOGY",
+                  "Museology",
+                  "(the new) museology",
+                  "(THE NEW) MUSEOLOGY",
+                  "(The New) Museology",
+                  "the new museology",
+                  "THE NEW MUSEOLOGY",
+                  "The New Museology",
+                ],
               },
               {
                 id: "q8-r11s1",
                 type: "summary_completion",
                 questionNumber: 8,
                 text: "consider museums mainly as [GAP]",
-                correctAnswer: "tourist attractions",
+                correctAnswer: [
+                  "tourist attractions",
+                  "TOURIST ATTRACTIONS",
+                  "Tourist Attractions",
+                ],
               },
             ],
           },
@@ -15458,42 +16876,46 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "summary_completion",
                 questionNumber: 22,
                 text: "most important role in [GAP]",
-                correctAnswer: "workplace injury",
+                correctAnswer: [
+                  "workplace injury",
+                  "WORKPLACE INJURY",
+                  "Workplace Injury",
+                ],
               },
               {
                 id: "q23-r11s2",
                 type: "summary_completion",
                 questionNumber: 23,
                 text: "Staffs take about [GAP] for absence from work",
-                correctAnswer: "16.6 weeks",
+                correctAnswer: ["16.6 weeks", "16.6 WEEKS", "16.6 Weeks"],
               },
               {
                 id: "q24-r11s2",
                 type: "summary_completion",
                 questionNumber: 24,
                 text: "about [GAP] of all claims were mental issues",
-                correctAnswer: "7%",
+                correctAnswer: ["7%"],
               },
               {
                 id: "q25-r11s2",
                 type: "summary_completion",
                 questionNumber: 25,
                 text: "Sports such as [GAP]",
-                correctAnswer: "golf",
+                correctAnswer: ["golf", "GOLF", "Golf"],
               },
               {
                 id: "q26-r11s2",
                 type: "summary_completion",
                 questionNumber: 26,
                 text: "as well as [GAP] could be a treatment",
-                correctAnswer: "massage",
+                correctAnswer: ["massage", "MASSAGE", "Massage"],
               },
               {
                 id: "q27-r11s2",
                 type: "summary_completion",
                 questionNumber: 27,
                 text: "analyse [GAP] once again.",
-                correctAnswer: "workloads",
+                correctAnswer: ["workloads", "WORKLOADS", "Workloads"],
               },
             ],
           },
@@ -16310,35 +17732,40 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 questionNumber: 22,
                 text: "Flow chart item 1: [GAP]",
-                correctAnswer: "heat",
+                correctAnswer: ["heat", "HEAT", "Heat"],
               },
               {
                 id: "q23-r12s2",
                 type: "fill_in_the_blank",
                 questionNumber: 23,
                 text: "Flow chart item 2: [GAP]",
-                correctAnswer: "denser",
+                correctAnswer: ["denser", "DENSER", "Denser"],
               },
               {
                 id: "q24-r12s2",
                 type: "fill_in_the_blank",
                 questionNumber: 24,
                 text: "Flow chart item 3: [GAP]",
-                correctAnswer: "Great ocean Conveyor",
+                correctAnswer: [
+                  "Great ocean Conveyor",
+                  "great ocean conveyor",
+                  "GREAT OCEAN CONVEYOR",
+                  "Great Ocean Conveyor",
+                ],
               },
               {
                 id: "q25-r12s2",
                 type: "fill_in_the_blank",
                 questionNumber: 25,
                 text: "Flow chart item 4: [GAP]",
-                correctAnswer: "freshwater",
+                correctAnswer: ["freshwater", "FRESHWATER", "Freshwater"],
               },
               {
                 id: "q26-r12s2",
                 type: "fill_in_the_blank",
                 questionNumber: 26,
                 text: "Flow chart item 5: [GAP]",
-                correctAnswer: "southward",
+                correctAnswer: ["southward", "SOUTHWARD", "Southward"],
               },
             ],
           },
@@ -16660,7 +18087,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 38,
                 text:
                   "Whose idea of continuous work week did Stalin approve and helped to implement?",
-                correctAnswer: "Yuri Larin",
+                correctAnswer: ["Yuri Larin", "yuri larin", "YURI LARIN"],
               },
               {
                 id: "q39-r12s3",
@@ -16668,7 +18095,22 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 39,
                 text:
                   "What method was used to help workers to remember the rotation of theft off days?",
-                correctAnswer: ["Colour-coding", "colour"],
+                correctAnswer: [
+                  "Colour-coding",
+                  "colour-coding",
+                  "COLOUR-CODING",
+                  "Colour-Coding",
+                  "Color-coding",
+                  "color-coding",
+                  "COLOR-CODING",
+                  "Color-Coding",
+                  "colour",
+                  "COLOUR",
+                  "Colour",
+                  "color",
+                  "COLOR",
+                  "Color",
+                ],
               },
               {
                 id: "q40-r12s3",
@@ -16676,7 +18118,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 40,
                 text:
                   "What was the most resistant force to the new work week scheme?",
-                correctAnswer: "family",
+                correctAnswer: ["family", "FAMILY", "Family"],
               },
             ],
           },
@@ -16897,7 +18339,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 8,
                 text:
                   "Being disturbed repeatedly, the harried mother feels frustrated for the lack of [GAP]",
-                correctAnswer: "privacy",
+                correctAnswer: ["privacy", "PRIVACY", "Privacy"],
               },
               {
                 id: "q9-r13s1",
@@ -16905,7 +18347,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 9,
                 text:
                   "Inmates in high density settings were more aggressive in [GAP]",
-                correctAnswer: "male prison",
+                correctAnswer: ["male prison", "MALE PRISON", "Male Prison"],
               },
               {
                 id: "q10-r13s1",
@@ -16913,7 +18355,11 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 10,
                 text:
                   "The different result between male and female is associated with the varying need of [GAP]",
-                correctAnswer: "personal space",
+                correctAnswer: [
+                  "personal space",
+                  "PERSONAL SPACE",
+                  "Personal Space",
+                ],
               },
               {
                 id: "q11-r13s1",
@@ -16921,7 +18367,14 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 11,
                 text:
                   "Especially for male, Baum and Greenberg found that [GAP] declined with high density.",
-                correctAnswer: ["attraction", "attraction levels"],
+                correctAnswer: [
+                  "attraction",
+                  "ATTRACTION",
+                  "Attraction",
+                  "attraction levels",
+                  "ATTRACTION LEVELS",
+                  "Attraction Levels",
+                ],
               },
               {
                 id: "q12-r13s1",
@@ -16929,7 +18382,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 12,
                 text:
                   "The idea of responsibility diffusion may explain a person's reluctant to [GAP]",
-                correctAnswer: "help",
+                correctAnswer: ["help", "HELP", "Help"],
               },
               {
                 id: "q13-r13s1",
@@ -16937,7 +18390,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 13,
                 text:
                   "Schmidt and Keating suggest that if more [GAP] was present there would be a reduction in crowding stress.",
-                correctAnswer: "control",
+                correctAnswer: ["control", "CONTROL", "Control"],
               },
             ],
           },
@@ -17210,14 +18663,14 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 questionNumber: 24,
                 text: "people complain about the high living [GAP]",
-                correctAnswer: "density",
+                correctAnswer: ["density", "DENSITY", "Density"],
               },
               {
                 id: "q25-r13s2",
                 type: "fill_in_the_blank",
                 questionNumber: 25,
                 text: "under the designs of many [GAP] together",
-                correctAnswer: "architects",
+                correctAnswer: ["architects", "ARCHITECTS", "Architects"],
               },
               {
                 id: "q26-r13s2",
@@ -17225,14 +18678,14 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 26,
                 text:
                   "reconstruction program's major concern is to build a house within low [GAP]",
-                correctAnswer: "budget",
+                correctAnswer: ["budget", "BUDGET", "Budget"],
               },
               {
                 id: "q27-r13s2",
                 type: "fill_in_the_blank",
                 questionNumber: 27,
                 text: "conventional house in its own [GAP]",
-                correctAnswer: "garden",
+                correctAnswer: ["garden", "GARDEN", "Garden"],
               },
             ],
           },
@@ -18577,7 +20030,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 8,
                 text:
                   "[GAP] are exclusively offered to girls in the feeding programme.",
-                correctAnswer: "extra snacks",
+                correctAnswer: ["extra snacks", "EXTRA SNACKS", "Extra Snacks"],
               },
               {
                 id: "q9-r15s1",
@@ -18585,7 +20038,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 9,
                 text:
                   "Instead of going to school, many children in poverty are sent to collect [GAP] in the fields.",
-                correctAnswer: "firewood",
+                correctAnswer: ["firewood", "FIREWOOD", "Firewood"],
               },
               {
                 id: "q10-r15s1",
@@ -18593,7 +20046,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 10,
                 text:
                   "The pass rate at Msekeni has risen to [GAP] with the help of the feeding programme.",
-                correctAnswer: "85%",
+                correctAnswer: ["85%"],
               },
               {
                 id: "q11-r15s1",
@@ -18601,7 +20054,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 11,
                 text:
                   "Since the industrial revolution, the size of the modern human has grown by[GAP]",
-                correctAnswer: "50%",
+                correctAnswer: ["50%"],
               },
             ],
           },
@@ -18858,28 +20311,51 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "fill_in_the_blank",
                 questionNumber: 21,
                 text: "When did the bird of bitten reach its peak of number?",
-                correctAnswer: "1950s",
+                correctAnswer: ["1950s", "1950S"],
               },
               {
                 id: "q22-r15s2",
                 type: "fill_in_the_blank",
                 questionNumber: 22,
                 text: "What does the author describe the bittern's character?",
-                correctAnswer: ["(being) shy", "shyness"],
+                correctAnswer: [
+                  "(being) shy",
+                  "(BEING) SHY",
+                  "(Being) Shy",
+                  "being shy",
+                  "BEING SHY",
+                  "Being Shy",
+                  "shy",
+                  "SHY",
+                  "Shy",
+                  "shyness",
+                  "SHYNESS",
+                  "Shyness",
+                ],
               },
               {
                 id: "q23-r15s2",
                 type: "fill_in_the_blank",
                 questionNumber: 23,
                 text: "What is the main cause for the chick bittern's death?",
-                correctAnswer: "starvation",
+                correctAnswer: ["starvation", "STARVATION", "Starvation"],
               },
               {
                 id: "q24-r15s2",
                 type: "fill_in_the_blank",
                 questionNumber: 24,
                 text: "What is the main food for chick bittern?",
-                correctAnswer: "(native) fish",
+                correctAnswer: [
+                  "(native) fish",
+                  "(NATIVE) FISH",
+                  "(Native) Fish",
+                  "native fish",
+                  "NATIVE FISH",
+                  "Native Fish",
+                  "fish",
+                  "FISH",
+                  "Fish",
+                ],
               },
               {
                 id: "q25-r15s2",
@@ -18888,9 +20364,24 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 text:
                   "What system does it secure the stability for bittern's population?",
                 correctAnswer: [
+                  "patnership project",
+                  "PATNERSHIP PROJECT",
+                  "Patnership Project",
                   "partnership project",
+                  "PARTNERSHIP PROJECT",
+                  "Partnership Project",
                   "network (of sites)",
+                  "NETWORK (OF SITES)",
+                  "Network (Of Sites)",
+                  "network of sites",
+                  "NETWORK OF SITES",
+                  "Network Of Sites",
+                  "network",
+                  "NETWORK",
+                  "Network",
                   "partnership project network",
+                  "PARTNERSHIP PROJECT NETWORK",
+                  "Partnership Project Network",
                 ],
               },
               {
@@ -18899,7 +20390,12 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 26,
                 text:
                   "Besides bittern and rare vegetation, what mammal does the protection plan benefit?",
-                correctAnswer: "Otter and brown-hare",
+                correctAnswer: [
+                  "Otter and brown-hare",
+                  "otter and brown-hare",
+                  "OTTER AND BROWN-HARE",
+                  "Otter And Brown-Hare",
+                ],
               },
             ],
           },
@@ -19221,6 +20717,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
       },
     ],
   },
+
   // {
   //   id: "writing-test-1",
   //   moduleId: "writing",

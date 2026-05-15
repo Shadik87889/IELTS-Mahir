@@ -82,8 +82,17 @@
       @media (min-width: 1024px) {
         /* lg breakpoint */
         .mock-test-layout.reading-layout {
-          grid-template-columns: 1fr 1fr; /* Passage on left, Questions on right */
+          display: flex;
+          flex-direction: row;
           padding: 0rem; /* Larger padding for desktop */
+        }
+        .mock-test-layout.reading-layout .passage-content-area {
+          flex: 0 0 auto;
+          width: var(--passage-width, 50%);
+          border-right: none;
+        }
+        .mock-test-layout.reading-layout .main-test-content {
+          flex: 1 1 0%;
         }
         /* New rule for main-test-content height in reading module on large screens */
         .mock-test-layout.reading-layout .main-test-content {
@@ -91,6 +100,89 @@
         }
         .mock-test-layout.reading-layout .passage-content-area {
           height: 87vh; /* Set height to 87vh for reading module on computers */
+        }
+        .resizer {
+          width: 8px;
+          background-color: #f1f5f9;
+          border-left: 1px solid #e2e8f0;
+          border-right: 1px solid #e2e8f0;
+          cursor: col-resize;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10;
+          transition: background-color 0.2s;
+        }
+        .resizer:hover,
+        .resizer.dragging {
+          background-color: #cbd5e1;
+        }
+        .resizer::after {
+          content: "||";
+          color: #94a3b8;
+          font-size: 10px;
+          letter-spacing: -1px;
+        }
+        /* Disable transitions during drag for 1:1 real-time smooth resizing */
+        .mock-test-layout.is-resizing .passage-content-area,
+        .mock-test-layout.is-resizing .main-test-content {
+          transition: none !important;
+        }
+      }
+
+      /* Styles for Header Collapsed State */
+      body.header-collapsed #app-header {
+        display: none !important;
+      }
+      body.header-collapsed .test-info-bar,
+      body.header-collapsed .audio-player-wrapper,
+      body.header-collapsed .reading-tabs-container,
+      body.header-collapsed .writing-tabs-container {
+        top: 0 !important;
+      }
+
+      @media (min-width: 1024px) {
+        body.header-collapsed
+          .mock-test-layout.reading-layout
+          .main-test-content,
+        body.header-collapsed
+          .mock-test-layout.reading-layout
+          .passage-content-area,
+        body.header-collapsed
+          .mock-test-layout.writing-layout
+          .main-test-content,
+        body.header-collapsed
+          .mock-test-layout.writing-layout
+          .writing-instructions-area {
+          height: calc(100vh - 60px) !important;
+        }
+        body.header-collapsed
+          .mock-test-layout.listening-layout
+          .main-test-content,
+        body.header-collapsed .mock-test-layout.listening-layout .sidebar {
+          height: calc(100vh - 80px) !important;
+        }
+      }
+
+      @media (max-width: 1023px) {
+        body.header-collapsed
+          .mock-test-layout.reading-layout
+          .main-test-content,
+        body.header-collapsed
+          .mock-test-layout.reading-layout
+          .passage-content-area,
+        body.header-collapsed
+          .mock-test-layout.writing-layout
+          .main-test-content,
+        body.header-collapsed
+          .mock-test-layout.writing-layout
+          .writing-instructions-area {
+          height: calc(100vh - 156px) !important;
+        }
+        body.header-collapsed
+          .mock-test-layout.listening-layout
+          .main-test-content {
+          height: calc(100vh - 152px) !important;
         }
       }
 
@@ -1105,7 +1197,7 @@
     <!-- Header / Navigation Bar -->
     <header
       id="app-header"
-      class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
+      class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-[1000]"
     >
       <div class="flex items-center gap-2 sm:gap-4">
         <a href="home">
@@ -1137,12 +1229,32 @@
 
     <!-- Audio Player (fixed/sticky at top) -->
     <div id="fixed-audio-player-wrapper" class="audio-player-wrapper">
-      <div class="audio-player-container">
-        <audio id="test-audio-player" controls preload="auto" class="w-full">
-          <source src="" type="audio/mpeg" />
-          <!-- Audio URL will be set by JS -->
-          Your browser does not support the audio element.
-        </audio>
+      <div
+        class="audio-player-container flex items-center justify-between gap-4 w-full"
+      >
+        <div class="flex-grow">
+          <audio id="test-audio-player" controls preload="auto" class="w-full">
+            <source src="" type="audio/mpeg" />
+            <!-- Audio URL will be set by JS -->
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+        <div class="flex items-center gap-2 text-gray-600 flex-shrink-0">
+          <button
+            onclick="toggleHeader()"
+            class="flex items-center justify-center w-8 h-8 rounded hover:bg-gray-100 transition-colors bg-white shadow-sm border border-gray-200"
+            title="Toggle Header"
+          >
+            <i class="fas fa-chevron-up toggle-header-icon text-lg"></i>
+          </button>
+          <button
+            onclick="toggleFullScreen()"
+            class="flex items-center justify-center w-8 h-8 rounded hover:bg-gray-100 transition-colors bg-white shadow-sm border border-gray-200"
+            title="Toggle Fullscreen"
+          >
+            <i class="fas fa-expand toggle-fullscreen-icon text-lg"></i>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1155,9 +1267,26 @@
           class="ml-2 text-lg font-semibold text-gray-700"
         ></span>
       </h2>
-      <div class="flex items-center gap-2 text-xl font-bold text-gray-700">
-        <i class="fas fa-clock"></i>
-        <span id="timer-display-top-bar">00:00</span>
+      <div class="flex items-center gap-3 text-xl font-bold text-gray-700">
+        <!-- New Feature Buttons -->
+        <button
+          onclick="toggleHeader()"
+          class="flex items-center justify-center w-8 h-8 rounded hover:bg-gray-100 transition-colors"
+          title="Toggle Header"
+        >
+          <i class="fas fa-chevron-up toggle-header-icon text-lg"></i>
+        </button>
+        <button
+          onclick="toggleFullScreen()"
+          class="flex items-center justify-center w-8 h-8 rounded hover:bg-gray-100 transition-colors mr-2"
+          title="Toggle Fullscreen"
+        >
+          <i class="fas fa-expand toggle-fullscreen-icon text-lg"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-clock text-blue-600"></i>
+          <span id="timer-display-top-bar">00:00</span>
+        </div>
       </div>
     </div>
 
@@ -1202,7 +1331,10 @@
     </div>
 
     <!-- Toast Container for notifications -->
-    <div id="toast-container" class="fixed bottom-4 right-4 z-[100]"></div>
+    <div
+      id="toast-container"
+      class="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-[100] flex flex-col items-center gap-3 pointer-events-none w-full max-w-md px-4"
+    ></div>
 
     <!-- Modal Container for confirmations/alerts -->
     <div id="modal-container" class="modal-overlay">
@@ -1218,7 +1350,6 @@
       import {
         initFirebaseAuth,
         authAppState,
-        showToast,
         Icons,
         signOutUser,
       } from "./auth.js"; // Adjust path as necessary
@@ -1262,6 +1393,7 @@
         userAnswers: {}, // { questionId: userAnswer } (e.g., "mcq1", "q26")
         timerInterval: null,
         timeLeft: 0, // In seconds
+        audioCurrentTime: 0, // New: Tracks audio time
         currentQuestionIndex: 0, // 0-based index for the questionPaletteItems array (not used for writing)
         currentSectionIndex: 0, // 0-based index for current test section (used for reading/writing)
         testCompleted: false, // New state to control view
@@ -1287,6 +1419,226 @@
 
       // New: Array to map palette numbers to question IDs and their HTML element IDs
       let questionPaletteItems = []; // Stores { paletteNumber: N, questionId: "qX" or "mcqY", htmlElementId: "question-Z" }
+
+      // New: Global state for passage resizer
+      let isResizing = false;
+      let currentResizer = null;
+      let readingLayoutContainer = null;
+
+      /**
+       * Saves the current test state to sessionStorage to prevent data loss on accidental refresh.
+       */
+      function saveDraftState() {
+        if (!currentModuleId || !currentTestId) return;
+        const audioPlayer = document.getElementById("test-audio-player");
+        if (audioPlayer && currentModuleId === "listening") {
+          testState.audioCurrentTime = audioPlayer.currentTime;
+        }
+        const draft = {
+          userAnswers: testState.userAnswers,
+          timeLeft: testState.timeLeft,
+          audioCurrentTime: testState.audioCurrentTime,
+          currentSectionIndex: testState.currentSectionIndex,
+          passageStates: testState.passageStates,
+          highlightNotes: highlightState.notes,
+          highlightCounter: highlightState.highlightCounter,
+        };
+        sessionStorage.setItem(
+          `ielts_mahir_draft_${currentModuleId}_${currentTestId}`,
+          JSON.stringify(draft),
+        );
+      }
+
+      /**
+       * Clears the saved draft state from sessionStorage.
+       */
+      function clearDraftState() {
+        if (!currentModuleId || !currentTestId) return;
+        sessionStorage.removeItem(
+          `ielts_mahir_draft_${currentModuleId}_${currentTestId}`,
+        );
+      }
+
+      /**
+       * Updates the passage state HTML to ensure highlights are saved.
+       */
+      function updateCurrentPassageState() {
+        if (
+          currentModuleId === "reading" &&
+          currentTest &&
+          currentTest.sections[testState.currentSectionIndex]
+        ) {
+          const passageArea = document.querySelector(
+            ".passage-content-area .prose",
+          );
+          if (passageArea) {
+            const currentSectionId =
+              currentTest.sections[testState.currentSectionIndex].id;
+            testState.passageStates[currentSectionId] = passageArea.innerHTML;
+          }
+        }
+      }
+
+      // Global resize handlers for passage resizing
+      document.addEventListener("mousemove", (e) => {
+        if (!isResizing || !readingLayoutContainer) return;
+        const containerWidth = readingLayoutContainer.clientWidth;
+        let newWidth = (e.clientX / containerWidth) * 100;
+        if (newWidth < 20) newWidth = 20; // Min 20% width
+        if (newWidth > 80) newWidth = 80; // Max 80% width
+        readingLayoutContainer.style.setProperty(
+          "--passage-width",
+          `${newWidth}%`,
+        );
+      });
+
+      document.addEventListener("mouseup", () => {
+        if (isResizing) {
+          isResizing = false;
+          if (currentResizer) currentResizer.classList.remove("dragging");
+          if (readingLayoutContainer)
+            readingLayoutContainer.classList.remove("is-resizing");
+          document.body.style.cursor = "";
+          document.body.style.userSelect = "";
+        }
+      });
+
+      /**
+       * Full Screen & Header Toggle Logic
+       */
+      function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch((err) => {
+            console.error(
+              `Error attempting to enable full-screen mode: ${err.message} (${err.name})`,
+            );
+          });
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          }
+        }
+      }
+
+      function toggleHeader() {
+        document.body.classList.toggle("header-collapsed");
+        const isCollapsed = document.body.classList.contains(
+          "header-collapsed",
+        );
+
+        document.querySelectorAll(".toggle-header-icon").forEach((icon) => {
+          if (isCollapsed) {
+            icon.classList.remove("fa-chevron-up");
+            icon.classList.add("fa-chevron-down");
+          } else {
+            icon.classList.remove("fa-chevron-down");
+            icon.classList.add("fa-chevron-up");
+          }
+        });
+      }
+
+      // Automatically update the full-screen icons when state changes
+      document.addEventListener("fullscreenchange", () => {
+        const isFullscreen = !!document.fullscreenElement;
+        document.querySelectorAll(".toggle-fullscreen-icon").forEach((icon) => {
+          if (isFullscreen) {
+            icon.classList.remove("fa-expand");
+            icon.classList.add("fa-compress");
+          } else {
+            icon.classList.remove("fa-compress");
+            icon.classList.add("fa-expand");
+          }
+        });
+      });
+
+      // Expose to window for inline HTML onclick attributes
+      window.toggleFullScreen = toggleFullScreen;
+      window.toggleHeader = toggleHeader;
+
+      /**
+       * Advanced UI/UX Toast Notification System
+       */
+      function showToast(message, type = "info") {
+        const toastContainer = document.getElementById("toast-container");
+        if (!toastContainer) return;
+
+        const toast = document.createElement("div");
+        toast.className =
+          "pointer-events-auto flex items-center w-full max-w-sm p-4 bg-white border border-gray-100 rounded-xl shadow-2xl transform transition-all duration-500 translate-y-10 opacity-0 relative overflow-hidden";
+
+        let iconClass, iconColor, bgColor, progressColor;
+        switch (type) {
+          case "success":
+            iconClass = "fas fa-check-circle";
+            iconColor = "text-green-500";
+            bgColor = "bg-green-50";
+            progressColor = "bg-green-500";
+            break;
+          case "error":
+            iconClass = "fas fa-exclamation-circle";
+            iconColor = "text-red-500";
+            bgColor = "bg-red-50";
+            progressColor = "bg-red-500";
+            break;
+          case "warning":
+            iconClass = "fas fa-exclamation-triangle";
+            iconColor = "text-amber-500";
+            bgColor = "bg-amber-50";
+            progressColor = "bg-amber-500";
+            break;
+          case "info":
+          default:
+            iconClass = "fas fa-info-circle";
+            iconColor = "text-blue-500";
+            bgColor = "bg-blue-50";
+            progressColor = "bg-blue-500";
+            break;
+        }
+
+        toast.innerHTML = `
+            <div class="inline-flex items-center justify-center flex-shrink-0 w-10 h-10 ${bgColor} ${iconColor} rounded-full">
+                <i class="${iconClass} text-xl"></i>
+            </div>
+            <div class="ml-4 text-sm font-semibold text-gray-700 font-inter pr-2">
+                ${message}
+            </div>
+            <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-100 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 transition-colors close-toast-btn" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="absolute bottom-0 left-0 h-1 ${progressColor} transition-all ease-linear" style="width: 100%; transition-duration: 3500ms;" id="toast-progress"></div>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        // Close button logic
+        const closeBtn = toast.querySelector(".close-toast-btn");
+        closeBtn.addEventListener("click", () => removeToast(toast));
+
+        // Trigger entrance animation
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            toast.classList.remove("translate-y-10", "opacity-0");
+            const progress = toast.querySelector("#toast-progress");
+            if (progress) progress.style.width = "0%";
+          });
+        });
+
+        // Auto remove after 3.5 seconds
+        setTimeout(() => {
+          removeToast(toast);
+        }, 3500);
+      }
+
+      function removeToast(toast) {
+        if (!toast || toast.classList.contains("removing")) return;
+        toast.classList.add("removing");
+        toast.classList.add("opacity-0", "scale-95");
+        setTimeout(() => {
+          if (toast.parentElement) {
+            toast.parentElement.removeChild(toast);
+          }
+        }, 400); // Wait for exit animation
+      }
 
       /**
        * Displays a custom modal.
@@ -1460,6 +1812,8 @@
           highlightState.currentSelection.surroundContents(span);
           selection.removeAllRanges();
           highlightState.currentSelection = null;
+          updateCurrentPassageState(); // Ensure DOM changes are tracked
+          saveDraftState(); // Persist highlight
           return spanId;
         } catch (e) {
           console.error("Could not surround contents:", e);
@@ -1482,6 +1836,7 @@
           const spanId = applyHighlight("note");
           if (spanId) {
             highlightState.notes[spanId] = noteText;
+            saveDraftState(); // Persist note text
           }
         }
         hideNoteModal();
@@ -1803,7 +2158,7 @@
                                       .charAt(0)
                                       .toUpperCase()}
                                 </button>
-                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 hidden text-gray-800">
+                                <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-[1050] hidden text-gray-800">
                                     <div class="px-4 py-2 text-sm border-b border-gray-200">Hello, ${
                                       authAppState.userProfile?.name ||
                                       user.email ||
@@ -1814,12 +2169,6 @@
                                           /stroke="currentColor"/g,
                                           'stroke="gray"',
                                         )} Dashboard
-                                    </a>
-                                    <a href="ielts-mahir-community-forum" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
-                                        ${Icons.Forum.replace(
-                                          /stroke="currentColor"/g,
-                                          'stroke="gray"',
-                                        )} Forum
                                     </a>
                                     <button id="sign-out-dropdown-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-b-lg">
                                         ${Icons.SignOut.replace(
@@ -1912,6 +2261,7 @@
        */
       function handleAnswerInput(questionId, answer) {
         testState.userAnswers[questionId] = answer.trim();
+        saveDraftState(); // Save state
         if (currentModuleId === "listening") {
           updateQuestionPalette(); // Only update palette for listening
         } else if (currentModuleId === "writing") {
@@ -1937,6 +2287,7 @@
             dropzone.classList.remove("answered");
           }
           updateQuestionPalette();
+          saveDraftState(); // Save state
         }
       }
 
@@ -1949,6 +2300,7 @@
         const questionId = `q${questionNumber}`;
         testState.userAnswers[questionId] = optionLetter;
         updateQuestionPalette();
+        saveDraftState(); // Save state
         const dropzone = document.getElementById(`dropzone-${questionNumber}`);
         const optionEl = document.querySelector(
           `.matching-option[data-option-id="${optionLetter}"]`,
@@ -1976,6 +2328,7 @@
           currentAnswers = currentAnswers.filter((item) => item !== value);
         }
         testState.userAnswers[questionId] = currentAnswers;
+        saveDraftState(); // Save state
         if (currentModuleId === "listening") {
           updateQuestionPalette(); // Only update palette for listening
         }
@@ -2115,6 +2468,8 @@
 
         testState.timerInterval = setInterval(() => {
           testState.timeLeft--;
+          saveDraftState(); // Persist timer every second
+
           if (testState.timeLeft >= 0) {
             const formattedTime = formatTime(testState.timeLeft);
             if (mobileTimerDisplay)
@@ -2345,6 +2700,7 @@
        */
       async function handleSubmitTest() {
         clearInterval(testState.timerInterval); // Stop the timer
+        clearDraftState(); // Clear session storage as test is completed
 
         // Show a loading modal
         showModal(
@@ -2447,11 +2803,20 @@
                     const userAnswer = testState.userAnswers[subQuestionId];
                     const correctAnswer =
                       qGroup.questions[0].correctAnswer[subQuestionId];
-                    if (
-                      userAnswer &&
-                      correctAnswer &&
-                      userAnswer.toLowerCase() === correctAnswer.toLowerCase()
-                    ) {
+                    let isCorrect = false;
+                    if (userAnswer && correctAnswer) {
+                      if (Array.isArray(correctAnswer)) {
+                        isCorrect = correctAnswer.some(
+                          (ans) =>
+                            ans.toLowerCase() === userAnswer.toLowerCase(),
+                        );
+                      } else {
+                        isCorrect =
+                          userAnswer.toLowerCase() ===
+                          correctAnswer.toLowerCase();
+                      }
+                    }
+                    if (isCorrect) {
                       correctAnswersCount++;
                     }
                   }
@@ -2505,12 +2870,21 @@
                             testState.userAnswers[subQuestionId];
                           const correctAnswer =
                             question.correctAnswer[subQuestionId];
-                          if (
-                            userAnswer &&
-                            correctAnswer &&
-                            userAnswer.toLowerCase() ===
-                              correctAnswer.toLowerCase()
-                          ) {
+                          let isCorrect = false;
+                          if (userAnswer && correctAnswer) {
+                            if (Array.isArray(correctAnswer)) {
+                              isCorrect = correctAnswer.some(
+                                (ans) =>
+                                  ans.toLowerCase() ===
+                                  userAnswer.toLowerCase(),
+                              );
+                            } else {
+                              isCorrect =
+                                userAnswer.toLowerCase() ===
+                                correctAnswer.toLowerCase();
+                            }
+                          }
+                          if (isCorrect) {
                             correctAnswersCount++;
                           }
                         }
@@ -3002,9 +3376,26 @@
                                               const subCorrectAnswer =
                                                 qGroup.questions[0]
                                                   .correctAnswer[subQuestionId];
-                                              const subIsCorrect =
-                                                subUserAnswer.toLowerCase() ===
-                                                subCorrectAnswer.toLowerCase();
+
+                                              let subCorrectAnswerDisplay = "";
+                                              let subIsCorrect = false;
+                                              if (
+                                                Array.isArray(subCorrectAnswer)
+                                              ) {
+                                                subCorrectAnswerDisplay = subCorrectAnswer.join(
+                                                  " / ",
+                                                );
+                                                subIsCorrect = subCorrectAnswer.some(
+                                                  (ans) =>
+                                                    ans.toLowerCase() ===
+                                                    subUserAnswer.toLowerCase(),
+                                                );
+                                              } else {
+                                                subCorrectAnswerDisplay = subCorrectAnswer;
+                                                subIsCorrect =
+                                                  subUserAnswer.toLowerCase() ===
+                                                  subCorrectAnswerDisplay.toLowerCase();
+                                              }
 
                                               const displayQuestionNumber = subQuestionId.replace(
                                                 "q",
@@ -3045,7 +3436,7 @@
                                                             }">${subUserAnswer}</span>
                                                         </p>
                                                         <p class="text-sm text-gray-700">
-                                                            Correct Answer: <span class="correct-answer">${subCorrectAnswer}</span>
+                                                            Correct Answer: <span class="correct-answer">${subCorrectAnswerDisplay}</span>
                                                         </p>
                                                         ${
                                                           qGroup.questions[0]
@@ -3151,9 +3542,29 @@
                                                         question.correctAnswer[
                                                           subQuestionId
                                                         ];
-                                                      const subIsCorrect =
-                                                        subUserAnswer.toLowerCase() ===
-                                                        subCorrectAnswer.toLowerCase();
+
+                                                      let subCorrectAnswerDisplay =
+                                                        "";
+                                                      let subIsCorrect = false;
+                                                      if (
+                                                        Array.isArray(
+                                                          subCorrectAnswer,
+                                                        )
+                                                      ) {
+                                                        subCorrectAnswerDisplay = subCorrectAnswer.join(
+                                                          " / ",
+                                                        );
+                                                        subIsCorrect = subCorrectAnswer.some(
+                                                          (ans) =>
+                                                            ans.toLowerCase() ===
+                                                            subUserAnswer.toLowerCase(),
+                                                        );
+                                                      } else {
+                                                        subCorrectAnswerDisplay = subCorrectAnswer;
+                                                        subIsCorrect =
+                                                          subUserAnswer.toLowerCase() ===
+                                                          subCorrectAnswerDisplay.toLowerCase();
+                                                      }
 
                                                       const displayQuestionNumber = subQuestionId.replace(
                                                         "q",
@@ -3203,7 +3614,7 @@
                                                                     }">${subUserAnswer}</span>
                                                                 </p>
                                                                 <p class="text-sm text-gray-700">
-                                                                    Correct Answer: <span class="correct-answer">${subCorrectAnswer}</span>
+                                                                    Correct Answer: <span class="correct-answer">${subCorrectAnswerDisplay}</span>
                                                                 </p>
                                                                 ${
                                                                   question.explanation
@@ -3372,19 +3783,11 @@
        */
       function goToNextSection() {
         // Save current passage state before navigating
-        if (currentModuleId === "reading") {
-          const passageArea = document.querySelector(
-            ".passage-content-area .prose",
-          );
-          if (passageArea) {
-            const currentSectionId =
-              currentTest.sections[testState.currentSectionIndex].id;
-            testState.passageStates[currentSectionId] = passageArea.innerHTML;
-          }
-        }
+        updateCurrentPassageState();
 
         if (testState.currentSectionIndex < currentTest.sections.length - 1) {
           testState.currentSectionIndex++;
+          saveDraftState();
           renderApp();
           // Scroll to the top of the main content area for the new section
           document.querySelector(".main-test-content").scrollTop = 0;
@@ -3401,19 +3804,11 @@
        */
       function goToPreviousSection() {
         // Save current passage state before navigating
-        if (currentModuleId === "reading") {
-          const passageArea = document.querySelector(
-            ".passage-content-area .prose",
-          );
-          if (passageArea) {
-            const currentSectionId =
-              currentTest.sections[testState.currentSectionIndex].id;
-            testState.passageStates[currentSectionId] = passageArea.innerHTML;
-          }
-        }
+        updateCurrentPassageState();
 
         if (testState.currentSectionIndex > 0) {
           testState.currentSectionIndex--;
+          saveDraftState();
           renderApp();
           // Scroll to the top of the main content area for the new section
           document.querySelector(".main-test-content").scrollTop = 0;
@@ -3463,6 +3858,9 @@
           "section-info-top-bar",
         );
         const topBarTestTitle = document.getElementById("test-title-top-bar");
+
+        // Check if it's a desktop view (min-width: 1024px)
+        const isDesktop = window.innerWidth >= 1024;
 
         if (!appDiv) return;
 
@@ -3595,9 +3993,6 @@
             testState.activeWritingTab === "instructions";
           const isResponseActive = testState.activeWritingTab === "response";
 
-          // Check if it's a desktop view (min-width: 1024px)
-          const isDesktop = window.innerWidth >= 1024;
-
           // Update timer and section info in the new top bar
           if (topBarTimerDisplay) {
             topBarTimerDisplay.textContent = formatTime(testState.timeLeft);
@@ -3676,6 +4071,13 @@
                             }
                         </div>
                     </div>
+
+                    <!-- Resizer for Reading Desktop Layout -->
+                    ${
+                      currentModuleId === "reading" && isDesktop
+                        ? `<div id="reading-resizer" class="resizer hidden lg:flex"></div>`
+                        : ""
+                    }
 
                     <!-- Writing Instructions Area (Only for Writing) -->
                     <div class="writing-instructions-area custom-scrollbar" style="${
@@ -3827,6 +4229,26 @@
           });
         }
         // --- END: Passage Interaction Logic ---
+
+        // --- START: Resize Logic ---
+        if (currentModuleId === "reading" && isDesktop) {
+          const resizer = document.getElementById("reading-resizer");
+          const layoutContainer = appDiv.querySelector(
+            ".mock-test-layout.reading-layout",
+          );
+          if (resizer && layoutContainer) {
+            resizer.addEventListener("mousedown", (e) => {
+              isResizing = true;
+              currentResizer = resizer;
+              readingLayoutContainer = layoutContainer;
+              resizer.classList.add("dragging");
+              layoutContainer.classList.add("is-resizing");
+              document.body.style.cursor = "col-resize";
+              document.body.style.userSelect = "none"; // Prevent text highlighting while dragging
+            });
+          }
+        }
+        // --- END: Resize Logic ---
 
         // Helper function to render writing instructions
         function renderWritingInstructions(task) {
@@ -5298,6 +5720,7 @@
                     testState.testCompleted = false;
                     testState.userAnswers = {}; // Reset user answers
                     testState.passageStates = {}; // Reset passage states
+                    testState.audioCurrentTime = 0; // Reset audio time
                     questionPaletteItems = []; // Reset palette items
                     highlightState = {
                       notes: {},
@@ -5488,6 +5911,49 @@
                       }
                     }
 
+                    testState.timeLeft = currentTest.duration * 60;
+
+                    // --- NEW: Load draft state if it exists ---
+                    const savedDraft = sessionStorage.getItem(
+                      `ielts_mahir_draft_${currentModuleId}_${currentTestId}`,
+                    );
+                    if (savedDraft) {
+                      try {
+                        const parsedDraft = JSON.parse(savedDraft);
+                        if (parsedDraft.userAnswers) {
+                          testState.userAnswers = {
+                            ...testState.userAnswers,
+                            ...parsedDraft.userAnswers,
+                          };
+                        }
+                        if (parsedDraft.timeLeft !== undefined) {
+                          testState.timeLeft = parsedDraft.timeLeft;
+                        }
+                        if (parsedDraft.currentSectionIndex !== undefined) {
+                          testState.currentSectionIndex =
+                            parsedDraft.currentSectionIndex;
+                        }
+                        if (parsedDraft.passageStates) {
+                          testState.passageStates = parsedDraft.passageStates;
+                        }
+                        if (parsedDraft.highlightNotes) {
+                          highlightState.notes = parsedDraft.highlightNotes;
+                        }
+                        if (parsedDraft.highlightCounter !== undefined) {
+                          highlightState.highlightCounter =
+                            parsedDraft.highlightCounter;
+                        }
+                        if (parsedDraft.audioCurrentTime !== undefined) {
+                          testState.audioCurrentTime =
+                            parsedDraft.audioCurrentTime;
+                        }
+                        console.log("Draft state recovered successfully.");
+                      } catch (e) {
+                        console.error("Failed to parse draft state", e);
+                      }
+                    }
+                    // --- END: Load draft state ---
+
                     console.log(
                       "Final total questions (for scoring):",
                       totalQuestions,
@@ -5497,7 +5963,6 @@
                       questionPaletteItems.length,
                     );
 
-                    testState.timeLeft = currentTest.duration * 60;
                     const audioPlayer = document.getElementById(
                       "test-audio-player",
                     );
@@ -5508,6 +5973,11 @@
                       if (currentModuleId === "listening") {
                         // The 'loadeddata' event ensures we can get the duration and play the audio.
                         audioPlayer.addEventListener("loadeddata", () => {
+                          // Restore saved time if it exists
+                          if (testState.audioCurrentTime > 0) {
+                            audioPlayer.currentTime =
+                              testState.audioCurrentTime;
+                          }
                           // Auto-start the audio
                           audioPlayer
                             .play()
@@ -5519,7 +5989,8 @@
                             );
                         });
 
-                        let lastTime = 0;
+                        // Initialize lastTime with the restored time to prevent the anti-seek from resetting it
+                        let lastTime = testState.audioCurrentTime || 0;
 
                         // 1. Prevent pausing
                         audioPlayer.addEventListener("pause", () => {
@@ -5540,6 +6011,7 @@
                             audioPlayer.currentTime = lastTime;
                           }
                           lastTime = audioPlayer.currentTime;
+                          testState.audioCurrentTime = audioPlayer.currentTime; // Sync tracking continuously
                         });
 
                         // 3. Prevent replay after the audio has finished

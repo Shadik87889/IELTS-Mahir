@@ -489,9 +489,11 @@
         border-top: 1px solid #e2e8f0;
         z-index: 50;
         display: flex; /* Default for mobile */
-        justify-content: space-around;
-        padding: 0.5rem 0;
+        justify-content: flex-start; /* Changed for scrolling */
+        padding: 0.5rem;
         box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+        overflow-x: auto; /* Enable horizontal scrolling */
+        gap: 0.25rem;
       }
 
       @media (min-width: 768px) {
@@ -502,7 +504,7 @@
       }
 
       #mobile-bottom-nav button {
-        flex: 1;
+        flex: 0 0 4.5rem; /* Fixed width for scrollable items */
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -556,6 +558,15 @@
 
       #left-sidebar.open {
         transform: translateX(0); /* Slide in */
+      }
+
+      /* Hide horizontal scrollbar for mobile dashboard nav */
+      .hide-scroll-bar::-webkit-scrollbar {
+          display: none;
+      }
+      .hide-scroll-bar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
       }
 
       @media (min-width: 1024px) {
@@ -2341,39 +2352,151 @@
           "Guest";
 
         sidebar.innerHTML = `
-            <!-- Close button for mobile (re-rendered here to ensure it's always present) -->
+            <!-- Close button for mobile -->
             <button
                 id="sidebar-close-button"
-                class="lg:hidden absolute top-4 right-4 text-gray-600 hover:text-red-600 text-2xl p-2 rounded-lg transition-colors"
+                class="lg:hidden absolute top-4 right-4 text-gray-500 hover:text-red-500 text-2xl p-2 rounded-lg transition-colors z-50 bg-white/50 backdrop-blur-sm"
             >
                 <i class="fas fa-times"></i>
             </button>
-            <div class="mb-6 p-4 rounded-xl bg-blue-50 border border-blue-100 text-center shadow-sm">
-                <div class="w-16 h-16 mx-auto mb-3 flex items-center justify-center rounded-full bg-blue-500 text-white text-2xl font-bold shadow-lg">
-                    ${userName.charAt(0).toUpperCase()}
+
+            <!-- ========================================== -->
+            <!-- DESKTOP VIEW (Hidden on Mobile)            -->
+            <!-- ========================================== -->
+            <div class="hidden lg:block">
+                <div class="mb-6 p-4 rounded-xl bg-blue-50 border border-blue-100 text-center shadow-sm">
+                    <div class="w-16 h-16 mx-auto mb-3 flex items-center justify-center rounded-full bg-blue-500 text-white text-2xl font-bold shadow-lg">
+                        ${userName.charAt(0).toUpperCase()}
+                    </div>
+                    <h3 class="text-xl font-semibold text-blue-800 mb-1">${userName}</h3>
+                    <p class="text-sm text-blue-600">Level: ${
+                      dashboardState.userGameStats.level || 1
+                    } | Points: ${
+          dashboardState.userGameStats.totalPoints || 0
+        }</p>
                 </div>
-                <h3 class="text-xl font-semibold text-blue-800 mb-1">${userName}</h3>
-                <p class="text-sm text-blue-600">Level: ${
-                  dashboardState.userGameStats.level || 1
-                } | Points: ${dashboardState.userGameStats.totalPoints || 0}</p>
+                <nav class="space-y-1">
+                    ${navItems
+                      .map(
+                        (item) => `
+                        <button id="${
+                          item.id
+                        }" class="nav-item w-full text-left ${
+                          dashboardState.currentView === item.view
+                            ? "active"
+                            : ""
+                        }" data-view="${item.view}">
+                            ${item.icon}
+                            <span>${item.text}</span>
+                        </button>
+                    `,
+                      )
+                      .join("")}
+                </nav>
             </div>
-            <nav class="space-y-1">
-                ${navItems
-                  .map(
-                    (item) => `
-                    <button id="${item.id}" class="nav-item w-full text-left ${
-                      dashboardState.currentView === item.view ? "active" : ""
-                    }" data-view="${item.view}">
-                        ${item.icon}
-                        <span>${item.text}</span>
-                    </button>
-                `,
-                  )
-                  .join("")}
-            </nav>
+
+            <!-- ========================================== -->
+            <!-- MOBILE VIEW (Hidden on Desktop)            -->
+            <!-- ========================================== -->
+            <div class="lg:hidden flex flex-col min-h-full pb-6 pt-10">
+                
+                <!-- NEW: Premium Mobile Profile Snippet -->
+                <div class="mb-6 mx-2 mt-2 p-5 rounded-[1.25rem] bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 shadow-xl shadow-blue-900/20 border border-blue-500/30 text-white relative overflow-hidden">
+                    <!-- Decorative background elements -->
+                    <div class="absolute -top-6 -right-6 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                    <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+                    
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-[4.25rem] h-[4.25rem] mb-3 flex items-center justify-center rounded-full bg-white text-blue-600 text-[1.75rem] font-black shadow-lg ring-4 ring-white/20 transform transition-transform hover:scale-105">
+                            ${userName.charAt(0).toUpperCase()}
+                        </div>
+                        <h3 class="text-lg font-bold tracking-wide mb-1 text-white">${userName}</h3>
+                        <div class="flex items-center justify-center gap-2.5 mt-1.5 w-full">
+                            <div class="flex items-center gap-1.5 bg-black/30 px-3.5 py-1.5 rounded-full border border-white/10 backdrop-blur-md shadow-inner whitespace-nowrap">
+                                <i class="fas fa-shield-alt text-amber-400 text-[13px]"></i>
+                                <span class="text-[13px] font-bold tracking-wide text-white">Lvl ${
+                                  dashboardState.userGameStats.level || 1
+                                }</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 bg-black/30 px-3.5 py-1.5 rounded-full border border-white/10 backdrop-blur-md shadow-inner whitespace-nowrap">
+                                <i class="fas fa-bolt text-yellow-400 text-[13px]"></i>
+                                <span class="text-[13px] font-bold tracking-wide text-white">${
+                                  dashboardState.userGameStats.totalPoints || 0
+                                } Pts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top: Main Site Navigation -->
+                <div class="mt-2 flex-1">
+                    <h4 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-4">Main Menu</h4>
+                    <nav class="space-y-1 font-inter px-2">
+                        <a href="home" class="flex items-center px-4 py-3 text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 rounded-xl transition-all duration-200">
+                            <div class="w-8 flex justify-start"><i class="fas fa-home text-[1.1rem] opacity-75"></i></div>
+                            <span>Home</span>
+                        </a>
+                        
+                        <!-- Free Resources Accordion -->
+                        <div class="group/accordion">
+                            <div class="flex items-center justify-between px-4 py-3 text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 rounded-xl transition-all duration-200 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.fa-chevron-down').classList.toggle('rotate-180');">
+                                <div class="flex items-center">
+                                    <div class="w-8 flex justify-start"><i class="fas fa-book-open text-[1.1rem] opacity-75"></i></div>
+                                    <span>Free Resources</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs text-slate-400 transition-transform duration-300"></i>
+                            </div>
+                            <div class="hidden overflow-hidden transition-all duration-300">
+                                <div class="py-1 px-2 space-y-0.5 mt-1 border-l-2 border-slate-200 ml-6">
+                                    <a href="free-speaking-resources" class="block px-4 py-2 text-[14px] font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-colors">Speaking</a>
+                                    <a href="free-reading-resources" class="block px-4 py-2 text-[14px] font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-colors">Reading</a>
+                                    <a href="free-listening-resources" class="block px-4 py-2 text-[14px] font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-colors">Listening</a>
+                                    <a href="free-writing-resources" class="block px-4 py-2 text-[14px] font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-colors">Writing</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- IELTS Tips & Tricks Accordion -->
+                        <div class="group/accordion">
+                            <div class="flex items-center justify-between px-4 py-3 text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 rounded-xl transition-all duration-200 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.fa-chevron-down').classList.toggle('rotate-180');">
+                                <div class="flex items-center">
+                                    <div class="w-8 flex justify-start"><i class="fas fa-lightbulb text-[1.1rem] opacity-75"></i></div>
+                                    <span>Tips & Tricks</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs text-slate-400 transition-transform duration-300"></i>
+                            </div>
+                            <div class="hidden overflow-hidden transition-all duration-300">
+                                <div class="py-1 px-2 space-y-0.5 mt-1 border-l-2 border-slate-200 ml-6">
+                                    <a href="downloadable-pdf-resources" class="block px-4 py-2 text-[14px] font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-colors">Downloadable PDFs</a>
+                                    <div class="px-4 py-1.5 text-[11px] text-slate-400 font-bold uppercase tracking-wider mt-1">Blog Categories</div>
+                                    <div class="space-y-0.5">
+                                        <a href="ielts-mahir-blog?category=Speaking" class="block px-4 py-2 text-[14px] font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-colors">Speaking</a>
+                                        <a href="ielts-mahir-blog?category=Reading" class="block px-4 py-2 text-[14px] font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-colors">Reading</a>
+                                        <a href="ielts-mahir-blog?category=Listening" class="block px-4 py-2 text-[14px] font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-colors">Listening</a>
+                                        <a href="ielts-mahir-blog?category=Writing" class="block px-4 py-2 text-[14px] font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-colors">Writing</a>
+                                        <a href="ielts-mahir-blog?category=Others" class="block px-4 py-2 text-[14px] font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-colors">Others</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="mock-test-home" class="flex items-center px-4 py-3 text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 rounded-xl transition-all duration-200">
+                            <div class="w-8 flex justify-start"><i class="fas fa-laptop-code text-[1.1rem] opacity-75"></i></div>
+                            <span>Mock Test</span>
+                        </a>
+                        <a href="quiz-home" class="flex items-center px-4 py-3 text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 rounded-xl transition-all duration-200">
+                            <div class="w-8 flex justify-start"><i class="fas fa-brain text-[1.1rem] opacity-75"></i></div>
+                            <span>Quizzes</span>
+                        </a>
+                        <a href="contact" class="flex items-center px-4 py-3 text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 rounded-xl transition-all duration-200">
+                            <div class="w-8 flex justify-start"><i class="fas fa-envelope text-[1.1rem] opacity-75"></i></div>
+                            <span>Contact</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
         `;
       }
-
       function renderMobileBottomNav() {
         const bottomNav = document.getElementById("mobile-bottom-nav");
         // Only show bottom nav if user is authenticated
@@ -2383,25 +2506,44 @@
           return;
         }
         bottomNav.style.display = "flex"; // Ensure it's visible if authenticated
+        bottomNav.classList.add("hide-scroll-bar"); // Hide the horizontal scrollbar
 
         const navItems = [
           {
-            id: "nav-home-mobile",
-            icon: Icons.Home,
-            text: "Home",
+            id: "nav-dashboard-mobile",
+            icon: Icons.Activity,
+            text: "Dashboard",
             view: "dashboard",
           },
           {
-            id: "nav-quiz-mobile",
+            id: "nav-quiz-cat-mobile",
             icon: Icons.Play,
             text: "Quiz",
             view: "quizCategories",
           },
           {
-            id: "nav-daily-leaderboard-mobile",
+            id: "nav-history-mobile",
+            icon: Icons.History,
+            text: "History",
+            view: "quizHistory",
+          },
+          {
+            id: "nav-progress-mobile",
+            icon: Icons.Target,
+            text: "Progress",
+            view: "progressTracking",
+          },
+          {
+            id: "nav-global-mobile",
             icon: Icons.Leaderboard,
-            text: "Daily Rank",
-            view: "dailyLeaderboard", // Changed to internal view
+            text: "Global",
+            view: "globalLeaderboard",
+          },
+          {
+            id: "nav-daily-mobile",
+            icon: Icons.CalendarDay,
+            text: "Daily",
+            view: "dailyLeaderboard",
           },
           {
             id: "nav-profile-mobile",
@@ -2410,16 +2552,17 @@
             view: "profile",
           },
         ];
+
         bottomNav.innerHTML = navItems
           .map(
             (item) => `
           <button id="${item.id}" class="${
               dashboardState.currentView === item.view ? "active" : ""
-            } flex-1 flex flex-col items-center justify-center p-2 text-gray-600 hover:text-blue-600 transition-colors" data-view="${
+            } flex flex-col items-center justify-center p-2 text-gray-600 hover:text-blue-600 transition-colors" data-view="${
               item.view
             }">
-            ${item.icon}
-            <span class="text-xs font-semibold">${item.text}</span>
+            <div class="text-[1.25rem] leading-none mb-1">${item.icon}</div>
+            <span class="text-[10px] font-semibold">${item.text}</span>
           </button>
         `,
           )
@@ -3631,18 +3774,8 @@
           .getElementById("sidebar-overlay")
           ?.addEventListener("click", closeMobileSidebar);
 
-        // Top navigation links
-        document.querySelectorAll("#app-header .nav-link").forEach((link) => {
-          link.addEventListener("click", (event) => {
-            event.preventDefault();
-            const viewId = event.currentTarget.id
-              .replace("nav-", "")
-              .replace("-top", "");
-            dashboardState.currentView = viewId;
-            renderApp();
-            closeMobileSidebar(); // Close sidebar after navigation
-          });
-        });
+        // Note: The buggy #app-header .nav-link interceptor was removed here.
+        // Header links will now properly navigate to their standard href locations!
 
         // Left sidebar navigation items
         document
