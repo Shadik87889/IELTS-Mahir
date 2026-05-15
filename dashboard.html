@@ -996,6 +996,7 @@
 
     <!-- Mobile Bottom Navigation -->
     <footer id="mobile-bottom-nav" class="lg:hidden"></footer>
+    <script src="block-location.js"></script>
 
     <script type="module">
       // Import authentication functions and state from the central auth.js file
@@ -3686,6 +3687,20 @@
                         ${userName.charAt(0).toUpperCase()}
                     </div>
                     <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 font-anton mb-4">${userName}</h2>
+                    
+                    <!-- NEW: System ID Card -->
+                    <div class="mb-6 bg-blue-50 border border-blue-100 rounded-xl p-4 flex flex-col sm:flex-row items-center gap-3 shadow-sm w-full max-w-md mx-auto">
+                        <div class="flex-1 text-center sm:text-left">
+                            <p class="text-xs text-blue-600 font-bold uppercase tracking-wider mb-1">System ID</p>
+                            <p class="text-sm font-mono text-gray-800 bg-white px-3 py-1.5 rounded border border-gray-200 break-all" id="profile-system-id">${
+                              dashboardState.userId || "Not Available"
+                            }</p>
+                        </div>
+                        <button onclick="copySystemId()" class="flex-shrink-0 flex items-center justify-center gap-2 px-4 py-2 bg-white border border-blue-200 text-blue-600 rounded-lg shadow-sm hover:bg-blue-50 hover:border-blue-300 transition-colors duration-200 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                            <i class="far fa-copy"></i> <span class="sm:hidden">Copy ID</span>
+                        </button>
+                    </div>
+
                     <p class="text-gray-700 text-lg mb-2"><span class="font-semibold">Email:</span> ${userEmail}</p>
                     <p class="text-gray-700 text-lg mb-2"><span class="font-semibold">Level:</span> ${userLevel}</p>
                     <p class="text-gray-700 text-lg mb-2"><span class="font-semibold">Total Points:</span> ${userTotalPoints}</p>
@@ -3699,6 +3714,28 @@
                 </div>
             </section>
         `;
+
+        // Expose copy function globally so the inline onclick works
+        window.copySystemId = function () {
+          const idElement = document.getElementById("profile-system-id");
+          if (idElement && idElement.textContent !== "Not Available") {
+            const textToCopy = idElement.textContent;
+
+            // Fallback for document.execCommand as requested by constraints
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+              document.execCommand("copy");
+              showToast("System ID copied to clipboard!", "success");
+            } catch (err) {
+              console.error("Failed to copy", err);
+              showToast("Failed to copy ID", "error");
+            }
+            document.body.removeChild(textArea);
+          }
+        };
         // Event listeners are now set up in setupGlobalEventListeners
       }
 
