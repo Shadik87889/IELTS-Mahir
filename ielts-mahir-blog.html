@@ -217,6 +217,10 @@
         transform: scale(1.08) rotate(-2deg);
       }
 
+      .pr-mobile-brand-name {
+        display: none;
+      }
+
       .pr-nav {
         flex-grow: 1;
         display: flex;
@@ -410,7 +414,7 @@
         animation: authShimmer 1.5s infinite linear;
       }
       .auth-loading-content {
-        width: 80px;
+        display: none !important; /* Hides horizontal line on all devices */
       }
       .auth-loading-content .auth-loading-bar:first-child {
         width: 100%;
@@ -600,6 +604,25 @@
           top: 16px;
           border-radius: 100px;
         }
+
+        .pr-logo {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-shrink: 0;
+          text-decoration: none;
+        }
+
+        .pr-mobile-brand-name {
+          display: block;
+          font-family: "Outfit", sans-serif;
+          font-weight: 800;
+          color: #063956;
+          font-size: 1.25rem;
+          letter-spacing: -0.5px;
+          white-space: nowrap;
+        }
+
         #premium-header.scrolled {
           top: 10px;
         }
@@ -919,6 +942,7 @@
             src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
             alt="IELTS Mahir Logo"
           />
+          <span class="pr-mobile-brand-name">IELTS MAHIR</span>
         </a>
 
         <nav class="pr-nav">
@@ -1902,7 +1926,7 @@
     </script>
 
     <!-- External Auth Loading for Header User Profile -->
-    <!-- <script type="module" src="auth-page-loading.js"></script> -->
+    <script type="module" src="auth-page-loading.js"></script>
 
     <!-- Super Premium Navigation Logic -->
     <script>

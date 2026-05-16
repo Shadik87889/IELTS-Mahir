@@ -292,21 +292,24 @@
       id="app-header"
       class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-50"
     >
-      <div class="flex items-center gap-4">
-        <a href="home" class="flex items-center gap-2 group">
+      <div class="flex items-center gap-2 sm:gap-4">
+        <a href="home" class="flex items-center gap-2 flex-shrink-0 group">
           <img
             src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
             alt="IELTS Mahir Logo"
             class="h-9 w-auto group-hover:opacity-90 transition-opacity"
             onerror="this.onerror=null; this.src='https://placehold.co/120x40/f8fafc/3b82f6?text=IELTS+Mahir&font=Montserrat';"
           />
+          <span
+            class="block lg:hidden font-inter font-extrabold text-[#063956] text-[1.25rem] tracking-[-0.5px] whitespace-nowrap"
+            >IELTS MAHIR</span
+          >
         </a>
       </div>
 
       <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
         <!-- Pulse Loader (Default state) -->
-        <div class="animate-pulse flex items-center gap-3">
-          <div class="h-9 w-24 bg-slate-200 rounded-full hidden sm:block"></div>
+        <div class="animate-pulse flex space-x-4">
           <div class="rounded-full bg-slate-200 h-10 w-10"></div>
         </div>
       </div>
