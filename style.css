@@ -1452,6 +1452,7 @@
     bottom: -39vw;
     width: 100%;
     z-index: 10;
+    display: none;
   }
   .flip-indicators {
     display: flex;
@@ -1735,6 +1736,7 @@
     font-size: 4vw;
     left: 30vw;
   }
+
   #page4.band-calculator .cal-grapic-el {
     z-index: 1;
     width: 25vw;
