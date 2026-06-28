@@ -1249,15 +1249,17 @@
       <div
         class="audio-player-container flex items-center justify-between gap-1 sm:gap-4 w-full"
       >
-        <!-- Audio element wrapper (min-w-0 prevents overflow on small screens) -->
-        <div class="flex-grow min-w-0 mr-1 sm:mr-0">
+        <!-- Audio element wrapper -->
+        <div class="flex-grow min-w-0 mr-2 sm:mr-4">
           <audio
             id="test-audio-player"
             controls
+            controlsList="nodownload noplaybackrate"
             preload="auto"
-            class="w-full h-9 sm:h-auto"
+            class="w-full"
+            style="min-height: 45px;"
           >
-            <source src="" type="audio/mpeg" />
+            <!-- Audio URL will be set by JS -->
             Your browser does not support the audio element.
           </audio>
         </div>
@@ -6080,25 +6082,45 @@
                             audioPlayer.currentTime =
                               testState.audioCurrentTime;
                           }
+
                           // Auto-start the audio
-                          audioPlayer
-                            .play()
-                            .catch((e) =>
-                              console.error(
-                                "Autoplay was prevented by the browser:",
-                                e,
-                              ),
-                            );
+                          let playPromise = audioPlayer.play();
+
+                          // Catch the Chrome Autoplay Block silently.
+                          if (playPromise !== undefined) {
+                            playPromise.catch((e) => {
+                              console.warn(
+                                "Autoplay blocked by Chrome. User must click Play manually.",
+                              );
+                              // We just show a small toast instead of a full screen modal.
+                              // Because the audio player is now visible, the user can just click play themselves!
+                              showToast(
+                                "Please click the Play button on the audio player to begin.",
+                                "info",
+                              );
+                            });
+                          }
                         });
 
                         // Initialize lastTime with the restored time to prevent the anti-seek from resetting it
                         let lastTime = testState.audioCurrentTime || 0;
-
-                        // 1. Prevent pausing
+                        // 1. Prevent pausing (added safe catch to prevent console spam)
                         audioPlayer.addEventListener("pause", () => {
                           // Silently resume if a pause is attempted before the audio ends.
                           if (!audioPlayer.ended) {
-                            audioPlayer.play();
+                            let forcePlay = audioPlayer.play();
+                            if (forcePlay !== undefined) {
+                              forcePlay.catch((e) => {
+                                /* ignore */
+                              });
+                            }
+                          }
+                        });
+
+                        // 1.5 Prevent changing playback speed (Force normal 1.0x speed)
+                        audioPlayer.addEventListener("ratechange", () => {
+                          if (audioPlayer.playbackRate !== 1.0) {
+                            audioPlayer.playbackRate = 1.0;
                           }
                         });
 
