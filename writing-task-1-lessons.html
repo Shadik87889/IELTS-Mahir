@@ -503,6 +503,12 @@
         signInWithCustomToken,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
+      // 1. ADD THE APP CHECK IMPORT
+      import {
+        initializeAppCheck,
+        ReCaptchaEnterpriseProvider,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app-check.js";
+
       // Global Config
       const appId =
         typeof __app_id !== "undefined"
@@ -520,7 +526,21 @@
               appId: "1:1036043607546:web:bd217e04cc0ec5f296d843",
             };
 
+      // Initialize Firebase App
       const app = initializeApp(firebaseConfig);
+
+      // 2. INITIALIZE APP CHECK HERE
+      // Enable this debug line ONLY when developing locally on localhost
+      // self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+
+      const appCheck = initializeAppCheck(app, {
+        provider: new ReCaptchaEnterpriseProvider(
+          "6LeOaictAAAAAARPSS2_zN6tuSvDR51pBSzOtOxOf",
+        ),
+        isTokenAutoRefreshEnabled: true, // Set to true to allow auto-refresh
+      });
+
+      // Initialize Services (Must be done AFTER App Check)
       const db = getFirestore(app);
       const auth = getAuth(app);
 

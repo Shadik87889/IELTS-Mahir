@@ -68,13 +68,12 @@
           padding: 0rem; /* Medium padding for tablet */
         }
       }
-
       /* Specific layout for Listening Test on larger screens */
       @media (min-width: 1024px) {
         /* lg breakpoint */
         .mock-test-layout.listening-layout {
-          grid-template-columns: 3fr 1fr; /* Main content (3 parts), sidebar (1 part) */
-          padding: 0rem; /* Larger padding for desktop */
+          grid-template-columns: 1fr;
+          padding-bottom: 0; /* Exact height calculation prevents overlap */
         }
       }
 
@@ -134,8 +133,6 @@
       body.header-collapsed #app-header {
         display: none !important;
       }
-      body.header-collapsed .test-info-bar,
-      body.header-collapsed .audio-player-wrapper,
       body.header-collapsed .reading-tabs-container,
       body.header-collapsed .writing-tabs-container {
         top: 0 !important;
@@ -154,16 +151,19 @@
         body.header-collapsed
           .mock-test-layout.writing-layout
           .writing-instructions-area {
-          height: calc(100vh - 60px) !important;
+          height: calc(
+            100vh - 70px
+          ) !important; /* 60px info bar + 10px safe gap */
         }
         body.header-collapsed
           .mock-test-layout.listening-layout
           .main-test-content,
         body.header-collapsed .mock-test-layout.listening-layout .sidebar {
-          height: calc(100vh - 80px) !important;
+          height: calc(
+            100vh - 150px
+          ) !important; /* 80px audio + 60px bottom bar + 10px safe gap */
         }
       }
-
       @media (max-width: 1023px) {
         body.header-collapsed
           .mock-test-layout.reading-layout
@@ -330,56 +330,58 @@
         /* Removed shadow */
       }
 
-      /* Audio Player Wrapper (fixed position at top) */
+      /* Audio Player Wrapper */
       .audio-player-wrapper {
-        position: sticky;
-        top: 64px; /* Adjust based on header height */
+        position: relative; /* Fixed overlap issue */
         width: 100%;
-        background-color: #f0f2f5; /* Slightly darker background than body */
+        background-color: #f0f2f5;
         padding: 0.75rem 1rem;
-        /* Removed shadow, using a subtle border */
-        border-bottom: 1px solid #d1d8e0; /* Softer border */
-        z-index: 900; /* Below header, above main content */
-        display: none; /* Hidden by default, shown by JS for listening */
+        border-bottom: 1px solid #d1d8e0;
+        z-index: 900;
+        display: none;
         justify-content: center;
         align-items: center;
-        height: 80px; /* Fixed height for consistency */
+        height: 80px;
       }
-
       .audio-player-container {
-        background-color: #ffffff; /* Pure white for the player itself */
-        border-radius: 1.25rem; /* More rounded */
-        padding: 0.75rem 1.5rem; /* Increased padding */
+        background-color: #ffffff;
+        border-radius: 1.25rem;
+        padding: 0.5rem 0.5rem;
         display: flex;
         align-items: center;
-        justify-content: center;
-        /* Removed inset shadow */
+        justify-content: space-between;
         border: 1px solid #e0e0e0;
         width: 100%;
-        max-width: 960px; /* Slightly wider max-width */
-        height: 60px; /* Fixed height for consistency */
+        max-width: 960px;
+        min-height: 50px;
+      }
+
+      @media (min-width: 640px) {
+        .audio-player-container {
+          padding: 0.75rem 1.5rem;
+          min-height: 60px;
+        }
       }
 
       .audio-player-container audio {
         width: 100%;
-        border-radius: 0.75rem; /* Rounded corners for audio element */
-        filter: none; /* Removed filter for a cleaner look */
+        border-radius: 0.75rem;
+        filter: none;
       }
 
-      /* New: Sticky Test Info Bar */
+      /* New: Test Info Bar */
       .test-info-bar {
-        position: sticky;
-        top: 64px; /* Below the header */
+        position: relative; /* Fixed overlap issue */
         width: 100%;
-        background-color: #ffffff; /* White background */
-        padding: 0.75rem 1.5rem; /* Padding */
-        border-bottom: 1px solid #e0e0e0; /* Subtle border */
-        z-index: 900; /* Same as audio player, below header */
-        display: flex; /* Hidden by default, shown by JS */
-        justify-content: space-between; /* Align timer and section info */
+        background-color: #ffffff;
+        padding: 0.75rem 1.5rem;
+        border-bottom: 1px solid #e0e0e0;
+        z-index: 900;
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        height: 60px; /* Consistent height */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+        height: 60px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       }
 
       /* Mobile Question Palette Wrapper (fixed at bottom) */
@@ -1148,22 +1150,19 @@
       @media (min-width: 1024px) {
         /* Desktop specific heights */
         .mock-test-layout.listening-layout .main-test-content {
-          height: 79.5vh;
-        }
-        .mock-test-layout.listening-layout .sidebar {
-          height: 79.5vh;
+          height: calc(
+            100vh - 220px
+          ); /* 64 header + 80 audio + 60 bottom bar + 16 gap */
         }
         .mock-test-layout.reading-layout .main-test-content,
         .mock-test-layout.reading-layout .passage-content-area {
-          /* Header (64px) + Info Bar (60px) = 124px. Calc height: 100vh - 124px */
-          height: calc(100vh - 124px); /* Adjusted height */
+          height: calc(100vh - 140px); /* 64 header + 60 info bar + 16 gap */
           border-radius: 0rem;
-          /* Height of the sticky bar */
-          border-top: none; /* Remove top border as it's below sticky bar */
+          border-top: none;
         }
         .mock-test-layout.writing-layout .main-test-content,
         .mock-test-layout.writing-layout .writing-instructions-area {
-          height: calc(100vh - 124px); /* Adjusted height */
+          height: calc(100vh - 140px);
           border-radius: 0rem;
           border-top: none;
         }
@@ -1191,9 +1190,27 @@
           padding-top: 40vw;
         }
       }
+      /* Desktop Bottom Palette Styling & Custom Scrollbar */
+      .bottom-desktop-palette {
+        height: 70px;
+      }
+      .question-palette-flex::-webkit-scrollbar {
+        height: 6px;
+      }
+      .question-palette-flex::-webkit-scrollbar-track {
+        background: #334155;
+        border-radius: 4px;
+      }
+      .question-palette-flex::-webkit-scrollbar-thumb {
+        background: #64748b;
+        border-radius: 4px;
+      }
+      .question-palette-flex::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
     </style>
   </head>
-  <body class="py-0 px-0">
+  <body class="py-0 px-0 header-collapsed">
     <!-- Header / Navigation Bar -->
     <header
       id="app-header"
@@ -1230,30 +1247,53 @@
     <!-- Audio Player (fixed/sticky at top) -->
     <div id="fixed-audio-player-wrapper" class="audio-player-wrapper">
       <div
-        class="audio-player-container flex items-center justify-between gap-4 w-full"
+        class="audio-player-container flex items-center justify-between gap-1 sm:gap-4 w-full"
       >
-        <div class="flex-grow">
-          <audio id="test-audio-player" controls preload="auto" class="w-full">
+        <!-- Audio element wrapper (min-w-0 prevents overflow on small screens) -->
+        <div class="flex-grow min-w-0 mr-1 sm:mr-0">
+          <audio
+            id="test-audio-player"
+            controls
+            preload="auto"
+            class="w-full h-9 sm:h-auto"
+          >
             <source src="" type="audio/mpeg" />
-            <!-- Audio URL will be set by JS -->
             Your browser does not support the audio element.
           </audio>
         </div>
-        <div class="flex items-center gap-2 text-gray-600 flex-shrink-0">
-          <button
-            onclick="toggleHeader()"
-            class="flex items-center justify-center w-8 h-8 rounded hover:bg-gray-100 transition-colors bg-white shadow-sm border border-gray-200"
-            title="Toggle Header"
+
+        <!-- Controls container -->
+        <div
+          class="flex items-center gap-1 sm:gap-4 text-gray-600 flex-shrink-0"
+        >
+          <!-- New Top Timer -->
+          <div
+            class="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-lg font-bold text-slate-700 bg-white px-2 sm:px-4 py-1.5 rounded-lg border border-gray-200 shadow-sm"
           >
-            <i class="fas fa-chevron-up toggle-header-icon text-lg"></i>
-          </button>
-          <button
-            onclick="toggleFullScreen()"
-            class="flex items-center justify-center w-8 h-8 rounded hover:bg-gray-100 transition-colors bg-white shadow-sm border border-gray-200"
-            title="Toggle Fullscreen"
-          >
-            <i class="fas fa-expand toggle-fullscreen-icon text-lg"></i>
-          </button>
+            <i class="fas fa-clock text-blue-600"></i>
+            <span id="timer-display-top-player">00:00</span>
+          </div>
+
+          <div class="flex items-center gap-1 sm:gap-2">
+            <button
+              onclick="toggleHeader()"
+              class="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg hover:bg-gray-100 transition-colors bg-white shadow-sm border border-gray-200"
+              title="Toggle Header"
+            >
+              <i
+                class="fas fa-chevron-down toggle-header-icon text-base sm:text-lg"
+              ></i>
+            </button>
+            <button
+              onclick="toggleFullScreen()"
+              class="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg hover:bg-gray-100 transition-colors bg-white shadow-sm border border-gray-200"
+              title="Toggle Fullscreen"
+            >
+              <i
+                class="fas fa-expand toggle-fullscreen-icon text-base sm:text-lg"
+              ></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1274,7 +1314,7 @@
           class="flex items-center justify-center w-8 h-8 rounded hover:bg-gray-100 transition-colors"
           title="Toggle Header"
         >
-          <i class="fas fa-chevron-up toggle-header-icon text-lg"></i>
+          <i class="fas fa-chevron-down toggle-header-icon text-lg"></i>
         </button>
         <button
           onclick="toggleFullScreen()"
@@ -1894,7 +1934,12 @@
                   ${question.steps
                     .map((step, index) => {
                       const questionId = `q${step.questionNumber}`;
-                      const inputField = `<input type="text" id="${questionId}" placeholder="Answer"
+                      const inputField = `<input type="text" id="${questionId}" name="gap_${Math.random()
+                        .toString(36)
+                        .substring(
+                          2,
+                          10,
+                        )}" placeholder="Answer" autocomplete="off" spellcheck="false" data-lpignore="true"
                                                  oninput="handleAnswerInput('${questionId}', this.value)"
                                                  value="${
                                                    testState.userAnswers[
@@ -2467,6 +2512,10 @@
           "timer-display-top-bar",
         ); // New: For the sticky top bar timer
 
+        const topAudioTimerDisplay = document.getElementById(
+          "timer-display-top-player",
+        ); // Timer next to audio player
+
         testState.timerInterval = setInterval(() => {
           testState.timeLeft--;
           saveDraftState(); // Persist timer every second
@@ -2478,16 +2527,17 @@
             if (desktopTimerDisplaySidebar)
               desktopTimerDisplaySidebar.textContent = formattedTime; // Update sidebar timer
             if (topBarTimerDisplay)
-              // Update new top bar timer
               topBarTimerDisplay.textContent = formattedTime;
+            if (topAudioTimerDisplay)
+              topAudioTimerDisplay.textContent = formattedTime;
           } else {
             clearInterval(testState.timerInterval);
             if (mobileTimerDisplay) mobileTimerDisplay.textContent = "00:00";
             if (desktopTimerDisplaySidebar)
               desktopTimerDisplaySidebar.textContent = "00:00"; // Update sidebar timer
-            if (topBarTimerDisplay)
-              // Update new top bar timer
-              topBarTimerDisplay.textContent = "00:00";
+            if (topBarTimerDisplay) topBarTimerDisplay.textContent = "00:00";
+            if (topAudioTimerDisplay)
+              topAudioTimerDisplay.textContent = "00:00";
             showToast("Time's up! Your test has been submitted.", "info");
             handleSubmitTest(); // Automatically submit when time runs out
           }
@@ -4172,36 +4222,14 @@
                         </div>
                     </div>
 
-                    <!-- Sidebar: Question Palette & Timer (for desktop/tablet) -->
-                    <div class="sidebar">
-                        <div class="text-center mb-4">
-                            <h3 class="text-2xl font-anton text-white mb-2">Question Palette</h3>
-                            <div class="flex items-center justify-center gap-2 text-xl font-bold text-white">
-                                <i class="fas fa-clock"></i>
-                                <span id="timer-display-desktop-sidebar">${formatTime(
-                                  testState.timeLeft,
-                                )}</span>
-                            </div>
+        <!-- Bottom Bar: Question Palette (for desktop) -->
+                    <div class="hidden lg:flex fixed bottom-0 left-0 w-full bg-slate-800 text-white z-[950] shadow-[0_-10px_25px_rgba(0,0,0,0.15)] px-2 py-2 items-center justify-center border-t border-slate-700 h-[60px]">
+
+                        <!-- Single-line Question Palette (No wrap, No scroll) -->
+                        <div class="flex items-center justify-center w-full max-w-full overflow-hidden" id="question-palette-desktop">
+                            <!-- Question buttons grouped by Parts will be injected here -->
                         </div>
 
-                        <div class="question-palette-grid" id="question-palette-desktop">
-                            <!-- Question buttons will be injected here -->
-                        </div>
-
-                        <div class="flex flex-row gap-3 mt-6">
-                            <div class="flex items-center gap-2">
-                                <span class="question-palette-btn answered w-6 h-6 rounded-full text-xs"></span>
-                                <span class="text-sm">Answered</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="question-palette-btn unanswered w-6 h-6 rounded-full text-xs"></span>
-                                <span class="text-sm">Unanswered</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="question-palette-btn current w-6 h-6 rounded-full text-xs"></span>
-                                <span class="text-sm">Current</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             `;
@@ -4949,7 +4977,12 @@
                             : "inline-input";
                         const inputField = `<input type="text" id="q-${
                           question.id
-                        }" placeholder="Answer"
+                        }" name="gap_${Math.random()
+                          .toString(36)
+                          .substring(
+                            2,
+                            10,
+                          )}" placeholder="Answer" autocomplete="off" spellcheck="false" data-lpignore="true"
                                                            oninput="handleAnswerInput('${
                                                              question.id
                                                            }', this.value)"
@@ -5036,7 +5069,12 @@
                                                                 const qNum =
                                                                   match[1];
                                                                 inputId = `q${qNum}`; // This is the ID used in userAnswers
-                                                                const inputFieldHtml = `<input type="text" id="${inputId}" placeholder="Answer"
+                                                                const inputFieldHtml = `<input type="text" id="${inputId}" name="gap_${Math.random()
+                                                                  .toString(36)
+                                                                  .substring(
+                                                                    2,
+                                                                    10,
+                                                                  )}" placeholder="Answer" autocomplete="off" spellcheck="false" data-lpignore="true"
                                                                                                  oninput="handleAnswerInput('${inputId}', this.value)"
                                                                                                  value="${
                                                                                                    testState
@@ -5076,14 +5114,56 @@
                 }
               }
 
+              // --- START OF NEW MAP/DIAGRAM LAYOUT LOGIC ---
+              let finalInstructions = qGroup.instructions || "";
+              let mapImageHtml = "";
+
+              // 1. Detect and extract the map/image from the instructions
+              if (finalInstructions.includes("<img")) {
+                const imgMatch = finalInstructions.match(/<img[^>]+>/);
+                if (imgMatch) {
+                  mapImageHtml = imgMatch[0];
+                  // Remove the image from the instruction text so it doesn't show in the blue box
+                  finalInstructions = finalInstructions.replace(
+                    /<img[^>]+>/,
+                    "",
+                  );
+                }
+              }
+
+              // 2. Build the blue instruction box (now without the image inside it)
+              let instructionsBlock = finalInstructions
+                ? `<div class="question-group-instructions mb-6 text-gray-600 font-inter">${finalInstructions}</div>`
+                : "";
+
+              // 3. If a map was found, render the side-by-side layout with Instructions on TOP
+              if (mapImageHtml) {
+                return `
+                      <div class="w-full mb-8">
+                          <!-- TOP: Instructions span full width above everything -->
+                          ${instructionsBlock}
+                          
+                          <!-- BOTTOM: Split Map (Left) and Questions (Right) -->
+                          <div class="flex flex-col lg:flex-row gap-6 items-start mt-2">
+                              <!-- Left Side: Sticky Map -->
+                              <div class="w-full lg:w-1/2 lg:sticky lg:top-[120px] bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm flex justify-center [&>img]:w-full [&>img]:h-auto [&>img]:m-0">
+                                  ${mapImageHtml}
+                              </div>
+                              <!-- Right Side: Questions ONLY -->
+                              <div class="w-full lg:w-1/2 flex flex-col">
+                                  ${questionsHtml}
+                              </div>
+                          </div>
+                      </div>
+                  `;
+              }
+
+              // 4. Default layout for normal questions (No map)
               return `
-                  ${
-                    qGroup.instructions
-                      ? `<div class="question-group-instructions mb-6 text-gray-600 font-inter">${qGroup.instructions}</div>`
-                      : ""
-                  }
+                  ${instructionsBlock}
                   ${questionsHtml}
               `;
+              // --- END OF NEW MAP/DIAGRAM LAYOUT LOGIC ---
             })
             .join("");
         }
@@ -5275,14 +5355,35 @@
               );
             }
 
-            const paletteHtml = questionPaletteItems
+            // 1. Generate Mobile Palette (Classic Grid - keeps mobile UI unaffected)
+            const mobilePaletteHtml = questionPaletteItems
               .map((item) => {
                 return `<button class="question-palette-btn unanswered" data-palette-number="${item.paletteNumber}">${item.paletteNumber}</button>`;
               })
               .join("");
 
+            // 2. Generate Desktop Palette (Single Line, Fluid Scaling, No Wrap, No Scroll)
+            let desktopPaletteHtml = "";
+            let currentPart = 0;
+
+            questionPaletteItems.forEach((item) => {
+              const partNumber = Math.floor((item.paletteNumber - 1) / 10) + 1;
+
+              // If we are starting a new part, insert the "Part X" wrapper
+              if (partNumber !== currentPart) {
+                if (currentPart !== 0) desktopPaletteHtml += `</div>`; // Close previous group wrapper
+                desktopPaletteHtml += `<div class="flex items-center gap-[2px] xl:gap-1 mr-1 lg:mr-3 xl:mr-5 min-w-0">
+                      <div class="font-bold text-slate-400 text-[9px] xl:text-[11px] uppercase tracking-wider mr-0.5 xl:mr-1 whitespace-nowrap">Part ${partNumber}</div>`;
+                currentPart = partNumber;
+              }
+
+              // Using dynamic min() rules to make sure buttons auto-squish strictly without breaking bounds on smaller computer screens
+              desktopPaletteHtml += `<button class="question-palette-btn unanswered rounded font-bold transition-all hover:-translate-y-0.5 flex-shrink" style="width: min(2vw, 32px); height: min(2vw, 32px); min-width: 18px; min-height: 18px; font-size: min(1.2vw, 13px); display:flex; justify-content:center; align-items:center; padding: 0;" data-palette-number="${item.paletteNumber}">${item.paletteNumber}</button>`;
+            });
+            if (currentPart !== 0) desktopPaletteHtml += `</div>`;
+
             if (questionPaletteDesktop) {
-              questionPaletteDesktop.innerHTML = paletteHtml;
+              questionPaletteDesktop.innerHTML = desktopPaletteHtml;
               questionPaletteDesktop.addEventListener("click", (event) => {
                 if (event.target.classList.contains("question-palette-btn")) {
                   const paletteNum = parseInt(
@@ -5293,7 +5394,7 @@
               });
             }
             if (questionPaletteMobile) {
-              questionPaletteMobile.innerHTML = paletteHtml;
+              questionPaletteMobile.innerHTML = mobilePaletteHtml;
               questionPaletteMobile.addEventListener("click", (event) => {
                 if (event.target.classList.contains("question-palette-btn")) {
                   const paletteNum = parseInt(

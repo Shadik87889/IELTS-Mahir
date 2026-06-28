@@ -906,7 +906,7 @@ export const allMockTests = [
                 questionNumber: 2,
                 type: "fill_in_the_blank",
                 text: "Departure date: July [GAP]",
-                correctAnswer: ["15, 15TH", "15, 15Th", "15, 15th"],
+                correctAnswer: ["15", "15TH", "15", "15Th", "15", "15th"],
               },
               {
                 id: "q3",
