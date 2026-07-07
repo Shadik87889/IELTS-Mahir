@@ -1497,6 +1497,7 @@
     <!-- Modal Container -->
     <div id="modal-container"></div>
     <script src="block-location.js"></script>
+    <script type="module" src="prevent-test-retake.js"></script>
 
     <script type="module">
       import {
@@ -1512,6 +1513,7 @@
         MockTestIcons,
         formatTime,
       } from "./mock-test-data.js";
+      import { allWritingTests } from "./writing-test-data.js";
       import {
         getFirestore,
         doc,
@@ -1520,11 +1522,15 @@
         collection,
         addDoc,
         serverTimestamp,
+        query,
+        where,
+        getDocs,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
       let db;
       let auth;
       let currentModuleId = null;
+      let completedTestIds = [];
 
       // --- DYNAMIC MODULE THEMES & GRIDS ---
       const gridHtmlTemplate = `
@@ -1658,6 +1664,49 @@
           }
         } catch (error) {
           console.error("Error fetching stats:", error);
+        }
+      }
+
+      async function fetchCompletedTests(userId, moduleId) {
+        if (!db || !userId || !moduleId) return;
+        const appId =
+          typeof __app_id !== "undefined"
+            ? __app_id
+            : "ielts-mahir-community-forum";
+        completedTestIds = [];
+
+        try {
+          // 1. Check the private mockTestResults collection (Reading, Listening)
+          if (moduleId !== "writing") {
+            const resultsRef = collection(
+              db,
+              `artifacts/${appId}/users/${userId}/mockTestResults`,
+            );
+            const q1 = query(resultsRef, where("moduleId", "==", moduleId));
+            const snap1 = await getDocs(q1);
+            snap1.forEach((doc) => {
+              const data = doc.data();
+              if (data.testId) completedTestIds.push(data.testId);
+            });
+          }
+
+          // 2. Check the dedicated public submissions collection for Writing
+          if (moduleId === "writing") {
+            const submissionsRef = collection(
+              db,
+              `artifacts/${appId}/public/data/writingSubmissions`,
+            );
+            const q2 = query(submissionsRef, where("userId", "==", userId));
+            const snap2 = await getDocs(q2);
+            snap2.forEach((doc) => {
+              const data = doc.data();
+              if (data.testId && !completedTestIds.includes(data.testId)) {
+                completedTestIds.push(data.testId);
+              }
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching completed tests:", error);
         }
       }
 
@@ -1946,9 +1995,10 @@
         // Dynamic Hero Inline Background Styling
         const heroBgStyle = `background-color: ${theme.bgBase}; background-image: radial-gradient(ellipse at 50% 0%, ${theme.bgGlow} 0%, transparent 70%), linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px); background-size: 100% 100%, 36px 36px, 36px 36px; background-position: top center;`;
 
-        const testsInThisModule = allMockTests.filter(
-          (test) => test.moduleId === currentModuleId,
-        );
+        const testsInThisModule =
+          currentModuleId === "writing"
+            ? allWritingTests
+            : allMockTests.filter((test) => test.moduleId === currentModuleId);
 
         const userIdPill =
           authAppState.isAuthReady && authAppState.userId
@@ -2086,22 +2136,28 @@
                               currentModuleId === "listening"
                             ) {
                               hasPremiumForThisModule = true;
+                            } else if (
+                              userGameStats.premiumPackage === "Writing Pass" &&
+                              currentModuleId === "writing"
+                            ) {
+                              hasPremiumForThisModule = true;
                             }
                           }
 
                           let isLocked = false;
+                          let isCompleted = completedTestIds.includes(test.id);
 
-                          // Only the first 5 tests are free for Listening and Reading
+                          // Only the FIRST test is free for Listening, Reading, and Writing
                           if (
                             (currentModuleId === "reading" ||
-                              currentModuleId === "listening") &&
+                              currentModuleId === "listening" ||
+                              currentModuleId === "writing") &&
                             !hasPremiumForThisModule
                           ) {
-                            if (index >= 5) {
+                            if (index >= 1) {
                               isLocked = true;
                             }
                           }
-
                           const totalQuestions =
                             test.moduleId === "writing"
                               ? 2
@@ -2164,22 +2220,30 @@
                                   );
                                 }, 0);
 
-                          // Visual states for Locked vs Unlocked
-                          const cardClasses = isLocked
-                            ? "video-card locked-card opacity-0 animate-fade-in-up stagger-" +
-                              ((index % 4) + 1) +
-                              " flex flex-col h-full outline-none"
-                            : "video-card group opacity-0 animate-fade-in-up stagger-" +
-                              ((index % 4) + 1) +
-                              " flex flex-col h-full outline-none";
+                          // Visual states for Locked vs Completed vs Unlocked
+                          const cardClasses =
+                            isLocked || isCompleted
+                              ? "video-card locked-card opacity-0 animate-fade-in-up stagger-" +
+                                ((index % 4) + 1) +
+                                " flex flex-col h-full outline-none"
+                              : "video-card group opacity-0 animate-fade-in-up stagger-" +
+                                ((index % 4) + 1) +
+                                " flex flex-col h-full outline-none";
 
-                          // Directly redirect to payment-system page instead of showing the modal
-                          const linkHref = isLocked
-                            ? `payment-system?module=${currentModuleId}`
-                            : `mock-test?module=${currentModuleId}&test=${test.id}`;
+                          // Link handles premium blocks, completed tests naturally block user via test page
+                          let linkHref = "";
+                          if (isLocked && !isCompleted) {
+                            linkHref = `payment-system?module=${currentModuleId}`;
+                          } else {
+                            linkHref =
+                              currentModuleId === "writing"
+                                ? `writing-test?test=${test.id}`
+                                : `mock-test?module=${currentModuleId}&test=${test.id}`;
+                          }
 
-                          const lockOverlay = isLocked
-                            ? `
+                          const lockOverlay =
+                            isLocked && !isCompleted
+                              ? `
                               <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-slate-900/50">
                                   <div class="w-14 h-14 bg-white/95 rounded-full flex items-center justify-center text-slate-800 shadow-xl mb-2 transform scale-100 group-hover:scale-110 transition-transform">
                                       <i class="fas fa-lock text-2xl"></i>
@@ -2187,17 +2251,29 @@
                                   <span class="text-white font-bold text-[10px] uppercase tracking-widest bg-amber-500 shadow-lg px-3 py-1 rounded-full border border-amber-400">Premium</span>
                               </div>
                           `
+                              : "";
+
+                          const completedOverlay = isCompleted
+                            ? `
+                              <div class="absolute inset-0 bg-emerald-900/40 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-emerald-900/50">
+                                  <div class="w-14 h-14 bg-white/95 rounded-full flex items-center justify-center text-emerald-600 shadow-xl mb-2 transform scale-100 group-hover:scale-110 transition-transform">
+                                      <i class="fas fa-check-circle text-2xl"></i>
+                                  </div>
+                                  <span class="text-white font-bold text-[10px] uppercase tracking-widest bg-emerald-500 shadow-lg px-3 py-1 rounded-full border border-emerald-400">Completed</span>
+                              </div>
+                          `
                             : "";
 
-                          const playOverlay = !isLocked
-                            ? `
+                          const playOverlay =
+                            !isLocked && !isCompleted
+                              ? `
                               <div class="play-overlay absolute inset-0 flex items-center justify-center z-20">
                                   <div class="play-icon w-14 h-14 text-white rounded-full flex items-center justify-center backdrop-blur-md border border-white/30">
                                       <i class="fas fa-arrow-right text-xl"></i>
                                   </div>
                               </div>
                           `
-                            : "";
+                              : "";
 
                           return `
                                 <a href="${linkHref}" class="${cardClasses}">
@@ -2207,7 +2283,7 @@
                                         <div class="absolute inset-0 opacity-[0.15]" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
                                         
                                         <div class="relative z-10 w-[72px] h-[72px] rounded-2xl flex items-center justify-center text-3xl text-white shadow-[0_10px_25px_rgba(0,0,0,0.5)] ${themeBadge} transition-transform duration-500 border border-white/20 ${
-                            isLocked
+                            isLocked || isCompleted
                               ? ""
                               : "group-hover:scale-110 group-hover:-rotate-6"
                           }">
@@ -2216,6 +2292,7 @@
                                         
                                         ${playOverlay}
                                         ${lockOverlay}
+                                        ${completedOverlay}
                                         
                                         <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg text-[10px] font-extrabold text-slate-800 uppercase tracking-widest shadow-sm z-30 flex items-center gap-1.5">
                                           <div class="w-2 h-2 rounded-full ${themeBadge} animate-pulse"></div> ${
@@ -2231,7 +2308,9 @@
                                       isLocked ? "bg-slate-50" : ""
                                     }">
                                         <h3 class="anton-text text-2xl text-slate-900 mb-3 ${
-                                          isLocked ? "" : themeHover
+                                          isLocked || isCompleted
+                                            ? ""
+                                            : themeHover
                                         } transition-colors leading-tight tracking-wide uppercase">
                                             ${test.title}
                                         </h3>
@@ -2239,30 +2318,41 @@
                                             ${test.description}
                                         </p>
                                         <div class="mt-auto pt-4 border-t border-slate-200 flex items-center justify-between transition-colors ${
-                                          isLocked ? "" : themeBorderHover
+                                          isLocked || isCompleted
+                                            ? ""
+                                            : themeBorderHover
                                         }">
                                             <span class="font-bold text-[13px] uppercase tracking-wider flex items-center ${
-                                              isLocked
+                                              isCompleted
+                                                ? "text-emerald-500"
+                                                : isLocked
                                                 ? "text-slate-400"
                                                 : themeText
                                             }">
                                                 ${
-                                                  isLocked
+                                                  isCompleted
+                                                    ? "Completed"
+                                                    : isLocked
                                                     ? "Unlock Test"
                                                     : "Start Test"
                                                 }
                                             </span>
-                                            <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center transition-all transform border border-slate-100 ${
-                                              isLocked
-                                                ? "text-slate-400"
-                                                : themeText +
+                                            <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all transform border ${
+                                              isCompleted
+                                                ? "bg-emerald-50 text-emerald-500 border-emerald-100"
+                                                : isLocked
+                                                ? "bg-slate-50 text-slate-400 border-slate-100"
+                                                : "bg-slate-50 border-slate-100 " +
+                                                  themeText +
                                                   " " +
                                                   themeBgHover +
                                                   " group-hover:text-white group-hover:translate-x-1 " +
                                                   themeBorderHover
                                             }">
                                                 <i class="fas ${
-                                                  isLocked
+                                                  isCompleted
+                                                    ? "fa-check"
+                                                    : isLocked
                                                     ? "fa-lock"
                                                     : "fa-chevron-right"
                                                 } text-xs"></i>
@@ -2308,23 +2398,6 @@
 
                       if (cardsHtml.length > 0) return cardsHtml;
 
-                      if (currentModuleId === "writing") {
-                        return `
-                                <div class="video-card flex flex-col h-full outline-none opacity-60 cursor-not-allowed">
-                                    <div class="relative overflow-hidden aspect-[16/10] bg-slate-900 border-b border-slate-100 flex items-center justify-center shrink-0">
-                                        <div class="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-800 opacity-90"></div>
-                                        <div class="relative z-10 w-[72px] h-[72px] rounded-2xl flex items-center justify-center text-3xl text-white shadow-[0_10px_25px_rgba(0,0,0,0.5)] bg-slate-600 border border-white/20">
-                                            <i class="fas fa-pen-nib"></i>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 md:p-7 flex flex-col flex-grow bg-white">
-                                        <h3 class="anton-text text-2xl text-slate-700 mb-3 leading-tight tracking-wide uppercase">Coming Soon</h3>
-                                        <p class="text-sm text-slate-500 font-medium leading-relaxed flex-grow">New writing mock tests are currently in development. Check back soon for exciting updates!</p>
-                                    </div>
-                                </div>
-                            `;
-                      }
-
                       return `<div class="md:col-span-3 text-center text-slate-600 py-8 inter-text"><p class="text-lg">No mock tests available for this module yet.</p></div>`;
                     })()}
                 </div>
@@ -2342,8 +2415,17 @@
           .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
             db = firestoreDb;
             auth = firebaseAuth;
+
+            const urlParams = new URLSearchParams(window.location.search);
+            currentModuleId = urlParams.get("module") || "reading";
+
             auth.onAuthStateChanged(async (user) => {
-              if (user) await fetchUserGameStats(user.uid);
+              if (user) {
+                await fetchUserGameStats(user.uid);
+                await fetchCompletedTests(user.uid, currentModuleId);
+              } else {
+                completedTestIds = [];
+              }
               renderApp();
             });
           })

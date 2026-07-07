@@ -1451,7 +1451,6 @@
         isCheckingAuth: true, // Added to show loading while checking premium
         accessDenied: false, // Added to show locked screen
         isUserPremium: false, // Added to store user's premium status
-        alreadyCompleted: false, // Added to prevent URL bypass retakes
       };
 
       // New: State for passage highlighting and notes
@@ -1887,41 +1886,32 @@
       }
 
       /**
-       * Handles the mouseup event to detect text selection anywhere in the test layout.
+       * Handles the mouseup event on the passage to detect text selection.
        * @param {MouseEvent} event - The mouseup event object.
        */
       function handlePassageMouseUp(event) {
         const popover = document.getElementById("selection-popover");
-        if (!popover) return;
-        const target = event.target;
+        if (!popover) return; // Guard clause to prevent error if popover is missing
 
-        // Prevent popover when interacting with inputs, selects, or buttons
-        if (
-          ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "OPTION"].includes(
-            target.tagName,
-          ) ||
-          popover.contains(target)
-        ) {
-          return;
-        }
+        const passageArea = event.currentTarget; // Capture currentTarget outside the timeout
+        const target = event.target; // Capture target as well for safety
 
+        // Debounce hiding to allow popover button clicks
         setTimeout(() => {
           const selection = window.getSelection();
 
-          if (selection.rangeCount > 0 && !selection.isCollapsed) {
-            const layoutContainer = document.querySelector(".mock-test-layout");
-            // Ensure the selection is within the test area (works for passage AND questions in any module)
-            if (
-              layoutContainer &&
-              layoutContainer.contains(selection.anchorNode)
-            ) {
-              highlightState.currentSelection = selection
-                .getRangeAt(0)
-                .cloneRange();
-              showSelectionPopover(highlightState.currentSelection);
-            }
+          if (
+            selection.rangeCount > 0 &&
+            !selection.isCollapsed &&
+            passageArea &&
+            passageArea.contains(selection.anchorNode)
+          ) {
+            highlightState.currentSelection = selection
+              .getRangeAt(0)
+              .cloneRange();
+            showSelectionPopover(highlightState.currentSelection);
           } else {
-            // Hide if clicked outside the popover and no text is selected
+            // If the click was not on the popover, hide it.
             if (!popover.contains(target)) {
               hideSelectionPopover();
             }
@@ -3942,27 +3932,6 @@
           if (testInfoBar) testInfoBar.style.display = "none"; // Hide info bar on results page
           if (mobilePaletteWrapper) mobilePaletteWrapper.style.display = "none"; // Hide mobile palette
           body.classList.remove("listening-body-padding");
-        } else if (testState.alreadyCompleted) {
-          appDiv.innerHTML = `
-            <div class="flex flex-col justify-center items-center h-full min-h-[60vh] px-4 w-full animate-fade-in-up">
-                <div class="bg-white p-8 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-slate-100 max-w-lg w-full text-center transform transition-all hover:scale-[1.01]">
-                    <div class="w-24 h-24 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-inner">
-                        <i class="fas fa-clipboard-check"></i>
-                    </div>
-                    <h2 class="text-3xl sm:text-4xl font-anton text-slate-800 uppercase tracking-wide mb-4">Test Completed</h2>
-                    <p class="text-slate-600 mb-8 font-inter text-lg leading-relaxed">
-                        You have already successfully completed this mock test. To maintain authentic scoring and assessments, tests cannot be retaken.
-                    </p>
-                    <a href="mock-test-home" class="inline-block px-8 py-3.5 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-all font-inter active:scale-95">
-                        <i class="fas fa-arrow-left mr-2"></i> Go Back to Tests
-                    </a>
-                </div>
-            </div>
-          `;
-          audioPlayerWrapper.style.display = "none";
-          if (testInfoBar) testInfoBar.style.display = "none";
-          if (mobilePaletteWrapper) mobilePaletteWrapper.style.display = "none";
-          body.classList.remove("listening-body-padding");
         } else if (testState.accessDenied) {
           appDiv.innerHTML = `
             <div class="flex flex-col justify-center items-center h-full min-h-[60vh] px-4 w-full">
@@ -4003,27 +3972,36 @@
             testState.currentSectionIndex === currentTest.sections.length - 1;
           const isFirstSection = testState.currentSectionIndex === 0;
 
-          // Navigation buttons for ALL modules
-          navigationButtonsHtml = `
-              <button id="prev-section-btn"
-                      class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-gray-300 transition-colors duration-200 font-semibold text-base transform active:scale-95 ${
-                        isFirstSection ? "opacity-50 cursor-not-allowed" : ""
-                      }"
-                      ${isFirstSection ? "disabled" : ""}>
-                  <i class="fas fa-arrow-left mr-2"></i> Previous
-              </button>
-              ${
-                isLastSection
-                  ? `<button id="submit-test-btn"
-                             class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
-                             <i class="fas fa-check-circle mr-2"></i> Submit
-                         </button>`
-                  : `<button id="next-section-btn"
-                             class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
-                             Next <i class="fas fa-arrow-right ml-2"></i>
-                         </button>`
-              }
-          `;
+          if (currentModuleId === "reading" || currentModuleId === "writing") {
+            navigationButtonsHtml = `
+                <button id="prev-section-btn"
+                        class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-gray-300 transition-colors duration-200 font-semibold text-base transform active:scale-95 ${
+                          isFirstSection ? "opacity-50 cursor-not-allowed" : ""
+                        }"
+                        ${isFirstSection ? "disabled" : ""}>
+                    <i class="fas fa-arrow-left mr-2"></i> Previous
+                </button>
+                ${
+                  isLastSection
+                    ? `<button id="submit-test-btn"
+                               class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
+                               <i class="fas fa-check-circle mr-2"></i> Submit
+                           </button>`
+                    : `<button id="next-section-btn"
+                               class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
+                               Next <i class="fas fa-arrow-right ml-2"></i>
+                           </button>`
+                }
+            `;
+          } else {
+            // For Listening, just a submit button
+            navigationButtonsHtml = `
+                <button id="submit-test-btn"
+                        class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95 mx-auto">
+                    <i class="fas fa-check-circle mr-2"></i> Submit Test
+                </button>
+            `;
+          }
 
           // Render the test questions
           let mockTestLayoutClass = "";
@@ -4040,10 +4018,10 @@
           } else if (currentModuleId === "listening") {
             mockTestLayoutClass = "listening-layout";
             audioPlayerDisplay = "flex"; // Show audio for listening
-            body.classList.add("listening-body-padding"); // Add padding for bottom bar
+            body.classList.add("listening-body-padding"); // Add padding for mobile palette
             testInfoBarDisplay = "none"; // Hide info bar for listening (sidebar handles timer)
             if (mobilePaletteWrapper)
-              mobilePaletteWrapper.style.display = "none"; // Hide old mobile palette
+              mobilePaletteWrapper.style.display = "flex"; // Show mobile palette for listening
           } else if (currentModuleId === "writing") {
             mockTestLayoutClass = "writing-layout";
             audioPlayerDisplay = "none"; // Hide audio for writing
@@ -4128,8 +4106,8 @@
                         : ""
                     }
 
-                  <!-- Passage Content Area (Only for Reading) -->
-                    <div class="passage-content-area custom-scrollbar pb-24" style="${
+                    <!-- Passage Content Area (Only for Reading) -->
+                    <div class="passage-content-area custom-scrollbar" style="${
                       currentModuleId === "reading" &&
                       (isDesktop || isPassageActive)
                         ? "display: block;"
@@ -4169,8 +4147,8 @@
                         }
                     </div>
 
-                  <!-- Main Test Content Area (Questions/Writing Tasks) -->
-                    <div class="main-test-content custom-scrollbar pb-24" style="${
+                    <!-- Main Test Content Area (Questions/Writing Tasks) -->
+                    <div class="main-test-content custom-scrollbar" style="${
                       (currentModuleId === "reading" &&
                         (isDesktop || isQuestionsActive)) ||
                       currentModuleId === "listening" ||
@@ -4189,12 +4167,15 @@
                         </div>
 
 
-                   <!-- Test Sections and Questions -->
+                        <!-- Test Sections and Questions -->
                         <div id="test-questions-container">
                             ${
                               currentModuleId === "writing"
-                                ? renderWritingTask(currentSection)
-                                : `<div class="question-section" id="section-${
+                                ? // For Writing, render only the current section (task)
+                                  renderWritingTask(currentSection)
+                                : currentModuleId === "reading"
+                                ? // For Reading, render only the current section
+                                  `<div class="question-section" id="section-${
                                     currentSection.id
                                   }">
                                     <h3 class="text-2xl font-bold text-gray-700 mb-3 font-anton">${
@@ -4211,6 +4192,30 @@
                                         ${qGroupRenderer(currentSection)}
                                     </div>
                                 </div>`
+                                : // For Listening, render all sections
+                                  currentTest.sections
+                                    .map(
+                                      (section) => `
+                                <div class="question-section" id="section-${
+                                  section.id
+                                }">
+                                    <h3 class="text-2xl font-bold text-gray-700 mb-3 font-anton">${
+                                      section.title
+                                    }</h3>
+                                    ${
+                                      section.image
+                                        ? `<div class="map-image-container">
+                                                <img src="${section.image}" alt="Test Section Image" class="rounded-lg">
+                                           </div>`
+                                        : ""
+                                    }
+                                    <div class="questions-list">
+                                        ${qGroupRenderer(section)}
+                                    </div>
+                                </div>
+                            `,
+                                    )
+                                    .join("")
                             }
                         </div>
 
@@ -4219,33 +4224,17 @@
                         </div>
                     </div>
 
-<!-- Bottom Bar: Section Tabs (for Listening & Reading) -->
+     <!-- Bottom Bar: Question Palette (for desktop) -->
                     ${
-                      currentModuleId === "listening" ||
-                      currentModuleId === "reading"
+                      currentModuleId === "listening"
                         ? `
-                    <div class="flex fixed bottom-0 left-0 w-full bg-white z-[950] shadow-[0_-4px_10px_rgba(0,0,0,0.03)] px-2 sm:px-4 py-3 items-center justify-center border-t border-gray-200 h-[70px]">
-                        <div class="flex items-center bg-white rounded-xl border border-gray-300 overflow-hidden shadow-sm text-base sm:text-lg font-medium max-w-full overflow-x-auto" id="test-section-tabs">
-                            ${currentTest.sections
-                              .map(
-                                (sec, idx) => `
-                                <button class="section-tab-btn flex-shrink-0 flex items-center justify-center w-14 sm:w-16 h-12 transition-colors ${
-                                  idx === testState.currentSectionIndex
-                                    ? "bg-[#1a1a1a] text-white"
-                                    : "bg-white text-[#005a9c] hover:bg-gray-50"
-                                } ${
-                                  idx > 0 ? "border-l border-gray-300" : ""
-                                }" data-section-index="${idx}">
-                                    ${
-                                      idx === testState.currentSectionIndex
-                                        ? '<i class="fas fa-key"></i>'
-                                        : idx + 1
-                                    }
-                                </button>
-                            `,
-                              )
-                              .join("")}
+                    <div class="hidden lg:flex fixed bottom-0 left-0 w-full bg-slate-800 text-white z-[950] shadow-[0_-10px_25px_rgba(0,0,0,0.15)] px-2 py-2 items-center justify-center border-t border-slate-700 h-[60px]">
+
+                        <!-- Single-line Question Palette (No wrap, No scroll) -->
+                        <div class="flex items-center justify-center w-full max-w-full overflow-hidden" id="question-palette-desktop">
+                            <!-- Question buttons grouped by Parts will be injected here -->
                         </div>
+
                     </div>
                     `
                         : ""
@@ -4254,15 +4243,17 @@
             `;
         }
 
-        // --- START: Highlight & Note Interaction Logic (Global for Test Area) ---
-        const testLayoutArea = appDiv.querySelector(".mock-test-layout");
-        if (testLayoutArea) {
-          // Listen for text selection anywhere in the layout (passage AND questions)
-          testLayoutArea.addEventListener("mouseup", handlePassageMouseUp);
-          testLayoutArea.addEventListener("touchend", handlePassageMouseUp); // For mobile
+        // --- START: Passage Interaction Logic ---
+        const passageArea = appDiv.querySelector(
+          ".passage-content-area .prose",
+        );
+        if (passageArea) {
+          // Listen for text selection
+          passageArea.addEventListener("mouseup", handlePassageMouseUp);
+          passageArea.addEventListener("touchend", handlePassageMouseUp); // For mobile
 
-          // Listen for clicks on notes & highlights
-          testLayoutArea.addEventListener("click", (event) => {
+          // Listen for clicks on notes (event delegation)
+          passageArea.addEventListener("click", (event) => {
             if (
               event.target.classList.contains("note-text") &&
               event.target.id
@@ -4271,19 +4262,10 @@
               if (noteText) {
                 showNote(noteText);
               }
-            } else if (event.target.classList.contains("highlighted-text")) {
-              // Feature: Click a highlight to easily select it so you can click "Clear"
-              const selection = window.getSelection();
-              const range = document.createRange();
-              range.selectNodeContents(event.target);
-              selection.removeAllRanges();
-              selection.addRange(range);
-              highlightState.currentSelection = range;
-              showSelectionPopover(range);
             }
           });
         }
-        // --- END: Highlight & Note Interaction Logic ---
+        // --- END: Passage Interaction Logic ---
 
         // --- START: Resize Logic ---
         if (currentModuleId === "reading" && isDesktop) {
@@ -5199,8 +5181,7 @@
           !testState.testCompleted &&
           !testState.accessDenied &&
           !testState.isCheckingAuth &&
-          !testState.isLoadingResults &&
-          !testState.alreadyCompleted;
+          !testState.isLoadingResults;
         if (isTakingTest) {
           const testQuestionsContainer = document.getElementById(
             "test-questions-container",
@@ -5389,6 +5370,37 @@
               })
               .join("");
 
+            // 2. Generate Desktop Palette (Single Line, Fluid Scaling, No Wrap, No Scroll)
+            let desktopPaletteHtml = "";
+            let currentPart = 0;
+
+            questionPaletteItems.forEach((item) => {
+              const partNumber = Math.floor((item.paletteNumber - 1) / 10) + 1;
+
+              // If we are starting a new part, insert the "Part X" wrapper
+              if (partNumber !== currentPart) {
+                if (currentPart !== 0) desktopPaletteHtml += `</div>`; // Close previous group wrapper
+                desktopPaletteHtml += `<div class="flex items-center gap-[2px] xl:gap-1 mr-1 lg:mr-3 xl:mr-5 min-w-0">
+                      <div class="font-bold text-slate-400 text-[9px] xl:text-[11px] uppercase tracking-wider mr-0.5 xl:mr-1 whitespace-nowrap">Part ${partNumber}</div>`;
+                currentPart = partNumber;
+              }
+
+              // Using dynamic min() rules to make sure buttons auto-squish strictly without breaking bounds on smaller computer screens
+              desktopPaletteHtml += `<button class="question-palette-btn unanswered rounded font-bold transition-all hover:-translate-y-0.5 flex-shrink" style="width: min(2vw, 32px); height: min(2vw, 32px); min-width: 18px; min-height: 18px; font-size: min(1.2vw, 13px); display:flex; justify-content:center; align-items:center; padding: 0;" data-palette-number="${item.paletteNumber}">${item.paletteNumber}</button>`;
+            });
+            if (currentPart !== 0) desktopPaletteHtml += `</div>`;
+
+            if (questionPaletteDesktop) {
+              questionPaletteDesktop.innerHTML = desktopPaletteHtml;
+              questionPaletteDesktop.addEventListener("click", (event) => {
+                if (event.target.classList.contains("question-palette-btn")) {
+                  const paletteNum = parseInt(
+                    event.target.dataset.paletteNumber,
+                  );
+                  scrollToQuestion(paletteNum);
+                }
+              });
+            }
             if (questionPaletteMobile) {
               questionPaletteMobile.innerHTML = mobilePaletteHtml;
               questionPaletteMobile.addEventListener("click", (event) => {
@@ -5449,44 +5461,21 @@
             if (totalQuestions > 0) {
               scrollToQuestion(testState.currentQuestionIndex + 1); // Scroll to current question
             }
-          }
+          } else if (
+            currentModuleId === "reading" ||
+            currentModuleId === "writing"
+          ) {
+            // Navigation buttons for reading/writing
+            const prevSectionBtn = document.getElementById("prev-section-btn");
+            const nextSectionBtn = document.getElementById("next-section-btn");
 
-          // Attach listener to new Section Tabs (Listening & Reading)
-          const sectionTabsContainer = document.getElementById(
-            "test-section-tabs",
-          );
-          if (sectionTabsContainer) {
-            sectionTabsContainer.addEventListener("click", (event) => {
-              const btn = event.target.closest(".section-tab-btn");
-              if (btn) {
-                const targetIndex = parseInt(btn.dataset.sectionIndex);
-                if (targetIndex !== testState.currentSectionIndex) {
-                  testState.currentSectionIndex = targetIndex;
-                  saveDraftState();
-                  renderApp();
-                  document.querySelector(".main-test-content").scrollTop = 0;
-                  if (currentModuleId === "reading") {
-                    document.querySelector(
-                      ".passage-content-area",
-                    ).scrollTop = 0;
-                  }
-                }
-              }
-            });
-          }
+            if (prevSectionBtn) {
+              prevSectionBtn.onclick = goToPreviousSection;
+            }
+            if (nextSectionBtn) {
+              nextSectionBtn.onclick = goToNextSection;
+            }
 
-          // Navigation buttons logic for ALL modules
-          const prevSectionBtn = document.getElementById("prev-section-btn");
-          const nextSectionBtn = document.getElementById("next-section-btn");
-
-          if (prevSectionBtn) {
-            prevSectionBtn.onclick = goToPreviousSection;
-          }
-          if (nextSectionBtn) {
-            nextSectionBtn.onclick = goToNextSection;
-          }
-
-          if (currentModuleId === "reading" || currentModuleId === "writing") {
             // Mobile reading tabs event listeners (only for reading)
             if (currentModuleId === "reading") {
               const passageTabBtn = document.getElementById("passage-tab-btn");
@@ -5648,9 +5637,8 @@
         const popover = document.createElement("div");
         popover.id = "selection-popover";
         popover.innerHTML = `
-            <button id="highlight-btn" title="Highlight selection" class="flex items-center gap-1"><i class="fas fa-highlighter"></i> Highlight</button>
-            <button id="add-note-btn" title="Add note to selection" class="flex items-center gap-1"><i class="fas fa-sticky-note"></i> Note</button>
-            <button id="clear-highlight-btn" title="Clear selection highlight" class="flex items-center gap-1 text-red-400 hover:text-red-300"><i class="fas fa-eraser"></i> Clear</button>
+            <button id="highlight-btn" title="Highlight selection">Highlight</button>
+            <button id="add-note-btn" title="Add note to selection">Add Note</button>
         `;
         document.body.appendChild(popover);
 
@@ -5691,36 +5679,6 @@
         document
           .getElementById("note-modal-container")
           .addEventListener("click", hideNoteModal); // Close on overlay click
-
-        // Add event listener for Clear Highlight
-        document
-          .getElementById("clear-highlight-btn")
-          .addEventListener("click", () => {
-            if (highlightState.currentSelection) {
-              const range = highlightState.currentSelection;
-              const spans = document.querySelectorAll(
-                ".highlighted-text, .note-text",
-              );
-              spans.forEach((span) => {
-                // Check if the selected text overlaps with any highlighted spans
-                if (range.intersectsNode(span)) {
-                  const parent = span.parentNode;
-                  while (span.firstChild) {
-                    parent.insertBefore(span.firstChild, span);
-                  }
-                  parent.removeChild(span);
-                  // Delete note data if it was a note
-                  if (highlightState.notes[span.id]) {
-                    delete highlightState.notes[span.id];
-                  }
-                }
-              });
-              window.getSelection().removeAllRanges();
-              hideSelectionPopover();
-              updateCurrentPassageState(); // Save state
-              saveDraftState();
-            }
-          });
         // --- END: Dynamic creation of highlighter UI elements ---
 
         // Initialize Firebase Auth and listen for state changes
@@ -5753,12 +5711,11 @@
                 const testIndex = moduleTests.findIndex(
                   (t) => t.id === currentTestId,
                 );
-                // Premium logic starting from index 1 (Only the first test is free)
+                // Based on mock-test-category.html, reading & listening have premium logic starting from index 5
                 testState.isPremiumTest =
                   (currentModuleId === "reading" ||
-                    currentModuleId === "listening" ||
-                    currentModuleId === "writing") &&
-                  testIndex >= 1;
+                    currentModuleId === "listening") &&
+                  testIndex >= 5;
 
                 const scoreParam = urlParams.get("score");
                 const totalParam = urlParams.get("total");
@@ -5852,27 +5809,6 @@
                       }
                     } else {
                       testState.isUserPremium = false; // Explicitly handle logged out
-                    }
-
-                    // --- NEW: Enforce "Already Completed" Block for URL Bypass ---
-                    if (user) {
-                      try {
-                        const existingResult = await fetchUserMockTestResult(
-                          user.uid,
-                          currentTestId,
-                        );
-                        if (existingResult) {
-                          testState.alreadyCompleted = true;
-                        }
-                      } catch (e) {
-                        console.error("Error checking past results:", e);
-                      }
-                    }
-
-                    if (testState.alreadyCompleted) {
-                      testState.isCheckingAuth = false;
-                      renderApp(); // Render the completed block screen
-                      return; // STOP execution here
                     }
 
                     // Enforce Premium Access

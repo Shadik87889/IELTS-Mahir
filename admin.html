@@ -240,8 +240,7 @@
         <i class="fas fa-user-shield text-lg mr-4"></i>
         User Management
       </a>
-    </li>
-    <li>
+ <li>
       <a
         href="#"
         class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
@@ -249,6 +248,16 @@
       >
         <i class="fas fa-crown text-lg mr-4"></i>
         Premium Access
+      </a>
+    </li>
+    <li>
+      <a
+        href="#"
+        class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+        data-page="writing-submissions"
+      >
+        <i class="fas fa-pen-nib text-lg mr-4"></i>
+        Writing Submissions
       </a>
     </li>
   </ul>
@@ -457,10 +466,15 @@
         searchTerm: "",
       };
 
-      // New state variables for Speaking Session Requests
+   // New state variables for Speaking Session Requests
       let speakingRequestCurrentPage = 1;
       const speakingRequestItemsPerPage = 5;
       let speakingRequestCurrentFilters = { status: "all", searchTerm: "" };
+
+      // State variables for Writing Submissions
+      let writingSubmissionsCurrentPage = 1;
+      const writingSubmissionsItemsPerPage = 10;
+      let writingSubmissionsCurrentFilters = { status: "all", searchTerm: "" };
 
       const FORUM_CATEGORIES_DATA = [
         {
@@ -3989,13 +4003,255 @@
                     </tbody>
                 </table>
             </div>
-            <div id="premium-users-pagination" class="mt-6 flex justify-center"></div>
+          <div id="premium-users-pagination" class="mt-6 flex justify-center"></div>
+        </div>
+      `;
+
+      const WRITING_SUBMISSIONS_HTML = `
+        ${generatePageHeader("Writing Submissions")}
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <p class="text-gray-700 mb-6">Review student writing mock tests, assign band scores, and provide feedback.</p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between mb-4 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <div class="w-full sm:w-1/3">
+                    <label class="block text-gray-700 text-xs font-semibold mb-1">Filter by Status</label>
+                    <select id="writing-filter-status" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 text-sm">
+                        <option value="all">All Statuses</option>
+                        <option value="pending">Pending Review</option>
+                        <option value="reviewed">Reviewed</option>
+                    </select>
+                </div>
+                <div class="w-full sm:w-2/3">
+                    <label class="block text-gray-700 text-xs font-semibold mb-1">Search</label>
+                    <input type="text" id="writing-filter-search" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 text-sm" placeholder="Search by name, email, or test title...">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Title</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status & Score</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="writing-submissions-list" class="bg-white divide-y divide-gray-200">
+                        <!-- Dynamic Content -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="writing-pagination" class="mt-6 flex justify-center"></div>
         </div>
       `;
 
       let premiumUsersCurrentPage = 1;
       const premiumUsersItemsPerPage = 10;
-      let premiumUsersCurrentFilters = { searchTerm: "" };
+     let premiumUsersCurrentFilters = { searchTerm: "" };
+
+      // --- WRITING SUBMISSIONS LOGIC ---
+      window.openGradeWritingModal = async (submissionId) => {
+          if (!isAuthReady) return showMessage("Firebase not ready.");
+          try {
+              const docSnap = await getDoc(doc(db, "artifacts", appId, "public", "data", "writingSubmissions", submissionId));
+              if (!docSnap.exists()) return showMessage("Submission not found.");
+              const sub = docSnap.data();
+
+              const modalHtml = `
+              <div id="grade-writing-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[1050] p-4">
+                  <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+                      <div class="p-6 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                          <h3 class="text-2xl font-bold text-gray-800">Grade: ${sub.testTitle}</h3>
+                          <button onclick="document.getElementById('grade-writing-modal').remove()" class="text-gray-500 hover:text-red-500 text-2xl leading-none">&times;</button>
+                      </div>
+                      <div class="p-6 overflow-y-auto flex-1 bg-gray-100">
+                          <div class="mb-4 text-sm text-gray-600">
+                              <strong>Student:</strong> ${sub.userName} (${sub.userEmail})<br>
+                              <strong>Time Taken:</strong> ${Math.floor(sub.timeTakenSeconds / 60)}m ${sub.timeTakenSeconds % 60}s
+                          </div>
+                          
+                          <div class="mb-6 bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+                              <h4 class="font-bold text-lg text-blue-800 mb-2">Task 1 (Word Count: <span class="${sub.task1WordCount >= 150 ? 'text-green-600' : 'text-red-600'}">${sub.task1WordCount}</span>)</h4>
+                              <div class="whitespace-pre-wrap text-gray-700 text-sm font-serif p-4 bg-gray-50 rounded border border-gray-100 min-h-[100px]">${sub.task1Response || '<em>No response</em>'}</div>
+                          </div>
+
+                          <div class="mb-6 bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+                              <h4 class="font-bold text-lg text-purple-800 mb-2">Task 2 (Word Count: <span class="${sub.task2WordCount >= 250 ? 'text-green-600' : 'text-red-600'}">${sub.task2WordCount}</span>)</h4>
+                              <div class="whitespace-pre-wrap text-gray-700 text-sm font-serif p-4 bg-gray-50 rounded border border-gray-100 min-h-[150px]">${sub.task2Response || '<em>No response</em>'}</div>
+                          </div>
+
+                          <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+                              <h4 class="font-bold text-lg text-gray-800 mb-3">Your Evaluation</h4>
+                              <div class="mb-4">
+                                  <label class="block text-sm font-semibold text-gray-700 mb-1">Overall Band Score</label>
+                                  <input type="number" id="eval-band-score" step="0.5" min="0" max="9" class="w-32 px-3 py-2 border border-gray-300 rounded focus:ring-red-500 focus:border-red-500" value="${sub.bandScore || ''}" placeholder="e.g., 7.5">
+                              </div>
+                              <div>
+                                  <label class="block text-sm font-semibold text-gray-700 mb-1">Detailed Feedback</label>
+                                  <textarea id="eval-feedback" rows="6" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-red-500 focus:border-red-500" placeholder="Provide feedback on Task Achievement, Coherence, Lexical Resource, and Grammar...">${sub.feedback || ''}</textarea>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="p-4 border-t border-gray-200 bg-white flex justify-end gap-3">
+                          <button onclick="document.getElementById('grade-writing-modal').remove()" class="px-5 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
+                          <button onclick="submitWritingGrade('${submissionId}')" class="px-5 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors shadow-md">Save & Publish Score</button>
+                      </div>
+                  </div>
+              </div>
+              `;
+              document.body.insertAdjacentHTML("beforeend", modalHtml);
+          } catch (error) {
+              console.error("Error fetching submission:", error);
+              showMessage("Failed to load submission data.");
+          }
+      };
+
+      window.submitWritingGrade = async (submissionId) => {
+          const bandScore = document.getElementById("eval-band-score").value;
+          const feedback = document.getElementById("eval-feedback").value;
+          
+          if (!bandScore) return showMessage("Please enter a Band Score.");
+
+          try {
+              // Update public submission
+              await updateDoc(doc(db, "artifacts", appId, "public", "data", "writingSubmissions", submissionId), {
+                  bandScore: parseFloat(bandScore),
+                  feedback: feedback,
+                  status: "reviewed",
+                  reviewedAt: serverTimestamp()
+              });
+
+              // NOTE: If you also want to update the student's private copy, you would need the userId to construct the path:
+              // \`artifacts/\${appId}/users/\${userId}/writingSubmissions/\${submissionId}\`
+              // To keep it simple, the student dashboard can just query the public folder or we assume the IDs match.
+              
+              document.getElementById('grade-writing-modal').remove();
+              showMessage("Score and feedback published successfully!");
+          } catch (error) {
+              console.error("Error saving grade:", error);
+              showMessage(`Failed to save grade: ${error.message}`);
+          }
+      };
+
+      window.deleteWritingSubmission = async (submissionId) => {
+          if (!isAuthReady) return showMessage("Firebase not ready.");
+          const messageBox = document.getElementById("message-box");
+          const messageContent = document.getElementById("message-content");
+          const closeMessageBoxBtn = document.getElementById("close-message-box");
+
+          messageContent.textContent = "Are you sure you want to delete this writing submission?";
+          messageBox.classList.remove("hidden");
+
+          const confirmBtn = document.createElement("button");
+          confirmBtn.textContent = "Confirm Delete";
+          confirmBtn.className = "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 ml-2";
+          confirmBtn.id = "confirm-delete-btn";
+          messageBox.querySelector(".text-center").appendChild(confirmBtn);
+
+          confirmBtn.addEventListener("click", async () => {
+              try {
+                  await deleteDoc(doc(db, "artifacts", appId, "public", "data", "writingSubmissions", submissionId));
+                  showMessage("Submission deleted successfully.");
+              } catch (error) {
+                  console.error("Error deleting:", error);
+                  showMessage(`Failed to delete: ${error.message}`);
+              } finally {
+                  confirmBtn.remove();
+                  messageBox.classList.add("hidden");
+              }
+          });
+
+          const originalClose = closeMessageBoxBtn.onclick;
+          closeMessageBoxBtn.onclick = () => {
+              confirmBtn.remove();
+              messageBox.classList.add("hidden");
+              if (originalClose) originalClose();
+              closeMessageBoxBtn.onclick = originalClose;
+          };
+      };
+
+      const renderWritingSubmissions = (filters, currentPage, itemsPerPage) => {
+          if (!isAuthReady) return;
+          const container = document.getElementById("writing-submissions-list");
+          const paginationContainer = document.getElementById("writing-pagination");
+          if (!container || !paginationContainer) return;
+
+          onSnapshot(collection(db, "artifacts", appId, "public", "data", "writingSubmissions"), (snapshot) => {
+              container.innerHTML = "";
+              let allSubs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+              let filteredSubs = allSubs.filter(s =>
+                  (filters.status === "all" || s.status === filters.status) &&
+                  (filters.searchTerm === "" ||
+                      (s.userName && s.userName.toLowerCase().includes(filters.searchTerm.toLowerCase())) ||
+                      (s.userEmail && s.userEmail.toLowerCase().includes(filters.searchTerm.toLowerCase())) ||
+                      (s.testTitle && s.testTitle.toLowerCase().includes(filters.searchTerm.toLowerCase())))
+              );
+
+              // Sort by newest first
+              filteredSubs.sort((a, b) => (b.submittedAt?.toDate() || new Date(0)).getTime() - (a.submittedAt?.toDate() || new Date(0)).getTime());
+
+              const totalPages = Math.ceil(filteredSubs.length / itemsPerPage);
+              const paginatedSubs = filteredSubs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+              if (paginatedSubs.length === 0) {
+                  container.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">No writing submissions found.</td></tr>';
+              } else {
+                  paginatedSubs.forEach(sub => {
+                      const date = sub.submittedAt ? sub.submittedAt.toDate().toLocaleString() : "Just now";
+                      
+                      let statusBadge = sub.status === "reviewed" 
+                          ? `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Reviewed (Band ${sub.bandScore})</span>`
+                          : `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending Review</span>`;
+
+                      const tr = document.createElement("tr");
+                      tr.className = "hover:bg-gray-50";
+                      tr.innerHTML = `
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${date}</td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="text-sm font-medium text-gray-900">${sub.userName}</div>
+                              <div class="text-sm text-gray-500">${sub.userEmail}</div>
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${sub.testTitle}</td>
+                          <td class="px-6 py-4 whitespace-nowrap">${statusBadge}</td>
+                          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                              <button onclick="openGradeWritingModal('${sub.id}')" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors mr-2">
+                                  <i class="fas fa-edit mr-1"></i> Grade/View
+                              </button>
+                              <button onclick="deleteWritingSubmission('${sub.id}')" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">
+                                  <i class="fas fa-trash-alt"></i>
+                              </button>
+                          </td>
+                      `;
+                      container.appendChild(tr);
+                  });
+              }
+
+              // Pagination Logic
+              paginationContainer.innerHTML = "";
+              if (totalPages > 1) {
+                  const nav = document.createElement("nav");
+                  nav.className = "flex justify-center items-center space-x-2";
+                  const createBtn = (text, page, disabled, onClick) => {
+                      const btn = document.createElement("button");
+                      btn.textContent = text;
+                      btn.className = `px-3 py-1 rounded-lg text-sm transition-colors duration-200 ${disabled ? "bg-gray-200 text-gray-500 cursor-not-allowed" : page === currentPage ? "bg-red-600 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`;
+                      btn.disabled = disabled;
+                      btn.addEventListener("click", onClick);
+                      return btn;
+                  };
+                  nav.appendChild(createBtn("Previous", currentPage - 1, currentPage === 1, () => { writingSubmissionsCurrentPage--; renderWritingSubmissions(filters, writingSubmissionsCurrentPage, itemsPerPage); }));
+                  for (let i = 1; i <= totalPages; i++) {
+                      nav.appendChild(createBtn(i, i, false, () => { writingSubmissionsCurrentPage = i; renderWritingSubmissions(filters, writingSubmissionsCurrentPage, itemsPerPage); }));
+                  }
+                  nav.appendChild(createBtn("Next", currentPage + 1, currentPage === totalPages, () => { writingSubmissionsCurrentPage++; renderWritingSubmissions(filters, writingSubmissionsCurrentPage, itemsPerPage); }));
+                  paginationContainer.appendChild(nav);
+              }
+          });
+      };
+      // --- END WRITING SUBMISSIONS LOGIC ---
 
       window.grantPremiumAccess = async (e) => {
           e.preventDefault();
@@ -4204,8 +4460,11 @@
           case "user-management": // New case for user management
             contentHtml = USER_MANAGEMENT_HTML;
             break;
-          case "premium-access":
+         case "premium-access":
             contentHtml = PREMIUM_ACCESS_HTML;
+            break;
+          case "writing-submissions":
+            contentHtml = WRITING_SUBMISSIONS_HTML;
             break;
         }
         contentArea.innerHTML = contentHtml;
@@ -4644,7 +4903,7 @@
               };
             }
           }
-          if (pageName === "premium-access") {
+  if (pageName === "premium-access") {
             const form = document.getElementById("grant-premium-form");
             if (form) form.addEventListener("submit", window.grantPremiumAccess);
 
@@ -4657,6 +4916,19 @@
                 });
             }
             renderPremiumUsers(premiumUsersCurrentFilters, premiumUsersCurrentPage, premiumUsersItemsPerPage);
+          }
+          if (pageName === "writing-submissions") {
+            document.getElementById("writing-filter-status").addEventListener("change", (e) => {
+                writingSubmissionsCurrentFilters.status = e.target.value;
+                writingSubmissionsCurrentPage = 1;
+                renderWritingSubmissions(writingSubmissionsCurrentFilters, writingSubmissionsCurrentPage, writingSubmissionsItemsPerPage);
+            });
+            document.getElementById("writing-filter-search").addEventListener("input", (e) => {
+                writingSubmissionsCurrentFilters.searchTerm = e.target.value;
+                writingSubmissionsCurrentPage = 1;
+                renderWritingSubmissions(writingSubmissionsCurrentFilters, writingSubmissionsCurrentPage, writingSubmissionsItemsPerPage);
+            });
+            renderWritingSubmissions(writingSubmissionsCurrentFilters, writingSubmissionsCurrentPage, writingSubmissionsItemsPerPage);
           }
         }, 0);
       };

@@ -1451,7 +1451,6 @@
         isCheckingAuth: true, // Added to show loading while checking premium
         accessDenied: false, // Added to show locked screen
         isUserPremium: false, // Added to store user's premium status
-        alreadyCompleted: false, // Added to prevent URL bypass retakes
       };
 
       // New: State for passage highlighting and notes
@@ -1887,41 +1886,32 @@
       }
 
       /**
-       * Handles the mouseup event to detect text selection anywhere in the test layout.
+       * Handles the mouseup event on the passage to detect text selection.
        * @param {MouseEvent} event - The mouseup event object.
        */
       function handlePassageMouseUp(event) {
         const popover = document.getElementById("selection-popover");
-        if (!popover) return;
-        const target = event.target;
+        if (!popover) return; // Guard clause to prevent error if popover is missing
 
-        // Prevent popover when interacting with inputs, selects, or buttons
-        if (
-          ["INPUT", "TEXTAREA", "SELECT", "BUTTON", "OPTION"].includes(
-            target.tagName,
-          ) ||
-          popover.contains(target)
-        ) {
-          return;
-        }
+        const passageArea = event.currentTarget; // Capture currentTarget outside the timeout
+        const target = event.target; // Capture target as well for safety
 
+        // Debounce hiding to allow popover button clicks
         setTimeout(() => {
           const selection = window.getSelection();
 
-          if (selection.rangeCount > 0 && !selection.isCollapsed) {
-            const layoutContainer = document.querySelector(".mock-test-layout");
-            // Ensure the selection is within the test area (works for passage AND questions in any module)
-            if (
-              layoutContainer &&
-              layoutContainer.contains(selection.anchorNode)
-            ) {
-              highlightState.currentSelection = selection
-                .getRangeAt(0)
-                .cloneRange();
-              showSelectionPopover(highlightState.currentSelection);
-            }
+          if (
+            selection.rangeCount > 0 &&
+            !selection.isCollapsed &&
+            passageArea &&
+            passageArea.contains(selection.anchorNode)
+          ) {
+            highlightState.currentSelection = selection
+              .getRangeAt(0)
+              .cloneRange();
+            showSelectionPopover(highlightState.currentSelection);
           } else {
-            // Hide if clicked outside the popover and no text is selected
+            // If the click was not on the popover, hide it.
             if (!popover.contains(target)) {
               hideSelectionPopover();
             }
@@ -3942,27 +3932,6 @@
           if (testInfoBar) testInfoBar.style.display = "none"; // Hide info bar on results page
           if (mobilePaletteWrapper) mobilePaletteWrapper.style.display = "none"; // Hide mobile palette
           body.classList.remove("listening-body-padding");
-        } else if (testState.alreadyCompleted) {
-          appDiv.innerHTML = `
-            <div class="flex flex-col justify-center items-center h-full min-h-[60vh] px-4 w-full animate-fade-in-up">
-                <div class="bg-white p-8 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-slate-100 max-w-lg w-full text-center transform transition-all hover:scale-[1.01]">
-                    <div class="w-24 h-24 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-inner">
-                        <i class="fas fa-clipboard-check"></i>
-                    </div>
-                    <h2 class="text-3xl sm:text-4xl font-anton text-slate-800 uppercase tracking-wide mb-4">Test Completed</h2>
-                    <p class="text-slate-600 mb-8 font-inter text-lg leading-relaxed">
-                        You have already successfully completed this mock test. To maintain authentic scoring and assessments, tests cannot be retaken.
-                    </p>
-                    <a href="mock-test-home" class="inline-block px-8 py-3.5 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-all font-inter active:scale-95">
-                        <i class="fas fa-arrow-left mr-2"></i> Go Back to Tests
-                    </a>
-                </div>
-            </div>
-          `;
-          audioPlayerWrapper.style.display = "none";
-          if (testInfoBar) testInfoBar.style.display = "none";
-          if (mobilePaletteWrapper) mobilePaletteWrapper.style.display = "none";
-          body.classList.remove("listening-body-padding");
         } else if (testState.accessDenied) {
           appDiv.innerHTML = `
             <div class="flex flex-col justify-center items-center h-full min-h-[60vh] px-4 w-full">
@@ -4128,8 +4097,8 @@
                         : ""
                     }
 
-                  <!-- Passage Content Area (Only for Reading) -->
-                    <div class="passage-content-area custom-scrollbar pb-24" style="${
+                    <!-- Passage Content Area (Only for Reading) -->
+                    <div class="passage-content-area custom-scrollbar" style="${
                       currentModuleId === "reading" &&
                       (isDesktop || isPassageActive)
                         ? "display: block;"
@@ -4169,8 +4138,8 @@
                         }
                     </div>
 
-                  <!-- Main Test Content Area (Questions/Writing Tasks) -->
-                    <div class="main-test-content custom-scrollbar pb-24" style="${
+                    <!-- Main Test Content Area (Questions/Writing Tasks) -->
+                    <div class="main-test-content custom-scrollbar" style="${
                       (currentModuleId === "reading" &&
                         (isDesktop || isQuestionsActive)) ||
                       currentModuleId === "listening" ||
@@ -4219,13 +4188,12 @@
                         </div>
                     </div>
 
-<!-- Bottom Bar: Section Tabs (for Listening & Reading) -->
+<!-- Bottom Bar: Section Tabs (for Listening) -->
                     ${
-                      currentModuleId === "listening" ||
-                      currentModuleId === "reading"
+                      currentModuleId === "listening"
                         ? `
                     <div class="flex fixed bottom-0 left-0 w-full bg-white z-[950] shadow-[0_-4px_10px_rgba(0,0,0,0.03)] px-2 sm:px-4 py-3 items-center justify-center border-t border-gray-200 h-[70px]">
-                        <div class="flex items-center bg-white rounded-xl border border-gray-300 overflow-hidden shadow-sm text-base sm:text-lg font-medium max-w-full overflow-x-auto" id="test-section-tabs">
+                        <div class="flex items-center bg-white rounded-xl border border-gray-300 overflow-hidden shadow-sm text-base sm:text-lg font-medium max-w-full overflow-x-auto" id="listening-section-tabs">
                             ${currentTest.sections
                               .map(
                                 (sec, idx) => `
@@ -4254,15 +4222,17 @@
             `;
         }
 
-        // --- START: Highlight & Note Interaction Logic (Global for Test Area) ---
-        const testLayoutArea = appDiv.querySelector(".mock-test-layout");
-        if (testLayoutArea) {
-          // Listen for text selection anywhere in the layout (passage AND questions)
-          testLayoutArea.addEventListener("mouseup", handlePassageMouseUp);
-          testLayoutArea.addEventListener("touchend", handlePassageMouseUp); // For mobile
+        // --- START: Passage Interaction Logic ---
+        const passageArea = appDiv.querySelector(
+          ".passage-content-area .prose",
+        );
+        if (passageArea) {
+          // Listen for text selection
+          passageArea.addEventListener("mouseup", handlePassageMouseUp);
+          passageArea.addEventListener("touchend", handlePassageMouseUp); // For mobile
 
-          // Listen for clicks on notes & highlights
-          testLayoutArea.addEventListener("click", (event) => {
+          // Listen for clicks on notes (event delegation)
+          passageArea.addEventListener("click", (event) => {
             if (
               event.target.classList.contains("note-text") &&
               event.target.id
@@ -4271,19 +4241,10 @@
               if (noteText) {
                 showNote(noteText);
               }
-            } else if (event.target.classList.contains("highlighted-text")) {
-              // Feature: Click a highlight to easily select it so you can click "Clear"
-              const selection = window.getSelection();
-              const range = document.createRange();
-              range.selectNodeContents(event.target);
-              selection.removeAllRanges();
-              selection.addRange(range);
-              highlightState.currentSelection = range;
-              showSelectionPopover(range);
             }
           });
         }
-        // --- END: Highlight & Note Interaction Logic ---
+        // --- END: Passage Interaction Logic ---
 
         // --- START: Resize Logic ---
         if (currentModuleId === "reading" && isDesktop) {
@@ -5199,8 +5160,7 @@
           !testState.testCompleted &&
           !testState.accessDenied &&
           !testState.isCheckingAuth &&
-          !testState.isLoadingResults &&
-          !testState.alreadyCompleted;
+          !testState.isLoadingResults;
         if (isTakingTest) {
           const testQuestionsContainer = document.getElementById(
             "test-questions-container",
@@ -5389,6 +5349,24 @@
               })
               .join("");
 
+            // Attach listener to new Listening section tabs
+            const sectionTabsContainer = document.getElementById(
+              "listening-section-tabs",
+            );
+            if (sectionTabsContainer) {
+              sectionTabsContainer.addEventListener("click", (event) => {
+                const btn = event.target.closest(".section-tab-btn");
+                if (btn) {
+                  const targetIndex = parseInt(btn.dataset.sectionIndex);
+                  if (targetIndex !== testState.currentSectionIndex) {
+                    testState.currentSectionIndex = targetIndex;
+                    saveDraftState();
+                    renderApp();
+                    document.querySelector(".main-test-content").scrollTop = 0;
+                  }
+                }
+              });
+            }
             if (questionPaletteMobile) {
               questionPaletteMobile.innerHTML = mobilePaletteHtml;
               questionPaletteMobile.addEventListener("click", (event) => {
@@ -5449,30 +5427,6 @@
             if (totalQuestions > 0) {
               scrollToQuestion(testState.currentQuestionIndex + 1); // Scroll to current question
             }
-          }
-
-          // Attach listener to new Section Tabs (Listening & Reading)
-          const sectionTabsContainer = document.getElementById(
-            "test-section-tabs",
-          );
-          if (sectionTabsContainer) {
-            sectionTabsContainer.addEventListener("click", (event) => {
-              const btn = event.target.closest(".section-tab-btn");
-              if (btn) {
-                const targetIndex = parseInt(btn.dataset.sectionIndex);
-                if (targetIndex !== testState.currentSectionIndex) {
-                  testState.currentSectionIndex = targetIndex;
-                  saveDraftState();
-                  renderApp();
-                  document.querySelector(".main-test-content").scrollTop = 0;
-                  if (currentModuleId === "reading") {
-                    document.querySelector(
-                      ".passage-content-area",
-                    ).scrollTop = 0;
-                  }
-                }
-              }
-            });
           }
 
           // Navigation buttons logic for ALL modules
@@ -5648,9 +5602,8 @@
         const popover = document.createElement("div");
         popover.id = "selection-popover";
         popover.innerHTML = `
-            <button id="highlight-btn" title="Highlight selection" class="flex items-center gap-1"><i class="fas fa-highlighter"></i> Highlight</button>
-            <button id="add-note-btn" title="Add note to selection" class="flex items-center gap-1"><i class="fas fa-sticky-note"></i> Note</button>
-            <button id="clear-highlight-btn" title="Clear selection highlight" class="flex items-center gap-1 text-red-400 hover:text-red-300"><i class="fas fa-eraser"></i> Clear</button>
+            <button id="highlight-btn" title="Highlight selection">Highlight</button>
+            <button id="add-note-btn" title="Add note to selection">Add Note</button>
         `;
         document.body.appendChild(popover);
 
@@ -5691,36 +5644,6 @@
         document
           .getElementById("note-modal-container")
           .addEventListener("click", hideNoteModal); // Close on overlay click
-
-        // Add event listener for Clear Highlight
-        document
-          .getElementById("clear-highlight-btn")
-          .addEventListener("click", () => {
-            if (highlightState.currentSelection) {
-              const range = highlightState.currentSelection;
-              const spans = document.querySelectorAll(
-                ".highlighted-text, .note-text",
-              );
-              spans.forEach((span) => {
-                // Check if the selected text overlaps with any highlighted spans
-                if (range.intersectsNode(span)) {
-                  const parent = span.parentNode;
-                  while (span.firstChild) {
-                    parent.insertBefore(span.firstChild, span);
-                  }
-                  parent.removeChild(span);
-                  // Delete note data if it was a note
-                  if (highlightState.notes[span.id]) {
-                    delete highlightState.notes[span.id];
-                  }
-                }
-              });
-              window.getSelection().removeAllRanges();
-              hideSelectionPopover();
-              updateCurrentPassageState(); // Save state
-              saveDraftState();
-            }
-          });
         // --- END: Dynamic creation of highlighter UI elements ---
 
         // Initialize Firebase Auth and listen for state changes
@@ -5753,12 +5676,11 @@
                 const testIndex = moduleTests.findIndex(
                   (t) => t.id === currentTestId,
                 );
-                // Premium logic starting from index 1 (Only the first test is free)
+                // Based on mock-test-category.html, reading & listening have premium logic starting from index 5
                 testState.isPremiumTest =
                   (currentModuleId === "reading" ||
-                    currentModuleId === "listening" ||
-                    currentModuleId === "writing") &&
-                  testIndex >= 1;
+                    currentModuleId === "listening") &&
+                  testIndex >= 5;
 
                 const scoreParam = urlParams.get("score");
                 const totalParam = urlParams.get("total");
@@ -5852,27 +5774,6 @@
                       }
                     } else {
                       testState.isUserPremium = false; // Explicitly handle logged out
-                    }
-
-                    // --- NEW: Enforce "Already Completed" Block for URL Bypass ---
-                    if (user) {
-                      try {
-                        const existingResult = await fetchUserMockTestResult(
-                          user.uid,
-                          currentTestId,
-                        );
-                        if (existingResult) {
-                          testState.alreadyCompleted = true;
-                        }
-                      } catch (e) {
-                        console.error("Error checking past results:", e);
-                      }
-                    }
-
-                    if (testState.alreadyCompleted) {
-                      testState.isCheckingAuth = false;
-                      renderApp(); // Render the completed block screen
-                      return; // STOP execution here
                     }
 
                     // Enforce Premium Access

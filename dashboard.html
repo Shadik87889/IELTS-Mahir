@@ -1034,6 +1034,9 @@
         userProfile: null, // User profile from Firestore
         quizResults: [],
         mockTestResults: [],
+        readingResults: [], // Separated reading mock tests
+        listeningResults: [], // Separated listening mock tests
+        writingResults: [], // Added for writing submissions
         userGameStats: {
           totalPoints: 0,
           level: 1,
@@ -1067,7 +1070,11 @@
         // New pagination states for history lists
         dashboardQuizHistoryPage: 1,
         dashboardMockTestHistoryPage: 1,
+        dashboardWritingHistoryPage: 1, // Added for writing submissions
         fullQuizHistoryPage: 1,
+        readingHistoryPage: 1, // Added for separated reading results
+        listeningHistoryPage: 1, // Added for separated listening results
+        fullWritingHistoryPage: 1, // Added for full module results
         historyItemsPerPage: 10, // Items on the full history page
         dashboardItemsPerPage: 5, // Items on the dashboard recent activity
       };
@@ -1229,6 +1236,9 @@
           modalContainer.innerHTML = "";
         }
       }
+
+      // Expose globally so inline onclick events can trigger the modal
+      window.showMessageModal = showMessageModal;
 
       /**
        * Shows a modal for editing user profile (name and band goal).
@@ -1523,6 +1533,13 @@
               (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0),
           );
           dashboardState.mockTestResults = results;
+          // Automatically separate them for the advanced Results page!
+          dashboardState.readingResults = results.filter(
+            (r) => r.moduleId === "reading",
+          );
+          dashboardState.listeningResults = results.filter(
+            (r) => r.moduleId === "listening",
+          );
           console.log(
             "Mock test results fetched:",
             dashboardState.mockTestResults,
@@ -1530,6 +1547,48 @@
         } catch (error) {
           console.error("Error fetching mock test results:", error);
           showToast("Failed to load your mock test history.", "error");
+        }
+      }
+
+      /**
+       * Fetches writing submissions for the current user from Firestore.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchWritingResults(userId) {
+        if (!authAppState.db || !userId) {
+          dashboardState.writingResults = [];
+          return;
+        }
+
+        // FIXED: Using the correct database ID so it matches writing-test.html
+        const appId =
+          typeof __app_id !== "undefined"
+            ? __app_id
+            : "ielts-mahir-community-forum";
+        const writingResultsRef = collection(
+          authAppState.db,
+          `artifacts/${appId}/public/data/writingSubmissions`,
+        );
+
+        try {
+          const q = query(writingResultsRef, where("userId", "==", userId));
+          const querySnapshot = await getDocs(q);
+          let results = [];
+          querySnapshot.forEach((doc) => {
+            results.push({ id: doc.id, ...doc.data() });
+          });
+          // Sort by timestamp descending
+          results.sort(
+            (a, b) =>
+              (b.submittedAt?.toDate() || 0) - (a.submittedAt?.toDate() || 0),
+          );
+          dashboardState.writingResults = results;
+          console.log(
+            "Writing results fetched:",
+            dashboardState.writingResults,
+          );
+        } catch (error) {
+          console.error("Error fetching writing results:", error);
         }
       }
 
@@ -2300,6 +2359,12 @@
             view: "dashboard",
           },
           {
+            id: "nav-module-results",
+            icon: '<i class="fas fa-file-contract"></i>',
+            text: "My Results",
+            view: "moduleResults",
+          },
+          {
             id: "nav-quiz-categories",
             icon: Icons.Play,
             text: "Quiz Categories",
@@ -2509,6 +2574,12 @@
             icon: Icons.Activity,
             text: "Dashboard",
             view: "dashboard",
+          },
+          {
+            id: "nav-module-results-mobile",
+            icon: '<i class="fas fa-file-contract"></i>',
+            text: "Results",
+            view: "moduleResults",
           },
           {
             id: "nav-quiz-cat-mobile",
@@ -3027,7 +3098,7 @@
                                 })()}
                             </tbody>
                         </table>
-                    </div>
+                   </div>
                      <div class="flex justify-center mt-2">
                         ${renderPaginationControls(
                           dashboardState.dashboardMockTestHistoryPage,
@@ -3036,6 +3107,102 @@
                               dashboardState.dashboardItemsPerPage,
                           ),
                           "dashboardMock",
+                        )}
+                    </div>
+                </div>
+
+                <!-- Recent Writing Activity Section -->
+                <div class="mt-12 mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Recent Writing Submissions</h2>
+                    <div class="recent-activity-table-container dashboard-card">
+                        <table class="recent-activity-table">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Test Title</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Band Score</th>
+                                    <th scope="col">Feedback</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${(() => {
+                                  const {
+                                    writingResults,
+                                    dashboardWritingHistoryPage,
+                                    dashboardItemsPerPage,
+                                  } = dashboardState;
+                                  const startIndex =
+                                    (dashboardWritingHistoryPage - 1) *
+                                    dashboardItemsPerPage;
+                                  const endIndex =
+                                    startIndex + dashboardItemsPerPage;
+                                  const paginatedResults = writingResults.slice(
+                                    startIndex,
+                                    endIndex,
+                                  );
+
+                                  if (paginatedResults.length > 0) {
+                                    return paginatedResults
+                                      .map((result) => {
+                                        const date = result.submittedAt
+                                          ? new Date(
+                                              result.submittedAt.toDate(),
+                                            ).toLocaleDateString()
+                                          : "N/A";
+                                        const isReviewed =
+                                          result.status === "reviewed";
+                                        const statusBadge = isReviewed
+                                          ? '<span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">Reviewed</span>'
+                                          : '<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold">Pending Review</span>';
+
+                                        const scoreDisplay = isReviewed
+                                          ? `<span class="font-bold text-green-600">${result.bandScore}</span>`
+                                          : `<span class="text-gray-400">N/A</span>`;
+                                        const feedbackDisplay =
+                                          isReviewed && result.feedback
+                                            ? `<button onclick="showMessageModal('Expert Feedback', \`${result.feedback
+                                                .replace(/`/g, "'")
+                                                .replace(
+                                                  /\n/g,
+                                                  "<br>",
+                                                )}\`)" class="text-blue-600 hover:text-blue-900 text-sm font-medium"><i class="fas fa-comment-dots mr-1"></i> Read</button>`
+                                            : `<span class="text-gray-400 text-sm">Awaiting</span>`;
+
+                                        return `
+                                            <tr>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${
+                                                  result.testTitle || "N/A"
+                                                }</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${statusBadge}</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${scoreDisplay}</td>
+                                                <td class="whitespace-nowrap text-sm text-gray-900">${feedbackDisplay}</td>
+                                            </tr>
+                                        `;
+                                      })
+                                      .join("");
+                                  } else {
+                                    return `
+                                    <tr class="no-data-row">
+                                        <td colspan="5" class="py-12 text-lg text-gray-500">
+                                            No recent writing submissions. Take a writing test to get expert feedback!
+                                        </td>
+                                    </tr>
+                                    `;
+                                  }
+                                })()}
+                            </tbody>
+                        </table>
+                    </div>
+                     <div class="flex justify-center mt-2">
+                        ${renderPaginationControls(
+                          dashboardState.dashboardWritingHistoryPage,
+                          Math.ceil(
+                            dashboardState.writingResults.length /
+                              dashboardState.dashboardItemsPerPage,
+                          ),
+                          "dashboardWriting",
                         )}
                     </div>
                 </div>
@@ -3235,6 +3402,358 @@
         `;
 
         // Event listeners are now set up in setupGlobalEventListeners
+      }
+
+      /**
+       * Renders the Full Advanced IELTS Modules Results view.
+       */
+      function renderModuleResultsView() {
+        const appContentDiv = document.getElementById("app-content");
+        if (!appContentDiv) return;
+
+        // Calculate Advanced Stats
+        const rResults = dashboardState.readingResults || [];
+        const lResults = dashboardState.listeningResults || [];
+        const wResults = (dashboardState.writingResults || []).filter(
+          (r) => r.status === "reviewed",
+        );
+
+        // Official IELTS Rounding Rule (rounds to nearest 0.5)
+        const ieltsRound = (score) => {
+          if (isNaN(score) || score <= 0) return "0.0";
+          return (Math.round(score * 2) / 2).toFixed(1);
+        };
+
+        // Smart calculator to safely ignore missing/broken scores and apply IELTS rounding
+        const calculateSafeAvg = (arr) => {
+          let sum = 0;
+          let validCount = 0;
+          arr.forEach((item) => {
+            const score = parseFloat(item.bandScore);
+            if (!isNaN(score) && score > 0) {
+              sum += score;
+              validCount++;
+            }
+          });
+          return validCount > 0 ? ieltsRound(sum / validCount) : "0.0";
+        };
+
+        const avgR = calculateSafeAvg(rResults);
+        const avgL = calculateSafeAvg(lResults);
+        const avgW = calculateSafeAvg(wResults);
+
+        let totalModules = 0;
+        let sumScores = 0;
+        if (parseFloat(avgR) > 0) {
+          totalModules++;
+          sumScores += parseFloat(avgR);
+        }
+        if (parseFloat(avgL) > 0) {
+          totalModules++;
+          sumScores += parseFloat(avgL);
+        }
+        if (parseFloat(avgW) > 0) {
+          totalModules++;
+          sumScores += parseFloat(avgW);
+        }
+
+        const overallBand =
+          totalModules > 0 ? ieltsRound(sumScores / totalModules) : "0.0";
+        appContentDiv.innerHTML = `
+            <section class="hero-section-new max-w-6xl mx-auto my-2 relative overflow-hidden rounded-3xl w-full">
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/5428828/pexels-photo-5428828.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-700/70 to-indigo-700/70"></div>
+                </div>
+                <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
+                    <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
+                        MY RESULTS
+                    </h1>
+                    <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
+                        Detailed performance review for all your IELTS modules.
+                    </p>
+                </div>
+            </section>
+
+            <section class="mt-8 mb-8 max-w-6xl mx-auto px-1 w-full">
+                <!-- Advanced Stats Overview -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Progress & Overview</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                    <div class="dashboard-card p-6 text-center border-t-4 border-blue-500 animate-fade-in-up" style="animation-delay: 0.1s;">
+                        <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-2">Overall Average</p>
+                        <p class="text-4xl font-anton text-blue-600">${overallBand}</p>
+                    </div>
+                    <div class="dashboard-card p-6 text-center border-t-4 border-green-500 animate-fade-in-up" style="animation-delay: 0.2s;">
+                        <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-2">Reading Avg</p>
+                        <p class="text-4xl font-anton text-green-600">${avgR}</p>
+                        <p class="text-xs text-gray-400 mt-2">${
+                          rResults.length
+                        } Tests Taken</p>
+                    </div>
+                    <div class="dashboard-card p-6 text-center border-t-4 border-yellow-500 animate-fade-in-up" style="animation-delay: 0.3s;">
+                        <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-2">Listening Avg</p>
+                        <p class="text-4xl font-anton text-yellow-500">${avgL}</p>
+                        <p class="text-xs text-gray-400 mt-2">${
+                          lResults.length
+                        } Tests Taken</p>
+                    </div>
+                    <div class="dashboard-card p-6 text-center border-t-4 border-purple-500 animate-fade-in-up" style="animation-delay: 0.4s;">
+                        <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-2">Writing Avg</p>
+                        <p class="text-4xl font-anton text-purple-600">${avgW}</p>
+                        <p class="text-xs text-gray-400 mt-2">${
+                          wResults.length
+                        } Tests Reviewed</p>
+                    </div>
+                </div>
+
+                <!-- Separated Reading Table -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Reading Mock Tests</h2>
+                <div class="recent-activity-table-container dashboard-card mb-4 animate-fade-in-up" style="animation-delay: 0.5s;">
+                    <table class="recent-activity-table">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Test Title</th>
+                                <th scope="col">Band Score</th>
+                                <th scope="col">Time Taken</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${(() => {
+                              const {
+                                readingResults,
+                                readingHistoryPage,
+                                historyItemsPerPage,
+                              } = dashboardState;
+                              const startIndex =
+                                (readingHistoryPage - 1) * historyItemsPerPage;
+                              const endIndex = startIndex + historyItemsPerPage;
+                              const paginatedResults = readingResults.slice(
+                                startIndex,
+                                endIndex,
+                              );
+
+                              if (paginatedResults.length > 0) {
+                                return paginatedResults
+                                  .map((result) => {
+                                    const date = result.timestamp
+                                      ? new Date(
+                                          result.timestamp.toDate(),
+                                        ).toLocaleDateString()
+                                      : "N/A";
+                                    return `
+                                        <tr>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${
+                                              result.testTitle || "N/A"
+                                            }</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900 font-bold text-green-600">${
+                                              result.bandScore
+                                            }</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
+                                              result.timeTakenSeconds,
+                                            )}</td>
+                                            <td class="whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="mock-test?module=${
+                                                  result.moduleId
+                                                }&test=${result.testId}&score=${
+                                      result.correctAnswers
+                                    }&total=${result.totalQuestions}&band=${
+                                      result.bandScore
+                                    }&time=${
+                                      result.timeTakenSeconds
+                                    }" class="text-blue-600 hover:text-blue-900">View Results</a>
+                                            </td>
+                                        </tr>`;
+                                  })
+                                  .join("");
+                              } else {
+                                return `<tr class="no-data-row"><td colspan="5" class="py-12 text-lg text-gray-500">No reading test history available.</td></tr>`;
+                              }
+                            })()}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex justify-center mt-2 mb-12">
+                    ${renderPaginationControls(
+                      dashboardState.readingHistoryPage,
+                      Math.ceil(
+                        dashboardState.readingResults.length /
+                          dashboardState.historyItemsPerPage,
+                      ),
+                      "readingHistory",
+                    )}
+                </div>
+
+                <!-- Separated Listening Table -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Listening Mock Tests</h2>
+                <div class="recent-activity-table-container dashboard-card mb-4 animate-fade-in-up" style="animation-delay: 0.6s;">
+                    <table class="recent-activity-table">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Test Title</th>
+                                <th scope="col">Band Score</th>
+                                <th scope="col">Time Taken</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${(() => {
+                              const {
+                                listeningResults,
+                                listeningHistoryPage,
+                                historyItemsPerPage,
+                              } = dashboardState;
+                              const startIndex =
+                                (listeningHistoryPage - 1) *
+                                historyItemsPerPage;
+                              const endIndex = startIndex + historyItemsPerPage;
+                              const paginatedResults = listeningResults.slice(
+                                startIndex,
+                                endIndex,
+                              );
+
+                              if (paginatedResults.length > 0) {
+                                return paginatedResults
+                                  .map((result) => {
+                                    const date = result.timestamp
+                                      ? new Date(
+                                          result.timestamp.toDate(),
+                                        ).toLocaleDateString()
+                                      : "N/A";
+                                    return `
+                                        <tr>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${
+                                              result.testTitle || "N/A"
+                                            }</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900 font-bold text-yellow-600">${
+                                              result.bandScore
+                                            }</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
+                                              result.timeTakenSeconds,
+                                            )}</td>
+                                            <td class="whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="mock-test?module=${
+                                                  result.moduleId
+                                                }&test=${result.testId}&score=${
+                                      result.correctAnswers
+                                    }&total=${result.totalQuestions}&band=${
+                                      result.bandScore
+                                    }&time=${
+                                      result.timeTakenSeconds
+                                    }" class="text-blue-600 hover:text-blue-900">View Results</a>
+                                            </td>
+                                        </tr>`;
+                                  })
+                                  .join("");
+                              } else {
+                                return `<tr class="no-data-row"><td colspan="5" class="py-12 text-lg text-gray-500">No listening test history available.</td></tr>`;
+                              }
+                            })()}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex justify-center mt-2 mb-12">
+                    ${renderPaginationControls(
+                      dashboardState.listeningHistoryPage,
+                      Math.ceil(
+                        dashboardState.listeningResults.length /
+                          dashboardState.historyItemsPerPage,
+                      ),
+                      "listeningHistory",
+                    )}
+                </div>
+
+                <!-- Writing Submissions -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Writing Test Submissions</h2>
+                <div class="recent-activity-table-container dashboard-card animate-fade-in-up" style="animation-delay: 0.7s;">
+                    <table class="recent-activity-table">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Test Title</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Band Score</th>
+                                <th scope="col">Feedback</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${(() => {
+                              const {
+                                writingResults,
+                                fullWritingHistoryPage,
+                                historyItemsPerPage,
+                              } = dashboardState;
+                              const startIndex =
+                                (fullWritingHistoryPage - 1) *
+                                historyItemsPerPage;
+                              const endIndex = startIndex + historyItemsPerPage;
+                              const paginatedResults = writingResults.slice(
+                                startIndex,
+                                endIndex,
+                              );
+
+                              if (paginatedResults.length > 0) {
+                                return paginatedResults
+                                  .map((result) => {
+                                    const date = result.submittedAt
+                                      ? new Date(
+                                          result.submittedAt.toDate(),
+                                        ).toLocaleDateString()
+                                      : "N/A";
+                                    const isReviewed =
+                                      result.status === "reviewed";
+                                    const statusBadge = isReviewed
+                                      ? '<span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">Reviewed</span>'
+                                      : '<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold">Pending Review</span>';
+                                    const scoreDisplay = isReviewed
+                                      ? `<span class="font-bold text-purple-600">${result.bandScore}</span>`
+                                      : `<span class="text-gray-400">N/A</span>`;
+
+                                    // Properly escaped string parameter for showMessageModal
+                                    const feedbackDisplay =
+                                      isReviewed && result.feedback
+                                        ? `<button onclick="showMessageModal('Expert Feedback', \`${result.feedback
+                                            .replace(/`/g, "'")
+                                            .replace(
+                                              /\n/g,
+                                              "<br>",
+                                            )}\`)" class="text-blue-600 hover:text-blue-900 text-sm font-medium"><i class="fas fa-comment-dots mr-1"></i> Read</button>`
+                                        : `<span class="text-gray-400 text-sm">Awaiting</span>`;
+
+                                    return `
+                                        <tr>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${
+                                              result.testTitle || "N/A"
+                                            }</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${statusBadge}</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${scoreDisplay}</td>
+                                            <td class="whitespace-nowrap text-sm text-gray-900">${feedbackDisplay}</td>
+                                        </tr>`;
+                                  })
+                                  .join("");
+                              } else {
+                                return `<tr class="no-data-row"><td colspan="5" class="py-12 text-lg text-gray-500">No writing submissions available.</td></tr>`;
+                              }
+                            })()}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex justify-center mt-2 pb-16">
+                    ${renderPaginationControls(
+                      dashboardState.fullWritingHistoryPage,
+                      Math.ceil(
+                        dashboardState.writingResults.length /
+                          dashboardState.historyItemsPerPage,
+                      ),
+                      "fullWritingHistory",
+                    )}
+                </div>
+            </section>
+        `;
       }
 
       /**
@@ -3764,6 +4283,9 @@
           case "dashboard":
             renderDashboardOverview();
             break;
+          case "moduleResults":
+            renderModuleResultsView();
+            break;
           case "quizCategories":
             renderQuizHomeView();
             break;
@@ -3956,9 +4478,29 @@
               dataArray = dashboardState.mockTestResults;
               itemsPerPageState = "dashboardItemsPerPage";
               break;
+            case "dashboardWriting":
+              stateKey = "dashboardWritingHistoryPage";
+              dataArray = dashboardState.writingResults;
+              itemsPerPageState = "dashboardItemsPerPage";
+              break;
             case "fullQuizHistory":
               stateKey = "fullQuizHistoryPage";
               dataArray = dashboardState.quizResults;
+              itemsPerPageState = "historyItemsPerPage";
+              break;
+            case "readingHistory":
+              stateKey = "readingHistoryPage";
+              dataArray = dashboardState.readingResults;
+              itemsPerPageState = "historyItemsPerPage";
+              break;
+            case "listeningHistory":
+              stateKey = "listeningHistoryPage";
+              dataArray = dashboardState.listeningResults;
+              itemsPerPageState = "historyItemsPerPage";
+              break;
+            case "fullWritingHistory":
+              stateKey = "fullWritingHistoryPage";
+              dataArray = dashboardState.writingResults;
               itemsPerPageState = "historyItemsPerPage";
               break;
             case "global":
@@ -4077,8 +4619,11 @@
       }
 
       function setupFirestoreListeners() {
+        // FIXED: Using the correct database ID
         const appId =
-          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+          typeof __app_id !== "undefined"
+            ? __app_id
+            : "ielts-mahir-community-forum";
 
         // Unsubscribe all previous listeners before setting up new ones
         if (dashboardState.unsubscribeAll) {
@@ -4201,6 +4746,35 @@
           );
           dashboardState.unsubscribeAll.push(unsubscribeQuizResults);
 
+          // Listener for user's writing submissions
+          const writingResultsRef = collection(
+            authAppState.db,
+            `artifacts/${appId}/public/data/writingSubmissions`,
+          );
+          const writingQuery = query(
+            writingResultsRef,
+            where("userId", "==", dashboardState.userId),
+          );
+
+          const unsubscribeWritingResults = onSnapshot(
+            writingQuery,
+            (snapshot) => {
+              const results = [];
+              snapshot.forEach((doc) => {
+                results.push({ id: doc.id, ...doc.data() });
+              });
+              results.sort(
+                (a, b) =>
+                  (b.submittedAt?.toDate() || 0) -
+                  (a.submittedAt?.toDate() || 0),
+              );
+              dashboardState.writingResults = results;
+              renderApp(); // Re-render to update the writing table
+            },
+            (error) => console.error("Error fetching writing results:", error),
+          );
+          dashboardState.unsubscribeAll.push(unsubscribeWritingResults);
+
           // Listener for global leaderboard (no real-time updates needed, can be fetched on demand)
           // For a truly world-class app, this might be a cloud function that aggregates data.
           // For now, we'll fetch it when the leaderboard view is rendered.
@@ -4254,6 +4828,7 @@
               await fetchUserGameStats(dashboardState.userId);
               await fetchQuizResults(dashboardState.userId);
               await fetchMockTestResults(dashboardState.userId);
+              await fetchWritingResults(dashboardState.userId); // Added
               await fetchDailyLeaderboardData(dashboardState.userId); // Fetch full daily leaderboard data
               await fetchGlobalLeaderboard(); // Fetch global leaderboard on load
             } else {
@@ -4266,6 +4841,7 @@
               };
               dashboardState.quizResults = [];
               dashboardState.mockTestResults = [];
+              dashboardState.writingResults = []; // Added
               dashboardState.dailyLeaderboardData = []; // Clear daily leaderboard data
               dashboardState.dailyLeaderboardRank = null;
               dashboardState.globalLeaderboard = [];
