@@ -373,6 +373,9 @@
       .stagger-4 {
         animation-delay: 0.4s;
       }
+      .stagger-5 {
+        animation-delay: 0.5s;
+      }
 
       /* === INSANELY PREMIUM "FLOATING ISLAND" NAVIGATION === */
       #premium-header {
@@ -903,7 +906,7 @@
         .pr-nav {
           position: fixed;
           top: 0;
-          right: -100%;
+          right: -120%; /* Pushed further out to hide the shadow completely */
           width: 100vw;
           max-width: 100%;
           height: 100vh;
@@ -1513,6 +1516,7 @@
         totalPoints: 0,
         level: 1,
         completedTests: [],
+        isPremium: false,
       };
 
       async function fetchUserGameStats(userId) {
@@ -1559,8 +1563,6 @@
               user.email ||
               user.uid.substring(0, 8);
 
-            // Perfectly adapted injected HTML to match the pure CSS hook setup from the Home/Contact designs.
-            // Level X Badge is fully removed as requested.
             authButtonsContainer.innerHTML = `
               <div class="relative">
                   <button id="profile-icon-btn" class="auth-icon-btn" aria-label="User Profile">
@@ -1607,7 +1609,6 @@
               await signOutUser();
             });
           } else {
-            // Logged out pure CSS hook adaptation
             authButtonsContainer.innerHTML = `
                 <a href="auth" class="auth-signin-btn">
                     <i class="fas fa-sign-in-alt"></i> <span class="hidden sm:inline">Sign In</span>
@@ -1621,14 +1622,142 @@
         const appDiv = document.getElementById("app");
         if (!appDiv) return;
 
+        let isPremiumUser = userGameStats.isPremium === true;
+        let pkg = userGameStats.premiumPackage || "";
+        let countdownHtml = "";
+        let expiresAtMillis = 0;
+
+        // Premium Countdown Logic
+        if (isPremiumUser && userGameStats.expiresAt) {
+          expiresAtMillis =
+            typeof userGameStats.expiresAt.toMillis === "function"
+              ? userGameStats.expiresAt.toMillis()
+              : userGameStats.expiresAt.seconds
+              ? userGameStats.expiresAt.seconds * 1000
+              : new Date(userGameStats.expiresAt).getTime();
+
+          if (expiresAtMillis > Date.now()) {
+            const pkgName = pkg ? pkg.split(" ")[0] : "Premium";
+            countdownHtml = `
+              <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-white/10 to-white/5 border border-white/20 backdrop-blur-md shadow-xl opacity-0 animate-fade-in-up hover:bg-white/10 transition-colors" style="animation-delay: 0.35s;">
+                  <div class="flex items-center gap-2 pr-3 border-r border-white/20">
+                      <i class="fas fa-crown text-amber-400 text-sm animate-pulse"></i>
+                      <span class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider">${pkgName} Active</span>
+                  </div>
+                  <div class="flex items-center gap-1.5 font-mono tabular-nums text-white" id="premium-timer">
+                      <span class="text-sm font-sans tracking-widest animate-pulse">Calculating...</span>
+                  </div>
+              </div>
+              `;
+          }
+        }
+
         // User ID Pill (Only if auth is ready)
         const userIdPill =
           authAppState.isAuthReady && authAppState.userId
-            ? `<div class="inline-flex items-center gap-2 px-4 py-2 mt-8 rounded-full bg-white/10 border border-white/20 backdrop-blur-md opacity-0 animate-fade-in-up" style="animation-delay: 0.3s;">
+            ? `<div class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md opacity-0 animate-fade-in-up" style="animation-delay: 0.3s;">
                 <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
                 <span class="text-xs sm:text-sm font-mono text-indigo-100 font-medium">ID: ${authAppState.userId}</span>
              </div>`
             : "";
+
+        // Premium Banner (Top)
+        let premiumBannerHtml = "";
+        if (
+          !isPremiumUser ||
+          (!pkg.includes("Platinum") && !pkg.includes("Full"))
+        ) {
+          premiumBannerHtml = `
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 mt-8 mb-4 animate-fade-in-up">
+                <div class="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 rounded-2xl p-1 shadow-[0_10px_25px_rgba(245,158,11,0.3)] transform transition-transform hover:-translate-y-1">
+                    <div class="bg-slate-900 rounded-xl px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-amber-400/20 text-amber-400 rounded-full flex items-center justify-center text-xl shrink-0">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg leading-tight">Unlock Premium Features</h4>
+                                <p class="text-amber-200/80 text-sm font-medium">Upgrade to Gold or Platinum for full access to all mock tests and expert evaluations.</p>
+                            </div>
+                        </div>
+                        <a href="mock-test-packages" class="shrink-0 px-6 py-2.5 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-900 font-extrabold text-sm uppercase tracking-widest rounded-lg transition-all shadow-md">
+                            Upgrade Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        // Premium Locked Card (Grid)
+        let premiumCardHtml = "";
+        if (
+          !isPremiumUser ||
+          (!pkg.includes("Platinum") && !pkg.includes("Full"))
+        ) {
+          premiumCardHtml = `
+                <a href="mock-test-packages" class="video-card group opacity-0 animate-fade-in-up stagger-5 flex flex-col h-full outline-none border-[3px] border-amber-400/60 shadow-[0_15px_40px_rgba(245,158,11,0.15)] relative overflow-hidden bg-gradient-to-b from-slate-900 to-[#0f172a]">
+                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-amber-500/20 rounded-full blur-[50px] pointer-events-none group-hover:bg-amber-500/30 transition-colors duration-700"></div>
+                    
+                    <div class="relative z-10 flex flex-col items-center justify-center h-full p-8 text-center mt-2">
+                        <div class="w-20 h-20 bg-gradient-to-br from-amber-300 to-orange-500 rounded-full flex items-center justify-center text-white text-3xl shadow-[0_0_30px_rgba(245,158,11,0.5)] mb-6 transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        
+                        <h3 class="anton-text text-3xl text-white mb-3 tracking-wide uppercase drop-shadow-md">
+                            Premium Tests <br/><span class="text-amber-400">Locked</span>
+                        </h3>
+                        
+                        <p class="text-sm text-slate-300 font-medium leading-relaxed mb-8 px-2">
+                            ${
+                              isPremiumUser
+                                ? "Upgrade your plan"
+                                : "Get a Premium Package"
+                            } to instantly unlock full access to highly-accurate IELTS Mock Tests.
+                        </p>
+                        
+                        <div class="mt-auto w-full">
+                            <div class="w-full py-4 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-900 font-extrabold text-[15px] uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-amber-500/30 flex items-center justify-center gap-2 transform group-hover:-translate-y-1">
+                                <i class="fas fa-crown"></i> View Packages
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        // Bottom Promo Block
+        let bottomPromoHtml = "";
+        if (
+          !isPremiumUser ||
+          (!pkg.includes("Platinum") && !pkg.includes("Full"))
+        ) {
+          bottomPromoHtml = `
+            <div class="mt-16 bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 text-center shadow-xl relative overflow-hidden animate-fade-in-up stagger-4">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 rounded-full blur-[60px] pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-indigo-500/10 rounded-full blur-[50px] pointer-events-none"></div>
+
+                <div class="relative z-10 max-w-2xl mx-auto">
+                    <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg mx-auto mb-6 transform rotate-3">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="anton-text text-3xl sm:text-4xl text-slate-800 mb-4 uppercase tracking-wide">Take Your Prep to the Next Level</h3>
+                    <p class="text-slate-500 font-medium text-lg mb-8 leading-relaxed">
+                        You're currently viewing the limited access preview. To get full access to highly-accurate mock tests, detailed analytics, and 1-on-1 speaking sessions, upgrade your package today.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a href="mock-test-packages" class="w-full sm:w-auto px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm uppercase tracking-widest rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                            View Premium Packages
+                        </a>
+                        <a href="contact" class="w-full sm:w-auto px-8 py-4 bg-white border-2 border-slate-200 hover:border-slate-300 text-slate-700 font-bold text-sm uppercase tracking-widest rounded-xl transition-all">
+                            Contact Support
+                        </a>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
 
         appDiv.innerHTML = `
             <!-- Premium Brand Hero Section -->
@@ -1655,7 +1784,11 @@
                             <p class="text-base sm:text-lg md:text-xl text-indigo-100 max-w-xl font-medium leading-relaxed mx-auto md:mx-0 shadow-sm">
                                 Experience authentic exam conditions. Practice tests for Listening, Reading, Writing, and Speaking designed to elevate your band score.
                             </p>
-                            ${userIdPill}
+                            
+                            <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-6 sm:mt-8">
+                                ${userIdPill}
+                                ${countdownHtml}
+                            </div>
                         </div>
 
                         <!-- Spectacular Image Area: Premium 4-Image Grid -->
@@ -1720,6 +1853,8 @@
                 </div>
                 <div class="absolute bottom-0 left-0 w-full h-[2px] bg-[#f8fafc] z-20"></div>
             </section>
+
+            ${premiumBannerHtml}
 
             <!-- Main Content Area -->
             <main class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-12 relative z-20">
@@ -1803,9 +1938,62 @@
                         </a>
                     `;
                     }).join("")}
+                    ${premiumCardHtml}
                 </div>
+                ${bottomPromoHtml}
             </main>
         `;
+
+        // Start Countdown Interval
+        if (expiresAtMillis > Date.now()) {
+          const timerEl = document.getElementById("premium-timer");
+          if (timerEl) {
+            const updateTimer = () => {
+              const now = Date.now();
+              const diff = expiresAtMillis - now;
+              if (diff <= 0) {
+                timerEl.innerHTML =
+                  '<span class="text-rose-400 text-sm font-bold uppercase tracking-widest font-sans">Expired</span>';
+                if (window.premiumTimerInterval)
+                  clearInterval(window.premiumTimerInterval);
+                return;
+              }
+              const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+              const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+              const m = Math.floor((diff / 1000 / 60) % 60);
+              const s = Math.floor((diff / 1000) % 60);
+
+              timerEl.innerHTML = `
+                        <div class="flex items-baseline gap-0.5"><span class="text-lg sm:text-xl font-bold text-white">${d}</span><span class="text-[9px] text-white/70 uppercase font-sans tracking-widest">d</span></div>
+                        <span class="text-white/30 font-light mx-0.5">:</span>
+                        <div class="flex items-baseline gap-0.5"><span class="text-lg sm:text-xl font-bold text-white">${h
+                          .toString()
+                          .padStart(
+                            2,
+                            "0",
+                          )}</span><span class="text-[9px] text-white/70 uppercase font-sans tracking-widest">h</span></div>
+                        <span class="text-white/30 font-light mx-0.5">:</span>
+                        <div class="flex items-baseline gap-0.5"><span class="text-lg sm:text-xl font-bold text-white">${m
+                          .toString()
+                          .padStart(
+                            2,
+                            "0",
+                          )}</span><span class="text-[9px] text-white/70 uppercase font-sans tracking-widest">m</span></div>
+                        <span class="text-white/30 font-light mx-0.5">:</span>
+                        <div class="flex items-baseline gap-0.5"><span class="text-lg sm:text-xl font-bold text-emerald-300 min-w-[24px] text-center inline-block">${s
+                          .toString()
+                          .padStart(
+                            2,
+                            "0",
+                          )}</span><span class="text-[9px] text-emerald-300/70 uppercase font-sans tracking-widest">s</span></div>
+                    `;
+            };
+            updateTimer(); // Initial Call
+            if (window.premiumTimerInterval)
+              clearInterval(window.premiumTimerInterval);
+            window.premiumTimerInterval = setInterval(updateTimer, 1000);
+          }
+        }
       }
 
       window.onload = async function () {

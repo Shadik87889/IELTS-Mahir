@@ -1403,8 +1403,11 @@
         allMockTests,
         MockTestIcons,
         formatTime,
-        calculateWordCount, // Import the new utility function
+        calculateWordCount,
       } from "./mock-test-data.js";
+
+      // Import writing tests
+      import { allWritingTests } from "./writing-test-data.js";
 
       // Firebase imports for Firestore
       import {
@@ -1430,6 +1433,28 @@
       let currentTestId = null;
       let currentTest = null;
       let totalQuestions = 0; // This will now represent total answerable slots
+
+      // Global variable to store when the premium package was granted
+      let premiumGrantedAt = null;
+
+      // New function to fetch premium details
+      async function fetchPremiumDetails(userId) {
+        if (!db || !userId) return;
+        try {
+          const appId =
+            typeof __app_id !== "undefined"
+              ? __app_id
+              : "ielts-mahir-community-forum";
+          const snap = await getDoc(
+            doc(db, `artifacts/${appId}/public/data/premiumUsers/${userId}`),
+          );
+          if (snap.exists()) {
+            premiumGrantedAt = snap.data().grantedAt;
+          }
+        } catch (e) {
+          console.error("Error fetching premium details:", e);
+        }
+      }
 
       // Test state encapsulated in an object
       let testState = {
@@ -2637,38 +2662,81 @@
       }
       /**
        * Fetches the user's specific mock test result from Firestore.
-       * @param {string} userId - The ID of the current user.
-       * @param {string} testId - The ID of the test.
-       * @returns {Promise<object|null>} The result document data or null if not found.
+       * Uses the premiumGrantedAt timestamp to ignore old tests and allow retakes.
        */
       async function fetchUserMockTestResult(userId, testId) {
         if (!db || !userId || !testId) return null;
         const appId =
-          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
-        const resultsRef = collection(
-          db,
-          `artifacts/${appId}/users/${userId}/mockTestResults`,
-        );
-        const q = query(
-          resultsRef,
-          where("testId", "==", testId),
-          where("userId", "==", userId),
-        );
+          typeof __app_id !== "undefined"
+            ? __app_id
+            : "ielts-mahir-community-forum";
 
         try {
-          const querySnapshot = await getDocs(q);
-          if (!querySnapshot.empty) {
-            let latestResult = null;
-            let latestTimestamp = 0;
-            querySnapshot.forEach((docSnap) => {
-              const data = docSnap.data();
-              const timestamp = data.timestamp ? data.timestamp.toMillis() : 0;
-              if (timestamp > latestTimestamp) {
-                latestTimestamp = timestamp;
-                latestResult = { id: docSnap.id, ...data };
-              }
-            });
-            return latestResult;
+          // Check Writing Submissions Collection
+          if (currentModuleId === "writing") {
+            const resultsRef = collection(
+              db,
+              `artifacts/${appId}/public/data/writingSubmissions`,
+            );
+            const q = query(
+              resultsRef,
+              where("testId", "==", testId),
+              where("userId", "==", userId),
+            );
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+              let latestResult = null;
+              let latestTimestamp = 0;
+              querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const timestamp = data.submittedAt
+                  ? data.submittedAt.toMillis()
+                  : 0;
+
+                // Ignore tests taken before the current premium package was granted (Allow Retake)
+                if (premiumGrantedAt && timestamp < premiumGrantedAt.toMillis())
+                  return;
+
+                if (timestamp > latestTimestamp) {
+                  latestTimestamp = timestamp;
+                  latestResult = { id: docSnap.id, ...data };
+                }
+              });
+              return latestResult;
+            }
+          }
+          // Check Reading/Listening Collection
+          else {
+            const resultsRef = collection(
+              db,
+              `artifacts/${appId}/users/${userId}/mockTestResults`,
+            );
+            const q = query(
+              resultsRef,
+              where("testId", "==", testId),
+              where("userId", "==", userId),
+            );
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+              let latestResult = null;
+              let latestTimestamp = 0;
+              querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const timestamp = data.timestamp
+                  ? data.timestamp.toMillis()
+                  : 0;
+
+                // Ignore tests taken before the current premium package was granted (Allow Retake)
+                if (premiumGrantedAt && timestamp < premiumGrantedAt.toMillis())
+                  return;
+
+                if (timestamp > latestTimestamp) {
+                  latestTimestamp = timestamp;
+                  latestResult = { id: docSnap.id, ...data };
+                }
+              });
+              return latestResult;
+            }
           }
           return null;
         } catch (error) {
@@ -5809,12 +5877,14 @@
                   let isTestInitialized = false;
 
                   auth.onAuthStateChanged(async (user) => {
-                    // Check premium status if user is logged in
                     if (user) {
+                      // Fetch premium granted date to handle retakes correctly
+                      await fetchPremiumDetails(user.uid);
+
                       const appId =
                         typeof __app_id !== "undefined"
                           ? __app_id
-                          : "ielts-mahir-community-forum"; // FIX: Matches Admin Panel Database
+                          : "ielts-mahir-community-forum";
                       const userStatsDocRef = doc(
                         db,
                         `artifacts/${appId}/users/${user.uid}/gameStats/summary`,
@@ -5824,37 +5894,24 @@
                         if (docSnap.exists()) {
                           const data = docSnap.data();
                           if (data.isPremium === true) {
-                            // Verify they have the correct package for this specific module
-                            if (
-                              !data.premiumPackage ||
-                              data.premiumPackage === "Full Premium Bundle"
-                            ) {
-                              testState.isUserPremium = true;
-                            } else if (
-                              data.premiumPackage === "Reading Pass" &&
-                              currentModuleId === "reading"
-                            ) {
-                              testState.isUserPremium = true;
-                            } else if (
-                              data.premiumPackage === "Listening Pass" &&
-                              currentModuleId === "listening"
-                            ) {
-                              testState.isUserPremium = true;
-                            } else {
-                              testState.isUserPremium = false;
-                            }
+                            testState.isUserPremium = true;
+                            testState.premiumPackage =
+                              data.premiumPackage || "";
                           } else {
                             testState.isUserPremium = false;
+                            testState.premiumPackage = "";
                           }
                         }
                       } catch (e) {
                         console.error("Error fetching user stats:", e);
                       }
                     } else {
-                      testState.isUserPremium = false; // Explicitly handle logged out
+                      testState.isUserPremium = false;
+                      testState.premiumPackage = "";
+                      premiumGrantedAt = null;
                     }
 
-                    // --- NEW: Enforce "Already Completed" Block for URL Bypass ---
+                    // --- Enforce "Already Completed" Block for URL Bypass ---
                     if (user) {
                       try {
                         const existingResult = await fetchUserMockTestResult(
@@ -5875,11 +5932,35 @@
                       return; // STOP execution here
                     }
 
-                    // Enforce Premium Access
-                    if (testState.isPremiumTest && !testState.isUserPremium) {
+                    // --- Advanced Premium Access Check based on Package Tier ---
+                    const moduleTests =
+                      currentModuleId === "writing"
+                        ? allWritingTests
+                        : allMockTests.filter(
+                            (t) => t.moduleId === currentModuleId,
+                          );
+                    const testIndex = moduleTests.findIndex(
+                      (t) => t.id === currentTestId,
+                    );
+
+                    let allowedTests = 1; // Default Free Tier Access (1 Test)
+                    if (testState.isUserPremium) {
+                      const pkg = testState.premiumPackage || "";
+                      if (
+                        pkg.includes("Platinum") ||
+                        pkg.includes("Full Premium")
+                      )
+                        allowedTests = 15;
+                      else if (pkg.includes("Gold")) allowedTests = 10;
+                      else if (pkg.includes("Silver")) allowedTests = 7;
+                      else allowedTests = 15; // Legacy fallback
+                    }
+
+                    // If the user tries to access a test index beyond their allowed limit, block them
+                    if (testIndex >= allowedTests) {
                       testState.accessDenied = true;
                       testState.isCheckingAuth = false;
-                      renderApp(); // Render Locked Screen
+                      renderApp(); // Render Locked Premium Screen
                       return; // STOP execution here
                     }
 

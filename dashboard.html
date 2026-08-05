@@ -1037,6 +1037,8 @@
         readingResults: [], // Separated reading mock tests
         listeningResults: [], // Separated listening mock tests
         writingResults: [], // Added for writing submissions
+        speakingResults: [], // Added for speaking submissions
+        speakingResults: [], // Added for speaking submissions
         userGameStats: {
           totalPoints: 0,
           level: 1,
@@ -1075,6 +1077,7 @@
         readingHistoryPage: 1, // Added for separated reading results
         listeningHistoryPage: 1, // Added for separated listening results
         fullWritingHistoryPage: 1, // Added for full module results
+        speakingHistoryPage: 1, // Added for speaking results
         historyItemsPerPage: 10, // Items on the full history page
         dashboardItemsPerPage: 5, // Items on the dashboard recent activity
       };
@@ -1589,6 +1592,46 @@
           );
         } catch (error) {
           console.error("Error fetching writing results:", error);
+        }
+      }
+
+      /**
+       * Fetches speaking submissions for the current user from Firestore.
+       * @param {string} userId - The ID of the current user.
+       */
+      async function fetchSpeakingResults(userId) {
+        if (!authAppState.db || !userId) {
+          dashboardState.speakingResults = [];
+          return;
+        }
+
+        const appId =
+          typeof __app_id !== "undefined"
+            ? __app_id
+            : "ielts-mahir-community-forum";
+        const speakingResultsRef = collection(
+          authAppState.db,
+          `artifacts/${appId}/public/data/speakingSubmissions`,
+        );
+
+        try {
+          const q = query(speakingResultsRef, where("userId", "==", userId));
+          const querySnapshot = await getDocs(q);
+          let results = [];
+          querySnapshot.forEach((doc) => {
+            results.push({ id: doc.id, ...doc.data() });
+          });
+          results.sort(
+            (a, b) =>
+              (b.submittedAt?.toDate() || 0) - (a.submittedAt?.toDate() || 0),
+          );
+          dashboardState.speakingResults = results;
+          console.log(
+            "Speaking results fetched:",
+            dashboardState.speakingResults,
+          );
+        } catch (error) {
+          console.error("Error fetching speaking results:", error);
         }
       }
 
@@ -2659,6 +2702,91 @@
           3,
         ); // Top 3 players
 
+        // Premium Status Logic
+        let isPremiumUser = dashboardState.userGameStats.isPremium === true;
+        let pkg = dashboardState.userGameStats.premiumPackage || "Free Tier";
+        let expiresAtMillis = 0;
+        let countdownHtml = "";
+        let upgradeBtnHtml = `<a href="mock-test-packages" class="px-6 py-2.5 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 font-bold rounded-xl shadow-[0_4px_15px_rgba(245,158,11,0.4)] hover:shadow-[0_6px_20px_rgba(245,158,11,0.6)] hover:-translate-y-0.5 transition-all text-sm uppercase tracking-wide whitespace-nowrap">Upgrade Plan</a>`;
+
+        if (isPremiumUser && dashboardState.userGameStats.expiresAt) {
+          expiresAtMillis =
+            typeof dashboardState.userGameStats.expiresAt.toMillis ===
+            "function"
+              ? dashboardState.userGameStats.expiresAt.toMillis()
+              : dashboardState.userGameStats.expiresAt.seconds
+              ? dashboardState.userGameStats.expiresAt.seconds * 1000
+              : new Date(dashboardState.userGameStats.expiresAt).getTime();
+
+          if (expiresAtMillis > Date.now()) {
+            const pkgName = pkg ? pkg.split(" ")[0] : "Premium";
+            countdownHtml = `
+                <div class="flex items-center justify-center sm:justify-start gap-2 mt-2 bg-white/50 px-3 py-1.5 rounded-lg border border-amber-200/50 inline-flex">
+                    <i class="fas fa-stopwatch text-amber-500 animate-pulse"></i>
+                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Valid for:</span>
+                    <div id="dashboard-premium-timer" class="flex gap-1 font-mono text-sm font-extrabold text-amber-600">Calculating...</div>
+                </div>
+              `;
+            if (pkg.includes("Platinum") || pkg.includes("Full")) {
+              upgradeBtnHtml = `<span class="px-5 py-2.5 bg-slate-100 text-slate-400 rounded-xl font-bold text-sm border border-slate-200 shadow-inner flex items-center gap-2 whitespace-nowrap"><i class="fas fa-check-circle"></i> Max Tier Active</span>`;
+            }
+          } else {
+            isPremiumUser = false;
+            pkg = "Expired Plan";
+            countdownHtml = `<p class="text-sm text-rose-500 font-bold mt-2 flex items-center justify-center sm:justify-start gap-1"><i class="fas fa-exclamation-circle"></i> Your subscription has expired.</p>`;
+          }
+        } else if (!isPremiumUser) {
+          countdownHtml = `<p class="text-xs text-slate-500 font-medium mt-2 max-w-sm mx-auto sm:mx-0">Access limited tests. Upgrade to unlock full mock tests and expert evaluation.</p>`;
+        }
+
+        const premiumCardHtml = `
+            <div class="dashboard-card p-6 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 border-l-[6px] ${
+              isPremiumUser
+                ? "border-amber-400 bg-gradient-to-r from-amber-50/50 to-white"
+                : "border-slate-300 bg-white"
+            }">
+                <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 w-full md:w-auto">
+                    <div class="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center text-3xl shadow-md ${
+                      isPremiumUser
+                        ? "bg-gradient-to-br from-amber-300 to-orange-500 text-white"
+                        : "bg-slate-100 text-slate-400 border border-slate-200"
+                    }">
+                        <i class="fas ${
+                          isPremiumUser ? "fa-crown" : "fa-user-graduate"
+                        }"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-center sm:justify-start gap-2 mb-1">
+                            <span class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded">Subscription Status</span>
+                            ${
+                              isPremiumUser
+                                ? '<span class="text-[10px] font-extrabold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded flex items-center gap-1"><i class="fas fa-circle text-[8px] animate-pulse"></i> ACTIVE</span>'
+                                : ""
+                            }
+                        </div>
+                        <h3 class="text-2xl font-black text-gray-800 font-anton uppercase tracking-wide">${pkg}</h3>
+                        ${countdownHtml}
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-5 w-full md:w-auto bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                    <div class="hidden lg:flex flex-col gap-2 text-xs text-gray-600 font-medium border-r border-slate-200 pr-5 mr-1">
+                        <div class="flex items-center gap-2"><i class="fas ${
+                          isPremiumUser
+                            ? "fa-check-circle text-emerald-500"
+                            : "fa-lock text-slate-300"
+                        }"></i> Full Mock Tests</div>
+                        <div class="flex items-center gap-2"><i class="fas ${
+                          isPremiumUser
+                            ? "fa-check-circle text-emerald-500"
+                            : "fa-lock text-slate-300"
+                        }"></i> Expert Writing Feedback</div>
+                    </div>
+                    ${upgradeBtnHtml}
+                </div>
+            </div>
+        `;
+
         // Safely access authAppState.auth.currentUser.email only if authAppState.auth and authAppState.auth.currentUser are defined
         const userName =
           dashboardState.userProfile?.name ||
@@ -2687,7 +2815,10 @@
                     </div>
                 </section>
 
-                <section class="mt-12 mb-8 max-w-6xl mx-auto px-1 w-full">
+                <section class="mt-8 mb-8 max-w-6xl mx-auto px-1 w-full">
+                    
+                    ${premiumCardHtml}
+
                     <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Your Performance Overview</h2>
 
                     <!-- Overall Statistics Cards -->
@@ -3220,6 +3351,33 @@
           renderCharts(); // Only render charts if there's data
         }
 
+        // Start premium timer
+        if (expiresAtMillis > Date.now()) {
+          const timerEl = document.getElementById("dashboard-premium-timer");
+          if (timerEl) {
+            const updateTimer = () => {
+              const now = Date.now();
+              const diff = expiresAtMillis - now;
+              if (diff <= 0) {
+                timerEl.innerHTML =
+                  '<span class="text-rose-500">Expired</span>';
+                if (window.dashPremiumInterval)
+                  clearInterval(window.dashPremiumInterval);
+                return;
+              }
+              const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+              const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+              const m = Math.floor((diff / 1000 / 60) % 60);
+              const s = Math.floor((diff / 1000) % 60);
+              timerEl.innerHTML = `${d}d ${h}h ${m}m ${s}s`;
+            };
+            updateTimer(); // Initial Call
+            if (window.dashPremiumInterval)
+              clearInterval(window.dashPremiumInterval);
+            window.dashPremiumInterval = setInterval(updateTimer, 1000);
+          }
+        }
+
         // Event listeners are now set up in setupGlobalEventListeners
       }
 
@@ -3407,6 +3565,9 @@
       /**
        * Renders the Full Advanced IELTS Modules Results view.
        */
+      /**
+       * Renders the Full Advanced IELTS Modules Results view.
+       */
       function renderModuleResultsView() {
         const appContentDiv = document.getElementById("app-content");
         if (!appContentDiv) return;
@@ -3416,6 +3577,9 @@
         const lResults = dashboardState.listeningResults || [];
         const wResults = (dashboardState.writingResults || []).filter(
           (r) => r.status === "reviewed",
+        );
+        const sResults = (dashboardState.speakingResults || []).filter(
+          (r) => r.status === "reviewed" || r.status === "completed",
         );
 
         // Official IELTS Rounding Rule (rounds to nearest 0.5)
@@ -3441,6 +3605,7 @@
         const avgR = calculateSafeAvg(rResults);
         const avgL = calculateSafeAvg(lResults);
         const avgW = calculateSafeAvg(wResults);
+        const avgS = calculateSafeAvg(sResults);
 
         let totalModules = 0;
         let sumScores = 0;
@@ -3456,306 +3621,510 @@
           totalModules++;
           sumScores += parseFloat(avgW);
         }
+        if (parseFloat(avgS) > 0) {
+          totalModules++;
+          sumScores += parseFloat(avgS);
+        }
 
         const overallBand =
           totalModules > 0 ? ieltsRound(sumScores / totalModules) : "0.0";
+
         appContentDiv.innerHTML = `
-            <section class="hero-section-new max-w-6xl mx-auto my-2 relative overflow-hidden rounded-3xl w-full">
+            <section class="hero-section-new max-w-6xl mx-auto my-2 relative overflow-hidden rounded-3xl w-full shadow-lg">
                 <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/5428828/pexels-photo-5428828.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-700/70 to-indigo-700/70"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/80 to-blue-800/90 backdrop-blur-[2px]"></div>
                 </div>
                 <div class="relative z-10 p-8 md:p-12 lg:p-16 flex flex-col items-center text-center text-white">
-                    <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg">
-                        MY RESULTS
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-3xl mb-6 backdrop-blur-md shadow-xl border border-white/30">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h1 class="font-anton text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight font-bold text-shadow-lg tracking-wide uppercase">
+                        Mastery Hub
                     </h1>
-                    <p class="font-inter text-lg sm:text-xl lg:text-2xl text-white text-opacity-90 mt-4 max-w-2xl mx-auto text-shadow-lg">
-                        Detailed performance review for all your IELTS modules.
+                    <p class="font-inter text-lg sm:text-xl lg:text-2xl text-blue-100 font-medium mt-4 max-w-2xl mx-auto text-shadow-md">
+                        Deep analytics and actionable feedback for every module.
                     </p>
                 </div>
             </section>
 
-            <section class="mt-8 mb-8 max-w-6xl mx-auto px-1 w-full">
+            <section class="mt-12 mb-8 max-w-6xl mx-auto px-1 w-full">
                 <!-- Advanced Stats Overview -->
-                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Progress & Overview</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-                    <div class="dashboard-card p-6 text-center border-t-4 border-blue-500 animate-fade-in-up" style="animation-delay: 0.1s;">
-                        <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-2">Overall Average</p>
-                        <p class="text-4xl font-anton text-blue-600">${overallBand}</p>
+                <div class="flex items-center gap-3 mb-6">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 font-inter">Performance Matrix</h2>
+                    <div class="h-px bg-slate-200 flex-1 ml-4 hidden sm:block"></div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6 mb-16">
+                    <div class="bg-gradient-to-br from-indigo-500 to-blue-600 rounded-3xl p-6 text-center text-white shadow-xl shadow-blue-500/20 transform transition-transform hover:-translate-y-1 col-span-2 md:col-span-1 lg:col-span-1 flex flex-col justify-center animate-fade-in-up" style="animation-delay: 0.1s;">
+                        <p class="text-blue-100 text-xs font-bold uppercase tracking-widest mb-2 opacity-80">Overall Band</p>
+                        <p class="text-5xl lg:text-6xl font-anton drop-shadow-md">${overallBand}</p>
                     </div>
-                    <div class="dashboard-card p-6 text-center border-t-4 border-green-500 animate-fade-in-up" style="animation-delay: 0.2s;">
-                        <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-2">Reading Avg</p>
-                        <p class="text-4xl font-anton text-green-600">${avgR}</p>
-                        <p class="text-xs text-gray-400 mt-2">${
+                    
+                    <div class="bg-white rounded-3xl p-6 text-center border border-slate-100 shadow-lg shadow-slate-200/50 hover:border-emerald-200 transition-colors animate-fade-in-up" style="animation-delay: 0.2s;">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center text-lg mb-3"><i class="fas fa-book-open"></i></div>
+                        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Reading</p>
+                        <p class="text-3xl font-anton text-emerald-500 mb-1">${avgR}</p>
+                        <p class="text-[10px] text-slate-400 font-semibold bg-slate-50 px-2 py-1 rounded-md inline-block">${
                           rResults.length
-                        } Tests Taken</p>
+                        } Tests</p>
                     </div>
-                    <div class="dashboard-card p-6 text-center border-t-4 border-yellow-500 animate-fade-in-up" style="animation-delay: 0.3s;">
-                        <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-2">Listening Avg</p>
-                        <p class="text-4xl font-anton text-yellow-500">${avgL}</p>
-                        <p class="text-xs text-gray-400 mt-2">${
+
+                    <div class="bg-white rounded-3xl p-6 text-center border border-slate-100 shadow-lg shadow-slate-200/50 hover:border-amber-200 transition-colors animate-fade-in-up" style="animation-delay: 0.3s;">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-amber-50 text-amber-500 flex items-center justify-center text-lg mb-3"><i class="fas fa-headphones"></i></div>
+                        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Listening</p>
+                        <p class="text-3xl font-anton text-amber-500 mb-1">${avgL}</p>
+                        <p class="text-[10px] text-slate-400 font-semibold bg-slate-50 px-2 py-1 rounded-md inline-block">${
                           lResults.length
-                        } Tests Taken</p>
+                        } Tests</p>
                     </div>
-                    <div class="dashboard-card p-6 text-center border-t-4 border-purple-500 animate-fade-in-up" style="animation-delay: 0.4s;">
-                        <p class="text-gray-500 text-sm font-semibold uppercase tracking-wider mb-2">Writing Avg</p>
-                        <p class="text-4xl font-anton text-purple-600">${avgW}</p>
-                        <p class="text-xs text-gray-400 mt-2">${
+
+                    <div class="bg-white rounded-3xl p-6 text-center border border-slate-100 shadow-lg shadow-slate-200/50 hover:border-purple-200 transition-colors animate-fade-in-up" style="animation-delay: 0.4s;">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-purple-50 text-purple-500 flex items-center justify-center text-lg mb-3"><i class="fas fa-pen-nib"></i></div>
+                        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Writing</p>
+                        <p class="text-3xl font-anton text-purple-500 mb-1">${avgW}</p>
+                        <p class="text-[10px] text-slate-400 font-semibold bg-slate-50 px-2 py-1 rounded-md inline-block">${
                           wResults.length
-                        } Tests Reviewed</p>
+                        } Tests</p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-6 text-center border border-slate-100 shadow-lg shadow-slate-200/50 hover:border-fuchsia-200 transition-colors animate-fade-in-up" style="animation-delay: 0.5s;">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-fuchsia-50 text-fuchsia-500 flex items-center justify-center text-lg mb-3"><i class="fas fa-microphone-alt"></i></div>
+                        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Speaking</p>
+                        <p class="text-3xl font-anton text-fuchsia-500 mb-1">${avgS}</p>
+                        <p class="text-[10px] text-slate-400 font-semibold bg-slate-50 px-2 py-1 rounded-md inline-block">${
+                          sResults.length
+                        } Tests</p>
                     </div>
                 </div>
 
-                <!-- Separated Reading Table -->
-                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Reading Mock Tests</h2>
-                <div class="recent-activity-table-container dashboard-card mb-4 animate-fade-in-up" style="animation-delay: 0.5s;">
-                    <table class="recent-activity-table">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col">Date</th>
-                                <th scope="col">Test Title</th>
-                                <th scope="col">Band Score</th>
-                                <th scope="col">Time Taken</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            ${(() => {
-                              const {
-                                readingResults,
-                                readingHistoryPage,
-                                historyItemsPerPage,
-                              } = dashboardState;
-                              const startIndex =
-                                (readingHistoryPage - 1) * historyItemsPerPage;
-                              const endIndex = startIndex + historyItemsPerPage;
-                              const paginatedResults = readingResults.slice(
-                                startIndex,
-                                endIndex,
-                              );
+                <!-- READING MODULE LIST -->
+                <div class="mb-12">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fas fa-book-open"></i></div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 font-inter">Reading History</h2>
+                    </div>
+                    <div class="flex flex-col gap-3 animate-fade-in-up" style="animation-delay: 0.2s;">
+                        ${(() => {
+                          const {
+                            readingResults,
+                            readingHistoryPage,
+                            historyItemsPerPage,
+                          } = dashboardState;
+                          const startIndex =
+                            (readingHistoryPage - 1) * historyItemsPerPage;
+                          const endIndex = startIndex + historyItemsPerPage;
+                          const paginatedResults = readingResults.slice(
+                            startIndex,
+                            endIndex,
+                          );
 
-                              if (paginatedResults.length > 0) {
-                                return paginatedResults
-                                  .map((result) => {
-                                    const date = result.timestamp
-                                      ? new Date(
-                                          result.timestamp.toDate(),
-                                        ).toLocaleDateString()
-                                      : "N/A";
-                                    return `
-                                        <tr>
-                                            <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
-                                            <td class="whitespace-nowrap text-sm text-gray-900">${
-                                              result.testTitle || "N/A"
-                                            }</td>
-                                            <td class="whitespace-nowrap text-sm text-gray-900 font-bold text-green-600">${
-                                              result.bandScore
-                                            }</td>
-                                            <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
-                                              result.timeTakenSeconds,
-                                            )}</td>
-                                            <td class="whitespace-nowrap text-right text-sm font-medium">
+                          if (paginatedResults.length > 0) {
+                            return paginatedResults
+                              .map((result) => {
+                                const date = result.timestamp
+                                  ? new Date(
+                                      result.timestamp.toDate(),
+                                    ).toLocaleDateString()
+                                  : "N/A";
+                                return `
+                                        <div class="group flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all relative overflow-hidden">
+                                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-emerald-400 rounded-l-2xl transform origin-left scale-y-0 group-hover:scale-y-100 transition-transform"></div>
+                                            <div class="flex flex-col sm:flex-row sm:items-center gap-4 pl-3 mb-4 sm:mb-0">
+                                                <div>
+                                                    <h4 class="text-slate-800 font-bold text-lg leading-tight group-hover:text-emerald-600 transition-colors">${
+                                                      result.testTitle ||
+                                                      "Mock Test"
+                                                    }</h4>
+                                                    <div class="flex items-center gap-3 text-xs font-semibold text-slate-400 mt-1.5">
+                                                        <span class="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded-md border border-slate-100"><i class="far fa-calendar-alt"></i> ${date}</span>
+                                                        <span class="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded-md border border-slate-100"><i class="far fa-clock"></i> ${formatTime(
+                                                          result.timeTakenSeconds,
+                                                        )}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto pl-3 sm:pl-0 border-t sm:border-t-0 pt-4 sm:pt-0 border-slate-100">
+                                                <div class="text-left sm:text-right">
+                                                    <div class="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest mb-0.5">Band Score</div>
+                                                    <div class="text-2xl font-black text-emerald-500">${
+                                                      result.bandScore
+                                                    }</div>
+                                                </div>
                                                 <a href="mock-test?module=${
                                                   result.moduleId
                                                 }&test=${result.testId}&score=${
-                                      result.correctAnswers
-                                    }&total=${result.totalQuestions}&band=${
-                                      result.bandScore
-                                    }&time=${
-                                      result.timeTakenSeconds
-                                    }" class="text-blue-600 hover:text-blue-900">View Results</a>
-                                            </td>
-                                        </tr>`;
-                                  })
-                                  .join("");
-                              } else {
-                                return `<tr class="no-data-row"><td colspan="5" class="py-12 text-lg text-gray-500">No reading test history available.</td></tr>`;
-                              }
-                            })()}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="flex justify-center mt-2 mb-12">
-                    ${renderPaginationControls(
-                      dashboardState.readingHistoryPage,
-                      Math.ceil(
-                        dashboardState.readingResults.length /
-                          dashboardState.historyItemsPerPage,
-                      ),
-                      "readingHistory",
-                    )}
+                                  result.correctAnswers
+                                }&total=${result.totalQuestions}&band=${
+                                  result.bandScore
+                                }&time=${
+                                  result.timeTakenSeconds
+                                }" class="w-10 h-10 rounded-full bg-slate-50 hover:bg-emerald-500 text-slate-400 hover:text-white flex items-center justify-center transition-all shadow-sm group-hover:scale-110 flex-shrink-0">
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>`;
+                              })
+                              .join("");
+                          } else {
+                            return `
+                                    <div class="bg-slate-50 rounded-2xl border border-dashed border-slate-200 p-8 flex flex-col items-center justify-center text-center">
+                                        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-300 flex items-center justify-center text-2xl mb-3"><i class="fas fa-folder-open"></i></div>
+                                        <p class="text-slate-500 font-medium">No reading history available yet.</p>
+                                        <a href="mock-test-home?module=reading" class="mt-3 text-sm text-emerald-500 font-bold hover:underline">Start a Reading Test</a>
+                                    </div>`;
+                          }
+                        })()}
+                    </div>
+                    <div class="flex justify-center mt-6">
+                        ${renderPaginationControls(
+                          dashboardState.readingHistoryPage,
+                          Math.ceil(
+                            dashboardState.readingResults.length /
+                              dashboardState.historyItemsPerPage,
+                          ),
+                          "readingHistory",
+                        )}
+                    </div>
                 </div>
 
-                <!-- Separated Listening Table -->
-                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Listening Mock Tests</h2>
-                <div class="recent-activity-table-container dashboard-card mb-4 animate-fade-in-up" style="animation-delay: 0.6s;">
-                    <table class="recent-activity-table">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col">Date</th>
-                                <th scope="col">Test Title</th>
-                                <th scope="col">Band Score</th>
-                                <th scope="col">Time Taken</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            ${(() => {
-                              const {
-                                listeningResults,
-                                listeningHistoryPage,
-                                historyItemsPerPage,
-                              } = dashboardState;
-                              const startIndex =
-                                (listeningHistoryPage - 1) *
-                                historyItemsPerPage;
-                              const endIndex = startIndex + historyItemsPerPage;
-                              const paginatedResults = listeningResults.slice(
-                                startIndex,
-                                endIndex,
-                              );
+                <!-- LISTENING MODULE LIST -->
+                <div class="mb-12">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center"><i class="fas fa-headphones"></i></div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 font-inter">Listening History</h2>
+                    </div>
+                    <div class="flex flex-col gap-3 animate-fade-in-up" style="animation-delay: 0.3s;">
+                        ${(() => {
+                          const {
+                            listeningResults,
+                            listeningHistoryPage,
+                            historyItemsPerPage,
+                          } = dashboardState;
+                          const startIndex =
+                            (listeningHistoryPage - 1) * historyItemsPerPage;
+                          const endIndex = startIndex + historyItemsPerPage;
+                          const paginatedResults = listeningResults.slice(
+                            startIndex,
+                            endIndex,
+                          );
 
-                              if (paginatedResults.length > 0) {
-                                return paginatedResults
-                                  .map((result) => {
-                                    const date = result.timestamp
-                                      ? new Date(
-                                          result.timestamp.toDate(),
-                                        ).toLocaleDateString()
-                                      : "N/A";
-                                    return `
-                                        <tr>
-                                            <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
-                                            <td class="whitespace-nowrap text-sm text-gray-900">${
-                                              result.testTitle || "N/A"
-                                            }</td>
-                                            <td class="whitespace-nowrap text-sm text-gray-900 font-bold text-yellow-600">${
-                                              result.bandScore
-                                            }</td>
-                                            <td class="whitespace-nowrap text-sm text-gray-900">${formatTime(
-                                              result.timeTakenSeconds,
-                                            )}</td>
-                                            <td class="whitespace-nowrap text-right text-sm font-medium">
+                          if (paginatedResults.length > 0) {
+                            return paginatedResults
+                              .map((result) => {
+                                const date = result.timestamp
+                                  ? new Date(
+                                      result.timestamp.toDate(),
+                                    ).toLocaleDateString()
+                                  : "N/A";
+                                return `
+                                        <div class="group flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-amber-200 transition-all relative overflow-hidden">
+                                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-amber-400 rounded-l-2xl transform origin-left scale-y-0 group-hover:scale-y-100 transition-transform"></div>
+                                            <div class="flex flex-col sm:flex-row sm:items-center gap-4 pl-3 mb-4 sm:mb-0">
+                                                <div>
+                                                    <h4 class="text-slate-800 font-bold text-lg leading-tight group-hover:text-amber-500 transition-colors">${
+                                                      result.testTitle ||
+                                                      "Mock Test"
+                                                    }</h4>
+                                                    <div class="flex items-center gap-3 text-xs font-semibold text-slate-400 mt-1.5">
+                                                        <span class="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded-md border border-slate-100"><i class="far fa-calendar-alt"></i> ${date}</span>
+                                                        <span class="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded-md border border-slate-100"><i class="far fa-clock"></i> ${formatTime(
+                                                          result.timeTakenSeconds,
+                                                        )}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto pl-3 sm:pl-0 border-t sm:border-t-0 pt-4 sm:pt-0 border-slate-100">
+                                                <div class="text-left sm:text-right">
+                                                    <div class="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest mb-0.5">Band Score</div>
+                                                    <div class="text-2xl font-black text-amber-500">${
+                                                      result.bandScore
+                                                    }</div>
+                                                </div>
                                                 <a href="mock-test?module=${
                                                   result.moduleId
                                                 }&test=${result.testId}&score=${
-                                      result.correctAnswers
-                                    }&total=${result.totalQuestions}&band=${
-                                      result.bandScore
-                                    }&time=${
-                                      result.timeTakenSeconds
-                                    }" class="text-blue-600 hover:text-blue-900">View Results</a>
-                                            </td>
-                                        </tr>`;
-                                  })
-                                  .join("");
-                              } else {
-                                return `<tr class="no-data-row"><td colspan="5" class="py-12 text-lg text-gray-500">No listening test history available.</td></tr>`;
-                              }
-                            })()}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="flex justify-center mt-2 mb-12">
-                    ${renderPaginationControls(
-                      dashboardState.listeningHistoryPage,
-                      Math.ceil(
-                        dashboardState.listeningResults.length /
-                          dashboardState.historyItemsPerPage,
-                      ),
-                      "listeningHistory",
-                    )}
+                                  result.correctAnswers
+                                }&total=${result.totalQuestions}&band=${
+                                  result.bandScore
+                                }&time=${
+                                  result.timeTakenSeconds
+                                }" class="w-10 h-10 rounded-full bg-slate-50 hover:bg-amber-500 text-slate-400 hover:text-white flex items-center justify-center transition-all shadow-sm group-hover:scale-110 flex-shrink-0">
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>`;
+                              })
+                              .join("");
+                          } else {
+                            return `
+                                    <div class="bg-slate-50 rounded-2xl border border-dashed border-slate-200 p-8 flex flex-col items-center justify-center text-center">
+                                        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-300 flex items-center justify-center text-2xl mb-3"><i class="fas fa-folder-open"></i></div>
+                                        <p class="text-slate-500 font-medium">No listening history available yet.</p>
+                                        <a href="mock-test-home?module=listening" class="mt-3 text-sm text-amber-500 font-bold hover:underline">Start a Listening Test</a>
+                                    </div>`;
+                          }
+                        })()}
+                    </div>
+                    <div class="flex justify-center mt-6">
+                        ${renderPaginationControls(
+                          dashboardState.listeningHistoryPage,
+                          Math.ceil(
+                            dashboardState.listeningResults.length /
+                              dashboardState.historyItemsPerPage,
+                          ),
+                          "listeningHistory",
+                        )}
+                    </div>
                 </div>
 
-                <!-- Writing Submissions -->
-                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 font-inter text-left mb-6">Writing Test Submissions</h2>
-                <div class="recent-activity-table-container dashboard-card animate-fade-in-up" style="animation-delay: 0.7s;">
-                    <table class="recent-activity-table">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col">Date</th>
-                                <th scope="col">Test Title</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Band Score</th>
-                                <th scope="col">Feedback</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            ${(() => {
-                              const {
-                                writingResults,
-                                fullWritingHistoryPage,
-                                historyItemsPerPage,
-                              } = dashboardState;
-                              const startIndex =
-                                (fullWritingHistoryPage - 1) *
-                                historyItemsPerPage;
-                              const endIndex = startIndex + historyItemsPerPage;
-                              const paginatedResults = writingResults.slice(
-                                startIndex,
-                                endIndex,
-                              );
+                <!-- WRITING MODULE LIST -->
+                <div class="mb-12">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center"><i class="fas fa-pen-nib"></i></div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 font-inter">Writing Submissions</h2>
+                    </div>
+                    <div class="flex flex-col gap-3 animate-fade-in-up" style="animation-delay: 0.4s;">
+                        ${(() => {
+                          const {
+                            writingResults,
+                            fullWritingHistoryPage,
+                            historyItemsPerPage,
+                          } = dashboardState;
+                          const startIndex =
+                            (fullWritingHistoryPage - 1) * historyItemsPerPage;
+                          const endIndex = startIndex + historyItemsPerPage;
+                          const paginatedResults = writingResults.slice(
+                            startIndex,
+                            endIndex,
+                          );
 
-                              if (paginatedResults.length > 0) {
-                                return paginatedResults
-                                  .map((result) => {
-                                    const date = result.submittedAt
-                                      ? new Date(
-                                          result.submittedAt.toDate(),
-                                        ).toLocaleDateString()
-                                      : "N/A";
-                                    const isReviewed =
-                                      result.status === "reviewed";
-                                    const statusBadge = isReviewed
-                                      ? '<span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">Reviewed</span>'
-                                      : '<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold">Pending Review</span>';
-                                    const scoreDisplay = isReviewed
-                                      ? `<span class="font-bold text-purple-600">${result.bandScore}</span>`
-                                      : `<span class="text-gray-400">N/A</span>`;
+                          if (paginatedResults.length > 0) {
+                            return paginatedResults
+                              .map((result) => {
+                                const date = result.submittedAt
+                                  ? new Date(
+                                      result.submittedAt.toDate(),
+                                    ).toLocaleDateString()
+                                  : "N/A";
+                                const isReviewed = result.status === "reviewed";
 
-                                    // Properly escaped string parameter for showMessageModal
-                                    const feedbackDisplay =
-                                      isReviewed && result.feedback
-                                        ? `<button onclick="showMessageModal('Expert Feedback', \`${result.feedback
-                                            .replace(/`/g, "'")
-                                            .replace(
-                                              /\n/g,
-                                              "<br>",
-                                            )}\`)" class="text-blue-600 hover:text-blue-900 text-sm font-medium"><i class="fas fa-comment-dots mr-1"></i> Read</button>`
-                                        : `<span class="text-gray-400 text-sm">Awaiting</span>`;
+                                const statusBadge = isReviewed
+                                  ? '<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded border border-emerald-200 text-[10px] font-extrabold uppercase tracking-widest"><i class="fas fa-check-double mr-1"></i> Evaluated</span>'
+                                  : '<span class="bg-amber-100 text-amber-700 px-2.5 py-1 rounded border border-amber-200 text-[10px] font-extrabold uppercase tracking-widest"><i class="fas fa-hourglass-half mr-1 animate-pulse"></i> Pending Review</span>';
 
-                                    return `
-                                        <tr>
-                                            <td class="whitespace-nowrap text-sm text-gray-900">${date}</td>
-                                            <td class="whitespace-nowrap text-sm text-gray-900">${
-                                              result.testTitle || "N/A"
-                                            }</td>
-                                            <td class="whitespace-nowrap text-sm text-gray-900">${statusBadge}</td>
-                                            <td class="whitespace-nowrap text-sm text-gray-900">${scoreDisplay}</td>
-                                            <td class="whitespace-nowrap text-sm text-gray-900">${feedbackDisplay}</td>
-                                        </tr>`;
-                                  })
-                                  .join("");
-                              } else {
-                                return `<tr class="no-data-row"><td colspan="5" class="py-12 text-lg text-gray-500">No writing submissions available.</td></tr>`;
-                              }
-                            })()}
-                        </tbody>
-                    </table>
+                                const scoreDisplay = isReviewed
+                                  ? `<div class="text-2xl font-black text-purple-600">${result.bandScore}</div>`
+                                  : `<div class="text-sm font-bold text-slate-300 mt-2">N/A</div>`;
+
+                                const feedbackAction =
+                                  isReviewed && result.feedback
+                                    ? `<button onclick="showMessageModal('Expert Feedback', \`${result.feedback
+                                        .replace(/`/g, "'")
+                                        .replace(
+                                          /\n/g,
+                                          "<br>",
+                                        )}\`)" class="w-10 h-10 rounded-full bg-slate-50 hover:bg-purple-600 text-slate-400 hover:text-white flex items-center justify-center transition-all shadow-sm group-hover:scale-110 flex-shrink-0" title="Read Feedback"><i class="fas fa-comment-dots"></i></button>`
+                                    : `<div class="w-10 h-10 rounded-full bg-slate-50 text-slate-300 flex items-center justify-center flex-shrink-0 cursor-not-allowed" title="Feedback not ready"><i class="fas fa-clock"></i></div>`;
+
+                                return `
+                                        <div class="group flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-purple-200 transition-all relative overflow-hidden">
+                                            <div class="absolute left-0 top-0 bottom-0 w-1.5 ${
+                                              isReviewed
+                                                ? "bg-purple-500"
+                                                : "bg-slate-300"
+                                            } rounded-l-2xl transform origin-left scale-y-0 group-hover:scale-y-100 transition-transform"></div>
+                                            <div class="flex flex-col sm:flex-row sm:items-center gap-4 pl-3 mb-4 sm:mb-0">
+                                                <div>
+                                                    <div class="flex items-center gap-3 mb-1.5">
+                                                        <h4 class="text-slate-800 font-bold text-lg leading-tight group-hover:text-purple-600 transition-colors">${
+                                                          result.testTitle ||
+                                                          "Writing Test"
+                                                        }</h4>
+                                                        ${statusBadge}
+                                                    </div>
+                                                    <div class="flex items-center gap-3 text-xs font-semibold text-slate-400 mt-1">
+                                                        <span class="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded-md border border-slate-100"><i class="far fa-calendar-alt"></i> ${date}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto pl-3 sm:pl-0 border-t sm:border-t-0 pt-4 sm:pt-0 border-slate-100">
+                                                <div class="text-left sm:text-right">
+                                                    <div class="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest mb-0.5">Band Score</div>
+                                                    ${scoreDisplay}
+                                                </div>
+                                                ${feedbackAction}
+                                            </div>
+                                        </div>`;
+                              })
+                              .join("");
+                          } else {
+                            return `
+                                    <div class="bg-slate-50 rounded-2xl border border-dashed border-slate-200 p-8 flex flex-col items-center justify-center text-center">
+                                        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-300 flex items-center justify-center text-2xl mb-3"><i class="fas fa-pen-nib"></i></div>
+                                        <p class="text-slate-500 font-medium">No writing history available yet.</p>
+                                        <a href="mock-test-home?module=writing" class="mt-3 text-sm text-purple-500 font-bold hover:underline">Start a Writing Test</a>
+                                    </div>`;
+                          }
+                        })()}
+                    </div>
+                    <div class="flex justify-center mt-6">
+                        ${renderPaginationControls(
+                          dashboardState.fullWritingHistoryPage,
+                          Math.ceil(
+                            dashboardState.writingResults.length /
+                              dashboardState.historyItemsPerPage,
+                          ),
+                          "fullWritingHistory",
+                        )}
+                    </div>
                 </div>
-                <div class="flex justify-center mt-2 pb-16">
-                    ${renderPaginationControls(
-                      dashboardState.fullWritingHistoryPage,
-                      Math.ceil(
-                        dashboardState.writingResults.length /
-                          dashboardState.historyItemsPerPage,
-                      ),
-                      "fullWritingHistory",
-                    )}
+
+                <!-- SPEAKING MODULE LIST (NEW!) -->
+                <div class="mb-16">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 rounded-lg bg-fuchsia-100 text-fuchsia-600 flex items-center justify-center"><i class="fas fa-microphone-alt"></i></div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800 font-inter">Speaking Requests & Results</h2>
+                    </div>
+                    <div class="flex flex-col gap-3 animate-fade-in-up" style="animation-delay: 0.5s;">
+                        ${(() => {
+                          const {
+                            speakingResults,
+                            speakingHistoryPage,
+                            historyItemsPerPage,
+                          } = dashboardState;
+                          const startIndex =
+                            (speakingHistoryPage - 1) * historyItemsPerPage;
+                          const endIndex = startIndex + historyItemsPerPage;
+                          const paginatedResults = speakingResults.slice(
+                            startIndex,
+                            endIndex,
+                          );
+
+                          if (paginatedResults.length > 0) {
+                            return paginatedResults
+                              .map((result) => {
+                                const date = result.submittedAt
+                                  ? new Date(
+                                      result.submittedAt.toDate(),
+                                    ).toLocaleDateString()
+                                  : "N/A";
+                                const isReviewed =
+                                  result.status === "reviewed" ||
+                                  result.status === "completed";
+
+                                let statusBadge = "";
+                                if (isReviewed) {
+                                  statusBadge =
+                                    '<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded border border-emerald-200 text-[10px] font-extrabold uppercase tracking-widest"><i class="fas fa-check-double mr-1"></i> Evaluated</span>';
+                                } else if (result.status === "confirmed") {
+                                  statusBadge =
+                                    '<span class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded border border-blue-200 text-[10px] font-extrabold uppercase tracking-widest"><i class="fas fa-calendar-check mr-1"></i> Scheduled</span>';
+                                } else if (result.status === "cancelled") {
+                                  statusBadge =
+                                    '<span class="bg-red-100 text-red-700 px-2.5 py-1 rounded border border-red-200 text-[10px] font-extrabold uppercase tracking-widest"><i class="fas fa-times-circle mr-1"></i> Cancelled</span>';
+                                } else {
+                                  statusBadge =
+                                    '<span class="bg-amber-100 text-amber-700 px-2.5 py-1 rounded border border-amber-200 text-[10px] font-extrabold uppercase tracking-widest"><i class="fas fa-hourglass-half mr-1 animate-pulse"></i> Pending</span>';
+                                }
+
+                                const scoreDisplay = isReviewed
+                                  ? `<div class="text-2xl font-black text-fuchsia-500">${result.bandScore}</div>`
+                                  : `<div class="text-sm font-bold text-slate-300 mt-2">N/A</div>`;
+
+                                // Build comprehensive feedback modal if evaluated
+                                let feedbackHtml = "No feedback provided.";
+                                if (isReviewed) {
+                                  feedbackHtml = `
+                                            <div class='mb-4 flex gap-4 text-xs font-bold text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-100'>
+                                                <div>FC: <span class='text-fuchsia-600 text-sm ml-1'>${
+                                                  result.fcScore || "-"
+                                                }</span></div>
+                                                <div>LR: <span class='text-fuchsia-600 text-sm ml-1'>${
+                                                  result.lrScore || "-"
+                                                }</span></div>
+                                                <div>GRA: <span class='text-fuchsia-600 text-sm ml-1'>${
+                                                  result.graScore || "-"
+                                                }</span></div>
+                                                <div>PR: <span class='text-fuchsia-600 text-sm ml-1'>${
+                                                  result.prScore || "-"
+                                                }</span></div>
+                                            </div>
+                                            <div class='text-sm text-slate-700 leading-relaxed'>${
+                                              result.feedback
+                                                ? result.feedback
+                                                    .replace(/`/g, "'")
+                                                    .replace(/\n/g, "<br>")
+                                                : "Good effort."
+                                            }</div>
+                                        `;
+                                }
+
+                                const feedbackAction = isReviewed
+                                  ? `<button onclick="showMessageModal('Speaking Evaluation', \`${feedbackHtml}\`)" class="w-10 h-10 rounded-full bg-slate-50 hover:bg-fuchsia-500 text-slate-400 hover:text-white flex items-center justify-center transition-all shadow-sm group-hover:scale-110 flex-shrink-0" title="Read Feedback"><i class="fas fa-comment-dots"></i></button>`
+                                  : `<div class="w-10 h-10 rounded-full bg-slate-50 text-slate-300 flex items-center justify-center flex-shrink-0 cursor-not-allowed" title="Evaluation not ready"><i class="fas fa-clock"></i></div>`;
+
+                                return `
+                                        <div class="group flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-fuchsia-200 transition-all relative overflow-hidden">
+                                            <div class="absolute left-0 top-0 bottom-0 w-1.5 ${
+                                              isReviewed
+                                                ? "bg-fuchsia-400"
+                                                : "bg-slate-300"
+                                            } rounded-l-2xl transform origin-left scale-y-0 group-hover:scale-y-100 transition-transform"></div>
+                                            <div class="flex flex-col sm:flex-row sm:items-center gap-4 pl-3 mb-4 sm:mb-0">
+                                                <div>
+                                                    <div class="flex items-center gap-3 mb-1.5">
+                                                        <h4 class="text-slate-800 font-bold text-lg leading-tight group-hover:text-fuchsia-500 transition-colors">${
+                                                          result.testTitle ||
+                                                          "Speaking Mock Test"
+                                                        }</h4>
+                                                        ${statusBadge}
+                                                    </div>
+                                                    <div class="flex items-center gap-3 text-xs font-semibold text-slate-400 mt-1">
+                                                        <span class="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded-md border border-slate-100"><i class="far fa-calendar-alt"></i> ${date}</span>
+                                                        <span class="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded-md border border-slate-100"><i class="far fa-clock"></i> ${
+                                                          result.preferredDate ||
+                                                          "N/A"
+                                                        } at ${
+                                  result.preferredTime || ""
+                                }</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto pl-3 sm:pl-0 border-t sm:border-t-0 pt-4 sm:pt-0 border-slate-100">
+                                                <div class="text-left sm:text-right">
+                                                    <div class="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest mb-0.5">Overall Band</div>
+                                                    ${scoreDisplay}
+                                                </div>
+                                                ${feedbackAction}
+                                            </div>
+                                        </div>`;
+                              })
+                              .join("");
+                          } else {
+                            return `
+                                    <div class="bg-slate-50 rounded-2xl border border-dashed border-slate-200 p-8 flex flex-col items-center justify-center text-center">
+                                        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-300 flex items-center justify-center text-2xl mb-3"><i class="fas fa-microphone-alt"></i></div>
+                                        <p class="text-slate-500 font-medium">No speaking requests found.</p>
+                                        <a href="mock-test-home?module=speaking" class="mt-3 text-sm text-fuchsia-500 font-bold hover:underline">Request a Session</a>
+                                    </div>`;
+                          }
+                        })()}
+                    </div>
+                    <div class="flex justify-center mt-6">
+                        ${renderPaginationControls(
+                          dashboardState.speakingHistoryPage,
+                          Math.ceil(
+                            dashboardState.speakingResults.length /
+                              dashboardState.historyItemsPerPage,
+                          ),
+                          "speakingHistory",
+                        )}
+                    </div>
                 </div>
+
             </section>
         `;
       }
-
       /**
        * Renders the Progress Tracking view.
        * (Placeholder for now, could expand with more detailed charts/goals)
@@ -4503,6 +4872,11 @@
               dataArray = dashboardState.writingResults;
               itemsPerPageState = "historyItemsPerPage";
               break;
+            case "speakingHistory":
+              stateKey = "speakingHistoryPage";
+              dataArray = dashboardState.speakingResults;
+              itemsPerPageState = "historyItemsPerPage";
+              break;
             case "global":
               stateKey = "globalLeaderboardCurrentPage";
               dataArray = dashboardState.globalLeaderboard;
@@ -4775,6 +5149,35 @@
           );
           dashboardState.unsubscribeAll.push(unsubscribeWritingResults);
 
+          // Listener for user's speaking submissions
+          const speakingResultsRef = collection(
+            authAppState.db,
+            `artifacts/${appId}/public/data/speakingSubmissions`,
+          );
+          const speakingQuery = query(
+            speakingResultsRef,
+            where("userId", "==", dashboardState.userId),
+          );
+
+          const unsubscribeSpeakingResults = onSnapshot(
+            speakingQuery,
+            (snapshot) => {
+              const results = [];
+              snapshot.forEach((doc) => {
+                results.push({ id: doc.id, ...doc.data() });
+              });
+              results.sort(
+                (a, b) =>
+                  (b.submittedAt?.toDate() || 0) -
+                  (a.submittedAt?.toDate() || 0),
+              );
+              dashboardState.speakingResults = results;
+              renderApp(); // Re-render to update the speaking interface
+            },
+            (error) => console.error("Error fetching speaking results:", error),
+          );
+          dashboardState.unsubscribeAll.push(unsubscribeSpeakingResults);
+
           // Listener for global leaderboard (no real-time updates needed, can be fetched on demand)
           // For a truly world-class app, this might be a cloud function that aggregates data.
           // For now, we'll fetch it when the leaderboard view is rendered.
@@ -4797,42 +5200,59 @@
                 authAppState.db,
                 `artifacts/${appId}/users/${user.uid}/userProfile/profile`,
               );
-              const userProfileSnap = await getDoc(userProfileRef);
 
-              if (userProfileSnap.exists()) {
-                dashboardState.userProfile = {
-                  ...userProfileSnap.data(),
-                };
-              } else {
-                // Create a default profile with a name if it doesn't exist
-                const defaultProfile = {
-                  name:
-                    user.displayName ||
-                    user.email?.split("@")[0] ||
-                    `User-${user.uid.substring(0, 5)}`,
-                  bandGoal: "", // Initialize band goal
-                };
-                await setDoc(userProfileRef, defaultProfile);
-                dashboardState.userProfile = defaultProfile;
-              }
+              // 1. Fetch Profile Data separately so we don't block other calls
+              const profilePromise = getDoc(userProfileRef).then(
+                async (userProfileSnap) => {
+                  if (userProfileSnap.exists()) {
+                    dashboardState.userProfile = { ...userProfileSnap.data() };
+                  } else {
+                    const defaultProfile = {
+                      name:
+                        user.displayName ||
+                        user.email?.split("@")[0] ||
+                        `User-${user.uid.substring(0, 5)}`,
+                      bandGoal: "",
+                    };
+                    await setDoc(userProfileRef, defaultProfile);
+                    dashboardState.userProfile = defaultProfile;
+                  }
+                  // Non-blocking update
+                  updateDoc(userProfileRef, {
+                    lastLogin: serverTimestamp(),
+                  }).catch(console.error);
+                },
+              );
 
-              // Update last login timestamp
-              await updateDoc(userProfileRef, { lastLogin: serverTimestamp() });
+              // 2. Fetch Core Personal Data in Parallel to massively speed up loading
+              await Promise.all([
+                profilePromise,
+                fetchUserGameStats(user.uid),
+                fetchQuizResults(user.uid),
+                fetchMockTestResults(user.uid),
+                fetchWritingResults(user.uid),
+                fetchSpeakingResults(user.uid),
+              ]);
+
+              // 3. Defer Heavy Leaderboard Fetches (Don't await them here)
+              // They will populate transparently in the background, making the dashboard load instantly
+              fetchDailyLeaderboardData(user.uid).then(() => {
+                if (
+                  dashboardState.currentView === "dashboard" ||
+                  dashboardState.currentView === "dailyLeaderboard"
+                )
+                  renderApp();
+              });
+              fetchGlobalLeaderboard().then(() => {
+                if (
+                  dashboardState.currentView === "dashboard" ||
+                  dashboardState.currentView === "globalLeaderboard"
+                )
+                  renderApp();
+              });
             } else {
               dashboardState.userId = null;
-              dashboardState.userProfile = null; // Clear user profile if signed out
-            }
-
-            // Fetch game stats, quiz results, and daily rank only if a user is present
-            if (dashboardState.userId) {
-              await fetchUserGameStats(dashboardState.userId);
-              await fetchQuizResults(dashboardState.userId);
-              await fetchMockTestResults(dashboardState.userId);
-              await fetchWritingResults(dashboardState.userId); // Added
-              await fetchDailyLeaderboardData(dashboardState.userId); // Fetch full daily leaderboard data
-              await fetchGlobalLeaderboard(); // Fetch global leaderboard on load
-            } else {
-              // Clear data if no user is signed in
+              dashboardState.userProfile = null;
               dashboardState.userGameStats = {
                 totalPoints: 0,
                 level: 1,
@@ -4841,18 +5261,18 @@
               };
               dashboardState.quizResults = [];
               dashboardState.mockTestResults = [];
-              dashboardState.writingResults = []; // Added
-              dashboardState.dailyLeaderboardData = []; // Clear daily leaderboard data
+              dashboardState.writingResults = [];
+              dashboardState.dailyLeaderboardData = [];
               dashboardState.dailyLeaderboardRank = null;
               dashboardState.globalLeaderboard = [];
             }
 
-            processDashboardData(); // Process data (will be empty if no user)
+            processDashboardData();
             processMockTestData();
-            setupFirestoreListeners(); // Setup listeners (will be no-op if no userId)
+            setupFirestoreListeners();
 
             dashboardState.isLoading = false;
-            renderApp(); // Render the app after data is processed
+            renderApp(); // Render the core app immediately without waiting for leaderboards
           });
         } catch (error) {
           console.error("Failed to initialize Firebase in dashboard:", error);

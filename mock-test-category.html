@@ -59,32 +59,6 @@
       content="https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
     />
 
-    <!-- Structured Data / JSON-LD for Google -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Free IELTS Mock Tests Online | Computer-Delivered Practice",
-        "description": "Access full-length IELTS mock tests simulating the real exam environment. Get assessed for Reading, Writing, Listening, and Speaking.",
-        "url": "https://ieltsmahir.com/mock-test-home",
-        "inLanguage": "en",
-        "publisher": {
-          "@type": "EducationalOrganization",
-          "name": "IELTS Mahir",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://ieltsmahir.com/assets/Ielts-mahir-fav.png"
-          }
-        },
-        "about": {
-          "@type": "EducationalOccupationalProgram",
-          "educationalCredentialAwarded": "IELTS Band Score",
-          "name": "IELTS Mock Tests & Practice"
-        }
-      }
-    </script>
-    <!-- === END SUPREME MOCK TEST SEO META TAGS === -->
-
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="test-left-header.css" />
@@ -701,7 +675,7 @@
         .pr-nav {
           position: fixed;
           top: 0;
-          right: -100%;
+          right: -120%; /* Pushed further out to hide the shadow completely */
           width: 100vw;
           max-width: 100%;
           height: 100vh;
@@ -982,39 +956,48 @@
       .stagger-4 {
         animation-delay: 0.4s;
       }
-
       /* Toast Notification */
       .toast {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         padding: 1rem 1.25rem;
         margin-bottom: 1rem;
-        border-radius: 0.75rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-          0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        border-radius: 1rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15),
+          0 8px 10px -6px rgba(0, 0, 0, 0.1);
         opacity: 0;
         transform: translateY(1rem) scale(0.95);
-        transition: all 0.3s ease-out;
-        width: 100%;
-        max-width: 380px;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        width: auto;
+        max-width: 420px;
         font-family: "Inter", sans-serif;
         font-size: 0.925rem;
-        font-weight: 500;
+        font-weight: 600;
+        line-height: 1.5;
+        z-index: 100000;
+        word-break: break-word;
+      }
+      .toast > *:not(.toast-icon) {
+        flex: 1;
+        min-width: 0;
+        white-space: normal !important;
       }
       .toast.show {
         opacity: 1;
         transform: translateY(0) scale(1);
       }
       .toast-success {
-        background-color: #eef2ff;
-        color: #312e81;
+        background-color: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
       }
       .toast-error {
         background-color: #fef2f2;
         color: #991b1b;
+        border: 1px solid #fecaca;
       }
       .toast-icon {
-        margin-right: 0.75rem;
+        margin-right: 0.85rem;
         flex-shrink: 0;
         width: 1.5rem;
         height: 1.5rem;
@@ -1022,10 +1005,11 @@
         align-items: center;
         justify-content: center;
         border-radius: 9999px;
+        margin-top: 0.1rem;
       }
       .toast-success .toast-icon {
-        background-color: #312e81;
-        color: #eef2ff;
+        background-color: #166534;
+        color: #f0fdf4;
       }
       .toast-error .toast-icon {
         background-color: #991b1b;
@@ -1495,7 +1479,216 @@
     ></div>
 
     <!-- Modal Container -->
-    <div id="modal-container"></div>
+    <div id="modal-container">
+      <!-- Speaking Request Modal -->
+      <div
+        id="speaking-request-modal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[10000] hidden flex items-center justify-center p-4"
+      >
+        <div
+          id="speaking-request-content"
+          class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden transform scale-95 opacity-0 transition-all duration-300"
+        >
+          <div
+            class="bg-gradient-to-r from-fuchsia-600 to-purple-700 px-6 py-4 flex justify-between items-center"
+          >
+            <h3 class="text-white font-anton text-2xl uppercase tracking-wide">
+              Request Session
+            </h3>
+            <button
+              onclick="closeSpeakingModal()"
+              class="text-white/80 hover:text-white transition-colors"
+            >
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <form
+            id="speaking-request-form"
+            onsubmit="submitSpeakingRequest(event)"
+            class="p-6 sm:p-8 space-y-4"
+          >
+            <input type="hidden" name="testId" id="spk-modal-test-id" />
+            <input
+              type="hidden"
+              name="testTitle"
+              id="spk-modal-test-title-input"
+            />
+
+            <div
+              class="bg-fuchsia-50 p-4 rounded-xl border border-fuchsia-100 mb-6 text-center"
+            >
+              <span
+                class="text-xs font-bold text-fuchsia-500 uppercase tracking-wider block mb-1"
+                >Target Test</span
+              >
+              <strong
+                id="spk-modal-test-title"
+                class="text-lg text-fuchsia-900 font-anton tracking-wide"
+                >...</strong
+              >
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-500 uppercase mb-1"
+                  >Name</label
+                >
+                <input
+                  type="text"
+                  name="userName"
+                  id="spk-modal-name"
+                  required
+                  class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-500 uppercase mb-1"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  name="userEmail"
+                  id="spk-modal-email"
+                  required
+                  class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-500 uppercase mb-1"
+                  >Preferred Date</label
+                >
+                <input
+                  type="date"
+                  name="preferredDate"
+                  id="spk-modal-date"
+                  required
+                  class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none text-slate-700"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-500 uppercase mb-1"
+                  >Preferred Time</label
+                >
+                <input
+                  type="time"
+                  name="preferredTime"
+                  required
+                  class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none text-slate-700"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-500 uppercase mb-1"
+                  >Platform</label
+                >
+                <select
+                  name="platform"
+                  required
+                  class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none text-slate-700"
+                >
+                  <option value="WhatsApp">WhatsApp Video Call</option>
+                  <option value="Zoom">Zoom</option>
+                  <option value="Skype">Skype</option>
+                  <option value="Google Meet">Google Meet</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-500 uppercase mb-1"
+                  >Platform ID / Number</label
+                >
+                <input
+                  type="text"
+                  name="contactId"
+                  required
+                  placeholder="e.g., +88017..."
+                  class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                class="block text-xs font-bold text-slate-500 uppercase mb-1"
+                >Additional Notes (Optional)</label
+              >
+              <textarea
+                name="notes"
+                rows="2"
+                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none resize-none"
+                placeholder="Any specific requests..."
+              ></textarea>
+            </div>
+
+            <div class="pt-4">
+              <button
+                type="submit"
+                id="spk-submit-btn"
+                class="w-full bg-gradient-to-r from-fuchsia-600 to-purple-700 hover:from-fuchsia-500 hover:to-purple-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-fuchsia-500/30 transition-transform transform active:scale-95 uppercase tracking-wider text-sm"
+              >
+                Submit Request
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Success Modal -->
+      <div
+        id="success-modal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[10005] hidden flex items-center justify-center p-4"
+      >
+        <div
+          id="success-content"
+          class="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden transform scale-95 opacity-0 transition-all duration-300 p-8 text-center relative"
+        >
+          <!-- Decorative Background element -->
+          <div
+            class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70"
+          ></div>
+          <div
+            class="absolute -bottom-24 -left-24 w-48 h-48 bg-teal-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70"
+          ></div>
+
+          <div class="relative z-10">
+            <div
+              class="w-24 h-24 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center text-white text-5xl shadow-[0_10px_25px_rgba(16,185,129,0.4)] mx-auto mb-6 transform hover:scale-110 transition-transform duration-300"
+            >
+              <i class="fas fa-check"></i>
+            </div>
+
+            <h3
+              class="font-anton text-3xl text-slate-800 uppercase tracking-wide mb-3"
+            >
+              Awesome!
+            </h3>
+
+            <p class="text-slate-500 font-medium text-sm leading-relaxed mb-8">
+              Your speaking session request has been submitted successfully. We
+              will review it shortly.
+            </p>
+
+            <button
+              onclick="closeSuccessModal()"
+              class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition-transform transform active:scale-95 uppercase tracking-wider text-sm"
+            >
+              Got it, Thanks!
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="block-location.js"></script>
     <script type="module" src="prevent-test-retake.js"></script>
 
@@ -1514,6 +1707,7 @@
         formatTime,
       } from "./mock-test-data.js";
       import { allWritingTests } from "./writing-test-data.js";
+
       import {
         getFirestore,
         doc,
@@ -1527,10 +1721,125 @@
         getDocs,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+      // Dynamically define Speaking Mock Tests here
+      const allSpeakingTests = Array.from({ length: 15 }, (_, i) => ({
+        id: `spk-test-${i + 1}`,
+        moduleId: "speaking",
+        title: `Speaking Mock Test ${i + 1}`,
+        description:
+          "A complete IELTS Speaking practice test covering all 3 parts.",
+        duration: "15",
+      }));
+
       let db;
       let auth;
       let currentModuleId = null;
       let completedTestIds = [];
+      let speakingSubmissionsMap = {}; // Global map to hold speaking submissions specifically
+      let premiumGrantedAt = null;
+
+      // Make functions globally available to inline HTML elements
+      window.openSpeakingModal = (testId, testTitle) => {
+        if (!authAppState.isAuthReady || !authAppState.userId) {
+          showToast("Please log in to request a speaking session.", "error");
+          return;
+        }
+        document.getElementById("spk-modal-test-id").value = testId;
+        document.getElementById("spk-modal-test-title").textContent = testTitle;
+        document.getElementById("spk-modal-test-title-input").value = testTitle;
+        document.getElementById("spk-modal-name").value =
+          authAppState.userProfile?.name || "";
+        document.getElementById("spk-modal-email").value =
+          authAppState.userProfile?.email || authAppState.user?.email || "";
+
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("spk-modal-date").min = today;
+
+        const modal = document.getElementById("speaking-request-modal");
+        modal.classList.remove("hidden");
+        setTimeout(
+          () =>
+            document
+              .getElementById("speaking-request-content")
+              .classList.remove("scale-95", "opacity-0"),
+          10,
+        );
+      };
+
+      window.closeSpeakingModal = () => {
+        document
+          .getElementById("speaking-request-content")
+          .classList.add("scale-95", "opacity-0");
+        setTimeout(
+          () =>
+            document
+              .getElementById("speaking-request-modal")
+              .classList.add("hidden"),
+          300,
+        );
+      };
+
+      window.closeSuccessModal = () => {
+        document
+          .getElementById("success-content")
+          .classList.add("scale-95", "opacity-0");
+        setTimeout(
+          () =>
+            document.getElementById("success-modal").classList.add("hidden"),
+          300,
+        );
+      };
+
+      window.submitSpeakingRequest = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById("spk-submit-btn");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+        data.userId = authAppState.userId;
+        data.status = "pending";
+
+        try {
+          const appId =
+            typeof __app_id !== "undefined"
+              ? __app_id
+              : "ielts-mahir-community-forum";
+          data.submittedAt = serverTimestamp();
+          await addDoc(
+            collection(
+              db,
+              `artifacts/${appId}/public/data/speakingSubmissions`,
+            ),
+            data,
+          );
+
+          // Close the form modal first
+          window.closeSpeakingModal();
+          e.target.reset();
+
+          // Wait for the form modal to close, then pop up the beautiful success modal
+          setTimeout(() => {
+            const successModal = document.getElementById("success-modal");
+            const successContent = document.getElementById("success-content");
+            successModal.classList.remove("hidden");
+            setTimeout(() => {
+              successContent.classList.remove("scale-95", "opacity-0");
+            }, 10);
+          }, 300);
+
+          // Refresh data to show pending status
+          await fetchCompletedTests(authAppState.userId, "speaking");
+          renderApp();
+        } catch (err) {
+          console.error(err);
+          showToast("Failed to submit request.", "error");
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = "Submit Request";
+        }
+      };
 
       // --- DYNAMIC MODULE THEMES & GRIDS ---
       const gridHtmlTemplate = `
@@ -1645,6 +1954,24 @@
         isPremium: false, // Assume non-premium by default
       };
 
+      async function fetchPremiumDetails(userId) {
+        if (!db || !userId) return;
+        try {
+          const appId =
+            typeof __app_id !== "undefined"
+              ? __app_id
+              : "ielts-mahir-community-forum";
+          const snap = await getDoc(
+            doc(db, `artifacts/${appId}/public/data/premiumUsers/${userId}`),
+          );
+          if (snap.exists()) {
+            premiumGrantedAt = snap.data().grantedAt;
+          }
+        } catch (e) {
+          console.error("Error fetching premium details:", e);
+        }
+      }
+
       async function fetchUserGameStats(userId) {
         if (!db || !userId) return;
         const appId =
@@ -1674,24 +2001,32 @@
             ? __app_id
             : "ielts-mahir-community-forum";
         completedTestIds = [];
+        speakingSubmissionsMap = {};
 
         try {
-          // 1. Check the private mockTestResults collection (Reading, Listening)
-          if (moduleId !== "writing") {
-            const resultsRef = collection(
+          if (moduleId === "speaking") {
+            const submissionsRef = collection(
               db,
-              `artifacts/${appId}/users/${userId}/mockTestResults`,
+              `artifacts/${appId}/public/data/speakingSubmissions`,
             );
-            const q1 = query(resultsRef, where("moduleId", "==", moduleId));
-            const snap1 = await getDocs(q1);
-            snap1.forEach((doc) => {
+            const q3 = query(submissionsRef, where("userId", "==", userId));
+            const snap3 = await getDocs(q3);
+            snap3.forEach((doc) => {
               const data = doc.data();
-              if (data.testId) completedTestIds.push(data.testId);
+              if (data.testId) {
+                const testTime = data.submittedAt || data.createdAt;
+                if (
+                  premiumGrantedAt &&
+                  testTime &&
+                  testTime.toMillis() < premiumGrantedAt.toMillis()
+                ) {
+                  return; // Ignored! Allow retake for this new package.
+                }
+                speakingSubmissionsMap[data.testId] = data;
+                completedTestIds.push(data.testId);
+              }
             });
-          }
-
-          // 2. Check the dedicated public submissions collection for Writing
-          if (moduleId === "writing") {
+          } else if (moduleId === "writing") {
             const submissionsRef = collection(
               db,
               `artifacts/${appId}/public/data/writingSubmissions`,
@@ -1701,6 +2036,35 @@
             snap2.forEach((doc) => {
               const data = doc.data();
               if (data.testId && !completedTestIds.includes(data.testId)) {
+                const testTime = data.submittedAt;
+                if (
+                  premiumGrantedAt &&
+                  testTime &&
+                  testTime.toMillis() < premiumGrantedAt.toMillis()
+                ) {
+                  return; // Ignored! Allow retake.
+                }
+                completedTestIds.push(data.testId);
+              }
+            });
+          } else {
+            const resultsRef = collection(
+              db,
+              `artifacts/${appId}/users/${userId}/mockTestResults`,
+            );
+            const q1 = query(resultsRef, where("moduleId", "==", moduleId));
+            const snap1 = await getDocs(q1);
+            snap1.forEach((doc) => {
+              const data = doc.data();
+              if (data.testId) {
+                const testTime = data.timestamp;
+                if (
+                  premiumGrantedAt &&
+                  testTime &&
+                  testTime.toMillis() < premiumGrantedAt.toMillis()
+                ) {
+                  return; // Ignored! Allow retake for this new package.
+                }
                 completedTestIds.push(data.testId);
               }
             });
@@ -1708,148 +2072,6 @@
         } catch (error) {
           console.error("Error fetching completed tests:", error);
         }
-      }
-
-      function renderSpeakingBookingModal() {
-        const modalContainer = document.getElementById("modal-container");
-        if (!modalContainer) return;
-        const userName = authAppState.userProfile?.name || "";
-        const userEmail = authAppState.user?.email || "";
-
-        modalContainer.innerHTML = `
-        <div id="speaking-booking-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center z-[99] hidden animate-fade-in">
-            <div id="speaking-modal-content" class="bg-white rounded-3xl shadow-2xl w-full max-w-lg m-4 p-6 sm:p-8 transform transition-transform duration-300 scale-95 border border-slate-100">
-                <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
-                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 anton-text tracking-wide uppercase">Book Session</h2>
-                    <button id="close-speaking-modal-btn" class="text-slate-400 hover:text-rose-500 hover:rotate-90 transition-all bg-slate-50 hover:bg-rose-50 w-10 h-10 rounded-full flex items-center justify-center">
-                        <i class="fas fa-times text-lg"></i>
-                    </button>
-                </div>
-                <p class="text-slate-600 mb-6 inter-text text-sm leading-relaxed">Fill out the form below to request a 1-on-1 speaking practice session. We'll contact you via email to confirm.</p>
-                <form id="speaking-booking-form">
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold outfit-text text-slate-700 uppercase tracking-wider mb-1">Your Name</label>
-                            <input type="text" name="userName" value="${userName}" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow outline-none inter-text" placeholder="e.g., John Doe">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold outfit-text text-slate-700 uppercase tracking-wider mb-1">Your Email</label>
-                            <input type="email" name="userEmail" value="${userEmail}" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow outline-none inter-text" placeholder="e.g., john@example.com">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold outfit-text text-slate-700 uppercase tracking-wider mb-1">Mobile Phone</label>
-                            <input type="tel" name="mobilePhone" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow outline-none inter-text" placeholder="e.g., 01712345678">
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold outfit-text text-slate-700 uppercase tracking-wider mb-1">Date</label>
-                                <input type="date" id="preferredDate" name="preferredDate" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow outline-none inter-text text-slate-600">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold outfit-text text-slate-700 uppercase tracking-wider mb-1">Time</label>
-                                <input type="time" name="preferredTime" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow outline-none inter-text text-slate-600">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold outfit-text text-slate-700 uppercase tracking-wider mb-1">Notes (Optional)</label>
-                            <textarea name="notes" rows="3" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow outline-none inter-text" placeholder="Specific topics to cover?"></textarea>
-                        </div>
-                    </div>
-                    <div class="mt-8">
-                        <button type="submit" id="submit-booking-btn" class="w-full flex justify-center items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl shadow-lg hover:shadow-indigo-500/30 transition-all text-sm font-bold outfit-text uppercase tracking-wider transform active:scale-95">
-                            <span id="submit-btn-text">Submit Request</span>
-                            <div id="submit-btn-spinner" class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white hidden"></div>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        `;
-        const dateInput = document.getElementById("preferredDate");
-        if (dateInput) {
-          dateInput.min = new Date().toISOString().split("T")[0];
-        }
-      }
-
-      async function handleBookingFormSubmit(event) {
-        event.preventDefault();
-        const submitBtn = document.getElementById("submit-booking-btn");
-        const btnText = document.getElementById("submit-btn-text");
-        const btnSpinner = document.getElementById("submit-btn-spinner");
-
-        submitBtn.disabled = true;
-        btnText.textContent = "Submitting...";
-        btnSpinner.classList.remove("hidden");
-
-        const form = event.target;
-        const formData = new FormData(form);
-
-        const bookingData = {
-          userName: formData.get("userName"),
-          userEmail: formData.get("userEmail"),
-          mobilePhone: formData.get("mobilePhone"),
-          preferredDate: formData.get("preferredDate"),
-          preferredTime: formData.get("preferredTime"),
-          notes: formData.get("notes"),
-          submittedAt: serverTimestamp(),
-          status: "pending",
-        };
-
-        if (authAppState.userId) bookingData.userId = authAppState.userId;
-
-        try {
-          await addDoc(
-            collection(
-              db,
-              `artifacts/ielts-mahir-community-forum/public/data/speakingSessionRequests`,
-            ),
-            bookingData,
-          );
-          showToast("Your booking request has been sent!", "success");
-          document
-            .getElementById("speaking-booking-modal")
-            .classList.add("hidden");
-          form.reset();
-        } catch (error) {
-          console.error("Error adding document: ", error);
-          showToast("Error submitting request. Please try again.", "error");
-        } finally {
-          submitBtn.disabled = false;
-          btnText.textContent = "Submit Request";
-          btnSpinner.classList.add("hidden");
-        }
-      }
-
-      function initSpeakingModalListeners() {
-        const modal = document.getElementById("speaking-booking-modal");
-        const openBtn = document.getElementById("book-speaking-session-card");
-        const closeBtn = document.getElementById("close-speaking-modal-btn");
-        const form = document.getElementById("speaking-booking-form");
-        const modalContent = document.getElementById("speaking-modal-content");
-
-        if (!modal || !openBtn || !closeBtn || !form || !modalContent) return;
-
-        const openModal = (e) => {
-          e.preventDefault();
-          modal.classList.remove("hidden");
-          setTimeout(() => {
-            modalContent.classList.remove("scale-95");
-          }, 10);
-        };
-
-        const closeModal = () => {
-          modalContent.classList.add("scale-95");
-          setTimeout(() => {
-            modal.classList.add("hidden");
-          }, 300);
-        };
-
-        openBtn.addEventListener("click", openModal);
-        closeBtn.addEventListener("click", closeModal);
-        modal.addEventListener("click", (e) => {
-          if (e.target === modal) closeModal();
-        });
-        form.addEventListener("submit", handleBookingFormSubmit);
       }
 
       async function updateAuthUI(user) {
@@ -1934,7 +2156,7 @@
         const module = MockTestModules.find(
           (mod) => mod.id === currentModuleId,
         );
-        if (!module) {
+        if (!module && currentModuleId !== "speaking") {
           appDiv.innerHTML = `<div class="text-center text-rose-500 text-xl mt-12 font-bold">Error: Module not found.<br><a href="mock-test-home" class="text-indigo-600 hover:underline mt-4 inline-block">Go back to modules</a></div>`;
           return;
         }
@@ -1995,18 +2217,119 @@
         // Dynamic Hero Inline Background Styling
         const heroBgStyle = `background-color: ${theme.bgBase}; background-image: radial-gradient(ellipse at 50% 0%, ${theme.bgGlow} 0%, transparent 70%), linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px); background-size: 100% 100%, 36px 36px, 36px 36px; background-position: top center;`;
 
-        const testsInThisModule =
-          currentModuleId === "writing"
-            ? allWritingTests
-            : allMockTests.filter((test) => test.moduleId === currentModuleId);
+        let testsInThisModule = [];
+        if (currentModuleId === "writing") {
+          testsInThisModule = allWritingTests;
+        } else if (currentModuleId === "speaking") {
+          testsInThisModule = allSpeakingTests;
+        } else {
+          testsInThisModule = allMockTests.filter(
+            (test) => test.moduleId === currentModuleId,
+          );
+        }
+
+        let allowedTests = 1; // Free tier default
+        let isPremiumUser = userGameStats.isPremium === true;
+        let pkg = userGameStats.premiumPackage || "";
+
+        if (isPremiumUser) {
+          if (pkg.includes("Platinum") || pkg.includes("Full Premium")) {
+            allowedTests = 15;
+          } else if (pkg.includes("Gold")) {
+            allowedTests = 10;
+          } else if (pkg.includes("Silver")) {
+            allowedTests = 7;
+          } else {
+            allowedTests = 15; // Legacy fallback
+          }
+        }
+
+        // Specific overrides for Speaking tests based on packages
+        if (currentModuleId === "speaking") {
+          if (isPremiumUser) {
+            if (pkg.includes("Platinum") || pkg.includes("Full Premium")) {
+              allowedTests = 7;
+            } else if (pkg.includes("Gold")) {
+              allowedTests = 5;
+            } else {
+              allowedTests = 0; // Silver/Legacy gets 0
+            }
+          } else {
+            allowedTests = 0;
+          }
+        }
+
+        let premiumBannerHtml = "";
+        if (allowedTests < testsInThisModule.length) {
+          premiumBannerHtml = `
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 mt-8 mb-4 animate-fade-in-up">
+                <div class="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 rounded-2xl p-1 shadow-[0_10px_25px_rgba(245,158,11,0.3)] transform transition-transform hover:-translate-y-1">
+                    <div class="bg-slate-900 rounded-xl px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-amber-400/20 text-amber-400 rounded-full flex items-center justify-center text-xl shrink-0">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg leading-tight">Unlock More Premium Tests</h4>
+                                <p class="text-amber-200/80 text-sm font-medium">Upgrade to Gold or Platinum for full access and expert evaluations.</p>
+                            </div>
+                        </div>
+                        <a href="mock-test-packages" class="shrink-0 px-6 py-2.5 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-900 font-extrabold text-sm uppercase tracking-widest rounded-lg transition-all shadow-md">
+                            Upgrade Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        // --- NEW: Countdown Generation & UI Pill Layout ---
+        let countdownHtml = "";
+        let expiresAtMillis = 0;
+
+        if (isPremiumUser && userGameStats.expiresAt) {
+          expiresAtMillis =
+            typeof userGameStats.expiresAt.toMillis === "function"
+              ? userGameStats.expiresAt.toMillis()
+              : userGameStats.expiresAt.seconds
+              ? userGameStats.expiresAt.seconds * 1000
+              : new Date(userGameStats.expiresAt).getTime();
+
+          if (expiresAtMillis > Date.now()) {
+            const pkgName = pkg ? pkg.split(" ")[0] : "Premium";
+            countdownHtml = `
+              <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-white/10 to-white/5 border border-white/20 backdrop-blur-md shadow-xl opacity-0 animate-fade-in-up hover:bg-white/10 transition-colors" style="animation-delay: 0.35s;">
+                  <div class="flex items-center gap-2 pr-3 border-r border-white/20">
+                      <i class="fas fa-crown text-amber-400 text-sm animate-pulse"></i>
+                      <span class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider">${pkgName} Active</span>
+                  </div>
+                  <div class="flex items-center gap-1.5 font-mono tabular-nums text-white" id="premium-timer">
+                      <span class="text-sm font-sans tracking-widest animate-pulse">Calculating...</span>
+                  </div>
+              </div>
+              `;
+          }
+        }
 
         const userIdPill =
           authAppState.isAuthReady && authAppState.userId
-            ? `<div class="inline-flex items-center gap-2 px-4 py-2 mt-8 rounded-full bg-white/10 border border-white/20 backdrop-blur-md opacity-0 animate-fade-in-up" style="animation-delay: 0.3s;">
+            ? `<div class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md opacity-0 animate-fade-in-up" style="animation-delay: 0.3s;">
                 <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
                 <span class="text-xs sm:text-sm font-mono text-white/80 font-medium">ID: ${authAppState.userId}</span>
              </div>`
             : "";
+
+        const dynamicModuleDescription =
+          currentModuleId === "speaking"
+            ? "Master this module with 1-on-1 expert evaluations under authentic exam conditions."
+            : module?.description
+            ? `${module.description} Master this module under authentic exam conditions.`
+            : "Master this module under authentic exam conditions.";
+
+        const dynamicModuleName =
+          currentModuleId === "speaking"
+            ? "Speaking"
+            : module?.name || "Mock Test";
 
         appDiv.innerHTML = `
             <!-- Premium Dynamic Brand Hero Section -->
@@ -2032,18 +2355,20 @@
                             </div>
 
                             <h1 class="anton-text text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-white leading-[1.05] mb-4 md:mb-6 drop-shadow-xl uppercase">
-                                ${module.name} <br />
+                                ${dynamicModuleName} <br />
                                 <span class="${
                                   theme.accentText
                                 } drop-shadow-md">MOCK TESTS</span>
                             </h1>
 
                             <p class="text-base sm:text-lg md:text-xl text-white/90 max-w-xl font-medium leading-relaxed mx-auto md:mx-0 shadow-sm">
-                                ${
-                                  module.description
-                                } Master this module under authentic exam conditions.
+                                ${dynamicModuleDescription}
                             </p>
-                            ${userIdPill}
+                            
+                            <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-6 sm:mt-8">
+                                ${userIdPill}
+                                ${countdownHtml}
+                            </div>
                         </div>
 
                         <!-- Spectacular Image Area: Dynamic 3-Image Grids -->
@@ -2092,6 +2417,8 @@
                 <div class="absolute bottom-0 left-0 w-full h-[2px] bg-[#f8fafc] z-20"></div>
             </section>
 
+            ${premiumBannerHtml}
+
             <!-- Main Content Area -->
             <main class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-12 relative z-20">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 md:mb-12 gap-4 md:gap-6 border-b border-slate-200 pb-4 md:pb-6 opacity-0 animate-fade-in-up" style="animation-delay: 0.2s;">
@@ -2109,171 +2436,308 @@
                     </div>
                 </div>
 
+                <!-- Premium Mock Test Modules Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8 max-w-7xl mx-auto">
                     ${(() => {
-                      let cardsHtml = testsInThisModule
+                      // We only show the tests they actually have access to
+                      const visibleTests = testsInThisModule.slice(
+                        0,
+                        allowedTests,
+                      );
+
+                      let cardsHtml = visibleTests
                         .map((test, index) => {
-                          // --- FREEMIUM LOGIC ---
-                          let hasPremiumForThisModule = false;
-                          if (userGameStats.isPremium === true) {
-                            // If they have Full Bundle or no specific package (legacy), grant access globally
-                            if (
-                              !userGameStats.premiumPackage ||
-                              userGameStats.premiumPackage ===
-                                "Full Premium Bundle"
-                            ) {
-                              hasPremiumForThisModule = true;
-                            }
-                            // Check specific module passes
-                            else if (
-                              userGameStats.premiumPackage === "Reading Pass" &&
-                              currentModuleId === "reading"
-                            ) {
-                              hasPremiumForThisModule = true;
-                            } else if (
-                              userGameStats.premiumPackage ===
-                                "Listening Pass" &&
-                              currentModuleId === "listening"
-                            ) {
-                              hasPremiumForThisModule = true;
-                            } else if (
-                              userGameStats.premiumPackage === "Writing Pass" &&
-                              currentModuleId === "writing"
-                            ) {
-                              hasPremiumForThisModule = true;
-                            }
-                          }
+                          // --- NEW SPEAKING CARD LOGIC ---
+                          if (currentModuleId === "speaking") {
+                            let submission = speakingSubmissionsMap[test.id];
+                            let isCompleted = submission ? true : false;
+                            let speakingResultsHtml = "";
 
-                          let isLocked = false;
-                          let isCompleted = completedTestIds.includes(test.id);
-
-                          // Only the FIRST test is free for Listening, Reading, and Writing
-                          if (
-                            (currentModuleId === "reading" ||
-                              currentModuleId === "listening" ||
-                              currentModuleId === "writing") &&
-                            !hasPremiumForThisModule
-                          ) {
-                            if (index >= 1) {
-                              isLocked = true;
-                            }
-                          }
-                          const totalQuestions =
-                            test.moduleId === "writing"
-                              ? 2
-                              : test.sections.reduce((totalAcc, sec) => {
-                                  return (
-                                    totalAcc +
-                                    (sec.questionGroups || []).reduce(
-                                      (groupAcc, group) => {
-                                        if (group.type === "matching")
-                                          return (
-                                            groupAcc +
-                                            (group.matchingItems
-                                              ? group.matchingItems.length
-                                              : 0)
-                                          );
-                                        if (group.questions) {
-                                          return (
-                                            groupAcc +
-                                            group.questions.reduce(
-                                              (qAcc, question) => {
-                                                if (
-                                                  question.type ===
-                                                    "table_fill_in_the_blank" &&
-                                                  question.correctAnswer
-                                                )
-                                                  return (
-                                                    qAcc +
-                                                    Object.keys(
-                                                      question.correctAnswer,
-                                                    ).length
-                                                  );
-                                                else if (
-                                                  group.type ===
-                                                    "multiple_choice_multiple_answers" &&
-                                                  question.correctAnswer
-                                                )
-                                                  return (
-                                                    qAcc +
-                                                    question.correctAnswer
-                                                      .length
-                                                  );
-                                                else if (
-                                                  question.type === "flow_chart"
-                                                )
-                                                  return (
-                                                    qAcc +
-                                                    (question.steps
-                                                      ? question.steps.length
-                                                      : 0)
-                                                  );
-                                                else return qAcc + 1;
-                                              },
-                                              0,
-                                            )
-                                          );
-                                        } else return groupAcc;
-                                      },
-                                      0,
-                                    )
-                                  );
-                                }, 0);
-
-                          // Visual states for Locked vs Completed vs Unlocked
-                          const cardClasses =
-                            isLocked || isCompleted
+                            const cardClasses = isCompleted
                               ? "video-card locked-card opacity-0 animate-fade-in-up stagger-" +
                                 ((index % 4) + 1) +
                                 " flex flex-col h-full outline-none"
                               : "video-card group opacity-0 animate-fade-in-up stagger-" +
                                 ((index % 4) + 1) +
-                                " flex flex-col h-full outline-none";
+                                " flex flex-col h-full outline-none cursor-pointer";
 
-                          // Link handles premium blocks, completed tests naturally block user via test page
-                          let linkHref = "";
-                          if (isLocked && !isCompleted) {
-                            linkHref = `payment-system?module=${currentModuleId}`;
-                          } else {
-                            linkHref =
-                              currentModuleId === "writing"
-                                ? `writing-test?test=${test.id}`
-                                : `mock-test?module=${currentModuleId}&test=${test.id}`;
-                          }
-
-                          const lockOverlay =
-                            isLocked && !isCompleted
-                              ? `
-                              <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-slate-900/50">
-                                  <div class="w-14 h-14 bg-white/95 rounded-full flex items-center justify-center text-slate-800 shadow-xl mb-2 transform scale-100 group-hover:scale-110 transition-transform">
-                                      <i class="fas fa-lock text-2xl"></i>
+                            let completedOverlay = "";
+                            if (
+                              isCompleted &&
+                              (submission.status === "completed" ||
+                                submission.status === "reviewed")
+                            ) {
+                              completedOverlay = `
+                                  <div class="absolute inset-0 bg-emerald-900/40 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-emerald-900/50">
+                                      <div class="w-14 h-14 bg-white/95 rounded-full flex items-center justify-center text-emerald-600 shadow-xl mb-2 transform scale-100 group-hover:scale-110 transition-transform">
+                                          <i class="fas fa-check-circle text-2xl"></i>
+                                      </div>
+                                      <span class="text-white font-bold text-[10px] uppercase tracking-widest bg-emerald-500 shadow-lg px-3 py-1 rounded-full border border-emerald-400">Evaluated</span>
                                   </div>
-                                  <span class="text-white font-bold text-[10px] uppercase tracking-widest bg-amber-500 shadow-lg px-3 py-1 rounded-full border border-amber-400">Premium</span>
-                              </div>
-                          `
+                              `;
+                            } else if (isCompleted) {
+                              completedOverlay = `
+                                  <div class="absolute inset-0 bg-amber-900/40 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-amber-900/50">
+                                      <div class="w-14 h-14 bg-white/95 rounded-full flex items-center justify-center text-amber-500 shadow-xl mb-2">
+                                          <i class="fas fa-hourglass-half text-2xl animate-pulse"></i>
+                                      </div>
+                                      <span class="text-white font-bold text-[10px] uppercase tracking-widest bg-amber-500 shadow-lg px-3 py-1 rounded-full border border-amber-400">Pending</span>
+                                  </div>
+                              `;
+                            }
+
+                            const playOverlay = !isCompleted
+                              ? `
+                                <div class="play-overlay absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                                    <div class="play-icon w-14 h-14 text-white rounded-full flex items-center justify-center backdrop-blur-md border border-white/30 shadow-lg">
+                                        <i class="fas fa-calendar-plus text-xl"></i>
+                                    </div>
+                                </div>
+                            `
                               : "";
 
-                          const completedOverlay = isCompleted
-                            ? `
-                              <div class="absolute inset-0 bg-emerald-900/40 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-emerald-900/50">
-                                  <div class="w-14 h-14 bg-white/95 rounded-full flex items-center justify-center text-emerald-600 shadow-xl mb-2 transform scale-100 group-hover:scale-110 transition-transform">
-                                      <i class="fas fa-check-circle text-2xl"></i>
-                                  </div>
-                                  <span class="text-white font-bold text-[10px] uppercase tracking-widest bg-emerald-500 shadow-lg px-3 py-1 rounded-full border border-emerald-400">Completed</span>
-                              </div>
-                          `
-                            : "";
+                            if (
+                              submission &&
+                              (submission.status === "completed" ||
+                                submission.status === "reviewed")
+                            ) {
+                              speakingResultsHtml = `
+                                    <div class="mt-4 mb-2 p-3 bg-fuchsia-50 rounded-xl border border-fuchsia-100 flex flex-col gap-2 relative z-30">
+                                        <div class="flex justify-between items-center border-b border-fuchsia-100 pb-1.5">
+                                            <span class="text-[10px] font-bold text-fuchsia-800 uppercase tracking-wider">Overall Score</span>
+                                            <span class="text-lg font-black text-fuchsia-600 bg-white px-2 py-0.5 rounded shadow-sm border border-fuchsia-100">${
+                                              submission.bandScore || "N/A"
+                                            }</span>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-1.5 text-[10px] text-slate-600 font-semibold">
+                                            <div class="flex justify-between bg-white p-1.5 rounded shadow-sm border border-fuchsia-50"><span class="text-slate-400">FC:</span> <span class="text-fuchsia-700 font-bold">${
+                                              submission.fcScore || "-"
+                                            }</span></div>
+                                            <div class="flex justify-between bg-white p-1.5 rounded shadow-sm border border-fuchsia-50"><span class="text-slate-400">LR:</span> <span class="text-fuchsia-700 font-bold">${
+                                              submission.lrScore || "-"
+                                            }</span></div>
+                                            <div class="flex justify-between bg-white p-1.5 rounded shadow-sm border border-fuchsia-50"><span class="text-slate-400">GRA:</span> <span class="text-fuchsia-700 font-bold">${
+                                              submission.graScore || "-"
+                                            }</span></div>
+                                            <div class="flex justify-between bg-white p-1.5 rounded shadow-sm border border-fuchsia-50"><span class="text-slate-400">PR:</span> <span class="text-fuchsia-700 font-bold">${
+                                              submission.prScore || "-"
+                                            }</span></div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
 
-                          const playOverlay =
-                            !isLocked && !isCompleted
-                              ? `
+                            let footerText = "Request Session";
+                            let footerIcon = "fa-calendar-plus";
+                            let footerTextColor = themeText;
+                            let footerIconBg =
+                              "bg-slate-50 border-slate-100 " +
+                              themeText +
+                              " " +
+                              themeBgHover +
+                              " group-hover:text-white group-hover:translate-x-1 " +
+                              themeBorderHover;
+                            let clickAction = `onclick="openSpeakingModal('${
+                              test.id
+                            }', '${test.title.replace(/'/g, "\\'")}')"`;
+
+                            if (submission) {
+                              clickAction = "";
+                              if (
+                                submission.status === "completed" ||
+                                submission.status === "reviewed"
+                              ) {
+                                footerText = "Evaluated";
+                                footerIcon = "fa-check";
+                                footerTextColor = "text-emerald-500";
+                                footerIconBg =
+                                  "bg-emerald-50 text-emerald-500 border-emerald-100";
+                              } else {
+                                footerText = "Pending Review";
+                                footerIcon = "fa-hourglass-half";
+                                footerTextColor = "text-amber-500";
+                                footerIconBg =
+                                  "bg-amber-50 text-amber-500 border-amber-100";
+                              }
+                            }
+
+                            return `
+                                <div class="${cardClasses}" ${clickAction}>
+                                    <div class="relative overflow-hidden aspect-[16/10] bg-slate-900 border-b border-slate-100 flex items-center justify-center shrink-0">
+                                        <div class="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 opacity-90"></div>
+                                        <div class="absolute inset-0 opacity-[0.15]" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+                                        
+                                        <div class="relative z-10 w-[72px] h-[72px] rounded-2xl flex items-center justify-center text-3xl text-white shadow-[0_10px_25px_rgba(0,0,0,0.5)] ${themeBadge} transition-transform duration-500 border border-white/20 ${
+                              isCompleted
+                                ? ""
+                                : "group-hover:scale-110 group-hover:-rotate-6"
+                            }">
+                                            <i class="fas ${themeIcon}"></i>
+                                        </div>
+                                        
+                                        ${playOverlay}
+                                        ${completedOverlay}
+                                        
+                                        <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg text-[10px] font-extrabold text-slate-800 uppercase tracking-widest shadow-sm z-30 flex items-center gap-1.5">
+                                          <div class="w-2 h-2 rounded-full ${themeBadge} animate-pulse"></div> ${
+                              test.duration
+                            } Mins
+                                        </div>
+                                        <div class="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg text-[10px] font-extrabold text-slate-800 uppercase tracking-widest shadow-sm z-30 flex items-center gap-1.5">
+                                          Part 1, 2, 3
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="p-6 md:p-7 flex flex-col flex-grow bg-white">
+                                        <h3 class="anton-text text-2xl text-slate-900 mb-3 ${
+                                          isCompleted ? "" : themeHover
+                                        } transition-colors leading-tight tracking-wide uppercase">
+                                            ${test.title}
+                                        </h3>
+                                        <p class="text-sm text-slate-500 font-medium leading-relaxed mb-4 flex-grow">
+                                            ${test.description}
+                                        </p>
+
+                                        ${speakingResultsHtml}
+
+                                        <div class="mt-auto pt-4 border-t border-slate-200 flex items-center justify-between transition-colors ${
+                                          isCompleted ? "" : themeBorderHover
+                                        }">
+                                            <span class="font-bold text-[13px] uppercase tracking-wider flex items-center ${footerTextColor}">
+                                                ${footerText}
+                                            </span>
+                                            <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all transform border ${footerIconBg}">
+                                                <i class="fas ${footerIcon} text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                          }
+                          // --- END NEW SPEAKING CARD LOGIC ---
+
+                          // STANDARD CARD LOGIC (Reading, Listening, Writing)
+                          let isCompleted = completedTestIds.includes(test.id);
+
+                          let totalQuestions = 0;
+                          if (test.moduleId === "writing") {
+                            totalQuestions = 2;
+                          } else {
+                            totalQuestions = test.sections.reduce(
+                              (totalAcc, sec) => {
+                                return (
+                                  totalAcc +
+                                  (sec.questionGroups || []).reduce(
+                                    (groupAcc, group) => {
+                                      if (group.type === "matching")
+                                        return (
+                                          groupAcc +
+                                          (group.matchingItems
+                                            ? group.matchingItems.length
+                                            : 0)
+                                        );
+                                      if (group.questions) {
+                                        return (
+                                          groupAcc +
+                                          group.questions.reduce(
+                                            (qAcc, question) => {
+                                              if (
+                                                question.type ===
+                                                  "table_fill_in_the_blank" &&
+                                                question.correctAnswer
+                                              )
+                                                return (
+                                                  qAcc +
+                                                  Object.keys(
+                                                    question.correctAnswer,
+                                                  ).length
+                                                );
+                                              else if (
+                                                group.type ===
+                                                  "multiple_choice_multiple_answers" &&
+                                                question.correctAnswer
+                                              )
+                                                return (
+                                                  qAcc +
+                                                  question.correctAnswer.length
+                                                );
+                                              else if (
+                                                question.type === "flow_chart"
+                                              )
+                                                return (
+                                                  qAcc +
+                                                  (question.steps
+                                                    ? question.steps.length
+                                                    : 0)
+                                                );
+                                              else return qAcc + 1;
+                                            },
+                                            0,
+                                          )
+                                        );
+                                      } else return groupAcc;
+                                    },
+                                    0,
+                                  )
+                                );
+                              },
+                              0,
+                            );
+                          }
+
+                          const cardClasses = isCompleted
+                            ? "video-card locked-card opacity-0 animate-fade-in-up stagger-" +
+                              ((index % 4) + 1) +
+                              " flex flex-col h-full outline-none"
+                            : "video-card group opacity-0 animate-fade-in-up stagger-" +
+                              ((index % 4) + 1) +
+                              " flex flex-col h-full outline-none";
+
+                          let linkHref = `mock-test?module=${currentModuleId}&test=${test.id}`;
+                          if (currentModuleId === "writing") {
+                            linkHref = `writing-test?test=${test.id}`;
+                          }
+
+                          let completedOverlay = "";
+                          if (isCompleted) {
+                            completedOverlay = `
+                                      <div class="absolute inset-0 bg-emerald-900/40 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-emerald-900/50">
+                                          <div class="w-14 h-14 bg-white/95 rounded-full flex items-center justify-center text-emerald-600 shadow-xl mb-2 transform scale-100 group-hover:scale-110 transition-transform">
+                                              <i class="fas fa-check-circle text-2xl"></i>
+                                          </div>
+                                          <span class="text-white font-bold text-[10px] uppercase tracking-widest bg-emerald-500 shadow-lg px-3 py-1 rounded-full border border-emerald-400">Completed</span>
+                                      </div>
+                                  `;
+                          }
+
+                          const playOverlay = !isCompleted
+                            ? `
                               <div class="play-overlay absolute inset-0 flex items-center justify-center z-20">
                                   <div class="play-icon w-14 h-14 text-white rounded-full flex items-center justify-center backdrop-blur-md border border-white/30">
                                       <i class="fas fa-arrow-right text-xl"></i>
                                   </div>
                               </div>
                           `
-                              : "";
+                            : "";
+
+                          let footerText = "Start Test";
+                          let footerIcon = "fa-chevron-right";
+                          let footerTextColor = themeText;
+                          let footerIconBg =
+                            "bg-slate-50 border-slate-100 " +
+                            themeText +
+                            " " +
+                            themeBgHover +
+                            " group-hover:text-white group-hover:translate-x-1 " +
+                            themeBorderHover;
+
+                          if (isCompleted) {
+                            footerText = "Completed";
+                            footerIcon = "fa-check";
+                            footerTextColor = "text-emerald-500";
+                            footerIconBg =
+                              "bg-emerald-50 text-emerald-500 border-emerald-100";
+                          }
 
                           return `
                                 <a href="${linkHref}" class="${cardClasses}">
@@ -2283,7 +2747,7 @@
                                         <div class="absolute inset-0 opacity-[0.15]" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
                                         
                                         <div class="relative z-10 w-[72px] h-[72px] rounded-2xl flex items-center justify-center text-3xl text-white shadow-[0_10px_25px_rgba(0,0,0,0.5)] ${themeBadge} transition-transform duration-500 border border-white/20 ${
-                            isLocked || isCompleted
+                            isCompleted
                               ? ""
                               : "group-hover:scale-110 group-hover:-rotate-6"
                           }">
@@ -2291,7 +2755,6 @@
                                         </div>
                                         
                                         ${playOverlay}
-                                        ${lockOverlay}
                                         ${completedOverlay}
                                         
                                         <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg text-[10px] font-extrabold text-slate-800 uppercase tracking-widest shadow-sm z-30 flex items-center gap-1.5">
@@ -2304,58 +2767,24 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="p-6 md:p-7 flex flex-col flex-grow bg-white ${
-                                      isLocked ? "bg-slate-50" : ""
-                                    }">
+                                    <div class="p-6 md:p-7 flex flex-col flex-grow bg-white">
                                         <h3 class="anton-text text-2xl text-slate-900 mb-3 ${
-                                          isLocked || isCompleted
-                                            ? ""
-                                            : themeHover
+                                          isCompleted ? "" : themeHover
                                         } transition-colors leading-tight tracking-wide uppercase">
                                             ${test.title}
                                         </h3>
-                                        <p class="text-sm text-slate-500 font-medium leading-relaxed mb-6 flex-grow">
+                                        <p class="text-sm text-slate-500 font-medium leading-relaxed mb-4 flex-grow">
                                             ${test.description}
                                         </p>
+
                                         <div class="mt-auto pt-4 border-t border-slate-200 flex items-center justify-between transition-colors ${
-                                          isLocked || isCompleted
-                                            ? ""
-                                            : themeBorderHover
+                                          isCompleted ? "" : themeBorderHover
                                         }">
-                                            <span class="font-bold text-[13px] uppercase tracking-wider flex items-center ${
-                                              isCompleted
-                                                ? "text-emerald-500"
-                                                : isLocked
-                                                ? "text-slate-400"
-                                                : themeText
-                                            }">
-                                                ${
-                                                  isCompleted
-                                                    ? "Completed"
-                                                    : isLocked
-                                                    ? "Unlock Test"
-                                                    : "Start Test"
-                                                }
+                                            <span class="font-bold text-[13px] uppercase tracking-wider flex items-center ${footerTextColor}">
+                                                ${footerText}
                                             </span>
-                                            <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all transform border ${
-                                              isCompleted
-                                                ? "bg-emerald-50 text-emerald-500 border-emerald-100"
-                                                : isLocked
-                                                ? "bg-slate-50 text-slate-400 border-slate-100"
-                                                : "bg-slate-50 border-slate-100 " +
-                                                  themeText +
-                                                  " " +
-                                                  themeBgHover +
-                                                  " group-hover:text-white group-hover:translate-x-1 " +
-                                                  themeBorderHover
-                                            }">
-                                                <i class="fas ${
-                                                  isCompleted
-                                                    ? "fa-check"
-                                                    : isLocked
-                                                    ? "fa-lock"
-                                                    : "fa-chevron-right"
-                                                } text-xs"></i>
+                                            <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all transform border ${footerIconBg}">
+                                                <i class="fas ${footerIcon} text-xs"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -2364,36 +2793,48 @@
                         })
                         .join("");
 
-                      if (currentModuleId === "speaking") {
+                      // Beautiful Premium Upgrade Card (Shown only if they don't have access to all tests)
+                      if (allowedTests < testsInThisModule.length) {
                         cardsHtml += `
-                                <a href="#" id="book-speaking-session-card" class="video-card group opacity-0 animate-fade-in-up stagger-4 flex flex-col h-full outline-none">
-                                    <div class="relative overflow-hidden aspect-[16/10] bg-slate-900 border-b border-slate-100 flex items-center justify-center shrink-0">
-                                        <div class="absolute inset-0 bg-gradient-to-br from-fuchsia-800 to-fuchsia-900 opacity-90"></div>
-                                        <div class="absolute inset-0 opacity-[0.2]" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
-                                        
-                                        <div class="relative z-10 w-[72px] h-[72px] rounded-2xl flex items-center justify-center text-3xl text-white shadow-[0_10px_25px_rgba(0,0,0,0.5)] bg-gradient-to-br from-pink-400 to-pink-600 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 border border-white/20">
-                                            <i class="fas fa-headset"></i>
-                                        </div>
-                                        
-                                        <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg text-[10px] font-extrabold text-slate-800 uppercase tracking-widest shadow-sm z-30 flex items-center gap-1.5">
-                                          <div class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></div> Live Session
-                                        </div>
-                                    </div>
-                                    <div class="p-6 md:p-7 flex flex-col flex-grow bg-white">
-                                        <h3 class="anton-text text-2xl text-slate-900 mb-3 group-hover:text-pink-600 transition-colors leading-tight tracking-wide uppercase">
-                                            Personalized Speaking Practice
-                                        </h3>
-                                        <p class="text-sm text-slate-500 font-medium leading-relaxed mb-6 flex-grow">
-                                            Schedule a live 1-on-1 session with an IELTS expert to significantly improve your speaking score.
-                                        </p>
-                                        <div class="mt-auto">
-                                            <span class="inline-flex justify-center w-full px-6 py-3 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-xl shadow-md group-hover:shadow-lg transition-all text-sm font-bold outfit-text uppercase tracking-wider transform group-hover:-translate-y-1">
-                                                Book a Session
-                                            </span>
-                                        </div>
-                                    </div>
-                                </a>
-                            `;
+                              <a href="mock-test-packages" class="video-card group opacity-0 animate-fade-in-up stagger-3 flex flex-col h-full outline-none border-[3px] border-amber-400/60 shadow-[0_15px_40px_rgba(245,158,11,0.15)] relative overflow-hidden bg-gradient-to-b from-slate-900 to-[#0f172a]">
+                                  <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                                  <div class="absolute top-0 right-0 w-48 h-48 bg-amber-500/20 rounded-full blur-[50px] pointer-events-none group-hover:bg-amber-500/30 transition-colors duration-700"></div>
+                                  <div class="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/20 rounded-full blur-[40px] pointer-events-none"></div>
+                                  
+                                  <div class="relative z-10 flex flex-col items-center justify-center h-full p-8 text-center mt-6">
+                                      <div class="w-20 h-20 bg-gradient-to-br from-amber-300 to-orange-500 rounded-full flex items-center justify-center text-white text-3xl shadow-[0_0_30px_rgba(245,158,11,0.5)] mb-6 transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+                                          <i class="fas fa-lock"></i>
+                                      </div>
+                                      
+                                      <h3 class="anton-text text-3xl text-white mb-3 tracking-wide uppercase drop-shadow-md">
+                                          ${
+                                            currentModuleId === "speaking"
+                                              ? "Speaking Tests"
+                                              : "Premium Tests"
+                                          } <br/><span class="text-amber-400">Locked</span>
+                                      </h3>
+                                      
+                                      <p class="text-sm text-slate-300 font-medium leading-relaxed mb-8 px-2">
+                                          ${
+                                            currentModuleId === "speaking"
+                                              ? "Get a Gold or Platinum Package to unlock full access to authentic IELTS Speaking Tests with expert evaluations."
+                                              : (isPremiumUser
+                                                  ? "Upgrade your plan"
+                                                  : "Get a Premium Package") +
+                                                ` to instantly unlock full access to highly-accurate IELTS ${
+                                                  module?.name || "Mock"
+                                                } Tests with expert evaluations.`
+                                          }
+                                      </p>
+                                      
+                                      <div class="mt-auto w-full">
+                                          <div class="w-full py-4 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-900 font-extrabold text-[15px] uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-amber-500/30 flex items-center justify-center gap-2 transform group-hover:-translate-y-1">
+                                              <i class="fas fa-crown"></i> View Packages
+                                          </div>
+                                      </div>
+                                  </div>
+                              </a>
+                          `;
                       }
 
                       if (cardsHtml.length > 0) return cardsHtml;
@@ -2401,16 +2842,93 @@
                       return `<div class="md:col-span-3 text-center text-slate-600 py-8 inter-text"><p class="text-lg">No mock tests available for this module yet.</p></div>`;
                     })()}
                 </div>
+                
+                ${(() => {
+                  if (allowedTests < testsInThisModule.length) {
+                    return `
+                    <div class="mt-16 bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 text-center shadow-xl relative overflow-hidden animate-fade-in-up stagger-4">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 rounded-full blur-[60px] pointer-events-none"></div>
+                        <div class="absolute bottom-0 left-0 w-48 h-48 bg-indigo-500/10 rounded-full blur-[50px] pointer-events-none"></div>
+                        
+                        <div class="relative z-10 max-w-2xl mx-auto">
+                            <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg mx-auto mb-6 transform rotate-3">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <h3 class="anton-text text-3xl sm:text-4xl text-slate-800 mb-4 uppercase tracking-wide">Take Your Prep to the Next Level</h3>
+                            <p class="text-slate-500 font-medium text-lg mb-8 leading-relaxed">
+                                You're currently viewing the limited access preview. To get full access to highly-accurate mock tests, detailed analytics, and evaluations, upgrade your package today.
+                            </p>
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                                <a href="mock-test-packages" class="w-full sm:w-auto px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm uppercase tracking-widest rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                                    View Premium Packages
+                                </a>
+                                <a href="contact" class="w-full sm:w-auto px-8 py-4 bg-white border-2 border-slate-200 hover:border-slate-300 text-slate-700 font-bold text-sm uppercase tracking-widest rounded-xl transition-all">
+                                    Contact Support
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                  }
+                  return "";
+                })()}
             </main>
         `;
 
-        if (currentModuleId === "speaking") {
-          initSpeakingModalListeners();
+        // --- START COUNTDOWN SCRIPT ---
+        if (expiresAtMillis > Date.now()) {
+          const timerEl = document.getElementById("premium-timer");
+          if (timerEl) {
+            const updateTimer = () => {
+              const now = Date.now();
+              const diff = expiresAtMillis - now;
+              if (diff <= 0) {
+                timerEl.innerHTML =
+                  '<span class="text-rose-400 text-sm font-bold uppercase tracking-widest font-sans">Expired</span>';
+                if (window.premiumTimerInterval)
+                  clearInterval(window.premiumTimerInterval);
+                return;
+              }
+              const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+              const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+              const m = Math.floor((diff / 1000 / 60) % 60);
+              const s = Math.floor((diff / 1000) % 60);
+
+              timerEl.innerHTML = `
+                        <div class="flex items-baseline gap-0.5"><span class="text-lg sm:text-xl font-bold text-white">${d}</span><span class="text-[9px] text-white/70 uppercase font-sans tracking-widest">d</span></div>
+                        <span class="text-white/30 font-light mx-0.5">:</span>
+                        <div class="flex items-baseline gap-0.5"><span class="text-lg sm:text-xl font-bold text-white">${h
+                          .toString()
+                          .padStart(
+                            2,
+                            "0",
+                          )}</span><span class="text-[9px] text-white/70 uppercase font-sans tracking-widest">h</span></div>
+                        <span class="text-white/30 font-light mx-0.5">:</span>
+                        <div class="flex items-baseline gap-0.5"><span class="text-lg sm:text-xl font-bold text-white">${m
+                          .toString()
+                          .padStart(
+                            2,
+                            "0",
+                          )}</span><span class="text-[9px] text-white/70 uppercase font-sans tracking-widest">m</span></div>
+                        <span class="text-white/30 font-light mx-0.5">:</span>
+                        <div class="flex items-baseline gap-0.5"><span class="text-lg sm:text-xl font-bold text-emerald-300 min-w-[24px] text-center inline-block">${s
+                          .toString()
+                          .padStart(
+                            2,
+                            "0",
+                          )}</span><span class="text-[9px] text-emerald-300/70 uppercase font-sans tracking-widest">s</span></div>
+                    `;
+            };
+            updateTimer(); // Initial Call
+            if (window.premiumTimerInterval)
+              clearInterval(window.premiumTimerInterval);
+            window.premiumTimerInterval = setInterval(updateTimer, 1000);
+          }
         }
+        // --- END COUNTDOWN SCRIPT ---
       }
 
       window.onload = async function () {
-        renderSpeakingBookingModal();
         initFirebaseAuth(updateAuthUI)
           .then(async ({ db: firestoreDb, auth: firebaseAuth }) => {
             db = firestoreDb;
@@ -2421,10 +2939,13 @@
 
             auth.onAuthStateChanged(async (user) => {
               if (user) {
+                await fetchPremiumDetails(user.uid);
                 await fetchUserGameStats(user.uid);
                 await fetchCompletedTests(user.uid, currentModuleId);
               } else {
                 completedTestIds = [];
+                speakingSubmissionsMap = {};
+                premiumGrantedAt = null;
               }
               renderApp();
             });

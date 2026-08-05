@@ -2234,8 +2234,8 @@
         ] = await Promise.all([
             getCollectionCount('posts', [where('status', '==', 'pending')]),
             getCollectionCount('testimonials', [where('status', '==', 'pending')]),
-           getCollectionCount('contactMessages', [where('status', '==', 'pending')]),
-            getCollectionCount('speakingSubmissions', [where('status', '==', 'pending')]),
+            getCollectionCount('contactMessages', [where('status', '==', 'pending')]),
+            getCollectionCount('speakingSessionRequests', [where('status', '==', 'pending')]),
             getCollectionCount('blogPosts'),
             getCollectionCount('teachers'),
             getCollectionCount('freeResources'),
@@ -2313,11 +2313,12 @@
             container.innerHTML = '<p class="text-red-500 text-sm text-center">Could not load messages.</p>';
         }
       }
-// --- SUPER PREMIUM: Speaking Session Request Management Functions ---
+
+      // --- NEW: Speaking Session Request Management Functions ---
       window.updateSpeakingRequestStatus = async (requestId, newStatus) => {
         if (!isAuthReady) return showMessage("Firebase not ready. Please try again.");
         try {
-            await updateDoc(doc(db, "artifacts", appId, "public", "data", "speakingSubmissions", requestId), {
+            await updateDoc(doc(db, "artifacts", appId, "public", "data", "speakingSessionRequests", requestId), {
                 status: newStatus,
             });
             showMessage(`Request status updated to '${newStatus}'.`);
@@ -2329,6 +2330,7 @@
 
       window.deleteSpeakingRequest = async (requestId) => {
           if (!isAuthReady) return showMessage("Firebase not ready. Please try again.");
+      
           const messageBox = document.getElementById("message-box");
           const messageContent = document.getElementById("message-content");
           const closeMessageBoxBtn = document.getElementById("close-message-box");
@@ -2343,7 +2345,7 @@
       
           confirmDeleteBtn.addEventListener('click', async () => {
               try {
-                  await deleteDoc(doc(db, "artifacts", appId, "public", "data", "speakingSubmissions", requestId));
+                  await deleteDoc(doc(db, "artifacts", appId, "public", "data", "speakingSessionRequests", requestId));
                   showMessage("Speaking request deleted successfully.");
               } catch (error) {
                   console.error("Error deleting speaking request:", error);
@@ -2363,118 +2365,25 @@
           };
       };
 
-      window.openGradeSpeakingModal = async (requestId) => {
-          if (!isAuthReady) return showMessage("Firebase not ready.");
-          try {
-              const docSnap = await getDoc(doc(db, "artifacts", appId, "public", "data", "speakingSubmissions", requestId));
-              if (!docSnap.exists()) return showMessage("Request not found.");
-              const sub = docSnap.data();
-
-              const modalHtml = `
-              <div id="grade-speaking-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[1050] p-4">
-                  <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
-                      <div class="p-6 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-                          <h3 class="text-2xl font-bold text-gray-800">Evaluate: ${sub.testTitle || 'Speaking Test'}</h3>
-                          <button onclick="document.getElementById('grade-speaking-modal').remove()" class="text-gray-500 hover:text-red-500 text-2xl leading-none">&times;</button>
-                      </div>
-                      <div class="p-6 overflow-y-auto flex-1 bg-gray-100">
-                          <div class="mb-4 bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex flex-wrap gap-4 text-sm text-gray-600">
-                              <div><strong>Student:</strong> ${sub.userName} (${sub.userEmail})</div>
-                              <div><strong>Platform:</strong> ${sub.platform} (${sub.contactId})</div>
-                          </div>
-                          
-                          <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                              <h4 class="font-bold text-lg text-gray-800 mb-4">Provide Band Scores & Feedback</h4>
-                              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
-                                  <div>
-                                      <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Fluency (FC)</label>
-                                      <input type="number" id="eval-fc-score" step="0.5" min="0" max="9" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-fuchsia-500 focus:border-fuchsia-500" value="${sub.fcScore || ''}" placeholder="e.g. 7.0">
-                                  </div>
-                                  <div>
-                                      <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Lexical (LR)</label>
-                                      <input type="number" id="eval-lr-score" step="0.5" min="0" max="9" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-fuchsia-500 focus:border-fuchsia-500" value="${sub.lrScore || ''}" placeholder="e.g. 7.5">
-                                  </div>
-                                  <div>
-                                      <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Grammar (GRA)</label>
-                                      <input type="number" id="eval-gra-score" step="0.5" min="0" max="9" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-fuchsia-500 focus:border-fuchsia-500" value="${sub.graScore || ''}" placeholder="e.g. 6.5">
-                                  </div>
-                                  <div>
-                                      <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Pronun. (PR)</label>
-                                      <input type="number" id="eval-pr-score" step="0.5" min="0" max="9" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-fuchsia-500 focus:border-fuchsia-500" value="${sub.prScore || ''}" placeholder="e.g. 8.0">
-                                  </div>
-                              </div>
-                              <div class="mb-4">
-                                  <label class="block text-sm font-semibold text-fuchsia-700 mb-1">Overall Band Score</label>
-                                  <input type="number" id="eval-overall-score" step="0.5" min="0" max="9" class="w-1/2 sm:w-1/3 px-3 py-2 border border-fuchsia-300 rounded focus:ring-fuchsia-500 focus:border-fuchsia-500 bg-fuchsia-50 font-bold text-lg" value="${sub.bandScore || ''}" placeholder="e.g., 7.5">
-                              </div>
-                              <div>
-                                  <label class="block text-sm font-semibold text-gray-700 mb-1">Detailed Feedback</label>
-                                  <textarea id="eval-spk-feedback" rows="5" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-fuchsia-500 focus:border-fuchsia-500" placeholder="Provide detailed feedback on the student's speaking performance...">${sub.feedback || ''}</textarea>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="p-4 border-t border-gray-200 bg-white flex justify-end gap-3">
-                          <button onclick="document.getElementById('grade-speaking-modal').remove()" class="px-5 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
-                          <button onclick="submitSpeakingGrade('${requestId}')" class="px-5 py-2 bg-fuchsia-600 text-white font-semibold rounded-lg hover:bg-fuchsia-700 transition-colors shadow-md">Save & Publish Evaluation</button>
-                      </div>
-                  </div>
-              </div>
-              `;
-              document.body.insertAdjacentHTML("beforeend", modalHtml);
-          } catch (error) {
-              console.error("Error fetching request:", error);
-              showMessage("Failed to load request data.");
-          }
-      };
-
-      window.submitSpeakingGrade = async (requestId) => {
-          const bandScore = document.getElementById("eval-overall-score").value;
-          const fcScore = document.getElementById("eval-fc-score").value;
-          const lrScore = document.getElementById("eval-lr-score").value;
-          const graScore = document.getElementById("eval-gra-score").value;
-          const prScore = document.getElementById("eval-pr-score").value;
-          const feedback = document.getElementById("eval-spk-feedback").value;
-          
-          if (!bandScore) return showMessage("Please enter an Overall Band Score.");
-
-          try {
-              await updateDoc(doc(db, "artifacts", appId, "public", "data", "speakingSubmissions", requestId), {
-                  bandScore: parseFloat(bandScore),
-                  fcScore: fcScore ? parseFloat(fcScore) : null,
-                  lrScore: lrScore ? parseFloat(lrScore) : null,
-                  graScore: graScore ? parseFloat(graScore) : null,
-                  prScore: prScore ? parseFloat(prScore) : null,
-                  feedback: feedback,
-                  status: "reviewed",
-                  evaluatedAt: serverTimestamp()
-              });
-              
-              document.getElementById('grade-speaking-modal').remove();
-              showMessage("Speaking evaluation published successfully!");
-          } catch (error) {
-              console.error("Error saving grade:", error);
-              showMessage(`Failed to save evaluation: ${error.message}`);
-          }
-      };
-
       const renderSpeakingRequests = (filters, currentPage, itemsPerPage) => {
-        if (!isAuthReady) return;
-        const container = document.getElementById("speaking-requests-list");
-        const paginationContainer = document.getElementById("speaking-request-pagination");
-        if (!container || !paginationContainer) return;
+        if (!isAuthReady) return showMessage("Speaking requests cannot be loaded because Firebase authentication is not ready. Please try refreshing the page.");
+        const [container, pagination] = [
+            document.getElementById("speaking-requests-list"),
+            document.getElementById("speaking-request-pagination"),
+        ];
+        if (!container || !pagination) return console.error("Speaking request elements not found.");
     
-        onSnapshot(collection(db, "artifacts", appId, "public", "data", "speakingSubmissions"), (snapshot) => {
-            container.innerHTML = "";
+        onSnapshot(collection(db, "artifacts", appId, "public", "data", "speakingSessionRequests"), (snapshot) => {
+            [container, pagination].forEach((el) => (el.innerHTML = ""));
             let allRequests = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-            
-            let filteredRequests = allRequests.filter((r) =>
-                (filters.status === "all" || r.status === filters.status || (filters.status === "reviewed" && r.status === "completed")) &&
+            let filteredRequests = allRequests.filter(
+                (r) =>
+                (filters.status === "all" || r.status === filters.status) &&
                 (filters.searchTerm === "" ||
                     (r.userName && r.userName.toLowerCase().includes(filters.searchTerm.toLowerCase())) ||
                     (r.userEmail && r.userEmail.toLowerCase().includes(filters.searchTerm.toLowerCase())) ||
-                    (r.testTitle && r.testTitle.toLowerCase().includes(filters.searchTerm.toLowerCase())))
+                    (r.mobilePhone && r.mobilePhone.toLowerCase().includes(filters.searchTerm.toLowerCase())))
             );
-            
             filteredRequests.sort((a, b) => (b.submittedAt?.toDate() || new Date(0)).getTime() - (a.submittedAt?.toDate() || new Date(0)).getTime());
     
             const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
@@ -2482,74 +2391,53 @@
     
             if (paginatedRequests.length === 0) {
                 container.innerHTML = '<p class="text-gray-500 text-center col-span-full">No speaking requests found matching your criteria.</p>';
-                paginationContainer.innerHTML = "";
                 return;
             }
     
             paginatedRequests.forEach((request) => {
-                const formattedDate = request.submittedAt ? request.submittedAt.toDate().toLocaleString() : "Just now";
+                const formattedDate = (request.submittedAt?.toDate() || new Date()).toLocaleString();
                 let statusBadge = "";
-                
                 switch (request.status) {
                     case "pending":
-                        statusBadge = '<span class="bg-yellow-100 text-yellow-800 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Pending</span>';
+                        statusBadge = '<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold">Pending</span>';
                         break;
                     case "confirmed":
-                        statusBadge = '<span class="bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Confirmed</span>';
+                        statusBadge = '<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-semibold">Confirmed</span>';
                         break;
-                    case "reviewed":
                     case "completed":
-                        statusBadge = `<span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Evaluated (Band ${request.bandScore || 'N/A'})</span>`;
+                        statusBadge = '<span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">Completed</span>';
                         break;
                     case "cancelled":
-                        statusBadge = '<span class="bg-red-100 text-red-800 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Cancelled</span>';
+                        statusBadge = '<span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-semibold">Cancelled</span>';
                         break;
                     default:
-                        statusBadge = '<span class="bg-gray-100 text-gray-800 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Unknown</span>';
+                        statusBadge = '<span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs font-semibold">Unknown</span>';
                 }
     
                 const card = document.createElement("div");
-                card.className = "bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow relative flex flex-col h-full";
+                card.className = "bg-white p-4 rounded-lg shadow-sm border border-gray-300";
                 card.innerHTML = `
-                    <div class="flex justify-between items-start mb-4">
+                    <div class="flex justify-between items-start mb-3">
                         <div>
-                            <span class="text-[10px] font-bold text-fuchsia-600 uppercase tracking-widest bg-fuchsia-50 px-2 py-1 rounded border border-fuchsia-100">${request.testTitle || 'Speaking Mock Test'}</span>
-                            <h3 class="font-bold text-gray-900 text-lg mt-2">${request.userName}</h3>
-                            <div class="text-gray-500 text-xs mt-1 flex flex-col sm:flex-row sm:gap-4">
-                                <span><i class="fas fa-envelope mr-1"></i> <a href="mailto:${request.userEmail}" class="hover:text-fuchsia-600 transition-colors">${request.userEmail}</a></span>
-                            </div>
+                            <h3 class="font-bold text-gray-800 text-lg">${request.userName}</h3>
+                            <p class="text-gray-700 text-sm">Email: <a href="mailto:${request.userEmail}" class="text-blue-600 hover:underline">${request.userEmail}</a></p>
+                            <p class="text-gray-700 text-sm">Phone: <a href="tel:${request.mobilePhone}" class="text-blue-600 hover:underline">${request.mobilePhone}</a></p>
+                            <p class="text-gray-600 text-sm font-semibold mt-1">Preferred Slot: ${request.preferredDate} at ${request.preferredTime}</p>
+                            <p class="text-gray-500 text-xs mt-1">Submitted: ${formattedDate}</p>
                         </div>
                         ${statusBadge}
                     </div>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-100 mb-4 flex-grow">
-                        <div>
-                            <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1">Requested Schedule</p>
-                            <p class="text-sm font-medium text-gray-800"><i class="far fa-calendar-alt text-fuchsia-500 w-4"></i> ${request.preferredDate || 'N/A'}</p>
-                            <p class="text-sm font-medium text-gray-800"><i class="far fa-clock text-fuchsia-500 w-4"></i> ${request.preferredTime || 'N/A'}</p>
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1">Platform Details</p>
-                            <p class="text-sm font-medium text-gray-800"><i class="fas fa-video text-blue-500 w-4"></i> ${request.platform || 'N/A'}</p>
-                            <p class="text-sm font-medium text-gray-800"><i class="fas fa-id-card text-blue-500 w-4"></i> ${request.contactId || 'N/A'}</p>
-                        </div>
-                    </div>
-            
-                    ${request.notes ? `<div class="mb-4 text-xs text-gray-700 bg-amber-50 p-3 rounded-lg border border-amber-200"><strong>Notes:</strong> ${request.notes}</div>` : ''}
-                    
-                    <div class="text-[10px] text-gray-400 mb-4 font-semibold uppercase tracking-wider">Submitted: ${formattedDate}</div>
-                    
-                    <div class="flex flex-wrap gap-2 border-t border-gray-100 pt-4 mt-auto">
-                        <button onclick="updateSpeakingRequestStatus('${request.id}', 'confirmed')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-semibold py-2 px-3 rounded-lg transition-colors duration-200">Confirm</button>
-                        <button onclick="openGradeSpeakingModal('${request.id}')" class="bg-fuchsia-600 hover:bg-fuchsia-700 text-white text-xs font-semibold py-2 px-3 rounded-lg transition-colors duration-200 shadow-sm"><i class="fas fa-star mr-1"></i> Evaluate</button>
-                        <button onclick="updateSpeakingRequestStatus('${request.id}', 'cancelled')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200 text-xs font-semibold py-2 px-3 rounded-lg transition-colors duration-200">Cancel</button>
-                        <button onclick="deleteSpeakingRequest('${request.id}')" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-semibold py-2 px-3 rounded-lg transition-colors duration-200 ml-auto"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                `;
+                    ${request.notes ? `<p class="text-gray-600 text-base mb-4 border-t pt-3 mt-3"><strong>Notes:</strong> ${request.notes}</p>` : ''}
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <button onclick="updateSpeakingRequestStatus('${request.id}', 'confirmed')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200">Confirm</button>
+                        <button onclick="updateSpeakingRequestStatus('${request.id}', 'completed')" class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200">Complete</button>
+                        <button onclick="updateSpeakingRequestStatus('${request.id}', 'cancelled')" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200">Cancel</button>
+                        <button onclick="deleteSpeakingRequest('${request.id}')" class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-3 rounded-lg transition-colors duration-200">Delete</button>
+                    </div>`;
                 container.appendChild(card);
             });
     
-            paginationContainer.innerHTML = "";
+            pagination.innerHTML = "";
             if (totalPages > 1) {
                 const paginationNav = document.createElement("nav");
                 paginationNav.className = "flex justify-center items-center space-x-2 mt-4";
@@ -2581,11 +2469,12 @@
                     speakingRequestCurrentPage++;
                     renderSpeakingRequests(filters, speakingRequestCurrentPage, itemsPerPage);
                 }));
-                paginationContainer.appendChild(paginationNav);
+                pagination.appendChild(paginationNav);
             }
         }, (error) => showMessage(`Error loading speaking requests: ${error.message}.`));
       };
-      // --- END SUPER PREMIUM Speaking Session Functions ---
+      // --- END NEW Functions ---
+
       let overviewChartInstance = null;
       const renderDashboardChart = async () => { // Renaming renderCharts
         const ctx = document.getElementById("overviewChart");
@@ -3783,34 +3672,32 @@
             <div id="contact-message-pagination" class="mt-8 flex justify-center"></div>
         </div>`;
 
-    const SPEAKING_REQUESTS_HTML = `
+      const SPEAKING_REQUESTS_HTML = `
         ${generatePageHeader("Speaking Session Requests")}
-        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-            <p class="text-gray-700 mb-6">Manage 1-on-1 speaking practice sessions, confirm schedules, and provide expert band scores and evaluations.</p>
-            
-            <div class="flex flex-col sm:flex-row items-center justify-between mb-4 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <div class="w-full sm:w-1/3">
-                    <label class="block text-gray-700 text-xs font-semibold mb-1">Filter by Status</label>
-                    <select id="speaking-request-filter-status" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 text-sm">
-                        <option value="all">All Statuses</option>
-                        <option value="pending">Pending</option>
-                        <option value="confirmed">Confirmed</option>
-                        <option value="reviewed">Evaluated</option>
-                        <option value="cancelled">Cancelled</option>
-                    </select>
-                </div>
-                <div class="w-full sm:w-2/3">
-                    <label class="block text-gray-700 text-xs font-semibold mb-1">Search</label>
-                    <input type="text" id="speaking-request-filter-search" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500 text-sm" placeholder="Search by name, email, or test title...">
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <p class="text-gray-700">Manage 1-on-1 speaking practice session requests submitted by users.</p>
+            <div class="mt-4 mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Filter Requests</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="speaking-request-filter-status" class="block text-gray-700 text-sm font-semibold mb-2">Status</label>
+                        <select id="speaking-request-filter-status" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500">
+                            <option value="all">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="speaking-request-filter-search" class="block text-gray-700 text-sm font-semibold mb-2">Search</label>
+                        <input type="text" id="speaking-request-filter-search" class="shadow-sm appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Search by name, email, phone...">
+                    </div>
                 </div>
             </div>
-            
-            <div id="speaking-requests-list" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4"></div>
+            <div id="speaking-requests-list" class="space-y-4"></div>
             <div id="speaking-request-pagination" class="mt-8 flex justify-center"></div>
         </div>`;
-
-
-
 
    const OUR_TEACHER_HTML = `
         ${generatePageHeader("Teacher Management")}
@@ -4071,148 +3958,80 @@
 
 const PREMIUM_ACCESS_HTML = `
         ${generatePageHeader("Premium Account Management")}
-        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 mb-8">
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <p class="text-gray-700 mb-6 text-lg">Enter a user's email to grant access. The system will automatically detect if the user is new or existing.</p>
+
             <div class="max-w-4xl mx-auto">
-                
-                <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-100 relative overflow-hidden mb-12">
-                    <!-- Decorative Top Bar -->
-                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+                <div class="bg-indigo-50 border-2 border-indigo-100 p-8 rounded-2xl shadow-sm relative overflow-hidden">
+                    <div id="user-status-badge" class="absolute top-0 right-0 bg-gray-200 text-gray-700 text-xs font-bold px-4 py-1.5 rounded-bl-lg uppercase tracking-wider">Checking Status...</div>
                     
-                    <div id="user-status-badge" class="absolute top-4 right-4 bg-slate-100 text-slate-500 text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300 border border-slate-200 shadow-sm">
-                        <i class="fas fa-circle text-[8px] text-slate-400"></i> Awaiting Input
-                    </div>
+                    <h3 class="text-2xl font-black text-indigo-900 mb-6"><i class="fas fa-id-card mr-2"></i> Issue Premium Package</h3>
                     
-                    <div class="p-6 md:p-8">
-                        <div class="mb-8 pr-32 sm:pr-40">
-                            <h3 class="text-2xl font-extrabold text-slate-800 tracking-tight flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shadow-inner border border-indigo-100/50">
-                                    <i class="fas fa-crown text-lg"></i>
+                    <form id="unified-premium-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="relative">
+                                <label class="block text-indigo-900 text-sm font-bold mb-1">Email Address</label>
+                                <div class="flex gap-2">
+                                    <input type="email" id="target-email" class="shadow-sm appearance-none border-2 border-indigo-100 rounded-lg w-full py-2.5 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" required placeholder="user@example.com">
+                                    <button type="button" id="lookup-email-btn" class="bg-indigo-200 hover:bg-indigo-300 text-indigo-800 px-4 rounded-lg transition-colors"><i class="fas fa-search"></i></button>
                                 </div>
-                                Issue Premium Access
-                            </h3>
-                            <p class="text-slate-500 text-sm mt-2 sm:ml-[3.25rem]">Search an email to upgrade an existing user or securely create a new premium account.</p>
+                            </div>
+                            <div>
+                                <label class="block text-indigo-900 text-sm font-bold mb-1">Full Name</label>
+                                <input type="text" id="target-name" class="shadow-sm appearance-none border-2 border-indigo-100 rounded-lg w-full py-2.5 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" required placeholder="Full Name">
+                            </div>
                         </div>
-                        
-                        <form id="unified-premium-form" class="space-y-6">
-                            <!-- Row 1: Email Lookup -->
-                            <div class="w-full">
-                                <label class="block text-slate-700 text-sm font-bold mb-2">Student Email Address</label>
-                                <div class="relative group">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <i class="fas fa-envelope text-slate-400 group-focus-within:text-indigo-500 transition-colors"></i>
-                                    </div>
-                                    <input type="email" id="target-email" class="block w-full pl-11 pr-[110px] sm:pr-32 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder-slate-400" required placeholder="student@example.com">
-                                    <button type="button" id="lookup-email-btn" class="absolute inset-y-1.5 right-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 sm:px-6 rounded-lg shadow-sm transition-all transform active:scale-95 flex items-center gap-2 h-[calc(100%-12px)]">
-                                        <i class="fas fa-search"></i> <span class="hidden sm:inline">Search</span>
-                                    </button>
-                                </div>
+
+                        <div id="password-section" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-indigo-900 text-sm font-bold mb-1">Temporary Password</label>
+                                <input type="text" id="target-password" class="shadow-sm appearance-none border-2 border-indigo-100 rounded-lg w-full py-2.5 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all font-mono" value="IeltsMahir123!">
+                                <p class="text-xs text-gray-500 mt-1">Only required for new accounts.</p>
                             </div>
-
-                            <div class="w-full h-px bg-slate-100 my-2"></div>
-
-                            <!-- Row 2: Basic Info -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-slate-700 text-sm font-bold mb-2 flex justify-between items-center">
-                                        <span>System User ID</span>
-                                    </label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <i class="fas fa-id-badge text-slate-400"></i>
-                                        </div>
-                                        <input type="text" id="target-user-id" class="block w-full pl-11 pr-4 py-3 bg-slate-100/50 border border-slate-200 rounded-xl text-slate-500 text-sm font-mono cursor-not-allowed transition-all" readonly placeholder="Auto-generated">
-                                    </div>
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-slate-700 text-sm font-bold mb-2">Full Name</label>
-                                    <div class="relative group">
-                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <i class="fas fa-user text-slate-400 group-focus-within:text-indigo-500 transition-colors"></i>
-                                        </div>
-                                        <input type="text" id="target-user-name" class="block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder-slate-400" required placeholder="John Doe">
-                                    </div>
-                                </div>
+                            <div>
+                                <label class="block text-indigo-900 text-sm font-bold mb-1">Package Type</label>
+                                <select id="target-package" class="shadow-sm appearance-none border-2 border-indigo-100 rounded-lg w-full py-2.5 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all font-semibold" required>
+                                    <option value="Silver Package">Silver Package (2,000 BDT) - 1 Month</option>
+                                    <option value="Gold Package">Gold Package (3,000 BDT) - 2 Months</option>
+                                    <option value="Platinum Package">Platinum Package (5,000 BDT) - 3 Months</option>
+                                </select>
                             </div>
+                        </div>
 
-                            <!-- Row 3: Security & Package -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-slate-700 text-sm font-bold mb-2">Package Tier</label>
-                                    <div class="relative group">
-                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
-                                            <i class="fas fa-box-open text-slate-400 group-focus-within:text-indigo-500 transition-colors"></i>
-                                        </div>
-                                        <select id="target-package" class="block w-full pl-11 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-semibold appearance-none focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer shadow-sm" required>
-                                            <option value="Silver Package">🥈 Silver Package (2,000 BDT) - 1 Month</option>
-                                            <option value="Gold Package" selected>🥇 Gold Package (3,000 BDT) - 2 Months</option>
-                                            <option value="Platinum Package">💎 Platinum Package (5,000 BDT) - 3 Months</option>
-                                        </select>
-                                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                                            <i class="fas fa-chevron-down text-slate-400 text-xs"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label class="block text-slate-700 text-sm font-bold mb-2 flex justify-between items-center">
-                                        <span>Temporary Password</span>
-                                        <span class="text-[10px] bg-slate-100 border border-slate-200 text-slate-500 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">New Users Only</span>
-                                    </label>
-                                    <div class="relative group">
-                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <i class="fas fa-key text-slate-400 group-focus-within:text-indigo-500 transition-colors"></i>
-                                        </div>
-                                        <input type="text" id="target-password" class="block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm font-mono focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all disabled:bg-slate-100/50 disabled:text-slate-400 disabled:cursor-not-allowed placeholder-slate-400" placeholder="e.g. Mahir123!" disabled>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="pt-6">
-                                <button type="submit" id="submit-premium-btn" disabled class="w-full relative overflow-hidden bg-slate-200 text-slate-400 font-bold text-lg py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center cursor-not-allowed border border-slate-300">
-                                    <span class="relative z-10 flex items-center gap-2">
-                                        <i class="fas fa-lock"></i> <span>Awaiting Lookup</span>
-                                    </span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="pt-4">
+                            <button type="submit" id="submit-premium-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold py-4 px-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center transform hover:-translate-y-0.5">
+                                <i class="fas fa-bolt mr-2"></i> <span>Initialize & Grant Access</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
-            <!-- Directory Section -->
-            <div class="flex flex-col sm:flex-row items-center justify-between mt-12 mb-6 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm">
-                <h3 class="text-xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-lg bg-yellow-100 text-yellow-600 flex items-center justify-center border border-yellow-200">
-                        <i class="fas fa-crown text-sm"></i>
-                    </div> 
-                    Premium Users
-                </h3>
-                <div class="w-full sm:w-80 relative group">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <i class="fas fa-search text-slate-400 group-focus-within:text-indigo-500 transition-colors"></i>
-                    </div>
-                    <input type="text" id="premium-users-search" class="block w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm" placeholder="Search Email, Name, or Package...">
+            <div class="flex flex-col sm:flex-row items-center justify-between mt-12 mb-6 gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <h3 class="text-2xl font-black text-gray-800 tracking-tight"><i class="fas fa-crown text-yellow-500 mr-2"></i> Premium User Directory</h3>
+                <div class="w-full sm:w-80 relative">
+                    <input type="text" id="premium-users-search" class="shadow-sm appearance-none border-2 border-gray-200 rounded-xl w-full py-2.5 pl-10 pr-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm font-medium" placeholder="Search Email, Name, or Package...">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                 </div>
             </div>
 
-            <div class="overflow-x-auto bg-white rounded-2xl border border-slate-200 shadow-sm">
-                <table class="min-w-full divide-y divide-slate-200">
-                    <thead class="bg-slate-50 border-b border-slate-200">
+            <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 shadow-sm">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-100">
                         <tr>
-                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">User Details</th>
-                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Package & Status</th>
-                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Timeline</th>
-                            <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-black text-gray-600 uppercase tracking-wider">User details</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-black text-gray-600 uppercase tracking-wider">Package & Status</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-black text-gray-600 uppercase tracking-wider">Granted / Expires</th>
+                            <th scope="col" class="px-6 py-4 text-right text-xs font-black text-gray-600 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="premium-users-list" class="bg-white divide-y divide-slate-100"></tbody>
+                    <tbody id="premium-users-list" class="bg-white divide-y divide-gray-100"></tbody>
                 </table>
             </div>
           <div id="premium-users-pagination" class="mt-8 flex justify-center pb-4"></div>
         </div>
       `;
-const WRITING_SUBMISSIONS_HTML = `
+      const WRITING_SUBMISSIONS_HTML = `
         ${generatePageHeader("Writing Submissions")}
         <div class="bg-white p-6 rounded-xl shadow-md mb-8">
             <p class="text-gray-700 mb-6">Review student writing mock tests, assign band scores, and provide feedback.</p>
@@ -4542,21 +4361,18 @@ const WRITING_SUBMISSIONS_HTML = `
           };
       };
 
-// Global flag for hybrid flow
-      window.isCurrentTargetNew = false;
-
-      // Unified Premium Handler
+// Unified Premium Handler
       window.handlePremiumIssuance = async (e) => {
           e.preventDefault();
           if (!isAuthReady) return showMessage("Firebase not ready.");
 
           const email = document.getElementById("target-email").value.trim();
-          let userId = document.getElementById("target-user-id").value.trim();
-          const name = document.getElementById("target-user-name").value.trim() || "User";
+          const name = document.getElementById("target-name").value.trim();
           const password = document.getElementById("target-password").value.trim();
           const packageType = document.getElementById("target-package").value;
+          const statusBadge = document.getElementById("user-status-badge");
 
-          if (!email) return showMessage("Please enter a valid email address.");
+          if (!email || !name) return showMessage("Email and Name are required.");
 
           let durationMonths = 1;
           if (packageType.includes("Gold")) durationMonths = 2;
@@ -4564,22 +4380,21 @@ const WRITING_SUBMISSIONS_HTML = `
           const expiresAt = new Date();
           expiresAt.setMonth(expiresAt.getMonth() + durationMonths);
 
-          const submitBtn = document.getElementById("submit-premium-btn");
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> <span>Processing...</span>';
-
-          // We will track the final password string to send to WhatsApp and save
-          let finalPassword = password;
-
           try {
-              if (window.isCurrentTargetNew) {
-                  if (!password || password.length < 6) {
-                      submitBtn.disabled = false;
-                      submitBtn.innerHTML = '<i class="fas fa-user-plus mr-2"></i> <span>Create Account & Grant Access</span>';
-                      return showMessage("Password must be at least 6 characters for a new account.");
-                  }
+              // Step 1: Check if user exists in the premium directory
+              const q = query(collection(db, "artifacts", appId, "public", "data", "premiumUsers"), where("email", "==", email));
+              const querySnapshot = await getDocs(q);
+              
+              let userId = "";
+
+              if (!querySnapshot.empty) {
+                  // EXISTING USER FLOW
+                  userId = querySnapshot.docs[0].data().userId;
+                  showMessage(`Updating existing user: ${name}...`);
+              } else {
+                  // NEW USER FLOW
+                  if (!password) return showMessage("Password is required for new accounts.");
                   
-                  // Create New User using Secondary App to prevent admin logout
                   let secondaryApp;
                   try { secondaryApp = getApp("SecondaryApp"); } 
                   catch(err) { secondaryApp = initializeApp(firebaseConfig, "SecondaryApp"); }
@@ -4587,23 +4402,17 @@ const WRITING_SUBMISSIONS_HTML = `
                   const secondaryAuth = getAuth(secondaryApp);
                   const userCredential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
                   userId = userCredential.user.uid;
-                  
+
                   // Create initial Profile
                   await setDoc(doc(db, "artifacts", appId, "users", userId, "userProfile", "profile"), {
                       name: name,
                       email: email,
                       createdAt: serverTimestamp()
                   });
-                  await signOut(secondaryAuth); // Clean up
-              } else {
-                  if (!userId) {
-                      submitBtn.disabled = false;
-                      submitBtn.innerHTML = '<i class="fas fa-bolt mr-2"></i> <span>Upgrade Existing Account</span>';
-                      return showMessage("User ID missing for existing user.");
-                  }
+                  await signOut(secondaryAuth);
               }
 
-              // Step 1: Update Game Stats (Access Key)
+              // Step 2: Update Game Stats (Access Key)
               await setDoc(doc(db, "artifacts", appId, "users", userId, "gameStats", "summary"), {
                   isPremium: true,
                   premiumPackage: packageType,
@@ -4612,186 +4421,98 @@ const WRITING_SUBMISSIONS_HTML = `
                   updatedByAdmin: auth.currentUser.email
               }, { merge: true });
 
-              // Step 2: Update Global Directory (Saving the password here so it's retrievable later)
-              let premiumUserData = {
+            // Step 3: Update Global Directory (Store credentials for access key usage)
+              await setDoc(doc(db, "artifacts", appId, "public", "data", "premiumUsers", userId), {
                   userId: userId,
-                  name: name,
                   email: email,
+                  name: name,
+                  password: password, // Save the actual password from the input field
                   package: packageType,
                   expiresAt: expiresAt,
                   grantedAt: serverTimestamp(),
                   grantedByAdmin: auth.currentUser.email
-              };
+              });
 
-              // Attach password to DB object ONLY if it's explicitly typed in (mostly for new users)
-              // If it's an existing user and we retrieved their old password, we re-save it.
-              if (finalPassword && finalPassword !== "Hidden/Unknown") {
-                  premiumUserData.password = finalPassword;
-              }
-              
-              await setDoc(doc(db, "artifacts", appId, "public", "data", "premiumUsers", userId), premiumUserData);
-
-              // Copy appropriate WhatsApp Message (Passing finalPassword to ensure it's in the text if available)
-              window.copyWhatsAppMsg(name, email, packageType, finalPassword !== "Hidden/Unknown" ? finalPassword : null);
-              
-              // Reset UI
+              window.copyWhatsAppMsg(name, email, packageType, password);
               document.getElementById("unified-premium-form").reset();
-              const statusBadge = document.getElementById("user-status-badge");
-              statusBadge.innerHTML = '<i class="fas fa-circle text-[8px] text-slate-400"></i> Awaiting Input';
-              statusBadge.className = "absolute top-4 right-4 bg-slate-100 text-slate-500 text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300 border border-slate-200 shadow-sm";
-              
-              submitBtn.className = "w-full relative overflow-hidden bg-slate-200 text-slate-400 font-bold text-lg py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center cursor-not-allowed border border-slate-300";
-              submitBtn.innerHTML = '<span class="relative z-10 flex items-center gap-2"><i class="fas fa-lock"></i> <span>Awaiting Lookup</span></span>';
+              statusBadge.textContent = "Checking Status...";
+              statusBadge.className = "absolute top-0 right-0 bg-gray-200 text-gray-700 text-xs font-bold px-4 py-1.5 rounded-bl-lg uppercase tracking-wider";
               
           } catch (error) {
               console.error(error);
               showMessage("Error: " + error.message);
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = window.isCurrentTargetNew 
-                  ? '<i class="fas fa-user-plus mr-2"></i> <span>Create Account & Grant Access</span>'
-                  : '<i class="fas fa-bolt mr-2"></i> <span>Upgrade Existing Account</span>';
           }
       };
 
-      // Safe Hybrid Email Lookup Logic
+    // Enhanced Email Lookup Logic
       window.lookupEmailStatus = async () => {
           const email = document.getElementById("target-email").value.trim().toLowerCase();
-          const userIdInput = document.getElementById("target-user-id");
-          const userNameInput = document.getElementById("target-user-name");
-          const passwordInput = document.getElementById("target-password");
+          const nameInput = document.getElementById("target-name");
+          const passInput = document.getElementById("target-password");
           const statusBadge = document.getElementById("user-status-badge");
-          const submitBtn = document.getElementById("submit-premium-btn");
+          const submitBtn = document.getElementById("submit-premium-btn").querySelector("span");
 
           if (!email || !email.includes('@')) return;
 
-          statusBadge.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Searching...';
-          statusBadge.className = "absolute top-4 right-4 bg-amber-100 text-amber-700 border border-amber-200 shadow-sm text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300";
-          
-          userIdInput.value = "";
-          userNameInput.value = "";
-          passwordInput.value = "";
-          submitBtn.disabled = true;
-          submitBtn.className = "w-full relative overflow-hidden bg-slate-200 text-slate-400 font-bold text-lg py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center cursor-not-allowed border border-slate-300";
-          submitBtn.innerHTML = '<span class="relative z-10 flex items-center gap-2"><i class="fas fa-lock"></i> <span>Awaiting Lookup</span></span>';
+          statusBadge.textContent = "Searching System...";
+          statusBadge.className = "absolute top-0 right-0 bg-yellow-500 text-white text-xs font-bold px-4 py-1.5 rounded-bl-lg uppercase tracking-wider animate-pulse";
 
           try {
-              let foundUserId = null;
-              let foundUserName = "";
-              let foundPassword = "";
-
-              // 1. Fast Check: Look in Premium Users table first
+              // 1. First, search in your existing Premium list (Fastest)
               const premiumQuery = query(collection(db, "artifacts", appId, "public", "data", "premiumUsers"), where("email", "==", email));
               const premiumSnap = await getDocs(premiumQuery);
 
+              let foundUser = null;
+
               if (!premiumSnap.empty) {
-                  const data = premiumSnap.docs[0].data();
-                  foundUserId = data.userId;
-                  foundUserName = data.name || "";
-                  foundPassword = data.password || ""; // Grab stored password if it exists
+                  foundUser = premiumSnap.docs[0].data();
               } else {
-                  // 2. Check global quiz results
-                  const quizQuery = query(collection(db, "artifacts", appId, "public", "data", "quizGlobalResults"), where("userEmail", "==", email), limit(1));
-                  const quizSnap = await getDocs(quizQuery);
-                  
-                  if (!quizSnap.empty) {
-                      foundUserId = quizSnap.docs[0].data().userId;
-                      foundUserName = quizSnap.docs[0].data().userName || "";
-                  } else {
-                      // 3. Check writing submissions
-                      const writingQuery = query(collection(db, "artifacts", appId, "public", "data", "writingSubmissions"), where("userEmail", "==", email), limit(1));
-                      const writingSnap = await getDocs(writingQuery);
-                      
-                      if (!writingSnap.empty) {
-                          foundUserId = writingSnap.docs[0].data().userId;
-                          foundUserName = writingSnap.docs[0].data().userName || "";
-                      } else {
-                          // 4. Deep Check: Search all registered user profiles
-                          const allProfilesSnap = await getDocs(collectionGroup(db, "userProfile"));
-                          for (const doc of allProfilesSnap.docs) {
-                              const data = doc.data();
-                              if (data.email && data.email.toLowerCase() === email) {
-                                  foundUserName = data.name || "";
-                                  const pathSegments = doc.ref.path.split('/');
-                                  const usersIndex = pathSegments.indexOf('users');
-                                  if (usersIndex !== -1 && pathSegments.length > usersIndex + 1) {
-                                      foundUserId = pathSegments[usersIndex + 1];
-                                      break; 
-                                  }
-                              }
-                          }
-                      }
-                  }
+                  // 2. If not in premium list, search the general User Profiles
+                  const userQuery = query(collectionGroup(db, "userProfile"), where("email", "==", email));
+                  const userSnap = await getDocs(userQuery);
+                  if (!userSnap.empty) foundUser = userSnap.docs[0].data();
               }
 
-              submitBtn.disabled = false;
-
-              if (foundUserId) {
-                  window.isCurrentTargetNew = false;
-                  userIdInput.value = foundUserId;
-                  userNameInput.value = foundUserName || "User";
+             if (foundUser) {
+                  nameInput.value = foundUser.name || "";
                   
-                  // Display retrieved password, or fallback text if we didn't store it
-                  passwordInput.value = foundPassword || "Hidden/Unknown";
-                  passwordInput.disabled = true;
+                  // Update UI for Existing User
+                  statusBadge.textContent = "Existing User Found";
+                  statusBadge.classList.remove('animate-pulse');
+                  statusBadge.className = "absolute top-0 right-0 bg-emerald-600 text-white text-xs font-bold px-4 py-1.5 rounded-bl-lg uppercase tracking-wider";
+                  submitBtn.textContent = "Upgrade Account Package";
                   
-                  statusBadge.innerHTML = '<i class="fas fa-check-circle text-emerald-500"></i> User Found';
-                  statusBadge.className = "absolute top-4 right-4 bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300";
-                  
-                  submitBtn.innerHTML = '<span class="relative z-10 flex items-center gap-2"><i class="fas fa-bolt"></i> <span>Upgrade Existing Account</span></span>';
-                  submitBtn.className = "w-full relative overflow-hidden bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow-[0_8px_20px_rgba(16,185,129,0.3)] text-white font-bold text-lg py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center transform hover:-translate-y-0.5 cursor-pointer border-none";
+                  // Show stored password so admin can see/edit the access key. 
+                  passInput.value = foundUser.password || "";
+                  if (!foundUser.password) passInput.placeholder = "Password not in database";
+                  passInput.disabled = false; 
+                  passInput.parentElement.style.opacity = "1";
               } else {
-                  window.isCurrentTargetNew = true;
-                  userIdInput.value = "Will be auto-generated";
-                  passwordInput.disabled = false;
-                  passwordInput.value = "IeltsMahir123!"; // Default suggestion
+                  // UI for New User
+                  statusBadge.textContent = "New User Detected";
+                  statusBadge.classList.remove('animate-pulse');
+                  statusBadge.className = "absolute top-0 right-0 bg-indigo-500 text-white text-xs font-bold px-4 py-1.5 rounded-bl-lg uppercase tracking-wider";
+                  submitBtn.textContent = "Create Account & Grant Access";
                   
-                  statusBadge.innerHTML = '<i class="fas fa-user-plus text-indigo-500"></i> Create New User';
-                  statusBadge.className = "absolute top-4 right-4 bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-sm text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300";
-                  
-                  submitBtn.innerHTML = '<span class="relative z-10 flex items-center gap-2"><i class="fas fa-user-plus"></i> <span>Create Account & Grant Access</span></span>';
-                  submitBtn.className = "w-full relative overflow-hidden bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 shadow-[0_8px_20px_rgba(99,102,241,0.3)] text-white font-bold text-lg py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center transform hover:-translate-y-0.5 cursor-pointer border-none";
+                  // Enable password input
+                  passInput.disabled = false;
+                  passInput.value = "IeltsMahir123!";
+                  passInput.parentElement.style.opacity = "1";
               }
           } catch (error) {
               console.error("Lookup error:", error);
-              statusBadge.innerHTML = '<i class="fas fa-exclamation-circle text-red-500"></i> System Error';
-              statusBadge.className = "absolute top-4 right-4 bg-red-50 text-red-700 border border-red-200 shadow-sm text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300";
+              statusBadge.textContent = "Lookup Error (Check Index)";
+              statusBadge.className = "absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-bl-lg uppercase tracking-wider";
           }
       };
-
-      window.copyWhatsAppMsg = (name, email, pkg, pwd) => {
-          const greeting = name && name !== "User" && name !== "N/A" ? `Hello ${name},` : "Hello!";
-          
-          let testsIncluded = "Premium Mock Tests";
-          let validity = "Premium Access";
-          
-          if (pkg.includes("Silver")) {
-              testsIncluded = "Listening: 7, Reading: 7, Writing: 7";
-              validity = "1 month";
-          } else if (pkg.includes("Gold")) {
-              testsIncluded = "Listening: 10, Reading: 10, Writing: 10, Speaking: 5";
-              validity = "2 months";
-          } else if (pkg.includes("Platinum")) {
-              testsIncluded = "Listening: 15, Reading: 15, Writing: 15, Speaking: 7";
-              validity = "3 months";
-          }
-
-          let waMessage = "";
-
-          if (pwd && pwd !== "Hidden/Unknown") {
-              // Message contains password (New user, or existing user with a known stored password)
-              waMessage = `${greeting}\n\nGreat news! We have generated your IELTS Mahir premium credentials and granted you access to the *${pkg}*.\n\n*Package Details:*\n✅ Tests Included: ${testsIncluded}\n⏳ Validity: ${validity}\n\nYou can now log in to access your premium mock tests and track your progress.\n\nVisit the login page here:\n👉 https://www.ieltsmahir.com/auth\n\n🔑 Login Email: ${email}\n🔒 Password: ${pwd}\n\nBest of luck with your IELTS preparation!\n\n- IELTS Mahir Team`;
-          } else {
-              // Existing User Message (No stored password, direct to dashboard)
-              waMessage = `${greeting}\n\nGreat news! Your existing IELTS Mahir account has been successfully upgraded to the *${pkg}*.\n\n*Package Details:*\n✅ Tests Included: ${testsIncluded}\n⏳ Validity: ${validity}\n\nYou can now access your premium mock tests and track your progress.\n\nVisit your dashboard here:\n👉 https://www.ieltsmahir.com/mock-test-home\n\n🔑 Login Email: ${email}\n\nBest of luck with your IELTS preparation!\n\n- IELTS Mahir Team`;
-          }
-          
+  window.copyWhatsAppMsg = (name, email, pkg, pwd) => {
+          const waMessage = `Hello ${name !== 'N/A' ? name : ''},\n\nYour IELTS Mahir account has been successfully assigned the ${pkg}.\n\nLogin Link: https://ieltsmahir.com/auth\nUsername/Email: ${email}\nPassword: ${pwd || 'Your chosen password'}\n\nPlease login and start your preparation. Best of luck!\n\n- IELTS Mahir Team`;
           navigator.clipboard.writeText(waMessage).then(() => {
-              showMessage("WhatsApp message copied to clipboard!");
+              showMessage("WhatsApp message (with credentials) copied to clipboard!");
           }).catch(err => {
               showMessage("Failed to copy message to clipboard.");
           });
       };
-
       window.revokePremiumAccess = async (userId) => {
           if (!isAuthReady) return showMessage("Firebase not ready.");
 
@@ -4841,7 +4562,7 @@ const WRITING_SUBMISSIONS_HTML = `
           };
       };
 
-     const renderPremiumUsers = (filters, currentPage, itemsPerPage) => {
+      const renderPremiumUsers = (filters, currentPage, itemsPerPage) => {
           if (!isAuthReady) return;
           const container = document.getElementById("premium-users-list");
           const paginationContainer = document.getElementById("premium-users-pagination");
@@ -4876,8 +4597,9 @@ const WRITING_SUBMISSIONS_HTML = `
                       if (user.package && user.package.includes("Gold")) badgeColor = "bg-yellow-100 text-yellow-800";
                       if (user.package && user.package.includes("Platinum")) badgeColor = "bg-purple-100 text-purple-800";
 
+                      // Safe names
+                      const safeName = user.name || "N/A";
                       const safeEmail = user.email || user.userId;
-                      const safeName = user.name || "User ID: " + user.userId.substring(0,6) + "...";
 
                       const tr = document.createElement("tr");
                       tr.className = "hover:bg-gray-50 transition-colors";
@@ -4893,8 +4615,8 @@ const WRITING_SUBMISSIONS_HTML = `
                               <div><span class="font-semibold text-gray-700">Granted:</span> ${grantedDate}</div>
                               <div><span class="font-semibold text-red-500">Expires:</span> ${expiresDate}</div>
                           </td>
-               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                             <button onclick="copyWhatsAppMsg('${safeName.replace(/'/g, "\\'")}', '${safeEmail.replace(/'/g, "\\'")}', '${(user.package || 'Legacy Premium').replace(/'/g, "\\'")}', '${(user.password || 'Hidden/Unknown').replace(/'/g, "\\'")}')" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors mr-2" title="Copy WhatsApp Message">
+                          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                             <button onclick="copyWhatsAppMsg('${safeName.replace(/'/g, "\\'")}', '${safeEmail.replace(/'/g, "\\'")}', '${user.package || 'Legacy Premium'}', '${user.password || ''}')" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors mr-2" title="Copy WhatsApp Credentials">
                                   <i class="fab fa-whatsapp mr-1"></i> MSG
                               </button>
                               <button onclick="revokePremiumAccess('${user.userId}')" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors" title="Revoke Access">
@@ -4927,6 +4649,7 @@ const WRITING_SUBMISSIONS_HTML = `
               }
           });
       };
+      
       window.loadPageContent = (pageName) => {
         const contentArea = document.getElementById("content-area");
         document

@@ -3,11 +3,16 @@ import {
   getFirestore,
   collection,
   getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 let completedTestIds = new Set();
 let hasFetched = false;
 let isFetching = false;
+let premiumGrantedAt = null;
 
 // We check both the premium app ID and the fallback default to guarantee we find the test
 const possibleAppIds =
@@ -20,17 +25,67 @@ async function fetchCompletedTests() {
   isFetching = true;
   try {
     const db = getFirestore();
+    const userId = authAppState.userId;
 
-    // Loop through potential database paths to ensure we catch the completed test
+    // 1. Fetch the exact time the user bought their CURRENT premium package
     for (const appId of possibleAppIds) {
+      try {
+        const premiumSnap = await getDoc(
+          doc(db, `artifacts/${appId}/public/data/premiumUsers/${userId}`),
+        );
+        if (premiumSnap.exists()) {
+          premiumGrantedAt = premiumSnap.data().grantedAt;
+          break; // Found the premium record, stop looking
+        }
+      } catch (e) {
+        // Ignore and try the next app ID if it fails
+      }
+    }
+
+    // 2. Loop through potential database paths to fetch completed tests
+    for (const appId of possibleAppIds) {
+      // --- Fetch Reading/Listening Results ---
       const resultsRef = collection(
         db,
-        `artifacts/${appId}/users/${authAppState.userId}/mockTestResults`,
+        `artifacts/${appId}/users/${userId}/mockTestResults`,
       );
       const snapshot = await getDocs(resultsRef);
-      snapshot.forEach((doc) => {
-        if (doc.data().testId) {
-          completedTestIds.add(doc.data().testId);
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data.testId) {
+          const testTime = data.timestamp;
+          // If user repurchased/upgraded AFTER taking this test, ignore it (allow 1 free retake)
+          if (
+            premiumGrantedAt &&
+            testTime &&
+            testTime.toMillis() < premiumGrantedAt.toMillis()
+          ) {
+            return;
+          }
+          completedTestIds.add(data.testId);
+        }
+      });
+
+      // --- Fetch Writing Submissions ---
+      const writingRef = collection(
+        db,
+        `artifacts/${appId}/public/data/writingSubmissions`,
+      );
+      const writingQ = query(writingRef, where("userId", "==", userId));
+      const writingSnapshot = await getDocs(writingQ);
+      writingSnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data.testId) {
+          const testTime = data.submittedAt;
+          // If user repurchased/upgraded AFTER taking this test, ignore it (allow 1 free retake)
+          if (
+            premiumGrantedAt &&
+            testTime &&
+            testTime.toMillis() < premiumGrantedAt.toMillis()
+          ) {
+            return;
+          }
+          completedTestIds.add(data.testId);
         }
       });
     }
@@ -54,7 +109,13 @@ function lockCompletedTests() {
     if (link.dataset.retakeProcessed === "true") return;
 
     const href = link.getAttribute("href") || link.dataset.originalHref;
-    if (!href || href.includes("payment-system") || href === "#") return;
+    if (
+      !href ||
+      href.includes("payment-system") ||
+      href.includes("mock-test-packages") ||
+      href === "#"
+    )
+      return;
 
     let testId = null;
     try {
@@ -142,7 +203,7 @@ function lockCompletedTests() {
                         </div>
                         <h2 class="text-3xl sm:text-4xl font-anton text-slate-800 uppercase tracking-wide mb-4">Test Completed</h2>
                         <p class="text-slate-600 mb-8 font-inter text-lg leading-relaxed">
-                            You have already successfully completed this mock test. To maintain authentic scoring and assessments, tests cannot be retaken.
+                            You have already successfully completed this mock test in your current package cycle. To maintain authentic scoring and assessments, tests cannot be retaken.
                         </p>
                         <a href="mock-test-home" class="inline-block px-8 py-3.5 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-all font-inter">
                             Go Back to Tests

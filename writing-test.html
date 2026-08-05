@@ -511,7 +511,28 @@
         alreadyCompleted: false,
         isPremiumTest: false,
         isUserPremium: false,
+        premiumPackage: "",
       };
+
+      let premiumGrantedAt = null;
+
+      async function fetchPremiumDetails(userId) {
+        if (!db || !userId) return;
+        try {
+          const appId =
+            typeof __app_id !== "undefined"
+              ? __app_id
+              : "ielts-mahir-community-forum";
+          const snap = await getDoc(
+            doc(db, `artifacts/${appId}/public/data/premiumUsers/${userId}`),
+          );
+          if (snap.exists()) {
+            premiumGrantedAt = snap.data().grantedAt;
+          }
+        } catch (e) {
+          console.error("Error fetching premium details:", e);
+        }
+      }
 
       window.onload = async () => {
         // Hide main container initially while verifying access
@@ -537,7 +558,6 @@
 
           headerTitle.textContent = currentTest.title;
 
-          // Identify if Premium (Only 1st test index 0 is free, index 1+ are premium)
           const testIndex = allWritingTests.findIndex((t) => t.id === testId);
           testState.isPremiumTest = testIndex >= 1;
 
@@ -549,6 +569,8 @@
                   ? __app_id
                   : "ielts-mahir-community-forum";
 
+              await fetchPremiumDetails(user.uid);
+
               // 1. Check Premium Package
               try {
                 const userStatsRef = doc(
@@ -559,20 +581,15 @@
                 if (docSnap.exists()) {
                   const data = docSnap.data();
                   if (data.isPremium === true) {
-                    if (
-                      !data.premiumPackage ||
-                      data.premiumPackage === "Full Premium Bundle" ||
-                      data.premiumPackage === "Writing Pass"
-                    ) {
-                      testState.isUserPremium = true;
-                    }
+                    testState.isUserPremium = true;
+                    testState.premiumPackage = data.premiumPackage || "";
                   }
                 }
               } catch (e) {
                 console.error("Failed to fetch user premium stats:", e);
               }
 
-              // 2. Check if Already Completed
+              // 2. Check if Already Completed (with Retake Logic)
               try {
                 const submissionsRef = collection(
                   db,
@@ -584,14 +601,51 @@
                   where("userId", "==", user.uid),
                 );
                 const querySnapshot = await getDocs(q);
+
                 if (!querySnapshot.empty) {
-                  testState.alreadyCompleted = true;
+                  querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const testTime = data.submittedAt;
+
+                    // Ignore test submissions from BEFORE the current package was granted
+                    if (
+                      !premiumGrantedAt ||
+                      (testTime &&
+                        testTime.toMillis() >= premiumGrantedAt.toMillis())
+                    ) {
+                      testState.alreadyCompleted = true;
+                    }
+                  });
                 }
               } catch (e) {
                 console.error("Failed to check past submissions:", e);
               }
             } else {
               testState.isUserPremium = false;
+              testState.premiumPackage = "";
+            }
+
+            // 3. Verify Package Limits
+            let allowedTests = 1; // Free tier
+            if (testState.isUserPremium) {
+              const pkg = testState.premiumPackage;
+              if (
+                pkg.includes("Platinum") ||
+                pkg.includes("Full Premium") ||
+                pkg.includes("Writing")
+              ) {
+                allowedTests = 15;
+              } else if (pkg.includes("Gold")) {
+                allowedTests = 10;
+              } else if (pkg.includes("Silver")) {
+                allowedTests = 7;
+              } else {
+                allowedTests = 15; // Legacy fallback
+              }
+            }
+
+            if (testIndex >= allowedTests) {
+              testState.accessDenied = true;
             }
 
             testState.isCheckingAuth = false;
@@ -600,7 +654,7 @@
             // UI Rendering based on Access States
             if (testState.alreadyCompleted) {
               renderCompletedScreen();
-            } else if (testState.isPremiumTest && !testState.isUserPremium) {
+            } else if (testState.accessDenied) {
               renderLockedScreen();
             } else {
               // Access Granted: Load Drafts & Start
@@ -635,7 +689,7 @@
                 </div>
                 <h2 class="text-3xl sm:text-4xl header-font font-bold text-slate-800 uppercase tracking-wide mb-4">Test Completed</h2>
                 <p class="text-slate-600 mb-8 font-inter text-lg leading-relaxed">
-                    You have already successfully completed this writing test. To maintain authentic grading, tests cannot be retaken.
+                    You have already successfully completed this writing test in your current package cycle. To maintain authentic grading, tests cannot be retaken.
                 </p>
                 <a href="mock-test-home?module=writing" class="inline-flex items-center justify-center px-8 py-3.5 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-all active:scale-95">
                     <i class="fas fa-arrow-left mr-2"></i> Go Back to Tests
@@ -654,16 +708,16 @@
                 <div class="w-24 h-24 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-inner">
                     <i class="fas fa-lock"></i>
                 </div>
-                <h2 class="text-3xl sm:text-4xl header-font font-bold text-slate-800 uppercase tracking-wide mb-4">Premium Content</h2>
+                <h2 class="text-3xl sm:text-4xl header-font font-bold text-slate-800 uppercase tracking-wide mb-4">Content Locked</h2>
                 <p class="text-slate-600 mb-8 font-inter text-lg leading-relaxed">
-                    This writing test is exclusively available for <strong class="text-amber-500">Premium</strong> users. Upgrade your account to unlock full features!
+                    This mock test exceeds your current package limit. Upgrade your account to unlock all tests and get expert evaluations!
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="mock-test-home?module=writing" class="px-6 py-3.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors">
-                        View Free Tests
+                        View Unlocked Tests
                     </a>
-                    <a href="payment-system?module=writing" class="px-6 py-3.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl shadow-lg hover:shadow-orange-500/30 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
-                        <i class="fas fa-crown"></i> Upgrade to Premium
+                    <a href="mock-test-packages" class="px-6 py-3.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl shadow-lg hover:shadow-orange-500/30 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                        <i class="fas fa-crown"></i> View Packages
                     </a>
                 </div>
             </div>
