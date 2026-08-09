@@ -623,6 +623,12 @@
             } else {
               testState.isUserPremium = false;
               testState.premiumPackage = "";
+
+              // Redirect unauthenticated users trying to take a test to the auth page
+              if (!window.location.pathname.endsWith("/auth")) {
+                window.location.href = "auth";
+              }
+              return;
             }
 
             // 3. Verify Package Limits

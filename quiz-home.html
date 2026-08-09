@@ -952,13 +952,10 @@
             auth = firebaseAuth;
 
             auth.onAuthStateChanged(async (user) => {
-              if (!user) {
-                if (!window.location.pathname.endsWith("/auth")) {
-                  window.location.href = "auth";
-                }
-                return;
+              if (user) {
+                await fetchUserGameStats(user.uid);
               }
-              await fetchUserGameStats(user.uid);
+              // Always render the app so unauthenticated users can see the content
               renderApp();
             });
           })

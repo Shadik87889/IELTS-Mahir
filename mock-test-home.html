@@ -2005,12 +2005,9 @@
             auth.onAuthStateChanged(async (user) => {
               if (user) {
                 await fetchUserGameStats(user.uid);
-                renderApp();
-              } else {
-                if (!window.location.pathname.endsWith("/auth")) {
-                  window.location.href = "auth";
-                }
               }
+              // Always render the app so unauthenticated users can see the content
+              renderApp();
             });
           })
           .catch((error) => {

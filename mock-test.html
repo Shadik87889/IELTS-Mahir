@@ -5909,6 +5909,12 @@
                       testState.isUserPremium = false;
                       testState.premiumPackage = "";
                       premiumGrantedAt = null;
+
+                      // Redirect unauthenticated users trying to take a test to the auth page
+                      if (!window.location.pathname.endsWith("/auth")) {
+                        window.location.href = "auth";
+                      }
+                      return;
                     }
 
                     // --- Enforce "Already Completed" Block for URL Bypass ---

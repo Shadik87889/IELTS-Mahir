@@ -111,6 +111,34 @@
       </div>
     </div>
 
+   <!-- 2FA Email Verification Section -->
+    <div id="two-factor-section" class="min-h-screen flex items-center justify-center w-full bg-gray-100 hidden z-50">
+      <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-200 text-center transform transition-all">
+        <div class="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-indigo-50 mb-6 border border-indigo-100 shadow-sm">
+          <i class="fas fa-envelope-open-text text-3xl text-indigo-600"></i>
+        </div>
+        <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Email Verification</h2>
+        <p class="mt-2 text-gray-500 text-sm mb-6">We've sent a 6-digit verification code to your email. Enter it below to access the panel.</p>
+        
+        <form id="verify-2fa-form" class="space-y-6">
+          <div>
+            <input type="text" id="verify-pin" maxlength="6" pattern="\d{6}" class="block w-full text-center text-3xl tracking-[1em] font-mono py-4 border border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition-all" placeholder="••••••" required autocomplete="off">
+          </div>
+          <button type="submit" id="verify-2fa-btn" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-md text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300">
+            <i class="fas fa-unlock mr-2 mt-0.5"></i> Verify Code
+          </button>
+        </form>
+        <div class="mt-6 border-t border-gray-100 pt-6 flex flex-col gap-3">
+            <button id="resend-otp-btn" class="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex items-center justify-center w-full gap-2">
+              <i class="fas fa-redo"></i> Resend Verification Code
+            </button>
+            <button onclick="handleLogout()" class="text-sm font-medium text-gray-500 hover:text-red-600 transition-colors flex items-center justify-center w-full gap-2">
+              <i class="fas fa-sign-out-alt"></i> Cancel & Sign Out
+            </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Admin Panel Section -->
     <div id="admin-panel" class="flex flex-1 hidden">
       <div id="sidebar-overlay" class="lg:hidden hidden overlay"></div>
@@ -390,13 +418,11 @@
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
       import {
         getAuth,
-        signInWithEmailAndPassword,
-        signOut,
-        onAuthStateChanged,
-        createUserWithEmailAndPassword,
-        updatePassword,
-        setPersistence,
-        inMemoryPersistence
+        signInWithEmailAndPassword, // Added for email/password login
+        signOut, // Added for logout functionality
+        onAuthStateChanged, // Added for real-time auth state management
+        createUserWithEmailAndPassword, // Added for creating new users
+        updatePassword, // Added for updating user password
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
       const defaultAppId = "ielts-mahir-community-forum";
@@ -429,6 +455,7 @@
       let isAuthReady = false; // This will now be managed by onAuthStateChanged
       let summernoteEditorInstance = null;
       let currentUserRole = null; // To store the role of the currently logged-in user
+      let user2FAPin = null; // To store the user's fetched security PIN
 
      // --- START: RBAC & AUDIT CONFIGURATION ---
       const ROLES = {
@@ -583,23 +610,66 @@
         { name: "Motivation & Support" },
       ];
 
-      const showMessage = (message) => {
+     const showMessage = (message) => {
         const messageBox = document.getElementById("message-box");
         const messageContent = document.getElementById("message-content");
         messageContent.textContent = message;
         messageBox.classList.remove("hidden");
       };
 
-     const showAdminPanel = () => {
+   const show2FAScreen = () => {
         document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("admin-panel").classList.add("hidden");
+        document.getElementById("two-factor-section").classList.remove("hidden");
+        document.getElementById("verify-pin").value = '';
+        setTimeout(() => document.getElementById("verify-pin").focus(), 100);
+      };
+
+      const showAdminPanel = () => {
+        document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("two-factor-section").classList.add("hidden");
         document.getElementById("admin-panel").classList.remove("hidden");
-        updateSidebarNavigation(); // Dynamically render sidebar based on RBAC
-        loadPageContent("dashboard"); // Load default page after successful login
+        updateSidebarNavigation(); 
+        loadPageContent("dashboard"); 
       };
 
       const showLoginForm = () => {
         document.getElementById("login-section").classList.remove("hidden");
         document.getElementById("admin-panel").classList.add("hidden");
+        document.getElementById("two-factor-section").classList.add("hidden");
+      };
+
+      // Helper function to generate and send OTP
+      window.sendEmailOTP = async (userEmail, uid) => {
+          const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6 digits
+          const expiry = new Date();
+          expiry.setMinutes(expiry.getMinutes() + 10); // Code valid for 10 minutes
+
+          try {
+              // 1. Save OTP hash/code locally in the admin's document
+              await updateDoc(doc(db, "artifacts", appId, "public", "data", "adminUsers", uid), {
+                  currentOtp: otp,
+                  otpExpiry: expiry
+              });
+
+              // 2. Trigger Firebase Email Extension by writing to the 'mail' collection
+              await addDoc(collection(db, "mail"), {
+                  to: [userEmail],
+                  message: {
+                      subject: "IELTS Mahir Admin - Your Login Verification Code",
+                      html: `<div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+                                <h2 style="color: #4F46E5;">Admin Panel Verification</h2>
+                                <p>Hello,</p>
+                                <p>Your 2-Step Verification code is:</p>
+                                <h1 style="font-size: 32px; letter-spacing: 5px; color: #111; background: #f4f4f5; padding: 15px; text-align: center; border-radius: 8px;">${otp}</h1>
+                                <p>This code will expire in <strong>10 minutes</strong>. If you did not attempt to log in, please secure your account immediately.</p>
+                             </div>`
+                  }
+              });
+          } catch (error) {
+              console.error("Failed to send OTP:", error);
+              showMessage("Error preparing verification code: " + error.message);
+          }
       };
 
       // Handle user login with email and password
@@ -622,9 +692,10 @@
         }
       };
 
-      // Handle user logout
+    // Handle user logout
       window.handleLogout = async () => {
         try {
+          sessionStorage.removeItem("2fa_verified"); // Clear 2FA clearance
           await signOut(auth);
           console.log("User logged out.");
           showMessage("Logged out successfully.", "info");
@@ -3723,9 +3794,7 @@
             secondaryApp = initializeApp(firebaseConfig, "SecondaryAdminCreationApp"); 
           }
           
-        const secondaryAuth = getAuth(secondaryApp);
-          // Prevent Firebase from overwriting your active admin session token
-          await setPersistence(secondaryAuth, inMemoryPersistence);
+          const secondaryAuth = getAuth(secondaryApp);
           const userCredential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
           const newUserId = userCredential.user.uid;
 
@@ -4819,12 +4888,12 @@ const WRITING_SUBMISSIONS_HTML = `
 // Global flag for hybrid flow
       window.isCurrentTargetNew = false;
 
-     // Unified Premium Handler
+      // Unified Premium Handler
       window.handlePremiumIssuance = async (e) => {
           e.preventDefault();
           if (!isAuthReady) return showMessage("Firebase not ready.");
 
-          const email = document.getElementById("target-email").value.trim().toLowerCase();
+          const email = document.getElementById("target-email").value.trim();
           let userId = document.getElementById("target-user-id").value.trim();
           const name = document.getElementById("target-user-name").value.trim() || "User";
           const password = document.getElementById("target-password").value.trim();
@@ -4859,8 +4928,6 @@ const WRITING_SUBMISSIONS_HTML = `
                   catch(err) { secondaryApp = initializeApp(firebaseConfig, "SecondaryApp"); }
                   
                   const secondaryAuth = getAuth(secondaryApp);
-                  // Ensure this new session lives only in memory so it doesn't corrupt your admin cookies
-                  await setPersistence(secondaryAuth, inMemoryPersistence);
                   const userCredential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
                   userId = userCredential.user.uid;
                   
@@ -5785,36 +5852,29 @@ if (pageName === "premium-access") {
         }, 0);
       };
 
-      document.addEventListener("DOMContentLoaded", async () => {
+  document.addEventListener("DOMContentLoaded", async () => {
         // Set up authentication state listener
         onAuthStateChanged(auth, async (user) => {
           if (user) {
-            // User is signed in.
             userId = user.uid;
-            // Fetch user's role from Firestore
-            const userRoleDoc = await getDoc(
-              doc(
-                db,
-                "artifacts",
-                appId,
-                "public",
-                "data",
-                "adminUsers",
-                userId
-              )
-            );
-          if (userRoleDoc.exists()) {
-              currentUserRole = userRoleDoc.data().role;
+            const userRoleDoc = await getDoc(doc(db, "artifacts", appId, "public", "data", "adminUsers", userId));
+            
+            if (userRoleDoc.exists()) {
+              const userData = userRoleDoc.data();
+              currentUserRole = userData.role;
+              
               if (Object.values(ROLES).includes(currentUserRole)) {
                 isAuthReady = true;
-                console.log(
-                  "Firebase authenticated. User ID:",
-                  userId,
-                  "Role:",
-                  currentUserRole
-                );
-                await fetchRolePermissions(); // Wait for dynamic permissions
-                showAdminPanel();
+                console.log("Firebase authenticated. Role:", currentUserRole);
+                await fetchRolePermissions(); 
+                
+                // --- 2FA EMAIL INTERCEPTION ---
+                if (sessionStorage.getItem("2fa_verified") === "true") {
+                    showAdminPanel();
+                } else {
+                    show2FAScreen();
+                    await window.sendEmailOTP(user.email, userId);
+                }
               } else {
                 // User has an unassigned or invalid role, log them out
                 console.log(
@@ -5835,11 +5895,13 @@ if (pageName === "premium-access") {
               isAuthReady = false;
               showLoginForm();
             }
-          } else {
+        } else {
             // User is signed out.
             userId = null;
             isAuthReady = false;
             currentUserRole = null;
+            user2FAPin = null;
+            sessionStorage.removeItem("2fa_verified");
             console.log("User is logged out or not authenticated.");
             showLoginForm();
           }
@@ -5854,6 +5916,81 @@ if (pageName === "premium-access") {
             // If the click is anywhere else, ensure all dropdowns are closed.
             closeAllKebabDropdowns();
         });
+
+      // --- 2FA Verification Form Listener ---
+        const verify2faForm = document.getElementById("verify-2fa-form");
+        if (verify2faForm) {
+            verify2faForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const enteredPin = document.getElementById("verify-pin").value;
+                const btn = document.getElementById("verify-2fa-btn");
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Verifying...';
+                btn.disabled = true;
+
+                try {
+                    // Fetch latest OTP data from user document
+                    const userDoc = await getDoc(doc(db, "artifacts", appId, "public", "data", "adminUsers", userId));
+                    const userData = userDoc.data();
+
+                    if (userData && userData.currentOtp === enteredPin) {
+                        const now = new Date();
+                        const expiry = userData.otpExpiry.toDate();
+
+                        if (now > expiry) {
+                            showMessage("This code has expired. Please request a new one.");
+                            document.getElementById("verify-pin").value = '';
+                        } else {
+                            // Success!
+                            sessionStorage.setItem("2fa_verified", "true");
+                            
+                            // Erase OTP after successful use for security
+                            await updateDoc(doc(db, "artifacts", appId, "public", "data", "adminUsers", userId), {
+                                currentOtp: null,
+                                otpExpiry: null
+                            });
+                            
+                            showAdminPanel();
+                        }
+                    } else {
+                        showMessage("Incorrect verification code.");
+                        document.getElementById("verify-pin").value = '';
+                        document.getElementById("verify-pin").focus();
+                    }
+                } catch (error) {
+                    console.error("Verification error:", error);
+                    showMessage("Error verifying code. Please try again.");
+                } finally {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            });
+        }
+
+        // --- Resend OTP Logic ---
+        const resendOtpBtn = document.getElementById("resend-otp-btn");
+        if (resendOtpBtn) {
+            resendOtpBtn.addEventListener("click", async () => {
+                resendOtpBtn.disabled = true;
+                resendOtpBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Sending...';
+                
+                await window.sendEmailOTP(auth.currentUser.email, auth.currentUser.uid);
+                showMessage("A new code has been sent to your email.", "info");
+                
+                // Add a cooldown to prevent spamming
+                let countdown = 60;
+                const timer = setInterval(() => {
+                    resendOtpBtn.innerHTML = `Wait ${countdown}s to resend`;
+                    countdown--;
+                    if (countdown < 0) {
+                        clearInterval(timer);
+                        resendOtpBtn.disabled = false;
+                        resendOtpBtn.innerHTML = '<i class="fas fa-redo"></i> Resend Verification Code';
+                    }
+                }, 1000);
+            });
+        }
 
         // Event listener for the login form
         const loginForm = document.getElementById("login-form");

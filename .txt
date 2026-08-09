@@ -1,0 +1,190 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions to reuse logic and clean up rules
+    function IsLoggedIn() {
+      return request.auth != null;
+    }
+
+    function GetUserRole(appId) {
+      return exists(/databases/$(database)/documents/artifacts/$(appId)/public/data/adminUsers/$(request.auth.uid)) 
+             ? get(/databases/$(database)/documents/artifacts/$(appId)/public/data/adminUsers/$(request.auth.uid)).data.role 
+             : 'user';
+    }
+
+    function IsAdmin(appId) {
+      // Include super_admin as an admin level
+      return IsLoggedIn() && GetUserRole(appId) in ['super_admin', 'admin'];
+    }
+
+    function IsAdminOrModerator(appId) {
+      // Include all panel staff roles here so they can access their permitted database sections
+      return IsLoggedIn() && GetUserRole(appId) in ['super_admin', 'admin', 'moderator', 'editor'];
+    }
+
+    function IsResourceOwner(userId) {
+      return IsLoggedIn() && request.auth.uid == userId;
+    }
+
+    function SafeViewIncrementOnly() {
+      return request.resource.data.views == resource.data.views + 1 
+             && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views']);
+    }
+
+   // ADMIN USERS
+    match /artifacts/{appId}/public/data/adminUsers/{adminId} {
+      // Allow users to read their own role document upon login, and Admins to read the entire list
+      allow read: if request.auth.uid == adminId || IsAdmin(appId);
+      allow create: if IsAdmin(appId);
+      // Allow admins to update anyone, but allow users to update their own doc (required to save the 2FA OTP)
+      allow update: if IsAdmin(appId) || request.auth.uid == adminId;
+      allow delete: if IsAdmin(appId) && request.auth.uid != adminId;
+    }
+    
+    // PREMIUM USERS TRACKING LIST
+    match /artifacts/{appId}/public/data/premiumUsers/{userId} {
+      allow read: if IsAdminOrModerator(appId) || IsResourceOwner(userId);
+      allow write: if IsAdminOrModerator(appId);
+    }
+    
+    // USER PROFILES (Modified to allow search queries)
+    match /{path=**}/userProfile/{docId} {
+      allow read: if IsLoggedIn();
+    }
+
+    match /artifacts/{appId}/users/{userId}/userProfile/{docId} {
+      allow write: if IsResourceOwner(userId) || IsAdmin(appId);
+    }
+    
+    // PAYMENT VERIFICATIONS
+    match /artifacts/{appId}/public/data/paymentVerifications/{verificationId} {
+      allow create: if IsLoggedIn() && request.auth.uid == request.resource.data.userId;
+      allow read, update: if IsAdminOrModerator(appId);
+      allow delete: if false;
+    }
+
+    // PUBLIC CONTENT DATA (Only Admin/Moderators can add, edit, or delete)
+    match /artifacts/{appId}/public/data/posts/{postId} {
+      allow read: if true;
+      allow write: if IsAdminOrModerator(appId);
+    }
+    match /artifacts/{appId}/public/data/quizzes/{quizId} {
+      allow read: if true;
+      allow write: if IsAdminOrModerator(appId);
+    }
+    match /artifacts/{appId}/public/data/blogPosts/{blogPostId} {
+      allow read: if true;
+      allow write: if IsAdminOrModerator(appId);
+    }
+    match /artifacts/{appId}/public/data/teachers/{teacherId} {
+      allow read: if true;
+      allow write: if IsAdminOrModerator(appId);
+    }
+
+    // USER-GENERATED CONTENT (Users can create, edit, or delete their own data only)
+    match /artifacts/{appId}/public/data/comments/{commentId} {
+      allow read: if true;
+      allow create: if IsLoggedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if IsLoggedIn() && (resource.data.userId == request.auth.uid || IsAdminOrModerator(appId));
+    }
+    match /artifacts/{appId}/public/data/testimonials/{testimonialId} {
+      allow read: if true;
+      allow create: if IsLoggedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if IsLoggedIn() && (resource.data.userId == request.auth.uid || IsAdminOrModerator(appId));
+    }
+
+    // WRITING SUBMISSIONS (Users can submit, Users can read their own, Admins can do everything)
+    match /artifacts/{appId}/public/data/writingSubmissions/{submissionId} {
+      allow create: if IsLoggedIn() && request.resource.data.userId == request.auth.uid;
+      allow read: if IsLoggedIn() && (resource.data.userId == request.auth.uid || IsAdminOrModerator(appId));
+      allow update, delete: if IsAdminOrModerator(appId);
+    }
+
+    // FREE RESOURCES
+    match /artifacts/{appId}/public/data/freeResources/{resourceId} {
+      allow read: if true;
+      allow create, delete: if IsAdminOrModerator(appId);
+      allow update: if IsAdminOrModerator(appId) || SafeViewIncrementOnly();
+    }
+
+    // PDF RESOURCES
+    match /artifacts/{appId}/public/data/pdfResources/{resourceId} {
+      allow read: if true;
+      allow create, delete: if IsAdminOrModerator(appId);
+      allow update: if IsAdminOrModerator(appId) || SafeViewIncrementOnly();
+    }
+
+    // GLOBAL RESULTS
+    match /artifacts/{appId}/public/data/quizGlobalResults/{globalResultId} {
+      allow read: if true;
+      allow create: if IsLoggedIn();
+      allow update, delete: if false;
+    }
+    match /artifacts/{appId}/public/data/mockTestGlobalResults/{globalResultId} {
+      allow read: if true;
+      allow create: if IsLoggedIn();
+      allow update, delete: if false;
+    }
+
+    // VOICE ROOMS
+    match /artifacts/{appId}/public/data/voiceRooms/{roomId} {
+      allow read, update: if IsLoggedIn();
+    }
+    match /artifacts/{appId}/public/data/voiceRooms/{roomId}/participants/{participantId} {
+      allow get, list: if IsLoggedIn();
+      allow create, delete: if IsLoggedIn() && request.auth.uid == participantId;
+    }
+    match /artifacts/{appId}/public/data/voiceRooms/{roomId}/participants/{participantId}/signals/{signalId} {
+      allow read, delete: if IsLoggedIn() && request.auth.uid == participantId;
+      allow create: if IsLoggedIn();
+    }
+    match /artifacts/{appId}/public/data/voiceRooms/{roomId}/messages/{messageId} {
+        allow get, list: if IsLoggedIn();
+        allow create: if IsLoggedIn() && request.auth.uid == request.resource.data.author.uid;
+    }
+
+    // CONTACT MESSAGES
+    match /artifacts/{appId}/public/data/contactMessages/{messageId} {
+      allow read, update: if IsAdminOrModerator(appId);
+      allow create: if true;
+    }
+
+    // SPEAKING SESSION REQUESTS & SUBMISSIONS
+    match /artifacts/{appId}/public/data/speakingSessionRequests/{requestId} {
+      allow create: if IsLoggedIn() && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if IsAdminOrModerator(appId);
+    }
+    match /artifacts/{appId}/public/data/speakingSubmissions/{submissionId} {
+      allow create: if IsLoggedIn() && request.resource.data.userId == request.auth.uid;
+      allow read: if IsLoggedIn() && (resource.data.userId == request.auth.uid || IsAdminOrModerator(appId));
+      allow update, delete: if IsAdminOrModerator(appId);
+    }
+
+    // PRIVATE USER DATA
+    match /artifacts/{appId}/users/{userId}/{documents=**} {
+      allow read, write: if IsLoggedIn() && (IsResourceOwner(userId) || IsAdminOrModerator(appId));
+    }
+
+    // DYNAMIC SETTINGS (Only Super Admin can update the rules)
+    match /artifacts/{appId}/public/data/system_settings/{docId} {
+      allow read: if IsLoggedIn();
+      allow write: if GetUserRole(appId) == 'super_admin';
+    }
+
+  // AUDIT LOGS (Immutable and readable by Admins)
+    match /artifacts/{appId}/public/data/auditLogs/{logId} {
+      allow read: if IsAdmin(appId);
+      allow create: if IsLoggedIn();
+      allow update, delete: if false; 
+    }
+
+    // TRIGGER EMAIL EXTENSION (For 2FA OTPs)
+    match /mail/{document=**} {
+      allow create: if IsLoggedIn();
+      allow read, update, delete: if false; // Only the extension needs backend read/update access
+    }
+
+  }
+}

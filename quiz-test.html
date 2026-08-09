@@ -1964,9 +1964,14 @@
 
             // Fetch user game stats after Firebase is initialized and user is authenticated
             auth.onAuthStateChanged(async (user) => {
-              if (user) {
-                await fetchUserGameStats(user.uid);
+              if (!user) {
+                // Redirect unauthenticated users trying to take a quiz test to the auth page
+                if (!window.location.pathname.endsWith("/auth")) {
+                  window.location.href = "auth";
+                }
+                return;
               }
+              await fetchUserGameStats(user.uid);
               // Initialize quiz state only after auth and stats are ready
               await initializeQuizState();
             });
