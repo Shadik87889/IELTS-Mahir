@@ -7761,18 +7761,18 @@ export const allMockTests = [
           },
           {
             instructions: `
-              <p>Questions 21-22</p>
-              <p>Summary</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage, using no more than two words from the Reading Passage for each answer. Write your answers in boxes 21-22 on your answer sheet.</p>
-              <p>The implement of CSR, HOW?</p>
-              <p>Promotion of CSR requires the understanding of interdependence between business and society. Corporations workers’ productivity generally needs health care, Education, and given 21...............Restrictions the imposed by government and companies both protect consumers from being treated unfairly. Improvement of safety standard can reduce the 22 ...............of accidents in the workplace. Similarly society becomes pool of more human needs and aspirations.</p>
+              <p class="font-bold mb-2">Questions 21-22</p>
+              <p class="font-bold mb-2">Summary</p>
+              <p class="mb-4">Complete the following summary of the paragraphs of Reading Passage, using no more than two words from the Reading Passage for each answer. Write your answers in boxes 21-22 on your answer sheet.</p>
             `,
+            title: "The implement of CSR, HOW?",
             questions: [
               {
                 id: "q21",
                 questionNumber: 21,
                 type: "summary_completion",
-                text: "given [GAP]",
+                text:
+                  "Promotion of CSR requires the understanding of interdependence between business and society. Corporations workers’ productivity generally needs health care, Education, and given [GAP]. ",
                 correctAnswer: [
                   "Equal opportunity",
                   "equal opportunity",
@@ -7784,7 +7784,8 @@ export const allMockTests = [
                 id: "q22",
                 questionNumber: 22,
                 type: "summary_completion",
-                text: "reduce the [GAP] of accidents",
+                text:
+                  "Restrictions the imposed by government and companies both protect consumers from being treated unfairly. Improvement of safety standard can reduce the [GAP] of accidents in the workplace. Similarly society becomes pool of more human needs and aspirations.",
                 correctAnswer: [
                   "internal costs",
                   "INTERNAL COSTS",
@@ -8395,12 +8396,9 @@ export const allMockTests = [
           },
           {
             instructions: `
-              <p>Questions 9-13</p>
-              <p>Summary</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage, using no more than two words from the Reading Passage for each answer. Write your answers in boxes 9-13 on your answer sheet.</p>
-              <p>Hundred years ago, sailors tried to identify their time by checking the sun or stars, but the trouble was that they did need a reliable clock which showed time of......9.......</p>
-              <p>And the timekeeper required would be to precisely tell a tangible time lapse confined to......10...... An extraordinary craftsman, Harrison, once created a novel clock which did not rely on 11......to work properly.</p>
-              <p>Later on, competitive mode of 12.........was another prominent device designed by Hadley, which calculated angle between sun and the earth. Base on Harrison's effort, Earns haw eventually implement key components for 13…...... which had been used ever since.</p>
+              <p class="font-bold mb-2">Questions 9-13</p>
+              <p class="font-bold mb-2">Summary</p>
+              <p class="mb-4">Complete the following summary of the paragraphs of Reading Passage, using no more than two words from the Reading Passage for each answer. Write your answers in boxes 9-13 on your answer sheet.</p>
             `,
 
             questions: [
@@ -8408,22 +8406,24 @@ export const allMockTests = [
                 id: "q9-p1",
                 questionNumber: 9,
                 type: "summary_completion",
-                text: "time of [GAP]",
-                correctAnswer: ["Home", "home", "HOME"], // Placeholder
+                text:
+                  "Hundred years ago, sailors tried to identify their time by checking the sun or stars, but the trouble was that they did need a reliable clock which showed time of [GAP]. ",
+                correctAnswer: ["Home", "home", "HOME"],
               },
               {
                 id: "q10-p1",
                 questionNumber: 10,
                 type: "summary_completion",
-                text: "confined to [GAP]",
-
-                correctAnswer: ["2.8s", "2.8S"], // Placeholder
+                text:
+                  "And the timekeeper required would be to precisely tell a tangible time lapse confined to [GAP]. ",
+                correctAnswer: ["2.8s", "2.8S"],
               },
               {
                 id: "q11-p1",
                 questionNumber: 11,
                 type: "summary_completion",
-                text: "did not rely on [GAP] to work properly.",
+                text:
+                  "An extraordinary craftsman, Harrison, once created a novel clock which did not rely on [GAP] to work properly. ",
                 correctAnswer: [
                   "Oil",
                   "oil",
@@ -8431,26 +8431,28 @@ export const allMockTests = [
                   "lubrication",
                   "LUBRICATION",
                   "Lubrication",
-                ], // Placeholder
+                ],
               },
               {
                 id: "q12-p1",
                 questionNumber: 12,
                 type: "summary_completion",
-                text: "competitive mode of [GAP]",
-                correctAnswer: ["Sextant", "sextant", "SEXTANT"], // Placeholder
+                text:
+                  "Later on, competitive mode of [GAP] was another prominent device designed by Hadley, which calculated angle between sun and the earth. ",
+                correctAnswer: ["Sextant", "sextant", "SEXTANT"],
               },
               {
                 id: "q13-p1",
                 questionNumber: 13,
                 type: "summary_completion",
-                text: "key components for [GAP]",
+                text:
+                  "Base on Harrison's effort, Earns haw eventually implement key components for [GAP] which had been used ever since.",
                 correctAnswer: [
                   "Marine chronometer",
                   "marine chronometer",
                   "MARINE CHRONOMETER",
                   "Marine Chronometer",
-                ], // Placeholder
+                ],
               },
             ],
           },
@@ -8921,10 +8923,9 @@ export const allMockTests = [
         questionGroups: [
           {
             instructions: `
-              <p>Questions 28-32</p>
-              <p>Summary</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage, using no more than three words from the Reading Passage for each answer. Write your answers in boxes 28-32 on your answer sheet.</p>
-              <p>Having been preserved well in Europe and central Asia, the remains of the Irish elk was initially found approximately _______28____. Around _____29______, they were driven to live in the plain after being restricted to the Ural Mountains. Hunting was considered as one of the important factors of Irish elk's extinction, people have not started hunting until______30______ when Irish elk used to get through under a variety of climatic fluctuations. The huge antlers may possibly contribute to the reason why Irish elk extinct, which was highly controversial as they live pleasantly over the span of____31_____. Generally, it is well-known that, at the last maximum ice age, mammals become extinct about ______32_____. </p>
+              <p class="font-bold mb-2">Questions 28-32</p>
+              <p class="font-bold mb-2">Summary</p>
+              <p class="mb-4">Complete the following summary of the paragraphs of Reading Passage, using no more than three words from the Reading Passage for each answer. Write your answers in boxes 28-32 on your answer sheet.</p>
             `,
 
             questions: [
@@ -8932,57 +8933,62 @@ export const allMockTests = [
                 id: "q28-p3",
                 questionNumber: 28,
                 type: "summary_completion",
-                text: "initially found approximately [GAP]",
+                text:
+                  "Having been preserved well in Europe and central Asia, the remains of the Irish elk was initially found approximately [GAP]. ",
                 correctAnswer: [
                   "400,000 years ago",
                   "400,000 YEARS AGO",
                   "400,000 Years Ago",
-                ], // Placeholder
+                ],
               },
               {
                 id: "q29-p3",
                 questionNumber: 29,
                 type: "summary_completion",
-                text: "Around [GAP], they were driven to live in the plain",
+                text:
+                  "Around [GAP], they were driven to live in the plain after being restricted to the Ural Mountains. ",
                 correctAnswer: [
                   "8000 years ago",
                   "8000 YEARS AGO",
                   "8000 Years Ago",
-                ], // Placeholder
+                ],
               },
               {
                 id: "q30-p3",
                 questionNumber: 30,
                 type: "summary_completion",
-                text: "people have not started hunting until [GAP]",
+                text:
+                  "Hunting was considered as one of the important factors of Irish elk's extinction, people have not started hunting until [GAP] when Irish elk used to get through under a variety of climatic fluctuations. ",
                 correctAnswer: [
                   "7000 years ago",
                   "7000 YEARS AGO",
                   "7000 Years Ago",
-                ], // Placeholder
+                ],
               },
               {
                 id: "q31-p3",
                 questionNumber: 31,
                 type: "summary_completion",
-                text: "over the span of [GAP]",
+                text:
+                  "The huge antlers may possibly contribute to the reason why Irish elk extinct, which was highly controversial as they live pleasantly over the span of [GAP]. ",
                 correctAnswer: [
                   "Wooded interglacials",
                   "wooded interglacials",
                   "WOODED INTERGLACIALS",
                   "Wooded Interglacials",
-                ], // Placeholder
+                ],
               },
               {
                 id: "q32-p3",
                 questionNumber: 32,
                 type: "summary_completion",
-                text: "mammals become extinct about [GAP]",
+                text:
+                  "Generally, it is well-known that, at the last maximum ice age, mammals become extinct about [GAP].",
                 correctAnswer: [
                   "10500 years ago",
                   "10500 YEARS AGO",
                   "10500 Years Ago",
-                ], // Placeholder
+                ],
               },
             ],
           },
@@ -9633,17 +9639,17 @@ export const allMockTests = [
           },
           {
             instructions: `
-              <p>Questions 23-27</p>
-              <p>Summary</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage, using no more than three words from the Reading Passage for each answer. Write your answers in boxes 23-27 on your answer sheet.</p>
-              <p>The boat-double R/V Kilindi crossed the lake was dismantled and stored in a ........23........... The technology they used called........24......; they created sound energy in to 1000-2000 metres in to the bottom of the lake, and used separate equipment to collect the returned waves. Then the data had been analyzed and processed in the........25....... Scholz also added that they were now building ........26......view of the sediment or sub-image in the bottom of the lake. Whole set of equipment works well yet the ship should avoid physical barrier including tree stumps or........27......floating on the surface of the lake.</p>
+              <p class="font-bold mb-2">Questions 23-27</p>
+              <p class="font-bold mb-2">Summary</p>
+              <p class="mb-4">Complete the following summary of the paragraphs of Reading Passage, using no more than three words from the Reading Passage for each answer. Write your answers in boxes 23-27 on your answer sheet.</p>
             `,
             questions: [
               {
                 id: "q23-p3s2",
                 questionNumber: 23,
                 type: "summary_completion",
-                text: "dismantled and stored in a [GAP]",
+                text:
+                  "The boat-double R/V Kilindi crossed the lake was dismantled and stored in a [GAP]. ",
                 correctAnswer: [
                   "shipping container",
                   "SHIPPING CONTAINER",
@@ -9654,7 +9660,7 @@ export const allMockTests = [
                 id: "q24-p3s2",
                 questionNumber: 24,
                 type: "summary_completion",
-                text: "technology they used called [GAP]",
+                text: "The technology they used called [GAP]; ",
                 correctAnswer: [
                   "seismic reflection profiling",
                   "SEISMIC REFLECTION PROFILING",
@@ -9665,14 +9671,15 @@ export const allMockTests = [
                 id: "q25-p3s2",
                 questionNumber: 25,
                 type: "summary_completion",
-                text: "processed in the [GAP]",
+                text:
+                  "they created sound energy in to 1000-2000 metres in to the bottom of the lake, and used separate equipment to collect the returned waves. Then the data had been analyzed and processed in the [GAP]. ",
                 correctAnswer: ["laboratory", "LABORATORY", "Laboratory"],
               },
               {
                 id: "q26-p3s2",
                 questionNumber: 26,
                 type: "summary_completion",
-                text: "building [GAP] view",
+                text: "Scholz also added that they were now building [GAP] ",
                 correctAnswer: [
                   "three-dimensional",
                   "THREE-DIMENSIONAL",
@@ -9683,7 +9690,8 @@ export const allMockTests = [
                 id: "q27-p3s2",
                 questionNumber: 27,
                 type: "summary_completion",
-                text: "tree stumps or [GAP] floating",
+                text:
+                  "view of the sediment or sub-image in the bottom of the lake. Whole set of equipment works well yet the ship should avoid physical barrier including tree stumps or [GAP] floating on the surface of the lake.",
                 correctAnswer: ["fishing nets", "FISHING NETS", "Fishing Nets"],
               },
             ],
@@ -10153,17 +10161,17 @@ export const allMockTests = [
           },
           {
             instructions: `
-              <p>Questions 7-11</p>
-              <p>Summary</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage, using no more than two words from the Reading Passage for each answer. Write your answers in boxes 7-11 on your answer sheet.</p>
-              <p>Flood makes river shorter than it used to be, which means faster speed and more damage to constructions on flood plain. Not only European river poses such threat but the same things happens to the powerful____7_____in the US. In Europe, one innovative approach carried out by UK's Environment Agency, for example a wetland instead of concrete walls is generated not far from the city of____8_____to protect it from flooding. In 1995, Rhine flooded again and thousands of people left the country of_____9______. A league of engineers suggested that cities should be porous, _____10____set a good example for others. Another city devastated by heavy storms casually is ______11______, though its government pours billions of dollars each year in order to solve the problem.</p>
+              <p class="font-bold mb-2">Questions 7-11</p>
+              <p class="font-bold mb-2">Summary</p>
+              <p class="mb-4">Complete the following summary of the paragraphs of Reading Passage, using no more than two words from the Reading Passage for each answer. Write your answers in boxes 7-11 on your answer sheet.</p>
             `,
             questions: [
               {
                 id: "q7-p4s1",
                 questionNumber: 7,
                 type: "summary_completion",
-                text: "powerful [GAP] in the US.",
+                text:
+                  "Flood makes river shorter than it used to be, which means faster speed and more damage to constructions on flood plain. Not only European river poses such threat but the same things happens to the powerful [GAP] ",
                 correctAnswer: ["Mississippi", "mississippi", "MISSISSIPPI"],
               },
               {
@@ -10171,14 +10179,15 @@ export const allMockTests = [
                 questionNumber: 8,
                 type: "summary_completion",
                 text:
-                  "not far from the city of [GAP] to protect it from flooding.",
+                  "in the US. In Europe, one innovative approach carried out by UK's Environment Agency, for example a wetland instead of concrete walls is generated not far from the city of [GAP] ",
                 correctAnswer: ["London", "london", "LONDON"],
               },
               {
                 id: "q9-p4s1",
                 questionNumber: 9,
                 type: "summary_completion",
-                text: "thousands of people left the country of [GAP].",
+                text:
+                  "to protect it from flooding. In 1995, Rhine flooded again and thousands of people left the country of [GAP]. ",
                 correctAnswer: [
                   "The Netherlands",
                   "the netherlands",
@@ -10189,7 +10198,8 @@ export const allMockTests = [
                 id: "q10-p4s1",
                 questionNumber: 10,
                 type: "summary_completion",
-                text: "porous, [GAP] set a good example for others.",
+                text:
+                  "A league of engineers suggested that cities should be porous, [GAP] ",
                 correctAnswer: ["Berlin", "berlin", "BERLIN"],
               },
               {
@@ -10197,7 +10207,7 @@ export const allMockTests = [
                 questionNumber: 11,
                 type: "summary_completion",
                 text:
-                  "casually is [GAP], though its government pours billions of dollars each year in order to solve the problem.",
+                  "set a good example for others. Another city devastated by heavy storms casually is [GAP], though its government pours billions of dollars each year in order to solve the problem.",
                 correctAnswer: [
                   "Los Angeles",
                   "los angeles",
@@ -10472,38 +10482,40 @@ export const allMockTests = [
           },
           {
             instructions: `
-              <p>Questions 24-27</p>
-              <p>Summary</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage, using no more than two words from the Reading Passage for each answer. Write your answers in boxes 24-27 on your answer sheet.</p>
-              <p>Dutch concentrated on gaining independence by ____24____ against Spain in the early 17th century; consequently spare resources entered the area of _____25_____. Prosperous traders demonstrated their status by building great _____26____ and with gardens in surroundings. Attracted by the success of profit on tulip, traders kept looking for______27_____and speculator for sale.</p>
+              <p class="font-bold mb-2">Questions 24-27</p>
+              <p class="font-bold mb-2">Summary</p>
+              <p class="mb-4">Complete the following summary of the paragraphs of Reading Passage, using no more than two words from the Reading Passage for each answer. Write your answers in boxes 24-27 on your answer sheet.</p>
             `,
             questions: [
               {
                 id: "q24-p4s2",
                 questionNumber: 24,
                 type: "summary_completion",
-                text: "gaining independence by [GAP] against Spain",
+                text: "Dutch concentrated on gaining independence by [GAP] ",
                 correctAnswer: ["Fighting", "fighting", "FIGHTING"],
               },
               {
                 id: "q25-p4s2",
                 questionNumber: 25,
                 type: "summary_completion",
-                text: "entered the area of [GAP].",
+                text:
+                  "against Spain in the early 17th century; consequently spare resources entered the area of [GAP]. ",
                 correctAnswer: ["commerce", "COMMERCE", "Commerce"],
               },
               {
                 id: "q26-p4s2",
                 questionNumber: 26,
                 type: "summary_completion",
-                text: "building great [GAP] and with gardens in surroundings.",
+                text:
+                  "Prosperous traders demonstrated their status by building great [GAP] ",
                 correctAnswer: ["estates", "ESTATES", "Estates"],
               },
               {
                 id: "q27-p4s2",
                 questionNumber: 27,
                 type: "summary_completion",
-                text: "looking for [GAP] and speculator for sale.",
+                text:
+                  "and with gardens in surroundings. Attracted by the success of profit on tulip, traders kept looking for [GAP] and speculator for sale.",
                 correctAnswer: [
                   "flower lovers",
                   "FLOWER LOVERS",
@@ -11710,17 +11722,16 @@ integration, our cognitive memory is less burdened; it has to deal with only a
           },
           {
             instructions: `
-              <p>Questions 37-40</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage, using NO MORE THAN THREE WORDS from the Reading Passage for each answer. Write your answers in boxes 37-40 on your answer sheet.</p>
-              <p>Many theories speculated that Easter Island’s fall around the era of the initial European contact. Some say the resources are depleted by a 37............; The erroneous theories began with a root of the 38............ advanced by some scholars. Early writers did not have adequate 39.............understandings to comprehend the true result of 40………..nature of events on the island.</p>
-              <p>The social devastation was in fact a direct of the first European settlers.</p>
+              <p class="font-bold mb-2">Questions 37-40</p>
+              <p class="mb-4">Complete the following summary of the paragraphs of Reading Passage, using NO MORE THAN THREE WORDS from the Reading Passage for each answer. Write your answers in boxes 37-40 on your answer sheet.</p>
             `,
             questions: [
               {
                 id: "q37-p5s3",
                 questionNumber: 37,
                 type: "summary_completion",
-                text: "depleted by a [GAP]",
+                text:
+                  "Many theories speculated that Easter Island’s fall around the era of the initial European contact. Some say the resources are depleted by a [GAP]; ",
                 correctAnswer: [
                   "growing population",
                   "GROWING POPULATION",
@@ -11731,7 +11742,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q38-p5s3",
                 questionNumber: 38,
                 type: "summary_completion",
-                text: "root of the [GAP] advanced by some scholars.",
+                text: "The erroneous theories began with a root of the [GAP] ",
                 correctAnswer: [
                   "racist assumption",
                   "RACIST ASSUMPTION",
@@ -11742,21 +11753,19 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q39-p5s3",
                 questionNumber: 39,
                 type: "summary_completion",
-                text: "did not have adequate [GAP] understandings",
+                text:
+                  "advanced by some scholars. Early writers did not have adequate [GAP] ",
                 correctAnswer: [
                   "archeological and historical",
-                  "ARCHEOLOGICAL AND HISTORICAL",
-                  "Archeological And Historical",
                   "archaeological and historical",
-                  "ARCHAEOLOGICAL AND HISTORICAL",
-                  "Archaeological And Historical",
                 ],
               },
               {
                 id: "q40-p5s3",
                 questionNumber: 40,
                 type: "summary_completion",
-                text: "true result of [GAP] nature of events on the island.",
+                text:
+                  "understandings to comprehend the true result of [GAP] nature of events on the island. The social devastation was in fact a direct of the first European settlers.",
                 correctAnswer: [
                   "inhuman behavior",
                   "INHUMAN BEHAVIOR",
@@ -12201,9 +12210,8 @@ integration, our cognitive memory is less burdened; it has to deal with only a
           },
           {
             instructions: `
-              <p>Questions 18-22</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage 2 using NO MORE THAN THREE WORDS from the Reading Passage for each answer. Write your answers in boxes 18-22 on your answer sheet</p>
-              <p>After the opening ceremony, the embarrassed engineers tried to find out the reason of the bridge's wobbling. Judged from the videotape, they thought that 18..........and 19..........might create excessive force on the bridge. The distribution of 20..........resulted from human activities could cause 21..........throughout the structure. This swaying prompted people to start adjusting the way they walk, which in turn reinforced the 22..........</p>
+              <p class="font-bold mb-2">Questions 18-22</p>
+              <p class="mb-4">Complete the following summary of the paragraphs of Reading Passage 2 using NO MORE THAN THREE WORDS from the Reading Passage for each answer. Write your answers in boxes 18-22 on your answer sheet.</p>
             `,
             questions: [
               {
@@ -12211,7 +12219,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 18,
                 type: "summary_completion",
                 text:
-                  "they thought that [GAP] and [GAP] might create excessive force on the bridge.",
+                  "After the opening ceremony, the embarrassed engineers tried to find out the reason of the bridge's wobbling. Judged from the videotape, they thought that [GAP] ",
                 correctAnswer: [
                   "(the) winds",
                   "(THE) WINDS",
@@ -12228,16 +12236,14 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q19-p6s2",
                 questionNumber: 19,
                 type: "summary_completion",
-                text:
-                  "they thought that [GAP] and [GAP] might create excessive force on the bridge.",
+                text: "and [GAP] might create excessive force on the bridge. ",
                 correctAnswer: ["pedestrians", "PEDESTRIANS", "Pedestrians"],
               },
               {
                 id: "q20-p6s2",
                 questionNumber: 20,
                 type: "summary_completion",
-                text:
-                  "The distribution of [GAP] resulted from human activities",
+                text: "The distribution of [GAP] ",
                 correctAnswer: [
                   "(excessive horizontal dynamic) forces",
                   "(EXCESSIVE HORIZONTAL DYNAMIC) FORCES",
@@ -12254,14 +12260,16 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q21-p6s2",
                 questionNumber: 21,
                 type: "summary_completion",
-                text: "could cause [GAP] throughout the structure.",
+                text:
+                  "resulted from human activities could cause [GAP] throughout the structure. ",
                 correctAnswer: ["vibration", "VIBRATION", "Vibration"],
               },
               {
                 id: "q22-p6s2",
                 questionNumber: 22,
                 type: "summary_completion",
-                text: "which in turn reinforced the [GAP]",
+                text:
+                  "This swaying prompted people to start adjusting the way they walk, which in turn reinforced the [GAP].",
                 correctAnswer: ["motion", "MOTION", "Motion"],
               },
             ],
@@ -13749,43 +13757,42 @@ integration, our cognitive memory is less burdened; it has to deal with only a
           },
           {
             instructions: `
-              <p>Questions 6-9</p>
-              <p>Summary</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage, using no more than two words or a number from the Reading Passage for each answer. Write your answers in boxes 6-9 on your answer sheet.</p>
-              <p>The cycle from ear to voice normally lasts about..........6..........., which depends on sophistication of paper, for example, it could go up to..........7........sometimes. When expert took close research on affecting elements, they found appropriate speaking speed is somehow among.........8.........w.p.m. In a specific experiment, the accuracy of interpretation dropped while the ear-voice span speed increased between 95 to 164 w.p.m. However, the maximum of speed was about.........9..........w.p.m.</p>
+              <p class="font-bold mb-2">Questions 6-9</p>
+              <p class="font-bold mb-2">Summary</p>
+              <p class="mb-4">Complete the following summary of the paragraphs of Reading Passage, using no more than two words or a number from the Reading Passage for each answer. Write your answers in boxes 6-9 on your answer sheet.</p>
             `,
             questions: [
               {
                 id: "q6-r8s1",
                 questionNumber: 6,
                 type: "summary_completion",
-
-                text: "normally lasts about[GAP]",
-                correctAnswer: "iii",
+                text:
+                  "The cycle from ear to voice normally lasts about [GAP], ",
+                correctAnswer: ["2 or 3 seconds", "2 OR 3 SECONDS"],
               },
               {
                 id: "q7-r8s1",
                 questionNumber: 7,
                 type: "summary_completion",
-
-                text: "up to[GAP] sometimes.",
-                correctAnswer: "vii",
+                text:
+                  "which depends on sophistication of paper, for example, it could go up to [GAP] ",
+                correctAnswer: ["10 seconds", "10 SECONDS"],
               },
               {
                 id: "q8-r8s1",
                 questionNumber: 8,
                 type: "summary_completion",
-
-                text: "among[GAP] w.p.m.",
-                correctAnswer: "NOTE GIVEN",
+                text:
+                  "sometimes. When expert took close research on affecting elements, they found appropriate speaking speed is somehow among [GAP] ",
+                correctAnswer: ["100 and 120", "100 AND 120"],
               },
               {
                 id: "q9-r8s1",
                 questionNumber: 9,
                 type: "summary_completion",
-
-                text: "about[GAP] w.p.m.",
-                correctAnswer: "TRUE",
+                text:
+                  "w.p.m. In a specific experiment, the accuracy of interpretation dropped while the ear-voice span speed increased between 95 to 164 w.p.m. However, the maximum of speed was about [GAP] w.p.m.",
+                correctAnswer: ["200"],
               },
             ],
           },
@@ -16498,24 +16505,25 @@ integration, our cognitive memory is less burdened; it has to deal with only a
           },
           {
             instructions: `
-                  <p>Questions 5-8</p>
-                  <p>Summary</p>
-                  <p>Complete the following summary of the paragraphs of Reading Passage, using no more than three words from the Reading Passage for each answer. Write your answers in boxes 5-8 on your answer sheet.</p>
-                  <p>Instead of being visitors, people turned out to be____5_____, who require the creation or hiring of blockbuster exhibitions as well as regular exhibition changes and innovations. Business nous and ____6_____simply summarized in a magazine are not only important factors for directors, but also an ability to attract a crowd of audiences. _____7_____ has contributed to the linking of museums, the heritage industry, and tourism, profit-making and pleasure-giving. There occurs some controversy over whether it is proper to consider museums mainly as_____8______. </p>
+                  <p class="font-bold mb-2">Questions 5-8</p>
+                  <p class="font-bold mb-2">Summary</p>
+                  <p class="mb-4">Complete the following summary of the paragraphs of Reading Passage, using no more than three words from the Reading Passage for each answer. Write your answers in boxes 5-8 on your answer sheet.</p>
                 `,
             questions: [
               {
                 id: "q5-r11s1",
                 type: "summary_completion",
                 questionNumber: 5,
-                text: "people turned out to be [GAP]",
+                text:
+                  "Instead of being visitors, people turned out to be [GAP], ",
                 correctAnswer: ["customers", "CUSTOMERS", "Customers"],
               },
               {
                 id: "q6-r11s1",
                 type: "summary_completion",
                 questionNumber: 6,
-                text: "Business nous and [GAP] simply summarized in a magazine",
+                text:
+                  "who require the creation or hiring of blockbuster exhibitions as well as regular exhibition changes and innovations. Business nous and [GAP] ",
                 correctAnswer: [
                   "public relation skills",
                   "PUBLIC RELATION SKILLS",
@@ -16526,24 +16534,16 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q7-r11s1",
                 type: "summary_completion",
                 questionNumber: 7,
-                text: "[GAP] has contributed to the linking of museums",
-                correctAnswer: [
-                  "museology",
-                  "MUSEOLOGY",
-                  "Museology",
-                  "(the new) museology",
-                  "(THE NEW) MUSEOLOGY",
-                  "(The New) Museology",
-                  "the new museology",
-                  "THE NEW MUSEOLOGY",
-                  "The New Museology",
-                ],
+                text:
+                  "simply summarized in a magazine are not only important factors for directors, but also an ability to attract a crowd of audiences. [GAP] ",
+                correctAnswer: ["museology", "MUSEOLOGY", "the new museology"],
               },
               {
                 id: "q8-r11s1",
                 type: "summary_completion",
                 questionNumber: 8,
-                text: "consider museums mainly as [GAP]",
+                text:
+                  "has contributed to the linking of museums, the heritage industry, and tourism, profit-making and pleasure-giving. There occurs some controversy over whether it is proper to consider museums mainly as [GAP].",
                 correctAnswer: [
                   "tourist attractions",
                   "TOURIST ATTRACTIONS",

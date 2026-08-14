@@ -6,11 +6,11 @@
     <title>IELTS Mahir - Mock Test</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter (for general text) and Anton (for headings) -->
+    <!-- Google Fonts: Inter and Open Sans for a professional IELTS look -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <!-- Font Awesome for icons -->
@@ -45,8 +45,10 @@
       }
 
       /* Custom font classes */
-      .font-anton {
-        font-family: "Anton", sans-serif;
+      .font-heading {
+        font-family: "Open Sans", "Inter", sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.01em;
       }
       .font-inter {
         font-family: "Inter", sans-serif;
@@ -206,42 +208,42 @@
 
       /* Styling for the main test content area (questions) */
       .main-test-content {
-        background-color: #ffffff; /* Pure white background */
-        /* More pronounced rounded corners */
-        /* Removed deep shadow, using a very subtle border for separation */
-        border: 1px solid #e0e0e0;
-        padding: 1.5rem; /* Standard padding */
-        overflow-y: auto; /* Enable scrolling for test content */
-        transition: all 0.3s ease-in-out; /* Smooth transitions for layout changes */
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
+        background-color: #ffffff;
+        border: none;
+        padding: 2rem 3rem;
+        overflow-y: auto;
+        transition: all 0.3s ease-in-out;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
         position: relative;
-        /* height will be set by media queries */
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: #0a0a0a;
+        font-size: 16px;
       }
       #test-questions-container {
-        overflow-y: scroll;
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
+        overflow-y: visible;
       }
       @media (min-width: 768px) {
         .main-test-content {
-          padding: 2rem; /* Standard padding for tablet and desktop */
+          padding: 2rem 3rem;
         }
       }
 
       /* Styling for the passage content area (for Reading Tests) */
       .passage-content-area {
-        background-color: #ffffff; /* Pure white background */
-        border-radius: 1.5rem;
-        /* Removed deep shadow, using a very subtle border for separation */
-        border: 1px solid #e0e0e0;
-        padding: 1.5rem;
-        overflow-y: auto; /* Enable scrolling for passage content */
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
-        display: none; /* Hidden by default, shown by JS for reading */
+        background-color: #ffffff;
+        border-radius: 0;
+        border: none;
+        padding: 2rem 3rem;
+        overflow-y: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        display: none;
         transition: all 0.3s ease-in-out;
-        /* height will be set by media queries */
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: #0a0a0a;
+        font-size: 16px;
+        line-height: 1.7;
       }
 
       /* Styling for the writing instructions area (for Writing Tests) */
@@ -457,133 +459,139 @@
 
       /* Question section styling */
       .question-section {
-        margin-bottom: 3rem; /* More vertical space */
-        padding-bottom: 2rem; /* More padding */
-        border-bottom: 1px solid #e0e0e0; /* Subtle solid separator */
-      }
-
-      .question-section:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
+        margin-bottom: 2rem;
         padding-bottom: 0;
+        border-bottom: none;
       }
 
       /* Enhanced Question Group Instructions */
       .question-group-instructions {
-        margin-bottom: 2.5rem; /* More space below */
-        padding: 1.75rem; /* Increased padding */
-        background-color: #e6f7ff; /* Lighter, softer blue */
-        border-left: 8px solid #1890ff; /* Brighter blue */
-        border-radius: 1.25rem; /* More rounded corners */
-        /* Removed shadow */
-        font-size: 1.15rem; /* Slightly larger text */
-        line-height: 1.7;
-        color: #262626; /* Darker text for contrast */
+        margin-bottom: 1.5rem;
+        padding: 0;
+        background-color: transparent;
+        border-left: none;
+        border-radius: 0;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #0a0a0a;
+        font-weight: normal;
         position: relative;
-        overflow: hidden;
-        transition: all 0.3s ease-in-out;
+        overflow: visible;
+      }
+
+      /* Seamless summary completion layout */
+      .summary-box {
+        line-height: 2.2;
+      }
+      .summary-box .question-item {
+        display: inline;
+        margin: 0;
+      }
+      .summary-box .question-item p.inline-question-text {
+        display: inline;
       }
 
       .question-group-instructions::before {
-        content: "\f05a"; /* FontAwesome info-circle icon */
-        font-family: "Font Awesome 5 Free";
-        font-weight: 900;
-        position: absolute;
-        top: 0.75rem;
-        right: 1.25rem;
-        font-size: 2.5rem; /* Larger icon */
-        color: rgba(24, 144, 255, 0.1); /* Very faded blue */
-        z-index: 0;
+        display: none;
       }
 
       .question-group-instructions p {
-        margin-bottom: 0.8rem;
-        line-height: 1.6;
-        position: relative;
-        z-index: 1;
-      }
-
-      .question-group-instructions p:last-child {
-        margin-bottom: 0;
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
       }
 
       /* Individual question item styling */
       .question-item {
-        margin-bottom: 2rem; /* More space between questions */
-        padding: 1.5rem; /* Increased padding */
-        background-color: #ffffff; /* Pure white background */
-        border-left: 6px solid #1890ff; /* Brighter blue */
-        border-radius: 0.75rem; /* Nicely rounded */
-        /* Removed shadow */
-        border: 1px solid #d9d9d9; /* Softer border */
-        transition: all 0.2s ease-in-out;
+        margin-bottom: 1.5rem;
+        padding: 0;
+        background-color: transparent;
+        border-left: none;
+        border-radius: 0;
+        border: none;
+        transition: none;
       }
 
       .question-item:hover {
-        /* Subtle hover effect, no shadow */
-        background-color: #f5f5f5; /* Very light gray on hover */
+        background-color: transparent;
       }
 
       .question-item label {
-        display: block;
-        margin-bottom: 0.6rem;
-        font-weight: 600; /* Bolder label */
-        color: #262626; /* Dark text */
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: normal;
+        color: #0a0a0a;
       }
 
       .question-item .inline-question-text {
         display: inline;
-        font-size: 1.125rem; /* text-lg */
-        font-weight: 600; /* font-semibold */
-        color: #434343; /* Darker slate */
+        font-size: 16px;
+        font-weight: normal;
+        color: #0a0a0a;
       }
 
-      .question-item .inline-input,
+      .question-item .inline-input {
+        display: inline-block;
+        width: 150px;
+        padding: 0 0.5rem;
+        margin: 0 0.25rem;
+        border: 1px solid #888;
+        border-radius: 3px;
+        font-size: 1rem;
+        vertical-align: baseline;
+        background-color: white;
+        height: 32px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        color: #000;
+      }
+
       .question-item .inline-select {
         display: inline-block;
-        width: 170px; /* Default width */
-        padding: 0.4rem 0.8rem; /* More padding */
-        margin: 0 0.6rem; /* More horizontal margin */
-        border: 1px solid #bfbfbf; /* Softer border */
-        border-radius: 0.5rem; /* More rounded */
-        font-size: 1.05rem; /* Slightly larger font */
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        width: auto;
+        min-width: 70px;
+        padding: 0 1.5rem 0 0.5rem;
+        margin: 0 0.25rem;
+        border: 1px solid #888;
+        border-radius: 3px;
+        font-size: 1rem;
         vertical-align: middle;
         background-color: white;
+        height: 34px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        color: #000;
+        cursor: pointer;
       }
-      /* Make inline inputs fluid on small screens */
+
       @media (max-width: 767px) {
-        .question-item .inline-input,
-        .question-item .inline-select {
-          width: calc(100% - 1.2rem); /* Full width minus side margins */
-          margin: 0.6rem 0.6rem 0.6rem 0; /* Adjust margins for stacking */
-          display: block; /* Stack on mobile */
+        .question-item .inline-input {
+          width: calc(100% - 1.2rem);
+          margin: 0.6rem 0.6rem 0.6rem 0;
+          display: block;
         }
       }
 
       .question-item .inline-input:focus,
       .question-item .inline-select:focus {
         outline: none;
-        border-color: #1890ff; /* Brighter blue on focus */
-        box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.25); /* Subtle focus ring */
+        border-color: #333;
+        box-shadow: none;
       }
 
       /* New style for inputs on a new line */
       .question-item .block-input {
         display: block;
-        width: calc(100% - 1.5rem); /* Full width minus padding */
-        margin: 0.75rem 0.75rem 0 0.75rem; /* Increased margins */
-        padding: 0.6rem 1.2rem; /* Larger padding */
-        border: 1px solid #bfbfbf;
-        border-radius: 0.5rem;
-        font-size: 1.05rem;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        width: 100%;
+        margin: 0.5rem 0;
+        padding: 0.3rem 0.6rem;
+        border: 1px solid #999;
+        border-radius: 2px;
+        font-size: 0.95rem;
+        height: 32px;
       }
 
       .question-item .block-input:focus {
         outline: none;
-        border-color: #1890ff;
-        box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.25);
+        border-color: #333;
+        box-shadow: none;
       }
 
       /* Table specific styles */
@@ -637,33 +645,34 @@
       /* Radio button and checkbox styling */
       .question-item input[type="radio"],
       .question-item input[type="checkbox"] {
-        margin-right: 0.8rem; /* More space */
-        transform: scale(1.3); /* Larger size */
-        accent-color: #1890ff; /* Brighter blue accent color */
+        margin-right: 0.6rem;
+        transform: scale(1);
+        accent-color: #000;
+        vertical-align: middle;
+        margin-top: -2px;
       }
 
       .question-item .radio-option,
       .question-item .checkbox-option {
         display: flex;
         align-items: center;
-        margin-bottom: 0.8rem; /* More space */
+        margin-bottom: 0.4rem;
         cursor: pointer;
-        padding: 0.75rem 1rem; /* More padding */
-        border-radius: 0.75rem; /* More rounded */
-        transition: background-color 0.2s ease;
-        border: 1px solid #e0e0e0; /* Subtle border */
+        padding: 0;
+        border-radius: 0;
+        border: none;
+        transition: none;
       }
 
       .question-item .radio-option:hover,
       .question-item .checkbox-option:hover {
-        background-color: #e6f7ff; /* Very light blue on hover */
-        /* Removed shadow */
+        background-color: transparent;
       }
 
       .question-item .radio-option input[type="radio"]:checked + span,
       .question-item .checkbox-option input[type="checkbox"]:checked + span {
-        font-weight: 700; /* Bolder when checked */
-        color: #1890ff; /* Brighter blue when checked */
+        font-weight: normal;
+        color: #000;
       }
 
       /* Map image container */
@@ -1302,7 +1311,7 @@
 
     <!-- New: Sticky Test Info Bar (for Reading/Writing modules) -->
     <div id="test-info-bar" class="test-info-bar">
-      <h2 class="text-xl font-anton text-gray-800">
+      <h2 class="text-xl font-heading text-gray-800">
         <span id="test-title-top-bar"></span>
         <span
           id="section-info-top-bar"
@@ -2400,16 +2409,36 @@
        * @param {string} questionId - The ID of the question.
        * @param {string} value - The value of the checkbox.
        * @param {boolean} isChecked - Whether the checkbox is checked.
+       * @param {number} maxAllowed - Maximum options user can select.
        */
-      window.handleMultipleChoiceInput = (questionId, value, isChecked) => {
+      window.handleMultipleChoiceInput = (
+        questionId,
+        value,
+        isChecked,
+        maxAllowed,
+      ) => {
         let currentAnswers = testState.userAnswers[questionId] || [];
+
         if (isChecked) {
+          // Block selecting more options than required by IELTS rules
+          if (maxAllowed && currentAnswers.length >= maxAllowed) {
+            const checkbox = document.querySelector(
+              `input[name="q-${questionId}"][value="${value}"]`,
+            );
+            if (checkbox) checkbox.checked = false;
+            showToast(
+              `You can only select ${maxAllowed} options for this question.`,
+              "warning",
+            );
+            return;
+          }
           if (!currentAnswers.includes(value)) {
             currentAnswers.push(value);
           }
         } else {
           currentAnswers = currentAnswers.filter((item) => item !== value);
         }
+
         testState.userAnswers[questionId] = currentAnswers;
         saveDraftState(); // Save state
         if (currentModuleId === "listening") {
@@ -2903,13 +2932,19 @@
                       if (qGroup.type === "multiple_choice_multiple_answers") {
                         userAnswer = testState.userAnswers[question.id] || [];
                         correctAnswer = question.correctAnswer || [];
-                        // IELTS scoring: award one point for each correct option selected.
-                        const correctSelections = userAnswer.filter((ans) =>
-                          correctAnswer.includes(ans),
+
+                        // Security fallback: Slice the user's array to ONLY count up to the max allowed.
+                        let allowedCount = correctAnswer.length;
+                        let submittedAnswers = userAnswer.slice(
+                          0,
+                          allowedCount,
+                        );
+
+                        const correctSelections = submittedAnswers.filter(
+                          (ans) => correctAnswer.includes(ans),
                         );
                         correctAnswersCount += correctSelections.length;
 
-                        // Set isCorrect to false because we have already handled scoring for this type.
                         isCorrect = false;
                       } else {
                         userAnswer = testState.userAnswers[question.id];
@@ -3897,9 +3932,9 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-center mt-8 gap-3 flex-wrap">
-                        <a href="mock-test-home" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
-                        <i class="fas fa-home w-5 h-5"></i> Back to Mock Tests
+                   <div class="flex justify-center mt-8 gap-3 flex-wrap">
+                        <a href="mock-test-category?module=${currentModuleId}" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
+                        <i class="fas fa-arrow-left w-5 h-5"></i> Back to Category
                         </a>
                          <a href="daily-leaderboard" class="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
                          <i class="fas fa-list-ol w-5 h-5"></i> Daily Leaderboard
@@ -4014,14 +4049,14 @@
           appDiv.innerHTML = `
             <div class="flex flex-col justify-center items-center h-full min-h-[60vh] px-4 w-full animate-fade-in-up">
                 <div class="bg-white p-8 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-slate-100 max-w-lg w-full text-center transform transition-all hover:scale-[1.01]">
-                    <div class="w-24 h-24 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-inner">
+                   <div class="w-24 h-24 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-inner">
                         <i class="fas fa-clipboard-check"></i>
                     </div>
-                    <h2 class="text-3xl sm:text-4xl font-anton text-slate-800 uppercase tracking-wide mb-4">Test Completed</h2>
-                    <p class="text-slate-600 mb-8 font-inter text-lg leading-relaxed">
+                    <h2 class="text-3xl sm:text-4xl font-heading text-slate-800 uppercase tracking-wide mb-4">Test Completed</h2>
+                  <p class="text-slate-600 mb-8 font-inter text-lg leading-relaxed">
                         You have already successfully completed this mock test. To maintain authentic scoring and assessments, tests cannot be retaken.
                     </p>
-                    <a href="mock-test-home" class="inline-block px-8 py-3.5 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-all font-inter active:scale-95">
+                    <a href="mock-test-category?module=${currentModuleId}" class="inline-block px-8 py-3.5 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-all font-inter active:scale-95">
                         <i class="fas fa-arrow-left mr-2"></i> Go Back to Tests
                     </a>
                 </div>
@@ -4035,10 +4070,10 @@
           appDiv.innerHTML = `
             <div class="flex flex-col justify-center items-center h-full min-h-[60vh] px-4 w-full">
                 <div class="bg-white p-8 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-slate-100 max-w-lg w-full text-center transform transition-all hover:scale-[1.01]">
-                    <div class="w-24 h-24 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-inner">
+                   <div class="w-24 h-24 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-inner">
                         <i class="fas fa-lock"></i>
                     </div>
-                    <h2 class="text-3xl sm:text-4xl font-anton text-slate-800 uppercase tracking-wide mb-4">Premium Content</h2>
+                    <h2 class="text-3xl sm:text-4xl font-heading text-slate-800 uppercase tracking-wide mb-4">Premium Content</h2>
                     <p class="text-slate-600 mb-8 font-inter text-lg leading-relaxed">
                         This mock test is exclusively available for <strong class="text-amber-500">Premium</strong> users. Upgrade your account to unlock all tests and skyrocket your IELTS score!
                     </p>
@@ -4065,33 +4100,10 @@
           if (mobilePaletteWrapper) mobilePaletteWrapper.style.display = "none"; // Hide mobile palette
           body.classList.remove("listening-body-padding");
         } else {
-          // Define navigationButtonsHtml based on the module and section
-          let navigationButtonsHtml = "";
+          // Check if user is on first or last section for navigation controls
           const isLastSection =
             testState.currentSectionIndex === currentTest.sections.length - 1;
           const isFirstSection = testState.currentSectionIndex === 0;
-
-          // Navigation buttons for ALL modules
-          navigationButtonsHtml = `
-              <button id="prev-section-btn"
-                      class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-gray-300 transition-colors duration-200 font-semibold text-base transform active:scale-95 ${
-                        isFirstSection ? "opacity-50 cursor-not-allowed" : ""
-                      }"
-                      ${isFirstSection ? "disabled" : ""}>
-                  <i class="fas fa-arrow-left mr-2"></i> Previous
-              </button>
-              ${
-                isLastSection
-                  ? `<button id="submit-test-btn"
-                             class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
-                             <i class="fas fa-check-circle mr-2"></i> Submit
-                         </button>`
-                  : `<button id="next-section-btn"
-                             class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
-                             Next <i class="fas fa-arrow-right ml-2"></i>
-                         </button>`
-              }
-          `;
 
           // Render the test questions
           let mockTestLayoutClass = "";
@@ -4196,15 +4208,18 @@
                         : ""
                     }
 
-                  <!-- Passage Content Area (Only for Reading) -->
+                 <!-- Passage Content Area (Only for Reading) -->
                     <div class="passage-content-area custom-scrollbar pb-24" style="${
                       currentModuleId === "reading" &&
                       (isDesktop || isPassageActive)
                         ? "display: block;"
                         : "display: none;"
                     }">
-                        <h2 class="text-2xl font-anton text-gray-800 mb-4">Passage</h2>
-                        <div class="prose max-w-none text-gray-700 leading-relaxed">
+                        <h2 class="text-[1.4rem] font-bold text-black uppercase tracking-wide mb-1">PASSAGE ${
+                          testState.currentSectionIndex + 1
+                        }</h2>
+                        <div class="text-[13px] text-gray-500 mb-8 border-b border-gray-100 pb-2">You should spend about 20 minutes on the questions for this passage.</div>
+                        <div class="prose max-w-none text-black leading-relaxed">
                             ${
                               currentModuleId === "reading" &&
                               currentSection.passageContent
@@ -4222,14 +4237,14 @@
                         : ""
                     }
 
-                    <!-- Writing Instructions Area (Only for Writing) -->
-                    <div class="writing-instructions-area custom-scrollbar" style="${
+             <!-- Writing Instructions Area (Only for Writing) -->
+                    <div class="writing-instructions-area custom-scrollbar pb-24" style="${
                       currentModuleId === "writing" &&
                       (isDesktop || isInstructionsActive)
                         ? "display: block;"
                         : "display: none;"
                     }">
-                        <h2 class="text-2xl font-anton text-gray-800 mb-4">Instructions</h2>
+                        <h2 class="text-2xl font-heading text-gray-800 mb-4">Instructions</h2>
                         ${
                           currentModuleId === "writing"
                             ? renderWritingInstructions(currentSection)
@@ -4248,7 +4263,7 @@
                         : "display: none;"
                     }">
                         <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-3xl font-anton text-gray-800">${
+                            <h2 class="text-3xl font-heading text-gray-800">${
                               currentTest.title
                             } - Section ${
             testState.currentSectionIndex + 1
@@ -4257,7 +4272,7 @@
                         </div>
 
 
-                   <!-- Test Sections and Questions -->
+                  <!-- Test Sections and Questions -->
                         <div id="test-questions-container">
                             ${
                               currentModuleId === "writing"
@@ -4265,7 +4280,7 @@
                                 : `<div class="question-section" id="section-${
                                     currentSection.id
                                   }">
-                                    <h3 class="text-2xl font-bold text-gray-700 mb-3 font-anton">${
+                                    <h3 class="text-[1.1rem] font-bold text-black mb-4 uppercase">${
                                       currentSection.title
                                     }</h3>
                                     ${
@@ -4282,42 +4297,62 @@
                             }
                         </div>
 
-                        <div class="flex justify-between mt-8">
-                            ${navigationButtonsHtml}
-                        </div>
-                    </div>
+                     </div>
 
-<!-- Bottom Bar: Section Tabs (for Listening & Reading) -->
-                    ${
-                      currentModuleId === "listening" ||
-                      currentModuleId === "reading"
-                        ? `
-                    <div class="flex fixed bottom-0 left-0 w-full bg-white z-[950] shadow-[0_-4px_10px_rgba(0,0,0,0.03)] px-2 sm:px-4 py-3 items-center justify-center border-t border-gray-200 h-[70px]">
-                        <div class="flex items-center bg-white rounded-xl border border-gray-300 overflow-hidden shadow-sm text-base sm:text-lg font-medium max-w-full overflow-x-auto" id="test-section-tabs">
-                            ${currentTest.sections
-                              .map(
-                                (sec, idx) => `
-                                <button class="section-tab-btn flex-shrink-0 flex items-center justify-center w-14 sm:w-16 h-12 transition-colors ${
-                                  idx === testState.currentSectionIndex
-                                    ? "bg-[#1a1a1a] text-white"
-                                    : "bg-white text-[#005a9c] hover:bg-gray-50"
-                                } ${
-                                  idx > 0 ? "border-l border-gray-300" : ""
-                                }" data-section-index="${idx}">
-                                    ${
+                    <!-- Persistent Bottom Navigation Bar (Jumpinto / Official IELTS style) -->
+                    <div class="flex fixed bottom-0 left-0 w-full bg-white z-[950] shadow-[0_-4px_15px_rgba(0,0,0,0.05)] px-4 py-3 items-center justify-between border-t border-gray-200 h-[70px]">
+                        
+                        <!-- Left: Previous Button -->
+                        <div class="w-1/3 flex justify-start">
+                            <button id="prev-section-btn"
+                                    class="flex items-center gap-2 px-4 sm:px-5 py-2 bg-gray-100 text-gray-700 rounded-lg font-heading text-sm hover:bg-gray-200 transition-colors ${
+                                      isFirstSection
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : "cursor-pointer"
+                                    }"
+                                    ${isFirstSection ? "disabled" : ""}>
+                                <i class="fas fa-arrow-left"></i> <span class="hidden sm:inline">Previous Section</span>
+                            </button>
+                        </div>
+
+                        <!-- Center: Section / Task Tabs -->
+                        <div class="w-1/3 flex justify-center">
+                            <div class="flex items-center bg-gray-100 rounded-lg p-1 shadow-inner overflow-x-auto max-w-full" id="test-section-tabs">
+                                ${currentTest.sections
+                                  .map(
+                                    (sec, idx) => `
+                                    <button class="section-tab-btn flex-shrink-0 px-4 py-1.5 rounded-md text-sm font-heading transition-all ${
                                       idx === testState.currentSectionIndex
-                                        ? '<i class="fas fa-key"></i>'
-                                        : idx + 1
-                                    }
-                                </button>
-                            `,
-                              )
-                              .join("")}
+                                        ? "bg-white text-blue-700 shadow-sm"
+                                        : "text-gray-500 hover:text-gray-700"
+                                    }" data-section-index="${idx}">
+                                        ${
+                                          currentModuleId === "writing"
+                                            ? `Task ${idx + 1}`
+                                            : `Part ${idx + 1}`
+                                        }
+                                    </button>
+                                `,
+                                  )
+                                  .join("")}
+                            </div>
+                        </div>
+
+                        <!-- Right: Next / Submit Button -->
+                        <div class="w-1/3 flex justify-end">
+                            ${
+                              isLastSection
+                                ? `<button id="submit-test-btn"
+                                         class="flex items-center gap-2 px-6 sm:px-8 py-2 bg-green-600 text-white rounded-lg font-heading text-sm hover:bg-green-700 transition-all shadow-md active:scale-95">
+                                         <span class="hidden sm:inline">Submit Test</span> <i class="fas fa-paper-plane"></i>
+                                     </button>`
+                                : `<button id="next-section-btn"
+                                         class="flex items-center gap-2 px-4 sm:px-5 py-2 bg-blue-600 text-white rounded-lg font-heading text-sm hover:bg-blue-700 transition-all shadow-md active:scale-95">
+                                         <span class="hidden sm:inline">Next Section</span> <i class="fas fa-arrow-right"></i>
+                                     </button>`
+                            }
                         </div>
                     </div>
-                    `
-                        : ""
-                    }
                 </div>
             `;
         }
@@ -4377,7 +4412,7 @@
         function renderWritingInstructions(task) {
           return `
                 <div class="question-section" id="task-instructions-${task.id}">
-                    <h3 class="text-2xl font-bold text-gray-700 mb-3 font-anton">${task.title}</h3>
+                    <h3 class="text-2xl font-heading text-gray-700 mb-3">${task.title}</h3>
                     <div class="question-group-instructions mb-6 text-gray-600 font-inter">
                         ${task.instructions}
                     </div>
@@ -4393,7 +4428,7 @@
 
           return `
                 <div class="question-section" id="task-response-${task.id}">
-                    <h3 class="text-2xl font-bold text-gray-700 mb-3 font-anton">Your Response</h3>
+                    <h3 class="text-2xl font-heading text-gray-700 mb-3">Your Response</h3>
                     <div class="question-item">
                         
                         <textarea id="writing-response-${task.id}"
@@ -4602,50 +4637,55 @@
                       <div class="question-item" id="question-${
                         qGroup.questions[0].questionNumber
                       }">
-                          <p class="text-lg font-semibold mb-2">List of Headings:</p>
-                          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2 mb-4">
-                              ${(qGroup.listHeadings || []) // Ensure it's an array before map
-                                .map(
-                                  (heading) =>
-                                    `<div class="flex items-center p-3 bg-white rounded-lg border border-gray-200">
-                                        <span class="font-bold text-blue-600 text-lg w-8 flex-shrink-0">${heading.id}.</span>
-                                        <span class="ml-2 text-gray-800">${heading.text}</span>
+                          <div class="border border-gray-300 bg-[#fbfbfb] p-5 mb-8 max-w-[500px]">
+                              <p class="font-bold text-black mb-4 text-center">List of Headings</p>
+                              <div class="space-y-2">
+                                  ${(qGroup.listHeadings || [])
+                                    .map(
+                                      (heading) =>
+                                        `<div class="flex items-start">
+                                        <span class="font-bold text-gray-800 w-8 flex-shrink-0">${heading.id}</span>
+                                        <span class="text-gray-800">${heading.text}</span>
                                     </div>`,
-                                )
-                                .join("")}
+                                    )
+                                    .join("")}
+                              </div>
                           </div>
+                          <div>
                           ${qGroup.questions
                             .map(
                               (question) => `
-                              <div class="mb-3">
-                                  <label class="block text-gray-700 text-sm font-bold mb-1" for="q-${
+                              <div class="flex items-center justify-between py-3 border-b border-gray-200 last:border-0">
+                                  <label class="text-black flex gap-3 pr-4" for="q-${
                                     question.id
                                   }">
-                                      ${question.questionNumber}. ${
-                                question.text ||
-                                `Paragraph ${question.paragraphId}`
-                              }:
+                                      <strong class="text-gray-800">${
+                                        question.questionNumber
+                                      }</strong> 
+                                      <span class="text-[15px] leading-relaxed">${
+                                        question.text ||
+                                        `Paragraph ${question.paragraphId}`
+                                      }</span>
                                   </label>
                                   <select id="q-${
                                     question.id
                                   }" onchange="handleAnswerInput('${
                                 question.id
                               }', this.value)"
-                                          class="inline-select w-64">
-                                      <option value="">Select a heading</option>
-                                      ${(qGroup.listHeadings || []) // Ensure it's an array before map
+                                          class="inline-select w-[70px] h-[34px] border border-gray-400 rounded bg-white text-center appearance-none cursor-pointer focus:ring-2 focus:ring-black" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23999%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right .5rem top 50%; background-size: .65rem auto;">
+                                      <option value="">${
+                                        question.questionNumber
+                                      }</option>
+                                      ${(qGroup.listHeadings || [])
                                         .map(
-                                          (heading) => `
-                                          <option value="${heading.id}" ${
-                                            testState.userAnswers[
-                                              question.id
-                                            ] === heading.id
-                                              ? "selected"
-                                              : ""
-                                          }>
-                                              ${heading.id}
-                                          </option>
-                                      `,
+                                          (heading) =>
+                                            `<option value="${heading.id}" ${
+                                              testState.userAnswers[
+                                                question.id
+                                              ] === heading.id
+                                                ? "selected"
+                                                : ""
+                                            }>${heading.id}</option>`,
                                         )
                                         .join("")}
                                   </select>
@@ -4653,12 +4693,11 @@
                           `,
                             )
                             .join("")}
+                          </div>
                       </div>
                   `;
                 }
               } else if (qGroup.type === "which_paragraph_contains") {
-                // This type should have its own rendering logic, as it doesn't use listHeadings
-                // For now, let's assume options are A, B, C, D...
                 const paragraphOptions = [
                   "A",
                   "B",
@@ -4673,57 +4712,46 @@
                   "K",
                   "L",
                   "M",
-                  "N",
-                  "O",
-                  "P",
-                  "Q",
-                  "R",
-                  "S",
-                  "T",
-                  "U",
-                  "V",
-                  "W",
-                  "X",
-                  "Y",
-                  "Z",
-                ]; // Example options
+                ];
                 if (qGroup.questions && qGroup.questions.length > 0) {
                   questionsHtml = `
                       <div class="question-item" id="question-${
                         qGroup.questions[0].questionNumber
                       }">
-                          <p class="text-lg font-semibold mb-2">Choose the correct paragraph:</p>
+                          <div>
                           ${qGroup.questions
                             .map(
                               (question) => `
-                              <div class="mb-3">
-                                  <label class="block text-gray-700 text-sm font-bold mb-1" for="q-${
+                              <div class="flex items-center justify-between py-3 border-b border-gray-200 last:border-0">
+                                  <label class="text-black flex gap-3 pr-4" for="q-${
                                     question.id
                                   }">
-                                      ${question.questionNumber}. ${
-                                question.text
-                              }:
+                                      <strong class="text-gray-800">${
+                                        question.questionNumber
+                                      }</strong> 
+                                      <span class="text-[15px] leading-relaxed">${
+                                        question.text
+                                      }</span>
                                   </label>
                                   <select id="q-${
                                     question.id
                                   }" onchange="handleAnswerInput('${
                                 question.id
                               }', this.value)"
-                                          class="inline-select w-48">
-                                      <option value="">Select a paragraph</option>
+                                          class="inline-select w-[70px] h-[34px] border border-gray-400 rounded bg-white text-center appearance-none cursor-pointer focus:ring-2 focus:ring-black" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23999%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right .5rem top 50%; background-size: .65rem auto;">
+                                      <option value="">${
+                                        question.questionNumber
+                                      }</option>
                                       ${paragraphOptions
                                         .map(
-                                          (option) => `
-                                          <option value="${option}" ${
-                                            testState.userAnswers[
-                                              question.id
-                                            ] === option
-                                              ? "selected"
-                                              : ""
-                                          }>
-                                              ${option}
-                                          </option>
-                                      `,
+                                          (option) =>
+                                            `<option value="${option}" ${
+                                              testState.userAnswers[
+                                                question.id
+                                              ] === option
+                                                ? "selected"
+                                                : ""
+                                            }>${option}</option>`,
                                         )
                                         .join("")}
                                   </select>
@@ -4731,6 +4759,7 @@
                           `,
                             )
                             .join("")}
+                          </div>
                       </div>
                   `;
                 }
@@ -4742,10 +4771,10 @@
                       <div class="question-item" id="question-${
                         question.questionNumber
                       }">
-                          <p class="text-lg font-semibold mb-2">${
+                          <p class="mb-2 text-black"><strong>${
                             question.questionNumber
-                          }. ${question.text}</p>
-                          <div class="flex flex-wrap gap-4">
+                          }</strong> ${question.text}</p>
+                          <div class="flex flex-col gap-1 pl-4 mt-2 mb-6">
                               <label class="radio-option">
                                   <input type="radio" name="q-${
                                     question.id
@@ -4760,7 +4789,7 @@
                                              ? "checked"
                                              : ""
                                          }>
-                                  <span class="ml-2 text-gray-700">TRUE</span>
+                                  <span class="text-black">TRUE</span>
                               </label>
                               <label class="radio-option">
                                   <input type="radio" name="q-${
@@ -4776,7 +4805,7 @@
                                              ? "checked"
                                              : ""
                                          }>
-                                  <span class="ml-2 text-gray-700">FALSE</span>
+                                  <span class="text-black">FALSE</span>
                               </label>
                               <label class="radio-option">
                                   <input type="radio" name="q-${
@@ -4792,7 +4821,7 @@
                                              ? "checked"
                                              : ""
                                          }>
-                                  <span class="ml-2 text-gray-700">NOT GIVEN</span>
+                                  <span class="text-black">NOT GIVEN</span>
                               </label>
                           </div>
                       </div>
@@ -4805,60 +4834,64 @@
                   questionsHtml = qGroup.questions
                     .map(
                       (question) => `
-                <div class="question-item" id="question-${
-                  question.questionNumber
-                }">
-                    <p class="text-lg font-semibold mb-2">${
-                      question.questionNumber
-                    }. ${question.text}</p>
-                    <div class="flex flex-wrap gap-4">
-                        <label class="radio-option">
-                            <input type="radio" name="q-${
-                              question.id
-                            }" value="YES"
-                                   onchange="handleAnswerInput('${
-                                     question.id
-                                   }', this.value)"
-                                   ${
-                                     testState.userAnswers[question.id] ===
-                                     "YES"
-                                       ? "checked"
-                                       : ""
-                                   }>
-                            <span class="ml-2 text-gray-700">YES</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="q-${
-                              question.id
-                            }" value="NO"
-                                   onchange="handleAnswerInput('${
-                                     question.id
-                                   }', this.value)"
-                                   ${
-                                     testState.userAnswers[question.id] === "NO"
-                                       ? "checked"
-                                       : ""
-                                   }>
-                            <span class="ml-2 text-gray-700">NO</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="q-${
-                              question.id
-                            }" value="NOT GIVEN"
-                                   onchange="handleAnswerInput('${
-                                     question.id
-                                   }', this.value)"
-                                   ${
-                                     testState.userAnswers[question.id] ===
-                                     "NOT GIVEN"
-                                       ? "checked"
-                                       : ""
-                                   }>
-                            <span class="ml-2 text-gray-700">NOT GIVEN</span>
-                        </label>
-                    </div>
-                </div>
-            `,
+                      <div class="question-item" id="question-${
+                        question.questionNumber
+                      }">
+                          <p class="mb-2 text-black"><strong>${
+                            question.questionNumber
+                          }</strong> ${question.text}</p>
+                          <div class="flex flex-col gap-1 pl-4 mt-2 mb-6">
+                              <label class="radio-option">
+                                  <input type="radio" name="q-${
+                                    question.id
+                                  }" value="YES"
+                                         onchange="handleAnswerInput('${
+                                           question.id
+                                         }', this.value)"
+                                         ${
+                                           testState.userAnswers[
+                                             question.id
+                                           ] === "YES"
+                                             ? "checked"
+                                             : ""
+                                         }>
+                                  <span class="text-black">YES</span>
+                              </label>
+                              <label class="radio-option">
+                                  <input type="radio" name="q-${
+                                    question.id
+                                  }" value="NO"
+                                         onchange="handleAnswerInput('${
+                                           question.id
+                                         }', this.value)"
+                                         ${
+                                           testState.userAnswers[
+                                             question.id
+                                           ] === "NO"
+                                             ? "checked"
+                                             : ""
+                                         }>
+                                  <span class="text-black">NO</span>
+                              </label>
+                              <label class="radio-option">
+                                  <input type="radio" name="q-${
+                                    question.id
+                                  }" value="NOT GIVEN"
+                                         onchange="handleAnswerInput('${
+                                           question.id
+                                         }', this.value)"
+                                         ${
+                                           testState.userAnswers[
+                                             question.id
+                                           ] === "NOT GIVEN"
+                                             ? "checked"
+                                             : ""
+                                         }>
+                                  <span class="text-black">NOT GIVEN</span>
+                              </label>
+                          </div>
+                      </div>
+                  `,
                     )
                     .join("");
                 }
@@ -4868,49 +4901,54 @@
                       <div class="question-item" id="question-${
                         qGroup.questions[0].questionNumber
                       }">
-                          <p class="text-lg font-semibold mb-2">List of Items:</p>
-                          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2 mb-4">
-                              ${qGroup.listItems
-                                .map(
-                                  (item) =>
-                                    `<div class="flex items-center p-3 bg-white rounded-lg border border-gray-200">
-                                        <span class="font-bold text-blue-600 text-lg w-8 flex-shrink-0">${item.id}.</span>
-                                        <span class="ml-2 text-gray-800">${item.text}</span>
+                          <div class="border border-gray-300 bg-[#fbfbfb] p-5 mb-8 min-w-[250px] inline-block">
+                              <p class="font-bold text-black mb-4 text-center">List of Options</p>
+                              <div class="space-y-2">
+                                  ${qGroup.listItems
+                                    .map(
+                                      (item) =>
+                                        `<div class="flex items-start">
+                                        <span class="font-bold text-gray-800 w-8 flex-shrink-0">${item.id}</span>
+                                        <span class="text-gray-800">${item.text}</span>
                                     </div>`,
-                                )
-                                .join("")}
+                                    )
+                                    .join("")}
+                              </div>
                           </div>
+                          <div>
                           ${qGroup.questions
                             .map(
                               (question) => `
-                              <div class="mb-3">
-                                  <label class="block text-gray-700 text-sm font-bold mb-1" for="q-${
+                              <div class="flex items-center justify-between py-3 border-b border-gray-200 last:border-0">
+                                  <label class="text-black flex gap-3 pr-4" for="q-${
                                     question.id
                                   }">
-                                      ${question.questionNumber}. ${
-                                question.statement
-                              }
+                                      <strong class="text-gray-800">${
+                                        question.questionNumber
+                                      }</strong> 
+                                      <span class="text-[15px] leading-relaxed">${
+                                        question.statement
+                                      }</span>
                                   </label>
                                   <select id="q-${
                                     question.id
                                   }" onchange="handleAnswerInput('${
                                 question.id
                               }', this.value)"
-                                          class="inline-select w-48">
-                                      <option value="">Select an item</option>
+                                          class="inline-select w-[70px] h-[34px] border border-gray-400 rounded bg-white text-center appearance-none cursor-pointer focus:ring-2 focus:ring-black" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23999%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right .5rem top 50%; background-size: .65rem auto;">
+                                      <option value="">${
+                                        question.questionNumber
+                                      }</option>
                                       ${qGroup.listItems
                                         .map(
-                                          (item) => `
-                                          <option value="${item.id}" ${
-                                            testState.userAnswers[
-                                              question.id
-                                            ] === item.id
-                                              ? "selected"
-                                              : ""
-                                          }>
-                                              ${item.id}
-                                          </option>
-                                      `,
+                                          (item) =>
+                                            `<option value="${item.id}" ${
+                                              testState.userAnswers[
+                                                question.id
+                                              ] === item.id
+                                                ? "selected"
+                                                : ""
+                                            }>${item.id}</option>`,
                                         )
                                         .join("")}
                                   </select>
@@ -4918,6 +4956,7 @@
                           `,
                             )
                             .join("")}
+                          </div>
                       </div>
                   `;
                 }
@@ -4927,49 +4966,54 @@
                       <div class="question-item" id="question-${
                         qGroup.questions[0].questionNumber
                       }">
-                          <p class="text-lg font-semibold mb-2">Complete each sentence with the correct ending:</p>
-                          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2 mb-4">
-                              ${(qGroup.listItems || []) // Use listItems for the endings
-                                .map(
-                                  (item) =>
-                                    `<div class="flex items-center p-3 bg-white rounded-lg border border-gray-200">
-                                        <span class="font-bold text-blue-600 text-lg w-8 flex-shrink-0">${item.id}.</span>
-                                        <span class="ml-2 text-gray-800">${item.text}</span>
+                          <div class="border border-gray-300 bg-[#fbfbfb] p-5 mb-8 max-w-[500px]">
+                              <p class="font-bold text-black mb-4 text-center">List of Endings</p>
+                              <div class="space-y-2">
+                                  ${(qGroup.listItems || [])
+                                    .map(
+                                      (item) =>
+                                        `<div class="flex items-start">
+                                        <span class="font-bold text-gray-800 w-8 flex-shrink-0">${item.id}</span>
+                                        <span class="text-gray-800">${item.text}</span>
                                     </div>`,
-                                )
-                                .join("")}
+                                    )
+                                    .join("")}
+                              </div>
                           </div>
+                          <div>
                           ${qGroup.questions
                             .map(
                               (question) => `
-                              <div class="mb-3">
-                                  <label class="block text-gray-700 text-sm font-bold mb-1" for="q-${
+                              <div class="flex items-center justify-between py-3 border-b border-gray-200 last:border-0">
+                                  <label class="text-black flex gap-3 pr-4" for="q-${
                                     question.id
                                   }">
-                                      ${question.questionNumber}. ${
-                                question.statement
-                              }
+                                      <strong class="text-gray-800">${
+                                        question.questionNumber
+                                      }</strong> 
+                                      <span class="text-[15px] leading-relaxed">${
+                                        question.statement
+                                      }</span>
                                   </label>
                                   <select id="q-${
                                     question.id
                                   }" onchange="handleAnswerInput('${
                                 question.id
                               }', this.value)"
-                                          class="inline-select w-64">
-                                      <option value="">Select an ending</option>
+                                          class="inline-select w-[70px] h-[34px] border border-gray-400 rounded bg-white text-center appearance-none cursor-pointer focus:ring-2 focus:ring-black" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23999%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right .5rem top 50%; background-size: .65rem auto;">
+                                      <option value="">${
+                                        question.questionNumber
+                                      }</option>
                                       ${(qGroup.listItems || [])
                                         .map(
-                                          (item) => `
-                                          <option value="${item.id}" ${
-                                            testState.userAnswers[
-                                              question.id
-                                            ] === item.id
-                                              ? "selected"
-                                              : ""
-                                          }>
-                                              ${item.id}
-                                          </option>
-                                      `,
+                                          (item) =>
+                                            `<option value="${item.id}" ${
+                                              testState.userAnswers[
+                                                question.id
+                                              ] === item.id
+                                                ? "selected"
+                                                : ""
+                                            }>${item.id}</option>`,
                                         )
                                         .join("")}
                                   </select>
@@ -4977,40 +5021,43 @@
                           `,
                             )
                             .join("")}
+                          </div>
                       </div>
                   `;
                 }
               } else if (qGroup.type === "multiple_choice_multiple_answers") {
-                // Assuming there's only one question object in this type of group
                 if (qGroup.questions && qGroup.questions.length > 0) {
                   const question = qGroup.questions[0];
                   questionsHtml = `
                       <div class="question-item" id="question-${
                         question.questionNumber
                       }">
-                          <p class="text-lg font-semibold mb-2">${
+                          <p class="mb-3 text-black"><strong>${
                             question.questionNumber
-                          }. ${question.text}</p>
-                          <div class="flex flex-col gap-2">
+                          }</strong> ${question.text}</p>
+                          <div class="flex flex-col gap-1 pl-4 mt-2 mb-6">
                               ${qGroup.options
                                 .map(
                                   (option) => `
-                                  <label class="checkbox-option flex items-center cursor-pointer p-2 rounded-md hover:bg-blue-50">
+                                  <label class="checkbox-option">
                                       <input type="checkbox" name="q-${
                                         question.id
                                       }" value="${option.id}"
                                              onchange="handleMultipleChoiceInput('${
                                                question.id
-                                             }', this.value, this.checked)"
+                                             }', this.value, this.checked, ${
+                                    question.correctAnswer
+                                      ? question.correctAnswer.length
+                                      : 0
+                                  })"
                                              ${
                                                testState.userAnswers[
                                                  question.id
                                                ]?.includes(option.id)
                                                  ? "checked"
                                                  : ""
-                                             }
-                                             class="mr-2 transform scale-125">
-                                      <span class="text-gray-700">${
+                                             }>
+                                      <span class="text-black">${
                                         option.text
                                       }</span>
                                   </label>
@@ -5032,9 +5079,10 @@
                                 <div class="question-item" id="question-${
                                   question.questionNumber
                                 }">
-                                    <p class="text-lg font-semibold mb-2">${
+                                    <p class="mb-2 text-black"><strong>${
                                       question.questionNumber
-                                    }. ${question.text}</p>
+                                    }</strong> ${question.text}</p>
+                                    <div class="flex flex-col gap-1 pl-4 mt-2 mb-6">
                                     ${question.options
                                       .map(
                                         (option) => `
@@ -5052,11 +5100,12 @@
                                                        ? "checked"
                                                        : ""
                                                    }>
-                                            <span class="ml-2 text-gray-700">${option}</span>
+                                            <span class="text-black">${option}</span>
                                         </label>
                                     `,
                                       )
                                       .join("")}
+                                    </div>
                                 </div>
                             `;
                       } else if (
@@ -5076,7 +5125,7 @@
                           .substring(
                             2,
                             10,
-                          )}" placeholder="Answer" autocomplete="off" spellcheck="false" data-lpignore="true"
+                          )}" placeholder="" autocomplete="off" spellcheck="false" data-lpignore="true"
                                                            oninput="handleAnswerInput('${
                                                              question.id
                                                            }', this.value)"
@@ -5087,26 +5136,30 @@
                                                              ] || ""
                                                            }" class="${inputClass}">`;
 
-                        // Create a styled number badge
-                        const numberBadge = `<span class="inline-flex items-center justify-center w-7 h-7 mr-2 text-sm font-bold text-white bg-blue-600 rounded-full shadow-lg transform -translate-y-1">${question.questionNumber}</span>`;
+                        // Create circled number badge precisely like CBT IELTS
+                        const numberBadge = `<span class="mr-2 text-[12px] text-gray-700 font-bold bg-gray-100 border border-gray-300 rounded-full w-[24px] h-[24px] inline-flex items-center justify-center translate-y-[-1px] shadow-sm">${question.questionNumber}</span>`;
 
-                        // Combine the styled number and the input field
                         const numberedInputField = `${numberBadge}${inputField}`;
 
                         let questionTextContent = "";
                         let inputElementHtml = "";
 
                         if (question.inputPlacement === "newline") {
-                          questionTextContent = question.text; // The question text itself
-                          inputElementHtml = numberedInputField; // The numbered input goes on the line below
+                          questionTextContent = question.text;
+                          inputElementHtml = numberedInputField;
                         } else {
-                          // For inline inputs, replace [GAP] with the numbered input field
-                          questionTextContent = question.text.includes("[GAP]")
-                            ? question.text.replace(
-                                /\[GAP\]/g,
-                                numberedInputField,
-                              )
-                            : `${question.text} ${numberedInputField}`; // Fallback if [GAP] isn't present
+                          // Detects either [GAP] or 3+ dots (.......) and perfectly injects the input field
+                          if (
+                            question.text.includes("[GAP]") ||
+                            /\.{3,}/.test(question.text)
+                          ) {
+                            questionTextContent = question.text.replace(
+                              /\[GAP\]|\.{3,}/g,
+                              numberedInputField,
+                            );
+                          } else {
+                            questionTextContent = `${question.text} ${numberedInputField}`;
+                          }
                           inputElementHtml = "";
                         }
 
@@ -5253,9 +5306,27 @@
               }
 
               // 4. Default layout for normal questions (No map)
+              let finalQuestionsHtml = questionsHtml;
+
+              // Wrap summary tasks with an exact replica border // Wrap summary tasks with an exact replica border layout
+              if (
+                qGroup.type === "summary_completion" ||
+                qGroup.type === "fill_in_the_blank_passage"
+              ) {
+                finalQuestionsHtml = `
+                    <div class="border border-gray-400 p-6 mt-4 mb-6 rounded-sm bg-white shadow-sm summary-box">
+                        ${
+                          qGroup.title
+                            ? `<p class="font-bold text-center text-gray-800 text-[1.1rem] mb-6">${qGroup.title}</p>`
+                            : ""
+                        }
+                        ${questionsHtml}
+                    </div>
+                  `;
+              }
               return `
                   ${instructionsBlock}
-                  ${questionsHtml}
+                  ${finalQuestionsHtml}
               `;
               // --- END OF NEW MAP/DIAGRAM LAYOUT LOGIC ---
             })
