@@ -2234,13 +2234,13 @@
 
         if (isPremiumUser) {
           if (pkg.includes("Platinum") || pkg.includes("Full Premium")) {
-            allowedTests = 15;
+            allowedTests = 16;
           } else if (pkg.includes("Gold")) {
-            allowedTests = 10;
+            allowedTests = 11;
           } else if (pkg.includes("Silver")) {
-            allowedTests = 7;
+            allowedTests = 6;
           } else {
-            allowedTests = 15; // Legacy fallback
+            allowedTests = 16; // Legacy fallback
           }
         }
 
@@ -2251,11 +2251,13 @@
               allowedTests = 7;
             } else if (pkg.includes("Gold")) {
               allowedTests = 5;
+            } else if (pkg.includes("Silver")) {
+              allowedTests = 2;
             } else {
-              allowedTests = 0; // Silver/Legacy gets 0
+              allowedTests = 2; // Legacy fallback
             }
           } else {
-            allowedTests = 0;
+            allowedTests = 0; // Free users get 0 speaking tests
           }
         }
 
@@ -2265,13 +2267,13 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 mt-8 mb-4 animate-fade-in-up">
                 <div class="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 rounded-2xl p-1 shadow-[0_10px_25px_rgba(245,158,11,0.3)] transform transition-transform hover:-translate-y-1">
                     <div class="bg-slate-900 rounded-xl px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div class="flex items-center gap-4">
+                      <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-amber-400/20 text-amber-400 rounded-full flex items-center justify-center text-xl shrink-0">
                                 <i class="fas fa-crown"></i>
                             </div>
                             <div>
                                 <h4 class="text-white font-bold text-lg leading-tight">Unlock More Premium Tests</h4>
-                                <p class="text-amber-200/80 text-sm font-medium">Upgrade to Gold or Platinum for full access and expert evaluations.</p>
+                                <p class="text-amber-200/80 text-sm font-medium">Upgrade your package to instantly unlock more tests and expert evaluations.</p>
                             </div>
                         </div>
                         <a href="mock-test-packages" class="shrink-0 px-6 py-2.5 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-900 font-extrabold text-sm uppercase tracking-widest rounded-lg transition-all shadow-md">
@@ -2814,14 +2816,14 @@
                                           } <br/><span class="text-amber-400">Locked</span>
                                       </h3>
                                       
-                                      <p class="text-sm text-slate-300 font-medium leading-relaxed mb-8 px-2">
+                                     <p class="text-sm text-slate-300 font-medium leading-relaxed mb-8 px-2">
                                           ${
                                             currentModuleId === "speaking"
-                                              ? "Get a Gold or Platinum Package to unlock full access to authentic IELTS Speaking Tests with expert evaluations."
+                                              ? "Get a Premium Package (Silver, Gold, or Platinum) to unlock authentic IELTS Speaking Tests with expert 1-on-1 evaluations."
                                               : (isPremiumUser
                                                   ? "Upgrade your plan"
                                                   : "Get a Premium Package") +
-                                                ` to instantly unlock full access to highly-accurate IELTS ${
+                                                ` to instantly unlock highly-accurate IELTS ${
                                                   module?.name || "Mock"
                                                 } Tests with expert evaluations.`
                                           }

@@ -7240,7 +7240,485 @@ export const allMockTests = [
       },
     ],
   },
-
+  {
+    id: "listening-test-16",
+    moduleId: "listening",
+    title: "IELTS Listening Test 16",
+    description: "A full-length Academic Listening practice test.",
+    duration: 40,
+    audioUrl: "Listening_tests_audio/Test 16/Partial Test 1.mp3",
+    sections: [
+      {
+        id: "section-1",
+        title: "Section 1",
+        questionGroups: [
+          {
+            instructions:
+              "<p>Questions 1-5</p><p>Complete the form below.</p><p>Write <strong>NO MORE THAN THREE WORDS AND/OR A NUMBER</strong> for each answer.</p><h3>SOCIOLOGY RESEARCH PROJECT SURVEY</h3>",
+            questions: [
+              {
+                id: "q1",
+                questionNumber: 1,
+                type: "fill_in_the_blank",
+                text: "Age: [GAP]",
+                correctAnswer: ["59", "FIFTY NINE", "Fifty Nine", "fifty nine"],
+              },
+              {
+                id: "q2",
+                questionNumber: 2,
+                type: "fill_in_the_blank",
+                text: "Postcode: [GAP]",
+                correctAnswer: ["HA87UP", "Ha87up", "ha87up", "HA87 UP"],
+              },
+              {
+                id: "q3",
+                questionNumber: 3,
+                type: "fill_in_the_blank",
+                text: "COMPUTER FACILITIES ALREADY USED<br>Where? [GAP]",
+                correctAnswer: [
+                  "LOCAL LIBRARY",
+                  "Local Library",
+                  "local library",
+                  "LIBRARY",
+                  "Library",
+                  "library",
+                ],
+              },
+              {
+                id: "q4",
+                questionNumber: 4,
+                type: "fill_in_the_blank",
+                text: "SPORTS FACILITIES ALREADY USED<br>Where? [GAP]",
+                correctAnswer: [
+                  "SWIMMING POOL",
+                  "Swimming Pool",
+                  "swimming pool",
+                ],
+              },
+              {
+                id: "q5",
+                questionNumber: 5,
+                type: "fill_in_the_blank",
+                text: "EDUCATION FACILITIES ALREADY USED<br>Where? [GAP]",
+                correctAnswer: [
+                  "FURTHER EDUCATION COLLEGE",
+                  "Further Education College",
+                  "further education college",
+                  "COLLEGE",
+                  "College",
+                  "college",
+                ],
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 6-10</p><p>Complete the form below.</p><p>Write <strong>NO MORE THAN THREE WORDS AND/OR A NUMBER</strong> for each answer.</p><h3>IMPROVEMENTS FOR THE COMMUNITY CENTRE</h3>",
+            questions: [
+              {
+                id: "q6",
+                questionNumber: 6,
+                type: "fill_in_the_blank",
+                text: "New sports: [GAP]",
+                correctAnswer: [
+                  "BADMINTON AND YOGA",
+                  "Badminton And Yoga",
+                  "badminton and yoga",
+                  "BADMINTON, YOGA",
+                  "badminton, yoga",
+                ],
+              },
+              {
+                id: "q7",
+                questionNumber: 7,
+                type: "fill_in_the_blank",
+                text: "Classes organized only for: [GAP]",
+                correctAnswer: ["PENSIONERS", "Pensioners", "pensioners"],
+              },
+              {
+                id: "q8",
+                questionNumber: 8,
+                type: "fill_in_the_blank",
+                text: "Education classes: [GAP]",
+                correctAnswer: [
+                  "ARTS AND CRAFTS",
+                  "Arts And Crafts",
+                  "arts and crafts",
+                ],
+              },
+              {
+                id: "q9",
+                questionNumber: 9,
+                type: "fill_in_the_blank",
+                text: "Willing to pay about: £ [GAP] for new classes.",
+                correctAnswer: ["2", "TWO", "Two", "two"],
+              },
+              {
+                id: "q10",
+                questionNumber: 10,
+                type: "fill_in_the_blank",
+                text:
+                  "Possible frequency of visits, if improvements made? [GAP] a week",
+                correctAnswer: [
+                  "3",
+                  "THREE TIMES",
+                  "Three Times",
+                  "three times",
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "section-2",
+        title: "Section 2",
+        questionGroups: [
+          {
+            instructions:
+              "<p>Questions 11-15</p><p>Choose the correct letter, <strong>A, B or C</strong>.</p>",
+            questions: [
+              {
+                id: "q11",
+                questionNumber: 11,
+                type: "mcq",
+                text: "The park which makes up Hampstead Heath is",
+                options: [
+                  "A. very large.",
+                  "B. fairly large.",
+                  "C. fairly small.",
+                ],
+                correctAnswer: "A",
+              },
+              {
+                id: "q12",
+                questionNumber: 12,
+                type: "mcq",
+                text: "According the speaker. Hampstead underground station is",
+                options: [
+                  "A. the shallowest in the system.",
+                  "B. the deepest in the system.",
+                  "C. the oldest in London.",
+                ],
+                correctAnswer: "B",
+              },
+              {
+                id: "q13",
+                questionNumber: 13,
+                type: "mcq",
+                text:
+                  "The speaker suggests that after their walk people might want to",
+                options: [
+                  "A. have a meal in the famous restaurants.",
+                  "B. avoid Hampstead village as it is very busy.",
+                  "C. visit Hampstead village to look at the shops.",
+                ],
+                correctAnswer: "C",
+              },
+              {
+                id: "q14",
+                questionNumber: 14,
+                type: "mcq",
+                text: "The houses in the Vale of the Heath are built",
+                options: [
+                  "A. on the edge of the heath.",
+                  "B. on the heath itself.",
+                  "C. opposite the heath.",
+                ],
+                correctAnswer: "B",
+              },
+              {
+                id: "q15",
+                questionNumber: 15,
+                type: "mcq",
+                text:
+                  "The speaker advises walkers to remove their headphones to",
+                options: [
+                  "A. hear the silence away from the traffic.",
+                  "B. ensure they are not being followed.",
+                  "C. listen to the noises in the park.",
+                ],
+                correctAnswer: "C",
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 16-20</p><p>Which activity can be done at each of the following locations on the heath?</p><p>Choose <strong>FIVE</strong> answers below and write the correct letter, <strong>A-G</strong>, next to questions 16-20.</p>",
+            type: "matching",
+            questions: [
+              {
+                id: "l16-q16-20",
+                questionNumber: 16,
+              },
+            ],
+            matchingOptions: {
+              title: "Activities",
+              A: "have picnics",
+              B: "go fishing",
+              C: "view London",
+              D: "have a swim",
+              E: "attend concerts",
+              F: "watch plays",
+              G: "have snacks",
+            },
+            matchingItems: [
+              {
+                number: 16,
+                text: "Kenwood House",
+                correctAnswer: "G",
+              },
+              {
+                number: 17,
+                text: "grassy slopes",
+                correctAnswer: "A",
+              },
+              {
+                number: 18,
+                text: "open-air stage",
+                correctAnswer: "E",
+              },
+              {
+                number: 19,
+                text: "ponds",
+                correctAnswer: "D",
+              },
+              {
+                number: 20,
+                text: "Parliament Hill",
+                correctAnswer: "C",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "section-3",
+        title: "Section 3",
+        questionGroups: [
+          {
+            instructions:
+              "<p>Questions 21-25</p><p>How do the speakers describe the green urban planning options?</p><p>Choose <strong>FIVE</strong> descriptions from the box and write the correct letter, <strong>A-G</strong>, next to questions 21-25.</p>",
+            type: "matching",
+            questions: [
+              {
+                id: "l16-q21-25",
+                questionNumber: 21,
+              },
+            ],
+            matchingOptions: {
+              title: "Descriptions",
+              A: "dangerous",
+              B: "too expensive",
+              C: "too many objections",
+              D: "disruptive",
+              E: "unpractical",
+              F: "successful",
+              G: "unsuccessful",
+            },
+            matchingItems: [
+              {
+                number: 21,
+                text: "green belt",
+                correctAnswer: "F",
+              },
+              {
+                number: 22,
+                text: "decentralization",
+                correctAnswer: "E",
+              },
+              {
+                number: 23,
+                text: "new towns",
+                correctAnswer: "B",
+              },
+              {
+                number: 24,
+                text: "brownfield sites",
+                correctAnswer: "A",
+              },
+              {
+                number: 25,
+                text: "pedestrianized zones",
+                correctAnswer: "D",
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 26-28</p><p>Choose the correct letter, <strong>A, B or C</strong>.</p>",
+            questions: [
+              {
+                id: "q26",
+                questionNumber: 26,
+                type: "mcq",
+                text: "Which area is Jack having the most problems with?",
+                options: [
+                  "A. Understanding the statistics.",
+                  "B. The lack of material.",
+                  "C. The selection of statistics.",
+                ],
+                correctAnswer: "C",
+              },
+              {
+                id: "q27",
+                questionNumber: 27,
+                type: "mcq",
+                text: "What has been central to Curitiba's success?",
+                options: [
+                  "A. Central government intervention.",
+                  "B. Working together with residents.",
+                  "C. Giving responsibility to strategists.",
+                ],
+                correctAnswer: "B",
+              },
+              {
+                id: "q28",
+                questionNumber: 28,
+                type: "mcq",
+                text: "Why does the transport system work so well?",
+                options: [
+                  "A. There are cheap fares for the poor and elderly.",
+                  "B. Bicycles can use the bus lanes.",
+                  "C. There is a low car ownership.",
+                ],
+                correctAnswer: "A",
+              },
+            ],
+          },
+          {
+            instructions:
+              "<p>Questions 29-30</p><p>Choose <strong>TWO</strong> letters, A-E.</p><p>Which does the tutor suggest are the <strong>TWO</strong> areas Jack needs to focus on?</p>",
+            type: "multiple_choice_multiple_answers",
+            questions: [
+              {
+                id: "q29-30",
+                questionNumber: "29-30",
+                text: "",
+                correctAnswer: ["C", "D"],
+              },
+            ],
+            options: [
+              { id: "A", text: "The amount of parkland" },
+              { id: "B", text: "The employment strategy" },
+              { id: "C", text: "The pedestrianized zones" },
+              { id: "D", text: "The recycling scheme" },
+              { id: "E", text: "The suburban areas" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "section-4",
+        title: "Section 4",
+        questionGroups: [
+          {
+            instructions:
+              "<p>Questions 31-40</p><p>Complete the notes below.</p><p>Write <strong>NO MORE THAN TWO WORDS</strong> for each answer.</p><h3>ECONOMICS COURSE GUIDELINES</h3><h4>During lectures</h4>",
+            questions: [
+              {
+                id: "q31",
+                questionNumber: 31,
+                type: "fill_in_the_blank",
+                text:
+                  "<strong>Students:</strong><br>will receive information about economics and the 31. [GAP] to concentrate on",
+                correctAnswer: ["PRIORITIES", "Priorities", "priorities"],
+              },
+              {
+                id: "q32",
+                questionNumber: 32,
+                type: "fill_in_the_blank",
+                text:
+                  "will be provided with information about the subject will be provided with a framework for further study<br>will have an opportunity to be taught by a 32. [GAP] in the field",
+                correctAnswer: ["RESEARCHER", "Researcher", "researcher"],
+              },
+              {
+                id: "q33",
+                questionNumber: 33,
+                type: "fill_in_the_blank",
+                text: "will take part in the learning culture in 33. [GAP]",
+                correctAnswer: [
+                  "HIGHER EDUCATION",
+                  "Higher Education",
+                  "higher education",
+                ],
+              },
+              {
+                id: "q34",
+                questionNumber: 34,
+                type: "fill_in_the_blank",
+                text:
+                  "<strong>Common problems students have with techniques used in lectures</strong><br>may not develop 34. [GAP] : no immediate questions",
+                correctAnswer: [
+                  "STUDENT UNDERSTANDING",
+                  "Student Understanding",
+                  "student understanding",
+                ],
+              },
+              {
+                id: "q35",
+                questionNumber: 35,
+                type: "fill_in_the_blank",
+                text:
+                  "newer techniques help improve 35. [GAP] more than lectures",
+                correctAnswer: [
+                  "LEARNING OUTCOMES",
+                  "Learning Outcomes",
+                  "learning outcomes",
+                ],
+              },
+              {
+                id: "q36",
+                questionNumber: 36,
+                type: "fill_in_the_blank",
+                text:
+                  "<strong>How to avoid problems and make learning easier</strong><br>leave time to read 36. [GAP] on the booklist",
+                correctAnswer: ["ALL ITEMS", "All Items", "all items"],
+              },
+              {
+                id: "q37",
+                questionNumber: 37,
+                type: "fill_in_the_blank",
+                text:
+                  "test yourself with quizzes<br>if you have had a 37. [GAP] , revise what you previously learned",
+                correctAnswer: ["GAP YEAR", "Gap Year", "gap year"],
+              },
+              {
+                id: "q38",
+                questionNumber: 38,
+                type: "fill_in_the_blank",
+                text: "use the web to do more 38. [GAP]",
+                correctAnswer: [
+                  "BACKGROUND RESEARCH",
+                  "Background Research",
+                  "background research",
+                ],
+              },
+              {
+                id: "q39",
+                questionNumber: 39,
+                type: "fill_in_the_blank",
+                text:
+                  "check the sources of information on the web are 39. [GAP]",
+                correctAnswer: ["RELIABLE", "Reliable", "reliable"],
+              },
+              {
+                id: "q40",
+                questionNumber: 40,
+                type: "fill_in_the_blank",
+                text: "40. [GAP] with your classmates",
+                correctAnswer: [
+                  "DISCUSS IDEAS",
+                  "Discuss Ideas",
+                  "discuss ideas",
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
   {
     id: "reading-test-1",
     moduleId: "reading",
@@ -8994,7 +9472,7 @@ export const allMockTests = [
           },
           {
             instructions: `
-              <p>Questions 33-35</p>
+              <p><strong>Questions 33-35</strong></p>
               <p>Answer the questions below. Choose NO MORE THAN THREE WORDS AND/OR A NUMBER from the passage for each answer.</p>
             `,
 
@@ -9037,7 +9515,7 @@ export const allMockTests = [
           },
           {
             instructions: `
-              <p>Questions 33-35</p>
+              <p><strong>Questions 33-35</strong></p>
               <p>Answer the questions below. Choose NO MORE THAN THREE WORDS AND/OR A NUMBER from the passage for each answer.</p>
             `,
 
@@ -9070,7 +9548,7 @@ export const allMockTests = [
           },
           {
             instructions: `
-              <p>Questions 36-39</p>
+              <p><strong>Questions 36-39</strong></p>
               <p>Matching choose the letter A-D and fill in box 36-39</p>
             `,
             type: "matching_items",
@@ -11600,18 +12078,6 @@ integration, our cognitive memory is less burdened; it has to deal with only a
               <p>Questions 27-30</p>
               <p>The reading passage has seven paragraphs, A-G Choose the correct heading for paragraphs A-G from the list below. Write the correct number, i-xi, in boxes 27-31 on your answer sheet.</p>
               <p>NB There are more headings than paragraphs, so you will not use them</p>
-              <p>List of Headings</p>
-              <p>i The famous moai</p>
-              <p>ii The status represented symbols of combined purposes</p>
-              <p>iii The ancient spots which indicates scientific application</p>
-              <p>iv The story of the name</p>
-              <p>v Early immigrants, rise and prosperity</p>
-              <p>vi The geology of Easter Island</p>
-              <p>vii The begin of Thor Heyerdahl’s discovery</p>
-              <p>viii The countering explaination to the misconceptions politaically manipulated</p>
-              <p>ix Symbols of authority and power</p>
-              <p>x The Navel of the World</p>
-              <p>xi The norweigian Invaders’legacy</p>
             `,
             type: "matching_headings",
             listHeadings: [
@@ -11965,25 +12431,27 @@ integration, our cognitive memory is less burdened; it has to deal with only a
             ],
           },
           {
+            type: "summary_completion",
             instructions: `
               <p>Questions 6-8</p>
               <p>Complete the summary below.</p>
               <p>Choose NO MORE THAN THREE WORDS from the passage for each answer. Write your answers in boxes 6-8 on your answer sheet.</p>
-              <p>In the experiment carried out by Frances Rauscher, participants were immersed in the music for a ............6..............period of time before they were tested. Rauscher suggested that enhancement of their performance is related to the............7..............nature of Mozart's music. After that, another parallel experiment was also conducted on............8..............</p>
             `,
             questions: [
               {
                 id: "q6-p6s1",
                 questionNumber: 6,
                 type: "summary_completion",
-                text: "immersed in the music for a [GAP] period of time",
+                text:
+                  "In the experiment carried out by Frances Rauscher, participants were immersed in the music for a [GAP]",
                 correctAnswer: ["short", "SHORT", "Short"],
               },
               {
                 id: "q7-p6s1",
                 questionNumber: 7,
                 type: "summary_completion",
-                text: "related to the [GAP] nature of Mozart's music.",
+                text:
+                  " period of time before they were tested. Rauscher suggested that enhancement of their performance is related to the [GAP]",
                 correctAnswer: [
                   "complex, repetitive",
                   "COMPLEX, REPETITIVE",
@@ -11994,7 +12462,8 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q8-p6s1",
                 questionNumber: 8,
                 type: "summary_completion",
-                text: "conducted on [GAP]",
+                text:
+                  " nature of Mozart's music. After that, another parallel experiment was also conducted on [GAP].",
                 correctAnswer: ["rats", "RATS", "Rats"],
               },
             ],
@@ -12155,14 +12624,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
               <p>Questions 14-17</p>
               <p>Choose FOUR letters, A-H. Write the correct letters in boxes 14-17 on your answer sheet.</p>
               <p>Which FOUR of the following situation were witnessed on the opening ceremony of the bridge?</p>
-              <p>A The frequency of oscillation increased after some time.</p>
-              <p>B All the engineers went to see the ceremony that day.</p>
-              <p>C The design of the bridge astonished the people.</p>
-              <p>D Unexpected sideways movement of the bridge occurred.</p>
-              <p>E Pedesfrians had difficulty in walking on the deck.</p>
-              <p>F The bridge fell down when people tried to retain their balance.</p>
-              <p>G Vibration could be detected on the deck by the pedestrians.</p>
-              <p>H It was raining when the ceremony began.</p>
+             
             `,
             type: "multiple_choice_multiple_answers",
             options: [
@@ -12621,12 +13083,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
             instructions: `
               <p>Questions 37-40</p>
               <p>Complete each sentence with the correct ending, A-F, below. Write correct letter, A-F, in boxes 37-40 on your answer sheet</p>
-              <p>A. show no music-brain disorders.</p>
-              <p>B. indicates that medication can have varied results,</p>
-              <p>C. is key for the neurological community to unravel the mysteries.</p>
-              <p>D. should not be used in Isolation.</p>
-              <p>E. indicate that not everyone can receive good education.</p>
-              <p>F. show a misconception that there is function centre localized in the brain.</p>
+             
             `,
             type: "matching_sentence_endings",
             listItems: [
@@ -13376,13 +13833,12 @@ integration, our cognitive memory is less burdened; it has to deal with only a
         </p>`,
         questionGroups: [
           {
+            type: "summary_completion",
             instructions: `
               <p>Questions 27-31</p>
               <p>Complete the summary with the list of words A-L below.</p>
               <p>Write the correct letter A-L in boxes 27-31 on your answer sheet.</p>
-              <p>The question, arisen from Captain Cook's expedition to Hawaii, and others derived from it, has fascinated researchers for a long time. However, a surprising archaeological find on Efate began to provide valuable information about the 27................On the excavating site, a 28................containing29................of Lapita was uncovered Later on, various researches and tests have been done to study the ancient people - Lapita and their 30.................... How could they manage to spread themselves so far over the vast ocean? All that is certain is that they were good at canoeing. And perhaps they could take well advantage of the trade wind But there is no 31.................of it.</p>
             `,
-
             listItems: [
               { id: "A", text: "A" },
               { id: "B", text: "B" },
@@ -13402,35 +13858,38 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q27-r7s3",
                 type: "summary_completion",
                 questionNumber: 27,
-                text: "about the [GAP]",
+                text:
+                  "The question, arisen from Captain Cook's expedition to Hawaii, and others derived from it, has fascinated researchers for a long time. However, a surprising archaeological find on Efate began to provide valuable information about the [GAP]",
                 correctAnswer: "B",
               },
               {
                 id: "q28-r7s3",
                 questionNumber: 28,
                 type: "summary_completion",
-                text: "a [GAP] containing",
+                text: ". On the excavating site, a [GAP]",
                 correctAnswer: "L",
               },
               {
                 id: "q29-r7s3",
                 questionNumber: 29,
                 type: "summary_completion",
-                text: "[GAP] of Lapita was uncovered",
+                text: " containing [GAP]",
                 correctAnswer: "A",
               },
               {
                 id: "q30-r7s3",
                 questionNumber: 30,
                 type: "summary_completion",
-                text: "Lapita and their [GAP]",
+                text:
+                  " of Lapita was uncovered. Later on, various researches and tests have been done to study the ancient people - Lapita and their [GAP]",
                 correctAnswer: "C",
               },
               {
                 id: "q31-r7s3",
                 questionNumber: 31,
                 type: "summary_completion",
-                text: "But there is no [GAP] of it.",
+                text:
+                  ". How could they manage to spread themselves so far over the vast ocean? All that is certain is that they were good at canoeing. And perhaps they could take well advantage of the trade wind. But there is no [GAP] of it.",
                 correctAnswer: "F",
               },
             ],
@@ -13944,48 +14403,50 @@ integration, our cognitive memory is less burdened; it has to deal with only a
         </p>`,
         questionGroups: [
           {
+            type: "summary_completion",
             instructions: `
               <p>Questions 14-19</p>
               <strong>Complete the flow chart below.</strong>
               <p>Complete the flow chart, using NO MORE THAN TWO WORDS from the Reading Passage for each answer. Write your answers in boxes 14-19 on your answer sheet.</p>
-              <strong>Guide to Making Water Filters Step one:</strong>
-              <p>Combination of 14...........and organic material, with sufficient 15..........to create a thick mixture sun dried Step two: pack 16..........around the cylinders place them in 17...........which is as burning fuel for firing (maximum temperature: 18...........) filter being baked in under 19.......... </p>
+              <strong>Guide to Making Water Filters</strong><br/>
+              <strong>Step one:</strong>
             `,
             questions: [
               {
                 id: "q14-r8s2",
                 questionNumber: 14,
-                type: "fill_in_the_blank",
+                type: "summary_completion",
                 text: "Combination of [GAP] and organic material, with",
                 correctAnswer: ["clay", "CLAY", "Clay"],
               },
               {
                 id: "q15-r8s2",
                 questionNumber: 15,
-                type: "fill_in_the_blank",
+                type: "summary_completion",
                 text:
-                  "sufficient [GAP] to create a thick mixture sun dried Step two:",
+                  " sufficient [GAP] to create a thick mixture sun dried.<br/><strong>Step two:</strong>",
                 correctAnswer: ["water", "WATER", "Water"],
               },
               {
                 id: "q16-r8s2",
                 questionNumber: 16,
-                type: "fill_in_the_blank",
-                text: "pack [GAP] around the cylinders",
+                type: "summary_completion",
+                text: " pack [GAP] around the cylinders,",
                 correctAnswer: ["straw", "STRAW", "Straw"],
               },
               {
                 id: "q17-r8s2",
                 questionNumber: 17,
-                type: "fill_in_the_blank",
-                text: "place them in [GAP] which is as burning fuel for firing",
+                type: "summary_completion",
+                text:
+                  " place them in [GAP] which is as burning fuel for firing",
                 correctAnswer: ["cow manure", "COW MANURE", "Cow Manure"],
               },
               {
                 id: "q18-r8s2",
                 questionNumber: 18,
-                type: "fill_in_the_blank",
-                text: "(maximum temperature: [GAP])",
+                type: "summary_completion",
+                text: " (maximum temperature: [GAP])",
                 correctAnswer: [
                   "950 degress",
                   "950 DEGRESS",
@@ -13998,8 +14459,8 @@ integration, our cognitive memory is less burdened; it has to deal with only a
               {
                 id: "q19-r8s2",
                 questionNumber: 19,
-                type: "fill_in_the_blank",
-                text: "filter being baked in under [GAP]",
+                type: "summary_completion",
+                text: " filter being baked in under [GAP].",
                 correctAnswer: ["60 minutes", "60 MINUTES", "60 Minutes"],
               },
             ],
@@ -14234,15 +14695,6 @@ integration, our cognitive memory is less burdened; it has to deal with only a
             instructions: `
               <p>Questions 27-31</p>
               <p>Reading Passage 3 has five sections A-E. Choose the correct heading for each section from the of headings below.</p>
-              <p>List of Headings</p>
-              <p>i Animal sometimes make music.</p>
-              <p>ii Recent research on music</p>
-              <p>iii Culture embedded in music</p>
-              <p>iv Historical theories review</p>
-              <p>v Communication in music with animals</p>
-              <p>vi Contrast between music and language</p>
-              <p>vii Questions on a biological link with human and music</p>
-              <p>viii Music is good for babies.</p>
             `,
             type: "matching_headings",
             listHeadings: [
@@ -14296,13 +14748,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
               <p>Questions 32-38</p>
               <p>Look at the following people and list of statements below. Match each person with the correct statement. Write the correct letter A-G in boxes 32-38 on your answer sheet.</p>
               <p>List of Statements</p>
-              <p>A Music exists outside of the world in which it is created.</p>
-              <p>B Music has a common feature though cultural influences affect</p>
-              <p>C Humans need music.</p>
-              <p>D Music priority connects to the disordered sound around.</p>
-              <p>E Discovery of mathematical musical foundation.</p>
-              <p>F Music is not treated equally well compared with language</p>
-              <p>G Humans and monkeys have similar traits in perceiving sound.</p>
+              
             `,
             type: "matching_items",
             listItems: [
@@ -14656,21 +15102,20 @@ integration, our cognitive memory is less burdened; it has to deal with only a
             ],
           },
           {
+            type: "summary_completion",
+            title: "Scientific Evidence found in Efate site",
             instructions: `
               <p>Questions 8 -10</p>
               <p>Summary</p>
               <p>Complete the following summary of the paragraphs of Reading Passage, using no more than Two words from the Reading Passage for each answer. Write your answers in boxes 8-10 on your answer sheet.</p>
-              <p>Scientific Evident found in Efate site</p>
-              <p>Tests show the human remains and the charcoal found in the buried um are from the start of the Lapita period. Yet The .........8........ covering many of the Efate site did not come from that area. Then examinations carried out on the .........9........ discovered at Efate site reveal that not everyone buried there was a native living in the area. In fact, DNA could identify the Lapita's nearest.........10...........present-days.</p>
             `,
-
             questions: [
               {
                 id: "q8-r9s1",
                 questionNumber: 8,
                 type: "summary_completion",
                 text:
-                  "The [GAP] covering many of the Efate site did not come from that area.",
+                  "Tests show the human remains and the charcoal found in the buried urn are from the start of the Lapita period. Yet The [GAP]",
                 correctAnswer: ["rock", "ROCK", "Rock"],
               },
               {
@@ -14678,7 +15123,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 9,
                 type: "summary_completion",
                 text:
-                  "examinations carried out on the [GAP] discovered at Efate site",
+                  " covering many of the Efate site did not come from that area. Then examinations carried out on the [GAP]",
                 correctAnswer: ["teeth", "TEETH", "Teeth"],
               },
               {
@@ -14686,7 +15131,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 questionNumber: 10,
                 type: "summary_completion",
                 text:
-                  "DNA could identify the Lapita's nearest [GAP] present-days.",
+                  " discovered at Efate site reveal that not everyone buried there was a native living in the area. In fact, DNA could identify the Lapita's nearest [GAP] present-days.",
                 correctAnswer: ["descendants", "DESCENDANTS", "Descendants"],
               },
             ],
@@ -14986,10 +15431,10 @@ integration, our cognitive memory is less burdened; it has to deal with only a
             ],
           },
           {
+            type: "summary_completion",
             instructions: `
               <p>Questions 22-26</p>
-              <p>Complete the summary below using NO MORE THAN TWO WORDS from the passage. Write your answers in boxes 22-26 On your answer sheet</p>
-              <p>In the summer of 2003, thousands of extra death occurred in the country of____22_____. Moreover, world-widely, the third record of hottest summer date from_____23____, after the year of______24_____. According to Jones, all the 10 hottest years happened from_____25____. However, summer of 2003 was at the peak of previous ____26____years, perhaps even more.</p>
+              <p>Complete the summary below using NO MORE THAN TWO WORDS from the passage. Write your answers in boxes 22-26 On your answer sheet.</p>
             `,
             questions: [
               {
@@ -14997,21 +15442,22 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "summary_completion",
                 questionNumber: 22,
                 text:
-                  "thousands of extra death occurred in the country of [GAP].",
+                  "In the summer of 2003, thousands of extra death occurred in the country of [GAP].",
                 correctAnswer: ["France", "france", "FRANCE"],
               },
               {
                 id: "q23-r9s2",
                 type: "summary_completion",
                 questionNumber: 23,
-                text: "the third record of hottest summer date from [GAP].",
+                text:
+                  " Moreover, world-widely, the third record of hottest summer date from [GAP],",
                 correctAnswer: ["1856"],
               },
               {
                 id: "q24-r9s2",
                 type: "summary_completion",
                 questionNumber: 24,
-                text: "after the year of [GAP].",
+                text: " after the year of [GAP].",
                 correctAnswer: [
                   "1988 and 2002",
                   "1988 AND 2002",
@@ -15022,7 +15468,8 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q25-r9s2",
                 type: "summary_completion",
                 questionNumber: 25,
-                text: "all the 10 hottest years happened from [GAP].",
+                text:
+                  " According to Jones, all the 10 hottest years happened from [GAP].",
                 correctAnswer: ["1990"],
               },
               {
@@ -15030,54 +15477,8 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 type: "summary_completion",
                 questionNumber: 26,
                 text:
-                  "summer of 2003 was at the peak of previous [GAP] years, perhaps even more.",
+                  " However, summer of 2003 was at the peak of previous [GAP] years, perhaps even more.",
                 correctAnswer: ["500"],
-              },
-            ],
-          },
-          {
-            instructions: `
-              <p>Questions 22-26</p>
-              <p>Complete the summary below using NO MORE THAN TWO WORDS from the passage. Write your answers in boxes 22-26 On your answer sheet</p>
-              <p>In the summer of 2003, thousands of extra death occurred in the country of____22_____. Moreover, world-widely, the third record of hottest summer date from_____23____, after the year of______24_____. According to Jones, all the 10 hottest years happened from_____25____. However, summer of 2003 was at the peak of previous ____26____years, perhaps even more.</p>
-            `,
-            questions: [
-              {
-                id: "q22-r9s2",
-                type: "summary_completion",
-                questionNumber: 22,
-                text:
-                  "thousands of extra death occurred in the country of [GAP].",
-                correctAnswer: "France",
-              },
-              {
-                id: "q23-r9s2",
-                type: "summary_completion",
-                questionNumber: 23,
-                text: "the third record of hottest summer date from [GAP].",
-                correctAnswer: "1856",
-              },
-              {
-                id: "q24-r9s2",
-                type: "summary_completion",
-                questionNumber: 24,
-                text: "after the year of [GAP].",
-                correctAnswer: ["1988 and 2002"],
-              },
-              {
-                id: "q25-r9s2",
-                type: "summary_completion",
-                questionNumber: 25,
-                text: "all the 10 hottest years happened from [GAP].",
-                correctAnswer: "1990",
-              },
-              {
-                id: "q26-r9s2",
-                type: "summary_completion",
-                questionNumber: 26,
-                text:
-                  "summer of 2003 was at the peak of previous [GAP] years, perhaps even more.",
-                correctAnswer: "500",
               },
             ],
           },
@@ -16141,18 +16542,19 @@ integration, our cognitive memory is less burdened; it has to deal with only a
             ],
           },
           {
+            type: "summary_completion",
             instructions: `
               <p>Question 32-38</p>
               <p>Complete the following summary of the paragraphs of Reading Passage, using no more three words or a number from the Reading Passage for each answer.</p>
               <p>Write your answers in boxes 32-38 on your answer sheet.</p>
-              <p>How the elephants sense these sound vibrations is still unknown, but O’Connell Rodwell, a fresh graduate in entomology at the University of Hawaii, proposes that the elephants are “listening” with their 32............., by two kinds of nerve endings—that responds to vibrations with both 33 .............frequency and slightly higher frequencies, o’Connell-Rodwell work is at the combination of geophysics, neurophysiology and 34 .............and it also was the first to indicate that a large land animal also is sending and receiving 35 ............., O’Connell-Rodwell noticed the freezing behavior by putting a male planthopper communicative approach other than 36………… Scientists have determined that an elephant’s ability to communicate over long distances is essential, especially, when elephant herds are finding a 37............., or are warning of predators. Finally, the results of our 2002 study showed US that elephants can detect warning calls played through the 38.............”</p>
             `,
             questions: [
               {
                 id: "q32-r10s3",
                 questionNumber: 32,
                 type: "summary_completion",
-                text: "listening” with their [GAP]",
+                text:
+                  "How the elephants sense these sound vibrations is still unknown, but O’Connell Rodwell, a fresh graduate in entomology at the University of Hawaii, proposes that the elephants are “listening” with their [GAP],",
                 correctAnswer: [
                   "trunks and feet",
                   "TRUNKS AND FEET",
@@ -16163,21 +16565,24 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q33-r10s3",
                 questionNumber: 33,
                 type: "summary_completion",
-                text: "both [GAP] frequency",
+                text:
+                  " by two kinds of nerve endings—that responds to vibrations with both [GAP] frequency",
                 correctAnswer: ["infrasonic", "INFRASONIC", "Infrasonic"],
               },
               {
                 id: "q34-r10s3",
                 questionNumber: 34,
                 type: "summary_completion",
-                text: "neurophysiology and [GAP]",
+                text:
+                  " and slightly higher frequencies, o’Connell-Rodwell work is at the combination of geophysics, neurophysiology and [GAP]",
                 correctAnswer: ["ecology", "ECOLOGY", "Ecology"],
               },
               {
                 id: "q35-r10s3",
                 questionNumber: 35,
                 type: "summary_completion",
-                text: "sending and receiving [GAP]",
+                text:
+                  " and it also was the first to indicate that a large land animal also is sending and receiving [GAP],",
                 correctAnswer: [
                   "seismic messages",
                   "SEISMIC MESSAGES",
@@ -16188,7 +16593,8 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q36-r10s3",
                 questionNumber: 36,
                 type: "summary_completion",
-                text: "approach other than [GAP]",
+                text:
+                  " O’Connell-Rodwell noticed the freezing behavior by putting a male planthopper communicative approach other than [GAP].",
                 correctAnswer: [
                   "acoustic communication",
                   "ACOUSTIC COMMUNICATION",
@@ -16202,74 +16608,17 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q37-r10s3",
                 questionNumber: 37,
                 type: "summary_completion",
-                text: "finding a [GAP]",
+                text:
+                  " Scientists have determined that an elephant’s ability to communicate over long distances is essential, especially, when elephant herds are finding a [GAP],",
                 correctAnswer: ["mate", "MATE", "Mate"],
               },
               {
                 id: "q38-r10s3",
                 questionNumber: 38,
                 type: "summary_completion",
-                text: "through the [GAP]",
+                text:
+                  " or are warning of predators. Finally, the results of our 2002 study showed US that elephants can detect warning calls played through the [GAP].”",
                 correctAnswer: ["ground", "GROUND", "Ground"],
-              },
-            ],
-          },
-          {
-            instructions: `
-              <p>Question 32-38</p>
-              <p>Complete the following summary of the paragraphs of Reading Passage, using no more three words or a number from the Reading Passage for each answer.</p>
-              <p>Write your answers in boxes 32-38 on your answer sheet.</p>
-              <p>How the elephants sense these sound vibrations is still unknown, but O’Connell Rodwell, a fresh graduate in entomology at the University of Hawaii, proposes that the elephants are “listening” with their 32............., by two kinds of nerve endings—that responds to vibrations with both 33 .............frequency and slightly higher frequencies, o’Connell-Rodwell work is at the combination of geophysics, neurophysiology and 34 .............and it also was the first to indicate that a large land animal also is sending and receiving 35 ............., O’Connell-Rodwell noticed the freezing behavior by putting a male planthopper communicative approach other than 36………… Scientists have determined that an elephant’s ability to communicate over long distances is essential, especially, when elephant herds are finding a 37............., or are warning of predators. Finally, the results of our 2002 study showed US that elephants can detect warning calls played through the 38.............”</p>
-            `,
-            questions: [
-              {
-                id: "q32-r10s3",
-                questionNumber: 32,
-                type: "summary_completion",
-                text: "listening” with their [GAP]",
-                correctAnswer: "trunks and feet", // Placeholder
-              },
-              {
-                id: "q33-r10s3",
-                questionNumber: 33,
-                type: "summary_completion",
-                text: "both [GAP] frequency",
-                correctAnswer: "infrasonic", // Placeholder
-              },
-              {
-                id: "q34-r10s3",
-                questionNumber: 34,
-                type: "summary_completion",
-                text: "neurophysiology and [GAP]",
-                correctAnswer: "ecology", // Placeholder
-              },
-              {
-                id: "q35-r10s3",
-                questionNumber: 35,
-                type: "summary_completion",
-                text: "sending and receiving [GAP]",
-                correctAnswer: "seismic messages", // Placeholder
-              },
-              {
-                id: "q36-r10s3",
-                questionNumber: 36,
-                type: "summary_completion",
-                text: "approach other than [GAP]",
-                correctAnswer: ["communication", "communications"], // Placeholder
-              },
-              {
-                id: "q37-r10s3",
-                questionNumber: 37,
-                type: "summary_completion",
-                text: "finding a [GAP]",
-                correctAnswer: "mate", // Placeholder
-              },
-              {
-                id: "q38-r10s3",
-                questionNumber: 38,
-                type: "summary_completion",
-                text: "through the [GAP]",
-                correctAnswer: "ground", // Placeholder
               },
             ],
           },
@@ -16864,18 +17213,19 @@ integration, our cognitive memory is less burdened; it has to deal with only a
             ],
           },
           {
+            type: "summary_completion",
             instructions: `
                   <p>Questions 22-27</p>
                   <p>Summary</p>
                   <p>Complete the following summary of the paragraphs of Reading Passage, using no more than two words from the Reading Passage for each answer. Write your answers in boxes 22-27 on your answer sheet.</p>
-                  <p>Statistics from National worker's compensation indicate stress plays the most important role in____22_____ which cause the time losses. Staffs take about ____23______ for absence from work caused by stress. Not just time is our main concern but great expenses generated consequently. An official insurer wrote sometime that about ____24_____ of all claims were mental issues whereas nearly 27% costs in all claims. Sports such as _____25______, as well as 26 could be a treatment to release stress; however, specialists recommended another practical way out, analyse _____27____once again.</p>
                 `,
             questions: [
               {
                 id: "q22-r11s2",
                 type: "summary_completion",
                 questionNumber: 22,
-                text: "most important role in [GAP]",
+                text:
+                  "Statistics from National worker's compensation indicate stress plays the most important role in [GAP]",
                 correctAnswer: [
                   "workplace injury",
                   "WORKPLACE INJURY",
@@ -16886,35 +17236,38 @@ integration, our cognitive memory is less burdened; it has to deal with only a
                 id: "q23-r11s2",
                 type: "summary_completion",
                 questionNumber: 23,
-                text: "Staffs take about [GAP] for absence from work",
+                text: " which cause the time losses. Staffs take about [GAP]",
                 correctAnswer: ["16.6 weeks", "16.6 WEEKS", "16.6 Weeks"],
               },
               {
                 id: "q24-r11s2",
                 type: "summary_completion",
                 questionNumber: 24,
-                text: "about [GAP] of all claims were mental issues",
+                text:
+                  " for absence from work caused by stress. Not just time is our main concern but great expenses generated consequently. An official insurer wrote sometime that about [GAP]",
                 correctAnswer: ["7%"],
               },
               {
                 id: "q25-r11s2",
                 type: "summary_completion",
                 questionNumber: 25,
-                text: "Sports such as [GAP]",
+                text:
+                  " of all claims were mental issues whereas nearly 27% costs in all claims. Sports such as [GAP]",
                 correctAnswer: ["golf", "GOLF", "Golf"],
               },
               {
                 id: "q26-r11s2",
                 type: "summary_completion",
                 questionNumber: 26,
-                text: "as well as [GAP] could be a treatment",
+                text: ", as well as [GAP]",
                 correctAnswer: ["massage", "MASSAGE", "Massage"],
               },
               {
                 id: "q27-r11s2",
                 type: "summary_completion",
                 questionNumber: 27,
-                text: "analyse [GAP] once again.",
+                text:
+                  " could be a treatment to release stress; however, specialists recommended another practical way out, analyse [GAP] once again.",
                 correctAnswer: ["workloads", "WORKLOADS", "Workloads"],
               },
             ],
@@ -20717,7 +21070,672 @@ integration, our cognitive memory is less burdened; it has to deal with only a
       },
     ],
   },
+  {
+    id: "reading-test-16",
+    moduleId: "reading",
+    title: "Reading Test 16",
+    description: "Academic Reading practice test with various question types.",
+    duration: 60,
+    sections: [
+      {
+        id: "reading-section-1",
+        title: "Section 1",
+        passageContent: ` <h1 class="text-center text-3xl md:text-4xl font-extrabold text-green-700 mb-6">
+            Koalas
+        </h1>
 
+        <!-- Section A -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">A.</span>
+            Koalas are just too nice for their own good. And except for the occasional baby taken by birds of prey, koalas have no natural enemies. In an ideal world, the life of an arboreal couch potato would be perfectly safe and acceptable.
+        </p>
+
+        <!-- Section B -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">B.</span>
+            Just two hundred years ago, koalas flourished across Australia. Now they seem to be in decline, but exact numbers are not available as the species would not seem to be 'under threat'. Their problem, however, has been man, more specifically, the white man. Koala and aborigine had co-existed peacefully for centuries.
+        </p>
+
+        <!-- Section C -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">C.</span>
+            Today koalas are found only in scattered pockets of southeast Australia, where they seem to be at risk on several fronts. The koala's only food source, the eucalyptus tree has declined. In the past 200 years, a third of Australia's eucalyptus forests have disappeared. Koalas have been killed by parasites, chlamydia epidemics and a tumour-causing retro-virus. And every year 11000 are killed by cars, ironically most of them in wildlife sanctuaries, and thousands are killed by poachers. Some are also taken illegally as pets. The animals usually soon die, but they are easily replaced.
+        </p>
+
+        <!-- Section D -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">D.</span>
+            Bush fires pose another threat. The horrific ones that raged in New South Wales recently killed between 100 and 1000 koalas. Many that were taken into sanctuaries and shelters were found to have burnt their paws on the glowing embers. But zoologists say that the species should recover. The koalas will be aided by the eucalyptus, which grows quickly and is already burgeoning forth after the fires. So the main problem to their survival is their slow reproductive rate - they produce only one baby a year over a reproductive lifespan of about nine years.
+        </p>
+
+        <!-- Section E -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">E.</span>
+            The latest problem for the species is perhaps more insidious. With plush, grey fur, dark amber eyes and button nose, koalas are cuddliness incarnate. Australian zoos and wildlife parks have taken advantage of their uncomplaining attitudes, and charge visitors to be photographed hugging the furry bundles. But people may not realise how cruel this is, but because of the koala's delicate disposition, constant handling can push an already precariously balanced physiology over the edge.
+        </p>
+
+        <!-- Section F -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">F.</span>
+            Koalas only eat the foliage of certain species of eucalyptus trees, between 600 and 1250 grams a day. The tough leaves are packed with cellulose, tannins, aromatic oils and precursors of toxic cyanides. To handle this cocktail, koalas have a specialised digestive system. Cellulosedigesting bacteria in the break down fibre, while a specially adapted gut and liver process the toxins. To digest their food properly, koalas must sit still for 21 hours every day.
+        </p>
+
+        <!-- Section G -->
+        <p class="mb-4">
+            <span class="font-bold text-green-800">G.</span>
+            Koalas are the epitome of innocence and inoffensiveness. Although they are capable of ripping open a man's arm with their needle-sharp claws, or giving a nasty nip, they simply wouldn't. If you upset a koala, it may blink or swallow, or hiccup. But attack? No way! Koalas are just not aggressive. They use their claws to grip the hard-smooth bark of eucalyptus trees.
+        </p>
+        
+        <!-- Section H -->
+        <p>
+            <span class="font-bold text-green-800">H.</span>
+            They are also very sensitive, and the slightest upset can prevent them from breeding, cause them to go off their food, and succumb to gut infections. Koalas are stoic creatures and put on a brave face until they are at death's door. One day they may appear healthy, the next they could be dead. Captive koalas have to be weighed daily to check that they are feeding properly. A sudden loss of weight is usually the only warning keepers have that their charge is ill. Only two keepers plus a vet were allowed to handle London Zoo's koalas, as these creatures are only comfortable with people they know. A request for the koala to be taken to meet the Queen was refused because of the distress this would have caused the marsupial. Sadly, London’s Zoo no longer has a koala. Two years ago the female koala died of a cancer caused by a retrovirus. When they come into heat, female koalas become more active, and start losing weight, but after about sixteen days, heat ends and the weight piles back on. London's koala did not. Surgery revealed hundreds of pea-sized tumours. Almost every zoo in Australia has koalas - the marsupial has become the Animal Ambassador of the nation, but nowhere outside Australia would handling by the public be allowed. Koala cuddling screams in the face of every rule of good care. First, some zoos allow koalas to be passed from stranger to stranger, many children who love to squeeze. Secondly, most people have no idea of how to handle the animals; they like to cling on to their handler, all in their own good time and use his or her arm as a tree. For such reasons, the Association of Fauna and Marine parks, an Australian conservation society is campaigning to ban koala cuddling. Policy on koala handling is determined by state government authorities. And the largest of the numbers in the Australian Nature Conservation Agency, with the aim of instituting national guidelines. Following a wave of publicity, some zoos and wildlife parks have stopped turning their koalas into photo.
+        </p>`,
+        questionGroups: [
+          {
+            instructions: `
+              <p>Questions 1-5</p>
+              <p>Choose the correct letter, A, B, C or D. Write the correct letter in boxes 1-5 on your answer sheet.</p>
+            `,
+            questions: [
+              {
+                id: "q1-r16s1",
+                questionNumber: 1,
+                type: "mcq",
+                text:
+                  "The main reason why koala declined is that they are killed EXCEPT FOR",
+                options: [
+                  "A. by poachers",
+                  "B. by diseases they got",
+                  "C. giving too many birth yet survived little!",
+                  "D. accidents on the road",
+                ],
+                correctAnswer: "C",
+              },
+              {
+                id: "q2-r16s1",
+                questionNumber: 2,
+                type: "mcq",
+                text: "What can help koalas fully digest their food?",
+                options: [
+                  "A. toxic substance in the leaves",
+                  "B. organs that dissolve the fibres",
+                  "C. remaining inactive for a period to digest",
+                  "D. eating eucalyptus trees",
+                ],
+                correctAnswer: "C",
+              },
+              {
+                id: "q3-r16s1",
+                questionNumber: 3,
+                type: "mcq",
+                text:
+                  "What would koalas do when facing the dangerous situation?",
+                options: [
+                  "A. show signs of being offended",
+                  "B. counter attack furiously",
+                  "C. use sharp claws to rip the man",
+                  "D. use claws to grip the bark of trees",
+                ],
+                correctAnswer: "A",
+              },
+              {
+                id: "q4-r16s1",
+                questionNumber: 4,
+                type: "mcq",
+                text: "In what ways Australian zoos exploit koalas?",
+                options: [
+                  "A. encourage people to breed koalas as pets",
+                  "B. allow tourists to hug the koalas",
+                  "C. put them on the trees as a symbol",
+                  "D. establish a koala campaign",
+                ],
+                correctAnswer: "B",
+              },
+              {
+                id: "q5-r16s1",
+                questionNumber: 5,
+                type: "mcq",
+                text:
+                  "What would the government do to protect koalas from being endangered?",
+                options: [
+                  "A. introduce koala protection guidelines",
+                  "B. close some of the zoos",
+                  "C. encourage people to resist visiting the zoos",
+                  "D. persuade the public to learn more knowledge",
+                ],
+                correctAnswer: "A",
+              },
+            ],
+          },
+          {
+            instructions: `
+              <p>Questions 6-12</p>
+              <p>Do the following statements agree with the information given in Reading Passage 1?</p>
+              <p>In boxes 6-12 on your answer sheet, write</p>
+              <p><strong>YES</strong> if the statement is true</p>
+              <p><strong>NO</strong> if the statement is false</p>
+              <p><strong>NOT GIVEN</strong> if the information is not given in the passage</p>
+            `,
+            type: "yes_no_not_given",
+            questions: [
+              {
+                id: "q6-r16s1",
+                questionNumber: 6,
+                text: "New coming human settlers caused danger to koalas.",
+                correctAnswer: "YES",
+              },
+              {
+                id: "q7-r16s1",
+                questionNumber: 7,
+                text:
+                  "Koalas can still be seen in most of the places in Australia.",
+                correctAnswer: "NO",
+              },
+              {
+                id: "q8-r16s1",
+                questionNumber: 8,
+                text:
+                  "It takes decade for the eucalyptus trees to recover after the fire.",
+                correctAnswer: "NO",
+              },
+              {
+                id: "q9-r16s1",
+                questionNumber: 9,
+                text: "Koalas will fight each other when food becomes scarce.",
+                correctAnswer: "NOT GIVEN",
+              },
+              {
+                id: "q10-r16s1",
+                questionNumber: 10,
+                text: "It is not easy to notice that koalas are ill.",
+                correctAnswer: "YES",
+              },
+              {
+                id: "q11-r16s1",
+                questionNumber: 11,
+                text:
+                  "Koalas are easily infected with human contagious disease via cuddling.",
+                correctAnswer: "NOT GIVEN",
+              },
+              {
+                id: "q12-r16s1",
+                questionNumber: 12,
+                text:
+                  "Koalas like to hold a person's arm when they are embraced.",
+                correctAnswer: "YES",
+              },
+            ],
+          },
+          {
+            instructions: `
+              <p>Question 13</p>
+              <p>Choose the correct letter, A, B, C or D.</p>
+            `,
+            questions: [
+              {
+                id: "q13-r16s1",
+                type: "mcq",
+                questionNumber: 13,
+                text: "From your opinion this article written by",
+                options: [
+                  "A. a journalist who write for magazine",
+                  "B. a zoo keeper in London Zoo.",
+                  "C. a tourist who traveling back from Australia",
+                  "D. a government official who studies koalas to establish a law",
+                ],
+                correctAnswer: "A",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "reading-section-2",
+        title: "Section 2",
+        passageContent: `<h1 class="text-center text-3xl md:text-4xl font-extrabold text-blue-700 mb-6">
+            Antarctica - in from the cold?
+        </h1>
+
+        <!-- Section A -->
+        <p class="mb-4">
+            <span class="font-bold text-blue-800">A.</span>
+            A little over a century ago, men of the ilk of Scott, Shackleton and Mawson battled against Antarctica's blizzards, cold and deprivation. In the name of Empire and in an age of heroic deeds they created an image of Antarctica that was to last well into the 20th century - an image of remoteness, hardship, bleakness and isolation that was the province of only the most courageous of men. The image was one of a place removed from everyday reality, of a place with no apparent value to anyone.
+        </p>
+
+        <!-- Section B -->
+        <p class="mb-4">
+            <span class="font-bold text-blue-800">B.</span>
+            As we enter the 21st century, our perception of Antarctica has changed. Although physically Antarctica is no closer and probably no warmer, and to spend time there still demands a dedication not seen in ordinary life, the continent and its surrounding ocean are increasingly seen to an integral part of Planet Earth, and a key component in the Earth System. Is this because the world seems a little smaller these days, shrunk by TV and tourism, or is it because Antarctica really does occupy a central spot on Earth's mantle? Scientific research during the past half century has revealed - and continues to reveal – that Antarctica's great mass and low temperature exert a major influence on climate and ocean circulation, factors which influence the lives of millions of people all over the globe.
+        </p>
+
+        <!-- Section C -->
+        <p class="mb-4">
+            <span class="font-bold text-blue-800">C.</span>
+            Antarctica was not always cold. The slow break-up of the super-continent Gondwana with the northward movements of Africa, South America, India and Australia eventually created enough space around Antarctica for the development of an Antarctic Circumpolar Current (ACC), that flowed from west to east under the influence of the prevailing westerly winds. Antarctica cooled, its vegetation perished, glaciation began and the continent took on its present-day appearance. Today the ice that overlies the bedrock is up to 4km thick, and surface temperatures as low as -89.2deg C have been recorded. The icy blast that howls over the ice cap and out to sea -the so-called katabatic wind - can reach 300 km/hr, creating fearsome wind chill effects.
+        </p>
+
+        <!-- Section D -->
+        <p class="mb-4">
+            <span class="font-bold text-blue-800">D.</span>
+            Out of this extreme environment come some powerful forces that reverberate around the world. The Earth's rotation, coupled to the generation of cells of low pressure off the Antarctic coast, would allow Astronauts a view of Antarctica that is as beautiful as it is awesome. Spinning away to the northeast, the cells grow and deepen, whipping up the Southern Ocean into the mountainous seas so respected by mariners. Recent work is showing that the temperature of the ocean may be a better predictor of rainfall in Australia than is the pressure difference between Darwin and Tahiti - the Southern Oscillation Index. By receiving more accurate predictions, graziers in northern Queensland are able to avoid overstocking in years when rainfall will be poor. Not only does this limit their losses but it prevents serious pasture degradation that may take decades to repair. CSIRO is developing this as a prototype forecasting system, but we can confidently predict that as we know more about the Antarctic and Southern Ocean we will be able to enhance and extend our predictive ability.
+        </p>
+
+        <!-- Section E -->
+        <p class="mb-4">
+            <span class="font-bold text-blue-800">E.</span>
+            The ocean's surface temperature results from the interplay between deepwater temperature, air temperature and ice. Each winter between 4 and 19 million square km of sea ice form, locking up huge quantities of heat close to the continent. Only now can we start to unravel the influence of sea ice on the weather that is experienced in southern Australia. But in another way the extent of sea ice extends its influence far beyond Antarctica. Antarctic krill – the small shrimp-like crustaceans that are the staple diet for baleen whales, penguins, some seals, flighted sea birds and many fish - breed well in years when sea ice is extensive and poorly when it is not. Many species of baleen whales and flighted sea birds migrate between the hemispheres and when the krill are less abundant they do not thrive.
+        </p>
+
+        <!-- Section F -->
+        <p>
+            <span class="font-bold text-blue-800">F.</span>
+            The circulatory system of the world's oceans is like a huge conveyor belt, moving water and dissolved minerals and nutrients from one hemisphere to the other, and from the ocean's abyssal depths to the surface. The ACC is the longest current in the world, and has the largest flow. Through it, the deep flows of the Atlantic, Indian and Pacific Oceans are joined to form part of a single global thermohaline circulation. During winter, the howling katabatics sometimes scour the ice off patches of the sea's surface leaving large ice-locked lagoons, or 'polynyas'. Recent research has shown that as fresh sea ice forms, it is continuously stripped away by the wind and may be blown up to 90km in a single day. Since only fresh water freezes into ice, the water that remains becomes increasingly salty and dense, sinking until it spills over the continental shelf. Cold water carries more oxygen than warm water, so when it rises, well into the northern hemisphere, it reoxygenates and revitalises the ocean. The state of the northern oceans, and their biological productivity, owe much to what happens in the Antarctic.
+        </p>`,
+        questionGroups: [
+          {
+            instructions: `
+              <p>Questions 14-18</p>
+              <p>The reading Passage has seven paragraphs A-F. Which paragraph contains the following information? Write the correct letter A-F, in boxes 14-18 on your answer sheet.</p>
+            `,
+            type: "which_paragraph_contains",
+            questions: [
+              {
+                id: "q14-r16s2",
+                questionNumber: 14,
+                text:
+                  "The example of research on weather prediction on agriculture",
+                correctAnswer: "D",
+              },
+              {
+                id: "q15-r16s2",
+                questionNumber: 15,
+                text:
+                  "Antarctic sea ice brings life back to the world oceans' vitality.",
+                correctAnswer: "F",
+              },
+              {
+                id: "q16-r16s2",
+                questionNumber: 16,
+                text:
+                  "A food chain that influence the animals living pattern based on Antarctic fresh sea ice.",
+                correctAnswer: "E",
+              },
+              {
+                id: "q17-r16s2",
+                questionNumber: 17,
+                text:
+                  "The explanation of how atmosphere pressure above Antarctica can impose effect on global climate change",
+                correctAnswer: "D",
+              },
+              {
+                id: "q18-r16s2",
+                questionNumber: 18,
+                text:
+                  "Antarctica was once thought to be a forgotten and insignificant continent",
+                correctAnswer: "A",
+              },
+            ],
+          },
+          {
+            instructions: `
+              <p>Questions 19-21</p>
+              <p>Summary</p>
+              <p>Please match the natural phenomenon with correct determined factor. Choose the correct answer from the box; Write the correct letter A-F, in boxes 19-21 on your answer sheet.</p>
+            `,
+            type: "matching_items",
+            listItems: [
+              { id: "A", text: "Antarctic Circumpolar Current (ACC)" },
+              { id: "B", text: "katabatic winds" },
+              { id: "C", text: "rainfall" },
+              { id: "D", text: "temperature" },
+              { id: "E", text: "glaciers" },
+              { id: "F", text: "pressure" },
+            ],
+            questions: [
+              {
+                id: "q19-r16s2",
+                questionNumber: 19,
+                statement:
+                  "Globally, mass Antarctica's size and __________ influence the climate change",
+                correctAnswer: "D",
+              },
+              {
+                id: "q20-r16s2",
+                questionNumber: 20,
+                statement: "__________ contributory to western wind",
+                correctAnswer: "A",
+              },
+              {
+                id: "q21-r16s2",
+                questionNumber: 21,
+                statement:
+                  "Southern Oscillation Index based on air pressure can predict __________ in Australia.",
+                correctAnswer: "C",
+              },
+            ],
+          },
+          {
+            instructions: `
+              <p>Questions 22-26</p>
+              <p>Choose the correct letter. A, B, C or D. Write your answers in boxes 22-26 on your answer sheet.</p>
+            `,
+            questions: [
+              {
+                id: "q22-r16s2",
+                type: "mcq",
+                questionNumber: 22,
+                text:
+                  "In the paragraph B, the author want to tell which of the following truth about Antarctic?",
+                options: [
+                  "A. To show Antarctica has been a central topic of global warming in Mass media",
+                  "B. To illustrate its huge see ice brings food to million lives to places in the world",
+                  "C. To show it is the heart and its significance to the global climate and current",
+                  "D. To illustrate it locates in the central spot on Earth geographically",
+                ],
+                correctAnswer: "C",
+              },
+              {
+                id: "q23-r16s2",
+                type: "mcq",
+                questionNumber: 23,
+                text:
+                  "Why do Australian farmers keep an eye on the Antarctic ocean temperature?",
+                options: [
+                  "A. Help farmers reduce their economic or ecological losses",
+                  "B. Retrieve grassland decreased in the overgrazing process",
+                  "C. Prevent animal from dying",
+                  "D. A cell provides fertilizer for the grassland",
+                ],
+                correctAnswer: "A",
+              },
+              {
+                id: "q24-r16s2",
+                type: "mcq",
+                questionNumber: 24,
+                text: "What is the final effect of katabatic winds?",
+                options: [
+                  "A. Increase the moving speed of ocean current",
+                  "B. Increase salt level near ocean surface",
+                  "C. Bring fresh ice into southern oceans",
+                  "D. Pile up the mountainous ice cap respected by mariners",
+                ],
+                correctAnswer: "C",
+              },
+              {
+                id: "q25-r16s2",
+                type: "mcq",
+                questionNumber: 25,
+                text: "The break of the continental shelf is due to the",
+                options: [
+                  "A. Salt and density increase",
+                  "B. Salt and density decrease",
+                  "C. global warming resulting a rising temperature",
+                  "D. fresh ice melting into ocean water",
+                ],
+                correctAnswer: "A",
+              },
+              {
+                id: "q26-r16s2",
+                type: "mcq",
+                questionNumber: 26,
+                text: "The decrease in number of Whales and seabirds is due to",
+                options: [
+                  "A. killer whales are more active around",
+                  "B. Sea birds are affected by high sea level salty",
+                  "C. less sea ice reduces productivity of food source",
+                  "D. seals fail to reproduce babies",
+                ],
+                correctAnswer: "C",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "reading-section-3",
+        title: "Section 3",
+        passageContent: `<h1 class="text-center text-3xl md:text-4xl font-extrabold text-amber-700 mb-6">
+            Language strategy In Multinational Company
+        </h1>
+        
+        <!-- Section A -->
+        <p class="mb-4">
+            <span class="font-bold text-amber-800">A.</span>
+            The importance of language management in multinational companies has never been greater than today. Multinationals are becoming ever more conscious of the importance of global coordination as a source of competitive advantage and language remains the ultimate barrier to aspirations of international harmonization. Before attempting to consider language management strategies, companies will have to evaluate the magnitude of the language barrier confronting them and in doing so they will need to examine it in three dimensions: the Language Diversity, the Language Penetration and the Language Sophistication. Companies next need to turn their attention to how they should best manage language. There is a range of options from which MNCs can formulate their language strategy.
+        </p>
+
+        <!-- Section B -->
+        <p class="mb-4">
+            <span class="font-bold text-amber-800">B.</span>
+            Lingua Franca: The simplest answer, though realistic only for English speaking companies, is to rely on ones native tongue. As recently as 1991 a survey of British exporting companies found that over a third used English exclusively in dealings with foreign customers. This attitude that “one language fits all” has also been carried through into the Internet age. A survey of the web sites of top American companies confirmed that over half made no provision for foreign language access, and another found that less than 10% of leading companies were able to respond adequately to emails other than in the company’s language. Widespread though it is however, reliance on a single language is a strategy that is fatally flawed. It makes no allowance for the growing trend in Linguistic Nationalism whereby buyers in Asia, South America and the Middle East in particular are asserting their right to “work in the language of the customer”. It also fails to recognize the increasing vitality of languages such as Spanish, Arabic and Chinese that overtime are likely to challenge the dominance of English as a lingua franca. In the IT arena it ignores the rapid globalization of the Internet where the number of English-language ecommerce transactions, emails and web sites, is rapidly diminishing as a percentage of the total. Finally, the total reliance on a single language puts the English speaker at risk in negotiations. Contracts, rules and legislation are invariably written in the local language, and a company unable to operate in that language is vulnerable.
+        </p>
+
+        <!-- Section C -->
+        <p class="mb-4">
+            <span class="font-bold text-amber-800">C.</span>
+            Functional Multilingualism: Another improvised approach to Language is to rely on what has been termed "Functional Multilingualism". Essentially what this means is to muddle through, relying on a mix of languages, pidgins and gestures to communicate by whatever means the parties have at their disposal. In a social context such a shared effort to make one another understand might be considered an aid to the bonding process with the frustration of communication being regularly punctuated by moments of absurdity and humor. However, as the basis for business negotiations it appears very hit-and-nuts. And yet Hagen’s recent study suggests that 16% of international business transaction; are conducted in a "cocktail of languages." Functional Multilingualism shares the same defects as reliance on a lingua franca and increases the probability of cognitive divergence between the parties engaged in the communication.
+        </p>
+
+        <!-- Section D -->
+        <p class="mb-4">
+            <span class="font-bold text-amber-800">D.</span>
+            External Language Resources: A more rational and obvious response to the language barrier is to employ external resources such as translators and interpreters, and certainly there are many excellent companies specialized in these fields. However, such a response is by no means an end to the language barrier. For a start these services can be very expensive with a top Simultaneous Interpreter, commanding daily rates as high as a partner in an international consulting company. Secondly, any good translator or interpreter will insist that to be fully effective they must understand the context of the subject matter. This is not always possible. In some cases it is prohibited by the complexity or specialization of the topic. Sometimes by lack of preparation time but most often the obstacle is the reluctance of the parties to explain the wider context to an ’outsider". Another problem is that unless there has been considerable pre-explaining between the interpreter and his clients it is likely that there will be ambiguity and cultural overtones in the source messages the interpreter has to work with. They will of course endeavour to provide a hi fidelity translation but in this circumstance the interpreter has to use initiative and guess work. This clearly injects a potential source of misunderstanding into the proceedings. Finally while a good interpreter will attempt to convey not only the meaning but also the spirit of any communication, there can be no doubt that there is a loss of rhetorical power when communications go through a third party. So in situations requiring negotiation, persuasion, humor etc. the use of an interpreter is a poor substitute for direct communication.
+        </p>
+
+        <!-- Section E -->
+        <p class="mb-4">
+            <span class="font-bold text-amber-800">E.</span>
+            Training: The immediate and understandable reaction to any skills-shortage in a business is to consider personnel development and certainly the language training industry is well developed. Offering programs at almost every level and in numerous languages. However, without doubting the value of language training no company should be deluded into believing this to be assured of success. Training in most companies is geared to the economic cycle. When times are good, money is invested in training. When belts get tightened training is one of the first "luxuries" to be pared down. In a study conducted across four European countries, nearly twice as many companies said they needed language training in coming years as had conducted training in past years. This disparity between "good intentions" and "actual delivery", underlines the problems of relying upon training for language skills. Unless the company is totally committed to sustaining the strategy even though bad times, it will fail.
+        </p>
+
+        <!-- Section F -->
+        <p>
+            <span class="font-bold text-amber-800">F.</span>
+            One notable and committed leader in the field of language training has been the Volkswagen Group. They have developed a language strategy over many years and in many respects can be regarded as a model of how to manage language professionally. However, the Volkswagen approach underlines that language training has to be considered a strategic rather than a tactical solution. In their system to progress from "basics" to "communications competence" in a language requires the completion of 6 language stages each one demanding approximately 90 hours of refresher course, supported by many more hours of self-study, spread over a 6-9 month period. The completion of each stage is marked by a post-stage achievement test, which is a pre-requisite for continued training. So even this professionally managed program expects a minimum of three years of fairly intensive study to produce an accountant. Engineer, buyer or salesperson capable of working effectively in a foreign language. Clearly companies intending to pursue this route need to do so with realistic expectations and with the intention of sustaining the program over many years. Except in terms of "brush-up" courses for people who were previously fluent in a foreign language, training cannot be considered a quick fix.
+        </p>`,
+        questionGroups: [
+          {
+            instructions: `
+              <p>Questions 27-32</p>
+              <p>Summary</p>
+              <p>Complete the following summary of the Whole Paragraphs of Reading Passage, choosing A-L words from the following options. Write your answers in boxes 27-32 on your answer sheet.</p>
+              <div class="my-4 p-4 border rounded-md bg-gray-50">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+                  <div><strong>A.</strong> gestures</div>
+                  <div><strong>B.</strong> clients</div>
+                  <div><strong>C.</strong> transaction</div>
+                  <div><strong>D.</strong> understanding and assumption</div>
+                  <div><strong>E.</strong> accurate</div>
+                  <div><strong>F.</strong> documents</div>
+                  <div><strong>G.</strong> managers</div>
+                  <div><strong>H.</strong> body language</div>
+                  <div><strong>I.</strong> long-term</div>
+                  <div><strong>J.</strong> effective</div>
+                  <div><strong>K.</strong> rivals</div>
+                  <div><strong>L.</strong> costly</div>
+                </div>
+              </div>
+            `,
+            questions: [
+              {
+                id: "q27-r16s3",
+                questionNumber: 27,
+                type: "summary_completion",
+                text:
+                  "MNCs often encounter language barrier in their daily strategy, then they seek several approaches to solve such problems. First, native language gives them a realistic base in a different language speaking country, but problem turned up when they deal with oversea [GAP].",
+                correctAnswer: ["clients", "B", "CLIENTS", "Clients"],
+              },
+              {
+                id: "q28-r16s3",
+                questionNumber: 28,
+                type: "summary_completion",
+                text:
+                  "For example, operation on translation of some key [GAP], it is inevitable to generate differences by rules from different countries.",
+                correctAnswer: ["documents", "F", "DOCUMENTS", "Documents"],
+              },
+              {
+                id: "q29-r16s3",
+                questionNumber: 29,
+                type: "summary_completion",
+                text:
+                  "Another way is to rely on a combination of spoken language and [GAP],",
+                correctAnswer: ["gestures", "A", "GESTURES", "Gestures"],
+              },
+              {
+                id: "q30-r16s3",
+                questionNumber: 30,
+                type: "summary_completion",
+                text:
+                  "yet a report written that over one-tenth business [GAP] processed in a party language setting.",
+                correctAnswer: [
+                  "transaction",
+                  "C",
+                  "TRANSACTION",
+                  "Transaction",
+                ],
+              },
+              {
+                id: "q31-r16s3",
+                questionNumber: 31,
+                type: "summary_completion",
+                text:
+                  "Third way: hire translators. However, firstly it is [GAP],",
+                correctAnswer: ["costly", "L", "COSTLY", "Costly"],
+              },
+              {
+                id: "q32-r16s3",
+                questionNumber: 32,
+                type: "summary_completion",
+                text:
+                  "besides if they are not well prepared, they have to resort to his/her own [GAP] work.",
+                correctAnswer: [
+                  "understanding and assumption",
+                  "D",
+                  "UNDERSTANDING AND ASSUMPTION",
+                  "Understanding and assumption",
+                ],
+              },
+            ],
+          },
+          {
+            instructions: `
+              <p>Questions 33-39</p>
+              <p>Answer the questions below.</p>
+              <p>Choose NO MORE THAN THREE WORDS AND/OR A NUMBER from the passage for each answer.</p>
+            `,
+            questions: [
+              {
+                id: "q33-r16s3",
+                type: "fill_in_the_blank",
+                questionNumber: 33,
+                text:
+                  "What understandable reaction does Training pay attention to according to the author?",
+                correctAnswer: [
+                  "personnel development",
+                  "PERSONNEL DEVELOPMENT",
+                  "Personnel Development",
+                ],
+              },
+              {
+                id: "q34-r16s3",
+                type: "fill_in_the_blank",
+                questionNumber: 34,
+                text:
+                  "In what term does the writer describe training during economy depression?",
+                correctAnswer: [
+                  "luxuries",
+                  "LUXURIES",
+                  "Luxuries",
+                  "luxury",
+                  "first luxuries",
+                  "first luxury",
+                ],
+              },
+              {
+                id: "q35-r16s3",
+                type: "fill_in_the_blank",
+                questionNumber: 35,
+                text:
+                  "What contribution does Volkswagen Group set up for multinational companies?",
+                correctAnswer: ["a model", "A MODEL", "A Model", "model"],
+              },
+              {
+                id: "q36-r16s3",
+                type: "fill_in_the_blank",
+                questionNumber: 36,
+                text:
+                  "What does Volkswagen Group consider language training as in their company?",
+                correctAnswer: [
+                  "a strategic solution",
+                  "A STRATEGIC SOLUTION",
+                  "A Strategic Solution",
+                  "strategic solution",
+                ],
+              },
+              {
+                id: "q37-r16s3",
+                type: "fill_in_the_blank",
+                questionNumber: 37,
+                text:
+                  "How many stages are needed from basic course to advanced in training?",
+                correctAnswer: [
+                  "6",
+                  "six",
+                  "SIX",
+                  "Six",
+                  "6 stages",
+                  "six stages",
+                ],
+              },
+              {
+                id: "q38-r16s3",
+                type: "fill_in_the_blank",
+                questionNumber: 38,
+                text:
+                  "How long does a refresher course (single stage) need normally?",
+                correctAnswer: ["90 hours", "90 HOURS", "90 Hours"],
+              },
+              {
+                id: "q39-r16s3",
+                type: "fill_in_the_blank",
+                questionNumber: 39,
+                text:
+                  "At least how long is needed for a specific professional to acquire a foreign language?",
+                correctAnswer: [
+                  "three years",
+                  "THREE YEARS",
+                  "Three Years",
+                  "3 years",
+                ],
+              },
+            ],
+          },
+          {
+            instructions: `
+              <p>Question 40</p>
+              <p>Choose the correct letter, A, B, C or D. Write your answers in boxes 40 on your answer sheet.</p>
+            `,
+            questions: [
+              {
+                id: "q40-r16s3",
+                type: "mcq",
+                questionNumber: 40,
+                text: "What is the Main function of this passage?",
+                options: [
+                  "A. to reveal all kinds of language problems that companies may encounter.",
+                  "B. to exhibits some well-known companies successfully dealing with language difficulties.",
+                  "C. to evaluate various approaches for language barrier in multinational companies.",
+                  "D. to testify that training is only feasible approach to solve language problem.",
+                ],
+                correctAnswer: "C",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
   // {
   //   id: "writing-test-1",
   //   moduleId: "writing",
