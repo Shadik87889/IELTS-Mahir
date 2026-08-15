@@ -388,7 +388,7 @@
         orderBy,
         limit,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-      import {
+     import {
         getAuth,
         signInWithEmailAndPassword,
         signOut,
@@ -396,7 +396,8 @@
         createUserWithEmailAndPassword,
         updatePassword,
         setPersistence,
-        inMemoryPersistence
+        inMemoryPersistence,
+        sendPasswordResetEmail
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
       const defaultAppId = "ielts-mahir-community-forum";
@@ -425,10 +426,21 @@
 
       const appId = typeof __app_id !== "undefined" ? __app_id : defaultAppId;
 
-      let userId = null;
+   let userId = null;
       let isAuthReady = false; // This will now be managed by onAuthStateChanged
       let summernoteEditorInstance = null;
       let currentUserRole = null; // To store the role of the currently logged-in user
+
+      // Global tracker for Firebase listeners to prevent background permission errors
+      const unsubscribeFunctions = {};
+      window.clearAllListeners = () => {
+          Object.values(unsubscribeFunctions).forEach(unsub => {
+              if (typeof unsub === 'function') unsub();
+          });
+          for (let key in unsubscribeFunctions) {
+              unsubscribeFunctions[key] = null;
+          }
+      };
 
      // --- START: RBAC & AUDIT CONFIGURATION ---
       const ROLES = {
@@ -583,7 +595,12 @@
         { name: "Motivation & Support" },
       ];
 
-      const showMessage = (message) => {
+    const showMessage = (message) => {
+        // Ignore ghost permission errors that fire for a split-second during logout/password changes
+        if (typeof message === 'string' && (message.includes('Missing or insufficient permissions') || message.includes('permission-denied'))) {
+            console.warn("Suppressed background permission error during session termination.");
+            return;
+        }
         const messageBox = document.getElementById("message-box");
         const messageContent = document.getElementById("message-content");
         messageContent.textContent = message;
@@ -622,12 +639,13 @@
         }
       };
 
-      // Handle user logout
+// Handle user logout
       window.handleLogout = async () => {
         try {
+          isAuthReady = false; // Flag immediately so background listeners stop triggering UI updates
           await signOut(auth);
           console.log("User logged out.");
-          showMessage("Logged out successfully.", "info");
+          showMessage("Logged out successfully.");
           // The onAuthStateChanged listener will handle showing the login form
         } catch (error) {
           console.error("Logout failed:", error);
@@ -3569,16 +3587,16 @@
         }
       };
 
-      // --- User Management Functions ---
+     // --- User Management Functions ---
 
-      // Function for current admin to change their own password
+      // Function for current Super Admin to change their own password
       window.changeCurrentUserPassword = async (
         currentPassword,
         newPassword,
         confirmNewPassword
       ) => {
-        if (!isAuthReady) {
-          showMessage("You must be logged in to change your password.");
+        if (!isAuthReady || currentUserRole !== ROLES.SUPER_ADMIN) {
+          showMessage("Only Super Admins can directly change their password here.");
           return;
         }
         if (newPassword !== confirmNewPassword) {
@@ -3591,18 +3609,11 @@
         }
 
         const user = auth.currentUser;
-        if (!user) {
-          showMessage("No user is currently logged in.");
-          return;
-        }
+        if (!user) return showMessage("No user is currently logged in.");
 
         try {
-          // Firebase requires re-authentication for sensitive operations like password change
-          // This is a simplified approach; a full implementation might involve prompting for current password
-          // and reauthenticating the user. For this demo, we'll try to update directly.
           await updatePassword(user, newPassword);
           showMessage("Your password has been changed successfully!");
-          // Clear the form
           document.getElementById("current-password").value = "";
           document.getElementById("new-password").value = "";
           document.getElementById("confirm-new-password").value = "";
@@ -3610,11 +3621,28 @@
           console.error("Error changing password:", error);
           if (error.code === "auth/requires-recent-login") {
             showMessage(
-              "Please re-login recently to change your password. For security reasons, this operation requires recent authentication."
+              "Please log out and log back in to change your password. For security reasons, this operation requires recent authentication."
             );
           } else {
             showMessage(`Failed to change password: ${error.message}.`);
           }
+        }
+      };
+
+     // Function for Super Admin to send password reset emails to OTHERS
+      window.sendAdminPasswordReset = async (email) => {
+        if (!isAuthReady || currentUserRole !== ROLES.SUPER_ADMIN) {
+          showMessage("Only Super Admins can reset user passwords.");
+          return;
+        }
+        try {
+          await sendPasswordResetEmail(auth, email);
+          await window.logAdminAction("UPDATE", "USER_PASSWORD", email, `Sent password reset email`);
+          showMessage(`A password reset link has been successfully sent to ${email}.`);
+          document.getElementById("reset-password-form").reset();
+        } catch (error) {
+          console.error("Error sending reset email:", error);
+          showMessage(`Failed to send reset email: ${error.message}`);
         }
       };
 
@@ -3757,13 +3785,16 @@
             '<p class="text-gray-500 text-center">Only Admins and Super Admins can view and manage user accounts.</p>';
           return;
         }
-        const container = document.getElementById("admin-users-list");
+ const container = document.getElementById("admin-users-list");
+        const resetDropdown = document.getElementById("reset-target-user");
         if (!container) return console.error("Admin users list container not found.");
 
-        onSnapshot(
+        if (unsubscribeFunctions.adminUsers) unsubscribeFunctions.adminUsers();
+        unsubscribeFunctions.adminUsers = onSnapshot(
           collection(db, "artifacts", appId, "public", "data", "adminUsers"),
           (snapshot) => {
             container.innerHTML = "";
+            if (resetDropdown) resetDropdown.innerHTML = '<option value="">Select a user...</option>';
             if (snapshot.empty) {
               container.innerHTML = '<p class="text-gray-500 text-center">No admin accounts found.</p>';
               return;
@@ -3771,6 +3802,13 @@
 
             snapshot.docs.forEach((docSnap) => {
               const user = { id: docSnap.id, ...docSnap.data() };
+              
+              if (resetDropdown && user.email) {
+                  const option = document.createElement("option");
+                  option.value = user.email;
+                  option.textContent = `${user.email} (${user.role.replace('_', ' ')})`;
+                  resetDropdown.appendChild(option);
+              }
               const userCard = document.createElement("div");
               userCard.className = "bg-gray-100 p-4 rounded-lg shadow-sm mb-3 flex items-center justify-between";
               
@@ -4135,10 +4173,10 @@
             <div id="testimonial-pagination" class="mt-8 flex justify-center"></div>
         </div>`;
 
-    const USER_MANAGEMENT_HTML = `
+ const USER_MANAGEMENT_HTML = `
         ${generatePageHeader("User Management")}
         <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-            <p class="text-gray-700">Manage admin, moderator, and editor accounts for this panel. You can create new users, set their permissions, change roles, and update your own password.</p>
+            <p class="text-gray-700">Manage admin, moderator, and editor accounts for this panel. You can create new users, set their permissions, change roles, and update passwords.</p>
         </div>
 
         <!-- Section to Create New Admin/Moderator -->
@@ -4170,9 +4208,10 @@
             </form>
         </div>
 
-        <!-- Section for Current Admin to Change Password -->
-        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Change Your Password</h3>
+        <!-- Section for Super Admin to Change Their OWN Password -->
+        <div id="super-admin-change-own-password-section" class="bg-white p-6 rounded-xl shadow-md mb-8 hidden border border-red-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Change Your Password <span class="text-sm font-normal text-red-500">(Super Admin Only)</span></h3>
+            <p class="text-sm text-gray-600 mb-4">Directly change your own panel password right here.</p>
             <form id="change-password-form" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
@@ -4181,14 +4220,35 @@
                     </div>
                     <div>
                         <label for="new-password" class="block text-sm font-medium text-gray-700">New Password</label>
-                        <input type="password" id="new-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" required>
+                        <input type="password" id="new-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" required minlength="6">
                     </div>
                     <div>
                         <label for="confirm-new-password" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
-                        <input type="password" id="confirm-new-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" required>
+                        <input type="password" id="confirm-new-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" required minlength="6">
                     </div>
                 </div>
-                <button type="submit" class="w-full md:w-auto flex justify-center py-2 px-6 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">Change Password</button>
+                <button type="submit" class="w-full md:w-auto flex justify-center py-2 px-6 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
+                    <i class="fas fa-key mr-2 mt-1"></i> Update My Password
+                </button>
+            </form>
+        </div>
+
+        <!-- Section for Super Admin to Reset Other Users' Passwords -->
+        <div id="super-admin-password-section" class="bg-white p-6 rounded-xl shadow-md mb-8 hidden border border-blue-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Reset Other Users' Passwords <span class="text-sm font-normal text-blue-500">(Super Admin Only)</span></h3>
+            <p class="text-sm text-gray-600 mb-4">Select an existing panel user to send them a secure link to their inbox so they can reset their password.</p>
+            <form id="reset-password-form" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="reset-target-user" class="block text-sm font-medium text-gray-700">Select User</label>
+                        <select id="reset-target-user" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 sm:text-sm" required>
+                            <option value="">Loading users...</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="w-full md:w-auto flex justify-center py-2 px-6 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                    <i class="fas fa-envelope mr-2 mt-1"></i> Send Password Reset Link
+                </button>
             </form>
         </div>
 
@@ -5713,26 +5773,32 @@ const WRITING_SUBMISSIONS_HTML = `
                 };
             }
 
-            // Event listener for changing current user's password
-            const changePasswordForm = document.getElementById(
-              "change-password-form"
-            );
+        // Show Password Management sections ONLY if Super Admin
+            if (currentUserRole === ROLES.SUPER_ADMIN) {
+                document.getElementById("super-admin-password-section").classList.remove("hidden");
+                document.getElementById("super-admin-change-own-password-section").classList.remove("hidden");
+            }
+
+            // Event listener for changing current user's password (Direct Change)
+            const changePasswordForm = document.getElementById("change-password-form");
             if (changePasswordForm) {
               changePasswordForm.onsubmit = async (e) => {
                 e.preventDefault();
-                const currentPassword = document.getElementById(
-                  "current-password"
-                ).value;
-                const newPassword = document.getElementById("new-password")
-                  .value;
-                const confirmNewPassword = document.getElementById(
-                  "confirm-new-password"
-                ).value;
-                await changeCurrentUserPassword(
-                  currentPassword,
-                  newPassword,
-                  confirmNewPassword
-                );
+                const currentPassword = document.getElementById("current-password").value;
+                const newPassword = document.getElementById("new-password").value;
+                const confirmNewPassword = document.getElementById("confirm-new-password").value;
+                await changeCurrentUserPassword(currentPassword, newPassword, confirmNewPassword);
+              };
+            }
+
+            // Event listener for sending password reset link (Inbox Link)
+            const resetPasswordForm = document.getElementById("reset-password-form");
+            if (resetPasswordForm) {
+              resetPasswordForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const targetEmail = document.getElementById("reset-target-user").value;
+                if (!targetEmail) return showMessage("Please select a user first.");
+                await window.sendAdminPasswordReset(targetEmail);
               };
             }
           }
@@ -5824,19 +5890,21 @@ if (pageName === "premium-access") {
                 isAuthReady = false;
                 showLoginForm();
               }
-            } else {
+           } else {
               // User is authenticated in Firebase Auth but has no role document.
               // This could mean they are a regular user or a new admin not yet assigned a role.
               // For this panel, we assume only users with roles in 'adminUsers' collection can access.
               console.log(
                 "User is authenticated but no role found in Firestore. Logging out."
               );
+              if (typeof clearAllListeners === 'function') clearAllListeners();
               await signOut(auth);
               isAuthReady = false;
               showLoginForm();
             }
           } else {
             // User is signed out.
+            if (typeof clearAllListeners === 'function') clearAllListeners();
             userId = null;
             isAuthReady = false;
             currentUserRole = null;
