@@ -9470,49 +9470,7 @@ export const allMockTests = [
               },
             ],
           },
-          {
-            instructions: `
-              <p><strong>Questions 33-35</strong></p>
-              <p>Answer the questions below. Choose NO MORE THAN THREE WORDS AND/OR A NUMBER from the passage for each answer.</p>
-            `,
 
-            questions: [
-              {
-                id: "q33-p3",
-                type: "fill_in_the_blank_passage",
-                questionNumber: 33,
-                text:
-                  "What kind of physical characteristics eventually contributed to the extinction of Irish elk?",
-                correctAnswer: [
-                  "Male’s huge antlers",
-                  "male’s huge antlers",
-                  "MALE’S HUGE ANTLERS",
-                  "Male’S Huge Antlers",
-                ], // Placeholder
-              },
-              {
-                id: "q34-p3",
-                questionNumber: 34,
-                type: "fill_in_the_blank_passage",
-                text:
-                  "What kind of nutrient substance needed in maintaining the huge size of Irish elk?",
-                correctAnswer: ["Minerals", "minerals", "MINERALS"], // Placeholder
-              },
-              {
-                id: "q35-p3",
-                questionNumber: 35,
-                type: "fill_in_the_blank_passage",
-                text:
-                  "What geographical evidence suggested the advent of human resulted in the extinction of Irish elk?",
-                correctAnswer: [
-                  "Habitat destruction",
-                  "habitat destruction",
-                  "HABITAT DESTRUCTION",
-                  "Habitat Destruction",
-                ], // Placeholder
-              },
-            ],
-          },
           {
             instructions: `
               <p><strong>Questions 33-35</strong></p>
@@ -15136,44 +15094,7 @@ integration, our cognitive memory is less burdened; it has to deal with only a
               },
             ],
           },
-          {
-            instructions: `
-              <p>Questions 11-13</p>
-              <p>Answer the questions below.</p>
-              <p>Choose NO MORE THAN THREE WORDS AND/OR A NUMBER from the passage for each answer.</p>
-            `,
 
-            questions: [
-              {
-                id: "q11-r9s1",
-                questionNumber: 11,
-                type: "fill_in_the_blank",
-                text:
-                  "What did the Lapita travel in when they crossed the oceans?",
-                correctAnswer: ["canoes", "CANOES", "Canoes"],
-              },
-              {
-                id: "q12-r9s1",
-                questionNumber: 12,
-                type: "fill_in_the_blank",
-                text:
-                  "In Irwins’s view, what would the Latipa have relied on to bring them fast back to the base?",
-                correctAnswer: ["trade winds", "TRADE WINDS", "Trade Winds"],
-              },
-              {
-                id: "q13-r9s1",
-                questionNumber: 13,
-                type: "fill_in_the_blank",
-                text:
-                  "Which sea creatures would have been an indication to the Lapita of where to find land?",
-                correctAnswer: [
-                  "seabirds and turtles",
-                  "SEABIRDS AND TURTLES",
-                  "Seabirds And Turtles",
-                ],
-              },
-            ],
-          },
           {
             instructions: `
               <p>Questions 11-13</p>
