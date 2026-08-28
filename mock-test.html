@@ -1452,6 +1452,7 @@
           <audio
             id="test-audio-player"
             controls
+            autoplay
             controlsList="nodownload noplaybackrate"
             preload="auto"
             class="w-full"
@@ -6819,37 +6820,44 @@
                               testState.audioCurrentTime;
                           }
 
-                          // Auto-start the audio
-                          let playPromise = audioPlayer.play();
+                          // Auto-start the audio automatically without showing any prompts
+                          const attemptAutoplay = () => {
+                            let playPromise = audioPlayer.play();
 
-                          // Catch the Chrome Autoplay Block silently.
-                          if (playPromise !== undefined) {
-                            playPromise.catch((e) => {
-                              console.warn("Autoplay blocked by browser.");
-                              // Because the audio player is hidden, attach a one-time global click listener
-                              // so the moment they click anywhere (e.g. to answer), the audio starts.
-                              const startAudioInteraction = () => {
-                                audioPlayer
-                                  .play()
-                                  .catch((e) =>
-                                    console.warn("Still blocked", e),
+                            if (playPromise !== undefined) {
+                              playPromise.catch(() => {
+                                // If the browser strictly blocks autoplay on a fresh load,
+                                // it will silently wait for the user's first natural interaction (like scrolling or typing an answer) to unlock and play.
+                                const silentUnlock = () => {
+                                  audioPlayer.play().catch(() => {});
+                                  [
+                                    "click",
+                                    "keydown",
+                                    "touchstart",
+                                    "scroll",
+                                  ].forEach((evt) =>
+                                    document.removeEventListener(
+                                      evt,
+                                      silentUnlock,
+                                    ),
                                   );
-                                document.removeEventListener(
-                                  "click",
-                                  startAudioInteraction,
-                                );
-                              };
-                              document.addEventListener(
-                                "click",
-                                startAudioInteraction,
-                              );
+                                };
 
-                              showToast(
-                                "Click anywhere on the screen to start the audio.",
-                                "info",
-                              );
-                            });
-                          }
+                                [
+                                  "click",
+                                  "keydown",
+                                  "touchstart",
+                                  "scroll",
+                                ].forEach((evt) =>
+                                  document.addEventListener(evt, silentUnlock, {
+                                    once: true,
+                                  }),
+                                );
+                              });
+                            }
+                          };
+
+                          attemptAutoplay();
                         });
 
                         // Initialize lastTime with the restored time to prevent the anti-seek from resetting it
