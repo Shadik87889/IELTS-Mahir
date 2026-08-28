@@ -74,9 +74,149 @@
       @media (min-width: 1024px) {
         /* lg breakpoint */
         .mock-test-layout.listening-layout {
-          grid-template-columns: 1fr;
-          padding-bottom: 0; /* Exact height calculation prevents overlap */
+          grid-template-columns: 1fr 1fr; /* Empty left, content right for Jumpinto style */
+          padding-bottom: 0;
+          gap: 0;
         }
+        .mock-test-layout.listening-layout .main-test-content {
+          padding: 3rem 4rem 6rem 2rem;
+          max-width: 800px;
+          border-left: 1px solid transparent;
+        }
+      }
+
+      /* Jumpinto UI Styles specifically for Listening */
+      .mock-test-layout.listening-layout {
+        font-family: "Inter", sans-serif;
+        background: #ffffff;
+      }
+      .mock-test-layout.listening-layout .main-test-content {
+        background: #ffffff;
+        color: #111827;
+      }
+      .mock-test-layout.listening-layout h3 {
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        text-transform: none !important;
+        color: #000 !important;
+        margin-bottom: 1rem;
+      }
+      .mock-test-layout.listening-layout .question-item {
+        margin-bottom: 1.5rem;
+        font-size: 14px;
+      }
+      .mock-test-layout.listening-layout .inline-input,
+      .mock-test-layout.listening-layout .table-input,
+      .mock-test-layout.listening-layout .block-input {
+        border: 1px solid #e5e7eb !important;
+        border-radius: 4px !important;
+        padding: 4px 8px !important;
+        font-size: 14px !important;
+        box-shadow: none !important;
+        color: #000 !important;
+        height: auto !important;
+        min-height: 32px;
+      }
+      .mock-test-layout.listening-layout .inline-input:focus,
+      .mock-test-layout.listening-layout .table-input:focus {
+        border-color: #3b82f6 !important;
+        outline: none;
+      }
+      .mock-test-layout.listening-layout .inline-select {
+        border: 1px solid #e5e7eb !important;
+        border-radius: 4px !important;
+        padding: 4px 24px 4px 8px !important;
+        font-size: 14px !important;
+        background-color: #fff !important;
+        box-shadow: none !important;
+        height: auto !important;
+        min-height: 32px;
+        color: #000 !important;
+      }
+      .mock-test-layout.listening-layout table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        margin: 1.5rem 0 !important;
+      }
+      .mock-test-layout.listening-layout th,
+      .mock-test-layout.listening-layout td {
+        border: 1px solid #000 !important;
+        padding: 12px 16px !important;
+        font-size: 14px !important;
+        color: #000 !important;
+      }
+      .mock-test-layout.listening-layout th {
+        background-color: #fff !important;
+        font-weight: 700 !important;
+      }
+      .mock-test-layout.listening-layout .map-image-container {
+        border: none !important;
+        box-shadow: none !important;
+        margin: 1rem 0 !important;
+      }
+
+      /* Jumpinto Bottom Bar Palette */
+      .jumpinto-bottom-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1.5rem;
+        gap: 0.35rem;
+        overflow-x: auto;
+        z-index: 1000;
+        height: 56px;
+        font-family: "Inter", sans-serif;
+      }
+      .jumpinto-bottom-bar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .jumpinto-bottom-bar::-webkit-scrollbar {
+        display: none; /* Chrome, Safari and Opera */
+      }
+      .jumpinto-part-label {
+        font-size: 12px;
+        color: #6b7280;
+        margin-right: 0.5rem;
+        margin-left: 1.5rem;
+        white-space: nowrap;
+      }
+      .jumpinto-part-label:first-child {
+        margin-left: 0;
+      }
+      .jumpinto-q-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e5e7eb;
+        border-radius: 2px;
+        font-size: 13px;
+        color: #374151;
+        background: #f9fafb;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+      .jumpinto-q-btn:hover {
+        background: #f3f4f6;
+      }
+      .jumpinto-q-btn.answered {
+        border-color: #111827;
+        background: #ffffff;
+        color: #111827;
+      }
+      .jumpinto-q-btn.current {
+        border-color: #111827;
+        font-weight: bold;
+        box-shadow: 0 0 0 1px #111827;
       }
 
       /* Specific layout for Reading Test on larger screens */
@@ -278,7 +418,7 @@
       /* Show sidebar only on large screens for listening layout */
       @media (min-width: 1024px) {
         .mock-test-layout.listening-layout .sidebar {
-          display: flex; /* Show sidebar on desktop for listening */
+          display: none; /* Hidden for Jumpinto style */
         }
       }
 
@@ -1029,8 +1169,7 @@
       @media (max-width: 1023px) {
         /* Mobile and Tablet specific heights */
         .mock-test-layout.listening-layout .main-test-content {
-          /* Header (64px) + Audio Player (80px) + Mobile Palette Header (72px) = 216px */
-          height: calc(100vh - 102px);
+          height: calc(100vh - 120px); /* 64px header + 56px bottom bar */
           border-radius: 0vw;
         }
         .mock-test-layout.reading-layout {
@@ -1159,15 +1298,14 @@
       @media (min-width: 1024px) {
         /* Desktop specific heights */
         .mock-test-layout.listening-layout .main-test-content {
-          height: calc(
-            100vh - 220px
-          ); /* 64 header + 80 audio + 60 bottom bar + 16 gap */
+          height: calc(100vh - 120px); /* 64px header + 56px bottom bar */
         }
         .mock-test-layout.reading-layout .main-test-content,
         .mock-test-layout.reading-layout .passage-content-area {
-          height: calc(100vh - 140px); /* 64 header + 60 info bar + 16 gap */
+          height: calc(100vh - 120px); /* 64 header + 56 bottom bar */
           border-radius: 0rem;
           border-top: none;
+          padding-bottom: 2rem;
         }
         .mock-test-layout.writing-layout .main-test-content,
         .mock-test-layout.writing-layout .writing-instructions-area {
@@ -1219,13 +1357,14 @@
       }
     </style>
   </head>
-  <body class="py-0 px-0 header-collapsed">
+  <body class="py-0 px-0">
     <!-- Header / Navigation Bar -->
     <header
       id="app-header"
-      class="site-header py-4 px-4 md:px-8 flex items-center justify-between transition-colors duration-300 sticky top-0 z-[1000]"
+      class="site-header py-3 px-4 md:px-8 flex items-center justify-between bg-white border-b border-gray-200 sticky top-0 z-[1000]"
     >
-      <div class="flex items-center gap-2 sm:gap-4">
+      <!-- Left: Logo -->
+      <div class="flex items-center">
         <a href="home">
           <img
             src="assets/278115481_106536582034386_7446598694214552893_n-removebg-preview.png"
@@ -1235,19 +1374,69 @@
           />
         </a>
       </div>
-      <div id="auth-buttons-container" class="flex items-center gap-2 sm:gap-4">
-        <!-- Authentication status will be handled by auth.js -->
-        <div class="animate-pulse flex space-x-4">
-          <div class="rounded-full bg-gray-300 h-8 w-8 sm:h-10 sm:w-10"></div>
-          <div class="flex-1 space-y-4 py-1 hidden sm:block">
-            <div class="h-2 bg-gray-300 rounded"></div>
-            <div class="space-y-2">
-              <div class="grid grid-cols-3 gap-2">
-                <div class="h-2 bg-gray-300 rounded col-span-2"></div>
-                <div class="h-2 bg-gray-300 rounded col-span-1"></div>
-              </div>
-              <div class="h-2 bg-gray-300 rounded"></div>
-            </div>
+
+      <!-- Center: Timer & Submit (Jumpinto Style) -->
+      <div
+        class="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-4"
+      >
+        <span
+          id="timer-display-header"
+          class="text-[#f50014] font-bold text-[19px] tracking-wide"
+          >00:00</span
+        >
+        <button
+          id="header-submit-btn"
+          class="text-black hover:text-gray-600 transition-colors flex items-center justify-center cursor-pointer"
+          title="Submit Test"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Right: Contact & Auth -->
+      <div class="flex items-center gap-3 sm:gap-5">
+        <a
+          href="contact"
+          class="flex items-center justify-center w-10 h-10 rounded-full border border-gray-200 hover:bg-gray-50 transition-colors text-black"
+          title="Contact Us"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+            ></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </a>
+        <div
+          id="auth-buttons-container"
+          class="flex items-center gap-2 sm:gap-4"
+        >
+          <!-- Auth injected here -->
+          <div class="animate-pulse flex space-x-4">
+            <div class="rounded-full bg-gray-300 h-8 w-8 sm:h-10 sm:w-10"></div>
           </div>
         </div>
       </div>
@@ -1287,15 +1476,6 @@
 
           <div class="flex items-center gap-1 sm:gap-2">
             <button
-              onclick="toggleHeader()"
-              class="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg hover:bg-gray-100 transition-colors bg-white shadow-sm border border-gray-200"
-              title="Toggle Header"
-            >
-              <i
-                class="fas fa-chevron-down toggle-header-icon text-base sm:text-lg"
-              ></i>
-            </button>
-            <button
               onclick="toggleFullScreen()"
               class="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg hover:bg-gray-100 transition-colors bg-white shadow-sm border border-gray-200"
               title="Toggle Fullscreen"
@@ -1320,13 +1500,6 @@
       </h2>
       <div class="flex items-center gap-3 text-xl font-bold text-gray-700">
         <!-- New Feature Buttons -->
-        <button
-          onclick="toggleHeader()"
-          class="flex items-center justify-center w-8 h-8 rounded hover:bg-gray-100 transition-colors"
-          title="Toggle Header"
-        >
-          <i class="fas fa-chevron-down toggle-header-icon text-lg"></i>
-        </button>
         <button
           onclick="toggleFullScreen()"
           class="flex items-center justify-center w-8 h-8 rounded hover:bg-gray-100 transition-colors mr-2"
@@ -1963,8 +2136,6 @@
         }, 10);
       }
 
-      // --- START: Flow Chart Helper Functions ---
-
       /**
        * Renders the HTML for a flow chart question.
        * @param {object} question - The question object of type 'flow_chart'.
@@ -1974,58 +2145,170 @@
         if (!question.steps || question.steps.length === 0) {
           return "<p>Flow chart data is missing.</p>";
         }
-        return `
-          <div class="flow-chart-wrapper bg-slate-50 p-4 sm:p-6 rounded-xl border border-slate-200">
-              <div class="flow-chart-container mx-auto max-w-2xl">
-                  ${question.steps
-                    .map((step, index) => {
-                      const questionId = `q${step.questionNumber}`;
-                      const inputField = `<input type="text" id="${questionId}" name="gap_${Math.random()
-                        .toString(36)
-                        .substring(
-                          2,
-                          10,
-                        )}" placeholder="Answer" autocomplete="off" spellcheck="false" data-lpignore="true"
-                                                 oninput="handleAnswerInput('${questionId}', this.value)"
-                                                 value="${
-                                                   testState.userAnswers[
-                                                     questionId
-                                                   ] || ""
-                                                 }"
-                                                 class="inline-input mx-1" style="width: 150px;">`;
-                      const stepText = step.text.replace(
-                        /\[GAP\]/g,
-                        inputField,
-                      );
 
-                      return `
-                          <div class="flow-chart-item" id="question-${
-                            step.questionNumber
-                          }">
-                              <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-center">
-                                  <p class="text-base sm:text-lg text-gray-800 leading-relaxed">
-                                      <span class="font-bold mr-2">${
-                                        step.questionNumber
-                                      }.</span>
-                                      ${stepText}
-                                  </p>
-                              </div>
-                          </div>
-                          ${
-                            index < question.steps.length - 1
-                              ? `
-                          <div class="flex justify-center my-4">
-                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 h-8 w-8"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
-                          </div>
-                          `
-                              : ""
-                          }
-                      `;
+        var optionsHtml = "";
+        if (
+          question.options &&
+          Array.isArray(question.options) &&
+          question.options.length > 0
+        ) {
+          var optionsList = question.options
+            .map(function (opt) {
+              var textStr =
+                typeof opt === "object" ? opt.id + ". " + opt.text : opt;
+              return (
+                '<div class="text-[15px] sm:text-[16px] text-black mb-0.5">' +
+                textStr +
+                "</div>"
+              );
+            })
+            .join("");
+
+          optionsHtml =
+            '<div class="border border-gray-800 px-6 py-4 mb-6 w-fit min-w-[200px] mx-auto bg-white">' +
+            optionsList +
+            "</div>";
+        }
+
+        var stepsHtml = question.steps
+          .map(function (step, index) {
+            var hasQ =
+              step.questionNumber !== undefined &&
+              step.questionNumber !== null &&
+              step.questionNumber !== "";
+            var questionId = hasQ ? "q" + step.questionNumber : "";
+            var savedAnswer = hasQ
+              ? testState.userAnswers[questionId] || ""
+              : "";
+
+            var stepText = step.text;
+
+            if (hasQ) {
+              var isDropdown = false;
+              if (question.options && question.options.length > 0) {
+                isDropdown = true;
+              } else {
+                var cAns = step.correctAnswer;
+                if (Array.isArray(cAns) && cAns.length > 0) cAns = cAns[0];
+                if (
+                  typeof cAns === "string" &&
+                  cAns.length === 1 &&
+                  /[A-Z]/.test(cAns)
+                ) {
+                  isDropdown = true;
+                }
+              }
+
+              var inputElement = "";
+              if (isDropdown) {
+                var letters = [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G",
+                  "H",
+                  "I",
+                  "J",
+                  "K",
+                  "L",
+                ];
+                var selectOpts = "";
+                if (question.options && question.options.length > 0) {
+                  selectOpts = question.options
+                    .map(function (opt) {
+                      var valId =
+                        typeof opt === "object"
+                          ? opt.id
+                          : opt.split(".")[0].trim();
+                      var isSel = savedAnswer === valId ? "selected" : "";
+                      return (
+                        '<option value="' +
+                        valId +
+                        '" ' +
+                        isSel +
+                        ">" +
+                        valId +
+                        "</option>"
+                      );
                     })
-                    .join("")}
-              </div>
-          </div>
-        `;
+                    .join("");
+                } else {
+                  selectOpts = letters
+                    .map(function (letter) {
+                      var isSel = savedAnswer === letter ? "selected" : "";
+                      return (
+                        '<option value="' +
+                        letter +
+                        '" ' +
+                        isSel +
+                        ">" +
+                        letter +
+                        "</option>"
+                      );
+                    })
+                    .join("");
+                }
+
+                inputElement =
+                  '<select id="' +
+                  questionId +
+                  '" onchange="handleAnswerInput(\'' +
+                  questionId +
+                  '\', this.value)" class="inline-select w-[70px] h-[34px] border border-gray-300 rounded bg-white text-center appearance-none bg-no-repeat cursor-pointer focus:ring-1 focus:ring-black mx-1 align-middle shadow-sm" style="background-image: url(\'data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%22%20fill%3D%22none%22%20stroke%3D%22%23999%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E\'); background-position: right 4px center; background-size: 14px; padding-right: 16px;">' +
+                  '<option value=""></option>' +
+                  selectOpts +
+                  "</select>";
+              } else {
+                inputElement =
+                  '<input type="text" id="' +
+                  questionId +
+                  '" oninput="handleAnswerInput(\'' +
+                  questionId +
+                  '\', this.value)" value="' +
+                  savedAnswer +
+                  '" class="inline-input mx-1 border border-gray-400 rounded-sm h-[32px] px-2 text-[15px] align-middle" style="width: 150px;" autocomplete="off" spellcheck="false">';
+              }
+
+              var badge =
+                '<span class="inline-flex items-center justify-center w-[24px] h-[24px] rounded-full border border-gray-300 bg-gray-50 text-[12px] text-gray-700 font-semibold mx-1 align-middle shadow-sm">' +
+                step.questionNumber +
+                "</span>";
+
+              stepText = stepText.replace(/\[GAP\]/g, badge + inputElement);
+            }
+
+            var arrowHtml = "";
+            if (index < question.steps.length - 1) {
+              arrowHtml =
+                '<div class="flex justify-center my-2 w-full"><span class="text-black text-xl font-bold leading-none">↓</span></div>';
+            }
+
+            var rowId = hasQ ? 'id="question-' + step.questionNumber + '"' : "";
+
+            return (
+              '<div class="flow-chart-item w-full bg-white p-4 sm:p-5 border border-gray-800 text-left rounded-sm transition-colors duration-300" ' +
+              rowId +
+              ">" +
+              '<div class="text-[15px] sm:text-[16px] text-black leading-relaxed prose max-w-none [&>ul]:my-0 [&>ul]:pl-5 [&>ul>li]:mb-2 [&>ul>li]:list-disc">' +
+              stepText +
+              "</div>" +
+              "</div>" +
+              arrowHtml
+            );
+          })
+          .join("");
+
+        return (
+          '<div class="w-full mb-8 font-inter">' +
+          optionsHtml +
+          '<div class="border border-gray-800 p-4 sm:p-6 bg-[#f8f9fa] w-full max-w-[850px] mx-auto flex flex-col items-center rounded-sm shadow-sm">' +
+          stepsHtml +
+          "</div>" +
+          "</div>"
+        );
       }
 
       /**
@@ -2459,6 +2742,9 @@
           const mobileButton = document.querySelector(
             `#question-palette-mobile .question-palette-btn[data-palette-number="${item.paletteNumber}"]`,
           );
+          const jumpintoButton = document.querySelector(
+            `#question-palette-jumpinto .jumpinto-q-btn[data-palette-number="${item.paletteNumber}"]`,
+          );
 
           const processButton = (button) => {
             if (!button) return;
@@ -2502,6 +2788,7 @@
 
           processButton(desktopButton);
           processButton(mobileButton);
+          processButton(jumpintoButton);
         });
         highlightCurrentQuestionInPalette();
       }
@@ -2524,6 +2811,13 @@
           button.classList.remove("current");
         });
 
+        const jumpintoPaletteButtons = document.querySelectorAll(
+          "#question-palette-jumpinto .jumpinto-q-btn",
+        );
+        jumpintoPaletteButtons.forEach((button) => {
+          button.classList.remove("current");
+        });
+
         if (questionPaletteItems.length > 0) {
           const currentPaletteNumber = testState.currentQuestionIndex + 1;
           const currentDesktopQBtn = document.querySelector(
@@ -2538,6 +2832,12 @@
           if (currentMobileQBtn) {
             currentMobileQBtn.classList.add("current");
           }
+          const currentJumpintoQBtn = document.querySelector(
+            `#question-palette-jumpinto .jumpinto-q-btn[data-palette-number="${currentPaletteNumber}"]`,
+          );
+          if (currentJumpintoQBtn) {
+            currentJumpintoQBtn.classList.add("current");
+          }
         }
       }
 
@@ -2550,13 +2850,124 @@
           (i) => i.paletteNumber === paletteNumber,
         );
         if (item) {
-          const questionElement = document.getElementById(item.htmlElementId);
-          if (questionElement) {
-            questionElement.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
+          testState.currentQuestionIndex = paletteNumber - 1;
+          let targetSectionIdx = testState.currentSectionIndex;
+          const qNumStr = item.htmlElementId
+            .replace("question-", "")
+            .replace("dummy-question-", "");
+
+          // Robust Manual Search to prevent false-positives across sections
+          for (let s = 0; s < currentTest.sections.length; s++) {
+            let found = false;
+            const section = currentTest.sections[s];
+            if (section.questionGroups) {
+              for (const qGroup of section.questionGroups) {
+                if (qGroup.questions) {
+                  for (const q of qGroup.questions) {
+                    if (
+                      q.id === item.questionId ||
+                      String(q.questionNumber) === qNumStr
+                    ) {
+                      found = true;
+                      break;
+                    }
+                    if (q.type === "flow_chart" && q.steps) {
+                      for (const step of q.steps) {
+                        if (
+                          "q" + step.questionNumber === item.questionId ||
+                          String(step.questionNumber) === qNumStr
+                        ) {
+                          found = true;
+                          break;
+                        }
+                      }
+                    }
+                    if (
+                      q.type === "table_fill_in_the_blank" &&
+                      q.correctAnswer
+                    ) {
+                      if (q.correctAnswer[item.questionId]) {
+                        found = true;
+                        break;
+                      }
+                    }
+                  }
+                }
+                if (qGroup.type === "matching" && qGroup.matchingItems) {
+                  for (const mItem of qGroup.matchingItems) {
+                    if (
+                      "q" + mItem.number === item.questionId ||
+                      String(mItem.number) === qNumStr
+                    ) {
+                      found = true;
+                      break;
+                    }
+                  }
+                }
+                if (
+                  qGroup.type === "table_fill_in_the_blank" &&
+                  qGroup.questions &&
+                  qGroup.questions[0] &&
+                  qGroup.questions[0].correctAnswer
+                ) {
+                  if (qGroup.questions[0].correctAnswer[item.questionId]) {
+                    found = true;
+                    break;
+                  }
+                }
+                if (found) break;
+              }
+            }
+            if (found) {
+              targetSectionIdx = s;
+              break;
+            }
+          }
+
+          const executeScroll = () => {
+            let questionElement = document.getElementById(item.htmlElementId);
+            if (!questionElement)
+              questionElement = document.getElementById(item.questionId);
+            if (!questionElement)
+              questionElement = document.getElementById("q-" + item.questionId);
+            if (!questionElement) {
+              const inputEl = document.querySelector(
+                'input[name="q-' + item.questionId + '"]',
+              );
+              if (inputEl)
+                questionElement = inputEl.closest(".question-item") || inputEl;
+            }
+
+            if (questionElement) {
+              const scrollTarget =
+                questionElement.closest(
+                  ".flex.items-center.justify-between, tr, .flow-chart-item, .question-item",
+                ) || questionElement;
+              scrollTarget.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+
+              scrollTarget.style.transition = "background-color 0.4s ease";
+              const originalBg = scrollTarget.style.backgroundColor;
+              scrollTarget.style.backgroundColor = "#fffbcc";
+              setTimeout(() => {
+                scrollTarget.style.backgroundColor =
+                  originalBg || "transparent";
+              }, 1200);
+            }
+          };
+
+          if (targetSectionIdx !== testState.currentSectionIndex) {
+            testState.currentSectionIndex = targetSectionIdx;
+            saveDraftState();
+            renderApp().then(() => {
+              requestAnimationFrame(() => {
+                setTimeout(executeScroll, 150);
+              });
             });
-            testState.currentQuestionIndex = paletteNumber - 1; // Update current index (0-based)
+          } else {
+            executeScroll();
             highlightCurrentQuestionInPalette();
           }
         }
@@ -2578,6 +2989,10 @@
           "timer-display-top-bar",
         ); // New: For the sticky top bar timer
 
+        const headerTimerDisplay = document.getElementById(
+          "timer-display-header",
+        ); // Jumpinto main header timer
+
         const topAudioTimerDisplay = document.getElementById(
           "timer-display-top-player",
         ); // Timer next to audio player
@@ -2594,6 +3009,8 @@
               desktopTimerDisplaySidebar.textContent = formattedTime; // Update sidebar timer
             if (topBarTimerDisplay)
               topBarTimerDisplay.textContent = formattedTime;
+            if (headerTimerDisplay)
+              headerTimerDisplay.textContent = formattedTime;
             if (topAudioTimerDisplay)
               topAudioTimerDisplay.textContent = formattedTime;
           } else {
@@ -2602,6 +3019,7 @@
             if (desktopTimerDisplaySidebar)
               desktopTimerDisplaySidebar.textContent = "00:00"; // Update sidebar timer
             if (topBarTimerDisplay) topBarTimerDisplay.textContent = "00:00";
+            if (headerTimerDisplay) headerTimerDisplay.textContent = "00:00";
             if (topAudioTimerDisplay)
               topAudioTimerDisplay.textContent = "00:00";
             showToast("Time's up! Your test has been submitted.", "info");
@@ -4114,14 +4532,14 @@
             mockTestLayoutClass = "reading-layout";
             audioPlayerDisplay = "none"; // Hide audio for reading
             body.classList.remove("listening-body-padding"); // Ensure no extra padding
-            testInfoBarDisplay = "flex"; // Show info bar for reading
+            testInfoBarDisplay = "none"; // Hide info bar for reading to match listening
             if (mobilePaletteWrapper)
               mobilePaletteWrapper.style.display = "none"; // Hide mobile palette for reading
           } else if (currentModuleId === "listening") {
             mockTestLayoutClass = "listening-layout";
-            audioPlayerDisplay = "flex"; // Show audio for listening
-            body.classList.add("listening-body-padding"); // Add padding for bottom bar
-            testInfoBarDisplay = "none"; // Hide info bar for listening (sidebar handles timer)
+            audioPlayerDisplay = "none"; // Completely hide audio for Jumpinto UI
+            body.classList.remove("listening-body-padding"); // Prevent white gap push at bottom!
+            testInfoBarDisplay = "none"; // Hide info bar for listening
             if (mobilePaletteWrapper)
               mobilePaletteWrapper.style.display = "none"; // Hide old mobile palette
           } else if (currentModuleId === "writing") {
@@ -4208,6 +4626,13 @@
                         : ""
                     }
 
+               <!-- Left Blank Area (Only for Listening Jumpinto UI) -->
+                    ${
+                      currentModuleId === "listening"
+                        ? `<div class="hidden lg:block w-full h-full bg-white"></div>`
+                        : ""
+                    }
+
                  <!-- Passage Content Area (Only for Reading) -->
                     <div class="passage-content-area custom-scrollbar pb-24" style="${
                       currentModuleId === "reading" &&
@@ -4271,8 +4696,7 @@
                             <!-- Timer moved to sticky top bar for Reading/Writing -->
                         </div>
 
-
-                  <!-- Test Sections and Questions -->
+<!-- Test Sections and Questions -->
                         <div id="test-questions-container">
                             ${
                               currentModuleId === "writing"
@@ -4285,23 +4709,29 @@
                                     }</h3>
                                     ${
                                       currentSection.image
-                                        ? `<div class="map-image-container">
-                                                <img src="${currentSection.image}" alt="Test Section Image" class="rounded-lg">
-                                           </div>`
+                                        ? `<div class="map-image-container"><img src="${currentSection.image}" alt="Test Section Image" class="rounded-lg"></div>`
                                         : ""
                                     }
-                                    <div class="questions-list">
-                                        ${qGroupRenderer(currentSection)}
-                                    </div>
+                                    <div class="questions-list">${qGroupRenderer(
+                                      currentSection,
+                                    )}</div>
                                 </div>`
                             }
                         </div>
 
                      </div>
 
-                    <!-- Persistent Bottom Navigation Bar (Jumpinto / Official IELTS style) -->
+                <!-- Persistent Bottom Navigation Bar -->
+                    ${
+                      currentModuleId === "listening" ||
+                      currentModuleId === "reading"
+                        ? `
+                    <div class="jumpinto-bottom-bar custom-scrollbar" id="question-palette-jumpinto">
+                        <!-- Populated by JS -->
+                    </div>
+                    `
+                        : `
                     <div class="flex fixed bottom-0 left-0 w-full bg-white z-[950] shadow-[0_-4px_15px_rgba(0,0,0,0.05)] px-4 py-3 items-center justify-between border-t border-gray-200 h-[70px]">
-                        
                         <!-- Left: Previous Button -->
                         <div class="w-1/3 flex justify-start">
                             <button id="prev-section-btn"
@@ -4353,6 +4783,8 @@
                             }
                         </div>
                     </div>
+                    `
+                    }
                 </div>
             `;
         }
@@ -4458,179 +4890,84 @@
             .map((qGroup) => {
               let questionsHtml = "";
               if (qGroup.type === "matching") {
-                const optionsHtml = Object.entries(qGroup.matchingOptions)
-                  .filter(([key]) => key !== "title")
-                  .map(
-                    ([key, value]) => `
-                        <div class="matching-option" draggable="true" data-option-id="${key}">
-                            <strong>${key}.</strong> ${value}
-                        </div>
-                    `,
-                  )
-                  .join("");
-
-                const tableRowsHtml = qGroup.matchingItems
-                  .map((item) => {
-                    const userAnswer = testState.userAnswers[`q${item.number}`];
-                    const dropzoneContent = userAnswer
-                      ? `<div class="matching-option-content" draggable="true" data-option-id="${userAnswer}" data-source-question-number="${item.number}"><strong>${userAnswer}.</strong> ${qGroup.matchingOptions[userAnswer]}</div>`
-                      : "";
-
-                    return `
-                        <tr id="question-${item.number}">
-                            <td class="matching-question-text font-semibold">${
-                              item.number
-                            }. ${item.text}</td>
-                            <td>
-                                <div class="matching-dropzone ${
-                                  userAnswer ? "answered" : ""
-                                }" id="dropzone-${
-                      item.number
-                    }" data-question-number="${item.number}">
-                                    ${dropzoneContent}
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                var optionsBoxTitle =
+                  qGroup.matchingOptions.title || "Problems";
+                var optionsListHtml = Object.entries(qGroup.matchingOptions)
+                  .filter(function (entry) {
+                    return entry[0] !== "title";
+                  })
+                  .map(function (entry) {
+                    return (
+                      '<div class="text-[16px] text-gray-800 mb-1 leading-relaxed">' +
+                      entry[0] +
+                      ". " +
+                      entry[1] +
+                      "</div>"
+                    );
                   })
                   .join("");
 
-                questionsHtml = `
-                    <style>
-                        .matching-layout-container {
-                            display: grid;
-                            grid-template-columns: 1fr;
-                            gap: 24px;
-                            margin-bottom: 2vw;
-                        }
-                        @media (min-width: 1024px) {
-                            .matching-layout-container {
-                                grid-template-columns: 3fr 2fr;
-                            }
-                        }
-                        .matching-options-box {
-                            background-color: #f0f4f8;
-                            border: 1px solid #e2e8f0;
-                            border-radius: 12px;
-                            padding: 16px;
-                            align-self: start; /* Stick to top */
-                            transition: all 0.2s ease;
-                        }
-                        .matching-options-box.drag-over-clear {
-                            border-style: dashed;
-                            border-color: #f56565;
-                            background-color: #fed7d7;
-                        }
-                        .matching-options-box h4 {
-                            font-weight: 700;
-                            margin-top: 0;
-                            margin-bottom: 12px;
-                            color: #2c5282;
-                            font-size: 1.1rem;
-                        }
-                        .matching-option {
-                            background-color: white;
-                            border: 1px solid #cbd5e0;
-                            border-radius: 8px;
-                            padding: 10px 12px;
-                            margin-bottom: 8px;
-                            cursor: grab;
-                            transition: all 0.2s ease;
-                            user-select: none;
-                            font-size: 0.9rem;
-                        }
-                        .matching-option:active {
-                            cursor: grabbing;
-                            background-color: #e2e8f0;
-                            transform: scale(1.02);
-                        }
-                        .matching-option.dragging {
-                            opacity: 0.5;
-                            border-style: dashed;
-                        }
-                        .matching-table-container {
-                            overflow-x: auto;
-                        }
-                        .matching-table {
-                            width: 100%;
-                            border-collapse: separate;
-                            border-spacing: 0;
-                            border: 1px solid #e2e8f0;
-                            border-radius: 12px;
-                            overflow: hidden;
-                        }
-                        .matching-table td {
-                            padding: 16px;
-                            vertical-align: middle;
-                            border-bottom: 1px solid #e2e8f0;
-                        }
-                        .matching-table tr:last-child td {
-                             border-bottom: none;
-                        }
-                        .matching-table tr:nth-child(even) {
-                             background-color: #f7fafc;
-                        }
-                        .matching-question-text {
-                            color: #2d3748;
-                            width: 60%;
-                        }
-                        .matching-dropzone {
-                            width: 100%;
-                            min-height: 50px;
-                            border: 2px dashed #a0b4c8;
-                            border-radius: 8px;
-                            padding: 5px;
-                            color: #a0aec0;
-                            transition: all 0.2s ease;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                        }
-                        .matching-dropzone.drag-over {
-                            background-color: #bee3f8;
-                            border-color: #3182ce;
-                        }
-                        .matching-dropzone.dragging-source {
-                            background-color: #fefcbf !important;
-                            border-color: #f6e05e;
-                        }
-                        /* When answered, remove placeholder styles */
-                        .matching-dropzone.answered {
-                            border-style: none;
-                            background-color: transparent;
-                            padding: 0;
-                        }
-                        /* The styled content inside the dropzone */
-                        .matching-option-content {
-                            background-color: white;
-                            border: 1px solid #a0b4c8;
-                            border-radius: 8px;
-                            padding: 10px 12px;
-                            font-size: 0.9rem;
-                            text-align: left;
-                            width: 100%;
-                            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-                            cursor: grab;
-                        }
-                        .matching-option-content:active {
-                            cursor: grabbing;
-                            transform: scale(1.02);
-                        }
-                    </style>
-                    <div class="matching-layout-container">
-                        <div class="matching-table-container">
-                            <table class="matching-table">
-                                <tbody>
-                                    ${tableRowsHtml}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="matching-options-box">
-                            <h4>${qGroup.matchingOptions.title}</h4>
-                            ${optionsHtml}
-                        </div>
-                    </div>
-                `;
+                var optionsBoxHtml =
+                  '<div class="border border-gray-600 p-6 mb-8 max-w-[500px] mx-auto bg-white mt-4">' +
+                  '<h4 class="font-bold text-center text-[18px] mb-4 text-black">' +
+                  optionsBoxTitle +
+                  "</h4>" +
+                  "<div>" +
+                  optionsListHtml +
+                  "</div>" +
+                  "</div>";
+
+                var questionsListHtml = qGroup.matchingItems
+                  .map(function (item) {
+                    var questionId = "q" + item.number;
+                    var selectedVal = testState.userAnswers[questionId] || "";
+                    var optionsHtml = Object.keys(qGroup.matchingOptions)
+                      .filter(function (k) {
+                        return k !== "title";
+                      })
+                      .map(function (key) {
+                        var sel = selectedVal === key ? "selected" : "";
+                        return (
+                          '<option value="' +
+                          key +
+                          '" ' +
+                          sel +
+                          ">" +
+                          key +
+                          "</option>"
+                        );
+                      })
+                      .join("");
+
+                    return (
+                      '<div class="flex items-center gap-4 mb-4" id="question-' +
+                      item.number +
+                      '">' +
+                      '<strong class="text-black text-[16px] w-[24px] text-right">' +
+                      item.number +
+                      "</strong>" +
+                      '<span class="text-[16px] text-black min-w-[150px] flex-1">' +
+                      item.text +
+                      "</span>" +
+                      '<select id="' +
+                      questionId +
+                      '" onchange="handleAnswerInput(\'' +
+                      questionId +
+                      '\', this.value)" class="border border-gray-300 rounded px-2 py-1.5 w-[65px] bg-white text-gray-700 focus:outline-none focus:border-black focus:ring-1 focus:ring-black appearance-none bg-no-repeat cursor-pointer" style="background-image: url(\'data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%22%20fill%3D%22none%22%20stroke%3D%22%23999%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E\'); background-position: right 6px center; background-size: 14px;">' +
+                      '<option value=""></option>' +
+                      optionsHtml +
+                      "</select>" +
+                      "</div>"
+                    );
+                  })
+                  .join("");
+
+                questionsHtml =
+                  '<div class="w-full">' +
+                  optionsBoxHtml +
+                  '<div class="max-w-[500px] mx-auto flex flex-col justify-start">' +
+                  questionsListHtml +
+                  "</div></div>";
               } else if (qGroup.type === "matching_headings") {
                 if (qGroup.questions && qGroup.questions.length > 0) {
                   questionsHtml = `
@@ -5108,9 +5445,57 @@
                                     </div>
                                 </div>
                             `;
+                      } else if (question.type === "map_labeling") {
+                        var questionId = question.id;
+                        var selectedVal =
+                          testState.userAnswers[questionId] || "";
+                        var letters = [
+                          "A",
+                          "B",
+                          "C",
+                          "D",
+                          "E",
+                          "F",
+                          "G",
+                          "H",
+                          "I",
+                        ]; // Standard A-I from reference
+                        var selectOptions = letters
+                          .map(function (letter) {
+                            var sel = selectedVal === letter ? "selected" : "";
+                            return (
+                              '<option value="' +
+                              letter +
+                              '" ' +
+                              sel +
+                              ">" +
+                              letter +
+                              "</option>"
+                            );
+                          })
+                          .join("");
+
+                        questionHtml =
+                          '<div class="flex items-center gap-4 mb-4" id="question-' +
+                          question.questionNumber +
+                          '">' +
+                          '<strong class="text-black text-[16px] w-[24px] text-right">' +
+                          question.questionNumber +
+                          "</strong>" +
+                          '<span class="text-[16px] text-black w-[200px]">' +
+                          question.text +
+                          "</span>" +
+                          '<select id="q-' +
+                          questionId +
+                          '" onchange="handleAnswerInput(\'' +
+                          questionId +
+                          '\', this.value)" class="border border-gray-300 rounded px-2 py-1.5 w-[65px] bg-white text-gray-700 focus:outline-none focus:border-black focus:ring-1 focus:ring-black appearance-none bg-no-repeat cursor-pointer" style="background-image: url(\'data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%22%20fill%3D%22none%22%20stroke%3D%22%23999%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E\'); background-position: right 6px center; background-size: 14px;">' +
+                          '<option value=""></option>' +
+                          selectOptions +
+                          "</select>" +
+                          "</div>";
                       } else if (
                         question.type === "fill_in_the_blank" ||
-                        question.type === "map_labeling" ||
                         question.type === "fill_in_the_blank_passage" ||
                         question.type === "summary_completion"
                       ) {
@@ -5283,26 +5668,21 @@
                 ? `<div class="question-group-instructions mb-6 text-gray-600 font-inter">${finalInstructions}</div>`
                 : "";
 
-              // 3. If a map was found, render the side-by-side layout with Instructions on TOP
+              // 3. If a map was found, render the stacked layout (Map top, Questions bottom) to match Jumpinto style exactly
               if (mapImageHtml) {
-                return `
-                      <div class="w-full mb-8">
-                          <!-- TOP: Instructions span full width above everything -->
-                          ${instructionsBlock}
-                          
-                          <!-- BOTTOM: Split Map (Left) and Questions (Right) -->
-                          <div class="flex flex-col lg:flex-row gap-6 items-start mt-2">
-                              <!-- Left Side: Sticky Map -->
-                              <div class="w-full lg:w-1/2 lg:sticky lg:top-[120px] bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm flex justify-center [&>img]:w-full [&>img]:h-auto [&>img]:m-0">
-                                  ${mapImageHtml}
-                              </div>
-                              <!-- Right Side: Questions ONLY -->
-                              <div class="w-full lg:w-1/2 flex flex-col">
-                                  ${questionsHtml}
-                              </div>
-                          </div>
-                      </div>
-                  `;
+                return (
+                  '<div class="w-full mb-4">' +
+                  instructionsBlock +
+                  '<div class="flex flex-col items-center mt-2 mb-6 w-full">' +
+                  '<div class="w-full max-w-[650px] border border-gray-300 rounded-sm p-2 bg-white flex justify-center [&>img]:max-w-full [&>img]:max-h-[380px] [&>img]:w-auto [&>img]:object-contain [&>img]:m-0">' +
+                  mapImageHtml +
+                  "</div>" +
+                  "</div>" +
+                  '<div class="max-w-[500px] w-full flex flex-col justify-start" style="margin-left: 0;">' +
+                  questionsHtml +
+                  "</div>" +
+                  "</div>"
+                );
               }
 
               // 4. Default layout for normal questions (No map)
@@ -5502,17 +5882,65 @@
             });
           }
 
-          // Populate question palette (both desktop and mobile) if listening test
-          if (currentModuleId === "listening") {
+          // Populate question palette (both desktop and mobile) if listening or reading test
+          if (
+            currentModuleId === "listening" ||
+            currentModuleId === "reading"
+          ) {
             const questionPaletteDesktop = document.getElementById(
               "question-palette-desktop",
             );
             const questionPaletteMobile = document.getElementById(
               "question-palette-mobile",
             );
+            const questionPaletteJumpinto = document.getElementById(
+              "question-palette-jumpinto",
+            );
             const desktopTimerDisplaySidebar = document.getElementById(
               "timer-display-desktop-sidebar",
             );
+
+            // Populate Jumpinto palette
+            if (questionPaletteJumpinto) {
+              let jumpintoHtml = "";
+              let currentPart = 1;
+              const partLabel =
+                currentModuleId === "reading" ? "Passage" : "Part";
+
+              // Usually 40 questions in IELTS
+              for (let i = 1; i <= totalQuestions; i++) {
+                if (currentModuleId === "reading") {
+                  if (i === 1 || i === 14 || i === 27) {
+                    jumpintoHtml += `<span class="jumpinto-part-label">${partLabel} ${currentPart}</span>`;
+                    currentPart++;
+                  }
+                } else {
+                  if (i === 1 || i === 11 || i === 21 || i === 31) {
+                    jumpintoHtml += `<span class="jumpinto-part-label">${partLabel} ${currentPart}</span>`;
+                    currentPart++;
+                  }
+                }
+
+                const item = questionPaletteItems.find(
+                  (q) => q.paletteNumber === i,
+                );
+                if (item) {
+                  jumpintoHtml += `<button class="jumpinto-q-btn unanswered" data-palette-number="${item.paletteNumber}">${item.paletteNumber}</button>`;
+                } else {
+                  jumpintoHtml += `<button class="jumpinto-q-btn unanswered" data-palette-number="${i}">${i}</button>`;
+                }
+              }
+              questionPaletteJumpinto.innerHTML = jumpintoHtml;
+
+              questionPaletteJumpinto.addEventListener("click", (event) => {
+                if (event.target.classList.contains("jumpinto-q-btn")) {
+                  const paletteNum = parseInt(
+                    event.target.dataset.paletteNumber,
+                  );
+                  scrollToQuestion(paletteNum);
+                }
+              });
+            }
 
             // Update sidebar timer display
             if (desktopTimerDisplaySidebar) {
@@ -5660,76 +6088,74 @@
             }
           }
 
-          // Submit button common logic
-          const submitBtn = document.getElementById("submit-test-btn");
-          if (submitBtn) {
-            submitBtn.addEventListener("click", () => {
-              let unansweredCount = 0;
-              if (currentModuleId === "writing") {
-                currentTest.sections.forEach((task) => {
-                  const userAnswerText = testState.userAnswers[task.id] || "";
-                  const wordCount = calculateWordCount(userAnswerText);
-                  if (wordCount < task.wordCountMin) {
+          // Submit button common logic abstraction
+          const handleSubmissionPrompt = () => {
+            let unansweredCount = 0;
+            if (currentModuleId === "writing") {
+              currentTest.sections.forEach((task) => {
+                const userAnswerText = testState.userAnswers[task.id] || "";
+                const wordCount = calculateWordCount(userAnswerText);
+                if (wordCount < task.wordCountMin) {
+                  unansweredCount++;
+                }
+              });
+              showModal(
+                "Confirm Submission",
+                `Are you sure you want to submit the test? ${
+                  unansweredCount > 0
+                    ? `You have ${unansweredCount} writing tasks below the minimum word count.`
+                    : "All writing tasks meet the minimum word count."
+                }`,
+                true,
+                () => handleSubmitTest(),
+                () => hideModal(),
+              );
+            } else {
+              const processedMultiAnswerIds = new Set();
+              questionPaletteItems.forEach((item) => {
+                if (item.isMultiAnswerPart) {
+                  if (!processedMultiAnswerIds.has(item.questionId)) {
+                    const userAnswer = testState.userAnswers[item.questionId];
+                    const answeredCount = Array.isArray(userAnswer)
+                      ? userAnswer.length
+                      : 0;
+                    const requiredCount = item.requiredAnswers || 0;
+                    const remaining = requiredCount - answeredCount;
+                    if (remaining > 0) {
+                      unansweredCount += remaining;
+                    }
+                    processedMultiAnswerIds.add(item.questionId);
+                  }
+                } else {
+                  const userAnswer = testState.userAnswers[item.questionId];
+                  if (
+                    userAnswer === undefined ||
+                    userAnswer === null ||
+                    userAnswer === "" ||
+                    (Array.isArray(userAnswer) && userAnswer.length === 0)
+                  ) {
                     unansweredCount++;
                   }
-                });
-                showModal(
-                  "Confirm Submission",
-                  `Are you sure you want to submit the test? ${
-                    unansweredCount > 0
-                      ? `You have ${unansweredCount} writing tasks below the minimum word count.`
-                      : "All writing tasks meet the minimum word count."
-                  }`,
-                  true,
-                  () => handleSubmitTest(), // On confirm
-                  () => hideModal(), // On cancel
-                );
-              } else {
-                // Existing logic for Listening/Reading
-                // Iterate through questionPaletteItems to accurately count unanswered questions
-                const processedMultiAnswerIds = new Set();
-                questionPaletteItems.forEach((item) => {
-                  if (item.isMultiAnswerPart) {
-                    if (!processedMultiAnswerIds.has(item.questionId)) {
-                      const userAnswer = testState.userAnswers[item.questionId];
-                      const answeredCount = Array.isArray(userAnswer)
-                        ? userAnswer.length
-                        : 0;
-                      const requiredCount = item.requiredAnswers || 0;
-                      const remaining = requiredCount - answeredCount;
-                      if (remaining > 0) {
-                        unansweredCount += remaining;
-                      }
-                      processedMultiAnswerIds.add(item.questionId);
-                    }
-                  } else {
-                    const userAnswer = testState.userAnswers[item.questionId];
-                    if (
-                      userAnswer === undefined ||
-                      userAnswer === null ||
-                      userAnswer === "" ||
-                      (Array.isArray(userAnswer) && userAnswer.length === 0)
-                    ) {
-                      unansweredCount++;
-                    }
-                  }
-                });
+                }
+              });
 
-                console.log(
-                  "Calculated unanswered questions:",
-                  unansweredCount,
-                ); // Debugging line
+              showModal(
+                "Confirm Submission",
+                `Are you sure you want to submit the test? You have ${unansweredCount} unanswered questions.`,
+                true,
+                () => handleSubmitTest(),
+                () => hideModal(),
+              );
+            }
+          };
 
-                showModal(
-                  "Confirm Submission",
-                  `Are you sure you want to submit the test? You have ${unansweredCount} unanswered questions.`,
-                  true,
-                  () => handleSubmitTest(), // On confirm
-                  () => hideModal(), // On cancel
-                );
-              }
-            });
-          }
+          const submitBtn = document.getElementById("submit-test-btn");
+          if (submitBtn)
+            submitBtn.addEventListener("click", handleSubmissionPrompt);
+
+          const headerSubmitBtn = document.getElementById("header-submit-btn");
+          if (headerSubmitBtn)
+            headerSubmitBtn.addEventListener("click", handleSubmissionPrompt);
 
           // Start the timer
           startTimer();
@@ -6174,14 +6600,20 @@
                                     question.steps.length > 0
                                   ) {
                                     question.steps.forEach((step) => {
-                                      const questionId = `q${step.questionNumber}`;
-                                      testState.userAnswers[questionId] = "";
-                                      questionPaletteItems.push({
-                                        paletteNumber: currentPaletteNumber,
-                                        questionId: questionId,
-                                        htmlElementId: `question-${step.questionNumber}`,
-                                      });
-                                      currentPaletteNumber++;
+                                      if (
+                                        step.questionNumber !== undefined &&
+                                        step.questionNumber !== null &&
+                                        step.questionNumber !== ""
+                                      ) {
+                                        const questionId = `q${step.questionNumber}`;
+                                        testState.userAnswers[questionId] = "";
+                                        questionPaletteItems.push({
+                                          paletteNumber: currentPaletteNumber,
+                                          questionId: questionId,
+                                          htmlElementId: `question-${step.questionNumber}`,
+                                        });
+                                        currentPaletteNumber++;
+                                      }
                                     });
                                   }
                                 } else {
@@ -6198,6 +6630,77 @@
                           }
                         });
                       });
+
+                      // Clean up any "undefined" question IDs created by intermediate steps to perfectly align palette
+                      questionPaletteItems = questionPaletteItems.filter(
+                        function (item) {
+                          return (
+                            item.questionId &&
+                            item.questionId.indexOf("undefined") === -1 &&
+                            item.htmlElementId &&
+                            item.htmlElementId.indexOf("undefined") === -1
+                          );
+                        },
+                      );
+
+                      // Smart Recalculation: Extract exact question numbers to prevent misalignment
+                      let multiAnswerCounter = {};
+                      questionPaletteItems.forEach(function (item, index) {
+                        let extractedNum = null;
+
+                        // 1. Try to extract from questionId (e.g., "q24" -> 24)
+                        let qMatch = item.questionId.match(/^q(\d+)$/);
+                        if (qMatch) extractedNum = parseInt(qMatch[1]);
+
+                        // 2. Try to extract from htmlElementId (e.g., "question-24" -> 24)
+                        if (extractedNum === null && item.htmlElementId) {
+                          let hMatch = item.htmlElementId.match(
+                            /question-(\d+)$/,
+                          );
+                          if (hMatch) extractedNum = parseInt(hMatch[1]);
+                        }
+
+                        // 3. Handle multi-answer ranges (e.g., "question-21-26")
+                        if (extractedNum === null && item.htmlElementId) {
+                          let rangeMatch = item.htmlElementId.match(
+                            /question-(\d+)-(\d+)/,
+                          );
+                          if (rangeMatch) {
+                            let start = parseInt(rangeMatch[1]);
+                            if (!multiAnswerCounter[item.htmlElementId]) {
+                              multiAnswerCounter[item.htmlElementId] = start;
+                            }
+                            extractedNum =
+                              multiAnswerCounter[item.htmlElementId];
+                            multiAnswerCounter[item.htmlElementId]++;
+                          }
+                        }
+
+                        if (extractedNum !== null && !isNaN(extractedNum)) {
+                          item.paletteNumber = extractedNum;
+                        } else {
+                          item.paletteNumber = index + 1; // Fallback
+                        }
+                      });
+
+                      // Deduplicate and Sort
+                      let uniqueMap = new Map();
+                      questionPaletteItems.forEach(function (item) {
+                        if (!uniqueMap.has(item.paletteNumber)) {
+                          uniqueMap.set(item.paletteNumber, item);
+                        }
+                      });
+                      questionPaletteItems = Array.from(uniqueMap.values());
+                      questionPaletteItems.sort(function (a, b) {
+                        return a.paletteNumber - b.paletteNumber;
+                      });
+
+                      currentPaletteNumber =
+                        questionPaletteItems.length > 0
+                          ? questionPaletteItems[
+                              questionPaletteItems.length - 1
+                            ].paletteNumber + 1
+                          : 1;
 
                       // After populating questionPaletteItems from the test data:
                       // Ensure totalQuestions is always 40 for Listening and Reading,
@@ -6241,6 +6744,11 @@
                         // For other modules, totalQuestions is just the count of parsed questions
                         totalQuestions = questionPaletteItems.length;
                       }
+                    }
+
+                    // Enforce 32 minutes total for Writing module
+                    if (currentModuleId === "writing") {
+                      currentTest.duration = 32;
                     }
 
                     testState.timeLeft = currentTest.duration * 60;
@@ -6317,13 +6825,27 @@
                           // Catch the Chrome Autoplay Block silently.
                           if (playPromise !== undefined) {
                             playPromise.catch((e) => {
-                              console.warn(
-                                "Autoplay blocked by Chrome. User must click Play manually.",
+                              console.warn("Autoplay blocked by browser.");
+                              // Because the audio player is hidden, attach a one-time global click listener
+                              // so the moment they click anywhere (e.g. to answer), the audio starts.
+                              const startAudioInteraction = () => {
+                                audioPlayer
+                                  .play()
+                                  .catch((e) =>
+                                    console.warn("Still blocked", e),
+                                  );
+                                document.removeEventListener(
+                                  "click",
+                                  startAudioInteraction,
+                                );
+                              };
+                              document.addEventListener(
+                                "click",
+                                startAudioInteraction,
                               );
-                              // We just show a small toast instead of a full screen modal.
-                              // Because the audio player is now visible, the user can just click play themselves!
+
                               showToast(
-                                "Please click the Play button on the audio player to begin.",
+                                "Click anywhere on the screen to start the audio.",
                                 "info",
                               );
                             });

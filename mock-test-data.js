@@ -1432,7 +1432,7 @@ export const allMockTests = [
         questionGroups: [
           {
             instructions:
-              "<p>Questions 11-15</p><p>Complete the diagram below.</p><p>Write <strong>NO MORE THAN TWO WORDS</strong> for each answer.</p><h3>THE ROTOGRAVURE PROCESS</h3><img src='https://i.imgur.com/gA3b3jY.png' alt='Rotogravure Process Diagram' class='rounded-lg my-4'>",
+              "<p>Questions 11-15</p><p>Complete the diagram below.</p><p>Write <strong>NO MORE THAN TWO WORDS</strong> for each answer.</p><h3>THE ROTOGRAVURE PROCESS</h3><img src='https://res.cloudinary.com/datfdhgqv/image/upload/v1787896967/test-4-1_qjetbh.png' alt='Rotogravure Process Diagram' class='rounded-lg my-4'>",
             questions: [
               {
                 id: "q11",
@@ -2175,51 +2175,7 @@ export const allMockTests = [
               },
             ],
           },
-          {
-            instructions:
-              "<p>Questions 36 - 40</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD OR A NUMBER</strong> for each answer.</p>",
-            questions: [
-              {
-                id: "q36",
-                questionNumber: 36,
-                type: "fill_in_the_blank",
-                text: "Coursework in statistics, theory, ecology and [GAP]",
-                correctAnswer: ["PLANT", "Plant", "plant"],
-              },
-              {
-                id: "q37",
-                questionNumber: 37,
-                type: "fill_in_the_blank",
-                text:
-                  "identification [GAP] help students gain practical experience.",
-                correctAnswer: ["INTERNSHIPS", "Internships", "internships"],
-              },
-              {
-                id: "q38",
-                questionNumber: 38,
-                type: "fill_in_the_blank",
-                text:
-                  "Has so far granted [GAP] Masters Degrees and 122 Ph.D.'s",
-                correctAnswer: ["277"],
-              },
-              {
-                id: "q39",
-                questionNumber: 39,
-                type: "fill_in_the_blank",
-                text:
-                  "One former student is now the [GAP] of the World Wide Fund for Nature,",
-                correctAnswer: ["DIRECTOR", "Director", "director"],
-              },
-              {
-                id: "q40",
-                questionNumber: 40,
-                type: "fill_in_the_blank",
-                text:
-                  "while many others continue to conduct [GAP] in their own university programmes.",
-                correctAnswer: ["RESEARCH", "Research", "research"],
-              },
-            ],
-          },
+
           {
             instructions:
               "<p>Questions 36 - 40</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD OR A NUMBER</strong> for each answer.</p>",
@@ -2800,40 +2756,6 @@ export const allMockTests = [
                 type: "fill_in_the_blank",
                 text: "Email: oliver.bennett21@ [GAP]",
                 correctAnswer: ["GMAIL.COM", "Gmail.Com", "gmail.com"],
-              },
-            ],
-          },
-          {
-            instructions:
-              "<p>Questions 7-10</p><p>Complete the form below.</p><p>Write <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p><h3>Gym Membership Form</h3>",
-            questions: [
-              {
-                id: "q7",
-                questionNumber: 7,
-                type: "fill_in_the_blank",
-                text: "Monthly fee: £ [GAP]",
-                correctAnswer: "35",
-              },
-              {
-                id: "q8",
-                questionNumber: 8,
-                type: "fill_in_the_blank",
-                text: "Facilities include: pool and [GAP]",
-                correctAnswer: "SAUNA",
-              },
-              {
-                id: "q9",
-                questionNumber: 9,
-                type: "fill_in_the_blank",
-                text: "Most popular class: [GAP]",
-                correctAnswer: "SPINNING",
-              },
-              {
-                id: "q10",
-                questionNumber: 10,
-                type: "fill_in_the_blank",
-                text: "Email: oliver.bennett21@ [GAP]",
-                correctAnswer: "GMAIL.COM",
               },
             ],
           },
@@ -3838,55 +3760,7 @@ export const allMockTests = [
               },
             ],
           },
-          {
-            instructions:
-              "<p>Questions 6-10</p><p>Complete the sentences below.</p><p>Write <strong>NO MORE THAN THREE WORDS AND/OR A NUMBER</strong> for each answer.</p><h3>SUGGESTIONS FOR IMPROVEMENTS AT LEISURE CENTRE</h3>",
-            questions: [
-              {
-                id: "q6",
-                questionNumber: 6,
-                type: "fill_in_the_blank",
-                text: "New sports: [GAP]",
-                correctAnswer: [
-                  "YOGA AND TENNIS",
-                  "Yoga And Tennis",
-                  "yoga and tennis",
-                ],
-              },
-              {
-                id: "q7",
-                questionNumber: 7,
-                type: "fill_in_the_blank",
-                text: "Classes organised especially for: [GAP]",
-                correctAnswer: ["OLDER ADULTS", "Older Adults", "older adults"],
-              },
-              {
-                id: "q8",
-                questionNumber: 8,
-                type: "fill_in_the_blank",
-                text: "Type of education classes suggested: [GAP]",
-                correctAnswer: [
-                  "DANCING AND POTTERY",
-                  "Dancing And Pottery",
-                  "dancing and pottery",
-                ],
-              },
-              {
-                id: "q9",
-                questionNumber: 9,
-                type: "fill_in_the_blank",
-                text: "Willing to pay: £ [GAP] per class",
-                correctAnswer: ["3", "THREE", "Three", "three"],
-              },
-              {
-                id: "q10",
-                questionNumber: 10,
-                type: "fill_in_the_blank",
-                text: "Likely frequency of visits if changes made: [GAP]",
-                correctAnswer: ["FOUR TIMES", "Four Times", "four times"],
-              },
-            ],
-          },
+
           {
             instructions:
               "<p>Questions 6-10</p><p>Complete the sentences below.</p><p>Write <strong>NO MORE THAN THREE WORDS AND/OR A NUMBER</strong> for each answer.</p><h3>SUGGESTIONS FOR IMPROVEMENTS AT LEISURE CENTRE</h3>",
@@ -4879,54 +4753,7 @@ export const allMockTests = [
               },
             ],
           },
-          {
-            instructions:
-              "<p>Questions 5-10</p><p>Complete the form below.</p><p>Write <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p>",
-            questions: [
-              {
-                id: "q5",
-                questionNumber: 5,
-                type: "fill_in_the_blank",
-                text: "Price of ticket: £ [GAP] (in advance)",
-                correctAnswer: ["105"],
-              },
-              {
-                id: "q6",
-                questionNumber: 6,
-                type: "fill_in_the_blank",
-                text: "Transfer to Sarah (Ticketing officer) [GAP]",
-                correctAnswer: ["PENDLETON", "Pendleton", "pendleton"],
-              },
-              {
-                id: "q7",
-                questionNumber: 7,
-                type: "fill_in_the_blank",
-                text: "Venue this year: Grand [GAP]",
-                correctAnswer: ["PALACE", "Palace", "palace"],
-              },
-              {
-                id: "q8",
-                questionNumber: 8,
-                type: "fill_in_the_blank",
-                text: "Located near [GAP]",
-                correctAnswer: ["CITY CENTER", "City Center", "city center"],
-              },
-              {
-                id: "q9",
-                questionNumber: 9,
-                type: "fill_in_the_blank",
-                text: "Website: www.[GAP].net",
-                correctAnswer: ["DIRECTION", "Direction", "direction"],
-              },
-              {
-                id: "q10",
-                questionNumber: 10,
-                type: "fill_in_the_blank",
-                text: "Best way to contact: [GAP]",
-                correctAnswer: ["ONLINE", "Online", "online"],
-              },
-            ],
-          },
+
           {
             instructions:
               "<p>Questions 5-10</p><p>Complete the form below.</p><p>Write <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p>",
@@ -5332,50 +5159,7 @@ export const allMockTests = [
               },
             ],
           },
-          {
-            instructions:
-              "<p>Questions 6-10</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD AND/OR A NUMBER</strong> for each answer.</p><h3>Lakeside Sports Centre - Swimming Lessons</h3>",
-            questions: [
-              {
-                id: "q6",
-                questionNumber: 6,
-                type: "fill_in_the_blank",
-                text:
-                  "Fees\nAdults: £230 per year\nChildren under 15: £180 annually or attend for [GAP] if both parents join",
-                correctAnswer: ["FREE", "Free", "free"],
-              },
-              {
-                id: "q7",
-                questionNumber: 7,
-                type: "fill_in_the_blank",
-                text: "Timings\nOpen daily from 8:00 AM to [GAP] PM",
-                correctAnswer: ["8"],
-              },
-              {
-                id: "q8",
-                questionNumber: 8,
-                type: "fill_in_the_blank",
-                text:
-                  "Facilities\n3 indoor pools available all year\n2 [GAP] pools only for use from April to August",
-                correctAnswer: ["OUTDOOR", "Outdoor", "outdoor"],
-              },
-              {
-                id: "q9",
-                questionNumber: 9,
-                type: "fill_in_the_blank",
-                text: "Dining area serves meals and [GAP].",
-                correctAnswer: ["DESSERTS", "Desserts", "desserts"],
-              },
-              {
-                id: "q10",
-                questionNumber: 10,
-                type: "fill_in_the_blank",
-                text:
-                  "The fitness studio provides a wide range of modern [GAP].",
-                correctAnswer: ["EQUIPMENT", "Equipment", "equipment"],
-              },
-            ],
-          },
+
           {
             instructions:
               "<p>Questions 6-10</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD AND/OR A NUMBER</strong> for each answer.</p><h3>Lakeside Sports Centre - Swimming Lessons</h3>",
@@ -5805,58 +5589,7 @@ export const allMockTests = [
               },
             ],
           },
-          {
-            instructions:
-              "<p>Questions 5-10</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD ONLY</strong> for each answer.</p>",
-            questions: [
-              {
-                id: "q5",
-                questionNumber: 5,
-                type: "fill_in_the_blank",
-                text:
-                  "<strong>For younger children:</strong><br>discovery workshop: activities using things from the [GAP]",
-                correctAnswer: ["KITCHEN", "Kitchen", "kitchen"],
-              },
-              {
-                id: "q6",
-                questionNumber: 6,
-                type: "fill_in_the_blank",
-                text:
-                  "book quest: children earn a badge by reading eight books<br><br><strong>For adults:</strong><br>on Wednesday: local writer gives a talk about a real [GAP]",
-                correctAnswer: ["MYSTERY", "Mystery", "mystery"],
-              },
-              {
-                id: "q7",
-                questionNumber: 7,
-                type: "fill_in_the_blank",
-                text: "Monday mornings: tech help is offered no [GAP] needed",
-                correctAnswer: ["BOOKING", "Booking", "booking"],
-              },
-              {
-                id: "q8",
-                questionNumber: 8,
-                type: "fill_in_the_blank",
-                text:
-                  "free testing of blood [GAP] and pressure levels (age 65+ only)",
-                correctAnswer: ["SUGAR", "Sugar", "sugar"],
-              },
-              {
-                id: "q9",
-                questionNumber: 9,
-                type: "fill_in_the_blank",
-                text:
-                  "<strong>Other details:</strong><br>the centre shop sells planners, postcards, and [GAP]",
-                correctAnswer: ["STAMPS", "Stamps", "stamps"],
-              },
-              {
-                id: "q10",
-                questionNumber: 10,
-                type: "fill_in_the_blank",
-                text: "parking is free during [GAP] and weekends",
-                correctAnswer: ["EVENINGS", "Evenings", "evenings"],
-              },
-            ],
-          },
+
           {
             instructions:
               "<p>Questions 5-10</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD ONLY</strong> for each answer.</p>",
@@ -6300,58 +6033,7 @@ export const allMockTests = [
               },
             ],
           },
-          {
-            instructions:
-              "<p>Questions 5-10</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD AND/OR A NUMBER</strong> for each answer.</p><h3>WELLNESS CENTRE MEMBERSHIP</h3>",
-            questions: [
-              {
-                id: "q5",
-                questionNumber: 5,
-                type: "fill_in_the_blank",
-                text: "<strong>Procedure:</strong><br>fill a [GAP]",
-                correctAnswer: ["FORM", "Form", "form"],
-              },
-              {
-                id: "q6",
-                questionNumber: 6,
-                type: "fill_in_the_blank",
-                text: "choose a [GAP]",
-                correctAnswer: ["PASSWORD", "Password", "password"],
-              },
-              {
-                id: "q7",
-                questionNumber: 7,
-                type: "fill_in_the_blank",
-                text: "receive a digital [GAP]",
-                correctAnswer: ["NEWSLETTER", "Newsletter", "newsletter"],
-              },
-              {
-                id: "q8",
-                questionNumber: 8,
-                type: "fill_in_the_blank",
-                text: "you can meet on any day except [GAP]",
-                correctAnswer: ["WEDNESDAYS", "Wednesdays", "wednesdays"],
-              },
-              {
-                id: "q9",
-                questionNumber: 9,
-                type: "fill_in_the_blank",
-                text: "Name: Claire Johnson<br>Website address: [GAP].org",
-                correctAnswer: [
-                  "WELLNESSCENTRE",
-                  "Wellnesscentre",
-                  "wellnesscentre",
-                ],
-              },
-              {
-                id: "q10",
-                questionNumber: 10,
-                type: "fill_in_the_blank",
-                text: "Mobile no: [GAP]",
-                correctAnswer: ["07392042451"],
-              },
-            ],
-          },
+
           {
             instructions:
               "<p>Questions 5-10</p><p>Complete the notes below.</p><p>Write <strong>ONE WORD AND/OR A NUMBER</strong> for each answer.</p><h3>WELLNESS CENTRE MEMBERSHIP</h3>",
@@ -6781,58 +6463,7 @@ export const allMockTests = [
               },
             ],
           },
-          {
-            instructions:
-              "<p>Questions 5-10</p><p>Complete the form below.</p><p>Write <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p><h3>Cambridge Language Centre – Registration</h3>",
-            questions: [
-              {
-                id: "q5",
-                questionNumber: 5,
-                type: "fill_in_the_blank",
-                text: "Full course fee: £[GAP]",
-                correctAnswer: ["240"],
-              },
-              {
-                id: "q6",
-                questionNumber: 6,
-                type: "fill_in_the_blank",
-                text: "Students should bring: [GAP]",
-                correctAnswer: ["NOTEBOOK", "Notebook", "notebook"],
-              },
-              {
-                id: "q7",
-                questionNumber: 7,
-                type: "fill_in_the_blank",
-                text: "Needed for student card: [GAP]",
-                correctAnswer: [
-                  "PASSPORT PHOTO",
-                  "Passport Photo",
-                  "passport photo",
-                ],
-              },
-              {
-                id: "q8",
-                questionNumber: 8,
-                type: "fill_in_the_blank",
-                text: "Placement test includes: [GAP] and interview",
-                correctAnswer: ["WRITTEN TEST", "Written Test", "written test"],
-              },
-              {
-                id: "q9",
-                questionNumber: 9,
-                type: "fill_in_the_blank",
-                text: "Missed lessons can be watched as [GAP]",
-                correctAnswer: ["VIDEOS", "Videos", "videos"],
-              },
-              {
-                id: "q10",
-                questionNumber: 10,
-                type: "fill_in_the_blank",
-                text: "Parking spaces are [GAP]",
-                correctAnswer: ["LIMITED", "Limited", "limited"],
-              },
-            ],
-          },
+
           {
             instructions:
               "<p>Questions 5-10</p><p>Complete the form below.</p><p>Write <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p><h3>Cambridge Language Centre – Registration</h3>",
