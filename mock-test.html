@@ -3060,7 +3060,9 @@
         }
 
         const appId =
-          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+          typeof __app_id !== "undefined"
+            ? __app_id
+            : "ielts-mahir-community-forum";
         const userId = authAppState.userId;
         const userEmail = authAppState.user?.email || "Anonymous";
         const userName =
@@ -3110,7 +3112,7 @@
       }
       /**
        * Fetches the user's specific mock test result from Firestore.
-       * Uses the premiumGrantedAt timestamp to ignore old tests and allow retakes.
+       * Uses safe timestamp extraction to eliminate composite index errors.
        */
       async function fetchUserMockTestResult(userId, testId) {
         if (!db || !userId || !testId) return null;
@@ -3119,8 +3121,17 @@
             ? __app_id
             : "ielts-mahir-community-forum";
 
+        const getSafeMillis = (val) => {
+          if (!val) return 0;
+          if (typeof val.toMillis === "function") return val.toMillis();
+          if (typeof val.getTime === "function") return val.getTime();
+          if (typeof val.seconds === "number") return val.seconds * 1000;
+          if (typeof val === "number") return val;
+          return 0;
+        };
+
         try {
-          // Check Writing Submissions Collection
+          // 1. Check Writing Submissions Collection
           if (currentModuleId === "writing") {
             const resultsRef = collection(
               db,
@@ -3137,15 +3148,13 @@
               let latestTimestamp = 0;
               querySnapshot.forEach((docSnap) => {
                 const data = docSnap.data();
-                const timestamp = data.submittedAt
-                  ? data.submittedAt.toMillis()
-                  : 0;
-
-                // Ignore tests taken before the current premium package was granted (Allow Retake)
-                if (premiumGrantedAt && timestamp < premiumGrantedAt.toMillis())
+                const timestamp = getSafeMillis(data.submittedAt);
+                if (
+                  premiumGrantedAt &&
+                  timestamp < getSafeMillis(premiumGrantedAt)
+                )
                   return;
-
-                if (timestamp > latestTimestamp) {
+                if (timestamp >= latestTimestamp) {
                   latestTimestamp = timestamp;
                   latestResult = { id: docSnap.id, ...data };
                 }
@@ -3153,32 +3162,27 @@
               return latestResult;
             }
           }
-          // Check Reading/Listening Collection
+          // 2. Check Reading/Listening Collection directly in user's subcollection
           else {
             const resultsRef = collection(
               db,
               `artifacts/${appId}/users/${userId}/mockTestResults`,
             );
-            const q = query(
-              resultsRef,
-              where("testId", "==", testId),
-              where("userId", "==", userId),
-            );
+            // Query by testId only (subcollection is already isolated to this user)
+            const q = query(resultsRef, where("testId", "==", testId));
             const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) {
               let latestResult = null;
               let latestTimestamp = 0;
               querySnapshot.forEach((docSnap) => {
                 const data = docSnap.data();
-                const timestamp = data.timestamp
-                  ? data.timestamp.toMillis()
-                  : 0;
-
-                // Ignore tests taken before the current premium package was granted (Allow Retake)
-                if (premiumGrantedAt && timestamp < premiumGrantedAt.toMillis())
+                const timestamp = getSafeMillis(data.timestamp);
+                if (
+                  premiumGrantedAt &&
+                  timestamp < getSafeMillis(premiumGrantedAt)
+                )
                   return;
-
-                if (timestamp > latestTimestamp) {
+                if (timestamp >= latestTimestamp) {
                   latestTimestamp = timestamp;
                   latestResult = { id: docSnap.id, ...data };
                 }
@@ -3189,7 +3193,6 @@
           return null;
         } catch (error) {
           console.error("Error fetching user mock test result:", error);
-          showToast("Failed to load your test results.", "error");
           return null;
         }
       }
@@ -3200,7 +3203,9 @@
       async function fetchLeaderboard() {
         if (!db || !currentTestId) return; // Use currentTestId from global scope
         const appId =
-          typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+          typeof __app_id !== "undefined"
+            ? __app_id
+            : "ielts-mahir-community-forum";
         const leaderboardRef = collection(
           db,
           `artifacts/${appId}/public/data/mockTestGlobalResults`,
@@ -4352,12 +4357,21 @@
                     </div>
 
                    <div class="flex justify-center mt-8 gap-3 flex-wrap">
+                        ${
+                          testState.isStaffModerator
+                            ? `
+                        <button onclick="window.location.href='mock-test?module=' + currentModuleId + '&test=' + currentTestId;" class="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow-lg hover:bg-emerald-700 transition-all font-semibold text-base transform active:scale-95">
+                          <i class="fas fa-redo"></i> Retake Test (Moderator)
+                        </button>
+                        `
+                            : ""
+                        }
                         <a href="mock-test-category?module=${currentModuleId}" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
-                        <i class="fas fa-arrow-left w-5 h-5"></i> Back to Category
+                          <i class="fas fa-arrow-left w-5 h-5"></i> Back to Category
                         </a>
-                         <a href="daily-leaderboard" class="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
-                         <i class="fas fa-list-ol w-5 h-5"></i> Daily Leaderboard
-                         </a>
+                        <a href="daily-leaderboard" class="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-colors duration-200 font-semibold text-base transform active:scale-95">
+                          <i class="fas fa-list-ol w-5 h-5"></i> Daily Leaderboard
+                        </a>
                     </div>
                 </div>
             `;
@@ -6400,6 +6414,50 @@
                             testState.premiumPackage = "";
                           }
                         }
+
+                        // CRITICAL FALLBACK: Always verify against public premiumUsers table
+                        // (fixes issues where auth.js might have overwritten the private doc on new signup)
+                        const premiumCheckRef = doc(
+                          db,
+                          `artifacts/${appId}/public/data/premiumUsers/${user.uid}`,
+                        );
+                        const premiumCheckSnap = await getDoc(premiumCheckRef);
+                        if (premiumCheckSnap.exists()) {
+                          const pData = premiumCheckSnap.data();
+
+                          let expMillis = 0;
+                          if (pData.expiresAt) {
+                            expMillis =
+                              typeof pData.expiresAt.toMillis === "function"
+                                ? pData.expiresAt.toMillis()
+                                : pData.expiresAt.seconds * 1000 ||
+                                  new Date(pData.expiresAt).getTime();
+                          }
+                          if (
+                            pData.package &&
+                            pData.package.includes("Lifetime")
+                          )
+                            expMillis = Date.now() + 100000000;
+
+                          if (expMillis > Date.now()) {
+                            testState.isUserPremium = true;
+                            testState.premiumPackage =
+                              pData.package ||
+                              testState.premiumPackage ||
+                              "Custom Plan";
+
+                            // Auto-heal the private doc silently
+                            setDoc(
+                              userStatsDocRef,
+                              {
+                                isPremium: true,
+                                premiumPackage: testState.premiumPackage,
+                                expiresAt: pData.expiresAt,
+                              },
+                              { merge: true },
+                            ).catch(() => {});
+                          }
+                        }
                       } catch (e) {
                         console.error("Error fetching user stats:", e);
                       }
@@ -6415,8 +6473,116 @@
                       return;
                     }
 
-                    // --- Enforce "Already Completed" Block for URL Bypass ---
-                    if (user) {
+                    // --- AUTO-MODERATOR & STAFF PRIVILEGE VERIFICATION ---
+                    let isStaffModerator = false;
+                    let staffRole = null;
+                    const validRoles = [
+                      "super_admin",
+                      "admin",
+                      "moderator",
+                      "editor",
+                    ];
+                    const appId =
+                      typeof __app_id !== "undefined"
+                        ? __app_id
+                        : "ielts-mahir-community-forum";
+
+                    // Authoritative check against adminUsers collection (single source of truth)
+                    try {
+                      const staffDocSnap = await getDoc(
+                        doc(
+                          db,
+                          "artifacts",
+                          appId,
+                          "public",
+                          "data",
+                          "adminUsers",
+                          user.uid,
+                        ),
+                      );
+                      if (staffDocSnap.exists()) {
+                        const role = (staffDocSnap.data().role || "")
+                          .toLowerCase()
+                          .trim();
+                        if (validRoles.includes(role)) {
+                          isStaffModerator = true;
+                          staffRole = role;
+                        }
+                      }
+
+                      if (!isStaffModerator && user.email) {
+                        const cleanEmail = user.email.toLowerCase().trim();
+                        const q = query(
+                          collection(
+                            db,
+                            "artifacts",
+                            appId,
+                            "public",
+                            "data",
+                            "adminUsers",
+                          ),
+                          where("email", "==", cleanEmail),
+                        );
+                        const snap = await getDocs(q);
+                        if (!snap.empty) {
+                          const role = (snap.docs[0].data().role || "")
+                            .toLowerCase()
+                            .trim();
+                          if (validRoles.includes(role)) {
+                            isStaffModerator = true;
+                            staffRole = role;
+                          }
+                        }
+                      }
+                    } catch (e) {
+                      console.warn("Staff verification in test:", e);
+                    }
+
+                    // Self-healing: if user was deleted from adminUsers, purge stale staff status immediately
+                    if (!isStaffModerator) {
+                      if (
+                        testState.isStaff === true ||
+                        testState.premiumPackage?.includes("Staff")
+                      ) {
+                        try {
+                          await setDoc(
+                            doc(
+                              db,
+                              "artifacts",
+                              appId,
+                              "users",
+                              user.uid,
+                              "gameStats",
+                              "summary",
+                            ),
+                            {
+                              isStaff: false,
+                              role: null,
+                              isPremium: false,
+                              premiumPackage: null,
+                              unlimitedRetakes: false,
+                            },
+                            { merge: true },
+                          );
+                        } catch (err) {}
+                        testState.isUserPremium = false;
+                        testState.premiumPackage = "";
+                      }
+                    }
+
+                    testState.isStaffModerator = isStaffModerator;
+
+                    if (isStaffModerator) {
+                      testState.isUserPremium = true;
+                      testState.premiumPackage = `Staff (${
+                        staffRole ? staffRole.toUpperCase() : "MODERATOR"
+                      })`;
+                      testState.alreadyCompleted = false; // Active Staff/Moderators are NEVER blocked!
+                      testState.accessDenied = false;
+                    }
+
+                    // --- Enforce "Already Completed" Block ONLY for Regular Users ---
+                    if (user && !isStaffModerator) {
                       try {
                         const existingResult = await fetchUserMockTestResult(
                           user.uid,
@@ -6448,20 +6614,24 @@
                     );
 
                     let allowedTests = 1; // Default Free Tier Access (1 Test)
-                    if (testState.isUserPremium) {
+                    if (isStaffModerator) {
+                      allowedTests = 999; // Unlimited for moderators
+                    } else if (testState.isUserPremium) {
                       const pkg = testState.premiumPackage || "";
                       if (
                         pkg.includes("Platinum") ||
-                        pkg.includes("Full Premium")
+                        pkg.includes("Full Premium") ||
+                        pkg.includes("Lifetime") ||
+                        pkg.includes("Custom")
                       )
                         allowedTests = 16;
                       else if (pkg.includes("Gold")) allowedTests = 11;
                       else if (pkg.includes("Silver")) allowedTests = 6;
-                      else allowedTests = 16; // Legacy fallback
+                      else allowedTests = 16;
                     }
 
                     // If the user tries to access a test index beyond their allowed limit, block them
-                    if (testIndex >= allowedTests) {
+                    if (!isStaffModerator && testIndex >= allowedTests) {
                       testState.accessDenied = true;
                       testState.isCheckingAuth = false;
                       renderApp(); // Render Locked Premium Screen

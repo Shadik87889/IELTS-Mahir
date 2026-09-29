@@ -1690,7 +1690,28 @@
     </div>
 
     <script src="block-location.js"></script>
-    <script type="module" src="prevent-test-retake.js"></script>
+    <!-- Built-in Retake Protection Handler for Regular Users -->
+    <script>
+      window.handleCompletedCardClick = function (e, testTitle) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        const modalContainer = document.getElementById("modal-container");
+        if (modalContainer && typeof window.showModal === "function") {
+          window.showModal(
+            "Test Already Completed",
+            `<p class="text-slate-700 leading-relaxed">You have already completed <strong>${testTitle}</strong>.<br><br>To ensure authentic IELTS band assessments, regular user accounts are limited to <strong>1 attempt per test</strong>.<br><br>Please visit your <a href="dashboard" class="text-teal-600 font-bold underline">Dashboard</a> to view your past test scores and review your answers.</p>`,
+            false,
+          );
+        } else {
+          alert(
+            `You have already completed ${testTitle}. Standard accounts can only take each test once to preserve authentic scoring.`,
+          );
+        }
+        return false;
+      };
+    </script>
 
     <script type="module">
       import {
@@ -1972,6 +1993,141 @@
         }
       }
 
+      let isStaffModerator = false;
+      let staffRole = null;
+
+      // Authoritative staff check: adminUsers is the single source of truth
+      async function checkStaffStatus(user) {
+        isStaffModerator = false;
+        staffRole = null;
+        if (!db || !user) return false;
+
+        const appId =
+          typeof __app_id !== "undefined"
+            ? __app_id
+            : "ielts-mahir-community-forum";
+        const validRoles = ["super_admin", "admin", "moderator", "editor"];
+
+        // 1. Authoritative check: Check adminUsers collection by user.uid
+        try {
+          const uidDoc = await getDoc(
+            doc(
+              db,
+              "artifacts",
+              appId,
+              "public",
+              "data",
+              "adminUsers",
+              user.uid,
+            ),
+          );
+          if (uidDoc.exists()) {
+            const role = (uidDoc.data().role || "").toLowerCase().trim();
+            if (validRoles.includes(role)) {
+              isStaffModerator = true;
+              staffRole = role;
+            }
+          }
+        } catch (e) {
+          console.warn("UID staff check:", e);
+        }
+
+        // 2. Authoritative check fallback: Check adminUsers by email
+        if (!isStaffModerator && user.email) {
+          const cleanEmail = user.email.toLowerCase().trim();
+          try {
+            const q = query(
+              collection(
+                db,
+                "artifacts",
+                appId,
+                "public",
+                "data",
+                "adminUsers",
+              ),
+              where("email", "==", cleanEmail),
+            );
+            const snap = await getDocs(q);
+            if (!snap.empty) {
+              const role = (snap.docs[0].data().role || "")
+                .toLowerCase()
+                .trim();
+              if (validRoles.includes(role)) {
+                isStaffModerator = true;
+                staffRole = role;
+              }
+            }
+          } catch (e) {
+            console.warn("Email query staff check:", e);
+          }
+        }
+
+        // Self-Healing Logic:
+        if (isStaffModerator) {
+          // Confirmed staff: ensure user's gameStats has staff privileges
+          try {
+            await setDoc(
+              doc(
+                db,
+                "artifacts",
+                appId,
+                "users",
+                user.uid,
+                "gameStats",
+                "summary",
+              ),
+              {
+                isStaff: true,
+                role: staffRole,
+                isPremium: true,
+                premiumPackage: `Staff (${staffRole.toUpperCase()})`,
+                unlimitedRetakes: true,
+              },
+              { merge: true },
+            );
+          } catch (err) {
+            console.warn("Auto-syncing staff role to stats:", err);
+          }
+          return true;
+        } else {
+          // NOT in adminUsers: if user previously had staff privileges in gameStats, immediately PURGE them!
+          if (
+            userGameStats.isStaff === true ||
+            (userGameStats.premiumPackage &&
+              userGameStats.premiumPackage.includes("Staff"))
+          ) {
+            try {
+              await setDoc(
+                doc(
+                  db,
+                  "artifacts",
+                  appId,
+                  "users",
+                  user.uid,
+                  "gameStats",
+                  "summary",
+                ),
+                {
+                  isStaff: false,
+                  role: null,
+                  isPremium: false,
+                  premiumPackage: null,
+                  unlimitedRetakes: false,
+                },
+                { merge: true },
+              );
+            } catch (purgeErr) {
+              console.warn("Could not purge revoked staff stats:", purgeErr);
+            }
+            userGameStats.isStaff = false;
+            userGameStats.isPremium = false;
+            userGameStats.premiumPackage = null;
+            userGameStats.role = null;
+          }
+          return false;
+        }
+      }
+
       async function fetchUserGameStats(userId) {
         if (!db || !userId) return;
         const appId =
@@ -2052,19 +2208,10 @@
               db,
               `artifacts/${appId}/users/${userId}/mockTestResults`,
             );
-            const q1 = query(resultsRef, where("moduleId", "==", moduleId));
-            const snap1 = await getDocs(q1);
+            const snap1 = await getDocs(resultsRef);
             snap1.forEach((doc) => {
               const data = doc.data();
-              if (data.testId) {
-                const testTime = data.timestamp;
-                if (
-                  premiumGrantedAt &&
-                  testTime &&
-                  testTime.toMillis() < premiumGrantedAt.toMillis()
-                ) {
-                  return; // Ignored! Allow retake for this new package.
-                }
+              if (data.testId && !completedTestIds.includes(data.testId)) {
                 completedTestIds.push(data.testId);
               }
             });
@@ -2228,33 +2375,57 @@
           );
         }
 
-        let allowedTests = 1; // Free tier default
-        let isPremiumUser = userGameStats.isPremium === true;
+        // Detect if user has staff/moderator privileges
+        let isStaff =
+          isStaffModerator ||
+          userGameStats.isStaff === true ||
+          ["super_admin", "admin", "moderator", "editor"].includes(
+            String(userGameStats.role || "")
+              .toLowerCase()
+              .trim(),
+          );
+        let isPremiumUser = userGameStats.isPremium === true || isStaff;
         let pkg = userGameStats.premiumPackage || "";
+        let allowedTests = 1; // Free tier default
 
-        if (isPremiumUser) {
-          if (pkg.includes("Platinum") || pkg.includes("Full Premium")) {
+        if (isStaff) {
+          // MODERATOR / STAFF: Unlock 100% of all tests in every module!
+          allowedTests = testsInThisModule.length;
+        } else if (isPremiumUser) {
+          if (
+            pkg.includes("Platinum") ||
+            pkg.includes("Full Premium") ||
+            pkg.includes("Lifetime") ||
+            pkg.includes("Custom")
+          ) {
             allowedTests = 16;
           } else if (pkg.includes("Gold")) {
             allowedTests = 11;
           } else if (pkg.includes("Silver")) {
             allowedTests = 6;
           } else {
-            allowedTests = 16; // Legacy fallback
+            allowedTests = 16;
           }
         }
 
         // Specific overrides for Speaking tests based on packages
         if (currentModuleId === "speaking") {
-          if (isPremiumUser) {
-            if (pkg.includes("Platinum") || pkg.includes("Full Premium")) {
+          if (isStaff) {
+            allowedTests = testsInThisModule.length; // All speaking tests unlocked for staff
+          } else if (isPremiumUser) {
+            if (
+              pkg.includes("Platinum") ||
+              pkg.includes("Full Premium") ||
+              pkg.includes("Lifetime") ||
+              pkg.includes("Custom")
+            ) {
               allowedTests = 7;
             } else if (pkg.includes("Gold")) {
               allowedTests = 5;
             } else if (pkg.includes("Silver")) {
               allowedTests = 2;
             } else {
-              allowedTests = 2; // Legacy fallback
+              allowedTests = 2;
             }
           } else {
             allowedTests = 0; // Free users get 0 speaking tests
@@ -2262,7 +2433,7 @@
         }
 
         let premiumBannerHtml = "";
-        if (allowedTests < testsInThisModule.length) {
+        if (!isStaff && allowedTests < testsInThisModule.length) {
           premiumBannerHtml = `
             <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 mt-8 mb-4 animate-fade-in-up">
                 <div class="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 rounded-2xl p-1 shadow-[0_10px_25px_rgba(245,158,11,0.3)] transform transition-transform hover:-translate-y-1">
@@ -2455,17 +2626,20 @@
                             let isCompleted = submission ? true : false;
                             let speakingResultsHtml = "";
 
-                            const cardClasses = isCompleted
-                              ? "video-card locked-card opacity-0 animate-fade-in-up stagger-" +
-                                ((index % 4) + 1) +
-                                " flex flex-col h-full outline-none"
-                              : "video-card group opacity-0 animate-fade-in-up stagger-" +
-                                ((index % 4) + 1) +
-                                " flex flex-col h-full outline-none cursor-pointer";
+                            // For staff & moderators: Cards NEVER lock and can be requested again
+                            const cardClasses =
+                              isCompleted && !isStaff
+                                ? "video-card locked-card opacity-0 animate-fade-in-up stagger-" +
+                                  ((index % 4) + 1) +
+                                  " flex flex-col h-full outline-none"
+                                : "video-card group opacity-0 animate-fade-in-up stagger-" +
+                                  ((index % 4) + 1) +
+                                  " flex flex-col h-full outline-none cursor-pointer";
 
                             let completedOverlay = "";
                             if (
                               isCompleted &&
+                              !isStaff &&
                               (submission.status === "completed" ||
                                 submission.status === "reviewed")
                             ) {
@@ -2477,13 +2651,19 @@
                                       <span class="text-white font-bold text-[10px] uppercase tracking-widest bg-emerald-500 shadow-lg px-3 py-1 rounded-full border border-emerald-400">Evaluated</span>
                                   </div>
                               `;
-                            } else if (isCompleted) {
+                            } else if (isCompleted && !isStaff) {
                               completedOverlay = `
                                   <div class="absolute inset-0 bg-amber-900/40 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-amber-900/50">
                                       <div class="w-14 h-14 bg-white/95 rounded-full flex items-center justify-center text-amber-500 shadow-xl mb-2">
                                           <i class="fas fa-hourglass-half text-2xl animate-pulse"></i>
                                       </div>
                                       <span class="text-white font-bold text-[10px] uppercase tracking-widest bg-amber-500 shadow-lg px-3 py-1 rounded-full border border-amber-400">Pending</span>
+                                  </div>
+                              `;
+                            } else if (isCompleted && isStaff) {
+                              completedOverlay = `
+                                  <div class="absolute top-3 right-3 bg-fuchsia-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider shadow-md z-30 flex items-center gap-1">
+                                      <i class="fas fa-check-circle text-[9px]"></i> Reviewed
                                   </div>
                               `;
                             }
@@ -2542,8 +2722,7 @@
                             let clickAction = `onclick="openSpeakingModal('${
                               test.id
                             }', '${test.title.replace(/'/g, "\\'")}')"`;
-
-                            if (submission) {
+                            if (submission && !isStaff) {
                               clickAction = "";
                               if (
                                 submission.status === "completed" ||
@@ -2561,6 +2740,12 @@
                                 footerIconBg =
                                   "bg-amber-50 text-amber-500 border-amber-100";
                               }
+                            } else if (submission && isStaff) {
+                              footerText = "Request Session Again";
+                              footerIcon = "fa-calendar-plus";
+                              footerTextColor = "text-fuchsia-600";
+                              footerIconBg =
+                                "bg-fuchsia-50 text-fuchsia-600 border-fuchsia-100 group-hover:bg-fuchsia-600 group-hover:text-white";
                             }
 
                             return `
@@ -2687,27 +2872,49 @@
                             );
                           }
 
-                          const cardClasses = isCompleted
-                            ? "video-card locked-card opacity-0 animate-fade-in-up stagger-" +
-                              ((index % 4) + 1) +
-                              " flex flex-col h-full outline-none"
-                            : "video-card group opacity-0 animate-fade-in-up stagger-" +
-                              ((index % 4) + 1) +
-                              " flex flex-col h-full outline-none";
+                          // Check if user is staff (moderator/admin)
+                          const isUserStaff =
+                            isStaffModerator || userGameStats.isStaff === true;
 
+                          // For staff & moderators: Cards NEVER lock and can be retaken forever!
+                          const cardClasses =
+                            isCompleted && !isUserStaff
+                              ? "video-card locked-card opacity-0 animate-fade-in-up stagger-" +
+                                ((index % 4) + 1) +
+                                " flex flex-col h-full outline-none cursor-not-allowed"
+                              : "video-card group opacity-0 animate-fade-in-up stagger-" +
+                                ((index % 4) + 1) +
+                                " flex flex-col h-full outline-none cursor-pointer";
+
+                          // If completed by a regular user, neutralize href so it cannot navigate
                           let linkHref = `mock-test?module=${currentModuleId}&test=${test.id}`;
                           if (currentModuleId === "writing") {
                             linkHref = `writing-test?test=${test.id}`;
                           }
 
+                          let cardClickAttribute = "";
+                          if (isCompleted && !isUserStaff) {
+                            linkHref = "javascript:void(0);";
+                            cardClickAttribute = `onclick="return handleCompletedCardClick(event, '${test.title.replace(
+                              /'/g,
+                              "\\'",
+                            )}');"`;
+                          }
+
                           let completedOverlay = "";
-                          if (isCompleted) {
+                          if (isCompleted && !isStaffModerator) {
                             completedOverlay = `
                                       <div class="absolute inset-0 bg-emerald-900/40 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all duration-300 group-hover:bg-emerald-900/50">
                                           <div class="w-14 h-14 bg-white/95 rounded-full flex items-center justify-center text-emerald-600 shadow-xl mb-2 transform scale-100 group-hover:scale-110 transition-transform">
                                               <i class="fas fa-check-circle text-2xl"></i>
                                           </div>
                                           <span class="text-white font-bold text-[10px] uppercase tracking-widest bg-emerald-500 shadow-lg px-3 py-1 rounded-full border border-emerald-400">Completed</span>
+                                      </div>
+                                  `;
+                          } else if (isCompleted && isStaffModerator) {
+                            completedOverlay = `
+                                      <div class="absolute top-3 right-3 bg-emerald-500 text-white px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider shadow-md z-30 flex items-center gap-1">
+                                          <i class="fas fa-redo text-[9px]"></i> Retake Ready
                                       </div>
                                   `;
                           }
@@ -2733,16 +2940,22 @@
                             " group-hover:text-white group-hover:translate-x-1 " +
                             themeBorderHover;
 
-                          if (isCompleted) {
-                            footerText = "Completed";
-                            footerIcon = "fa-check";
-                            footerTextColor = "text-emerald-500";
+                          if (isCompleted && isUserStaff) {
+                            footerText = "Retake Test";
+                            footerIcon = "fa-redo";
+                            footerTextColor = "text-indigo-600";
                             footerIconBg =
-                              "bg-emerald-50 text-emerald-500 border-emerald-100";
+                              "bg-indigo-50 text-indigo-600 border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white";
+                          } else if (isCompleted) {
+                            footerText = "Completed (1/1 Taken)";
+                            footerIcon = "fa-lock";
+                            footerTextColor = "text-emerald-600";
+                            footerIconBg =
+                              "bg-emerald-100 text-emerald-700 border-emerald-200";
                           }
 
                           return `
-                                <a href="${linkHref}" class="${cardClasses}">
+                                <a href="${linkHref}" class="${cardClasses}" ${cardClickAttribute}>
                                     
                                     <div class="relative overflow-hidden aspect-[16/10] bg-slate-900 border-b border-slate-100 flex items-center justify-center shrink-0">
                                         <div class="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 opacity-90"></div>
@@ -2941,10 +3154,13 @@
 
             auth.onAuthStateChanged(async (user) => {
               if (user) {
+                await checkStaffStatus(user);
                 await fetchPremiumDetails(user.uid);
                 await fetchUserGameStats(user.uid);
                 await fetchCompletedTests(user.uid, currentModuleId);
               } else {
+                isStaffModerator = false;
+                staffRole = null;
                 completedTestIds = [];
                 speakingSubmissionsMap = {};
                 premiumGrantedAt = null;
