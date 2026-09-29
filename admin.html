@@ -23,6 +23,7 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <link rel="stylesheet" href="admin-panel-extra.css" />
   </head>
   <body class="flex h-full">
@@ -105,9 +106,29 @@
             </button>
           </div>
         </form>
-        <p class="mt-6 text-center text-sm text-gray-600">
+       <p class="mt-6 text-center text-sm text-gray-600">
           Not an admin? Access to this panel is restricted.
         </p>
+      </div>
+    </div>
+
+<!-- Email Verification Section -->
+    <div id="email-verification-section" class="min-h-screen flex flex-col items-center justify-center w-full bg-gray-100 hidden">
+      <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md border border-gray-200">
+        <div class="flex justify-center mb-4">
+            <i class="fas fa-envelope-open-text text-4xl text-red-600"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">Check Your Email</h2>
+        <p class="text-sm text-gray-600 mb-6 text-center">
+            We've sent a 6-digit verification code to <br><span id="verify-email-display" class="font-bold text-gray-800">your email</span>.
+        </p>
+        <label class="block text-sm font-medium text-gray-700 mb-2 text-center">Enter Verification Code</label>
+        <input type="text" id="email-verify-input" maxlength="6" placeholder="123456" class="block w-full px-4 py-2 border border-gray-300 rounded-md mb-4 focus:ring-red-500 focus:border-red-500 text-center text-2xl tracking-widest">
+        <button id="email-verify-btn" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors duration-200">Verify Code & Login</button>
+        <div class="mt-4 flex flex-col space-y-3 text-center">
+           <button id="resend-code-btn" class="text-sm text-gray-500 hover:text-gray-900 transition-colors"><i class="fas fa-redo mr-1"></i> Resend Code</button>
+           <button id="email-logout-btn" class="text-sm text-red-600 hover:underline">Cancel and Log Out</button>
+        </div>
       </div>
     </div>
 
@@ -251,6 +272,16 @@
         User Management
       </a>
     </li>
+   <li>
+      <a
+        href="#"
+        class="nav-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 font-semibold transition-colors duration-200"
+        data-page="student-hub"
+      >
+        <i class="fas fa-user-graduate text-lg mr-4"></i>
+        Student Control Hub
+      </a>
+    </li>
     <li>
       <a
         href="#"
@@ -388,7 +419,7 @@
         orderBy,
         limit,
       } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-     import {
+   import {
         getAuth,
         signInWithEmailAndPassword,
         signOut,
@@ -452,8 +483,8 @@
 // Default fallback permissions. These will be overridden by Firestore settings.
       let ROLE_PERMISSIONS = {
         [ROLES.SUPER_ADMIN]: ["*"],
-        [ROLES.ADMIN]: ["dashboard", "messages", "speaking-requests", "our-teacher", "community-forum", "blog", "free-resources", "pdf-resources", "testimonial", "premium-access", "writing-submissions", "user-management", "audit-logs", "user-roles"],
-        [ROLES.MODERATOR]: ["dashboard", "messages", "speaking-requests", "community-forum", "writing-submissions"],
+        [ROLES.ADMIN]: ["dashboard", "messages", "speaking-requests", "our-teacher", "community-forum", "blog", "free-resources", "pdf-resources", "testimonial", "premium-access", "writing-submissions", "user-management", "student-hub", "audit-logs", "user-roles"],
+        [ROLES.MODERATOR]: ["dashboard", "messages", "speaking-requests", "community-forum", "writing-submissions", "student-hub"],
         [ROLES.EDITOR]: ["dashboard", "our-teacher", "blog", "free-resources", "pdf-resources", "testimonial"]
       };
 
@@ -595,7 +626,7 @@
         { name: "Motivation & Support" },
       ];
 
-    const showMessage = (message) => {
+  window.showMessage = (message) => {
         // Ignore ghost permission errors that fire for a split-second during logout/password changes
         if (typeof message === 'string' && (message.includes('Missing or insufficient permissions') || message.includes('permission-denied'))) {
             console.warn("Suppressed background permission error during session termination.");
@@ -603,9 +634,52 @@
         }
         const messageBox = document.getElementById("message-box");
         const messageContent = document.getElementById("message-content");
-        messageContent.textContent = message;
-        messageBox.classList.remove("hidden");
-      };
+        if (messageContent && messageBox) {
+          messageContent.textContent = message;
+          messageBox.classList.remove("hidden");
+        } else {
+          alert(message);
+        }
+    };
+    const showMessage = window.showMessage;
+
+    // Global copy to clipboard helper available to all inline HTML buttons
+    window.copyToClipboard = (text, successMsg = "Copied to clipboard!") => {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          window.showMessage(successMsg);
+        }).catch(() => {
+          window.showMessage(successMsg);
+        });
+      } else {
+        const temp = document.createElement("input");
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        document.body.removeChild(temp);
+        window.showMessage(successMsg);
+      }
+    };
+
+    // Global copy to clipboard helper available to all inline HTML buttons
+    window.copyToClipboard = (text, successMsg = "Copied to clipboard!") => {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          window.showMessage(successMsg);
+        }).catch(() => {
+          window.showMessage(successMsg);
+        });
+      } else {
+        const temp = document.createElement("input");
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        document.body.removeChild(temp);
+        window.showMessage(successMsg);
+      }
+    };
 
      const showAdminPanel = () => {
         document.getElementById("login-section").classList.add("hidden");
@@ -614,30 +688,103 @@
         loadPageContent("dashboard"); // Load default page after successful login
       };
 
-      const showLoginForm = () => {
+const showLoginForm = () => {
         document.getElementById("login-section").classList.remove("hidden");
         document.getElementById("admin-panel").classList.add("hidden");
+        document.getElementById("email-verification-section").classList.add("hidden");
       };
 
       // Handle user login with email and password
       const handleLogin = async (email, password) => {
         try {
-          const userCredential = await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
-          );
-          console.log("User logged in:", userCredential.user.uid);
-          // The onAuthStateChanged listener will now handle showing the admin panel
-          // based on whether the logged-in user is the admin.
-          showMessage("Attempting login...", "info"); // Provide immediate feedback
+          await signInWithEmailAndPassword(auth, email, password);
+          showMessage("Verifying credentials...", "info"); 
         } catch (error) {
           console.error("Login failed:", error);
-          showMessage(
-            `Login failed: ${error.message}. Please check your email and password.`
-          );
+          showMessage(`Login failed: ${error.message}. Please check your email and password.`);
         }
       };
+
+      // --- EMAIL OTP 2-STEP LOGIC HANDLING ---
+      const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+    const sendEmailOTP = async (user, otp) => {
+        try {
+          // 1. Save OTP to Firebase Firestore securely
+          await updateDoc(doc(db, "artifacts", appId, "public", "data", "adminUsers", user.uid), {
+            currentOtp: otp,
+            otpTimestamp: serverTimestamp()
+          });
+
+         // 2. Send Email via EmailJS (100% Free)
+          emailjs.init("zHQeeYutafJyCKYnS"); 
+          await emailjs.send("service_5ol6z0p", "template_rbqwsyi", {
+            email: user.email,
+            otp_code: otp,
+            user_name: "Admin"
+          });
+
+          showMessage("Verification code sent to your email!");
+        } catch (error) {
+          console.error("Error sending OTP:", error);
+          // Updated error message to show exact EmailJS errors for easier debugging
+          showMessage(`Email sending failed (${error.text || 'Unknown Error'}). Your fallback code is: ${otp}`);
+        }
+      };
+
+      const showEmailVerificationUI = async (user) => {
+        document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("admin-panel").classList.add("hidden");
+        document.getElementById("email-verification-section").classList.remove("hidden");
+        document.getElementById("verify-email-display").textContent = user.email;
+        document.getElementById("email-verify-input").value = ''; 
+
+        // Generate and send code automatically
+        const newOtp = generateOTP();
+        await sendEmailOTP(user, newOtp);
+
+        // Resend Button
+        document.getElementById("resend-code-btn").onclick = async () => {
+          document.getElementById("resend-code-btn").innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Sending...';
+          const resentOtp = generateOTP();
+          await sendEmailOTP(user, resentOtp);
+          document.getElementById("resend-code-btn").innerHTML = '<i class="fas fa-redo mr-1"></i> Resend Code';
+        };
+
+        // Verify Button
+        document.getElementById("email-verify-btn").onclick = async () => {
+          const enteredOtp = document.getElementById("email-verify-input").value;
+          if (enteredOtp.length !== 6) return showMessage("Please enter the 6-digit code.");
+
+          try {
+            const userDoc = await getDoc(doc(db, "artifacts", appId, "public", "data", "adminUsers", user.uid));
+            if (userDoc.exists() && userDoc.data().currentOtp === enteredOtp) {
+              // Success! Clear the OTP from database, set session flag, and grant access
+              await updateDoc(doc(db, "artifacts", appId, "public", "data", "adminUsers", user.uid), {
+                currentOtp: null 
+              });
+              sessionStorage.setItem('mfa_verified_' + user.uid, 'true');
+              document.getElementById("email-verification-section").classList.add("hidden");
+              await completeLoginFlow();
+            } else {
+              showMessage("Incorrect verification code. Please try again.");
+            }
+          } catch (error) {
+            showMessage(`Error verifying code: ${error.message}`);
+          }
+        };
+
+        document.getElementById("email-logout-btn").onclick = async () => {
+          await handleLogout();
+        };
+      };
+
+      const completeLoginFlow = async () => {
+          isAuthReady = true;
+          await fetchRolePermissions(); // Wait for dynamic permissions
+          showAdminPanel();
+      };
+      // --- END EMAIL OTP LOGIC HANDLING ---
 
 // Handle user logout
       window.handleLogout = async () => {
@@ -3670,8 +3817,19 @@
               updatedBy: auth.currentUser.email || "Unknown Admin",
             }
           );
+
+          // Instantly sync the new staff role directly into user's gameStats
+          await setDoc(doc(db, "artifacts", appId, "users", targetUserId, "gameStats", "summary"), {
+            isPremium: true,
+            premiumPackage: "Staff (Unlimited)",
+            isStaff: true,
+            role: newRole,
+            unlimitedRetakes: true,
+            updatedAt: serverTimestamp()
+          }, { merge: true });
+
           await window.logAdminAction("UPDATE", "USER", targetUserId, `Changed role to ${newRole}`);
-          showMessage(`User role updated to '${newRole.replace('_', ' ')}' successfully.`);
+          showMessage(`User role updated to '${newRole.replace('_', ' ')}' and full test access granted.`);
         } catch (error) {
           console.error("Error updating user role:", error);
           showMessage(`Failed to update user role: ${error.message}.`);
@@ -3707,8 +3865,30 @@
 
         confirmDeleteBtn.addEventListener("click", async () => {
           try {
+            // 1. Delete user from adminUsers collection
             await deleteDoc(doc(db, "artifacts", appId, "public", "data", "adminUsers", targetUserId));
-            showMessage("User access revoked successfully.");
+
+            // 2. Wipe staff permissions and staff test access from gameStats/summary
+            try {
+              await setDoc(doc(db, "artifacts", appId, "users", targetUserId, "gameStats", "summary"), {
+                isStaff: false,
+                role: null,
+                isPremium: false,
+                premiumPackage: null,
+                unlimitedRetakes: false,
+                updatedAt: serverTimestamp()
+              }, { merge: true });
+            } catch (statsErr) {
+              console.warn("Could not wipe gameStats on user delete:", statsErr);
+            }
+
+            // 3. Remove from public premiumUsers list if present
+            try {
+              await deleteDoc(doc(db, "artifacts", appId, "public", "data", "premiumUsers", targetUserId));
+            } catch (premErr) {}
+
+            await window.logAdminAction("REVOKE", "USER", targetUserId, `Revoked staff access and test privileges for user`);
+            showMessage("User access and all staff test privileges revoked successfully.");
           } catch (error) {
             console.error("Error deleting user:", error);
             showMessage(`Failed to delete user: ${error.message}.`);
@@ -3757,13 +3937,32 @@
           const userCredential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
           const newUserId = userCredential.user.uid;
 
-          // Add user to adminUsers collection immediately to grant panel access
+         // 1. Add user to adminUsers collection for admin panel access
           await setDoc(doc(db, "artifacts", appId, "public", "data", "adminUsers", newUserId), {
             email: email,
             role: role,
             createdAt: serverTimestamp(),
             createdBy: auth.currentUser.email || "Unknown"
           });
+
+          // 2. Automatically grant unlimited test access & moderator status directly to gameStats/summary
+          await setDoc(doc(db, "artifacts", appId, "users", newUserId, "gameStats", "summary"), {
+            isPremium: true,
+            premiumPackage: "Staff (Unlimited)",
+            isStaff: true,
+            role: role,
+            unlimitedRetakes: true,
+            updatedAt: serverTimestamp()
+          }, { merge: true });
+
+          // 3. Populate base profile so user is instantly recognized across all mock tests
+          await setDoc(doc(db, "artifacts", appId, "users", newUserId, "userProfile", "profile"), {
+            name: email.split("@")[0] + " (Staff)",
+            email: email,
+            isStaff: true,
+            role: role,
+            createdAt: serverTimestamp()
+          }, { merge: true });
 
           await signOut(secondaryAuth); // Clean up secondary auth
           
@@ -3809,26 +4008,37 @@
                   option.textContent = `${user.email} (${user.role.replace('_', ' ')})`;
                   resetDropdown.appendChild(option);
               }
-              const userCard = document.createElement("div");
-              userCard.className = "bg-gray-100 p-4 rounded-lg shadow-sm mb-3 flex items-center justify-between";
+             const userCard = document.createElement("div");
+              userCard.className = "bg-slate-50 border border-slate-200 p-4 rounded-2xl sm:rounded-xl shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3";
               
               const isSelf = user.id === auth.currentUser.uid;
               const canEdit = currentUserRole === ROLES.SUPER_ADMIN || (currentUserRole === ROLES.ADMIN && user.role !== ROLES.SUPER_ADMIN);
 
               userCard.innerHTML = `
-                <div>
-                  <p class="font-semibold text-gray-800">${user.email || 'No Email'}</p>
-                  <p class="text-sm text-gray-600">Role: <span class="capitalize font-bold text-red-600">${user.role.replace('_', ' ')}</span></p>
-                  <p class="text-xs text-gray-500">User ID: ${user.id.substring(0, 8)}...</p>
+                <div class="flex items-start sm:items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm shrink-0">
+                    ${(user.email || 'A').charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-900 text-sm sm:text-base leading-tight">${user.email || 'No Email'}</p>
+                    <div class="flex flex-wrap items-center gap-2 mt-1">
+                      <span class="text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-red-100 text-red-700 border border-red-200">
+                        ${user.role.replace('_', ' ')}
+                      </span>
+                      <span class="text-[11px] text-gray-400 font-mono">UID: ${user.id.substring(0, 8)}...</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex items-center space-x-2">
-                  <select onchange="updateAdminUserRole('${user.id}', this.value)" class="p-2 border border-gray-300 rounded-md text-sm" ${(!canEdit || isSelf) ? 'disabled' : ''}>
+                <div class="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0 pt-3 sm:pt-0 border-t border-slate-200 sm:border-0">
+                  <select onchange="updateAdminUserRole('${user.id}', this.value)" class="flex-1 sm:flex-initial px-3 py-2 bg-white border border-gray-300 rounded-xl sm:rounded-md text-xs sm:text-sm font-semibold outline-none" ${(!canEdit || isSelf) ? 'disabled' : ''}>
                     ${currentUserRole === ROLES.SUPER_ADMIN ? `<option value="${ROLES.SUPER_ADMIN}" ${user.role === ROLES.SUPER_ADMIN ? "selected" : ""}>Super Admin</option>` : ''}
                     <option value="${ROLES.ADMIN}" ${user.role === ROLES.ADMIN ? "selected" : ""}>Admin</option>
                     <option value="${ROLES.MODERATOR}" ${user.role === ROLES.MODERATOR ? "selected" : ""}>Moderator</option>
                     <option value="${ROLES.EDITOR}" ${user.role === ROLES.EDITOR ? "selected" : ""}>Editor</option>
                   </select>
-                  <button onclick="deleteAdminUser('${user.id}', '${user.role}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm transition-colors duration-200 ${(!canEdit || isSelf) ? 'opacity-50 cursor-not-allowed' : ''}" ${(!canEdit || isSelf) ? 'disabled' : ''}>Delete</button>
+                  <button onclick="deleteAdminUser('${user.id}', '${user.role}')" class="px-3.5 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl sm:rounded-md text-xs sm:text-sm font-bold transition-colors ${(!canEdit || isSelf) ? 'opacity-40 cursor-not-allowed' : ''}" ${(!canEdit || isSelf) ? 'disabled' : ''}>
+                    <i class="fas fa-trash-alt sm:mr-1"></i> <span class="hidden sm:inline">Delete</span>
+                  </button>
                 </div>
               `;
               container.appendChild(userCard);
@@ -4175,26 +4385,28 @@
 
  const USER_MANAGEMENT_HTML = `
         ${generatePageHeader("User Management")}
-        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-            <p class="text-gray-700">Manage admin, moderator, and editor accounts for this panel. You can create new users, set their permissions, change roles, and update passwords.</p>
+        <div class="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-xl shadow-sm border border-slate-100 mb-6 sm:mb-8">
+            <p class="text-gray-700 text-sm sm:text-base leading-relaxed">Manage admin, moderator, and editor accounts for this panel. You can create new users, set their permissions, change roles, and update passwords.</p>
         </div>
 
         <!-- Section to Create New Admin/Moderator -->
-        <div id="create-admin-section" class="bg-white p-6 rounded-xl shadow-md mb-8 hidden">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Create New Panel User</h3>
+        <div id="create-admin-section" class="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-xl shadow-sm border border-slate-100 mb-6 sm:mb-8 hidden">
+            <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-user-plus text-blue-600"></i> Create New Panel User
+            </h3>
             <form id="create-admin-form" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
                     <div>
-                        <label for="new-admin-email" class="block text-sm font-medium text-gray-700">User Email</label>
-                        <input type="email" id="new-admin-email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" placeholder="user@example.com" required>
+                        <label for="new-admin-email" class="block text-xs font-bold uppercase text-gray-600 mb-1">User Email</label>
+                        <input type="email" id="new-admin-email" class="w-full px-3.5 py-2.5 bg-slate-50 border border-gray-300 rounded-xl sm:rounded-md shadow-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-gray-900 text-sm outline-none" placeholder="user@example.com" required>
                     </div>
                     <div>
-                        <label for="new-admin-password" class="block text-sm font-medium text-gray-700">Password</label>
-                        <input type="text" id="new-admin-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" placeholder="min 6 characters" required minlength="6">
+                        <label for="new-admin-password" class="block text-xs font-bold uppercase text-gray-600 mb-1">Password</label>
+                        <input type="text" id="new-admin-password" class="w-full px-3.5 py-2.5 bg-slate-50 border border-gray-300 rounded-xl sm:rounded-md shadow-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-gray-900 text-sm outline-none" placeholder="min 6 characters" required minlength="6">
                     </div>
                     <div>
-                        <label for="new-admin-role" class="block text-sm font-medium text-gray-700">Assign Role</label>
-                        <select id="new-admin-role" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" required>
+                        <label for="new-admin-role" class="block text-xs font-bold uppercase text-gray-600 mb-1">Assign Role</label>
+                        <select id="new-admin-role" class="w-full px-3.5 py-2.5 bg-slate-50 border border-gray-300 rounded-xl sm:rounded-md shadow-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-gray-900 text-sm outline-none cursor-pointer" required>
                             <option value="editor">Editor</option>
                             <option value="moderator">Moderator</option>
                             <option value="admin">Admin</option>
@@ -4202,60 +4414,62 @@
                         </select>
                     </div>
                 </div>
-                <button type="submit" id="create-admin-btn" class="w-full md:w-auto flex justify-center py-2 px-6 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                    <i class="fas fa-user-plus mr-2 mt-1"></i> Create User Account
+                <button type="submit" id="create-admin-btn" class="w-full sm:w-auto flex items-center justify-center py-3 sm:py-2.5 px-6 border border-transparent rounded-xl sm:rounded-md shadow-sm text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all duration-200">
+                    <i class="fas fa-user-plus mr-2"></i> Create User Account
                 </button>
             </form>
         </div>
 
         <!-- Section for Super Admin to Change Their OWN Password -->
-        <div id="super-admin-change-own-password-section" class="bg-white p-6 rounded-xl shadow-md mb-8 hidden border border-red-100">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Change Your Password <span class="text-sm font-normal text-red-500">(Super Admin Only)</span></h3>
-            <p class="text-sm text-gray-600 mb-4">Directly change your own panel password right here.</p>
+        <div id="super-admin-change-own-password-section" class="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-xl shadow-sm mb-6 sm:mb-8 hidden border border-red-200">
+            <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-1">Change Your Password <span class="text-xs font-bold text-red-500">(Super Admin Only)</span></h3>
+            <p class="text-xs sm:text-sm text-gray-500 mb-4">Directly change your own panel password right here.</p>
             <form id="change-password-form" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
                     <div>
-                        <label for="current-password" class="block text-sm font-medium text-gray-700">Current Password</label>
-                        <input type="password" id="current-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" required>
+                        <label for="current-password" class="block text-xs font-bold uppercase text-gray-600 mb-1">Current Password</label>
+                        <input type="password" id="current-password" class="w-full px-3.5 py-2.5 bg-slate-50 border border-gray-300 rounded-xl sm:rounded-md shadow-sm focus:ring-2 focus:ring-red-500/20 focus:border-red-500 text-gray-900 text-sm outline-none" required>
                     </div>
                     <div>
-                        <label for="new-password" class="block text-sm font-medium text-gray-700">New Password</label>
-                        <input type="password" id="new-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" required minlength="6">
+                        <label for="new-password" class="block text-xs font-bold uppercase text-gray-600 mb-1">New Password</label>
+                        <input type="password" id="new-password" class="w-full px-3.5 py-2.5 bg-slate-50 border border-gray-300 rounded-xl sm:rounded-md shadow-sm focus:ring-2 focus:ring-red-500/20 focus:border-red-500 text-gray-900 text-sm outline-none" required minlength="6">
                     </div>
                     <div>
-                        <label for="confirm-new-password" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
-                        <input type="password" id="confirm-new-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 text-gray-900 sm:text-sm" required minlength="6">
+                        <label for="confirm-new-password" class="block text-xs font-bold uppercase text-gray-600 mb-1">Confirm New Password</label>
+                        <input type="password" id="confirm-new-password" class="w-full px-3.5 py-2.5 bg-slate-50 border border-gray-300 rounded-xl sm:rounded-md shadow-sm focus:ring-2 focus:ring-red-500/20 focus:border-red-500 text-gray-900 text-sm outline-none" required minlength="6">
                     </div>
                 </div>
-                <button type="submit" class="w-full md:w-auto flex justify-center py-2 px-6 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
-                    <i class="fas fa-key mr-2 mt-1"></i> Update My Password
+                <button type="submit" class="w-full sm:w-auto flex items-center justify-center py-3 sm:py-2.5 px-6 border border-transparent rounded-xl sm:rounded-md shadow-sm text-sm font-bold text-white bg-red-600 hover:bg-red-700 transition-all duration-200">
+                    <i class="fas fa-key mr-2"></i> Update My Password
                 </button>
             </form>
         </div>
 
         <!-- Section for Super Admin to Reset Other Users' Passwords -->
-        <div id="super-admin-password-section" class="bg-white p-6 rounded-xl shadow-md mb-8 hidden border border-blue-100">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Reset Other Users' Passwords <span class="text-sm font-normal text-blue-500">(Super Admin Only)</span></h3>
-            <p class="text-sm text-gray-600 mb-4">Select an existing panel user to send them a secure link to their inbox so they can reset their password.</p>
+        <div id="super-admin-password-section" class="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-xl shadow-sm mb-6 sm:mb-8 hidden border border-blue-200">
+            <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-1">Reset Other Users' Passwords <span class="text-xs font-bold text-blue-500">(Super Admin Only)</span></h3>
+            <p class="text-xs sm:text-sm text-gray-500 mb-4">Select an existing panel user to send them a secure link to their inbox.</p>
             <form id="reset-password-form" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                        <label for="reset-target-user" class="block text-sm font-medium text-gray-700">Select User</label>
-                        <select id="reset-target-user" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 sm:text-sm" required>
+                        <label for="reset-target-user" class="block text-xs font-bold uppercase text-gray-600 mb-1">Select User</label>
+                        <select id="reset-target-user" class="w-full px-3.5 py-2.5 bg-slate-50 border border-gray-300 rounded-xl sm:rounded-md shadow-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-gray-900 text-sm outline-none cursor-pointer" required>
                             <option value="">Loading users...</option>
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="w-full md:w-auto flex justify-center py-2 px-6 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                    <i class="fas fa-envelope mr-2 mt-1"></i> Send Password Reset Link
+                <button type="submit" class="w-full sm:w-auto flex items-center justify-center py-3 sm:py-2.5 px-6 border border-transparent rounded-xl sm:rounded-md shadow-sm text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all duration-200">
+                    <i class="fas fa-envelope mr-2"></i> Send Password Reset Link
                 </button>
             </form>
         </div>
 
         <!-- Section to Manage Existing Admin/Moderator -->
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Manage Existing Panel Users</h3>
-            <div id="admin-users-list"></div>
+        <div class="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-xl shadow-sm border border-slate-100">
+            <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-users-cog text-gray-700"></i> Manage Existing Panel Users
+            </h3>
+            <div id="admin-users-list" class="space-y-3"></div>
         </div>
       `;
 
@@ -4327,21 +4541,50 @@ const PREMIUM_ACCESS_HTML = `
 
                             <!-- Row 3: Security & Package -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-slate-700 text-sm font-bold mb-2">Package Tier</label>
+                               <div>
+                                    <label class="block text-slate-700 text-sm font-bold mb-2">Package Tier & Validity</label>
                                     <div class="relative group">
                                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
                                             <i class="fas fa-box-open text-slate-400 group-focus-within:text-indigo-500 transition-colors"></i>
                                         </div>
-                                        <select id="target-package" class="block w-full pl-11 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-semibold appearance-none focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer shadow-sm" required>
+                                        <select id="target-package" onchange="toggleCustomDurationFields(this.value)" class="block w-full pl-11 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm font-semibold appearance-none focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer shadow-sm" required>
                                             <option value="Silver Package">🥈 Silver Package (1,000 BDT) - 1 Month</option>
                                             <option value="Gold Package" selected>🥇 Gold Package (2,000 BDT) - 2 Months</option>
                                             <option value="Platinum Package">💎 Platinum Package (3,000 BDT) - 3 Months</option>
+                                            <option value="Custom Duration">⚙️ Custom Duration (Set Custom Days / Date)</option>
+                                            <option value="Lifetime Access">♾️ Lifetime Access (Permanent)</option>
                                         </select>
                                         <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
                                             <i class="fas fa-chevron-down text-slate-400 text-xs"></i>
                                         </div>
                                     </div>
+                                </div>
+
+                                <!-- Dynamic Custom Validity Builder (Appears when Custom Duration is chosen) -->
+                                <div id="custom-duration-container" class="hidden md:col-span-2 bg-gradient-to-r from-indigo-50/70 via-purple-50/70 to-pink-50/70 p-5 rounded-2xl border border-indigo-100/80 shadow-inner mt-2">
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <i class="fas fa-sliders-h text-indigo-600"></i>
+                                        <span class="text-sm font-extrabold text-indigo-900 uppercase tracking-wider">Custom Access Duration Config</span>
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-600 mb-1">Duration Length</label>
+                                            <input type="number" id="target-custom-days" min="1" max="365" value="15" placeholder="e.g. 15" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-slate-800 text-sm font-semibold focus:ring-2 focus:ring-indigo-500/30 outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-600 mb-1">Time Unit</label>
+                                            <select id="target-custom-unit" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-slate-800 text-sm font-semibold focus:ring-2 focus:ring-indigo-500/30 outline-none cursor-pointer">
+                                                <option value="days" selected>Days</option>
+                                                <option value="weeks">Weeks</option>
+                                                <option value="months">Months</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-600 mb-1">Or Pick Exact Expiry Date</label>
+                                            <input type="date" id="target-custom-exact-date" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-slate-800 text-sm font-semibold focus:ring-2 focus:ring-indigo-500/30 outline-none">
+                                        </div>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 mt-2 font-medium"><i class="fas fa-info-circle mr-1 text-indigo-500"></i> Tip: If an exact date is picked, it overrides the numeric days.</p>
                                 </div>
 
                                 <div>
@@ -4386,9 +4629,9 @@ const PREMIUM_ACCESS_HTML = `
                 </div>
             </div>
 
-            <div class="overflow-x-auto bg-white rounded-2xl border border-slate-200 shadow-sm">
-                <table class="min-w-full divide-y divide-slate-200">
-                    <thead class="bg-slate-50 border-b border-slate-200">
+           <div class="bg-transparent md:bg-white rounded-2xl md:border md:border-slate-200 md:shadow-sm overflow-hidden">
+                <table class="min-w-full block md:table">
+                    <thead class="hidden md:table-header-group bg-slate-50 border-b border-slate-200">
                         <tr>
                             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">User Details</th>
                             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Package & Status</th>
@@ -4396,7 +4639,7 @@ const PREMIUM_ACCESS_HTML = `
                             <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="premium-users-list" class="bg-white divide-y divide-slate-100"></tbody>
+                    <tbody id="premium-users-list" class="block md:table-row-group space-y-3 md:space-y-0 divide-y-0 md:divide-y divide-slate-100"></tbody>
                 </table>
             </div>
           <div id="premium-users-pagination" class="mt-8 flex justify-center pb-4"></div>
@@ -4422,9 +4665,9 @@ const WRITING_SUBMISSIONS_HTML = `
                 </div>
             </div>
 
-            <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+           <div class="bg-transparent md:bg-white rounded-2xl md:border md:border-gray-200 overflow-hidden">
+                <table class="min-w-full block md:table">
+                    <thead class="hidden md:table-header-group bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
@@ -4433,7 +4676,7 @@ const WRITING_SUBMISSIONS_HTML = `
                             <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="writing-submissions-list" class="bg-white divide-y divide-gray-200">
+                    <tbody id="writing-submissions-list" class="block md:table-row-group space-y-3 md:space-y-0 divide-y-0 md:divide-y divide-gray-200">
                         <!-- Dynamic Content -->
                     </tbody>
                 </table>
@@ -4446,9 +4689,9 @@ const WRITING_SUBMISSIONS_HTML = `
         ${generatePageHeader("System Audit Logs")}
         <div class="bg-white p-6 rounded-xl shadow-md mb-8">
             <p class="text-gray-700 mb-6">Review sensitive actions taken by panel administrators. Immutable logs ensure strict accountability.</p>
-            <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+           <div class="bg-transparent md:bg-white rounded-2xl md:border md:border-gray-200 overflow-hidden">
+                <table class="min-w-full block md:table">
+                    <thead class="hidden md:table-header-group bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Timestamp</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Admin User</th>
@@ -4456,7 +4699,7 @@ const WRITING_SUBMISSIONS_HTML = `
                             <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Details</th>
                         </tr>
                     </thead>
-                    <tbody id="audit-logs-list" class="bg-white divide-y divide-gray-200"></tbody>
+                    <tbody id="audit-logs-list" class="block md:table-row-group space-y-3 md:space-y-0 divide-y-0 md:divide-y divide-gray-200"></tbody>
                 </table>
             </div>
             <div id="audit-logs-pagination" class="mt-6 flex justify-center"></div>
@@ -4467,21 +4710,21 @@ const WRITING_SUBMISSIONS_HTML = `
         ${generatePageHeader("Role Access Control")}
         <div class="bg-white p-6 rounded-xl shadow-md mb-8">
             <p class="text-gray-700 mb-6">Dynamically assign panel access per role. Super Admins bypass all restrictions.</p>
-            <div class="overflow-x-auto bg-white rounded-lg border border-gray-200 mb-6">
-                <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <div class="overflow-x-auto bg-white rounded-2xl border border-gray-200 mb-6 shadow-sm">
+                <table class="min-w-full divide-y divide-gray-200 text-xs sm:text-sm">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-4 text-left font-bold text-gray-700 uppercase tracking-wider">Module / Page</th>
-                            <th scope="col" class="px-6 py-4 text-center font-bold text-gray-700 uppercase tracking-wider">Admin</th>
-                            <th scope="col" class="px-6 py-4 text-center font-bold text-gray-700 uppercase tracking-wider">Moderator</th>
-                            <th scope="col" class="px-6 py-4 text-center font-bold text-gray-700 uppercase tracking-wider">Editor</th>
+                            <th scope="col" class="px-3 sm:px-6 py-3.5 sm:py-4 text-left font-bold text-gray-700 uppercase tracking-wider">Module / Page</th>
+                            <th scope="col" class="px-2 sm:px-6 py-3.5 sm:py-4 text-center font-bold text-gray-700 uppercase tracking-wider">Admin</th>
+                            <th scope="col" class="px-2 sm:px-6 py-3.5 sm:py-4 text-center font-bold text-gray-700 uppercase tracking-wider">Mod</th>
+                            <th scope="col" class="px-2 sm:px-6 py-3.5 sm:py-4 text-center font-bold text-gray-700 uppercase tracking-wider">Editor</th>
                         </tr>
                     </thead>
                     <tbody id="role-permissions-matrix" class="bg-white divide-y divide-gray-100"></tbody>
                 </table>
             </div>
-            <button onclick="saveDynamicPermissions()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md">
-                <i class="fas fa-save mr-2"></i> Save Permissions Matrix
+            <button onclick="saveDynamicPermissions()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 sm:py-3 px-6 rounded-xl transition-all duration-200 shadow-md flex items-center justify-center gap-2 text-sm">
+                <i class="fas fa-save"></i> Save Permissions Matrix
             </button>
         </div>
       `;
@@ -4513,12 +4756,16 @@ const WRITING_SUBMISSIONS_HTML = `
                       if (log.actionType === "CREATE" || log.actionType === "GRANT") actionColor = "bg-green-100 text-green-800";
                       if (log.actionType === "UPDATE") actionColor = "bg-blue-100 text-blue-800";
 
-                      const tr = document.createElement("tr");
+                     const tr = document.createElement("tr");
+                      tr.className = "flex flex-col md:table-row bg-white border border-gray-200 md:border-none rounded-2xl md:rounded-none p-4 md:px-6 md:py-4 shadow-sm md:shadow-none hover:bg-gray-50 transition-colors";
                       tr.innerHTML = `
-                          <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-500">${date}</td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${log.adminEmail}</td>
-                          <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 inline-flex text-[10px] leading-4 font-bold rounded-md uppercase tracking-wider ${actionColor}">${log.actionType} ${log.targetType}</span></td>
-                          <td class="px-6 py-4 text-sm text-gray-600">${log.details} <br><span class="text-[10px] text-gray-400 font-mono">ID: ${log.targetId}</span></td>
+                          <td class="p-0 md:px-6 md:py-4 whitespace-nowrap text-xs text-gray-400 border-none mb-2 md:mb-0 flex justify-between items-center md:table-cell">
+                              <span>${date}</span>
+                              <div class="md:hidden"><span class="px-2 py-1 inline-flex text-[10px] leading-4 font-bold rounded-md uppercase tracking-wider ${actionColor}">${log.actionType} ${log.targetType}</span></div>
+                          </td>
+                          <td class="p-0 md:px-6 md:py-4 whitespace-nowrap text-sm font-bold text-gray-900 border-none mb-1 md:mb-0">${log.adminEmail}</td>
+                          <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 inline-flex text-[10px] leading-4 font-bold rounded-md uppercase tracking-wider ${actionColor}">${log.actionType} ${log.targetType}</span></td>
+                          <td class="p-0 md:px-6 md:py-4 text-xs sm:text-sm text-gray-600 border-none pt-2 md:pt-0 mt-2 md:mt-0 border-t border-gray-100 md:border-none">${log.details} <br><span class="text-[10px] text-gray-400 font-mono">ID: ${log.targetId}</span></td>
                       `;
                       container.appendChild(tr);
                   });
@@ -4543,7 +4790,7 @@ const WRITING_SUBMISSIONS_HTML = `
           });
       };
 
-      const ALL_PAGES = ["dashboard", "messages", "speaking-requests", "our-teacher", "community-forum", "blog", "free-resources", "pdf-resources", "testimonial", "user-management", "user-roles", "premium-access", "writing-submissions", "audit-logs"];
+      const ALL_PAGES = ["dashboard", "messages", "speaking-requests", "our-teacher", "community-forum", "blog", "free-resources", "pdf-resources", "testimonial", "user-management", "student-hub", "user-roles", "premium-access", "writing-submissions", "audit-logs"];
       const renderRolePermissions = () => {
           const container = document.getElementById("role-permissions-matrix");
           if (!container) return;
@@ -4557,10 +4804,10 @@ const WRITING_SUBMISSIONS_HTML = `
               const isChecked = (role) => ROLE_PERMISSIONS[role] && ROLE_PERMISSIONS[role].includes(page) ? "checked" : "";
               
               tr.innerHTML = `
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800 border-r border-gray-100">${formattedPage}</td>
-                  <td class="px-6 py-4 text-center"><input type="checkbox" class="perm-checkbox w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" data-role="admin" data-page="${page}" ${isChecked("admin")}></td>
-                  <td class="px-6 py-4 text-center"><input type="checkbox" class="perm-checkbox w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" data-role="moderator" data-page="${page}" ${isChecked("moderator")}></td>
-                  <td class="px-6 py-4 text-center"><input type="checkbox" class="perm-checkbox w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" data-role="editor" data-page="${page}" ${isChecked("editor")}></td>
+                  <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-bold text-gray-800 border-r border-gray-100">${formattedPage}</td>
+                  <td class="px-2 sm:px-6 py-3 sm:py-4 text-center"><input type="checkbox" class="perm-checkbox w-5 h-5 text-blue-600 rounded-md border-gray-300 focus:ring-blue-500 cursor-pointer" data-role="admin" data-page="${page}" ${isChecked("admin")}></td>
+                  <td class="px-2 sm:px-6 py-3 sm:py-4 text-center"><input type="checkbox" class="perm-checkbox w-5 h-5 text-blue-600 rounded-md border-gray-300 focus:ring-blue-500 cursor-pointer" data-role="moderator" data-page="${page}" ${isChecked("moderator")}></td>
+                  <td class="px-2 sm:px-6 py-3 sm:py-4 text-center"><input type="checkbox" class="perm-checkbox w-5 h-5 text-blue-600 rounded-md border-gray-300 focus:ring-blue-500 cursor-pointer" data-role="editor" data-page="${page}" ${isChecked("editor")}></td>
               `;
               container.appendChild(tr);
           });
@@ -4588,7 +4835,1135 @@ const WRITING_SUBMISSIONS_HTML = `
 
       let premiumUsersCurrentPage = 1;
       const premiumUsersItemsPerPage = 10;
-     let premiumUsersCurrentFilters = { searchTerm: "" };
+      let premiumUsersCurrentFilters = { searchTerm: "" };
+
+      // ==========================================
+      // --- START: STUDENT INTELLIGENCE & ACCESS HUB ---
+      // ==========================================
+
+   const STUDENT_HUB_HTML = `
+        <div class="w-full max-w-full overflow-hidden">
+            <!-- Header -->
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Student Intelligence & Access</h1>
+            <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-100 mb-6">
+                <p class="text-xs sm:text-sm text-gray-600">Monitor active student subscriptions, access expiration, and unlock test retakes.</p>
+            </div>
+            
+            <!-- Top Stats Overview (Safe Responsive 2x2 Grid) -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+                <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-sm border border-slate-100/90 relative overflow-hidden flex items-center justify-between">
+                    <div class="min-w-0 pr-1">
+                        <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider block truncate">Total Students</span>
+                        <span id="shub-total-students" class="text-xl sm:text-3xl font-extrabold text-slate-800 leading-tight">...</span>
+                    </div>
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm sm:text-lg shadow-inner shrink-0">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-sm border border-slate-100/90 relative overflow-hidden flex items-center justify-between">
+                    <div class="min-w-0 pr-1">
+                        <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider block truncate">Active Premium</span>
+                        <span id="shub-active-premium" class="text-xl sm:text-3xl font-extrabold text-emerald-600 leading-tight">...</span>
+                    </div>
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm sm:text-lg shadow-inner shrink-0">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                </div>
+                <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-sm border border-slate-100/90 relative overflow-hidden flex items-center justify-between">
+                    <div class="min-w-0 pr-1">
+                        <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider block truncate">Expiring (≤7d)</span>
+                        <span id="shub-expiring-soon" class="text-xl sm:text-3xl font-extrabold text-amber-500 leading-tight">...</span>
+                    </div>
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-sm sm:text-lg shadow-inner shrink-0">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                </div>
+                <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-sm border border-slate-100/90 relative overflow-hidden flex items-center justify-between">
+                    <div class="min-w-0 pr-1">
+                        <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider block truncate">Tests Finished</span>
+                        <span id="shub-total-tests" class="text-xl sm:text-3xl font-extrabold text-purple-600 leading-tight">...</span>
+                    </div>
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-sm sm:text-lg shadow-inner shrink-0">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter & Search Bar (Mobile First Layout) -->
+            <div class="bg-white p-3.5 sm:p-5 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full xl:w-auto">
+                    <div class="relative">
+                        <select id="shub-filter-status" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm font-semibold rounded-xl px-3.5 py-2.5 focus:ring-2 focus:ring-indigo-500/20 outline-none cursor-pointer appearance-none pr-8">
+                            <option value="all">All Student Statuses</option>
+                            <option value="active_premium">Active Premium Only</option>
+                            <option value="expiring_soon">Expiring Soon (≤7 Days)</option>
+                            <option value="expired">Expired Access</option>
+                            <option value="free">Standard / Free Accounts</option>
+                            <option value="staff">Staff & Moderators</option>
+                            <option value="suspended">Suspended / Frozen</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+                    </div>
+
+                    <div class="relative">
+                        <select id="shub-sort-by" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm font-semibold rounded-xl px-3.5 py-2.5 focus:ring-2 focus:ring-indigo-500/20 outline-none cursor-pointer appearance-none pr-8">
+                            <option value="recent">Sort: Recently Active</option>
+                            <option value="most_tests">Sort: Most Tests Completed</option>
+                            <option value="expiry_soon">Sort: Expiry (Urgent First)</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2.5 w-full xl:w-auto">
+                    <div class="flex-1 sm:w-80 relative">
+                        <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs sm:text-sm"></i>
+                        <input type="text" id="shub-search-input" placeholder="Search Name, Email, UID..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-700 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 outline-none">
+                    </div>
+                    <button onclick="loadPageContent('premium-access')" class="px-3.5 sm:px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white text-xs sm:text-sm font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap">
+                        <i class="fas fa-plus"></i> <span class="hidden sm:inline">New Premium</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Dedicated Cards List (Prevents iOS Table Overflows) -->
+            <div id="shub-cards-mobile" class="block lg:hidden space-y-3 mb-6 w-full"></div>
+
+            <!-- Desktop Dedicated Table View -->
+            <div class="hidden lg:block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+                <table class="min-w-full divide-y divide-slate-200 text-left">
+                    <thead class="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                        <tr>
+                            <th class="px-6 py-4">Student Profile</th>
+                            <th class="px-6 py-4">Access Package</th>
+                            <th class="px-6 py-4">Validity & Expiry</th>
+                            <th class="px-6 py-4">Tests Completed</th>
+                            <th class="px-6 py-4">Quota & Limit</th>
+                            <th class="px-6 py-4 text-right">Access Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shub-table-body" class="divide-y divide-slate-100 text-sm text-slate-700">
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center text-slate-400">
+                                <i class="fas fa-spinner fa-spin text-2xl text-indigo-500 mb-2 block"></i>
+                                Loading student intelligence data...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Ultra-Clean, Non-Overflowing Pagination Container -->
+            <div id="shub-pagination" class="p-3 sm:p-4 bg-white rounded-2xl border border-slate-200/90 shadow-sm w-full"></div>
+        </div>
+
+        <!-- Comprehensive Student Control Modal -->
+        <div id="shub-manage-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1050] hidden flex items-center justify-center p-3 sm:p-4">
+            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[92vh] flex flex-col overflow-hidden border border-slate-100 animate-in fade-in zoom-in-95 duration-150">
+                <!-- Modal Header -->
+                <div class="px-5 py-4 sm:px-6 sm:py-5 bg-gradient-to-r from-slate-900 to-indigo-950 text-white flex justify-between items-center shrink-0">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-amber-400 shrink-0">
+                            <i class="fas fa-user-cog text-base sm:text-lg"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h3 class="font-extrabold text-base sm:text-lg tracking-tight truncate" id="modal-student-name">Manage Student Access</h3>
+                            <p class="text-xs text-slate-300 font-mono truncate" id="modal-student-email">loading...</p>
+                        </div>
+                    </div>
+                    <button onclick="closeStudentModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors shrink-0 ml-2">
+                        <i class="fas fa-times text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-6 flex-1 bg-slate-50/50 custom-scrollbar">
+                    <!-- Current Status Row -->
+                    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">User Identifier</span>
+                            <span class="font-mono text-xs text-slate-600 bg-slate-100 px-2 py-1 rounded inline-block" id="modal-student-uid">UID</span>
+                        </div>
+                        <div class="flex items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-start">
+                            <div id="modal-status-badge" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Active</div>
+                            <button id="modal-killswitch-btn" onclick="toggleStudentAccessKillSwitch()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm">
+                                Freeze Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tier & Expiry Customization -->
+                    <div class="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <i class="fas fa-crown text-amber-500"></i> Plan Tier & Expiration Controls
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Package Tier</label>
+                                <select id="modal-package-select" onchange="handleModalPackageChange(this.value)" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                    <option value="Free Tier">Free Tier (1 Test Only)</option>
+                                    <option value="Silver Package">🥈 Silver Package (1 Month)</option>
+                                    <option value="Gold Package">🥇 Gold Package (2 Months)</option>
+                                    <option value="Platinum Package">💎 Platinum Package (3 Months)</option>
+                                    <option value="Custom Duration">⚙️ Custom Plan</option>
+                                    <option value="Lifetime Access">♾️ Lifetime Access (Permanent)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Custom Expiry Date</label>
+                                <input type="date" id="modal-expiry-date" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500/20">
+                            </div>
+                        </div>
+
+                        <!-- Quick Extension Shortcuts -->
+                        <div>
+                            <span class="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Quick Extend Shortcuts</span>
+                            <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
+                                <button onclick="quickExtendStudent(7)" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 text-xs font-bold rounded-lg transition-colors border border-slate-200">+7 Days</button>
+                                <button onclick="quickExtendStudent(15)" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 text-xs font-bold rounded-lg transition-colors border border-slate-200">+15 Days</button>
+                                <button onclick="quickExtendStudent(30)" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 text-xs font-bold rounded-lg transition-colors border border-slate-200">+30 Days</button>
+                                <button onclick="quickExtendStudent(90)" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 text-xs font-bold rounded-lg transition-colors border border-slate-200">+90 Days (3 Mo)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Completed Tests Breakdown & Specific Retake Unlocker -->
+                    <div class="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-2">
+                                <i class="fas fa-undo-alt text-indigo-600"></i> Completed Tests & Retake Unlocker
+                            </h4>
+                            <span class="text-[10px] sm:text-xs font-bold text-slate-400" id="modal-test-count-badge">0 Tests</span>
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">Click <strong>"Allow Retake"</strong> to remove test lock for a student.</p>
+                        
+                        <div id="modal-completed-tests-list" class="space-y-2 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
+                            <!-- Populated dynamically -->
+                            <p class="text-xs text-slate-400 italic">No tests completed yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="p-3.5 sm:px-6 sm:py-4 bg-white border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2.5 shrink-0">
+                    <button onclick="copyStudentWhatsAppNotice()" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-4 py-2.5 rounded-xl border border-emerald-200 transition-colors flex items-center gap-2 w-full sm:w-auto justify-center">
+                        <i class="fab fa-whatsapp text-sm"></i> Copy WhatsApp Update Notice
+                    </button>
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                        <button onclick="closeStudentModal()" class="flex-1 sm:flex-initial px-4 py-2.5 bg-slate-100 text-slate-600 font-bold text-xs rounded-xl hover:bg-slate-200 transition-colors">Cancel</button>
+                        <button id="modal-save-btn" onclick="saveStudentAccessChanges()" class="flex-1 sm:flex-initial px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-indigo-500/20">Save & Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Retake Confirmation Modal -->
+        <div id="shub-retake-confirm-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1100] hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 border border-slate-100 text-center transform transition-all scale-100 animate-in fade-in zoom-in-95 duration-150">
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-50 border border-amber-200/80 text-amber-500 flex items-center justify-center text-2xl mb-3 shadow-inner">
+                    <i class="fas fa-lock-open"></i>
+                </div>
+                <h3 class="text-base font-extrabold text-slate-800 mb-1">Unlock Test Retake?</h3>
+                <p class="text-xs text-slate-500 mb-3">
+                    Allow <strong id="retake-modal-student-name" class="text-slate-800"></strong> to retake:
+                </p>
+                <div class="p-3 bg-amber-50/70 border border-amber-200 rounded-xl text-xs font-bold text-amber-900 mb-4 break-words" id="retake-modal-test-title">
+                    Test Title
+                </div>
+                <p class="text-[11px] text-slate-400 mb-5 leading-relaxed">
+                    This removes their previous submission lock so they can submit a fresh attempt immediately.
+                </p>
+                <div class="flex items-center gap-2.5">
+                    <button onclick="closeRetakeConfirmModal()" class="flex-1 py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs rounded-xl transition-colors">
+                        Cancel
+                    </button>
+                    <button id="confirm-retake-action-btn" class="flex-1 py-2.5 px-3 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-md shadow-amber-500/20 transition-all flex items-center justify-center gap-1.5">
+                        <i class="fas fa-check"></i> Allow Retake
+                    </button>
+                </div>
+            </div>
+        </div>
+      `;
+      // ==========================================
+      // --- CONTROLLER LOGIC FOR STUDENT HUB ---
+      // ==========================================
+
+      let allStudentData = [];
+      let currentActiveStudent = null;
+      let shubCurrentPage = 1;
+      const shubItemsPerPage = 12;
+
+      const getSafeDateMillis = (val) => {
+        if (!val) return 0;
+        if (typeof val.toMillis === "function") return val.toMillis();
+        if (typeof val.getTime === "function") return val.getTime();
+        if (typeof val.seconds === "number") return val.seconds * 1000;
+        if (typeof val === "number") return val;
+        return 0;
+      };
+
+ window.renderStudentHub = async () => {
+        const tableBody = document.getElementById("shub-table-body");
+        if (!tableBody) return;
+
+        try {
+          const usersMap = {};
+
+          // Helper to find or initialize student in map
+          const getOrCreateStudent = (uid, email, name) => {
+            if (!uid) return null;
+            if (!usersMap[uid]) {
+              usersMap[uid] = {
+                uid: uid,
+                name: name || "Student",
+                email: (email || "No Email").toLowerCase().trim(),
+                createdAt: null,
+                package: "Free Tier",
+                isPremium: false,
+                isStaff: false,
+                role: null,
+                expiresAt: null,
+                isSuspended: false,
+                completedTests: [],
+                testDetails: []
+              };
+            }
+            if (name && usersMap[uid].name === "Student") usersMap[uid].name = name;
+            if (email && usersMap[uid].email === "no email") usersMap[uid].email = email.toLowerCase().trim();
+            return usersMap[uid];
+          };
+
+          // 1. Fetch User Profiles
+          try {
+            const profilesSnap = await getDocs(collectionGroup(db, "userProfile"));
+            profilesSnap.docs.forEach((d) => {
+              const data = d.data();
+              const pathParts = d.ref.path.split("/");
+              const uIndex = pathParts.indexOf("users");
+              const uid = uIndex !== -1 && pathParts[uIndex + 1] ? pathParts[uIndex + 1] : d.id;
+              const s = getOrCreateStudent(uid, data.email, data.name);
+              if (s) s.createdAt = data.createdAt || null;
+            });
+          } catch (e) {
+            console.warn("userProfile scan:", e);
+          }
+
+          // 2. Fetch User gameStats summaries (Reads actual active packages, custom validity & staff flags)
+          try {
+            const statsSnap = await getDocs(collectionGroup(db, "gameStats"));
+            statsSnap.docs.forEach((d) => {
+              const data = d.data();
+              const pathParts = d.ref.path.split("/");
+              const uIndex = pathParts.indexOf("users");
+              const uid = uIndex !== -1 && pathParts[uIndex + 1] ? pathParts[uIndex + 1] : d.id;
+              const s = getOrCreateStudent(uid, data.email, data.name);
+              if (s) {
+                if (data.isPremium) s.isPremium = true;
+                if (data.premiumPackage) s.package = data.premiumPackage;
+                if (data.expiresAt) s.expiresAt = data.expiresAt;
+                if (data.isStaff) s.isStaff = true;
+                if (data.role) s.role = data.role;
+                if (data.isSuspended) s.isSuspended = true;
+              }
+            });
+          } catch (e) {
+            console.warn("gameStats scan:", e);
+          }
+
+          // 3. Fetch Public Premium Users (Ensures newly issued packages from admin panel reflect immediately)
+          try {
+            const premiumSnap = await getDocs(collection(db, "artifacts", appId, "public", "data", "premiumUsers"));
+            premiumSnap.docs.forEach((d) => {
+              const p = d.data();
+              const uid = p.userId || d.id;
+              const s = getOrCreateStudent(uid, p.email, p.name);
+              if (s) {
+                s.isPremium = true;
+                s.package = p.package || s.package || "Custom Plan";
+                if (p.expiresAt) s.expiresAt = p.expiresAt;
+              }
+            });
+          } catch (e) {
+            console.warn("premiumUsers scan:", e);
+          }
+
+          // 4. Fetch Staff & Moderators
+          try {
+            const adminSnap = await getDocs(collection(db, "artifacts", appId, "public", "data", "adminUsers"));
+            adminSnap.docs.forEach((d) => {
+              const a = d.data();
+              const uid = d.id;
+              const s = getOrCreateStudent(uid, a.email, a.email ? a.email.split("@")[0] : "Admin");
+              if (s) {
+                s.isStaff = true;
+                s.role = a.role || "moderator";
+                s.package = `Staff (${(a.role || "MODERATOR").toUpperCase()})`;
+              }
+            });
+          } catch (e) {
+            console.warn("adminUsers scan:", e);
+          }
+
+          // Helper to register a completed test under student
+          const registerTestRecord = (uid, email, testId, testTitle, moduleId, bandScore, takenAt, docId) => {
+            if (!testId) return;
+            const cleanEmail = (email || "").toLowerCase().trim();
+            let student = usersMap[uid] || (cleanEmail ? Object.values(usersMap).find(st => st.email === cleanEmail) : null);
+            if (!student && uid) student = getOrCreateStudent(uid, email, "");
+            if (student) {
+              if (!student.completedTests.includes(testId)) {
+                student.completedTests.push(testId);
+                student.testDetails.push({
+                  docId: docId || testId,
+                  testId: testId,
+                  testTitle: testTitle || testId,
+                  moduleId: moduleId || "general",
+                  bandScore: bandScore || "N/A",
+                  takenAt: takenAt || null
+                });
+              }
+            }
+          };
+
+          // 5. Deep Scan: User's Private mockTestResults (catches actual attempts from Listening & Reading)
+          try {
+            const privTestsSnap = await getDocs(collectionGroup(db, "mockTestResults"));
+            privTestsSnap.docs.forEach((d) => {
+              const t = d.data();
+              const pathParts = d.ref.path.split("/");
+              const uIndex = pathParts.indexOf("users");
+              const uid = (uIndex !== -1 && pathParts[uIndex + 1]) ? pathParts[uIndex + 1] : t.userId;
+              registerTestRecord(uid, t.userEmail, t.testId, t.testTitle, t.moduleId, t.bandScore, t.timestamp, d.id);
+            });
+          } catch (e) {
+            console.warn("mockTestResults scan:", e);
+          }
+
+          // 6. Deep Scan: Public mockTestGlobalResults
+          try {
+            const globalTestsSnap = await getDocs(collection(db, "artifacts", appId, "public", "data", "mockTestGlobalResults"));
+            globalTestsSnap.docs.forEach((d) => {
+              const t = d.data();
+              registerTestRecord(t.userId, t.userEmail, t.testId, t.testTitle, t.moduleId, t.bandScore, t.timestamp, d.id);
+            });
+          } catch (e) {}
+
+          // 7. Deep Scan: Writing Submissions
+          try {
+            const writingSnap = await getDocs(collection(db, "artifacts", appId, "public", "data", "writingSubmissions"));
+            writingSnap.docs.forEach((d) => {
+              const w = d.data();
+              registerTestRecord(w.userId, w.userEmail, w.testId, w.testTitle, "writing", w.bandScore || "Pending", w.submittedAt, d.id);
+            });
+          } catch (e) {}
+
+          // 8. Deep Scan: Speaking Submissions
+          try {
+            const spkSnap = await getDocs(collection(db, "artifacts", appId, "public", "data", "speakingSubmissions"));
+            spkSnap.docs.forEach((d) => {
+              const s = d.data();
+              registerTestRecord(s.userId, s.userEmail, s.testId, s.testTitle, "speaking", s.bandScore || "Pending", s.submittedAt, d.id);
+            });
+          } catch (e) {}
+
+          allStudentData = Object.values(usersMap);
+
+          // Update KPI Summary Badges
+          let activePremCount = 0;
+          let expiringSoonCount = 0;
+          let totalCompletedTestsCount = 0;
+          const now = Date.now();
+          const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+
+          allStudentData.forEach((s) => {
+            totalCompletedTestsCount += s.completedTests.length;
+            const expMillis = getSafeDateMillis(s.expiresAt);
+            if (s.isPremium || s.isStaff || s.package.includes("Lifetime")) {
+              if (s.isStaff || s.package.includes("Lifetime") || (expMillis && expMillis > now)) {
+                activePremCount++;
+                if (expMillis && (expMillis - now <= sevenDaysMs)) {
+                  expiringSoonCount++;
+                }
+              }
+            }
+          });
+
+          const elTotal = document.getElementById("shub-total-students");
+          const elActive = document.getElementById("shub-active-premium");
+          const elSoon = document.getElementById("shub-expiring-soon");
+          const elTests = document.getElementById("shub-total-tests");
+
+          if (elTotal) elTotal.textContent = allStudentData.length;
+          if (elActive) elActive.textContent = activePremCount;
+          if (elSoon) elSoon.textContent = expiringSoonCount;
+          if (elTests) elTests.textContent = totalCompletedTestsCount;
+
+          const searchInput = document.getElementById("shub-search-input");
+          const filterStatus = document.getElementById("shub-filter-status");
+          const sortBy = document.getElementById("shub-sort-by");
+
+          if (searchInput) searchInput.oninput = filterAndRenderTable;
+          if (filterStatus) filterStatus.onchange = filterAndRenderTable;
+          if (sortBy) sortBy.onchange = filterAndRenderTable;
+
+          filterAndRenderTable();
+        } catch (error) {
+          console.error("Error loading student intelligence:", error);
+          tableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-red-500 font-bold">Failed to load student directory: ${error.message}</td></tr>`;
+        }
+      };
+
+     window.changeShubPage = (targetPage) => {
+        shubCurrentPage = targetPage;
+        filterAndRenderTable();
+      };
+
+      const filterAndRenderTable = () => {
+        const searchTerm = (document.getElementById("shub-search-input")?.value || "").toLowerCase().trim();
+        const statusFilter = document.getElementById("shub-filter-status")?.value || "all";
+        const sortBy = document.getElementById("shub-sort-by")?.value || "recent";
+        const now = Date.now();
+        const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+
+        let filtered = allStudentData.filter((s) => {
+          const matchesSearch =
+            !searchTerm ||
+            s.name.toLowerCase().includes(searchTerm) ||
+            s.email.toLowerCase().includes(searchTerm) ||
+            s.uid.toLowerCase().includes(searchTerm);
+
+          if (!matchesSearch) return false;
+
+          const expMillis = getSafeDateMillis(s.expiresAt);
+          const isActPrem = s.isStaff || (s.isPremium && expMillis > now);
+
+          if (statusFilter === "active_premium") return isActPrem && !s.isStaff;
+          if (statusFilter === "expiring_soon") return expMillis && (expMillis > now) && (expMillis - now <= sevenDaysMs);
+          if (statusFilter === "expired") return s.isPremium && expMillis && (expMillis <= now);
+          if (statusFilter === "free") return !s.isPremium && !s.isStaff;
+          if (statusFilter === "staff") return s.isStaff;
+          if (statusFilter === "suspended") return s.isSuspended === true;
+
+          return true;
+        });
+
+        // Sorting
+        filtered.sort((a, b) => {
+          if (sortBy === "most_tests") return b.completedTests.length - a.completedTests.length;
+          if (sortBy === "expiry_soon") {
+            const aExp = getSafeDateMillis(a.expiresAt) || Infinity;
+            const bExp = getSafeDateMillis(b.expiresAt) || Infinity;
+            return aExp - bExp;
+          }
+          return (getSafeDateMillis(b.createdAt) || 0) - (getSafeDateMillis(a.createdAt) || 0);
+        });
+
+        // Pagination Calculations
+        const totalItems = filtered.length;
+        const totalPages = Math.ceil(totalItems / shubItemsPerPage) || 1;
+        if (shubCurrentPage > totalPages) shubCurrentPage = 1;
+        if (shubCurrentPage < 1) shubCurrentPage = 1;
+
+        const startIndex = (shubCurrentPage - 1) * shubItemsPerPage;
+        const pageItems = filtered.slice(startIndex, startIndex + shubItemsPerPage);
+
+        const desktopTableBody = document.getElementById("shub-table-body");
+        const mobileCardsContainer = document.getElementById("shub-cards-mobile");
+        
+        if (desktopTableBody) desktopTableBody.innerHTML = "";
+        if (mobileCardsContainer) mobileCardsContainer.innerHTML = "";
+
+        if (pageItems.length === 0) {
+          const emptyMsg = `<div class="p-8 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">No students found matching your filters.</div>`;
+          if (desktopTableBody) desktopTableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-12 text-center text-slate-400">No students found matching your filters.</td></tr>`;
+          if (mobileCardsContainer) mobileCardsContainer.innerHTML = emptyMsg;
+        } else {
+          pageItems.forEach((student) => {
+            const expMillis = getSafeDateMillis(student.expiresAt);
+            let statusBadge = "";
+            let validityText = "";
+            let barPercent = 0;
+            let barColor = "bg-slate-300";
+
+            if (student.isStaff) {
+              statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-200">Staff</span>`;
+              validityText = `<span class="text-purple-700 font-bold text-xs">Permanent</span>`;
+              barPercent = 100;
+              barColor = "bg-purple-500";
+            } else if (student.isSuspended) {
+              statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-200">Suspended</span>`;
+              validityText = `<span class="text-rose-600 font-bold text-xs">Access Blocked</span>`;
+            } else if (student.isPremium && expMillis) {
+              if (expMillis > now) {
+                const daysLeft = Math.ceil((expMillis - now) / (1000 * 60 * 60 * 24));
+                if (daysLeft <= 7) {
+                  statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200 animate-pulse">${daysLeft}d left</span>`;
+                  barColor = "bg-amber-500";
+                } else {
+                  statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200">Active</span>`;
+                  barColor = "bg-emerald-500";
+                }
+                validityText = `<span class="font-bold text-slate-800 text-xs">${daysLeft} Days</span> <span class="text-[10px] text-slate-400">(${new Date(expMillis).toLocaleDateString()})</span>`;
+                barPercent = Math.min(100, Math.max(10, (daysLeft / 60) * 100));
+              } else {
+                statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-200 text-slate-600">Expired</span>`;
+                validityText = `<span class="text-rose-500 font-bold text-xs">Ended</span>`;
+              }
+            } else if (student.package === "Lifetime Access") {
+              statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-800 border border-indigo-200">Lifetime</span>`;
+              validityText = `<span class="text-indigo-600 font-bold text-xs">Permanent</span>`;
+              barPercent = 100;
+              barColor = "bg-indigo-500";
+            } else {
+              statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-500 border border-slate-200">Free Tier</span>`;
+              validityText = `<span class="text-slate-400 font-medium text-xs">Free Preview</span>`;
+            }
+
+            // Quotas
+            let allowedQuota = "1 Test / Module";
+            if (student.isStaff) allowedQuota = "16 / 16 (Full Unlocked)";
+            else if (student.package.includes("Platinum") || student.package.includes("Lifetime")) allowedQuota = "16 / 16 (All Tests)";
+            else if (student.package.includes("Gold")) allowedQuota = "11 / 16 Tests";
+            else if (student.package.includes("Silver")) allowedQuota = "6 / 16 Tests";
+
+            const initial = (student.name || 'S').charAt(0).toUpperCase();
+
+            // 1. MOBILE CARD (Guaranteed to fit 100% of mobile viewport without horizontal cut-off)
+            if (mobileCardsContainer) {
+              const card = document.createElement("div");
+              card.className = "bg-white rounded-2xl p-4 border border-slate-200/90 shadow-sm space-y-3 w-full box-border";
+              card.innerHTML = `
+                <!-- Top Row: Avatar, Name, Email, Status Badge -->
+                <div class="flex items-start justify-between gap-2.5 min-w-0">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-slate-200 to-indigo-100 text-indigo-700 flex items-center justify-center font-black text-sm shadow-inner shrink-0 border border-indigo-100/50">
+                            ${initial}
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <h4 class="font-extrabold text-slate-900 text-sm tracking-tight truncate leading-tight">${student.name}</h4>
+                            <p class="text-xs text-slate-500 font-mono truncate">${student.email}</p>
+                            <div class="text-[10px] text-slate-400 font-mono flex items-center gap-1 mt-0.5">
+                                <span>UID: ${student.uid.substring(0, 8)}...</span>
+                                <button onclick="copyToClipboard('${student.uid}', 'UID copied!')" class="text-slate-400 hover:text-indigo-600 transition-colors p-0.5">
+                                    <i class="far fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="shrink-0">
+                        ${statusBadge}
+                    </div>
+                </div>
+
+                <!-- Middle 2-Column Info Grid -->
+                <div class="grid grid-cols-2 gap-2 bg-slate-50/90 border border-slate-100 p-2.5 rounded-xl w-full box-border">
+                    <div class="min-w-0">
+                        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">Plan & Expiry</span>
+                        <div class="truncate text-xs font-bold text-slate-800 leading-tight">${student.package}</div>
+                        <div class="text-[11px] mt-0.5 truncate">${validityText}</div>
+                        <div class="w-full h-1 bg-slate-200 rounded-full mt-1.5 overflow-hidden">
+                            <div class="h-full ${barColor}" style="width: ${barPercent}%"></div>
+                        </div>
+                    </div>
+                    <div class="min-w-0 border-l border-slate-200/70 pl-2.5">
+                        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">Completed / Quota</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-700 font-extrabold text-[11px] leading-tight shrink-0">
+                                ${student.completedTests.length}
+                            </span>
+                            <span class="text-[11px] font-semibold text-slate-700 truncate">Finished</span>
+                        </div>
+                        <div class="text-[10px] text-slate-500 font-medium truncate mt-1">
+                            ${allowedQuota}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manage Action Button -->
+                <button onclick="openStudentModal('${student.uid}')" class="w-full py-2.5 px-4 bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white font-bold rounded-xl transition-all duration-150 border border-indigo-200/80 flex items-center justify-center gap-1.5 shadow-sm text-xs active:scale-98">
+                    <i class="fas fa-sliders-h text-xs"></i> <span>Manage Student Access</span>
+                </button>
+              `;
+              mobileCardsContainer.appendChild(card);
+            }
+
+            // 2. DESKTOP ROW
+            if (desktopTableBody) {
+              const tr = document.createElement("tr");
+              tr.className = "hover:bg-slate-50/70 transition-colors";
+              tr.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-slate-200 to-indigo-100 text-indigo-700 flex items-center justify-center font-black text-sm shadow-inner shrink-0 border border-indigo-100/50">
+                            ${initial}
+                        </div>
+                        <div>
+                            <h4 class="font-extrabold text-slate-900 text-sm tracking-tight leading-tight">${student.name}</h4>
+                            <p class="text-xs text-slate-500 font-mono">${student.email}</p>
+                            <div class="text-[10px] text-slate-400 font-mono flex items-center gap-1 mt-0.5">
+                                <span>UID: ${student.uid.substring(0, 8)}...</span>
+                                <button onclick="copyToClipboard('${student.uid}', 'UID copied!')" class="text-slate-400 hover:text-indigo-600 transition-colors p-0.5">
+                                    <i class="far fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="mb-1">${statusBadge}</div>
+                    <div class="text-xs font-semibold text-slate-700">${student.package}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-xs font-semibold text-slate-700">${validityText}</div>
+                    <div class="w-24 h-1.5 bg-slate-100 rounded-full mt-1.5 overflow-hidden">
+                        <div class="h-full ${barColor}" style="width: ${barPercent}%"></div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-700 font-bold flex items-center justify-center text-xs shadow-inner">
+                            ${student.completedTests.length}
+                        </span>
+                        <span class="text-xs text-slate-600 font-medium">Tests Finished</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-xs font-semibold text-slate-600">
+                    ${allowedQuota}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-xs">
+                    <button onclick="openStudentModal('${student.uid}')" class="px-3.5 py-1.5 bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white font-bold rounded-lg transition-colors border border-indigo-200/80 inline-flex items-center gap-1.5 shadow-sm">
+                        <i class="fas fa-sliders-h text-xs"></i> <span>Manage</span>
+                    </button>
+                </td>
+              `;
+              desktopTableBody.appendChild(tr);
+            }
+          });
+        }
+
+        // ==========================================
+        // SMART, NON-OVERFLOWING PAGINATION RENDERER
+        // ==========================================
+        const paginationContainer = document.getElementById("shub-pagination");
+        if (!paginationContainer) return;
+
+        if (totalItems <= shubItemsPerPage) {
+          paginationContainer.classList.add("hidden");
+          return;
+        }
+        paginationContainer.classList.remove("hidden");
+
+        const startItem = startIndex + 1;
+        const endItem = Math.min(startIndex + shubItemsPerPage, totalItems);
+
+        // Smart Windowing for Page Numbers (e.g. 1 ... 4 [5] 6 ... 16)
+        const getPageNumbers = () => {
+          if (totalPages <= 5) {
+            return Array.from({ length: totalPages }, (_, i) => i + 1);
+          }
+          if (shubCurrentPage <= 3) {
+            return [1, 2, 3, 4, '...', totalPages];
+          }
+          if (shubCurrentPage >= totalPages - 2) {
+            return [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+          }
+          return [1, '...', shubCurrentPage - 1, shubCurrentPage, shubCurrentPage + 1, '...', totalPages];
+        };
+
+        const pageNumbers = getPageNumbers();
+
+        paginationContainer.innerHTML = `
+          <!-- Mobile Smart Navigation (Guaranteed to fit 320px–420px screens perfectly) -->
+          <div class="flex sm:hidden items-center justify-between w-full gap-2">
+              <button onclick="changeShubPage(${shubCurrentPage - 1})" ${shubCurrentPage === 1 ? 'disabled class="opacity-40 cursor-not-allowed bg-slate-100 text-slate-400 px-3 py-2 rounded-xl text-xs font-bold"' : 'class="bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition-colors active:scale-95"'}>
+                  <i class="fas fa-chevron-left mr-1"></i> Prev
+              </button>
+              
+              <div class="text-xs font-bold text-slate-700 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200/80 text-center">
+                  Page <span class="text-indigo-600 font-black">${shubCurrentPage}</span> of ${totalPages}
+              </div>
+
+              <button onclick="changeShubPage(${shubCurrentPage + 1})" ${shubCurrentPage === totalPages ? 'disabled class="opacity-40 cursor-not-allowed bg-slate-100 text-slate-400 px-3 py-2 rounded-xl text-xs font-bold"' : 'class="bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition-colors active:scale-95"'}>
+                  Next <i class="fas fa-chevron-right ml-1"></i>
+              </button>
+          </div>
+
+          <!-- Desktop Smart Pagination Bar (With Windowed Numbers & Ellipsis) -->
+          <div class="hidden sm:flex items-center justify-between w-full">
+              <div class="text-xs font-semibold text-slate-500">
+                  Showing <span class="text-slate-800 font-bold">${startItem}–${endItem}</span> of <span class="text-slate-800 font-bold">${totalItems}</span> students
+              </div>
+
+              <div class="flex items-center space-x-1.5">
+                  <button onclick="changeShubPage(${shubCurrentPage - 1})" ${shubCurrentPage === 1 ? 'disabled class="opacity-40 cursor-not-allowed px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 text-slate-400"' : 'class="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"'}>
+                      &laquo; Prev
+                  </button>
+
+                  <div id="shub-page-pills" class="flex items-center space-x-1"></div>
+
+                  <button onclick="changeShubPage(${shubCurrentPage + 1})" ${shubCurrentPage === totalPages ? 'disabled class="opacity-40 cursor-not-allowed px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 text-slate-400"' : 'class="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors"'}>
+                      Next &raquo;
+                  </button>
+              </div>
+          </div>
+        `;
+
+        const pillsContainer = document.getElementById("shub-page-pills");
+        if (pillsContainer) {
+          pageNumbers.forEach((p) => {
+            if (p === '...') {
+              const span = document.createElement("span");
+              span.className = "px-2 text-xs font-bold text-slate-400 select-none";
+              span.textContent = "...";
+              pillsContainer.appendChild(span);
+            } else {
+              const btn = document.createElement("button");
+              btn.textContent = p;
+              btn.className = `w-8 h-8 rounded-lg text-xs font-bold transition-all ${
+                p === shubCurrentPage
+                  ? "bg-indigo-600 text-white shadow-sm shadow-indigo-500/30"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              }`;
+              btn.onclick = () => window.changeShubPage(p);
+              pillsContainer.appendChild(btn);
+            }
+          });
+        }
+      };
+
+      // Modal Interactions
+      window.openStudentModal = (uid) => {
+        const student = allStudentData.find((s) => s.uid === uid);
+        if (!student) return showMessage("Student details could not be found.");
+
+        currentActiveStudent = student;
+        document.getElementById("modal-student-name").textContent = student.name;
+        document.getElementById("modal-student-email").textContent = student.email;
+        document.getElementById("modal-student-uid").textContent = student.uid;
+        document.getElementById("modal-package-select").value = student.package.includes("Platinum") ? "Platinum Package" : student.package.includes("Gold") ? "Gold Package" : student.package.includes("Silver") ? "Silver Package" : student.package.includes("Lifetime") ? "Lifetime Access" : student.isPremium ? "Custom Duration" : "Free Tier";
+
+        const expMillis = getSafeDateMillis(student.expiresAt);
+        if (expMillis) {
+          document.getElementById("modal-expiry-date").value = new Date(expMillis).toISOString().split("T")[0];
+        } else {
+          document.getElementById("modal-expiry-date").value = "";
+        }
+
+        // Status Badge & Killswitch Button
+        const statusBadge = document.getElementById("modal-status-badge");
+        const killswitchBtn = document.getElementById("modal-killswitch-btn");
+
+        if (student.isSuspended) {
+          statusBadge.className = "px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-200";
+          statusBadge.textContent = "Suspended";
+          killswitchBtn.className = "px-4 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-sm";
+          killswitchBtn.textContent = "Reactivate Access";
+        } else if (student.isPremium || student.isStaff) {
+          statusBadge.className = "px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200";
+          statusBadge.textContent = "Active Access";
+          killswitchBtn.className = "px-4 py-1.5 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-all";
+          killswitchBtn.textContent = "Freeze / Suspend";
+        } else {
+          statusBadge.className = "px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200";
+          statusBadge.textContent = "Standard User";
+          killswitchBtn.className = "px-4 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-400 cursor-not-allowed";
+          killswitchBtn.textContent = "No Active Plan";
+        }
+
+        // Completed Tests List with Unlock Tool
+        const testListContainer = document.getElementById("modal-completed-tests-list");
+        document.getElementById("modal-test-count-badge").textContent = `${student.completedTests.length} Tests Recorded`;
+        testListContainer.innerHTML = "";
+
+        if (student.completedTests.length === 0) {
+          testListContainer.innerHTML = `<p class="text-xs text-slate-400 italic">No tests recorded for this account yet.</p>`;
+        } else {
+          student.testDetails.forEach((td) => {
+            const row = document.createElement("div");
+            row.className = "flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs";
+            row.innerHTML = `
+              <div class="flex items-center gap-2">
+                <span class="font-extrabold uppercase text-[10px] px-2 py-0.5 rounded bg-indigo-100 text-indigo-800">${td.moduleId}</span>
+                <span class="font-bold text-slate-800">${td.testTitle}</span>
+                <span class="text-slate-400 text-[10px]">(Score: ${td.bandScore})</span>
+              </div>
+              <button onclick="unlockStudentTestAttempt('${student.uid}', '${td.testId}', '${td.testTitle.replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg transition-colors text-[10px] flex items-center gap-1 shadow-sm">
+                <i class="fas fa-lock-open"></i> Allow Retake
+              </button>
+            `;
+            testListContainer.appendChild(row);
+          });
+        }
+
+        document.getElementById("shub-manage-modal").classList.remove("hidden");
+      };
+
+      window.handleModalPackageChange = (val) => {
+          const dateInput = document.getElementById("modal-expiry-date");
+          if (val === "Free Tier" || val === "Lifetime Access") {
+              dateInput.value = "";
+          } else if (val !== "Custom Duration") {
+              let baseDate = new Date();
+              if (val.includes("Platinum")) baseDate.setMonth(baseDate.getMonth() + 3);
+              else if (val.includes("Gold")) baseDate.setMonth(baseDate.getMonth() + 2);
+              else if (val.includes("Silver")) baseDate.setMonth(baseDate.getMonth() + 1);
+              dateInput.value = baseDate.toISOString().split("T")[0];
+          }
+      };
+
+      window.saveStudentAccessChanges = async () => {
+        if (!currentActiveStudent) return;
+        const saveBtn = document.getElementById("modal-save-btn");
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Saving...';
+
+        const pkgVal = document.getElementById("modal-package-select").value;
+        const dateVal = document.getElementById("modal-expiry-date").value;
+        
+        let expiresAt = null;
+        let isPremium = pkgVal !== "Free Tier";
+
+        if (pkgVal === "Lifetime Access") {
+          expiresAt = new Date();
+          expiresAt.setFullYear(expiresAt.getFullYear() + 25);
+        } else if (isPremium && dateVal) {
+          expiresAt = new Date(dateVal + "T23:59:59");
+        } else if (isPremium && !dateVal) {
+           // Fallback to calculate date if Admin forgot to select one
+           expiresAt = new Date();
+           if (pkgVal.includes("Platinum")) expiresAt.setMonth(expiresAt.getMonth() + 3);
+           else if (pkgVal.includes("Gold")) expiresAt.setMonth(expiresAt.getMonth() + 2);
+           else if (pkgVal.includes("Silver")) expiresAt.setMonth(expiresAt.getMonth() + 1);
+           else expiresAt.setMonth(expiresAt.getMonth() + 1);
+        }
+
+        try {
+          // 1. Update Game Stats
+          await setDoc(doc(db, "artifacts", appId, "users", currentActiveStudent.uid, "gameStats", "summary"), {
+            isPremium: isPremium,
+            premiumPackage: pkgVal,
+            expiresAt: expiresAt,
+            isSuspended: false,
+            updatedAt: serverTimestamp(),
+            updatedByAdmin: auth.currentUser.email
+          }, { merge: true });
+
+          // 2. Update Public Premium List
+          if (isPremium) {
+            await setDoc(doc(db, "artifacts", appId, "public", "data", "premiumUsers", currentActiveStudent.uid), {
+              userId: currentActiveStudent.uid,
+              name: currentActiveStudent.name,
+              email: currentActiveStudent.email,
+              package: pkgVal,
+              expiresAt: expiresAt,
+              grantedAt: serverTimestamp(),
+              grantedByAdmin: auth.currentUser.email
+            }, { merge: true });
+          } else {
+            await deleteDoc(doc(db, "artifacts", appId, "public", "data", "premiumUsers", currentActiveStudent.uid));
+          }
+
+          currentActiveStudent.package = pkgVal;
+          currentActiveStudent.isPremium = isPremium;
+          currentActiveStudent.expiresAt = expiresAt;
+          currentActiveStudent.isSuspended = false;
+
+          await window.logAdminAction("UPDATE", "STUDENT_ACCESS", currentActiveStudent.uid, `Updated access to ${pkgVal} (Expires: ${expiresAt ? expiresAt.toLocaleDateString() : 'N/A'})`);
+          showMessage("Student access successfully updated!");
+          closeStudentModal();
+          filterAndRenderTable();
+        } catch (err) {
+          console.error(err);
+          showMessage("Error saving changes: " + err.message);
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = "Save & Apply Changes";
+        }
+      };
+
+    
+      window.closeStudentModal = () => {
+        document.getElementById("shub-manage-modal").classList.add("hidden");
+        currentActiveStudent = null;
+      };
+
+      window.quickExtendStudent = (days) => {
+        const dateInput = document.getElementById("modal-expiry-date");
+        let baseDate = dateInput.value ? new Date(dateInput.value) : new Date();
+        if (baseDate.getTime() < Date.now()) baseDate = new Date();
+        baseDate.setDate(baseDate.getDate() + days);
+        dateInput.value = baseDate.toISOString().split("T")[0];
+        document.getElementById("modal-package-select").value = "Custom Duration";
+      };
+
+      window.toggleStudentAccessKillSwitch = async () => {
+        if (!currentActiveStudent) return;
+        const newSuspendedState = !currentActiveStudent.isSuspended;
+        
+        try {
+          // Update gameStats/summary
+          await setDoc(doc(db, "artifacts", appId, "users", currentActiveStudent.uid, "gameStats", "summary"), {
+            isSuspended: newSuspendedState,
+            isPremium: newSuspendedState ? false : currentActiveStudent.isPremium,
+            updatedAt: serverTimestamp()
+          }, { merge: true });
+
+          currentActiveStudent.isSuspended = newSuspendedState;
+          if (newSuspendedState) currentActiveStudent.isPremium = false;
+
+          await window.logAdminAction(
+            newSuspendedState ? "REVOKE" : "GRANT",
+            "USER_ACCESS",
+            currentActiveStudent.uid,
+            newSuspendedState ? "Suspended test access via Kill-Switch" : "Reactivated student access"
+          );
+
+          showMessage(newSuspendedState ? "Student access has been frozen." : "Student access reactivated!");
+          window.openStudentModal(currentActiveStudent.uid);
+          filterAndRenderTable();
+        } catch (err) {
+          console.error(err);
+          showMessage("Error updating access status: " + err.message);
+        }
+      };
+
+     window.closeRetakeConfirmModal = () => {
+        const modal = document.getElementById("shub-retake-confirm-modal");
+        if (modal) modal.classList.add("hidden");
+      };
+
+      window.unlockStudentTestAttempt = (uid, testId, testTitle) => {
+        if (!currentActiveStudent) return;
+
+        const modal = document.getElementById("shub-retake-confirm-modal");
+        const studentNameEl = document.getElementById("retake-modal-student-name");
+        const testTitleEl = document.getElementById("retake-modal-test-title");
+        const confirmBtn = document.getElementById("confirm-retake-action-btn");
+
+        if (studentNameEl) studentNameEl.textContent = currentActiveStudent.name;
+        if (testTitleEl) testTitleEl.textContent = testTitle;
+
+        confirmBtn.onclick = async () => {
+          confirmBtn.disabled = true;
+          confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Unlocking...';
+
+          try {
+            // 1. Delete from private mockTestResults
+            const privQuery = query(collection(db, "artifacts", appId, "users", uid, "mockTestResults"), where("testId", "==", testId));
+            const privSnap = await getDocs(privQuery);
+            for (const d of privSnap.docs) {
+              await deleteDoc(d.ref);
+            }
+
+            // 2. Delete from public writingSubmissions if writing test
+            const writQuery = query(collection(db, "artifacts", appId, "public", "data", "writingSubmissions"), where("userId", "==", uid), where("testId", "==", testId));
+            const writSnap = await getDocs(writQuery);
+            for (const d of writSnap.docs) {
+              await deleteDoc(d.ref);
+            }
+
+            // 3. Delete from public speakingSubmissions if speaking test
+            const spkQuery = query(collection(db, "artifacts", appId, "public", "data", "speakingSubmissions"), where("userId", "==", uid), where("testId", "==", testId));
+            const spkSnap = await getDocs(spkQuery);
+            for (const d of spkSnap.docs) {
+              await deleteDoc(d.ref);
+            }
+
+            // Remove from local memory
+            currentActiveStudent.completedTests = currentActiveStudent.completedTests.filter(t => t !== testId);
+            currentActiveStudent.testDetails = currentActiveStudent.testDetails.filter(t => t.testId !== testId);
+
+            await window.logAdminAction("RESET", "TEST_LOCK", testId, `Unlocked retake for student ${currentActiveStudent.email}`);
+            window.closeRetakeConfirmModal();
+            showMessage(`Test lock removed! Student can now retake "${testTitle}".`);
+
+            window.openStudentModal(uid);
+            filterAndRenderTable();
+          } catch (err) {
+            console.error(err);
+            showMessage("Failed to unlock test attempt: " + err.message);
+          } finally {
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = '<i class="fas fa-check"></i> Allow Retake';
+          }
+        };
+
+        if (modal) modal.classList.remove("hidden");
+      };
+
+      window.saveStudentAccessChanges = async () => {
+        if (!currentActiveStudent) return;
+        const saveBtn = document.getElementById("modal-save-btn");
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Saving...';
+
+        const pkgVal = document.getElementById("modal-package-select").value;
+        const dateVal = document.getElementById("modal-expiry-date").value;
+        let expiresAt = dateVal ? new Date(dateVal + "T23:59:59") : null;
+        let isPremium = pkgVal !== "Free Tier";
+
+        if (pkgVal === "Lifetime Access") {
+          expiresAt = new Date();
+          expiresAt.setFullYear(expiresAt.getFullYear() + 25);
+        }
+
+        try {
+          // 1. Update Game Stats
+          await setDoc(doc(db, "artifacts", appId, "users", currentActiveStudent.uid, "gameStats", "summary"), {
+            isPremium: isPremium,
+            premiumPackage: pkgVal,
+            expiresAt: expiresAt,
+            isSuspended: false,
+            updatedAt: serverTimestamp(),
+            updatedByAdmin: auth.currentUser.email
+          }, { merge: true });
+
+          // 2. Update Public Premium List
+          if (isPremium) {
+            await setDoc(doc(db, "artifacts", appId, "public", "data", "premiumUsers", currentActiveStudent.uid), {
+              userId: currentActiveStudent.uid,
+              name: currentActiveStudent.name,
+              email: currentActiveStudent.email,
+              package: pkgVal,
+              expiresAt: expiresAt,
+              grantedAt: serverTimestamp(),
+              grantedByAdmin: auth.currentUser.email
+            }, { merge: true });
+          } else {
+            await deleteDoc(doc(db, "artifacts", appId, "public", "data", "premiumUsers", currentActiveStudent.uid));
+          }
+
+          currentActiveStudent.package = pkgVal;
+          currentActiveStudent.isPremium = isPremium;
+          currentActiveStudent.expiresAt = expiresAt;
+          currentActiveStudent.isSuspended = false;
+
+          await window.logAdminAction("UPDATE", "STUDENT_ACCESS", currentActiveStudent.uid, `Updated access to ${pkgVal} (Expires: ${expiresAt ? expiresAt.toLocaleDateString() : 'N/A'})`);
+          showMessage("Student access successfully updated!");
+          closeStudentModal();
+          filterAndRenderTable();
+        } catch (err) {
+          console.error(err);
+          showMessage("Error saving changes: " + err.message);
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = "Save & Apply Changes";
+        }
+      };
+
+      window.copyStudentWhatsAppNotice = () => {
+        if (!currentActiveStudent) return;
+        const expStr = currentActiveStudent.expiresAt ? new Date(getSafeDateMillis(currentActiveStudent.expiresAt)).toLocaleDateString() : "Permanent";
+        const msg = `Hello ${currentActiveStudent.name}!\n\nWe have updated your IELTS Mahir portal access:\n\n*Updated Package:* ${currentActiveStudent.package}\n*Valid Until:* ${expStr}\n*Available Mock Tests:* Full Access Unlocked\n\nYou can access your tests here:\n👉 https://www.ieltsmahir.com/mock-test-home\n\nBest of luck with your preparation!\n- IELTS Mahir Team`;
+        
+        navigator.clipboard.writeText(msg).then(() => {
+          showMessage("WhatsApp notification message copied to clipboard!");
+        });
+      };
+
+      // ==========================================
+      // --- END: STUDENT INTELLIGENCE & ACCESS HUB ---
+      // ==========================================
 
       // --- WRITING SUBMISSIONS LOGIC ---
       window.openGradeWritingModal = async (submissionId) => {
@@ -4746,20 +6121,25 @@ const WRITING_SUBMISSIONS_HTML = `
                           : `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending Review</span>`;
 
                       const tr = document.createElement("tr");
-                      tr.className = "hover:bg-gray-50";
+                      tr.className = "flex flex-col md:table-row bg-white border border-gray-200 md:border-none rounded-2xl md:rounded-none p-4 md:px-6 md:py-4 shadow-sm md:shadow-none hover:bg-gray-50 transition-colors";
                       tr.innerHTML = `
-                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${date}</td>
-                          <td class="px-6 py-4 whitespace-nowrap">
-                              <div class="text-sm font-medium text-gray-900">${sub.userName}</div>
-                              <div class="text-sm text-gray-500">${sub.userEmail}</div>
+                          <td class="p-0 md:px-6 md:py-4 whitespace-nowrap text-xs text-gray-400 border-none mb-2 md:mb-0 flex justify-between items-center md:table-cell">
+                              <span>${date}</span>
+                              <div class="md:hidden">${statusBadge}</div>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${sub.testTitle}</td>
-                          <td class="px-6 py-4 whitespace-nowrap">${statusBadge}</td>
-                          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                              <button onclick="openGradeWritingModal('${sub.id}')" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors mr-2">
-                                  <i class="fas fa-edit mr-1"></i> Grade/View
+                          <td class="p-0 md:px-6 md:py-4 whitespace-nowrap border-none mb-2 md:mb-0">
+                              <div class="text-base md:text-sm font-bold text-gray-900">${sub.userName}</div>
+                              <div class="text-xs text-gray-500 font-mono">${sub.userEmail}</div>
+                          </td>
+                          <td class="p-0 md:px-6 md:py-4 whitespace-nowrap text-sm font-semibold text-gray-800 border-none mb-3 md:mb-0">
+                              <span class="inline-block bg-slate-100 md:bg-transparent px-2.5 py-1 md:p-0 rounded-lg text-xs md:text-sm font-bold text-slate-700">${sub.testTitle}</span>
+                          </td>
+                          <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap">${statusBadge}</td>
+                          <td class="p-0 md:px-6 md:py-4 whitespace-nowrap text-right text-sm font-medium border-none pt-3 md:pt-0 border-t border-gray-100 md:border-none flex items-center justify-end gap-2 md:table-cell">
+                              <button onclick="openGradeWritingModal('${sub.id}')" class="flex-1 md:flex-initial text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3.5 py-2 md:py-1.5 rounded-xl md:rounded-lg transition-colors font-bold text-xs flex items-center justify-center gap-1.5">
+                                  <i class="fas fa-edit"></i> Grade / Evaluate
                               </button>
-                              <button onclick="deleteWritingSubmission('${sub.id}')" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">
+                              <button onclick="deleteWritingSubmission('${sub.id}')" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-2 md:py-1.5 rounded-xl md:rounded-lg transition-colors font-bold text-xs">
                                   <i class="fas fa-trash-alt"></i>
                               </button>
                           </td>
@@ -4879,7 +6259,22 @@ const WRITING_SUBMISSIONS_HTML = `
 // Global flag for hybrid flow
       window.isCurrentTargetNew = false;
 
-     // Unified Premium Handler
+    // Toggle custom duration container
+      window.toggleCustomDurationFields = (val) => {
+          const container = document.getElementById("custom-duration-container");
+          if (!container) return;
+          if (val === "Custom Duration") {
+              container.classList.remove("hidden");
+              const today = new Date();
+              today.setDate(today.getDate() + 15);
+              document.getElementById("target-custom-exact-date").min = new Date().toISOString().split("T")[0];
+              document.getElementById("target-custom-exact-date").value = today.toISOString().split("T")[0];
+          } else {
+              container.classList.add("hidden");
+          }
+      };
+
+     // Unified Premium Handler with Custom Durations
       window.handlePremiumIssuance = async (e) => {
           e.preventDefault();
           if (!isAuthReady) return showMessage("Firebase not ready.");
@@ -4892,11 +6287,41 @@ const WRITING_SUBMISSIONS_HTML = `
 
           if (!email) return showMessage("Please enter a valid email address.");
 
-          let durationMonths = 1;
-          if (packageType.includes("Gold")) durationMonths = 2;
-          if (packageType.includes("Platinum")) durationMonths = 3;
-          const expiresAt = new Date();
-          expiresAt.setMonth(expiresAt.getMonth() + durationMonths);
+          // Smart Expiration Date Calculation
+          let expiresAt = new Date();
+          let effectivePackageLabel = packageType;
+
+          if (packageType === "Custom Duration") {
+              const exactDateVal = document.getElementById("target-custom-exact-date").value;
+              const daysVal = parseInt(document.getElementById("target-custom-days").value) || 15;
+              const unitVal = document.getElementById("target-custom-unit").value;
+
+              if (exactDateVal) {
+                  expiresAt = new Date(exactDateVal + "T23:59:59");
+                  effectivePackageLabel = `Custom Plan (Until ${expiresAt.toLocaleDateString()})`;
+              } else {
+                  if (unitVal === "days") {
+                      expiresAt.setDate(expiresAt.getDate() + daysVal);
+                      effectivePackageLabel = `Custom Plan (${daysVal} Days)`;
+                  } else if (unitVal === "weeks") {
+                      expiresAt.setDate(expiresAt.getDate() + (daysVal * 7));
+                      effectivePackageLabel = `Custom Plan (${daysVal} Weeks)`;
+                  } else {
+                      expiresAt.setMonth(expiresAt.getMonth() + daysVal);
+                      effectivePackageLabel = `Custom Plan (${daysVal} Months)`;
+                  }
+              }
+          } else if (packageType === "Lifetime Access") {
+              expiresAt.setFullYear(expiresAt.getFullYear() + 25); // 25 years = Permanent/Lifetime
+              effectivePackageLabel = "Lifetime Access (Unlimited)";
+          } else if (packageType.includes("Platinum")) {
+              expiresAt.setMonth(expiresAt.getMonth() + 3);
+          } else if (packageType.includes("Gold")) {
+              expiresAt.setMonth(expiresAt.getMonth() + 2);
+          } else {
+              // Silver (1 Month)
+              expiresAt.setMonth(expiresAt.getMonth() + 1);
+          }
 
           const submitBtn = document.getElementById("submit-premium-btn");
           submitBtn.disabled = true;
@@ -5094,11 +6519,11 @@ const WRITING_SUBMISSIONS_HTML = `
           }
       };
 
-      window.copyWhatsAppMsg = (name, email, pkg, pwd) => {
+     window.copyWhatsAppMsg = (name, email, pkg, pwd) => {
           const greeting = name && name !== "User" && name !== "N/A" ? `Hello ${name},` : "Hello!";
           
-          let testsIncluded = "Premium Mock Tests";
-          let validity = "Premium Access";
+          let testsIncluded = "Full Mock Tests (Listening, Reading, Writing, Speaking)";
+          let validity = pkg;
           
           if (pkg.includes("Silver")) {
               testsIncluded = "Listening: 7, Reading: 7, Writing: 7";
@@ -5109,6 +6534,12 @@ const WRITING_SUBMISSIONS_HTML = `
           } else if (pkg.includes("Platinum")) {
               testsIncluded = "Listening: 15, Reading: 15, Writing: 15, Speaking: 7";
               validity = "3 months";
+          } else if (pkg.includes("Lifetime")) {
+              testsIncluded = "All Current & Future Mock Tests";
+              validity = "Lifetime Access (Unlimited)";
+          } else if (pkg.includes("Custom")) {
+              testsIncluded = "All Full Mock Tests with Evaluations";
+              validity = pkg;
           }
 
           let waMessage = "";
@@ -5215,26 +6646,29 @@ const WRITING_SUBMISSIONS_HTML = `
                       const safeEmail = user.email || user.userId;
                       const safeName = user.name || "User ID: " + user.userId.substring(0,6) + "...";
 
-                      const tr = document.createElement("tr");
-                      tr.className = "hover:bg-gray-50 transition-colors";
+                     const tr = document.createElement("tr");
+                      tr.className = "flex flex-col md:table-row bg-white border border-slate-200 md:border-none rounded-2xl md:rounded-none p-4 md:px-6 md:py-4 shadow-sm md:shadow-none hover:bg-slate-50 transition-colors";
                       tr.innerHTML = `
-                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                              <div class="font-semibold">${safeName}</div>
-                              <div class="text-xs text-gray-500 font-mono">${safeEmail}</div>
+                          <td class="p-0 md:px-6 md:py-4 whitespace-nowrap text-sm text-gray-900 border-none mb-3 md:mb-0">
+                              <div class="font-bold text-slate-800 text-base md:text-sm flex items-center justify-between">
+                                  <span>${safeName}</span>
+                                  <span class="md:hidden px-2.5 py-0.5 text-[10px] font-bold rounded-full ${badgeColor}">${user.package || 'Legacy Premium'}</span>
+                              </div>
+                              <div class="text-xs text-gray-500 font-mono mt-0.5">${safeEmail}</div>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap">
+                          <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap">
                               <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full ${badgeColor}">${user.package || 'Legacy Premium'}</span>
                           </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              <div><span class="font-semibold text-gray-700">Granted:</span> ${grantedDate}</div>
-                              <div><span class="font-semibold text-red-500">Expires:</span> ${expiresDate}</div>
+                          <td class="p-0 md:px-6 md:py-4 whitespace-nowrap text-xs text-gray-500 border-none mb-3 md:mb-0 bg-slate-50 md:bg-transparent p-2.5 md:p-0 rounded-xl md:rounded-none">
+                              <div class="flex justify-between md:block"><span class="font-semibold text-gray-700">Granted:</span> <span>${grantedDate}</span></div>
+                              <div class="flex justify-between md:block mt-1 md:mt-0"><span class="font-semibold text-rose-500">Expires:</span> <span class="font-semibold text-rose-600">${expiresDate}</span></div>
                           </td>
-               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                             <button onclick="copyWhatsAppMsg('${safeName.replace(/'/g, "\\'")}', '${safeEmail.replace(/'/g, "\\'")}', '${(user.package || 'Legacy Premium').replace(/'/g, "\\'")}', '${(user.password || 'Hidden/Unknown').replace(/'/g, "\\'")}')" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors mr-2" title="Copy WhatsApp Message">
-                                  <i class="fab fa-whatsapp mr-1"></i> MSG
+                          <td class="p-0 md:px-6 md:py-4 whitespace-nowrap text-right text-sm font-medium border-none pt-3 md:pt-0 border-t border-slate-100 md:border-none flex items-center justify-end gap-2 md:table-cell">
+                             <button onclick="copyWhatsAppMsg('${safeName.replace(/'/g, "\\'")}', '${safeEmail.replace(/'/g, "\\'")}', '${(user.package || 'Legacy Premium').replace(/'/g, "\\'")}', '${(user.password || 'Hidden/Unknown').replace(/'/g, "\\'")}')" class="flex-1 md:flex-initial text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3 py-2 md:py-1.5 rounded-xl md:rounded-lg transition-colors font-bold text-xs flex items-center justify-center gap-1.5" title="Copy WhatsApp Message">
+                                  <i class="fab fa-whatsapp text-sm"></i> Copy WhatsApp Notice
                               </button>
-                              <button onclick="revokePremiumAccess('${user.userId}')" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors" title="Revoke Access">
-                                  <i class="fas fa-trash-alt"></i>
+                              <button onclick="revokePremiumAccess('${user.userId}')" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-2 md:py-1.5 rounded-xl md:rounded-lg transition-colors font-bold text-xs" title="Revoke Access">
+                                  <i class="fas fa-trash-alt mr-1"></i> Revoke
                               </button>
                           </td>
                       `;
@@ -5338,6 +6772,9 @@ const WRITING_SUBMISSIONS_HTML = `
             break;
           case "user-roles":
             contentHtml = ROLE_PERMISSIONS_HTML;
+            break;
+          case "student-hub":
+            contentHtml = STUDENT_HUB_HTML;
             break;
         }
         contentArea.innerHTML = contentHtml;
@@ -5846,65 +7283,56 @@ if (pageName === "premium-access") {
          });
             renderWritingSubmissions(writingSubmissionsCurrentFilters, writingSubmissionsCurrentPage, writingSubmissionsItemsPerPage);
           }
-         if (pageName === "audit-logs") renderAuditLogs(1);
-          if (pageName === "user-roles") renderRolePermissions();
+        if (pageName === "audit-logs") renderAuditLogs(1);
+         if (pageName === "user-roles") renderRolePermissions();
+         if (pageName === "student-hub") renderStudentHub();
         }, 0);
       };
-
-      document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
         // Set up authentication state listener
         onAuthStateChanged(auth, async (user) => {
           if (user) {
-            // User is signed in.
             userId = user.uid;
-            // Fetch user's role from Firestore
-            const userRoleDoc = await getDoc(
-              doc(
-                db,
-                "artifacts",
-                appId,
-                "public",
-                "data",
-                "adminUsers",
-                userId
-              )
-            );
-          if (userRoleDoc.exists()) {
-              currentUserRole = userRoleDoc.data().role;
+            
+            // Check if user exists in the adminUsers collection
+            const userRoleDoc = await getDoc(doc(db, "artifacts", appId, "public", "data", "adminUsers", userId));
+            
+            if (userRoleDoc.exists()) {
+              const userData = userRoleDoc.data();
+              currentUserRole = userData.role;
+
               if (Object.values(ROLES).includes(currentUserRole)) {
-                isAuthReady = true;
-                console.log(
-                  "Firebase authenticated. User ID:",
-                  userId,
-                  "Role:",
-                  currentUserRole
-                );
-                await fetchRolePermissions(); // Wait for dynamic permissions
-                showAdminPanel();
+                
+                // --- EMAIL 2-STEP VERIFICATION CHECK ---
+                // If they haven't verified the OTP in this browser tab session yet, force verification
+                if (!sessionStorage.getItem('mfa_verified_' + user.uid)) {
+                  isAuthReady = false;
+                  showEmailVerificationUI(user);
+                } else {
+                  // Already verified the code during this session
+                  await completeLoginFlow();
+                }
+                
               } else {
-                // User has an unassigned or invalid role, log them out
-                console.log(
-                  "User is logged in but lacks a valid administrative role. Logging out."
-                );
+                console.log("User lacks a valid administrative role. Logging out.");
                 await signOut(auth);
                 isAuthReady = false;
                 showLoginForm();
               }
-           } else {
-              // User is authenticated in Firebase Auth but has no role document.
-              // This could mean they are a regular user or a new admin not yet assigned a role.
-              // For this panel, we assume only users with roles in 'adminUsers' collection can access.
-              console.log(
-                "User is authenticated but no role found in Firestore. Logging out."
-              );
+            } else {
+              console.log("User is authenticated but no role found in Firestore. Logging out.");
               if (typeof clearAllListeners === 'function') clearAllListeners();
               await signOut(auth);
               isAuthReady = false;
               showLoginForm();
             }
+            
           } else {
             // User is signed out.
             if (typeof clearAllListeners === 'function') clearAllListeners();
+            // Clear session storage so they must verify again next time
+            if (userId) sessionStorage.removeItem('mfa_verified_' + userId);
+            
             userId = null;
             isAuthReady = false;
             currentUserRole = null;
